@@ -18,8 +18,8 @@ PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(Services::HooksProxy* hooker,
 {
     m_hplimit = hplimit;
 
-    hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject12GetIsPCDyingEv>(&CNWSObject__GetIsPCDying_Hook);
-    hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject7GetDeadEv>(&CNWSObject__GetDead_Hook);
+    hooker->Hook(API::Functions::_ZN10CNWSObject12GetIsPCDyingEv, (void*)&CNWSObject__GetIsPCDying_Hook, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN10CNWSObject7GetDeadEv, (void*)&CNWSObject__GetDead_Hook, Hooking::Order::Final);
 }
 
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* thisPtr)

@@ -34,7 +34,7 @@ private:
     static void HandleTickrateReporting(const std::chrono::time_point<std::chrono::high_resolution_clock>& now);
     static void HandleRecalibration(const std::chrono::time_point<std::chrono::high_resolution_clock>& now);
 
-    static void MainLoopUpdate(bool, CServerExoAppInternal* thisPtr);
+    static int32_t MainLoopUpdate(CServerExoAppInternal*);
 
     void SetPerfScopeResampler(const std::string& name);
     void PushPerfScope(std::string&& name, NWNXLib::Services::MetricData::Tags&& tags);

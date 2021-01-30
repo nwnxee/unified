@@ -11,7 +11,6 @@ public:
 
 private:
     static void CNWSCreature__ResolveAttackRoll_hook(CNWSCreature*, CNWSObject*);
-    static NWNXLib::Hooking::FunctionHook* pResolveAttackRoll_hook;
 };
 
 }

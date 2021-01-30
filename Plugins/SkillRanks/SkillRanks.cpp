@@ -39,6 +39,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace SkillRanks {
 
+static Hooking::FunctionHook *s_LoadRulesetInfoHook;
+
 SkillRanks::SkillRanks(Services::ProxyServiceList* services)
     : Plugin(services)
 {
@@ -59,20 +61,17 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules15LoadRulesetInfoEv, void, CNWRules*>(&LoadRulesetInfoHook);
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti,
-        char, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
+    s_LoadRulesetInfoHook = GetServices()->m_hooks->Hook(Functions::_ZN8CNWRules15LoadRulesetInfoEv, (void*)&LoadRulesetInfoHook, Hooking::Order::Earliest);
+    GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooking::Order::Final);
 }
 
 SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
+void SkillRanks::LoadRulesetInfoHook(CNWRules* pRules)
 {
-    // We only want to do this in the AFTER
-    if (before || !pRules)
-        return;
+    s_LoadRulesetInfoHook->CallOriginal<void>(pRules);
 
     g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
@@ -543,11 +542,7 @@ void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
     }
 }
 
-char SkillRanks::GetSkillRankHook(
-        CNWSCreatureStats* thisPtr,
-        uint8_t nSkill,
-        CNWSObject* pVersus,
-        int32_t bBaseOnly)
+char SkillRanks::GetSkillRankHook(CNWSCreatureStats* thisPtr, uint8_t nSkill, CNWSObject* pVersus, int32_t bBaseOnly)
 {
     if (nSkill >= Globals::Rules()->m_nNumSkills)
         return 0;

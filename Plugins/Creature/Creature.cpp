@@ -50,6 +50,7 @@ bool Creature::s_bCasterLevelHooksInitialized = false;
 bool Creature::s_bCriticalMultiplierHooksInitialized = false;
 bool Creature::s_bCriticalRangeHooksInitialized = false;
 bool Creature::s_bResolveAttackRollHookInitialized = false;
+static Hooking::FunctionHook *s_GetClassLevelHook = nullptr;
 
 Creature::Creature(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -1097,37 +1098,28 @@ ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
 
 ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pGetMovementRateFactor_hook;
-    static NWNXLib::Hooking::FunctionHook* pSetMovementRateFactor_hook;
+    static Hooking::FunctionHook *pGetMovementRateFactor_hook =
+        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv,
+        (void*)+[](CNWSCreature *pThis) -> float
+        {
+            auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
+            return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
+        }, Hooking::Order::Late);
 
-    if (!pGetMovementRateFactor_hook)
-    {
-        pGetMovementRateFactor_hook = 
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21GetMovementRateFactorEv>(
-            +[](CNWSCreature *pThis) -> float
+    static Hooking::FunctionHook *pSetMovementRateFactor_hook =
+        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf,
+        (void*)+[](CNWSCreature *pThis, float fRate) -> void
+        {
+            // Always set the default so it goes back to normal if cap is reset
+            pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
+
+            auto pCap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR_CAP");
+            if (pCap)
             {
-                auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
-                return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
-            });
-    }
-
-    if (!pSetMovementRateFactor_hook)
-    {
-        pSetMovementRateFactor_hook =
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21SetMovementRateFactorEf>(
-            +[](CNWSCreature *pThis, float fRate) -> void
-            {
-                // Always set the default so it goes back to normal if cap is reset
-                pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
-
-                auto pCap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR_CAP");
-                if (pCap)
-                {
-                    if (fRate > *pCap) { fRate = *pCap; }
-                    g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
-                }
-            });
-    }
+                if (fRate > *pCap) { fRate = *pCap; }
+                g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
+            }
+        }, Hooking::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -1474,20 +1466,16 @@ ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
 
 ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pGetWalkRate_hook;
+    static Hooking::FunctionHook *pGetWalkRate_hook =
+        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature11GetWalkRateEv,
+        (void*)+[](CNWSCreature *pThis) -> float
+        {
+            float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
 
-    if (!pGetWalkRate_hook)
-    {
-        pGetWalkRate_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
-            +[](CNWSCreature *pThis) -> float
-            {
-                float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
+            auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "WALK_RATE_CAP");
+            return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
-                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "WALK_RATE_CAP");
-                return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
-
-            });
-    }
+        }, Hooking::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -1587,37 +1575,31 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
 
 ArgumentStack Creature::LevelUp(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook* pCanLevelUp_hook;
-    static Hooking::FunctionHook* pValidateLevelUp_hook;
     static bool bSkipLevelUpValidation = false;
-    if (!pCanLevelUp_hook)
-    {
-        pCanLevelUp_hook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
-                (void*)+[](CNWSCreatureStats *pThis) -> int32_t
-                {
-                    if (bSkipLevelUpValidation && !pThis->m_bIsPC)
-                    {
-                        return pThis->GetLevel(false) < 60;
-                    }
-                    return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-                }, Hooking::Order::Late);
-    }
 
-    if (pValidateLevelUp_hook)
-    {
-        pValidateLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
-                +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
-                {
-                    if (bSkipLevelUpValidation)
-                    {
-                        ASSERT(!pThis->m_bIsPC);
-                        pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
-                        pThis->UpdateCombatInformation();
-                        return 0;
-                    }
-                    return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
-                });
-    }
+    static Hooking::FunctionHook *pCanLevelUp_hook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
+        (void*)+[](CNWSCreatureStats *pThis) -> int32_t
+        {
+            if (bSkipLevelUpValidation && !pThis->m_bIsPC)
+            {
+                return pThis->GetLevel(false) < 60;
+            }
+            return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+        }, Hooking::Order::Late);
+
+    static Hooking::FunctionHook *pValidateLevelUp_hook =
+        GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
+        (void*)+[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+        {
+            if (bSkipLevelUpValidation)
+            {
+                ASSERT(!pThis->m_bIsPC);
+                pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
+                pThis->UpdateCombatInformation();
+                return 0;
+            }
+            return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
+        }, Hooking::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -2076,11 +2058,37 @@ ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
 
 void Creature::InitCasterLevelHooks()
 {
-    auto hooker = g_plugin->GetServices()->m_hooks.get();
-    hooker->RequestSharedHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, uint8_t>(&CNWSCreatureStats__GetClassLevel);
-    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
-    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
-    hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+    auto *hooker = g_plugin->GetServices()->m_hooks.get();
+
+    s_GetClassLevelHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
+                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooking::Order::Early);
+
+    static Hooking::FunctionHook *s_ExecuteCommandGetCasterLevelHook =
+            hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
+                (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+                {
+                    s_bAdjustCasterLevel = true;
+                    auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+                    s_bAdjustCasterLevel = false;
+                    return retVal;
+                }, Hooking::Order::Early);
+    static Hooking::FunctionHook *s_ExecuteCommandResistSpellHook =
+            hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
+                (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+                {
+                    s_bAdjustCasterLevel = true;
+                    auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+                    s_bAdjustCasterLevel = false;
+                    return retVal;
+                }, Hooking::Order::Early);
+    static Hooking::FunctionHook *s_SetCreatorHook =
+            hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
+        (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
+                {
+                    s_bAdjustCasterLevel = true;
+                    s_SetCreatorHook->CallOriginal<void>(thisPtr, oidCreator);
+                    s_bAdjustCasterLevel = false;
+                }, Hooking::Order::Early);
 
     s_bCasterLevelHooksInitialized = true;
 }
@@ -2167,59 +2175,38 @@ ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
     return Events::Arguments(retVal);
 }
 
-void Creature::CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL)
+uint8_t Creature::CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel)
 {
-    static int32_t nModifier;
+    auto retVal = s_GetClassLevelHook->CallOriginal<uint8_t>(thisPtr, nMultiClass, bUseNegativeLevel);
 
-    if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
-        return;
-
-    auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
-    if (nClass > Constants::ClassType::MAX)
-        return;
-
-    if (!before)
+    if (s_bAdjustCasterLevel || nMultiClass < thisPtr->m_nNumMultiClasses)
     {
-        thisPtr->m_ClassInfo[nMultiClass].m_nLevel -= nModifier;
-        return;
+        auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
+
+        if (nClass != Constants::ClassType::Invalid)
+        {
+            int32_t nModifier = 0;
+            auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature,"CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+            if (nLevelOverride)
+            {
+                auto nLevel = std::max(nLevelOverride.value(), 255);
+                nModifier = nLevel - thisPtr->m_ClassInfo[nMultiClass].m_nLevel;
+            }
+
+            auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature,"CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+            if (nLevelModifier)
+                nModifier = nLevelModifier.value();
+
+            //Make sure m_nLevel doesn't over/underflow
+            nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+            if (nModifier < 0)
+                nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
+
+            retVal += nModifier;
+        }
     }
 
-    nModifier = 0;
-
-    auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
-    if (nLevelOverride)
-    {
-        auto nLevel = std::max(nLevelOverride.value(), 255);
-        nModifier = nLevel - thisPtr->m_ClassInfo[nMultiClass].m_nLevel;
-        thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
-        return;
-    }
-
-    auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
-    if (nLevelModifier)
-        nModifier = nLevelModifier.value();
-
-    //Make sure m_nLevel doesn't over/underflow
-    nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
-    if (nModifier < 0)
-        nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
-
-    thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
-}
-
-void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void Creature::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
-{
-    s_bAdjustCasterLevel = before;
+    return retVal;
 }
 
 ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
@@ -2237,81 +2224,78 @@ ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
 
 void Creature::InitCriticalMultiplierHook()
 {
-    static NWNXLib::Hooking::FunctionHook* pGetCriticalHitMultiplier_hook;
-    if (!pGetCriticalHitMultiplier_hook)
-    {
-        pGetCriticalHitMultiplier_hook =
-            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi>(
-            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+    static Hooking::FunctionHook *pGetCriticalHitMultiplier_hook =
+        g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi,
+        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        {
+            int32_t retVal;
+            if (!bOffHand) //mainhand
             {
-                int32_t retVal;
-                if (!bOffHand) //mainhand
-                {
-                    auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
-                    std::string BaseItemID;
-                    if (!pItem)
-                        BaseItemID = std::to_string(Constants::BaseItem::Gloves);
-                    else
-                        BaseItemID = std::to_string(pItem->m_nBaseItem);
+                auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                std::string BaseItemID;
+                if (!pItem)
+                    BaseItemID = std::to_string(Constants::BaseItem::Gloves);
+                else
+                    BaseItemID = std::to_string(pItem->m_nBaseItem);
 
-                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1!BI" + BaseItemID))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0!BI" + BaseItemID))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1"))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
-                        retVal = critMultOvr.value();
-                    else
-                        retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1!BI" + BaseItemID))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0!BI" + BaseItemID))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1"))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
+                    retVal = critMultOvr.value();
+                else
+                    retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
 
-                    //Override-Modifier gap
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1!BI" + BaseItemID))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0!BI" + BaseItemID))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1"))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
-                        retVal = retVal + critMultMod.value();
-                }
-                else //Offhand
-                {
-                    auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
-                    if (!pItem) // Could be a double-sided weapon
-                        pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                //Override-Modifier gap
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1!BI" + BaseItemID))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0!BI" + BaseItemID))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1"))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
+                    retVal = retVal + critMultMod.value();
+            }
+            else //Offhand
+            {
+                auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+                if (!pItem) // Could be a double-sided weapon
+                    pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
 
-                    std::string BaseItemID;
-                    if (!pItem)
-                        BaseItemID = std::to_string(Constants::BaseItem::Gloves);
-                    else
-                        BaseItemID = std::to_string(pItem->m_nBaseItem);
+                std::string BaseItemID;
+                if (!pItem)
+                    BaseItemID = std::to_string(Constants::BaseItem::Gloves);
+                else
+                    BaseItemID = std::to_string(pItem->m_nBaseItem);
 
-                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2!BI" + BaseItemID))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0!BI" + BaseItemID))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2"))
-                        retVal = critMultOvr.value();
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
-                        retVal = critMultOvr.value();
-                    else
-                        retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2!BI" + BaseItemID))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0!BI" + BaseItemID))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2"))
+                    retVal = critMultOvr.value();
+                else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
+                    retVal = critMultOvr.value();
+                else
+                    retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
 
-                    //Override-Modifier gap
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2!BI" + BaseItemID))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0!BI" + BaseItemID))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2"))
-                        retVal = retVal + critMultMod.value();
-                    if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
-                        retVal = retVal + critMultMod.value();
-                }
+                //Override-Modifier gap
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2!BI" + BaseItemID))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0!BI" + BaseItemID))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2"))
+                    retVal = retVal + critMultMod.value();
+                if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
+                    retVal = retVal + critMultMod.value();
+            }
 
-                return retVal > 0 ? retVal : 0;
-            });
-    }
+            return retVal > 0 ? retVal : 0;
+        }, Hooking::Order::Late);
+
     s_bCriticalMultiplierHooksInitialized = true;
 }
 
@@ -2425,80 +2409,77 @@ ArgumentStack Creature::GetCriticalMultiplierOverride(ArgumentStack&& args)
 
 void Creature::InitCriticalRangeHook()
 {
-    static NWNXLib::Hooking::FunctionHook* pGetCriticalHitRoll_hook;
-    if (!pGetCriticalHitRoll_hook)
-    {
-        pGetCriticalHitRoll_hook =
-            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi>(
-            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+    static NWNXLib::Hooking::FunctionHook *pGetCriticalHitRoll_hook =
+        g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi,
+        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        {
+            int32_t retVal;
+            if (!bOffHand) //mainhand
             {
-                int32_t retVal;
-                if (!bOffHand) //mainhand
-                {
-                    auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
-                    std::string BaseItemID;
-                    if (!pItem)
-                        BaseItemID = std::to_string(Constants::BaseItem::Gloves);
-                    else
-                        BaseItemID = std::to_string(pItem->m_nBaseItem);
+                auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                std::string BaseItemID;
+                if (!pItem)
+                    BaseItemID = std::to_string(Constants::BaseItem::Gloves);
+                else
+                    BaseItemID = std::to_string(pItem->m_nBaseItem);
 
-                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1!BI" + BaseItemID))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0!BI" + BaseItemID))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1"))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
-                        retVal = critRngOvr.value();
-                    else
-                        retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1!BI" + BaseItemID))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0!BI" + BaseItemID))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1"))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
+                    retVal = critRngOvr.value();
+                else
+                    retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
 
-                    //Override-Modifier gap
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1!BI" + BaseItemID))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0!BI" + BaseItemID))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1"))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
-                        retVal = retVal + critRngMod.value();
-                }
-                else //Offhand
-                {
-                    auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
-                    if (!pItem) // Could be a double-sided weapon
-                        pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                //Override-Modifier gap
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1!BI" + BaseItemID))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0!BI" + BaseItemID))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1"))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
+                    retVal = retVal + critRngMod.value();
+            }
+            else //Offhand
+            {
+                auto pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+                if (!pItem) // Could be a double-sided weapon
+                    pItem = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
 
-                    std::string BaseItemID;
-                    if (!pItem)
-                        BaseItemID = std::to_string(Constants::BaseItem::Gloves);
-                    else
-                        BaseItemID = std::to_string(pItem->m_nBaseItem);
+                std::string BaseItemID;
+                if (!pItem)
+                    BaseItemID = std::to_string(Constants::BaseItem::Gloves);
+                else
+                    BaseItemID = std::to_string(pItem->m_nBaseItem);
 
-                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2!BI" + BaseItemID))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0!BI" + BaseItemID))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2"))
-                        retVal = critRngOvr.value();
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
-                        retVal = critRngOvr.value();
-                    else
-                        retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2!BI" + BaseItemID))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0!BI" + BaseItemID))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2"))
+                    retVal = critRngOvr.value();
+                else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
+                    retVal = critRngOvr.value();
+                else
+                    retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
 
-                    //Override-Modifier gap
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2!BI" + BaseItemID))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0!BI" + BaseItemID))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2"))
-                        retVal = retVal + critRngMod.value();
-                    if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
-                        retVal = retVal + critRngMod.value();
-                }
-                return std::clamp(retVal, 0, 20);
-            });
-    }
+                //Override-Modifier gap
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2!BI" + BaseItemID))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0!BI" + BaseItemID))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2"))
+                    retVal = retVal + critRngMod.value();
+                if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
+                    retVal = retVal + critRngMod.value();
+            }
+            return std::clamp(retVal, 0, 20);
+        });
+
     s_bCriticalRangeHooksInitialized = true;
 }
 
@@ -2655,16 +2636,12 @@ ArgumentStack Creature::SetEffectIconFlashing(ArgumentStack&& args)
 
 ArgumentStack Creature::OverrideDamageLevel(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pGetDamageLevelHook;
-    if (!pGetDamageLevelHook)
-    {
-        pGetDamageLevelHook = g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN10CNWSObject14GetDamageLevelEv>(
-            +[](CNWSObject *thisPtr) -> uint8_t
-            {
-                auto damageLevel = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE");
-                return damageLevel ? *damageLevel : pGetDamageLevelHook->CallOriginal<uint8_t>(thisPtr);
-            });
-    }
+    static Hooking::FunctionHook *pGetDamageLevelHook = g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN10CNWSObject14GetDamageLevelEv,
+        (void*)+[](CNWSObject *thisPtr) -> uint8_t
+        {
+            auto damageLevel = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE");
+            return damageLevel ? *damageLevel : pGetDamageLevelHook->CallOriginal<uint8_t>(thisPtr);
+        }, Hooking::Order::Late);
 
     if (auto* pCreature = creature(args))
     {
@@ -2941,60 +2918,45 @@ void Creature::DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget)
     pAttackData->m_nAttackResult = 1;
 }
 
-bool Creature::InitResolveAttackRollHook()
+void Creature::InitResolveAttackRollHook()
 {
-    static NWNXLib::Hooking::FunctionHook* pResolveAttackRoll_hook;
-    if (!pResolveAttackRoll_hook)
+    g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
+    (void*)+[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
     {
-        try
+        auto pTargetCreature = Utils::AsNWSCreature(pTarget);
+        int32_t bRoundPaused = false;
+        if (g_plugin->m_ParryAllAttacks[thisPtr->m_idSelf] ||
+        g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
         {
-            pResolveAttackRoll_hook = 
-                g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>(
-                    +[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
-                    {
-                        auto pTargetCreature = Utils::AsNWSCreature(pTarget);
-                        int32_t bRoundPaused = false;
-                        if (g_plugin->m_ParryAllAttacks[thisPtr->m_idSelf] ||
-                        g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
-                        {
-                            if (auto *pCreature = pTargetCreature)
-                            {
-                                if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
-                                    pCreature->m_pcCombatRound->m_nParryActions > 0 &&
-                                    !pCreature->GetRangeWeaponEquipped())
-                                {
-                                    bRoundPaused = pCreature->m_pcCombatRound->m_bRoundPaused;
-                                    pCreature->m_pcCombatRound->m_bRoundPaused = false;
-                                }
-                            }
-                        }
-
-                        DoResolveAttackHook(thisPtr, pTarget);
-
-                        if (g_plugin->m_ParryAllAttacks[pTarget->m_idSelf] ||
-                            g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
-                        {
-                            if (bRoundPaused)
-                                pTargetCreature->m_pcCombatRound->m_bRoundPaused = true;
-                        }
-
-                    });
+            if (auto *pCreature = pTargetCreature)
+            {
+                if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
+                    pCreature->m_pcCombatRound->m_nParryActions > 0 &&
+                    !pCreature->GetRangeWeaponEquipped())
+                {
+                    bRoundPaused = pCreature->m_pcCombatRound->m_bRoundPaused;
+                    pCreature->m_pcCombatRound->m_bRoundPaused = false;
+                }
+            }
         }
-        catch (...)
+
+        DoResolveAttackHook(thisPtr, pTarget);
+
+        if (g_plugin->m_ParryAllAttacks[pTarget->m_idSelf] ||
+            g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
         {
-            LOG_ERROR("Can't hook ResolveAttackRoll, is ParryAllAttacks Tweak turned on?");
-            return false;
+            if (bRoundPaused)
+                pTargetCreature->m_pcCombatRound->m_bRoundPaused = true;
         }
-    }
+    }, Hooking::Order::Final);
+
     s_bResolveAttackRollHookInitialized = true;
-    return true;
 }
 
 ArgumentStack Creature::SetAttackRollOverride(ArgumentStack&& args)
 {
     if (!s_bResolveAttackRollHookInitialized)
-        if (!InitResolveAttackRollHook())
-            return Events::Arguments();
+        InitResolveAttackRollHook();
 
     const auto creatureId = Events::ExtractArgument<ObjectID>(args);
     auto nDie = Events::ExtractArgument<int32_t>(args);
@@ -3022,8 +2984,7 @@ ArgumentStack Creature::SetAttackRollOverride(ArgumentStack&& args)
 ArgumentStack Creature::SetParryAllAttacks(ArgumentStack&& args)
 {
     if (!s_bResolveAttackRollHookInitialized)
-        if (!InitResolveAttackRollHook())
-            return Events::Arguments();
+        InitResolveAttackRollHook();
 
     const auto creatureId = Events::ExtractArgument<ObjectID>(args);
     const auto bParry = !!Events::ExtractArgument<int32_t>(args);

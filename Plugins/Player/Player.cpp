@@ -165,34 +165,27 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 
 ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
 {
-    static bool bHandlePlayerToServerInputCancelGuiTimingEventHook;
-
-    if (!bHandlePlayerToServerInputCancelGuiTimingEventHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer, int32_t>(
-                +[](bool before, CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> void
+    static Hooking::FunctionHook *pHandlePlayerToServerInputCancelGuiTimingEventHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
+                (void*)+[](CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> int32_t
                 {
-                    // Before or after doesn't matter, just pick one so it happens only once
-                    if (before)
+                    CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
+
+                    if (pScriptVarTable)
                     {
-                        CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
+                        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
+                        int32_t id = pScriptVarTable->GetInt(varName);
 
-                        if (pScriptVarTable)
+                        if (id > 0)
                         {
-                            CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
-                            int32_t id = pScriptVarTable->GetInt(varName);
-
-                            if (id > 0)
-                            {
-                                LOG_DEBUG("Cancelling GUI timing event id %d...", id);
-                                pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
-                                pScriptVarTable->DestroyInt(varName);
-                            }
+                            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
+                            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
+                            pScriptVarTable->DestroyInt(varName);
                         }
                     }
-                });
-        bHandlePlayerToServerInputCancelGuiTimingEventHook = true;
-    }
+
+                    return pHandlePlayerToServerInputCancelGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -226,22 +219,17 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
 
 ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pOnRemoveLimitMovementSpeed_hook;
+    static NWNXLib::Hooking::FunctionHook* pOnRemoveLimitMovementSpeed_hook =
+            GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect,
+                (void*)+[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
+                {
+                    // Don't remove the forced walk flag when various slowdown effects expire
+                    auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pObject->m_idSelf, "ALWAYS_WALK");
+                    if (walk && *walk)
+                        return 1;
 
-    if (!pOnRemoveLimitMovementSpeed_hook)
-    {
-        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->RequestExclusiveHook
-            <Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect>(
-            +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
-            {
-                // Don't remove the forced walk flag when various slowdown effects expire
-                auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pObject->m_idSelf, "ALWAYS_WALK");
-                if (walk && *walk)
-                    return 1;
-
-                return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
-            });
-    }
+                    return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
+                }, Hooking::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -502,34 +490,23 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 
 ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
 {
-    static bool bAIActionRestHook;
-
-    if (!bAIActionRestHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
-            +[](bool before, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+    static Hooking::FunctionHook *pAIActionRestHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
+    (void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
             {
-                static int32_t creatureLevel;
-                static int32_t originalValue;
-
-                if (before)
+                if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
                 {
-                    creatureLevel = pCreature->m_pStats->GetLevel(0);
-
+                    uint8_t creatureLevel = pCreature->m_pStats->GetLevel(0);
+                    int32_t originalValue;
                     Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
-
-                    if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
-                    {
-                        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
-                    }
+                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
+                    auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
+                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
+                    return retVal;
                 }
                 else
-                {
-                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
-                }
-            });
-        bAIActionRestHook = true;
-    }
+                    return pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
+            }, Hooking::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -557,22 +534,12 @@ ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
 
-        Vector vTargetPosition;
-        vTargetPosition.x = 0.0f;
-        vTargetPosition.y = 0.0f;
-        vTargetPosition.z = 0.0f;
+        Vector vTargetPosition {};
 
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
-            pMessage->SendServerToPlayerGameObjUpdateVisEffect(
-                    pPlayer,
-                    visualEffect,                 // nVisualEffectID
-                    oidTarget,                    // oidTarget
-                    Utils::GetModule()->m_idSelf, // oidSource
-                    0,                            // nSourceNode
-                    0,                            // nTargetNode
-                    vTargetPosition,              // vTargetPosition
-                    0.0f);                        // fDuration
+            pMessage->SendServerToPlayerGameObjUpdateVisEffect(pPlayer, visualEffect, oidTarget, Utils::GetModule()->m_idSelf,
+                                                               0, 0, vTargetPosition, 0.0f);
         }
     }
     return Events::Arguments();
@@ -688,23 +655,20 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
 
 ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
 {
-    static bool bAIActionRestHook;
+    static Hooking::FunctionHook *pAIActionRestHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
+            (void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
+            {
+                auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
 
-    if (!bAIActionRestHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
-                +[](bool before, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+                if (auto animation = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_ANIMATION"))
                 {
-                    if (!before)
-                    {
-                        if (auto animation = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_ANIMATION"))
-                        {
-                            pCreature->SetAnimation(*animation);
-                        }
-                    }
-                });
-        bAIActionRestHook = true;
-    }
+                    if (retVal == 1/* In Progress*/)
+                        pCreature->SetAnimation(*animation);
+                }
+
+                return retVal;
+            }, Hooking::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -726,47 +690,32 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 {
-    static bool bSetObjectVisualTransformOverrideHook;
-
-    if (!bSetObjectVisualTransformOverrideHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+    static Hooking::FunctionHook *pSetObjectVisualTransformOverrideHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static ObjectVisualTransformData *pObjectVisualTransformData;
-
                         if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
                             pObject->m_nObjectType == Constants::ObjectType::Placeable ||
                             pObject->m_nObjectType == Constants::ObjectType::Item ||
                             pObject->m_nObjectType == Constants::ObjectType::Door)
                         {
-                            if (before)
+                            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
+                                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
-                                if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
-                                        "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                                {
-                                    pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
-                                }
-                                else
-                                {
-                                    pObjectVisualTransformData = nullptr;
-                                }
-                            }
+                                auto *pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
 
-                            if (pObjectVisualTransformData)
-                            {
-                                // Note: pObject->m_pVisualTransformData is pretending to be a pointer
                                 std::swap(*pObjectVisualTransformData, pObject->m_pVisualTransformData);
+                                pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                                std::swap(*pObjectVisualTransformData, pObject->m_pVisualTransformData);
+
+                                return;
                             }
                         }
                     }
-                });
-
-        bSetObjectVisualTransformOverrideHook = true;
-    }
+                    pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -854,53 +803,34 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
 ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 {
-    static bool bApplyLoopingVisualEffectToObjectHook;
-
-    if (!bApplyLoopingVisualEffectToObjectHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+    static Hooking::FunctionHook *pApplyLoopingVisualEffectToObjectHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static std::set<uint16_t> *pLoopingVisualEffectSet;
-
-                        if (before)
-                        {
                             if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
                                     "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
-                                pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
-                            }
-                            else
-                            {
-                                pLoopingVisualEffectSet = nullptr;
-                            }
+                                auto *pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
 
-                            if (pLoopingVisualEffectSet)
-                            {
                                 for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
                                     pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
                                 }
-                            }
-                        }
-                        else
-                        {
-                            if (pLoopingVisualEffectSet)
-                            {
+
+                                pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+
                                 for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
                                     pObject->RemoveLoopingVisualEffect(visualEffect);
                                 }
-                            }
-                        }
-                    }
-                });
 
-        bApplyLoopingVisualEffectToObjectHook = true;
-    }
+                                return;
+                            }
+                    }
+                    pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -953,44 +883,25 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
 ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
 {
-    static bool bSetPlaceableNameOverrideHook;
-
-    if (!bSetPlaceableNameOverrideHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+    static Hooking::FunctionHook *pSetPlaceableNameOverrideHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static std::optional<std::string> name;
-                        static CExoString swapName;
-
-                        if (before)
+                        if (auto name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
+                                                                                                      "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
-                            name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
-                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                            CExoString swapName = CExoString(*name);
 
-                            if (name)
-                            {
-                                std::string newName = *name;
-                                swapName = newName.c_str();
-
-                                std::swap(swapName, pPlaceable->m_sDisplayName);
-                            }
-                        }
-                        else
-                        {
-                            if (name)
-                            {
-                                std::swap(swapName, pPlaceable->m_sDisplayName);
-                            }
+                            std::swap(swapName, pPlaceable->m_sDisplayName);
+                            pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                            std::swap(swapName, pPlaceable->m_sDisplayName);
+                            return;
                         }
                     }
-                });
-
-        bSetPlaceableNameOverrideHook = true;
-    }
+                    pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -1050,64 +961,59 @@ ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
 
 ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
 {
-    static bool bSetPersistentLocationHook;
-    if (!bSetPersistentLocationHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void>(
-                +[](bool before, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
+    static Hooking::FunctionHook *pSetPersistentLocationHook =
+        GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii,
+                (void*)+[](CServerExoAppInternal *pServerExoAppInternal, CNWSPlayer *pPlayer, int32_t bUseSaveGameCharacter, int32_t bUseStateDataInSaveGame ) -> int32_t
                 {
-                    if (!before)
+                    auto retVal = pSetPersistentLocationHook->CallOriginal<int32_t>(pServerExoAppInternal, pPlayer, bUseSaveGameCharacter, bUseStateDataInSaveGame);
+
+                    std::string sKey;
+                    std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+                    if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
                     {
-                        std::string sKey;
-                        std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
-                        if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
-                        {
-                            std::string sCommunityName = pPlayer->GetPlayerName().CStr();
-                            sKey = sCommunityName + "!" + sBicFileName;
-                        }
-                        else
-                        {
-                            auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
-                            auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-                            std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
-                            sKey = sCDKey + "!" + sBicFileName;
-                        }
-                        auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;
-                        if (!wpOID)
-                            return;
+                        std::string sCommunityName = pPlayer->GetPlayerName().CStr();
+                        sKey = sCommunityName + "!" + sBicFileName;
+                    }
+                    else
+                    {
+                        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+                        auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
+                        std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+                        sKey = sCDKey + "!" + sBicFileName;
+                    }
+                    auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;
+                    if (!wpOID)
+                        return retVal;
 
-                        auto bFirstConnectOnly = g_plugin->m_PersistentLocationWP[sKey].second;
+                    auto bFirstConnectOnly = g_plugin->m_PersistentLocationWP[sKey].second;
 
-                        // Delete the key if this is the first connect and we're only setting the location on first connect
-                        if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
-                        {
-                            g_plugin->m_PersistentLocationWP.erase(sKey);
-                        }
-                            // The TURD exists already meaning its not the first connect
-                        else if (bFirstConnectOnly)
-                            return;
+                    // Delete the key if this is the first connect and we're only setting the location on first connect
+                    if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
+                    {
+                        g_plugin->m_PersistentLocationWP.erase(sKey);
+                    }
+                        // The TURD exists already meaning its not the first connect
+                    else if (bFirstConnectOnly)
+                        return retVal;
 
-                        // Fake some changes to their area/position as though they had a TURD
-                        auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
-                        if (pWP)
+                    // Fake some changes to their area/position as though they had a TURD
+                    auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
+                    if (pWP)
+                    {
+                        auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                        pCreature->m_oidDesiredArea = pWP->m_oidArea;
+                        pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
+                        pCreature->m_bDesiredAreaUpdateComplete = false;
+                        pCreature->m_vOrientation = pWP->m_vOrientation;
+                        pPlayer->m_bFromTURD = true;
+                        // We don't need the WP any more if we're only setting the location on first connect
+                        if (bFirstConnectOnly)
                         {
-                            auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
-                            pCreature->m_oidDesiredArea = pWP->m_oidArea;
-                            pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
-                            pCreature->m_bDesiredAreaUpdateComplete = false;
-                            pCreature->m_vOrientation = pWP->m_vOrientation;
-                            pPlayer->m_bFromTURD = true;
-                            // We don't need the WP any more if we're only setting the location on first connect
-                            if (bFirstConnectOnly)
-                            {
-                                Utils::AddDestroyObjectEvent(pWP->m_idSelf);
-                            }
+                            Utils::AddDestroyObjectEvent(pWP->m_idSelf);
                         }
                     }
-                });
-
-        bSetPersistentLocationHook = true;
-    }
+                    return retVal;
+                }, Hooking::Order::Early);
 
     const auto sCDKeyOrCommunityName = Events::ExtractArgument<std::string>(args);
     const auto sBicFileName = Events::ExtractArgument<std::string>(args);
@@ -1175,52 +1081,50 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         LOG_ERROR("Attempt to possess a creature while already possessing.");
         return Events::Arguments(0);
     }
-    static NWNXLib::Hooking::FunctionHook* pUnsummonMyselfHook;
-    static NWNXLib::Hooking::FunctionHook* pPossessFamiliarHook;
 
-    if (!pUnsummonMyselfHook)
-    {
-        // When a PC is logging off we don't want this creature to unsummon themselves (unless crashed in AT)
-        pUnsummonMyselfHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature14UnsummonMyselfEv>(
-                +[](CNWSCreature *pPossessed) -> void
+    // When a PC is logging off we don't want this creature to unsummon themselves (unless crashed in AT)
+    static NWNXLib::Hooking::FunctionHook* pUnsummonMyselfHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature14UnsummonMyselfEv,
+            (void*)+[](CNWSCreature *pPossessed) -> void
+            {
+                auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+                auto possessorOidPOS = pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
+                auto pServer = Globals::AppManager()->m_pServerExoApp;
+                auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
+
+                //Possessed, not in limbo
+                if (pPossessor && pPossessed->m_oidArea != Constants::OBJECT_INVALID)
                 {
-                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto possessorOidPOS = pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
-                    auto pServer = Globals::AppManager()->m_pServerExoApp;
-                    auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
-
-                    //Possessed, not in limbo
-                    if (pPossessor && pPossessed->m_oidArea != Constants::OBJECT_INVALID)
+                    pPossessor->UnpossessFamiliar();
+                }
+                else
+                {
+                    pUnsummonMyselfHook->CallOriginal<void>(pPossessed);
+                    // Remove the mind immunity effect from the possessor if they were in limbo
+                    if (pPossessor && pPossessed->m_oidArea == Constants::OBJECT_INVALID)
                     {
-                        pPossessor->UnpossessFamiliar();
-                    }
-                    else
-                    {
-                        pUnsummonMyselfHook->CallOriginal<void>(pPossessed);
-                        // Remove the mind immunity effect from the possessor if they were in limbo
-                        if (pPossessor && pPossessed->m_oidArea == Constants::OBJECT_INVALID)
+                        for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
                         {
-                            for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
+                            auto *eff = pPossessor->m_appliedEffects.element[i];
+                            if (eff->m_nType == Constants::EffectTrueType::Immunity &&
+                                eff->m_nSubType == Constants::EffectSubType::Magical &&
+                                eff->m_oidCreator == pPossessor->m_idSelf &&
+                                eff->m_fDuration == 4.0f &&
+                                eff->m_nCasterLevel == -1 &&
+                                eff->m_nParamInteger[0] == Constants::ImmunityType::MindSpells &&
+                                eff->m_nParamInteger[1] == Constants::RacialType::Invalid)
                             {
-                                auto *eff = pPossessor->m_appliedEffects.element[i];
-                                if (eff->m_nType == Constants::EffectTrueType::Immunity &&
-                                    eff->m_nSubType == Constants::EffectSubType::Magical &&
-                                    eff->m_oidCreator == pPossessor->m_idSelf &&
-                                    eff->m_fDuration == 4.0f &&
-                                    eff->m_nCasterLevel == -1 &&
-                                    eff->m_nParamInteger[0] == Constants::ImmunityType::MindSpells &&
-                                    eff->m_nParamInteger[1] == Constants::RacialType::Invalid)
-                                {
-                                    pPossessor->RemoveEffectById(eff->m_nID);
-                                    break;
-                                }
+                                pPossessor->RemoveEffectById(eff->m_nID);
+                                break;
                             }
                         }
                     }
-                });
+                }
+            }, Hooking::Order::Late);
 
-        pPossessFamiliarHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15PossessFamiliarEv>(
-                +[](CNWSCreature *pPossessor) -> void
+    static NWNXLib::Hooking::FunctionHook* pPossessFamiliarHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature15PossessFamiliarEv,
+                (void*)+[](CNWSCreature *pPossessor) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
                     auto possessorOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
@@ -1232,31 +1136,30 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                     {
                         pPossessFamiliarHook->CallOriginal<void>(pPossessor);
                     }
-                });
+                }, Hooking::Order::Late);
 
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17UnpossessFamiliarEv, int32_t>(
-                +[](bool before, CNWSCreature *pPossessor) -> void
+    static NWNXLib::Hooking::FunctionHook* pUnpossessFamiliarHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17UnpossessFamiliarEv,
+                (void*)+[](CNWSCreature *pPossessor) -> void
                 {
-                    if (!before)
-                    {
-                        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                        auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
-                        if (possessedOidPOS)
-                        {
-                            pPossessor->RemoveAssociate(*possessedOidPOS);
-                            pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
-                            pPOS->Remove(*possessedOidPOS, "possessorOid");
+                    pUnpossessFamiliarHook->CallOriginal<void>(pPossessor);
 
-                            auto possessedAssociateType = pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
-                            if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
-                            {
-                                pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
-                                pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
-                            }
+                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+                    auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+                    if (possessedOidPOS)
+                    {
+                        pPossessor->RemoveAssociate(*possessedOidPOS);
+                        pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
+                        pPOS->Remove(*possessedOidPOS, "possessorOid");
+
+                        auto possessedAssociateType = pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
+                        if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
+                        {
+                            pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
+                            pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
                         }
                     }
-                });
-    }
+                }, Hooking::Order::Early);
 
     // Save previous associate type so it can be set back after unpossess
     pPOS->Set(possessorId, "possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
@@ -1364,44 +1267,24 @@ ArgumentStack Player::SetCustomToken(ArgumentStack&& args)
 
 ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
 {
-    static bool bSetCreatureNameOverrideHook;
+    static Hooking::FunctionHook *pSetCreatureNameOverrideHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+                 {
+                     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
+                     {
+                         if (auto name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,"CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                         {
+                             CExoString swapName = CExoString(*name);
 
-    if (!bSetCreatureNameOverrideHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
-                {
-                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
-                    {
-                        static std::optional<std::string> name;
-                        static CExoString swapName;
-
-                        if (before)
-                        {
-                            name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
-                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
-
-                            if (name)
-                            {
-                                std::string newName = *name;
-                                swapName = newName.c_str();
-
-                                std::swap(swapName, pCreature->m_sDisplayName);
-                            }
-                        }
-                        else
-                        {
-                            if (name)
-                            {
-                                std::swap(swapName, pCreature->m_sDisplayName);
-                            }
-                        }
-                    }
-                });
-
-        bSetCreatureNameOverrideHook = true;
-    }
+                             std::swap(swapName, pCreature->m_sDisplayName);
+                             pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                             std::swap(swapName, pCreature->m_sDisplayName);
+                             return;
+                         }
+                     }
+                     pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                 }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -1413,11 +1296,11 @@ ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
         {
             if (name.empty())
             {
-                GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
             }
             else
             {
-                GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+                GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
             }
 
             if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
@@ -1528,41 +1411,22 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
 {
-    static bool bSetObjectMouseCursorOverrideHook;
-
-    if (!bSetObjectMouseCursorOverrideHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+    static Hooking::FunctionHook *pSetObjectMouseCursorOverrideHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static std::optional<int32_t> cursorId;
-                        static int32_t swapCursorId;
-
-                        if (before)
+                        if (auto cursorId = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,"OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
-                            cursorId = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,
-                                "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
-
-                            if (cursorId)
-                            {
-                                swapCursorId = *cursorId;
-                                std::swap(swapCursorId, pObject->m_nMouseCursor);
-                            }
-                        }
-                        else
-                        {
-                            if (cursorId)
-                            {
-                                std::swap(swapCursorId, pObject->m_nMouseCursor);
-                            }
+                            std::swap(*cursorId, pObject->m_nMouseCursor);
+                            pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                            std::swap(*cursorId, pObject->m_nMouseCursor);
+                            return;
                         }
                     }
-                });
-
-        bSetObjectMouseCursorOverrideHook = true;
-    }
+                    pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -1587,45 +1451,27 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
 {
-    static bool bSetObjectHiliteColorHook;
-
-    if (!bSetObjectHiliteColorHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+    static Hooking::FunctionHook *pSetObjectHiliteColorHook =
+            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+                (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static std::optional<int32_t> hiliteColor;
-                        static Vector swapHiliteColor;
-
-                        if (before)
+                        if (auto hiliteColor = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
-                            hiliteColor = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,
-                                "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                            Vector vHiliteColor = {};
+                            vHiliteColor.x = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f; // R
+                            vHiliteColor.y = (float)((*hiliteColor >> 8) & 0xFF) / 255.0f;  // G
+                            vHiliteColor.z = (float)(*hiliteColor & 0xFF) / 255.0f;         // B
 
-                            if (hiliteColor)
-                            {
-                                float r = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f;
-                                float g = (float)((*hiliteColor >> 8) & 0xFF) / 255.0f;
-                                float b = (float)(*hiliteColor & 0xFF) / 255.0f;
-
-                                swapHiliteColor = {r, g, b};
-                                std::swap(swapHiliteColor, pObject->m_vHiliteColor);
-                            }
-                        }
-                        else
-                        {
-                            if (hiliteColor)
-                            {
-                                std::swap(swapHiliteColor, pObject->m_vHiliteColor);
-                            }
+                            std::swap(vHiliteColor, pObject->m_vHiliteColor);
+                            pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                            std::swap(vHiliteColor, pObject->m_vHiliteColor);
+                            return;
                         }
                     }
-                });
-
-        bSetObjectHiliteColorHook = true;
-    }
+                    pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                }, Hooking::Order::Early);
 
     if (auto *pPlayer = player(args))
     {

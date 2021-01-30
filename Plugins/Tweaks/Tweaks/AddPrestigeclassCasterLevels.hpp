@@ -26,12 +26,8 @@ private:
     static uint8_t s_arcModClasses[NWNXLib::API::Constants::ClassType::MAX + 1];
     static bool s_bAdjustCasterLevel;
 
-    static void LoadCasterLevelModifiers(CNWRules* pRules);
-    static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
-    static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
-    static void CNWRules__LoadClassInfo(bool before, CNWRules* thisPtr);
+    static void CNWRules__LoadClassInfo(CNWRules* thisPtr);
+    static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
 };
 
 }

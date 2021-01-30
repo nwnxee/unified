@@ -34,8 +34,9 @@ Visibility::Visibility(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_TestObjectVisibleHook = GetServices()->m_hooks->RequestExclusiveHook
-        <API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
+    s_TestObjectVisibleHook = GetServices()->m_hooks->Hook(
+            API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_,
+            (void*)&Visibility::TestObjectVisibleHook, Hooking::Order::Late);
 }
 
 Visibility::~Visibility()

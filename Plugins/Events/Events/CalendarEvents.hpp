@@ -10,7 +10,7 @@ public:
     CalendarEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void HandleUpdateTimeHook(bool, CNWSModule*, uint32_t, uint32_t, uint32_t);
+    static void HandleUpdateTimeHook(CNWSModule*, uint32_t, uint32_t, uint32_t);
 };
 
 }

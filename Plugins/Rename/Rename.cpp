@@ -26,8 +26,6 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook* m_SendServerToPlayerPopUpGUIPanelHook;
-static Hooking::FunctionHook* m_SendServerToPlayerPlayModuleCharacterListResponseHook;
 
 static Rename::Rename* g_plugin;
 
@@ -45,6 +43,15 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Rename {
 
+static Hooking::FunctionHook *s_WriteGameObjUpdate_UpdateObjectHook;
+static Hooking::FunctionHook *s_SendServerToPlayerExamineGui_CreatureDataHook;
+static Hooking::FunctionHook *s_SendServerToPlayerPlayModuleCharacterListResponseHook;
+static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_AllHook;
+static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_AddHook;
+static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_DeleteHook;
+static Hooking::FunctionHook *s_SendServerToPlayerDungeonMasterUpdatePartyList;
+static Hooking::FunctionHook* s_SendServerToPlayerPopUpGUIPanelHook;
+
 Rename::Rename(Services::ProxyServiceList* services)
   : Plugin(services)
 {
@@ -57,63 +64,72 @@ Rename::Rename(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_RenameOnModuleCharList = Config::Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
+    m_RenameOnModuleCharList = Config::Get<bool>("ON_MODULE_CHAR_LIST", false);
     m_RenameOnPlayerList = Config::Get<bool>("ON_PLAYER_LIST", true);
     m_RenameAllowDM = Config::Get<bool>("ALLOW_DM", false);
     m_RenameAnonymousPlayerName = Config::Get<std::string>("ANONYMOUS_NAME", "Someone");
     m_RenameOverwriteDisplayName = Config::Get<bool>("OVERWRITE_DISPLAY_NAME", false);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage31WriteGameObjUpdate_UpdateObjectEP10CNWSPlayerP10CNWSObjectP17CLastUpdateObjectjj,
-            int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
-            &WriteGameObjUpdate_UpdateObjectHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj,
-            int32_t, CNWSMessage *, CNWSPlayer *, ObjectID>(&SendServerToPlayerExamineGui_CreatureDataHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage28SendServerToPlayerChat_PartyEjj10CExoString,
-            int32_t, CNWSMessage*, PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage28SendServerToPlayerChat_ShoutEjj10CExoString,
-            int32_t, CNWSMessage*, PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage27SendServerToPlayerChat_TellEjj10CExoString,
-            int32_t, CNWSMessage*, PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
+    s_WriteGameObjUpdate_UpdateObjectHook = GetServices()->m_hooks->Hook(
+            Functions::_ZN11CNWSMessage31WriteGameObjUpdate_UpdateObjectEP10CNWSPlayerP10CNWSObjectP17CLastUpdateObjectjj,
+            (void*)&WriteGameObjUpdate_UpdateObjectHook, Hooking::Order::Early);
+    s_SendServerToPlayerExamineGui_CreatureDataHook = GetServices()->m_hooks->Hook(
+            Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj,
+            (void*)&SendServerToPlayerExamineGui_CreatureDataHook, Hooking::Order::Early);
 
-    // TODO: When shared hooks are executed by exclusive hooks we can use a shared hook for this instead and simplify
-    // For now we perform the functionality of the HideClassesOnCharList Tweak for convenience
-    if (m_RenameOnModuleCharList > 0)
+#define HOOK_CHAT(_address) \
+    static Hooking::FunctionHook* CAT(pChatHook, __LINE__) = GetServices()->m_hooks->Hook(_address, \
+    (void*)+[](CNWSMessage *thisPtr, uint32_t nPlayerID, OBJECT_ID oidSpeaker, CExoString sSpeakerMessage) -> int32_t \
+    { \
+        auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidSpeaker); \
+        auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerID, 0); \
+        auto *observerPlayer = static_cast<CNWSPlayer*>(observerClient); \
+        SetOrRestorePlayerName(true, targetPlayer, observerPlayer); \
+        auto retVal = CAT(pChatHook, __LINE__)->CallOriginal<int32_t>(thisPtr, nPlayerID, oidSpeaker, sSpeakerMessage);       \
+        SetOrRestorePlayerName(false, targetPlayer, observerPlayer); \
+        return retVal; \
+    }, Hooking::Order::Early)
+
+    HOOK_CHAT(Functions::_ZN11CNWSMessage28SendServerToPlayerChat_PartyEjj10CExoString);
+    HOOK_CHAT(Functions::_ZN11CNWSMessage28SendServerToPlayerChat_ShoutEjj10CExoString);
+    HOOK_CHAT(Functions::_ZN11CNWSMessage27SendServerToPlayerChat_TellEjj10CExoString);
+
+#undef HOOK_CHAT
+
+    if (m_RenameOnModuleCharList)
     {
-        if (m_RenameOnModuleCharList == 1)
-            LOG_INFO("Renaming PCs in the module character listing.");
-        else if (m_RenameOnModuleCharList == 2)
-            LOG_INFO("Renaming PCs and hiding classes in the module character listing.");
-        else if (m_RenameOnModuleCharList == 3)
-            LOG_INFO("Hiding classes in the module character listing via the Rename plugin.");
-        m_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji, int32_t, CNWSMessage *, PlayerID, ObjectID, int32_t>
-            (&SendServerToPlayerPlayModuleCharacterListResponseHook);
+        s_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->Hook(
+                Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
+                (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooking::Order::Early);
     }
 
     if (m_RenameOnPlayerList)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer,
-                int32_t, CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerPlayerList_AllHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer,
-                int32_t, CNWSMessage*, PlayerID, CNWSPlayer*>(&SendServerToPlayerPlayerList_AddHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer,
-                int32_t, CNWSMessage*, PlayerID, CNWSPlayer*>(&SendServerToPlayerPlayerList_DeleteHook);
+        s_SendServerToPlayerPlayerList_AllHook = GetServices()->m_hooks->Hook(
+                Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer,
+                (void*)&SendServerToPlayerPlayerList_AllHook, Hooking::Order::Early);
+        s_SendServerToPlayerPlayerList_AddHook = GetServices()->m_hooks->Hook(
+                Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer,
+                (void*)&SendServerToPlayerPlayerList_AddHook, Hooking::Order::Early);
+        s_SendServerToPlayerPlayerList_DeleteHook = GetServices()->m_hooks->Hook(
+                Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer,
+                (void*)&SendServerToPlayerPlayerList_DeleteHook, Hooking::Order::Early);
     }
     else
         LOG_INFO("Not renaming PCs in the player list.");
 
     if (m_RenameAllowDM)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage46SendServerToPlayerDungeonMasterUpdatePartyListEj,
-                int32_t, CNWSMessage*, PlayerID>(&SendServerToPlayerDungeonMasterUpdatePartyListHook);
+        s_SendServerToPlayerDungeonMasterUpdatePartyList = GetServices()->m_hooks->Hook(
+                Functions::_ZN11CNWSMessage46SendServerToPlayerDungeonMasterUpdatePartyListEj,
+                (void*)&SendServerToPlayerDungeonMasterUpdatePartyListHook, Hooking::Order::Early);
         LOG_INFO("DMs will be included with rename logic.");
     }
 
     // TODO: When shared hooks are executed by exclusive hooks change this to HandlePlayerToServerParty
-    m_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->RequestExclusiveHook
-        <Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString, int32_t, CNWSMessage*, ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>
-        (&SendServerToPlayerPopUpGUIPanelHook);
-
+    s_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->Hook(
+            Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString,
+            (void*)&SendServerToPlayerPopUpGUIPanelHook, Hooking::Order::Early);
 }
 
 Rename::~Rename()
@@ -225,157 +241,76 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
     }
 }
 
-void Rename::WriteGameObjUpdate_UpdateObjectHook(
-        bool before,
-        CNWSMessage*,
-        CNWSPlayer *observerPlayer,
-        CNWSObject *targetObject,
-        CLastUpdateObject*,
-        uint32_t,
-        uint32_t)
+void Rename::WriteGameObjUpdate_UpdateObjectHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pAreaObject,
+                                                 CLastUpdateObject *pLastUpdateObject, uint32_t nObjectUpdatesRequired,
+                                                 uint32_t nObjectAppearanceUpdatesRequired)
 {
-    auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetObject->m_idSelf);
-    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
+    auto *pTargetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pAreaObject->m_idSelf);
+    SetOrRestorePlayerName(true, pTargetPlayer, pPlayer);
+    s_WriteGameObjUpdate_UpdateObjectHook->CallOriginal<void>(pMessage, pPlayer, pAreaObject, pLastUpdateObject,
+                                                              nObjectUpdatesRequired, nObjectAppearanceUpdatesRequired);
+    SetOrRestorePlayerName(false, pTargetPlayer, pPlayer);
 }
 
-void Rename::SendServerToPlayerExamineGui_CreatureDataHook(
-        bool before,
-        CNWSMessage*,
-        CNWSPlayer *observerPlayer,
-        ObjectID targetOid)
+int32_t Rename::SendServerToPlayerExamineGui_CreatureDataHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, ObjectID oidCreatureID)
 {
-    auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
-    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
-}
-
-// This can't work on per target basis as the player logging in hasn't selected their PC yet but it
-// will still work for a global override. We also handle the hide classes tweak until exclusive
-// hooks call shared hooks
-int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(
-        CNWSMessage *thisPtr,
-        PlayerID observerPlayerId,
-        ObjectID targetOid,
-        int32_t add)
-{
-    auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
-    auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(observerPlayerId, 0);
-    auto *observerPlayer = static_cast<CNWSPlayer *>(observerClient);
-    if (g_plugin->m_RenameOnModuleCharList == 1 || g_plugin->m_RenameOnModuleCharList == 2)
-    {
-        SetOrRestorePlayerName(true, targetPlayer, observerPlayer);
-    }
-
-    int32_t retVal = -1;
-
-    if (g_plugin->m_RenameOnModuleCharList >= 2)
-    {
-        thisPtr->CreateWriteMessage(sizeof(observerPlayerId), observerPlayerId, true);
-
-        thisPtr->WriteBOOL(add);
-        thisPtr->WriteDWORD(targetOid, 32);
-
-        if (add)
-        {
-            auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(targetOid);
-            if (targetCreature)
-            {
-                thisPtr->WriteCExoLocStringServer(targetCreature->GetFirstName(), targetCreature->GetGender());
-                thisPtr->WriteCExoLocStringServer(targetCreature->GetLastName(), targetCreature->GetGender());
-
-                uint16_t portraitId = targetCreature->GetPortraitId();
-                thisPtr->WriteWORD(portraitId, 16);
-                if (portraitId >= 0xFFFE)
-                {
-                    thisPtr->WriteCResRef(targetCreature->GetPortrait(), 16);
-                }
-
-                thisPtr->WriteBYTE(0, 8);
-            }
-            else
-            {
-                retVal = 0;
-            }
-        }
-
-        uint8_t *message;
-        uint32_t size;
-        if (!thisPtr->GetWriteMessage(&message, &size))
-        {
-            retVal = 0;
-        }
-        if (retVal != 0)
-            retVal = thisPtr->SendServerToPlayerMessage(observerPlayerId, 0x31, 0x03, message, size);
-    }
-    else
-    {
-        retVal = m_SendServerToPlayerPlayModuleCharacterListResponseHook->CallOriginal<int32_t>(thisPtr, observerPlayerId, targetOid, add);
-    }
-
-    if (g_plugin->m_RenameOnModuleCharList == 1 || g_plugin->m_RenameOnModuleCharList == 2)
-    {
-        SetOrRestorePlayerName(false, targetPlayer, observerPlayer);
-    }
+    auto *pTargetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidCreatureID);
+    SetOrRestorePlayerName(true, pTargetPlayer, pPlayer);
+    auto retVal = s_SendServerToPlayerExamineGui_CreatureDataHook->CallOriginal<int32_t>(pMessage, pPlayer, oidCreatureID);
+    SetOrRestorePlayerName(false, pTargetPlayer, pPlayer);
     return retVal;
 }
 
-void Rename::SendServerToPlayerChatHook(
-        bool before,
-        CNWSMessage*,
-        PlayerID observerPlayerId,
-        ObjectID targetOid,
-        CExoString*)
+// This can't work on per target basis as the player logging in hasn't selected their PC yet but it will still work for a global override.
+int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage *thisPtr, PlayerID nPlayerId, ObjectID nCharacterId, int32_t bAdd)
 {
-    auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
-    auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(observerPlayerId, 0);
-    auto *observerPlayer = static_cast<CNWSPlayer*>(observerClient);
-    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
+    auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(nCharacterId);
+    auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0);
+    auto *observerPlayer = static_cast<CNWSPlayer *>(observerClient);
+
+    SetOrRestorePlayerName(true, targetPlayer, observerPlayer);
+    auto retVal = s_SendServerToPlayerPlayModuleCharacterListResponseHook->CallOriginal<int32_t>(thisPtr, nPlayerId, nCharacterId, bAdd);
+    SetOrRestorePlayerName(false, targetPlayer, observerPlayer);
+
+    return retVal;
 }
 
-void Rename::SendServerToPlayerDungeonMasterUpdatePartyListHook(
-        bool before,
-        CNWSMessage*,
-        PlayerID observerPlayerId)
+int32_t Rename::SendServerToPlayerDungeonMasterUpdatePartyListHook(CNWSMessage *pMessage, PlayerID nPlayerID)
 {
-    g_plugin->GlobalNameChange(before, observerPlayerId, Constants::PLAYERID_ALL_PLAYERS);
+    g_plugin->GlobalNameChange(true, nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    auto retVal = s_SendServerToPlayerDungeonMasterUpdatePartyList->CallOriginal<int32_t>(pMessage, nPlayerID);
+    g_plugin->GlobalNameChange(false, nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    return retVal;
 }
 
-void Rename::SendServerToPlayerPlayerList_AllHook(
-        bool before,
-        CNWSMessage*,
-        CNWSPlayer *observerPlayer)
+int32_t Rename::SendServerToPlayerPlayerList_AllHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
 {
-    g_plugin->GlobalNameChange(before, observerPlayer->m_nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    g_plugin->GlobalNameChange(true, pPlayer->m_nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    auto retVal = s_SendServerToPlayerPlayerList_AllHook->CallOriginal<int32_t>(pMessage, pPlayer);
+    g_plugin->GlobalNameChange(false, pPlayer->m_nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    return retVal;
 }
 
-void Rename::SendServerToPlayerPlayerList_AddHook(
-        bool before,
-        CNWSMessage*,
-        PlayerID observerPlayerId,
-        CNWSPlayer *targetPlayer)
+int32_t Rename::SendServerToPlayerPlayerList_AddHook(CNWSMessage *pMessage, PlayerID nPlayerId, CNWSPlayer *pNewPlayer)
 {
-    if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
-        return;
+    if (!g_plugin->m_RenameAllowDM && nPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
+        return s_SendServerToPlayerPlayerList_AddHook->CallOriginal<int32_t>(pMessage, nPlayerId, pNewPlayer);
 
-    if (!before)
-    {
-        g_plugin->m_RenameAddedToPlayerList.insert(targetPlayer->m_oidNWSObject);
-    }
-    g_plugin->GlobalNameChange(before, observerPlayerId, targetPlayer->m_nPlayerID);
+    g_plugin->GlobalNameChange(true, nPlayerId, pNewPlayer->m_nPlayerID);
+    auto retVal = s_SendServerToPlayerPlayerList_AddHook->CallOriginal<int32_t>(pMessage, nPlayerId, pNewPlayer);
+    g_plugin->m_RenameAddedToPlayerList.insert(pNewPlayer->m_oidNWSObject);
+    g_plugin->GlobalNameChange(false, nPlayerId, pNewPlayer->m_nPlayerID);
+
+    return retVal;
 }
 
-void Rename::SendServerToPlayerPlayerList_DeleteHook(
-        bool before,
-        CNWSMessage*,
-        PlayerID observerPlayerId,
-        CNWSPlayer *targetPlayer)
+int32_t Rename::SendServerToPlayerPlayerList_DeleteHook(CNWSMessage *pMessage, PlayerID nPlayerId, CNWSPlayer *pNewPlayer)
 {
-    if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
-        return;
+    if (!g_plugin->m_RenameAllowDM && nPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
+        return s_SendServerToPlayerPlayerList_DeleteHook->CallOriginal<int32_t>(pMessage, nPlayerId, pNewPlayer);
 
-    if (before)
-    {
-        g_plugin->m_RenameAddedToPlayerList.erase(targetPlayer->m_oidNWSObject);
-    }
+    g_plugin->m_RenameAddedToPlayerList.erase(pNewPlayer->m_oidNWSObject);
+    return s_SendServerToPlayerPlayerList_DeleteHook->CallOriginal<int32_t>(pMessage, nPlayerId, pNewPlayer);
 }
 
 int32_t Rename::SendServerToPlayerPopUpGUIPanelHook(
@@ -402,7 +337,7 @@ int32_t Rename::SendServerToPlayerPopUpGUIPanelHook(
             *p_sStringReference = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
         }
     }
-    return m_SendServerToPlayerPopUpGUIPanelHook->CallOriginal<int32_t>(pMessage, observerOid, nGuiPanel, bGUIOption1,
+    return s_SendServerToPlayerPopUpGUIPanelHook->CallOriginal<int32_t>(pMessage, observerOid, nGuiPanel, bGUIOption1,
                                                                  bGUIOption2, nStringReference, p_sStringReference);
 }
 void Rename::GlobalNameChange(

@@ -10,7 +10,7 @@ public:
     ClearSpellEffectsOnTURDs(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void CNWSObject__ClearSpellEffectsOnOthers_hook(bool, CNWSObject*);
+    static void CNWSObject__ClearSpellEffectsOnOthers_hook(CNWSObject*);
 };
 
 }

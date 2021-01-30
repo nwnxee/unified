@@ -10,7 +10,7 @@ public:
     PreserveDepletedItems(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void CNWSCreature__AIActionItemCastSpell_hook(bool, CNWSCreature*, CNWSObjectActionNode*);
+    static uint32_t CNWSCreature__AIActionItemCastSpell_hook(CNWSCreature*, CNWSObjectActionNode*);
 };
 
 }

@@ -12,11 +12,12 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* DisablePause::pSetPauseState_hook;
+static Hooking::FunctionHook *s_SetPauseState_hook;
+
 DisablePause::DisablePause(Services::HooksProxy* hooker)
 {
-    pSetPauseState_hook = hooker->RequestExclusiveHook
-        <Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi>(&CServerExoAppInternal__SetPauseState_hook);
+    s_SetPauseState_hook = hooker->Hook(Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi,
+                                        (void*)&CServerExoAppInternal__SetPauseState_hook, Hooking::Order::Latest);
 }
 
 void DisablePause::CServerExoAppInternal__SetPauseState_hook(CServerExoAppInternal* thisPtr, uint8_t nState, int32_t bPause)
@@ -24,7 +25,7 @@ void DisablePause::CServerExoAppInternal__SetPauseState_hook(CServerExoAppIntern
     // nState=1 - timestop
     // nState=2 - DM pause
     if (nState != 2)
-        pSetPauseState_hook->CallOriginal<void>(thisPtr, nState, bPause);
+        s_SetPauseState_hook->CallOriginal<void>(thisPtr, nState, bPause);
 }
 
 }

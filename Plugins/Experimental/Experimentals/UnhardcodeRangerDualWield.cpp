@@ -16,7 +16,7 @@ using namespace NWNXLib::API::Constants;
 
 UnhardcodeRangerDualWield::UnhardcodeRangerDualWield(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::_ZN17CNWSCreatureStats7HasFeatEt>(&HasFeatHook);
+    hooker->Hook(API::Functions::_ZN17CNWSCreatureStats7HasFeatEt, (void*)&HasFeatHook, Hooking::Order::Final);
 }
 
 int32_t UnhardcodeRangerDualWield::HasFeatHook(CNWSCreatureStats* pCreatureStats, uint16_t nFeat)

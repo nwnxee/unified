@@ -32,8 +32,10 @@ using namespace NWNXLib::Services;
 
 namespace Chat {
 
+static Hooking::FunctionHook *s_SendServerToPlayerChatMessageHook = nullptr;
+
 Chat::Chat(Services::ProxyServiceList* services)
-    : Plugin(services), m_skipMessage(false), m_depth(0)
+        : Plugin(services), m_skipMessage(false), m_depth(0)
 {
 #define REGISTER(func) \
     Events::RegisterEvent(PLUGIN_NAME, #func, \
@@ -58,45 +60,46 @@ Chat::Chat(Services::ProxyServiceList* services)
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
 
-    m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
+    s_SendServerToPlayerChatMessageHook = GetServices()->m_hooks->Hook(
+            Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_,
+            (void*)&SendServerToPlayerChatMessage, Hooking::Order::Late);
 }
 
 Chat::~Chat()
 {
 }
 
-void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, ObjectID sender,
-    CExoString message, PlayerID target, CExoString* tellName)
+int32_t Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, uint8_t channel, ObjectID sender, CExoString message, ObjectID target, const CExoString& tellName)
 {
-    Chat& plugin = *g_plugin;
+    int32_t retVal = false;
 
-    if (plugin.m_depth == 0 && !plugin.m_chatScript.empty())
+    if (g_plugin->m_depth == 0 && !g_plugin->m_chatScript.empty())
     {
-        plugin.m_activeChannel = channel;
-        plugin.m_activeMessage = message.m_sString ? std::string(message.m_sString) : "";
-        plugin.m_activeSenderObjectId = sender;
+        g_plugin->m_activeChannel = channel;
+        g_plugin->m_activeMessage = message.m_sString ? std::string(message.m_sString) : "";
+        g_plugin->m_activeSenderObjectId = sender;
 
         CNWSClient* client = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(target, 0);
-        plugin.m_activeTargetObjectId = client ? static_cast<CNWSPlayer*>(client)->m_oidPCObject : Constants::OBJECT_INVALID;
+        g_plugin->m_activeTargetObjectId = client ? static_cast<CNWSPlayer*>(client)->m_oidPCObject : Constants::OBJECT_INVALID;
 
-        CExoString script = plugin.m_chatScript.c_str();
+        CExoString script = g_plugin->m_chatScript.c_str();
 
-        ++plugin.m_depth;
+        ++g_plugin->m_depth;
         Globals::VirtualMachine()->RunScript(&script, sender, 1);
-        --plugin.m_depth;
+        --g_plugin->m_depth;
     }
     // Suppress player to player tells
     if ((channel != Constants::ChatChannel::PlayerTell && channel != Constants::ChatChannel::DmTell) || sender == target)
     {
         LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
-            plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
+                  g_plugin->m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
     }
     else
     {
-        LOG_DEBUG("%s chat message. Channel: '%i'", plugin.m_skipMessage ? "Skipped" : "Sent", channel);
+        LOG_DEBUG("%s chat message. Channel: '%i'", g_plugin->m_skipMessage ? "Skipped" : "Sent", channel);
     }
 
-    if (plugin.m_depth > 0 || !plugin.m_skipMessage)
+    if (g_plugin->m_depth > 0 || !g_plugin->m_skipMessage)
     {
         if (g_plugin->m_customHearingDistances)
         {
@@ -104,60 +107,60 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
             auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
             if (playerList)
             {
-                if (channel == Constants::ChatChannel::PlayerShout &&
-                        server->GetServerInfo()->m_PlayOptions.bDisallowShouting)
+                if (channel == Constants::ChatChannel::PlayerShout && server->GetServerInfo()->m_PlayOptions.bDisallowShouting)
                 {
                     channel = Constants::ChatChannel::PlayerTalk;
                 }
+
                 if (channel == Constants::ChatChannel::PlayerTalk ||
                     channel == Constants::ChatChannel::PlayerWhisper ||
                     channel == Constants::ChatChannel::DmTalk ||
                     channel == Constants::ChatChannel::DmWhisper)
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto pSpeaker = Utils::AsNWSObject(server->GetGameObject(sender));
+                    auto *pSpeaker = Utils::AsNWSObject(server->GetGameObject(sender));
                     auto distance = g_plugin->m_hearingDistances[channel];
                     auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
-                    CNWSArea *speakerArea = nullptr;
-                    if (pSpeaker != nullptr)
+                    CNWSArea *pSpeakerArea = nullptr;
+                    if (pSpeaker)
                     {
-                        speakerArea = pSpeaker->GetArea();
+                        pSpeakerArea = pSpeaker->GetArea();
                         speakerPos = pSpeaker->m_vPosition;
-                        pSpeaker->BroadcastDialog(*tellName, distance);
+                        pSpeaker->BroadcastDialog(tellName, distance);
                     }
 
                     for (auto *head = playerList->pHead; head; head = head->pNext)
                     {
                         auto *pClient = static_cast<CNWSClient*>(head->pObject);
-                        auto *listenerClient =  server->GetClientObjectByPlayerId(pClient->m_nPlayerID, 0);
-                        auto *listener = static_cast<CNWSPlayer*>(listenerClient);
-                        auto *listenerObj = Utils::AsNWSObject(listener->GetGameObject());
+                        auto *pListenerClient = server->GetClientObjectByPlayerId(pClient->m_nPlayerID, 0);
+                        auto *pListener = static_cast<CNWSPlayer*>(pListenerClient);
+                        auto *pListenerObj = Utils::AsNWSObject(pListener->GetGameObject());
 
-                        auto pDistance = *pPOS->Get<float>(listenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));
+                        auto pDistance = *pPOS->Get<float>(pListenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));
                         if (pDistance >= 0)
                         {
                             distance = pDistance;
 
-                            auto v = listenerObj->m_vPosition;
+                            auto v = pListenerObj->m_vPosition;
                             v.x -= speakerPos.x;
                             v.y -= speakerPos.y;
                             v.z -= speakerPos.z;
                             float vSquared = v.x*v.x + v.y*v.y + v.z*v.z;
-                            if (speakerArea == listenerObj->GetArea() && vSquared <= distance*distance)
+                            if (pSpeakerArea == pListenerObj->GetArea() && vSquared <= distance*distance)
                             {
                                 switch (channel)
                                 {
                                     case Constants::ChatChannel::PlayerTalk:
-                                        thisPtr->SendServerToPlayerChat_Talk(listener->m_nPlayerID, sender, message);
+                                        thisPtr->SendServerToPlayerChat_Talk(pListener->m_nPlayerID, sender, message);
                                         break;
                                     case Constants::ChatChannel::DmTalk:
-                                        thisPtr->SendServerToPlayerChat_DM_Talk(listener->m_nPlayerID, sender, message);
+                                        thisPtr->SendServerToPlayerChat_DM_Talk(pListener->m_nPlayerID, sender, message);
                                         break;
                                     case Constants::ChatChannel::PlayerWhisper:
-                                        thisPtr->SendServerToPlayerChat_Whisper(listener->m_nPlayerID, sender, message);
+                                        thisPtr->SendServerToPlayerChat_Whisper(pListener->m_nPlayerID, sender, message);
                                         break;
                                     case Constants::ChatChannel::DmWhisper:
-                                        thisPtr->SendServerToPlayerChat_DM_Whisper(listener->m_nPlayerID, sender, message);
+                                        thisPtr->SendServerToPlayerChat_DM_Whisper(pListener->m_nPlayerID, sender, message);
                                         break;
                                     default:
                                         break;
@@ -165,23 +168,27 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                             }
                         }
                     }
+
+                    retVal = true;
                 }
                 else
                 {
-                    plugin.m_hook->CallOriginal<void>(thisPtr, channel, sender, message, target, tellName);
+                    retVal = s_SendServerToPlayerChatMessageHook->CallOriginal<int32_t>(thisPtr, channel, sender, message, target, tellName);
                 }
             }
         }
         else
         {
-            plugin.m_hook->CallOriginal<void>(thisPtr, channel, sender, message, target, tellName);
+            retVal = s_SendServerToPlayerChatMessageHook->CallOriginal<int32_t>(thisPtr, channel, sender, message, target, tellName);
         }
     }
 
-    if (plugin.m_depth == 0)
+    if (g_plugin->m_depth == 0)
     {
-        plugin.m_skipMessage = false;
+        g_plugin->m_skipMessage = false;
     }
+
+    return retVal;
 }
 
 Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
@@ -195,8 +202,8 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     const bool hasManualPlayerId = target != Constants::OBJECT_INVALID;
 
     const PlayerID playerId = hasManualPlayerId ?
-        Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
-        Constants::PLAYERID_ALL_CLIENTS;
+                              Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
+                              Constants::PLAYERID_ALL_CLIENTS;
 
     if (playerId != Constants::PLAYERID_INVALIDID)
     {

@@ -24,6 +24,8 @@ std::chrono::nanoseconds FastTimer::s_hookOverhead = std::chrono::nanoseconds(0)
 
 MetricsProxy* FastTimer::g_metricsForCalibration;
 
+static Hooking::FunctionHook *s_CheckForCDHook;
+
 void FastTimer::Start()
 {
     m_startTime = std::chrono::high_resolution_clock::now();
@@ -77,7 +79,8 @@ void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* me
         unhookedResults.emplace_back(runTest(10));
     }
 
-    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, int32_t>(&ProfilerCalibrateHookFuncWithScope);
+    s_CheckForCDHook = hooks->Hook(Functions::_ZN16CExoBaseInternal10CheckForCDEj,
+                                   (void*)&ProfilerCalibrateHookFuncWithScope, Hooking::Order::Earliest);
     for (size_t i = 0; i < runs; ++i)
     {
         hookedResults.emplace_back(runTest(10));
@@ -139,18 +142,15 @@ std::chrono::nanoseconds FastTimer::ConstructTimestampAndPop()
     return time;
 }
 
-void FastTimer::ProfilerCalibrateHookFuncWithScope(bool before, CExoBase*, uint32_t)
+int32_t FastTimer::ProfilerCalibrateHookFuncWithScope(CExoBase *thisPtr, uint32_t nLanguage)
 {
     static FastTimer timer;
 
-    if (before)
-    {
-        timer.Start();
-    }
-    else
-    {
-        timer.Stop(*g_metricsForCalibration, "FAST_TIMER_OVERHEAD_CALIBRATION");
-    }
+    timer.Start();
+    auto retVal = s_CheckForCDHook->CallOriginal<int32_t>(thisPtr, nLanguage);
+    timer.Stop(*g_metricsForCalibration, "FAST_TIMER_OVERHEAD_CALIBRATION");
+
+    return retVal;
 }
 
 FastTimerScope::FastTimerScope(MetricsProxy& metrics, std::string&& eventName, MetricData::Tags&& tags)

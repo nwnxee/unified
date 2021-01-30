@@ -17,7 +17,7 @@ using namespace NWNXLib::API;
 
 AdjustReputationFix::AdjustReputationFix(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature16AdjustReputationEii, void>(&CNWSCreature__AdjustReputation_Hook);
+    hooker->Hook(API::Functions::_ZN12CNWSCreature16AdjustReputationEii, (void*)&CNWSCreature__AdjustReputation_Hook, Hooking::Order::Final);
 }
 
 void AdjustReputationFix::CNWSCreature__AdjustReputation_Hook(CNWSCreature *pThis, int32_t nFactionId, int32_t nAdjustment)

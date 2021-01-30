@@ -11,32 +11,11 @@ public:
     SpellEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void CastSpellHook
-    (
-        CNWSObject*,
-        uint32_t,
-        Vector,
-        ObjectID,
-        int8_t,
-        ObjectID,
-        bool,
-        bool,
-        int8_t,
-        bool
-    );
-    static int32_t SetMemorizedSpellSlotHook
-    (
-        CNWSCreatureStats*,
-        uint8_t,
-        uint8_t,
-        uint32_t,
-        uint8_t,
-        uint8_t,
-        int32_t
-    );
+    static void SpellCastAndImpactHook(CNWSObject*, uint32_t, Vector, ObjectID, uint8_t, ObjectID, int32_t, int32_t, uint8_t, int32_t);
+    static int32_t SetMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t, int32_t);
     static void ClearMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
     static void BroadcastSpellCastHook(CNWSCreature*, uint32_t, uint8_t, uint16_t);
-    static void EffectAppliedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+    static int32_t OnEffectAppliedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
 };
 
 }

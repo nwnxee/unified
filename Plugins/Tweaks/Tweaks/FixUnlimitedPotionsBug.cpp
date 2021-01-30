@@ -11,38 +11,51 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static bool s_bUsableItemRemoval = false;
+static Hooking::FunctionHook *s_AIActionItemCastSpellHook;
+static Hooking::FunctionHook *s_AddEventDeltaTimeHook;
 
 FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
 {
-    hooker->RequestSharedHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode, uint32_t>(&CNWSCreature__AIActionItemCastSpell_hook);
-    hooker->RequestSharedHook<Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv, BOOL>(&CServerAIMaster__AddEventDeltaTime);
+    s_AIActionItemCastSpellHook = hooker->Hook(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
+                                               (void*)&CNWSCreature__AIActionItemCastSpell_hook, Hooking::Order::Early);
+    s_AddEventDeltaTimeHook = hooker->Hook(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv,
+                                           (void*)&CServerAIMaster__AddEventDeltaTime, Hooking::Order::Late);
 }
 
-void FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(bool before, CServerAIMaster*, uint32_t, uint32_t, OBJECT_ID, OBJECT_ID nObjectId, uint32_t nEventId, void*)
+int32_t FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(CServerAIMaster *pServerAIMaster, uint32_t nDaysFromNow,
+                                                                uint32_t nTimeFromNow, ObjectID nCallerObjectId,
+                                                                ObjectID nObjectId, uint32_t nEventId, void* pScript)
 {
-    if (before || !s_bUsableItemRemoval || nEventId != Constants::Event::DestroyObject)
-        return;
+   auto retVal = s_AddEventDeltaTimeHook->CallOriginal<int32_t>(pServerAIMaster, nDaysFromNow, nTimeFromNow, nCallerObjectId, nObjectId, nEventId, pScript);
 
-    if (auto* pItem = Utils::AsNWSItem(Utils::GetGameObject(nObjectId)))
+    if (s_bUsableItemRemoval && nEventId == Constants::Event::DestroyObject)
     {
-        pItem->m_bAbleToModifyActionQueue = false;
-        auto* pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pItem->m_oidPossessor));
-        if (!pOwnerCreature && pItem->m_oidPossessor != Constants::OBJECT_INVALID)
+        if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(nObjectId)))
         {
-            auto* pContainer = Utils::AsNWSItem(Utils::GetGameObject(pItem->m_oidPossessor));
-            if(pContainer)
-                pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pContainer->m_oidPossessor));
-        }
-        if (pOwnerCreature && pOwnerCreature->m_bPlayerCharacter)
-        {
-            pOwnerCreature->RemoveItem(pItem, true, true, false, true);
+            pItem->m_bAbleToModifyActionQueue = false;
+            auto *pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pItem->m_oidPossessor));
+            if (!pOwnerCreature && pItem->m_oidPossessor != Constants::OBJECT_INVALID)
+            {
+                auto *pContainer = Utils::AsNWSItem(Utils::GetGameObject(pItem->m_oidPossessor));
+                if (pContainer)
+                    pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pContainer->m_oidPossessor));
+            }
+            if (pOwnerCreature && pOwnerCreature->m_bPlayerCharacter)
+            {
+                pOwnerCreature->RemoveItem(pItem, true, true, false, true);
+            }
         }
     }
+
+    return retVal;
 }
 
-void FixUnlimitedPotionsBug::CNWSCreature__AIActionItemCastSpell_hook(bool before, CNWSCreature*, CNWSObjectActionNode*)
+uint32_t FixUnlimitedPotionsBug::CNWSCreature__AIActionItemCastSpell_hook(CNWSCreature *thisPtr, CNWSObjectActionNode *pNode)
 {
-    s_bUsableItemRemoval = before;
+    s_bUsableItemRemoval = true;
+    auto retVal = s_AIActionItemCastSpellHook->CallOriginal<uint32_t>(thisPtr, pNode);
+    s_bUsableItemRemoval = false;
+    return retVal;
 }
 
 }

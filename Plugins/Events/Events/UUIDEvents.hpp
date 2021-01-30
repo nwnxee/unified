@@ -11,7 +11,7 @@ public:
     UUIDEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void LoadFromGffHook(bool, CNWSUUID*, CResGFF*, CResStruct*);
+    static bool LoadFromGffHook(CNWSUUID*, CResGFF*, CResStruct*);
     static inline char UUIDGffFieldName[] = "UUID";
 };
 

@@ -18,22 +18,18 @@ using namespace NWNXLib::API;
 namespace Tracking {
 
 static Services::MetricsProxy* g_metrics;
+static Hooking::FunctionHook *s_MainLoopHook;
 
 Activity::Activity(Services::MetricsProxy* metrics, Services::HooksProxy* hooks)
 {
     g_metrics = metrics;
-    hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
+    s_MainLoopHook = hooks->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopUpdate, Hooking::Order::Earliest);
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }
 
-void Activity::MainLoopUpdate(bool before, CServerExoAppInternal* thisPtr)
+int32_t Activity::MainLoopUpdate(CServerExoAppInternal* thisPtr)
 {
-    if (!before)
-    {
-        return;
-    }
-
     using namespace std::chrono;
     static time_point<high_resolution_clock> s_lastUpdate;
     auto now = high_resolution_clock::now();
@@ -81,6 +77,8 @@ void Activity::MainLoopUpdate(bool before, CServerExoAppInternal* thisPtr)
                 });
         }
     }
+
+    return s_MainLoopHook->CallOriginal<int32_t>(thisPtr);
 }
 
 }

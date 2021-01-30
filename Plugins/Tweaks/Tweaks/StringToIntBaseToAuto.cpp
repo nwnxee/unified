@@ -15,12 +15,12 @@ using namespace NWNXLib::API::Constants;
 
 StringToIntBaseToAuto::StringToIntBaseToAuto(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii>
-                                    (&CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook);
+    hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii,
+                 (void*)&CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook, Hooking::Order::Final);
 }
 
-int32_t StringToIntBaseToAuto::CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook(
-        CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t StringToIntBaseToAuto::CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook(CNWVirtualMachineCommands* thisPtr,
+                                                                                               int32_t nCommandId, int32_t nParameters)
 {
     ASSERT(thisPtr); ASSERT(nParameters == 1);
     auto *vm = Globals::VirtualMachine();

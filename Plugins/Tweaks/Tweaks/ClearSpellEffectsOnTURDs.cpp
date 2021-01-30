@@ -11,23 +11,21 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static Hooking::FunctionHook *s_ClearSpellEffectsOnOthersHook;
+
 ClearSpellEffectsOnTURDs::ClearSpellEffectsOnTURDs(Services::HooksProxy* hooker)
 {
-    hooker->RequestSharedHook<Functions::_ZN10CNWSObject25ClearSpellEffectsOnOthersEv, uint32_t>(&CNWSObject__ClearSpellEffectsOnOthers_hook);
+    s_ClearSpellEffectsOnOthersHook = hooker->Hook(Functions::_ZN10CNWSObject25ClearSpellEffectsOnOthersEv, (void*)&CNWSObject__ClearSpellEffectsOnOthers_hook, Hooking::Order::Early);
 }
 
 
-void ClearSpellEffectsOnTURDs::CNWSObject__ClearSpellEffectsOnOthers_hook(bool before, CNWSObject *pObject)
+void ClearSpellEffectsOnTURDs::CNWSObject__ClearSpellEffectsOnOthers_hook(CNWSObject *pObject)
 {
-    if (before)
+    if (auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
     {
-        auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-        if (!pTURDList)
-            return;
-
         for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
         {
-            auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+            auto *pTURD = static_cast<CNWSPlayerTURD *>(pNode->pObject);
 
             if (pTURD)
             {
@@ -44,6 +42,7 @@ void ClearSpellEffectsOnTURDs::CNWSObject__ClearSpellEffectsOnOthers_hook(bool b
             }
         }
     }
+    s_ClearSpellEffectsOnOthersHook->CallOriginal<void>(pObject);
 }
 
 

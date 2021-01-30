@@ -12,8 +12,8 @@ using namespace NWNXLib::API;
 
 FixGreaterSanctuaryBug::FixGreaterSanctuaryBug(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv>
-                                    (&CNWSCreature__RemoveCombatInvisibilityEffects_hook);
+    hooker->Hook(Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv,
+                 (void*)&CNWSCreature__RemoveCombatInvisibilityEffects_hook, Hooking::Order::Final);
 }
 
 void FixGreaterSanctuaryBug::CNWSCreature__RemoveCombatInvisibilityEffects_hook(CNWSCreature *pThis)

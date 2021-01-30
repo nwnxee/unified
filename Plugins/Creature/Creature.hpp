@@ -156,14 +156,11 @@ private:
     static bool s_bResolveAttackRollHookInitialized;
 
     static void InitCasterLevelHooks();
-    static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
-    static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
+    static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats*, uint8_t, BOOL);
     static void InitCriticalMultiplierHook();
     static void InitCriticalRangeHook();
     static void DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget);
-    static bool InitResolveAttackRollHook();
+    static void InitResolveAttackRollHook();
 
 };
 

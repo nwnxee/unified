@@ -11,7 +11,8 @@ NWNXLib::Hooking::FunctionHook* s_GetAttacksPerRoundHook;
 
 DisplayNumAttacksOverrideInCharacterSheet::DisplayNumAttacksOverrideInCharacterSheet(Services::HooksProxy* hooker)
 {
-    s_GetAttacksPerRoundHook = hooker->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetAttacksPerRoundEv>(&GetAttacksPerRoundHook);
+    s_GetAttacksPerRoundHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats18GetAttacksPerRoundEv,
+                                            (void*)&GetAttacksPerRoundHook, Hooking::Order::Late);
 }
 
 uint8_t DisplayNumAttacksOverrideInCharacterSheet::GetAttacksPerRoundHook(CNWSCreatureStats *pCreatureStats)

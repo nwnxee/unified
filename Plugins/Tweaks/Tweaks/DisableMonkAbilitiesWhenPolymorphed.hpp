@@ -11,7 +11,6 @@ public:
 
 private:
     static int32_t CNWSCreature__GetUseMonkAbilities_hook(CNWSCreature*);
-    static NWNXLib::Hooking::FunctionHook* pGetUseMonkAbilities_hook;
 };
 
 }

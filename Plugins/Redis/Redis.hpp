@@ -90,7 +90,8 @@ private:
                   const uint64_t ns);
     std::unique_ptr<cpp_redis::redis_client> PoolMakeFunc();
 
-    static void CleanState(bool, CVirtualMachine*);
+    static NWNXLib::Hooking::FunctionHook *m_ClearStackHook;
+    static void CleanState(CVirtualMachineStack*);
 };
 
 }

@@ -11,7 +11,6 @@ public:
 
 private:
     static int32_t CNWSArea__RemoveObjectFromArea_hook(CNWSArea*, ObjectID);
-    static NWNXLib::Hooking::FunctionHook* pRemoveObjectFromArea_hook;
 };
 
 }

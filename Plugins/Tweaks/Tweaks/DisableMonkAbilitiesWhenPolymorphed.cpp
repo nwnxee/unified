@@ -8,19 +8,19 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* DisableMonkAbilitiesWhenPolymorphed::pGetUseMonkAbilities_hook;
+static Hooking::FunctionHook *s_GetUseMonkAbilities_hook;
 
 DisableMonkAbilitiesWhenPolymorphed::DisableMonkAbilitiesWhenPolymorphed(Services::HooksProxy* hooker)
 {
-    pGetUseMonkAbilities_hook = hooker->RequestExclusiveHook
-        <Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv>(&CNWSCreature__GetUseMonkAbilities_hook);
+    s_GetUseMonkAbilities_hook = hooker->Hook(Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv,
+                                              (void*)&CNWSCreature__GetUseMonkAbilities_hook, Hooking::Order::Early);
 }
 
 int32_t DisableMonkAbilitiesWhenPolymorphed::CNWSCreature__GetUseMonkAbilities_hook(CNWSCreature *pThis)
 {
     if ( pThis->m_bIsPolymorphed )
         return false;
-    return pGetUseMonkAbilities_hook->CallOriginal<int32_t>(pThis);
+    return s_GetUseMonkAbilities_hook->CallOriginal<int32_t>(pThis);
 }
 
 }
