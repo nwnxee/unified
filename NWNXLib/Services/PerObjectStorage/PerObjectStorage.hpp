@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Services/Services.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
+#include "nwnx.hpp"
 
 #include <cstdint>
 #include <memory>

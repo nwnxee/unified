@@ -84,19 +84,25 @@ namespace Hooks
         FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Order::Default);
         ~FunctionHook();
 
-        void *GetOriginal();
+        void *GetOriginal() { return m_trampoline; }
         template <typename Ret, typename ... Params>
-        Ret CallOriginal(Params ... args);
-    
+        Ret CallOriginal(Params ... args)
+        {
+            return reinterpret_cast<Ret(*)(Params...)>(GetOriginal())(args ...);
+        }
+
     private:
         uintptr_t   m_originalFunction;
         void*       m_newFunction;
         int32_t     m_order;
         void*       m_funchook;
         void*       m_trampoline;
+    
+        static inline std::unordered_map<uintptr_t, std::vector<FunctionHook*>> s_hooks;
     };
 
-    std::unique_ptr<FunctionHook> Hook(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
+    using Hook = std::unique_ptr<FunctionHook>;
+    Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
 }
 
 namespace MessageBus

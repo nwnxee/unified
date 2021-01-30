@@ -23,7 +23,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::Hooking;
 
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
@@ -91,9 +90,7 @@ NWNXCore::NWNXCore()
     // This sets up the base address for every hook and patch to follow.
     Platform::CalculateBaseAddress();
 
-    m_createServerHook = std::make_unique<FunctionHook>(
-        Platform::GetRelocatedAddress(API::Functions::_ZN11CAppManager12CreateServerEv),
-        (void*)&CreateServerHandler);
+    m_createServerHook = Hooks::HookFunction(API::Functions::_ZN11CAppManager12CreateServerEv, (void*)&CreateServerHandler);
 }
 
 NWNXCore::~NWNXCore()
@@ -106,7 +103,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     using namespace NWNXLib::Services;
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
-    services->m_hooks = std::make_unique<Services::Hooks>();
     services->m_tasks = std::make_unique<Services::Tasks>();
     services->m_metrics = std::make_unique<Services::Metrics>();
     services->m_perObjectStorage = std::make_unique<Services::PerObjectStorage>();
@@ -118,7 +114,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
 {
     std::unique_ptr<Services::ProxyServiceList> proxyServices = std::make_unique<Services::ProxyServiceList>();
 
-    proxyServices->m_hooks = std::make_unique<Services::HooksProxy>(*m_services->m_hooks);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
@@ -147,23 +142,23 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = m_services->m_hooks->Hook(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, (void*)&SetVarHandler, Hooking::Order::Final);
-    m_vmGetVarHook         = m_services->m_hooks->Hook(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, (void*)&GetVarHandler, Hooking::Order::Final);
-    m_vmTagEffectHook      = m_services->m_hooks->Hook(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, (void*)&TagEffectHandler, Hooking::Order::Final);
-    m_vmTagItemProperyHook = m_services->m_hooks->Hook(API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, (void*)&TagItemPropertyHandler, Hooking::Order::Final);
-    m_vmPlaySoundHook      = m_services->m_hooks->Hook(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, (void*)&PlaySoundHandler, Hooking::Order::Final);
+    m_vmSetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, (void*)&SetVarHandler, Hooks::Order::Final);
+    m_vmGetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, (void*)&GetVarHandler, Hooks::Order::Final);
+    m_vmTagEffectHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, (void*)&TagEffectHandler, Hooks::Order::Final);
+    m_vmTagItemProperyHook = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, (void*)&TagItemPropertyHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, (void*)&PlaySoundHandler, Hooks::Order::Final);
 
-    m_destroyServerHook    = m_services->m_hooks->Hook(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooking::Order::Final);
-    m_mainLoopInternalHook = m_services->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooking::Order::Final);
+    m_destroyServerHook    = Hooks::HookFunction(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooks::Order::Final);
 
-    m_posObjectDtorHook      = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSObjectD1Ev, (void*)&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook, Hooking::Order::VeryEarly);
-    m_posAreaDtorHook        = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSAreaD1Ev, (void*)&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook, Hooking::Order::VeryEarly);
-    m_posEatTURDHook         = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook, Hooking::Order::VeryEarly);
-    m_posDropTURDHook        = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer8DropTURDEv, (void*)&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook, Hooking::Order::VeryEarly);
-    m_posUUIDSaveToGffHook   = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook, Hooking::Order::VeryEarly);
-    m_posUUIDLoadFromGffHook = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook, Hooking::Order::VeryEarly);
+    m_posObjectDtorHook      = Hooks::HookFunction(API::Functions::_ZN10CNWSObjectD1Ev, (void*)&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook, Hooks::Order::VeryEarly);
+    m_posAreaDtorHook        = Hooks::HookFunction(API::Functions::_ZN8CNWSAreaD1Ev, (void*)&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook, Hooks::Order::VeryEarly);
+    m_posEatTURDHook         = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook, Hooks::Order::VeryEarly);
+    m_posDropTURDHook        = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer8DropTURDEv, (void*)&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook, Hooks::Order::VeryEarly);
+    m_posUUIDSaveToGffHook   = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook, Hooks::Order::VeryEarly);
+    m_posUUIDLoadFromGffHook = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook, Hooks::Order::VeryEarly);
 
-    static std::unique_ptr<NWNXLib::Hooking::FunctionHook> loadModuleInProgressHook = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
+    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
             (void*)+[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
             {
                 int index = nAreasLoaded;
@@ -181,19 +176,19 @@ void NWNXCore::InitialSetupHooks()
                 }
 
                 return loadModuleInProgressHook->CallOriginal<uint32_t>(pModule, nAreasLoaded, nAreasToLoad);
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
 
-    static std::unique_ptr<NWNXLib::Hooking::FunctionHook> loadModuleFinishHook = m_services->m_hooks->Hook(
+    static Hooks::Hook loadModuleFinishHook = Hooks::HookFunction(
             API::Functions::_ZN10CNWSModule16LoadModuleFinishEv,
             (void*)+[](CNWSModule *pModule) -> uint32_t
             {
                 MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
                 return loadModuleFinishHook->CallOriginal<uint32_t>(pModule);
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
 
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
-        static std::unique_ptr<NWNXLib::Hooking::FunctionHook> runScriptChunkHook = m_services->m_hooks->Hook(
+        static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
                 API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
                 (void*)+[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
                 {
@@ -201,7 +196,7 @@ void NWNXCore::InitialSetupHooks()
                     auto retVal = runScriptChunkHook->CallOriginal<int32_t>(pVirtualMachine, sScriptChunk, oid, bOidValid, bWrapIntoMain);
                     g_core->m_ScriptChunkRecursion -= 1;
                     return retVal;
-                }, Hooking::Order::VeryEarly);
+                }, Hooks::Order::VeryEarly);
     }
 }
 

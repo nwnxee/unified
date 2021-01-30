@@ -26,22 +26,22 @@ public:
 
     const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
 
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posObjectDtorHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posAreaDtorHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posEatTURDHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posDropTURDHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDSaveToGffHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDLoadFromGffHook;
+    NWNXLib::Hooks::Hook m_posObjectDtorHook;
+    NWNXLib::Hooks::Hook m_posAreaDtorHook;
+    NWNXLib::Hooks::Hook m_posEatTURDHook;
+    NWNXLib::Hooks::Hook m_posDropTURDHook;
+    NWNXLib::Hooks::Hook m_posUUIDSaveToGffHook;
+    NWNXLib::Hooks::Hook m_posUUIDLoadFromGffHook;
 
 private:
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmSetVarHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmGetVarHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagEffectHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagItemProperyHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmPlaySoundHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_destroyServerHook;
-    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_mainLoopInternalHook;
+    NWNXLib::Hooks::Hook m_createServerHook;
+    NWNXLib::Hooks::Hook m_vmSetVarHook;
+    NWNXLib::Hooks::Hook m_vmGetVarHook;
+    NWNXLib::Hooks::Hook m_vmTagEffectHook;
+    NWNXLib::Hooks::Hook m_vmTagItemProperyHook;
+    NWNXLib::Hooks::Hook m_vmPlaySoundHook;
+    NWNXLib::Hooks::Hook m_destroyServerHook;
+    NWNXLib::Hooks::Hook m_mainLoopInternalHook;
 
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
 

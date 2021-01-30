@@ -26,6 +26,7 @@ nwnxlib_add(
     "Commands.cpp"
     "Events.cpp"
     "MessageBus.cpp"
+    "Hooks.cpp"
 )
 
 add_subdirectory(API)
