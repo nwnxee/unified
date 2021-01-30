@@ -199,18 +199,18 @@ ArgumentStack Encounter::GetCanReset(ArgumentStack&& args)
         retVal = pEncounter->m_bReset;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetCanReset(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        auto reset = Services::Events::ExtractArgument<int32_t>(args);
+        auto reset = Events::ExtractArgument<int32_t>(args);
         pEncounter->m_bReset = !!reset;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)

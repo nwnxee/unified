@@ -12,12 +12,12 @@ namespace Events {
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook *s_UUIDLoadFromGffHook;
+static NWNXLib::Hooking::FunctionHook *s_UUIDLoadFromGffHook;
 UUIDEvents::UUIDEvents(NWNXLib::Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_UUID_COLLISION_.*", [hooker]() {
-        s_UUIDLoadFromGffHook = hooker->Hook(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct,
-                                             (void*)&LoadFromGffHook, Hooking::Order::Earliest);
+        s_UUIDLoadFromGffHook = hooker->Hook(Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct,
+                                             (void*)&LoadFromGffHook, NWNXLib::Hooking::Order::Earliest);
     });
 }
 

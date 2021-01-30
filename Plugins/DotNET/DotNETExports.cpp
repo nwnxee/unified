@@ -356,7 +356,7 @@ NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
 
 void* DotNET::RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
 {
-    auto aslrAddr = Platform::ASLR::GetRelocatedAddress(address);
+    auto aslrAddr = Platform::GetRelocatedAddress(address);
     auto funchook = s_managed_hooks.emplace_back(std::make_unique<NWNXLib::Hooking::FunctionHook>(aslrAddr, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
 }
