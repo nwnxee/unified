@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Events.hpp"
-#include "Common.hpp"
+#include "nwnx.hpp"
 #include <unordered_set>
 
 using namespace NWNXLib;

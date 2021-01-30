@@ -5,7 +5,6 @@
 #include "API/Globals.hpp"
 #include <hunspell/hunspell.hxx>
 #include <iostream>
-#include "Config.hpp"
 
 #include <dlfcn.h>
 

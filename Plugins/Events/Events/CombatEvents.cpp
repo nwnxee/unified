@@ -8,7 +8,6 @@
 #include "API/Globals.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 

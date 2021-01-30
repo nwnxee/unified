@@ -1,10 +1,8 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include <map>
 #include <set>
-#include "Plugin.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"

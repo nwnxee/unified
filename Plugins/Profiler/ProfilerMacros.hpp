@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Profiler.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "Timing.hpp"
 
 #include <array>

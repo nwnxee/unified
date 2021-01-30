@@ -1,5 +1,4 @@
 #include "Tracking.hpp"
-#include "Config.hpp"
 #include "Targets/Activity.hpp"
 
 using namespace NWNXLib;

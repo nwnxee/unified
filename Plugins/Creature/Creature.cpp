@@ -30,13 +30,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Config.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "MessageBus.hpp"
-#include "Encoding.hpp"
-
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -2022,7 +2015,7 @@ ArgumentStack Creature::SerializeQuickbar(ArgumentStack&& args)
             pCreature->SaveQuickButtons(&resGff, &resStruct);
             resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
 
-            retVal = Encoding::ToBase64(std::vector<uint8_t>(pData, pData+dataLength));
+            retVal = String::ToBase64(std::vector<uint8_t>(pData, pData+dataLength));
             delete[] pData;
         }
     }
@@ -2039,7 +2032,7 @@ ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
         const auto serializedB64 = Events::ExtractArgument<std::string>(args);
           ASSERT_OR_THROW(!serializedB64.empty());
 
-        std::vector<uint8_t> serialized = Encoding::FromBase64(serializedB64);
+        std::vector<uint8_t> serialized = String::FromBase64(serializedB64);
 
         if (serialized.empty() || serialized.size() < 14*4)
             return Events::Arguments(retVal);

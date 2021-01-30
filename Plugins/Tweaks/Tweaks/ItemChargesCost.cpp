@@ -1,7 +1,5 @@
 #include "Tweaks/ItemChargesCost.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/CExoArrayList.hpp"
 #include "API/CNWBaseItem.hpp"

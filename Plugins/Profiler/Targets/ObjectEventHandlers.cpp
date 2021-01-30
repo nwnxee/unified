@@ -2,8 +2,6 @@
 
 #include "API/Functions.hpp"
 #include "ProfilerMacros.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Profiler {
 

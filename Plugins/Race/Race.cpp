@@ -18,9 +18,6 @@
 #include "API/Functions.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/Constants/Effect.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "MessageBus.hpp"
-#include "Config.hpp"
 #include <cmath>
 
 using namespace NWNXLib;

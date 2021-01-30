@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 #include <cstring>
 
 namespace Events {

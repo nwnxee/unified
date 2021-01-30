@@ -1,7 +1,5 @@
 #include "Optimizations/GameObjectLookup.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"

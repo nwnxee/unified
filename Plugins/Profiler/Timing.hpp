@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include "Services/Metrics/MetricData.hpp"
 
 #include <array>

@@ -1,10 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Config.hpp"
-#include "Events.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include "API/Globals.hpp"
 #include "API/CExoString.hpp"
 #include "API/CAppManager.hpp"

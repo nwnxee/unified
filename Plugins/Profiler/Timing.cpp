@@ -3,8 +3,6 @@
 #include "API/CExoBase.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
 #include <algorithm>

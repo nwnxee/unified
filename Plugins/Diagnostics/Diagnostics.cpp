@@ -1,6 +1,5 @@
 #include "Diagnostics.hpp"
 #include "Diagnostics/MemorySanitizer.hpp"
-#include "Config.hpp"
 
 
 using namespace NWNXLib;

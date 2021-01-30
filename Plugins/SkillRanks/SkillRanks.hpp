@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include <bitset>
 #include <map>
 

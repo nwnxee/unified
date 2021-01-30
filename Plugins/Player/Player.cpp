@@ -38,11 +38,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Encoding.hpp"
-#include "Utils.hpp"
-
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -647,7 +642,7 @@ ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
                         if (pTileData)
                         {
                             std::vector<uint8_t> tileDataVector(&pTileData[0], &pTileData[pArea->m_nMapSize]);
-                            encString = NWNXLib::Encoding::ToBase64(tileDataVector);
+                            encString = NWNXLib::String::ToBase64(tileDataVector);
                         }
                         break;
                     }
@@ -679,7 +674,7 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
                         uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
                         if (pTileData)
                         {
-                            std::vector<uint8_t> tileDataVector = NWNXLib::Encoding::FromBase64(encString);
+                            std::vector<uint8_t> tileDataVector = NWNXLib::String::FromBase64(encString);
                             std::copy(tileDataVector.begin(), tileDataVector.begin() + pArea->m_nMapSize, pTileData);
                         }
                         break;

@@ -36,22 +36,20 @@
 #include "Events/DebugEvents.hpp"
 #include "Events/StoreEvents.hpp"
 #include "Events/JournalEvents.hpp"
-#include "Config.hpp"
-#include "MessageBus.hpp"
 
 #include <algorithm>
 #include <regex>
 #include <string>
 
+static Events::Events* g_plugin;
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Events::Events* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    g_plugin = new Events::Events(services);
+    g_plugin = new ::Events::Events(services);
     return g_plugin;
 }
 

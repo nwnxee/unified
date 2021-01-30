@@ -9,10 +9,6 @@
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWRules.hpp"
-#include "Utils.hpp"
-#include "Config.hpp"
-#include "MessageBus.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

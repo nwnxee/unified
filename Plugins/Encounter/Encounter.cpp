@@ -8,8 +8,6 @@
 #include "API/CEncounterListEntry.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "Events.hpp"
-
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

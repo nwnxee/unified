@@ -1,7 +1,6 @@
 #include "Events/CalendarEvents.hpp"
 #include "API/CNWSModule.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {

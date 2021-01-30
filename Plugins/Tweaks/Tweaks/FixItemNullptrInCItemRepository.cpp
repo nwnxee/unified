@@ -1,7 +1,5 @@
 #include "Tweaks/FixItemNullptrInCItemRepository.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/C2DA.hpp"
 #include "API/CAppManager.hpp"

@@ -2,7 +2,6 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Tweaks {
 

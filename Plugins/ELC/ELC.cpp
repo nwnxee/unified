@@ -25,10 +25,6 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
-#include "Events.hpp"
-#include "Config.hpp"
-#include "MessageBus.hpp"
-#include "Platform/ASLR.hpp"
 
 #include <set>
 #include <map>
@@ -453,7 +449,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     int32_t nMods[6] = {0};
 
     auto GetStatBonusesFromFeats = reinterpret_cast<void(*)(CExoArrayList<uint16_t>*, int32_t*, int32_t)>(
-            Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii));
+            Platform::GetRelocatedAddress(API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii));
 
     GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
 

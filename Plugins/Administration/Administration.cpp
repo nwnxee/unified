@@ -1,4 +1,4 @@
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNetLayer.hpp"
@@ -17,9 +17,6 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Events.hpp"
-
 #include <unistd.h>
 #include <csignal>
 

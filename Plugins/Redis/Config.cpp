@@ -1,7 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Config.hpp"
 
 namespace Redis
 {
@@ -35,8 +34,8 @@ void Redis::Reconfigure()
 
         // Pubsub.
         m_internal->m_config.m_pubsub_script = Config::Get<std::string>("PUBSUB_SCRIPT", "on_pubsub");
-        m_internal->m_config.m_pubsub_channels = Utils::split(Config::
-                Get<std::string>("PUBSUB_CHANNELS", ""), ',');
+        m_internal->m_config.m_pubsub_channels = String::Split(
+            Config::Get<std::string>("PUBSUB_CHANNELS", ""), ',');
 
         LOG_INFO("Reconfiguring for redis at %s:%d",
                                    m_internal->m_config.m_host,

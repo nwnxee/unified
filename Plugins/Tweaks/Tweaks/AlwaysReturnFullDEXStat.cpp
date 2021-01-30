@@ -2,7 +2,6 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWRace.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {

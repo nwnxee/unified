@@ -25,7 +25,6 @@
 #include "Tweaks/AlwaysReturnFullDEXStat.hpp"
 #include "Tweaks/DisplayNumAttacksOverrideInCharacterSheet.hpp"
 
-#include "Config.hpp"
 
 
 using namespace NWNXLib;

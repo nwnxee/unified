@@ -21,8 +21,6 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
-#include "Config.hpp"
-#include "MessageBus.hpp"
 
 
 using namespace NWNXLib;

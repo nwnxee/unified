@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Events.hpp"
-
+#include "nwnx.hpp"
 #include <regex>
 
 using ArgumentStack = NWNXLib::Events::ArgumentStack;

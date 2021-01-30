@@ -1,7 +1,5 @@
 #include "Optimizations/AsyncLogFlush.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include "API/CExoDebugInternal.hpp"
 #include "API/CExoFile.hpp"

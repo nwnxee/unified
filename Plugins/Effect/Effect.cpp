@@ -7,7 +7,6 @@
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWSObject.hpp"
-#include "Utils.hpp"
 
 #include <string>
 

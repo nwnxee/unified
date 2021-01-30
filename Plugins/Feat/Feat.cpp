@@ -16,7 +16,6 @@
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Config.hpp"
 #include <cmath>
 
 using namespace NWNXLib;

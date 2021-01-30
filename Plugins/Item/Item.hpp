@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Events.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSItem.hpp"
 
 using ArgumentStack = NWNXLib::Events::ArgumentStack;

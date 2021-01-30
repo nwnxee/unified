@@ -1,7 +1,6 @@
 #pragma once
+#include "nwnx.hpp"
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 class CNWSObjectActionNode;
 

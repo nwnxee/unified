@@ -1,12 +1,7 @@
 #include "Lua.hpp"
 
-#include "Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
-#include <cstring>
-//for Hooks
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 //for objectself

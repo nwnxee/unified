@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 

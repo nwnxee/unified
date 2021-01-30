@@ -1,9 +1,8 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
 #include "API/CNWSCreature.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 

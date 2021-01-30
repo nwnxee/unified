@@ -7,9 +7,6 @@
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
-#include "Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

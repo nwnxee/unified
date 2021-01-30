@@ -3,9 +3,8 @@
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSObjectActionNode.hpp"
 #include "API/Functions.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 

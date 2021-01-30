@@ -1,7 +1,5 @@
 #include "Tweaks/FixArmorDexBonusUnderOne.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/CNWRules.hpp"
 #include "API/CNWSCreature.hpp"

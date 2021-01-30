@@ -11,7 +11,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {

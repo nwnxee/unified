@@ -1,7 +1,6 @@
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
 
 #include "MySQL.hpp"
-#include "Config.hpp"
 
 #include <string.h>
 

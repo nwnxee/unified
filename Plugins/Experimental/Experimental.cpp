@@ -4,7 +4,6 @@
 #include "Experimentals/DisableLevelUpValidation.hpp"
 #include "Experimentals/UnhardcodeRangerDualWield.hpp"
 
-#include "Config.hpp"
 
 
 using namespace NWNXLib;

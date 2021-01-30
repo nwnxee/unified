@@ -1,7 +1,6 @@
 #include "Optimizations.hpp"
 #include "Optimizations/AsyncLogFlush.hpp"
 #include "Optimizations/GameObjectLookup.hpp"
-#include "Config.hpp"
 
 
 using namespace NWNXLib;

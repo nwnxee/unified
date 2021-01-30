@@ -8,8 +8,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCombatRound.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Utils.hpp"
 
 #include <cstring>
 #include <bitset>

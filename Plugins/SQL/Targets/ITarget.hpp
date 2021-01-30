@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 #include <queue>
 #include <string>

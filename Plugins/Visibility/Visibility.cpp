@@ -4,7 +4,6 @@
 #include "API/CNWSObject.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 
 using namespace NWNXLib;

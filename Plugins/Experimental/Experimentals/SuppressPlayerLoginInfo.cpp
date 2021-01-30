@@ -1,6 +1,5 @@
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"

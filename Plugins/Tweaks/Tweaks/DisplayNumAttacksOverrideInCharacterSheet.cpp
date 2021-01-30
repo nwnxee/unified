@@ -1,6 +1,5 @@
 #include "Tweaks/DisplayNumAttacksOverrideInCharacterSheet.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {

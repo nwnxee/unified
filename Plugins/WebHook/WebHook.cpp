@@ -1,9 +1,6 @@
 #include "WebHook.hpp"
 #include "API/CNWSModule.hpp"
 #include "External/httplib.h"
-#include "Services/Tasks/Tasks.hpp"
-#include "MessageBus.hpp"
-#include "Encoding.hpp"
 #include <cmath>
 #include <sstream>
 #include <iomanip>
@@ -70,7 +67,7 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
     // For Discord, will wait for a response
     auto path = origPath + "?wait=true";
 
-    message = Encoding::ToUTF8(message);
+    message = String::ToUTF8(message);
     escape_json(message);
 
     static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;

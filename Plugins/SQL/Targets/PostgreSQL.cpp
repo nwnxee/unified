@@ -5,7 +5,6 @@
 #include <regex>
 
 #include "PostgreSQL.hpp"
-#include "Config.hpp"
 
 namespace SQL {
 

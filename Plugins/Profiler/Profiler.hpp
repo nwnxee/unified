@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Metrics/Metrics.hpp"
+#include "nwnx.hpp"
 #include <chrono>
 #include <memory>
 

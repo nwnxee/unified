@@ -16,10 +16,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 

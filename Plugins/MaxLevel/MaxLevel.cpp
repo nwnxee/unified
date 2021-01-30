@@ -1,6 +1,5 @@
 #include "MaxLevel.hpp"
 
-#include "Utils.hpp"
 #include "API/C2DA.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWClass.hpp"
@@ -17,8 +16,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "Events.hpp"
-#include "Config.hpp"
 #include <regex>
 
 using namespace NWNXLib;

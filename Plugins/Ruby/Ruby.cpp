@@ -1,6 +1,4 @@
 #include "Ruby.hpp"
-#include "Config.hpp"
-#include "Services/Metrics/Metrics.hpp"
 
 #include "ruby.h" // Included last because ruby redefines snprintf for reasons.
 

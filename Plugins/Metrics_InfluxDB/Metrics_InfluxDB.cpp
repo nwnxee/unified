@@ -1,8 +1,5 @@
 #include "Metrics_InfluxDB.hpp"
 #include "InfluxDBClient.hpp"
-#include "Config.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.hpp"
 
 using namespace NWNXLib;
 

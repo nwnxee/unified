@@ -7,7 +7,6 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSItem.hpp"
-#include "Utils.hpp"
 
 #include <string>
 

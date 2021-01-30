@@ -1,11 +1,8 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/CExoLocString.hpp"
-#include "Utils.hpp"
 #include <map>
 #include <set>
 

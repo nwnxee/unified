@@ -3,9 +3,6 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
-#include "Config.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "MessageBus.hpp"
 
 #include <algorithm>
 #include <cstring>

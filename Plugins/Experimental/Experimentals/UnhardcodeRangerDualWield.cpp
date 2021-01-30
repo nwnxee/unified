@@ -1,6 +1,5 @@
 #include "Experimentals/UnhardcodeRangerDualWield.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 #include "API/CFactionManager.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"

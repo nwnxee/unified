@@ -1,6 +1,5 @@
 #include "Tweaks/HideClassesOnCharList.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CNWSCreature.hpp"

@@ -10,9 +10,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Events.hpp"
-#include "MessageBus.hpp"
 #include <cmath>
 #include <list>
 #include <numeric>

@@ -1,10 +1,8 @@
 #if defined(NWNX_SQL_SQLITE_SUPPORT)
 
 #include "SQLite.hpp"
-#include "Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
-#include "Utils.hpp"
 
 #include <sqlite3.h>
 

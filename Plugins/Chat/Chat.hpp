@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/Constants/Misc.hpp"
-#include "Events.hpp"
-
 using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace NWNXLib::Hooking { class FunctionHook; }

@@ -5,8 +5,6 @@
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {

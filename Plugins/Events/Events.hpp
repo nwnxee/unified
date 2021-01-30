@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "../../NWNXLib/Events.hpp"
+#include "nwnx.hpp"
 #include <memory>
 #include <stack>
 #include <string>

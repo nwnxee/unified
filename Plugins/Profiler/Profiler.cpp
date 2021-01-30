@@ -1,12 +1,7 @@
 #include "Profiler.hpp"
 
 #include "API/Functions.hpp"
-#include "Common.hpp"
 #include "ProfilerMacros.hpp"
-#include "Config.hpp"
-#include "Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "MessageBus.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
 #include "Targets/MainLoop.hpp"

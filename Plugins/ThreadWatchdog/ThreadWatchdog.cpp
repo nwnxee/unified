@@ -1,8 +1,5 @@
 #include "ThreadWatchdog.hpp"
 #include "API/Functions.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Config.hpp"
 
 using namespace NWNXLib;
 

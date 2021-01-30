@@ -1,7 +1,6 @@
 #include "Events/QuickbarEvents.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {

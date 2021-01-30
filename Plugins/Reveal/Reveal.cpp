@@ -3,7 +3,6 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSFaction.hpp"
 #include "API/Functions.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 
 

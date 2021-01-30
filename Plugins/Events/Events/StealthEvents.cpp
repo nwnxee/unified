@@ -2,7 +2,6 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
-#include "Utils.hpp"
 #include "Events.hpp"
 
 namespace Events {

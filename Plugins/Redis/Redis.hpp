@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"

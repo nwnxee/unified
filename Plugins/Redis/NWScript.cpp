@@ -3,8 +3,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Events.hpp"
-
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoString.hpp"

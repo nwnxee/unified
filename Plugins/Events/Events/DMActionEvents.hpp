@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Common.hpp"
+#include "nwnx.hpp"
 #include <cstdint>
 
 namespace Events {

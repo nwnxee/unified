@@ -1,6 +1,6 @@
 #pragma once
+#include "nwnx.hpp"
 
-#include "Common.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>

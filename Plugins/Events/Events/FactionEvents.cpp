@@ -3,7 +3,6 @@
 #include "API/CFactionManager.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -39,7 +38,7 @@ namespace Events {
         {
             s_HandleSetNPCFactionReputationHook->CallOriginal<void>(thisPtr, nFactionId, nSubjectFactionId, nReputation);
         }
-        else if (auto nResult = Utils::from_string<int32_t>(result))
+        else if (auto nResult = String::FromString<int32_t>(result))
         {
             nReputation = nResult.value();
             s_HandleSetNPCFactionReputationHook->CallOriginal<void>(thisPtr, nFactionId, nSubjectFactionId, nReputation);

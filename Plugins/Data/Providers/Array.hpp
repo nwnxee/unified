@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Events.hpp"
+#include "nwnx.hpp"
 #include <algorithm>
 #include <string>
 #include <random>

@@ -1,7 +1,5 @@
 #include "ServerLogRedirector.hpp"
 #include "API/CExoString.hpp"
-#include "Config.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 using namespace NWNXLib;
 
@@ -54,7 +52,7 @@ inline std::string TrimMessage(CExoString* message)
             s.erase(0, idxOfBracket + 1);
     }
 
-    return Utils::trim(s);
+    return String::Trim(s);
 }
 
 void ServerLogRedirector::WriteToLogFileHook(bool before, CExoDebugInternal*, CExoString* message)

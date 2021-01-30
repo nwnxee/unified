@@ -26,11 +26,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
-#include "Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Serialize.hpp"
-#include "Utils.hpp"
-
 #include <cstring>
 
 using namespace NWNXLib;
@@ -237,7 +232,7 @@ ArgumentStack Object::Serialize(ArgumentStack&& args)
     std::string retval = "";
     if (CGameObject *pObject = static_cast<CGameObject*>(object(args)))
     {
-        retval = SerializeGameObjectB64(pObject);
+        retval = Utils::SerializeGameObjectB64(pObject);
     }
     return Events::Arguments(retval);
 }
@@ -249,7 +244,7 @@ ArgumentStack Object::Deserialize(ArgumentStack&& args)
 
     const auto serialized = Events::ExtractArgument<std::string>(args);
 
-    if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    if (CGameObject *pObject = Utils::DeserializeGameObjectB64(serialized))
     {
         retval = static_cast<ObjectID>(pObject->m_idSelf);
         ASSERT(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
@@ -676,7 +671,7 @@ ArgumentStack Object::Export(ArgumentStack&& args)
     {
         auto ExportObject = [&](RESTYPE resType) -> void
         {
-            std::vector<uint8_t> serialized = SerializeGameObject(pGameObject, true);
+            std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
 
             if (!serialized.empty())
             {
@@ -922,7 +917,7 @@ ArgumentStack Object::PeekUUID(ArgumentStack&& args)
     if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
         static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
-                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+                Platform::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
 
         if (CanCarryUUID(pGameObject->m_nObjectType))
         {

@@ -1,6 +1,5 @@
 #include "Regex.hpp"
 
-#include "Config.hpp"
 
 #include <string>
 #include <stdio.h>

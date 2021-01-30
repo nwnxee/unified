@@ -4,9 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "MessageBus.hpp"
-#include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

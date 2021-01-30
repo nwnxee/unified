@@ -1,8 +1,5 @@
 #include "DotNET.hpp"
 
-#include "API/ALL_CLASSES.hpp"
-#include "API/Globals.hpp"
-#include "API/Constants.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
@@ -10,12 +7,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
-#include "Services/Services.hpp"
-#include "Events.hpp"
 
-#include "Assert.hpp"
-#include "Encoding.hpp"
-#include "Log.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -88,7 +80,7 @@ void DotNET::StackPushString(const char* value)
     ASSERT(vm->m_nRecursionLevel >= 0);
 
     LOG_DEBUG("Pushing string '%s'.", value);
-    CExoString str(Encoding::FromUTF8(value).c_str());
+    CExoString str(String::FromUTF8(value).c_str());
 
     if (vm->StackPushString(str))
     {
@@ -198,7 +190,7 @@ const char* DotNET::StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     // TODO: Less copies
-    return strdup(Encoding::ToUTF8(value.CStr()).c_str());
+    return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t DotNET::StackPopObject()
@@ -317,7 +309,7 @@ void DotNET::nwnxPushObject(uint32_t o)
 }
 void DotNET::nwnxPushString(const char *s)
 {
-    Events::Push(Encoding::FromUTF8(s));
+    Events::Push(String::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
@@ -342,7 +334,7 @@ uint32_t DotNET::nwnxPopObject()
 const char* DotNET::nwnxPopString()
 {
     auto str = Events::Pop<std::string>().value_or(std::string{""});
-    return strdup(Encoding::ToUTF8(str).c_str());
+    return strdup(String::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {

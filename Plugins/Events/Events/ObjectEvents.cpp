@@ -2,7 +2,6 @@
 #include "API/CNWSObject.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {

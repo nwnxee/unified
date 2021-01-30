@@ -1,22 +1,21 @@
+#include "nwnx.hpp"
+#include "Events.hpp"
 #include "Events/UUIDEvents.hpp"
 #include "API/CNWSUUID.hpp"
 #include "API/CResGFF.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
-#include "Events.hpp"
-#include "Utils.hpp"
-
+#include "API/CGameObject.hpp"
 
 namespace Events {
 
-using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-UUIDEvents::UUIDEvents(Services::HooksProxy* hooker)
+UUIDEvents::UUIDEvents(NWNXLib::Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_UUID_COLLISION_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, bool>(&LoadFromGffHook);
+        hooker->RequestSharedHook<Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, bool>(&LoadFromGffHook);
     });
 }
 
@@ -33,7 +32,7 @@ void UUIDEvents::LoadFromGffHook(bool bBefore, CNWSUUID *thisPtr, CResGFF *pResG
         if (success && !uuid.IsEmpty())
         {
             auto LookupObjectIdByUUID = reinterpret_cast<ObjectID(*)(CExoString&)>(
-                    Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
+                    NWNXLib::Platform::GetRelocatedAddress(Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
 
             bCollided = LookupObjectIdByUUID(uuid) != Constants::OBJECT_INVALID;
 

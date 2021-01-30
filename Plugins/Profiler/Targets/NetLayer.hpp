@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 namespace Profiler {
 

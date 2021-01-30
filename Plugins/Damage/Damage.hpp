@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Events.hpp"
-
+#include "nwnx.hpp"
 using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 struct DamageDataStr

@@ -1,11 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Config.hpp"
-#include "Events.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 
