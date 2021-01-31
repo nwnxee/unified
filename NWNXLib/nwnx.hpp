@@ -97,7 +97,7 @@ namespace Hooks
         int32_t     m_order;
         void*       m_funchook;
         void*       m_trampoline;
-    
+
         static inline std::unordered_map<uintptr_t, std::vector<FunctionHook*>> s_hooks;
     };
 
@@ -246,18 +246,18 @@ namespace Utils
 namespace POS
 {
     using CleanupFunc = std::function<void(void*)>;
-    void Set(CGameObject *pGameObject, const std::string& key, int value, bool persist = false);
-    void Set(CGameObject *pGameObject, const std::string& key, float value, bool persist = false);
-    void Set(CGameObject *pGameObject, const std::string& key, std::string value, bool persist = false);
-    void Set(CGameObject *pGameObject, const std::string& key, void *value, std::optional<CleanupFunc> cleanup);
+    void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, int value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, float value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, std::string value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, void *value, std::optional<CleanupFunc> cleanup);
 
     // Gets the value, but doesn't remove it
     template <typename T> std::optional<T>
-    Get(CGameObject *pGameObject, const std::string& key);
+    Get(CGameObject *pGameObject, const std::string& prefix, const std::string& key);
 
     // Removes without cleanup
-    void Remove(CGameObject *pGameObject, const std::string& key);
-    void RemoveRegex(CGameObject *pGameObject, const std::string& regex);
+    void Remove(CGameObject *pGameObject, const std::string& prefix, const std::string& key);
+    void RemoveRegex(CGameObject *pGameObject, const std::string& prefix, const std::string& regex);
 }
 
 namespace Tasks

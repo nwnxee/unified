@@ -28,6 +28,7 @@ nwnxlib_add(
     "MessageBus.cpp"
     "Hooks.cpp"
     "Tasks.cpp"
+    "POS.cpp"
 )
 
 add_subdirectory(API)

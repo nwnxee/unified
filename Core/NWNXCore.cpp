@@ -72,6 +72,9 @@ void RestoreCrashHandlers()
 
 }
 
+// TODO: Remove and allow auto-init post-load
+namespace NWNXLib::POS { void InitializeHooks(); }
+
 namespace Core {
 
 static NWNXCore s_core;
@@ -104,7 +107,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
     services->m_metrics = std::make_unique<Services::Metrics>();
-    services->m_perObjectStorage = std::make_unique<Services::PerObjectStorage>();
 
     return services;
 }
@@ -114,7 +116,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     std::unique_ptr<Services::ProxyServiceList> proxyServices = std::make_unique<Services::ProxyServiceList>();
 
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
-    proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
     ConfigureLogLevel(plugin);
 
@@ -138,6 +139,7 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
     }
 }
 
+
 void NWNXCore::InitialSetupHooks()
 {
     m_vmSetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, (void*)&SetVarHandler, Hooks::Order::Final);
@@ -149,12 +151,7 @@ void NWNXCore::InitialSetupHooks()
     m_destroyServerHook    = Hooks::HookFunction(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooks::Order::Final);
     m_mainLoopInternalHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooks::Order::Final);
 
-    m_posObjectDtorHook      = Hooks::HookFunction(API::Functions::_ZN10CNWSObjectD1Ev, (void*)&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook, Hooks::Order::VeryEarly);
-    m_posAreaDtorHook        = Hooks::HookFunction(API::Functions::_ZN8CNWSAreaD1Ev, (void*)&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook, Hooks::Order::VeryEarly);
-    m_posEatTURDHook         = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook, Hooks::Order::VeryEarly);
-    m_posDropTURDHook        = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer8DropTURDEv, (void*)&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook, Hooks::Order::VeryEarly);
-    m_posUUIDSaveToGffHook   = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook, Hooks::Order::VeryEarly);
-    m_posUUIDLoadFromGffHook = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook, Hooks::Order::VeryEarly);
+    POS::InitializeHooks();
 
     static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
             (void*)+[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t

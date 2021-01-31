@@ -26,13 +26,6 @@ public:
 
     const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
 
-    NWNXLib::Hooks::Hook m_posObjectDtorHook;
-    NWNXLib::Hooks::Hook m_posAreaDtorHook;
-    NWNXLib::Hooks::Hook m_posEatTURDHook;
-    NWNXLib::Hooks::Hook m_posDropTURDHook;
-    NWNXLib::Hooks::Hook m_posUUIDSaveToGffHook;
-    NWNXLib::Hooks::Hook m_posUUIDLoadFromGffHook;
-
 private:
     NWNXLib::Hooks::Hook m_createServerHook;
     NWNXLib::Hooks::Hook m_vmSetVarHook;
