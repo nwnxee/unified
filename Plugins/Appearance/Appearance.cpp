@@ -1,53 +1,117 @@
-#include "Appearance.hpp"
+#include "nwnx.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
 
+#include <map>
+#include <bitset>
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-
-static Appearance::Appearance* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new Appearance::Appearance(services);
-    return g_plugin;
-}
-
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Appearance {
 
-static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook = nullptr;
+enum OverrideType {
+    AppearanceType  = 0,
+    Gender          = 1,
+    HitPoints       = 2,
+    HairColor       = 3,
+    SkinColor       = 4,
+    PhenoType       = 5,
+    HeadType        = 6,
+    SoundSet        = 7,
+    TailType        = 8,
+    WingType        = 9,
+    FootstepSound   = 10,
+    Portrait        = 11,
+    OverrideType_MAX // Keep as last
+};
 
-Appearance::Appearance(Services::ProxyServiceList* services)
-    : Plugin(services)
+struct AppearanceOverrideData
 {
-#define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    std::bitset<OverrideType_MAX> bitSet;
 
-    REGISTER(SetOverride);
-    REGISTER(GetOverride);
+    uint16_t appearanceType     = 0;
+    uint8_t gender              = 0;
+    int32_t currentHitPoints    = 0;
+    uint8_t hairColor           = 0;
+    uint8_t skinColor           = 0;
+    uint8_t phenoType           = 0;
+    uint8_t headType            = 0;
+    uint16_t soundSet           = 0;
+    uint32_t tailType           = 0;
+    uint32_t wingType           = 0;
+    int32_t footstepSound       = 0;
+    uint16_t portraitId         = 0;
+};
 
-#undef REGISTER
-
-    s_ComputeGameObjectUpdateForObjectHook = Hooks::HookFunction(
-        Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
-        (void*)&ComputeGameObjectUpdateForObjectHook, Hooks::Order::Early);
+template <typename T>
+static void SwapIntValue(bool isSet, T &overrideValueVar, T &creatureValueVar)
+{
+    if(isSet)
+    {
+        std::swap(overrideValueVar, creatureValueVar);
+    }
 }
 
-Appearance::~Appearance()
+template <typename T>
+static void SetIntValue(int32_t type, int32_t value, std::bitset<OverrideType_MAX> &aodBitSet, T &aodVar)
 {
+    if (value < 0)
+    {
+        aodBitSet[type] = false;
+    }
+    else
+    {
+        aodBitSet[type] = true;
+        aodVar = static_cast<T>(value);
+    }
 }
 
-CNWSPlayer *Appearance::Player(ArgumentStack& args)
+static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook =
+    Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+        (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
+                   CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate)
+        {
+            if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
+            {
+                if (auto appearanceOverrideData = pCreature->nwnxGet<void *>(Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                {
+                    auto *pAOD = static_cast<AppearanceOverrideData *>(*appearanceOverrideData);
+
+                    auto SwapValues = [&]() -> void
+                    {
+                        SwapIntValue(pAOD->bitSet[AppearanceType], pAOD->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
+                        SwapIntValue(pAOD->bitSet[Gender], pAOD->gender, pCreature->m_cAppearance.m_nGender);
+                        SwapIntValue(pAOD->bitSet[HitPoints], pAOD->currentHitPoints, pCreature->m_nCurrentHitPoints);
+                        SwapIntValue(pAOD->bitSet[HairColor], pAOD->hairColor, pCreature->m_cAppearance.m_nHairColor);
+                        SwapIntValue(pAOD->bitSet[SkinColor], pAOD->skinColor, pCreature->m_cAppearance.m_nSkinColor);
+                        SwapIntValue(pAOD->bitSet[PhenoType], pAOD->phenoType, pCreature->m_cAppearance.m_nPhenoType);
+                        SwapIntValue(pAOD->bitSet[HeadType], pAOD->headType, pCreature->m_cAppearance.m_nHeadVariation);
+                        SwapIntValue(pAOD->bitSet[SoundSet], pAOD->soundSet, pCreature->m_nSoundSet);
+                        SwapIntValue(pAOD->bitSet[TailType], pAOD->tailType, pCreature->m_cAppearance.m_nTailVariation);
+                        SwapIntValue(pAOD->bitSet[WingType], pAOD->wingType, pCreature->m_cAppearance.m_nWingVariation);
+                        SwapIntValue(pAOD->bitSet[FootstepSound], pAOD->footstepSound, pCreature->m_nFootstepType);
+                        SwapIntValue(pAOD->bitSet[Portrait], pAOD->portraitId, pCreature->m_nPortraitId);
+                    };
+
+                    SwapValues();
+                    s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                    SwapValues();
+                    return;
+                }
+            }
+            s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+        }, Hooks::Order::Early);
+
+
+static CNWSPlayer *Player(ArgumentStack& args)
 {
-    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto playerId = args.extract<ObjectID>();
 
     if (playerId == Constants::OBJECT_INVALID)
     {
@@ -64,76 +128,15 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
     return pPlayer;
 }
 
-void Appearance::ComputeGameObjectUpdateForObjectHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
-                                                      CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate)
-{
-    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
-    {
-        if (auto appearanceOverrideData = pCreature->nwnxGet<void *>(Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-        {
-            auto *pAOD = static_cast<AppearanceOverrideData *>(*appearanceOverrideData);
-
-            auto SwapValues = [&]() -> void
-            {
-                SwapIntValue(pAOD->bitSet[AppearanceType], pAOD->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
-                SwapIntValue(pAOD->bitSet[Gender], pAOD->gender, pCreature->m_cAppearance.m_nGender);
-                SwapIntValue(pAOD->bitSet[HitPoints], pAOD->currentHitPoints, pCreature->m_nCurrentHitPoints);
-                SwapIntValue(pAOD->bitSet[HairColor], pAOD->hairColor, pCreature->m_cAppearance.m_nHairColor);
-                SwapIntValue(pAOD->bitSet[SkinColor], pAOD->skinColor, pCreature->m_cAppearance.m_nSkinColor);
-                SwapIntValue(pAOD->bitSet[PhenoType], pAOD->phenoType, pCreature->m_cAppearance.m_nPhenoType);
-                SwapIntValue(pAOD->bitSet[HeadType], pAOD->headType, pCreature->m_cAppearance.m_nHeadVariation);
-                SwapIntValue(pAOD->bitSet[SoundSet], pAOD->soundSet, pCreature->m_nSoundSet);
-                SwapIntValue(pAOD->bitSet[TailType], pAOD->tailType, pCreature->m_cAppearance.m_nTailVariation);
-                SwapIntValue(pAOD->bitSet[WingType], pAOD->wingType, pCreature->m_cAppearance.m_nWingVariation);
-                SwapIntValue(pAOD->bitSet[FootstepSound], pAOD->footstepSound, pCreature->m_nFootstepType);
-                SwapIntValue(pAOD->bitSet[Portrait], pAOD->portraitId, pCreature->m_nPortraitId);
-            };
-
-            SwapValues();
-
-            s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-
-            SwapValues();
-
-            return;
-        }
-    }
-
-    s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-}
-
-template <typename T>
-void Appearance::SwapIntValue(bool isSet, T &overrideValueVar, T &creatureValueVar)
-{
-    if(isSet)
-    {
-        std::swap(overrideValueVar, creatureValueVar);
-    }
-}
-
-template <typename T>
-void Appearance::SetIntValue(int32_t type, int32_t value, std::bitset<OverrideType_MAX> &aodBitSet, T &aodVar)
-{
-    if (value < 0)
-    {
-        aodBitSet[type] = false;
-    }
-    else
-    {
-        aodBitSet[type] = true;
-        aodVar = static_cast<T>(value);
-    }
-}
-
-ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetOverride(ArgumentStack&& args)
 {
     if (auto *pPlayer = Player(args))
     {
-        const auto oidCreature = Events::ExtractArgument<ObjectID>(args);
+        const auto oidCreature = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
-        const auto type = Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type < OverrideType_MAX);
-        const auto value = Events::ExtractArgument<int32_t>(args);
+        const auto value = args.extract<int32_t>();
 
         auto pCreature = Utils::GetGameObject(oidCreature);
         if (type < 0)
@@ -218,18 +221,18 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
         }
     }
 
-    return Events::Arguments();
+    return {};
 }
 
-ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetOverride(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
     if (auto *pPlayer = Player(args))
     {
-        const auto oidCreature = Events::ExtractArgument<ObjectID>(args);
+        const auto oidCreature = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
-        const auto type = Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type < OverrideType_MAX);
 
@@ -297,7 +300,7 @@ ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
         }
     }
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
 }
