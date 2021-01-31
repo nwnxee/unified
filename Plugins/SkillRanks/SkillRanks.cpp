@@ -62,7 +62,7 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 #undef REGISTER
 
     s_LoadRulesetInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules15LoadRulesetInfoEv, (void*)&LoadRulesetInfoHook, Hooks::Order::Earliest);
-    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooks::Order::Final);
+    static auto s_GetSkillRank = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooks::Order::Final);
 }
 
 SkillRanks::~SkillRanks()

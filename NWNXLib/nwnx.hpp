@@ -102,7 +102,7 @@ namespace Hooks
     };
 
     using Hook = std::unique_ptr<FunctionHook>;
-    Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
+    [[nodiscard]] Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
 }
 
 namespace MessageBus

@@ -2918,7 +2918,7 @@ void Creature::DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget)
 
 void Creature::InitResolveAttackRollHook()
 {
-    Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
+    static auto s_ResolveAttackRoll = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
     (void*)+[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
     {
         auto pTargetCreature = Utils::AsNWSCreature(pTarget);

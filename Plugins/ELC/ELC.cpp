@@ -109,7 +109,8 @@ ELC::ELC(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooks::Order::Final);
+    static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, 
+                                        (void*)&ValidateCharacterHook, Hooks::Order::Final);
 
     m_elcScript = Config::Get<std::string>("ELC_SCRIPT", "");
     m_enableCustomELCCheck = Config::Get<bool>("CUSTOM_ELC_CHECK", false);

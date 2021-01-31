@@ -46,6 +46,14 @@ static Hooks::Hook s_SummonAssociateHook;
 static Hooks::Hook s_LoadSpellGainTableHook;
 static Hooks::Hook s_LoadSpellKnownTableHook;
 
+// Replaced completely
+static Hooks::Hook s_CanLevelUpHook;
+static Hooks::Hook s_GetExpNeededForLevelUpHook;
+static Hooks::Hook s_GetSpellGainHook;
+static Hooks::Hook s_GetSpellsKnownPerLevelHook;
+
+
+
 MaxLevel::MaxLevel(Services::ProxyServiceList* services)
         : Plugin(services)
 {
@@ -55,20 +63,26 @@ MaxLevel::MaxLevel(Services::ProxyServiceList* services)
 
     if (m_maxLevel > CORE_MAX_LEVEL)
     {
-        s_GetServerInfoFromIniFileHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv,
-                                                                      (void*)&GetServerInfoFromIniFileHook, Hooks::Order::Early);
-        s_LoadModuleStartHook = Hooks::HookFunction(Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii,
-                                                             (void*)&LoadModuleStartHook, Hooks::Order::Early);
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv, (void*)&CanLevelUpHook, Hooks::Order::Final);
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv, (void*)&GetExpNeededForLevelUpHook, Hooks::Order::Final);
-        s_LevelDownHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats, (void*)&LevelDownHook, Hooks::Order::Late);
-        s_SummonAssociateHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt, (void*)&SummonAssociateHook, Hooks::Order::Late);
-        s_LoadSpellGainTableHook = Hooks::HookFunction(Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString,
-                                                                (void*)&LoadSpellGainTableHook, Hooks::Order::Early);
-        s_LoadSpellKnownTableHook = Hooks::HookFunction(Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString,
-                                                                 (void*)&LoadSpellKnownTableHook, Hooks::Order::Early);
-        Hooks::HookFunction(Functions::_ZN8CNWClass12GetSpellGainEhh, (void*)&GetSpellGainHook, Hooks::Order::Final);
-        Hooks::HookFunction(Functions::_ZN8CNWClass22GetSpellsKnownPerLevelEhhhth, (void*)&GetSpellsKnownPerLevelHook, Hooks::Order::Final);
+        s_GetServerInfoFromIniFileHook  = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv,
+                                                              (void*)&GetServerInfoFromIniFileHook, Hooks::Order::Early);
+        s_LoadModuleStartHook           = Hooks::HookFunction(Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii,
+                                                              (void*)&LoadModuleStartHook, Hooks::Order::Early);
+        s_CanLevelUpHook                = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
+                                                              (void*)&CanLevelUpHook, Hooks::Order::Final);
+        s_GetExpNeededForLevelUpHook    = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv,
+                                                              (void*)&GetExpNeededForLevelUpHook, Hooks::Order::Final);
+        s_LevelDownHook                 = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
+                                                              (void*)&LevelDownHook, Hooks::Order::Late);
+        s_SummonAssociateHook           = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt,
+                                                              (void*)&SummonAssociateHook, Hooks::Order::Late);
+        s_LoadSpellGainTableHook        = Hooks::HookFunction(Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString,
+                                                              (void*)&LoadSpellGainTableHook, Hooks::Order::Early);
+        s_LoadSpellKnownTableHook       = Hooks::HookFunction(Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString,
+                                                              (void*)&LoadSpellKnownTableHook, Hooks::Order::Early);
+        s_GetSpellGainHook              = Hooks::HookFunction(Functions::_ZN8CNWClass12GetSpellGainEhh,
+                                                              (void*)&GetSpellGainHook, Hooks::Order::Final);
+        s_GetSpellsKnownPerLevelHook    = Hooks::HookFunction(Functions::_ZN8CNWClass22GetSpellsKnownPerLevelEhhhth,
+                                                              (void*)&GetSpellsKnownPerLevelHook, Hooks::Order::Final);
     }
 }
 

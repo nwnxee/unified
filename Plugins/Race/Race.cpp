@@ -49,6 +49,12 @@ static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook;
 static Hooks::Hook s_LoadRaceInfoHook;
 static Hooks::Hook s_ValidateCharacterHook;
 
+// Replaced completely
+static Hooks::Hook s_ResolveInitiativeHook;
+static Hooks::Hook s_CheckItemRaceRestrictionsHook;
+static Hooks::Hook s_GetFavoredEnemyBonusHook;
+
+
 Race::Race(Services::ProxyServiceList* services)
     : Plugin(services)
 {
@@ -107,7 +113,7 @@ Race::Race(Services::ProxyServiceList* services)
                                                                 (void*)&ResetFeatRemainingUsesHook, Hooks::Order::Early);
 
     // Completely rewritten in NWNX for Race plugin so we can add our Initiative changes
-    Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveInitiativeEv, (void*)&ResolveInitiativeHook, Hooks::Order::Final);
+    s_ResolveInitiativeHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveInitiativeEv, (void*)&ResolveInitiativeHook, Hooks::Order::Final);
 
     // If a level up has been confirmed we rerun the racial applications in case of new feats, level based adjustments etc.
     s_SendServerToPlayerLevelUp_ConfirmationHook = Hooks::HookFunction(Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji,
@@ -122,13 +128,13 @@ Race::Race(Services::ProxyServiceList* services)
                                                                            (void*)&GetMeetsPrestigeClassRequirementsHook, Hooks::Order::Early);
 
     //Don't swap, check as both parent and child race
-    Hooks::HookFunction(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem, (void*)&CheckItemRaceRestrictionsHook, Hooks::Order::Final);
+    s_CheckItemRaceRestrictionsHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem, (void*)&CheckItemRaceRestrictionsHook, Hooks::Order::Final);
 
     // Need to set up default parent race to invalid before the on module load sets up the parents
     s_LoadRaceInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules12LoadRaceInfoEv, (void*)&LoadRaceInfoHook, Hooks::Order::Early);
 
     // Check for favored enemy bonuses on either the race or parent race including custom set favored enemy feats for custom races
-    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, (void*)&GetFavoredEnemyBonusHook, Hooks::Order::Final);
+    s_GetFavoredEnemyBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, (void*)&GetFavoredEnemyBonusHook, Hooks::Order::Final);
 
     s_ValidateCharacterHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooks::Order::Early);
 }

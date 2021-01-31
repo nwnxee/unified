@@ -57,7 +57,7 @@ Weapon::Weapon(Services::ProxyServiceList* services)
             Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooks::Order::Late);
     m_GetEpicWeaponFocusHook = Hooks::HookFunction(
             Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem, (void*)&Weapon::GetEpicWeaponFocus);
-    Hooks::HookFunction(
+    static auto s_GetWeaponFinesseHook = Hooks::HookFunction(
             Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooks::Order::Final);
 
     m_GetWeaponImprovedCriticalHook = Hooks::HookFunction
@@ -84,7 +84,8 @@ Weapon::Weapon(Services::ProxyServiceList* services)
             Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
     m_GetRangedAttackBonusHook = Hooks::HookFunction(
             Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooks::Order::Late);
-    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi, (void*)&GetUseMonkAttackTables, Hooks::Order::Final);
+    static auto s_GetUseMonkAttackTablesHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi, (void*)&GetUseMonkAttackTables, Hooks::Order::Final);
 
     m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
 
