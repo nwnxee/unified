@@ -36,4 +36,3 @@ struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_ownin
     void nwnxRemove(const std::string& key, const char *pn = PLUGIN_NAME);                                       \
     void nwnxRemoveRegex(const std::string& regex, const char *pn = PLUGIN_NAME);                                \
 
-

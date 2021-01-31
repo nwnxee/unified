@@ -62,6 +62,7 @@ static void InitFunctionMap()
 {
     if (s_FunctionMap.size()) return;
 
+#undef NWNXLIB_FUNCTION
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 #define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
 #include "API/FunctionsLinux.hpp"
