@@ -7,9 +7,6 @@
 #include "API/Functions.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -25,9 +22,9 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Feedback {
 
-static NWNXLib::Hooking::FunctionHook* s_SendFeedbackMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerCCMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerJournalUpdatedHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendFeedbackMessageHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerCCMessageHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerJournalUpdatedHook = nullptr;
 
 const int32_t FEEDBACK_MESSAGE = 0;
 const int32_t COMBATLOG_MESSAGE = 1;
@@ -37,7 +34,7 @@ Feedback::Feedback(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetMessageHidden);
@@ -46,17 +43,17 @@ Feedback::Feedback(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_SendFeedbackMessageHook = GetServices()->m_hooks->Hook(
+    s_SendFeedbackMessageHook = Hooks::HookFunction(
             API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
-            (void*)&SendFeedbackMessageHook, Hooking::Order::Late);
+            (void*)&SendFeedbackMessageHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerCCMessageHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData,
-            (void*)&SendServerToPlayerCCMessageHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerCCMessageHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerJournalUpdatedHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString,
-            (void*)&SendServerToPlayerJournalUpdatedHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerJournalUpdatedHook, Hooks::Order::Late);
 }
 
 Feedback::~Feedback()
@@ -105,7 +102,8 @@ int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32
 
     std::string varName = std::to_string(messageType) + ":" + std::to_string(messageId);
 
-    if (auto personalState = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, varName))
+    auto playerObj = Utils::GetGameObject(playerId);
+    if (auto personalState = playerObj->nwnxGet<int>(varName))
     {
         value = !!*personalState;
     }
@@ -115,22 +113,22 @@ int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32
 
 ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto messageId = Events::ExtractArgument<int32_t>(args);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalState(messageType, messageId) :
                                                                GetPersonalState(playerId, messageType, messageId);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
-    const auto state = Services::Events::ExtractArgument<int32_t>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto messageId = Events::ExtractArgument<int32_t>(args);
+    const auto state = Events::ExtractArgument<int32_t>(args);
 
     ASSERT_OR_THROW(messageId >= 0);
 
@@ -154,23 +152,23 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
     else
     {
         std::string varName = std::to_string(messageType) + ":" + std::to_string(messageId);
-
+        auto playerObj = Utils::GetGameObject(playerId);
         if (state == -1)
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
+            playerObj->nwnxRemove(varName);
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
+            playerObj->nwnxSet(varName, !!state, true);
         }
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
 {
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto state = Services::Events::ExtractArgument<int32_t>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto state = Events::ExtractArgument<int32_t>(args);
 
     if (!messageType)
     {
@@ -181,7 +179,7 @@ ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
         g_plugin->m_CombatMessageWhitelist = !!state;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

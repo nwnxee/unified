@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class ExamineEvents
 {
 public:
-    ExamineEvents(NWNXLib::Services::HooksProxy* hooker);
+    ExamineEvents();
 
 private:
     static void HandleExamine(bool, ObjectID, ObjectID);

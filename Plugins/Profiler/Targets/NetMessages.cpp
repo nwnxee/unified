@@ -1,7 +1,6 @@
 #include "Targets/NetMessages.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/Functions.hpp"
-#include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
 namespace Profiler {
@@ -10,24 +9,23 @@ using namespace NWNXLib;
 using namespace API;
 
 static Services::MetricsProxy* g_metrics;
-static Hooking::FunctionHook *s_ComputeGameObjectUpdateForCategoryHook;
-static Hooking::FunctionHook *s_SendServerToPlayerMessageHook;
-static Hooking::FunctionHook *s_HandlePlayerToServerMessageHook;
+static Hooks::Hook s_ComputeGameObjectUpdateForCategoryHook;
+static Hooks::Hook s_SendServerToPlayerMessageHook;
+static Hooks::Hook s_HandlePlayerToServerMessageHook;
 
-NetMessages::NetMessages(Services::HooksProxy* hooker,
-    Services::MetricsProxy* metrics)
+NetMessages::NetMessages(Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 
-    s_ComputeGameObjectUpdateForCategoryHook = hooker->Hook(
+    s_ComputeGameObjectUpdateForCategoryHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage34ComputeGameObjectUpdateForCategoryEjjP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayP29CNWSPlayerLUOSortedObjectListi,
-            (void*)&ComputeGameObjectUpdateForCategoryHook, Hooking::Order::Earliest);
+            (void*)&ComputeGameObjectUpdateForCategoryHook, Hooks::Order::Earliest);
 
-    s_SendServerToPlayerMessageHook = hooker->Hook(Functions::_ZN11CNWSMessage25SendServerToPlayerMessageEjhhPhj,
-                                                   (void*)&SendServerToPlayerMessageHook, Hooking::Order::Earliest);
+    s_SendServerToPlayerMessageHook = Hooks::HookFunction(Functions::_ZN11CNWSMessage25SendServerToPlayerMessageEjhhPhj,
+                                                   (void*)&SendServerToPlayerMessageHook, Hooks::Order::Earliest);
 
-    s_HandlePlayerToServerMessageHook = hooker->Hook(Functions::_ZN11CNWSMessage27HandlePlayerToServerMessageEjPhj,
-                                                     (void*)&HandlePlayerToServerMessageHook, Hooking::Order::Earliest);
+    s_HandlePlayerToServerMessageHook = Hooks::HookFunction(Functions::_ZN11CNWSMessage27HandlePlayerToServerMessageEjPhj,
+                                                     (void*)&HandlePlayerToServerMessageHook, Hooks::Order::Earliest);
 
     Services::Resamplers::ResamplerFuncPtr sumResampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("GameObjectUpdate", sumResampler, std::chrono::seconds(1));

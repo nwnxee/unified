@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class UUIDEvents
 {
 public:
-    UUIDEvents(NWNXLib::Services::HooksProxy* hooker);
+    UUIDEvents();
 
 private:
     static bool LoadFromGffHook(CNWSUUID*, CResGFF*, CResStruct*);

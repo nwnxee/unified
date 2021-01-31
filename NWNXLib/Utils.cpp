@@ -1,4 +1,4 @@
-#include "Utils.hpp"
+#include "nwnx.hpp"
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"

@@ -24,12 +24,6 @@
 #include "API/CNWSArea.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/Functions.hpp"
-#include "Utils.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Plugins/Plugins.hpp"
-#include "Services/Commands/Commands.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Services/Messaging/Messaging.hpp"
 
 #include <string>
 #include <cstdio>
@@ -57,7 +51,7 @@ Util::Util(Services::ProxyServiceList* services)
       m_scriptCompiler(nullptr)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetCurrentScriptName);
@@ -101,7 +95,7 @@ Util::Util(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    static Hooking::FunctionHook *pMainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
             (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 static int ticks;
@@ -123,20 +117,20 @@ Util::Util(Services::ProxyServiceList* services)
                 }
 
                 return retVal;
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
             if (message[0] == "ON_MODULE_LOAD_FINISH")
             {
-                if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
+                if (auto startScript = Config::Get<std::string>("PRE_MODULE_START_SCRIPT"))
                 {
                     LOG_NOTICE("Running module start script: %s", *startScript);
                     Utils::ExecuteScript(*startScript, 0);
                 }
 
-                if (auto startChunk = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
+                if (auto startChunk = Config::Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
                 {
                     LOG_NOTICE("Running module start script chunk: %s", *startChunk);
 
@@ -160,7 +154,7 @@ ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
 {
     std::string retval = "";
 
-    const auto depth = Services::Events::ExtractArgument<int32_t>(args);
+    const auto depth = Events::ExtractArgument<int32_t>(args);
 
     auto *pVM = API::Globals::VirtualMachine();
     if (pVM && pVM->m_nRecursionLevel >= 0 && pVM->m_nRecursionLevel >= depth)
@@ -170,7 +164,7 @@ ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
             retval = script.m_sScriptName.CStr();
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Util::GetAsciiTableString(ArgumentStack&&)
@@ -184,20 +178,20 @@ ArgumentStack Util::GetAsciiTableString(ArgumentStack&&)
             table[i] = i;
     }
 
-    return Services::Events::Arguments(std::string(table));
+    return Events::Arguments(std::string(table));
 }
 
 ArgumentStack Util::Hash(ArgumentStack&& args)
 {
-    const auto str = Services::Events::ExtractArgument<std::string>(args);
-    return Services::Events::Arguments((int32_t)std::hash<std::string>{}(str));
+    const auto str = Events::ExtractArgument<std::string>(args);
+    return Events::Arguments((int32_t)std::hash<std::string>{}(str));
 }
 
 ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tokenNumber = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tokenNumber >= 0);
 
     auto *pTlk = API::Globals::TlkTable();
@@ -215,62 +209,62 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
         retVal = foundToken->m_sValue.CStr();
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::EffectTypeCast(ArgumentStack&& args)
 {
-    return Services::Events::Arguments(Services::Events::ExtractArgument<CGameEffect*>(args));
+    return Events::Arguments(Events::ExtractArgument<CGameEffect*>(args));
 }
 
 ArgumentStack Util::StripColors(ArgumentStack&& args)
 {
-    const auto s = Services::Events::ExtractArgument<std::string>(args);
+    const auto s = Events::ExtractArgument<std::string>(args);
 
     std::regex color_codes("<c.+?(?=>)>|<\\/c>");
     std::string retVal = std::regex_replace(s, color_codes, "");
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 {
     int32_t retVal = 0;
-    const auto resRef = Services::Events::ExtractArgument<std::string>(args);
-    const auto resType = Services::Events::ExtractArgument<int32_t>(args);
+    const auto resRef = Events::ExtractArgument<std::string>(args);
+    const auto resType = Events::ExtractArgument<int32_t>(args);
 
     retVal = Globals::ExoResMan()->Exists(CResRef(resRef.c_str()), resType, nullptr);
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args)
 {
     std::string retVal;
-    const auto envVar = Services::Events::ExtractArgument<std::string>(args);
+    const auto envVar = Events::ExtractArgument<std::string>(args);
 
     if (const char* value = std::getenv(envVar.c_str()))
         retVal = std::string(value);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetMinutesPerHour(ArgumentStack&&)
 {
-    return Services::Events::Arguments(Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->m_nMinutesPerHour);
+    return Events::Arguments(Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->m_nMinutesPerHour);
 }
 
 ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
 {
-    const auto minPerHour = Services::Events::ExtractArgument<int32_t>(args);
+    const auto minPerHour = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(minPerHour > 0);
       ASSERT_OR_THROW(minPerHour <= 255);
 
     Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
 {
-    const auto s = Services::Events::ExtractArgument<std::string>(args);
+    const auto s = Events::ExtractArgument<std::string>(args);
     std::string result;
 
     // ** Copied from ../Webhook/External/httplib.h
@@ -300,23 +294,23 @@ ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
         }
     }
     // **
-    return Services::Events::Arguments(result);
+    return Events::Arguments(result);
 }
 
 ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
 {
-    const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
+    const auto twodaRef = Events::ExtractArgument<std::string>(args);
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
-    return Services::Events::Arguments(twoda ? twoda->m_nNumRows : 0);
+    return Events::Arguments(twoda ? twoda->m_nNumRows : 0);
 }
 
 ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto resRefType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto regexFilter = Services::Events::ExtractArgument<std::string>(args);
-    const auto bModuleOnly = Services::Events::ExtractArgument<int32_t>(args);
+    const auto resRefType = Events::ExtractArgument<int32_t>(args);
+    const auto regexFilter = Events::ExtractArgument<std::string>(args);
+    const auto bModuleOnly = Events::ExtractArgument<int32_t>(args);
 
     m_resRefIndex = 0;
     m_listResRefs.clear();
@@ -343,7 +337,7 @@ ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
         m_resRefIndex++;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetNextResRef(ArgumentStack&&)
@@ -356,21 +350,21 @@ ArgumentStack Util::GetNextResRef(ArgumentStack&&)
         m_resRefIndex++;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
 {
-    return Services::Events::Arguments(m_tickCount);
+    return Events::Arguments(m_tickCount);
 }
 
 ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 {
     ObjectID retVal = Constants::OBJECT_INVALID;
 
-    const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
+    const auto objectType = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(objectType >= 0);
-    const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
+    const auto nthLast = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(nthLast > 0);
 
     auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
@@ -396,24 +390,24 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::AddScript(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
       ASSERT_OR_THROW(scriptName.size() <= 16);
-    const auto scriptData = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptData = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptData.empty());
-    const auto wrapIntoMain = Services::Events::ExtractArgument<int32_t>(args);
+    const auto wrapIntoMain = Events::ExtractArgument<int32_t>(args);
 
     std::string alias;
     try
     {
-        alias = Services::Events::ExtractArgument<std::string>(args);
+        alias = Events::ExtractArgument<std::string>(args);
     }
     catch (const std::runtime_error& e)
     {
@@ -449,17 +443,17 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
     else
         retVal = m_scriptCompiler->m_sCapturedError.CStr();
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
       ASSERT_OR_THROW(scriptName.size() <= 16);
-    const auto maxLength = Services::Events::ExtractArgument<int32_t>(args);
+    const auto maxLength = Events::ExtractArgument<int32_t>(args);
 
     if (Globals::ExoResMan()->Exists(scriptName.c_str(), Constants::ResRefType::NSS, nullptr))
     {
@@ -474,22 +468,22 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+    const auto fileName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto contents = Services::Events::ExtractArgument<std::string>(args);
+    const auto contents = Events::ExtractArgument<std::string>(args);
 
     std::string alias;
     try
     {
-        alias = Services::Events::ExtractArgument<std::string>(args);
+        alias = Events::ExtractArgument<std::string>(args);
     }
     catch (const std::runtime_error& e)
     {
@@ -513,22 +507,22 @@ ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
 {
     int32_t retVal;
 
-    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+    const auto fileName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto type = Services::Events::ExtractArgument<int32_t>(args);
+    const auto type = Events::ExtractArgument<int32_t>(args);
 
     std::string alias;
     try
     {
-        alias = Services::Events::ExtractArgument<std::string>(args);
+        alias = Events::ExtractArgument<std::string>(args);
     }
     catch (const std::runtime_error& e)
     {
@@ -546,47 +540,47 @@ ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
 
     retVal = Globals::ExoResMan()->RemoveFile(exoFileName, type);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
 {
     const static uint32_t defaultInstructionLimit = Globals::VirtualMachine()->m_nInstructionLimit;
-    const auto limit = Services::Events::ExtractArgument<int32_t>(args);
+    const auto limit = Events::ExtractArgument<int32_t>(args);
 
     if (limit < 0)
     {
         // We queue it on the main thread so it'll reset after the current script is done executing
-        g_plugin->GetServices()->m_tasks->QueueOnMainThread(
+        Tasks::QueueOnMainThread(
             [](){ Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit; });
     }
     else
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::GetInstructionLimit(ArgumentStack&&)
 {
     int32_t retVal = Globals::VirtualMachine()->m_nInstructionLimit;
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::SetInstructionsExecuted(ArgumentStack&& args)
 {
-    const auto instructions = Services::Events::ExtractArgument<int32_t>(args);
+    const auto instructions = Events::ExtractArgument<int32_t>(args);
 
     Globals::VirtualMachine()->m_nInstructionsExecuted = instructions >= 0 ? instructions : 0;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::GetInstructionsExecuted(ArgumentStack&&)
 {
     int32_t retVal = Globals::VirtualMachine()->m_nInstructionsExecuted;
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)
@@ -599,17 +593,17 @@ ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)
         retVal = (intptr_t)pParameter;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)
 {
-    const auto command = Services::Events::ExtractArgument<std::string>(args);
+    const auto command = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!command.empty());
-    const auto scriptChunk = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptChunk = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptChunk.empty());
 
-    bool registered = g_plugin->GetServices()->m_commands->RegisterCommand(command, [](std::string &command, std::string &args)
+    bool registered = Commands::Register(command, [](std::string &command, std::string &args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -637,53 +631,51 @@ ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)
     if (registered)
         g_plugin->m_serverConsoleCommandMap[command] = scriptChunk;
 
-    return Services::Events::Arguments(registered);
+    return Events::Arguments(registered);
 }
 
 ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
 {
-    const auto command = Services::Events::ExtractArgument<std::string>(args);
+    const auto command = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!command.empty());
 
     if (g_plugin->m_serverConsoleCommandMap.find(command) != g_plugin->m_serverConsoleCommandMap.end())
     {
-        g_plugin->GetServices()->m_commands->UnregisterCommand(command);
+        Commands::Unregister(command);
         g_plugin->m_serverConsoleCommandMap.erase(command);
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::PluginExists(ArgumentStack&& args)
 {
-    auto pluginName = Services::Events::ExtractArgument<std::string>(args);
-
-    return GetServices()->m_plugins->FindPluginByName(pluginName) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+    return Plugin::Find(args.extract<std::string>()) ? 1 : 0;
 }
 
 ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
 {
-    return Services::Events::Arguments(Globals::ExoBase()->m_sUserDirectory.CStr());
+    return Events::Arguments(Globals::ExoBase()->m_sUserDirectory.CStr());
 }
 
 ArgumentStack Util::CreateDoor(ArgumentStack&& args)
 {
     ObjectID retVal = Constants::OBJECT_INVALID;
 
-    const auto strResRef = Services::Events::ExtractArgument<std::string>(args);
+    const auto strResRef = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!strResRef.empty());
-    const auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto oidArea = Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-    const auto posX = Services::Events::ExtractArgument<float>(args);
-    const auto posY = Services::Events::ExtractArgument<float>(args);
-    const auto posZ = Services::Events::ExtractArgument<float>(args);
-    const auto facing = Services::Events::ExtractArgument<float>(args);
-    const auto tag = Services::Events::ExtractArgument<std::string>(args);
+    const auto posX = Events::ExtractArgument<float>(args);
+    const auto posY = Events::ExtractArgument<float>(args);
+    const auto posZ = Events::ExtractArgument<float>(args);
+    const auto facing = Events::ExtractArgument<float>(args);
+    const auto tag = Events::ExtractArgument<std::string>(args);
 
     int32_t appearance = -1;
     try
     {
-        appearance = Services::Events::ExtractArgument<int32_t>(args);
+        appearance = Events::ExtractArgument<int32_t>(args);
     }
     catch (const std::runtime_error& e)
     {
@@ -696,7 +688,7 @@ ArgumentStack Util::CreateDoor(ArgumentStack&& args)
     if (!Globals::ExoResMan()->Exists(resRef, Constants::ResRefType::UTD, nullptr))
     {
         LOG_WARNING("CreateDoor: ResRef '%s' does not exist", resRef.GetResRefStr());
-        return Services::Events::Arguments(Constants::OBJECT_INVALID);
+        return Events::Arguments(Constants::OBJECT_INVALID);
     }
 
     if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
@@ -733,12 +725,12 @@ ArgumentStack Util::CreateDoor(ArgumentStack&& args)
     else
         LOG_WARNING("CreateDoor: Invalid Area");
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::SetItemActivator(ArgumentStack&& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto objectId = Events::ExtractArgument<ObjectID>(args);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
     if (pGameObject)
@@ -746,12 +738,12 @@ ArgumentStack Util::SetItemActivator(ArgumentStack&& args)
     else
       Utils::GetModule()->m_oidLastItemActivator = Constants::OBJECT_INVALID;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::GetWorldTime(ArgumentStack&& args)
 {
-    const auto adjustment = Services::Events::ExtractArgument<float>(args);
+    const auto adjustment = Events::ExtractArgument<float>(args);
 
     auto *pWorldTimer = Globals::AppManager()->m_pServerExoApp->GetWorldTimer();
     uint32_t adjustmentCalendarDay = pWorldTimer->GetCalendarDayFromSeconds(std::fabs(adjustment));
@@ -769,18 +761,18 @@ ArgumentStack Util::GetWorldTime(ArgumentStack&& args)
         retvalTimeOfDay = currentTimeOfDay;
     }
 
-    return Services::Events::Arguments((int32_t)retvalCalendarDay, (int32_t)retvalTimeOfDay);
+    return Events::Arguments((int32_t)retvalCalendarDay, (int32_t)retvalTimeOfDay);
 }
 
 ArgumentStack Util::SetResourceOverride(ArgumentStack&& args)
 {
-    auto resType = Services::Events::ExtractArgument<int32_t>(args);
+    auto resType = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(resType >= Constants::ResRefType::MIN);
       ASSERT_OR_THROW(resType <= Constants::ResRefType::MAX);
-    auto oldName = Services::Events::ExtractArgument<std::string>(args);
+    auto oldName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!oldName.empty());
       ASSERT_OR_THROW(oldName.size() <= 16);
-    auto newName = Services::Events::ExtractArgument<std::string>(args);
+    auto newName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(newName.size() <= 16);
 
     if (newName.empty())
@@ -788,15 +780,15 @@ ArgumentStack Util::SetResourceOverride(ArgumentStack&& args)
     else
         Globals::ExoResMan()->AddOverride(oldName.c_str(), newName.c_str(), resType);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::GetResourceOverride(ArgumentStack&& args)
 {
-    auto resType = Services::Events::ExtractArgument<int32_t>(args);
+    auto resType = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(resType >= Constants::ResRefType::MIN);
       ASSERT_OR_THROW(resType <= Constants::ResRefType::MAX);
-    auto resName = Services::Events::ExtractArgument<std::string>(args);
+    auto resName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!resName.empty());
       ASSERT_OR_THROW(resName.size() <= 16);
 
@@ -809,7 +801,7 @@ ArgumentStack Util::GetScriptParamIsSet(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    const auto paramName = Services::Events::ExtractArgument<std::string>(args);
+    const auto paramName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!paramName.empty());
 
     auto *pVirtualMachine = API::Globals::VirtualMachine();
@@ -827,25 +819,25 @@ ArgumentStack Util::GetScriptParamIsSet(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Util::SetDawnHour(ArgumentStack &&args)
 {
-    const auto dawnHour = Services::Events::ExtractArgument<int32_t>(args);
+    const auto dawnHour = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(dawnHour >= 0);
       ASSERT_OR_THROW(dawnHour <= 23);
     Utils::GetModule()->m_nDawnHour = dawnHour;
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::SetDuskHour(ArgumentStack &&args)
 {
-    const auto duskHour = Services::Events::ExtractArgument<int32_t>(args);
+    const auto duskHour = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(duskHour >= 0);
       ASSERT_OR_THROW(duskHour <= 23);
     Utils::GetModule()->m_nDuskHour = duskHour;
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Util::GetHighResTimeStamp(ArgumentStack&&)
@@ -855,7 +847,7 @@ ArgumentStack Util::GetHighResTimeStamp(ArgumentStack&&)
 
     auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
 
-    return Services::Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
+    return Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
 }
 
 }

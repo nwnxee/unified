@@ -1,15 +1,12 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/CExoLocString.hpp"
-#include "Utils.hpp"
 #include <map>
 #include <set>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Player {
 

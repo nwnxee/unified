@@ -1,6 +1,5 @@
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
@@ -16,9 +15,9 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-PreserveActionsOnDMPossess::PreserveActionsOnDMPossess(Services::HooksProxy* hooker)
+PreserveActionsOnDMPossess::PreserveActionsOnDMPossess()
 {
-    hooker->Hook(Functions::_ZN12CNWSCreature17PossessCreatureDMEjh, (void*)&CNWSCreature__PossessCreatureDM_hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN12CNWSCreature17PossessCreatureDMEjh, (void*)&CNWSCreature__PossessCreatureDM_hook, Hooks::Order::Final);
 }
 
 void PreserveActionsOnDMPossess::CNWSCreature__PossessCreatureDM_hook(CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode)

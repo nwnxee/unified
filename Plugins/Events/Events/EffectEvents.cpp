@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -12,20 +11,20 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook *s_OnEffectAppliedHook;
-static Hooking::FunctionHook *s_OnEffectRemovedHook;
+static Hooks::Hook s_OnEffectAppliedHook;
+static Hooks::Hook s_OnEffectRemovedHook;
 
-EffectEvents::EffectEvents(Services::HooksProxy* hooker)
+EffectEvents::EffectEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", [hooker]() {
-        s_OnEffectAppliedHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", []() {
+        s_OnEffectAppliedHook = Hooks::HookFunction(
                 NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
-                (void*)&OnEffectAppliedHook, Hooking::Order::Earliest);
+                (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", [hooker]() {
-        s_OnEffectRemovedHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", []() {
+        s_OnEffectRemovedHook = Hooks::HookFunction(
                 NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
-                (void*)&OnEffectRemovedHook, Hooking::Order::Earliest);
+                (void*)&OnEffectRemovedHook, Hooks::Order::Earliest);
     });
 }
 

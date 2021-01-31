@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class CombatEvents
 {
 public:
-    CombatEvents(NWNXLib::Services::HooksProxy* hooker);
+    CombatEvents();
 
 private:
     static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);

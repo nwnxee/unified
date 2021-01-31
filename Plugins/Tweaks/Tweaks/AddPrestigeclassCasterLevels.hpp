@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Tweaks
 {
@@ -19,7 +18,7 @@ enum TYPE
 class AddPrestigeclassCasterLevels
 {
 public:
-    AddPrestigeclassCasterLevels(NWNXLib::Services::HooksProxy* hooker);
+    AddPrestigeclassCasterLevels();
 
 private:
     static uint8_t s_classCasterType[NWNXLib::API::Constants::ClassType::MAX + 1];

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 class CNWSObjectActionNode;
 
@@ -10,7 +9,7 @@ namespace Tweaks {
 class FixUnlimitedPotionsBug
 {
 public:
-    FixUnlimitedPotionsBug(NWNXLib::Services::HooksProxy* hooker);
+    FixUnlimitedPotionsBug();
 
 private:
     static uint32_t CNWSCreature__AIActionItemCastSpell_hook(CNWSCreature*, CNWSObjectActionNode*);

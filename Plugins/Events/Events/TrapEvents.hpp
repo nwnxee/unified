@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class TrapEvents
 {
 public:
-    TrapEvents(NWNXLib::Services::HooksProxy* hooker);
+    TrapEvents();
 
 private:
-    static uint32_t HandleTrapHook(const std::string&, NWNXLib::Hooking::FunctionHook* originalTrapHook, CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t HandleTrapHook(const std::string&, NWNXLib::Hooks::FunctionHook* originalTrapHook, CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
     static uint32_t AIActionDisarmTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
     static uint32_t AIActionExamineTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
     static uint32_t AIActionFlagTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);

@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Tweaks {
 
 class FixItemNullptrInCItemRepository
 {
 public:
-    FixItemNullptrInCItemRepository(NWNXLib::Services::HooksProxy* hooker);
+    FixItemNullptrInCItemRepository();
 
 private:
     static int32_t CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis);

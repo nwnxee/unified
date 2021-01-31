@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class InventoryEvents
 {
 public:
-    InventoryEvents(NWNXLib::Services::HooksProxy* hooker);
+    InventoryEvents();
 
 private:
     static int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);

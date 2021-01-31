@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
@@ -92,7 +90,7 @@ private:
                   const uint64_t ns);
     std::unique_ptr<cpp_redis::redis_client> PoolMakeFunc();
 
-    static NWNXLib::Hooking::FunctionHook *m_ClearStackHook;
+    static NWNXLib::Hooks::Hook m_ClearStackHook;
     static void CleanState(CVirtualMachineStack*);
 };
 

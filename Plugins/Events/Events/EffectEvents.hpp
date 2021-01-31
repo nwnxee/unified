@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class EffectEvents
 {
 public:
-    EffectEvents(NWNXLib::Services::HooksProxy* hooker);
+    EffectEvents();
 
 private:
     static void HandleEffectHook(const std::string&, bool, CNWSObject*, CGameEffect*);

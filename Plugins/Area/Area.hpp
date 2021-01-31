@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSArea.hpp"
 
 #include <set>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Area {
 

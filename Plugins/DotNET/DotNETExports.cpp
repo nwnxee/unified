@@ -1,8 +1,5 @@
 #include "DotNET.hpp"
 
-#include "API/ALL_CLASSES.hpp"
-#include "API/Globals.hpp"
-#include "API/Constants.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
@@ -10,12 +7,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
-#include "Services/Services.hpp"
-#include "Services/Events/Events.hpp"
 
-#include "Assert.hpp"
-#include "Encoding.hpp"
-#include "Log.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -88,7 +80,7 @@ void DotNET::StackPushString(const char* value)
     ASSERT(vm->m_nRecursionLevel >= 0);
 
     LOG_DEBUG("Pushing string '%s'.", value);
-    CExoString str(Encoding::FromUTF8(value).c_str());
+    CExoString str(String::FromUTF8(value).c_str());
 
     if (vm->StackPushString(str))
     {
@@ -198,7 +190,7 @@ const char* DotNET::StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     // TODO: Less copies
-    return strdup(Encoding::ToUTF8(value.CStr()).c_str());
+    return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t DotNET::StackPopObject()
@@ -305,57 +297,56 @@ void DotNET::nwnxSetFunction(const char *plugin, const char *function)
 }
 void DotNET::nwnxPushInt(int32_t n)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(n);
+    Events::Push(n);
 }
 void DotNET::nwnxPushFloat(float f)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(f);
+    Events::Push(f);
 }
 void DotNET::nwnxPushObject(uint32_t o)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push((ObjectID)o);
+    Events::Push((ObjectID)o);
 }
 void DotNET::nwnxPushString(const char *s)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(Encoding::FromUTF8(s));
+    Events::Push(String::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(e);
+    Events::Push(e);
 }
 void DotNET::nwnxPushItemProperty(CGameEffect *ip)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(ip);
+    Events::Push(ip);
 }
 int32_t DotNET::nwnxPopInt()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<int32_t>().value_or(0);
+    return Events::Pop<int32_t>().value_or(0);
 }
 float DotNET::nwnxPopFloat()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<float>().value_or(0.0f);
+    return Events::Pop<float>().value_or(0.0f);
 }
 uint32_t DotNET::nwnxPopObject()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
+    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 const char* DotNET::nwnxPopString()
 {
-    auto str = Instance->GetServices()->m_events->GetProxyBase()->Pop<std::string>().value_or(std::string{""});
-    return strdup(Encoding::ToUTF8(str).c_str());
+    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    return strdup(String::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 CGameEffect* DotNET::nwnxPopItemProperty()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 void DotNET::nwnxCallFunction()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Call(nwnxActivePlugin, nwnxActiveFunction);
+    Events::Call(nwnxActivePlugin, nwnxActiveFunction);
 }
 
 NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
@@ -365,8 +356,7 @@ NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
 
 void* DotNET::RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
 {
-    auto aslrAddr = Platform::ASLR::GetRelocatedAddress(address);
-    auto funchook = s_managed_hooks.emplace_back(std::make_unique<NWNXLib::Hooking::FunctionHook>(aslrAddr, managedFuncPtr, order)).get();
+    auto funchook = s_managed_hooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
 }
 

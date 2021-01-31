@@ -6,44 +6,43 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook* s_SpellCastAndImpactHook;
-static Hooking::FunctionHook* s_SetMemorizedSpellSlotHook;
-static Hooking::FunctionHook* s_ClearMemorizedSpellSlotHook;
-static Hooking::FunctionHook* s_BroadcastSpellCastHook;
-static Hooking::FunctionHook* s_OnEffectAppliedHook;
+static Hooks::Hook s_SpellCastAndImpactHook;
+static Hooks::Hook s_SetMemorizedSpellSlotHook;
+static Hooks::Hook s_ClearMemorizedSpellSlotHook;
+static Hooks::Hook s_BroadcastSpellCastHook;
+static Hooks::Hook s_OnEffectAppliedHook;
 
-SpellEvents::SpellEvents(Services::HooksProxy* hooker)
+SpellEvents::SpellEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", [hooker]() {
-        s_SpellCastAndImpactHook = hooker->Hook(Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi,
-                                                (void*)&SpellCastAndImpactHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", []() {
+        s_SpellCastAndImpactHook = Hooks::HookFunction(Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi,
+                                                (void*)&SpellCastAndImpactHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_SET_MEMORIZED_SPELL_SLOT_.*", [hooker]() {
-        s_SetMemorizedSpellSlotHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats21SetMemorizedSpellSlotEhhjhhi,
-                                                   (void*)&SetMemorizedSpellSlotHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_SET_MEMORIZED_SPELL_SLOT_.*", []() {
+        s_SetMemorizedSpellSlotHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats21SetMemorizedSpellSlotEhhjhhi,
+                                                   (void*)&SetMemorizedSpellSlotHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_CLEAR_MEMORIZED_SPELL_.*", [hooker]() {
-        s_ClearMemorizedSpellSlotHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh,
-                                                     (void*)&ClearMemorizedSpellSlotHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_CLEAR_MEMORIZED_SPELL_.*", []() {
+        s_ClearMemorizedSpellSlotHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh,
+                                                     (void*)&ClearMemorizedSpellSlotHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_BROADCAST_CAST_SPELL_.*", [hooker]() {
-        s_BroadcastSpellCastHook = hooker->Hook(Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht,
-                                                (void*)&BroadcastSpellCastHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_BROADCAST_CAST_SPELL_.*", []() {
+        s_BroadcastSpellCastHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht,
+                                                (void*)&BroadcastSpellCastHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", [hooker]() {
-        s_OnEffectAppliedHook = hooker->Hook(Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
-                                             (void*)&OnEffectAppliedHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", []() {
+        s_OnEffectAppliedHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
+                                             (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
     });
 }
 

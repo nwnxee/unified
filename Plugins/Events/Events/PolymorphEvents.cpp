@@ -2,7 +2,6 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -10,18 +9,18 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 
-static Hooking::FunctionHook* s_OnApplyPolymorphHook;
-static Hooking::FunctionHook* s_OnRemovePolymorphHook;
+static Hooks::Hook s_OnApplyPolymorphHook;
+static Hooks::Hook s_OnRemovePolymorphHook;
 
-PolymorphEvents::PolymorphEvents(Services::HooksProxy* hooker)
+PolymorphEvents::PolymorphEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", [hooker]() {
-        s_OnApplyPolymorphHook = hooker->Hook(Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,
-                                              (void*)&OnApplyPolymorphHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", []() {
+        s_OnApplyPolymorphHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,
+                                              (void*)&OnApplyPolymorphHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", [hooker]() {
-        s_OnRemovePolymorphHook = hooker->Hook(Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect,
-                                               (void*)&OnRemovePolymorphHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", []() {
+        s_OnRemovePolymorphHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect,
+                                               (void*)&OnRemovePolymorphHook, Hooks::Order::Early);
     });
 }
 

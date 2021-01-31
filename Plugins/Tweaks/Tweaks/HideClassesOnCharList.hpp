@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 namespace Tweaks {
 
 class HideClassesOnCharList
 {
 public:
-    HideClassesOnCharList(NWNXLib::Services::HooksProxy* hooker);
+    HideClassesOnCharList();
 
 private:
     static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage*, PlayerID, ObjectID, int32_t);

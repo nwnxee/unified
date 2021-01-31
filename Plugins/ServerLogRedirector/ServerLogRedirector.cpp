@@ -1,7 +1,5 @@
 #include "ServerLogRedirector.hpp"
 #include "API/CExoString.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 using namespace NWNXLib;
 
@@ -21,30 +19,30 @@ using namespace NWNXLib::Services;
 
 static bool s_printString;
 static bool s_hideValidateGFFResourceMessage;
-static Hooking::FunctionHook *s_WriteToLogFileHook;
-static Hooking::FunctionHook *s_WriteToErrorFileHook;
-static Hooking::FunctionHook *s_ExecuteCommandPrintStringHook;
+static Hooks::Hook s_WriteToLogFileHook;
+static Hooks::Hook s_WriteToErrorFileHook;
+static Hooks::Hook s_ExecuteCommandPrintStringHook;
 
 ServerLogRedirector::ServerLogRedirector(Services::ProxyServiceList* services)
     : Plugin(services)
 {
     // Hook logging so it always emits to stdout/stderr.
-    s_WriteToLogFileHook = GetServices()->m_hooks->Hook(Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
-                                                        (void*)&WriteToLogFileHook, Hooking::Order::VeryEarly);
+    s_WriteToLogFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
+                                                        (void*)&WriteToLogFileHook, Hooks::Order::VeryEarly);
 
-    s_WriteToErrorFileHook = GetServices()->m_hooks->Hook(Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
-                                                          (void*)&WriteToErrorFileHook, Hooking::Order::VeryEarly);
+    s_WriteToErrorFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
+                                                          (void*)&WriteToErrorFileHook, Hooks::Order::VeryEarly);
 
-    s_ExecuteCommandPrintStringHook = GetServices()->m_hooks->Hook(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
+    s_ExecuteCommandPrintStringHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
         (void*)+[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
         {
             s_printString = true;
             auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);
             s_printString = false;
             return retVal;
-        }, Hooking::Order::VeryEarly);
+        }, Hooks::Order::VeryEarly);
 
-    s_hideValidateGFFResourceMessage = GetServices()->m_config->Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
+    s_hideValidateGFFResourceMessage = Config::Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
 }
 
 ServerLogRedirector::~ServerLogRedirector()
@@ -63,7 +61,7 @@ inline std::string TrimMessage(CExoString* message)
             s.erase(0, idxOfBracket + 1);
     }
 
-    return Utils::trim(s);
+    return String::Trim(s);
 }
 
 void ServerLogRedirector::WriteToLogFileHook(CExoDebugInternal *pExoDebugInternal, CExoString* message)

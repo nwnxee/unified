@@ -1,12 +1,10 @@
-#include "Encoding.hpp"
-#include "Assert.hpp"
-#include "Log.hpp"
+#include "nwnx.hpp"
 
 #include <string>
 #include <string.h>
 #include <algorithm>
 
-namespace NWNXLib::Encoding {
+namespace NWNXLib::String {
 
 Locale g_DefaultLocale = cp1252;
 
@@ -210,6 +208,14 @@ std::string FromUTF8(const char *str, Locale locale)
     return iso8859;
 }
 
+std::string ToUTF8(const std::string& str, Locale locale)
+{
+    return ToUTF8(str.c_str(), locale);
+}
+std::string FromUTF8(const std::string& str, Locale locale)
+{
+    return FromUTF8(str.c_str(), locale);
+}
 
 static const char base64_key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 std::string ToBase64(const std::vector<uint8_t>& in)

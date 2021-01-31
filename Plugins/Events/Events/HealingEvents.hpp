@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class HealingEvents
 {
 public:
-    HealingEvents(NWNXLib::Services::HooksProxy* hooker);
+    HealingEvents();
 
 private:
     static uint32_t AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);

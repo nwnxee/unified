@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/ALL_CLASSES.hpp"
 #include "API/Globals.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace DotNET {
 
@@ -18,7 +17,7 @@ private:
 
     static bool InitThunks();
 
-    static std::vector<std::unique_ptr<NWNXLib::Hooking::FunctionHook>> s_managed_hooks;
+    static inline std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managed_hooks;
 
     // Bootstrap functions
     using MainLoopHandlerType  = void (*)(uint64_t);

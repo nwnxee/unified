@@ -1,7 +1,5 @@
 #include "Tweaks/FixUnlimitedPotionsBug.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/Functions.hpp"
 #include "API/CNWSItem.hpp"
@@ -13,15 +11,15 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static bool s_bUsableItemRemoval = false;
-static Hooking::FunctionHook *s_AIActionItemCastSpellHook;
-static Hooking::FunctionHook *s_AddEventDeltaTimeHook;
+static Hooks::Hook s_AIActionItemCastSpellHook;
+static Hooks::Hook s_AddEventDeltaTimeHook;
 
-FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
+FixUnlimitedPotionsBug::FixUnlimitedPotionsBug()
 {
-    s_AIActionItemCastSpellHook = hooker->Hook(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
-                                               (void*)&CNWSCreature__AIActionItemCastSpell_hook, Hooking::Order::Early);
-    s_AddEventDeltaTimeHook = hooker->Hook(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv,
-                                           (void*)&CServerAIMaster__AddEventDeltaTime, Hooking::Order::Late);
+    s_AIActionItemCastSpellHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
+                                               (void*)&CNWSCreature__AIActionItemCastSpell_hook, Hooks::Order::Early);
+    s_AddEventDeltaTimeHook = Hooks::HookFunction(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv,
+                                           (void*)&CServerAIMaster__AddEventDeltaTime, Hooks::Order::Late);
 }
 
 int32_t FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(CServerAIMaster *pServerAIMaster, uint32_t nDaysFromNow,

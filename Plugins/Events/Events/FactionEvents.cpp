@@ -3,20 +3,19 @@
 #include "API/CFactionManager.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* s_HandleSetNPCFactionReputationHook;
+static NWNXLib::Hooks::Hook s_HandleSetNPCFactionReputationHook;
 
-FactionEvents::FactionEvents(Services::HooksProxy* hooker)
+FactionEvents::FactionEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_SET_NPC_FACTION_REPUTATION_.*", [hooker]() {
-        s_HandleSetNPCFactionReputationHook = hooker->Hook(API::Functions::_ZN15CFactionManager23SetNPCFactionReputationEiii,
-                                                           (void*)&HandleSetNPCFactionReputationHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_SET_NPC_FACTION_REPUTATION_.*", []() {
+        s_HandleSetNPCFactionReputationHook = Hooks::HookFunction(API::Functions::_ZN15CFactionManager23SetNPCFactionReputationEiii,
+                                                           (void*)&HandleSetNPCFactionReputationHook, Hooks::Order::Early);
         });
 }
 
@@ -38,7 +37,7 @@ void FactionEvents::HandleSetNPCFactionReputationHook(CFactionManager* thisPtr, 
     {
         s_HandleSetNPCFactionReputationHook->CallOriginal<void>(thisPtr, nFactionId, nSubjectFactionId, nReputation);
     }
-    else if (auto nResult = Utils::from_string<int32_t>(result))
+    else if (auto nResult = String::FromString<int32_t>(result))
     {
         nReputation = nResult.value();
         s_HandleSetNPCFactionReputationHook->CallOriginal<void>(thisPtr, nFactionId, nSubjectFactionId, nReputation);

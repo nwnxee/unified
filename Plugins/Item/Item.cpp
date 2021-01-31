@@ -26,7 +26,7 @@ Item::Item(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeight);
@@ -50,7 +50,7 @@ Item::~Item()
 
 CNWSItem *Item::item(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto objectId = Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -71,7 +71,7 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto w = Services::Events::ExtractArgument<int32_t>(args);
+        const auto w = Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
         auto oidPossessor = pItem->m_oidPossessor;
         auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
@@ -80,27 +80,27 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
             pCreature->UpdateEncumbranceState(true);
         }
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::SetBaseGoldPieceValue(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto g = Services::Events::ExtractArgument<int32_t>(args);
+        const auto g = Events::ExtractArgument<int32_t>(args);
         pItem->m_nBaseUnitCost = g;
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::SetAddGoldPieceValue(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto g = Services::Events::ExtractArgument<int32_t>(args);
+        const auto g = Events::ExtractArgument<int32_t>(args);
         pItem->m_nAdditionalCost = g;
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::GetBaseGoldPieceValue(ArgumentStack&& args)
@@ -110,7 +110,7 @@ ArgumentStack Item::GetBaseGoldPieceValue(ArgumentStack&& args)
     {
         retval = pItem->m_nBaseUnitCost;
     }
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Item::GetAddGoldPieceValue(ArgumentStack&& args)
@@ -120,26 +120,26 @@ ArgumentStack Item::GetAddGoldPieceValue(ArgumentStack&& args)
     {
         retval = pItem->m_nAdditionalCost;
     }
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto bt = Services::Events::ExtractArgument<int32_t>(args);
+        const auto bt = Events::ExtractArgument<int32_t>(args);
         pItem->m_nBaseItem = bt;
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
-        const auto idx   = Services::Events::ExtractArgument<int32_t>(args);
-        const auto val   = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = Events::ExtractArgument<int32_t>(args);
+        const auto idx   = Events::ExtractArgument<int32_t>(args);
+        const auto val   = Events::ExtractArgument<int32_t>(args);
 
         switch(type)
         {
@@ -184,7 +184,7 @@ ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
                 break;
         }
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
@@ -223,7 +223,7 @@ ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retval.str());
+    return Events::Arguments(retval.str());
 }
 
 ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
@@ -231,7 +231,7 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
 
     if (auto *pItem = item(args))
     {
-        const auto sAppString = Services::Events::ExtractArgument<std::string>(args);
+        const auto sAppString = Events::ExtractArgument<std::string>(args);
         int  idx;
         int  stringPos=0;
         char texture, part;
@@ -273,7 +273,7 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
     {
         LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 284");
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Item::GetBaseArmorClass(ArgumentStack&& args)
@@ -283,7 +283,7 @@ ArgumentStack Item::GetBaseArmorClass(ArgumentStack&& args)
     {
         retval = pItem->m_nArmorValue;
     }
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Item::GetMinEquipLevel(ArgumentStack&& args)
@@ -293,7 +293,7 @@ ArgumentStack Item::GetMinEquipLevel(ArgumentStack&& args)
     {
         retval = pItem->GetMinEquipLevel();
     }
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 

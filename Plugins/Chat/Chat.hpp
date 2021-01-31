@@ -1,13 +1,8 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/Constants/Misc.hpp"
-#include "Services/Events/Events.hpp"
-
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
-
-namespace NWNXLib::Hooking { class FunctionHook; }
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Chat {
 
@@ -18,7 +13,7 @@ public:
     virtual ~Chat();
 
 private:
-    NWNXLib::Hooking::FunctionHook* m_hook;
+    NWNXLib::Hooks::Hook m_hook;
 
     uint8_t m_activeChannel;
     std::string m_activeMessage;

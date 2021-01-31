@@ -1,8 +1,5 @@
 #include "Diagnostics/MemorySanitizer.hpp"
 
-#include "Platform/Debug.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include <dlfcn.h>
 #include <execinfo.h>
@@ -21,7 +18,7 @@ struct MetaFunction
     ~MetaFunction() { meta = oldmeta; }
 };
 
-MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
+MemorySanitizer::MemorySanitizer()
 {
     if (real_malloc == nullptr)
     {
@@ -29,13 +26,13 @@ MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
         LOG_WARNING("Please see Diagnostics/README.md for instructions");
         return;
     }
-    static Hooking::FunctionHook *pMainLoopHook = hooker->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
             (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
                 FreePending();
                 return retVal;
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
     enabled = true;
 }
 MemorySanitizer::~MemorySanitizer()
@@ -67,7 +64,7 @@ void MemorySanitizer::ReportError(void *ptr)
             if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
             {
                 std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    %s(%s) [0x%lx]\n", path, Platform::Debug::ResolveAddress(addr).c_str(), addr2);
+                    "    %s(%s) [0x%lx]\n", path, Platform::ResolveAddress(addr).c_str(), addr2);
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }

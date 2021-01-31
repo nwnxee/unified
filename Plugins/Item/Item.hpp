@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSItem.hpp"
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Item {
 

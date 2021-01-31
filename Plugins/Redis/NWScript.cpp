@@ -3,8 +3,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Events/Events.hpp"
-
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoString.hpp"
@@ -34,7 +32,7 @@ void Redis::RegisterWithNWScript()
 {
     // NWScript: Executes a raw redis command with a variable argument list.
     // Returns a opaque identifier you can use to access the result
-    GetServices()->m_events->RegisterEvent("Deferred",
+    Events::RegisterEvent(GetName(), "Deferred",
             [&](Events::ArgumentStack && arg)
             {
                 std::vector<std::string> v;
@@ -57,10 +55,10 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Returns the last query result type as a int.
-    GetServices()->m_events->RegisterEvent("GetResultType",
+    Events::RegisterEvent(GetName(), "GetResultType",
             [&](Events::ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
 
                 int type = 0;
                 if (resultId < s_results.size())
@@ -77,10 +75,10 @@ void Redis::RegisterWithNWScript()
 
     // NWScript: Get list length of result. Returns 0 if not a list.
     // N.B: Redis can return multi-list results. This is not handled here
-    GetServices()->m_events->RegisterEvent("GetResultArrayLength",
+    Events::RegisterEvent(GetName(), "GetResultArrayLength",
             [&](Events::ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
 
                 int32_t len = 0;
                 if (resultId < s_results.size() && s_results[resultId].is_array())
@@ -97,11 +95,11 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Get array element as a new result.
-    GetServices()->m_events->RegisterEvent("GetResultArrayElement",
+    Events::RegisterEvent(GetName(), "GetResultArrayElement",
             [&](Events::ArgumentStack && arg)
             {
-                const auto arrayIndex = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(arg));
-                const auto resultId = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(arg));
+                const auto arrayIndex = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
 
                 int32_t newResultId = 0;
                 std::string ret;
@@ -123,10 +121,10 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Get a result force-cast to string.
-    GetServices()->m_events->RegisterEvent("GetResultAsString",
+    Events::RegisterEvent(GetName(), "GetResultAsString",
             [&](Events::ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
 
                 std::string ret;
 
@@ -146,7 +144,7 @@ void Redis::RegisterWithNWScript()
 
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
-    GetServices()->m_events->RegisterEvent("GetPubSubData",
+    Events::RegisterEvent(GetName(), "GetPubSubData",
             [&](Events::ArgumentStack &&)
             {
                 return Events::Arguments(m_internal->m_last_pubsub_channel, m_internal->m_last_pubsub_message);

@@ -8,7 +8,6 @@
 #include "API/Globals.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -16,24 +15,24 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook *s_StartCombatRoundHook;
-static Hooking::FunctionHook *s_ApplyDisarmHook;
-static Hooking::FunctionHook *s_SendServerToPlayerAmbientBattleMusicPlayHook;
+static Hooks::Hook s_StartCombatRoundHook;
+static Hooks::Hook s_ApplyDisarmHook;
+static Hooks::Hook s_SendServerToPlayerAmbientBattleMusicPlayHook;
 
-CombatEvents::CombatEvents(HooksProxy* hooker)
+CombatEvents::CombatEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", [hooker]() {
-        s_StartCombatRoundHook = hooker->Hook(API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
-                                              (void*)&StartCombatRoundHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", []() {
+        s_StartCombatRoundHook = Hooks::HookFunction(API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
+                                              (void*)&StartCombatRoundHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_DISARM_*", [hooker]() {
-        s_ApplyDisarmHook = hooker->Hook(Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti,
-                                         (void*)&ApplyDisarmHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_DISARM_*", []() {
+        s_ApplyDisarmHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti,
+                                         (void*)&ApplyDisarmHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", [hooker]() {
-        s_SendServerToPlayerAmbientBattleMusicPlayHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", []() {
+        s_SendServerToPlayerAmbientBattleMusicPlayHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji,
-                (void*)&SendServerToPlayerAmbientBattleMusicPlayHook, Hooking::Order::Earliest);
+                (void*)&SendServerToPlayerAmbientBattleMusicPlayHook, Hooks::Order::Earliest);
     });
 }
 

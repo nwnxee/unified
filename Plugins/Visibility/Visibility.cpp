@@ -4,7 +4,6 @@
 #include "API/CNWSObject.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 
 using namespace NWNXLib;
@@ -21,13 +20,13 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Visibility {
 
-static NWNXLib::Hooking::FunctionHook* s_TestObjectVisibleHook;
+static NWNXLib::Hooks::Hook s_TestObjectVisibleHook;
 
 Visibility::Visibility(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetVisibilityOverride);
@@ -35,9 +34,9 @@ Visibility::Visibility(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_TestObjectVisibleHook = GetServices()->m_hooks->Hook(
+    s_TestObjectVisibleHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_,
-            (void*)&Visibility::TestObjectVisibleHook, Hooking::Order::Late);
+            (void*)&Visibility::TestObjectVisibleHook, Hooks::Order::Late);
 }
 
 Visibility::~Visibility()
@@ -89,7 +88,8 @@ int32_t Visibility::GetGlobalOverride(ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto globalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(targetId, "GLOBAL_VISIBILITY_OVERRIDE"))
+    auto target = Utils::GetGameObject(targetId);
+    if (auto globalOverride = target->nwnxGet<int>("GLOBAL_VISIBILITY_OVERRIDE"))
     {
         retVal = *globalOverride;
     }
@@ -101,7 +101,8 @@ int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto personalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, Utils::ObjectIDToString(targetId)))
+    auto player = Utils::GetGameObject(playerId);
+    if (auto personalOverride = player->nwnxGet<int>(Utils::ObjectIDToString(targetId)))
     {
         retVal = *personalOverride;
     }
@@ -111,22 +112,22 @@ int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 
 ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
 {
-    auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
+    auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
-    const auto override = Services::Events::ExtractArgument<int32_t>(args);
+    const auto override = Events::ExtractArgument<int32_t>(args);
 
     std::string varName = Utils::ObjectIDToString(targetId);
 
@@ -136,12 +137,13 @@ ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
         playerId = targetId;
     }
 
+    auto player = Utils::GetGameObject(playerId);
     if (override < 0)
-        g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
+        player->nwnxRemove(varName);
     else
-        g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, override);
+        player->nwnxSet(varName, override);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

@@ -1,7 +1,5 @@
 #include "Optimizations/GameObjectLookup.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
@@ -14,9 +12,9 @@ namespace Optimizations {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
+GameObjectLookup::GameObjectLookup()
 {
-    static Hooking::FunctionHook *gameObjectArrayCtorHook = hooker->Hook(API::Functions::_ZN16CGameObjectArrayC1Ei,
+    static Hooks::Hook gameObjectArrayCtorHook = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArrayC1Ei,
         (void*)+[](CGameObjectArray* pThis) -> void
         {
             gameObjectArrayCtorHook->CallOriginal<void>(pThis);
@@ -28,19 +26,20 @@ GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
             pThis->m_nArraySize = 0;
             pThis->m_nGameObjectCache = 0;
             GameObjectLookup::Initialize(pThis->m_nLogGameObjectCache);
-        }, Hooking::Order::Final);
-    static Hooking::FunctionHook *gameObjectArrayDtorHook = hooker->Hook(API::Functions::_ZN16CGameObjectArrayD1Ev,
+        }, Hooks::Order::Final);
+    static Hooks::Hook gameObjectArrayDtorHook = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArrayD1Ev,
         (void*)+[](CGameObjectArray *pThis) -> void
         {
             gameObjectArrayDtorHook->CallOriginal<void>(pThis);
             GameObjectLookup::Finalize();
-        }, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject, (void*)&GameObjectLookup::AddObjectAtPos, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddExternalObject, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddInternalObject, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject, (void*)&GameObjectLookup::Delete, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray6DeleteEj, (void*)+[](void* p, uint32_t id) -> uint8_t { return GameObjectLookup::Delete(p, id, nullptr); }, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject, (void*)&GameObjectLookup::GetGameObject, Hooking::Order::Final);
+        }, Hooks::Order::Final);
+
+    static auto s_AddObjectAtPos    = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject, (void*)&GameObjectLookup::AddObjectAtPos, Hooks::Order::Final);
+    static auto s_AddExternalObject = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddExternalObject, Hooks::Order::Final);
+    static auto s_AddInternalObject = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddInternalObject, Hooks::Order::Final);
+    static auto s_Delete1           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject, (void*)&GameObjectLookup::Delete, Hooks::Order::Final);
+    static auto s_Delete2           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEj, (void*)+[](void* p, uint32_t id) -> uint8_t { return GameObjectLookup::Delete(p, id, nullptr); }, Hooks::Order::Final);
+    static auto s_GetGameObject     = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject, (void*)&GameObjectLookup::GetGameObject, Hooks::Order::Final);
 }
 
 // DO NOT REARRANGE

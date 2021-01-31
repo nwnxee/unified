@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 namespace Experimental {
 
 class SuppressPlayerLoginInfo
 {
 public:
-    SuppressPlayerLoginInfo(NWNXLib::Services::HooksProxy* hooker);
+    SuppressPlayerLoginInfo();
 
 private:
     static int32_t SendServerToPlayerPlayerList_AddHook(CNWSMessage*, uint32_t, CNWSPlayer*);

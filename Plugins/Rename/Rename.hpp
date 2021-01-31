@@ -1,15 +1,12 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Events/Events.hpp"
-#include "Common.hpp"
+#include "nwnx.hpp"
 #include <unordered_set>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Rename {
 

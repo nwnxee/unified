@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class ItemEvents
 {
 public:
-    ItemEvents(NWNXLib::Services::HooksProxy* hooker);
+    ItemEvents();
 
 private:
     static int32_t CanUseItemHook(CNWSCreature*, CNWSItem*, int32_t);

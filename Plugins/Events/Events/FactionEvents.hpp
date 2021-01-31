@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class FactionEvents
 {
 public:
-    FactionEvents(NWNXLib::Services::HooksProxy* hooker);
+    FactionEvents();
 
 private:
     static void HandleSetNPCFactionReputationHook(CFactionManager*, int32_t, int32_t, int32_t);

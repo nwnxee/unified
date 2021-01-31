@@ -1,8 +1,5 @@
 #include "ThreadWatchdog.hpp"
 #include "API/Functions.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Services/Config/Config.hpp"
 
 using namespace NWNXLib;
 
@@ -21,17 +18,17 @@ static uint64_t s_mainThreadCounter = 0;
 static uint64_t s_watchdogLastObservedCounter = 0;
 static uint32_t s_watchdogPeriod;
 static uint32_t s_watchdogKillThreshold;
-static Hooking::FunctionHook *s_MainLoopHook;
+static Hooks::Hook s_MainLoopHook;
 
 ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    s_MainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                  (void*)&MainLoopUpdate, Hooking::Order::Earliest);
+    s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+                                                  (void*)&MainLoopUpdate, Hooks::Order::Earliest);
 
-    s_watchdogPeriod = GetServices()->m_config->Get<uint32_t>("PERIOD", 15);
+    s_watchdogPeriod = Config::Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite
-    s_watchdogKillThreshold = GetServices()->m_config->Get<uint32_t>("KILL_THRESHOLD", ~0);
+    s_watchdogKillThreshold = Config::Get<uint32_t>("KILL_THRESHOLD", ~0);
 }
 
 ThreadWatchdog::~ThreadWatchdog()
@@ -73,13 +70,12 @@ int32_t ThreadWatchdog::MainLoopUpdate(CServerExoAppInternal *thisPtr)
                     // Now that metric is sitting in some big array, waiting for the main thread to process it.
                     // We're going to pretend to be the main thread.
                     Services::Metrics* metrics = g_plugin->GetServices()->m_metrics->GetProxyBase();
-                    Services::Tasks* tasks = g_plugin->GetServices()->m_tasks->GetProxyBase();
-                    metrics->Update(tasks);
+                    metrics->Update();
 
                     // Finally, we're going to pump the main thread task queue, so we don't accumulate a gazillion
                     // tasks, and so we remain productive until somebody can come along and figure out why we've
                     // hit a long stall.
-                    tasks->ProcessWorkOnMainThread();
+                    Tasks::ProcessMainThreadWork();
 
                     if (--killThreshold == 0)
                     {

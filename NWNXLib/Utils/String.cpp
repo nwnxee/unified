@@ -1,11 +1,12 @@
-#include "String.hpp"
+#include "nwnx.hpp"
 #include <sstream>
 #include <stdlib.h> 
 #include <string.h>
 
-namespace NWNXLib::Utils {
+namespace NWNXLib::String
+{
 
-template<> std::optional<bool> from_string(const std::string& str)
+template<> std::optional<bool> FromString(const std::string& str)
 {
     static const char* truesies[] = { "t", "true", "y", "yes", "1" };
     static const char* falsies[] = { "f", "false", "n", "no", "0" };
@@ -40,7 +41,7 @@ inline const char* first_non_space(const std::string& str) {
     return start;
 }
 
-template <> std::optional<int32_t> from_string(const std::string& str)
+template <> std::optional<int32_t> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<int32_t>();
@@ -49,7 +50,7 @@ template <> std::optional<int32_t> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<int32_t>(res) : std::optional<int32_t>();
 }
 
-template<> std::optional<uint32_t> from_string(const std::string& str)
+template<> std::optional<uint32_t> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<uint32_t>();
@@ -58,7 +59,7 @@ template<> std::optional<uint32_t> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<uint32_t>(res) : std::optional<uint32_t>();
 }
 
-template<> std::optional<int64_t> from_string(const std::string& str)
+template<> std::optional<int64_t> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<int64_t>();
@@ -67,7 +68,7 @@ template<> std::optional<int64_t> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<int64_t>(res) : std::optional<int64_t>();
 }
 
-template<> std::optional<uint64_t> from_string(const std::string& str)
+template<> std::optional<uint64_t> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<uint64_t>();
@@ -76,7 +77,7 @@ template<> std::optional<uint64_t> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<uint64_t>(res) : std::optional<uint64_t>();
 }
 
-template<> std::optional<float> from_string(const std::string& str)
+template<> std::optional<float> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<float>();
@@ -85,7 +86,7 @@ template<> std::optional<float> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<float>(res) : std::optional<float>();
 }
 
-template<> std::optional<double> from_string(const std::string& str)
+template<> std::optional<double> FromString(const std::string& str)
 {
     const char* start = first_non_space(str);
     if (!*start) return std::optional<double>();
@@ -94,24 +95,24 @@ template<> std::optional<double> from_string(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<double>(res) : std::optional<double>();
 }
 
-std::string& ltrim(std::string& str) 
+std::string& LTrim(std::string& str) 
 {
     str.erase(0, str.find_first_not_of(" \n\r\t"));
     return str;
 }
 
-std::string& rtrim(std::string& str) 
+std::string& RTrim(std::string& str) 
 {
     str.erase(str.find_last_not_of(" \n\r\t") + 1);
     return str;
 }
 
-std::string& trim(std::string& str) 
+std::string& Trim(std::string& str) 
 {
-    return ltrim(rtrim(str));
+    return LTrim(RTrim(str));
 }
 
-std::string join(const std::vector<std::string>& v, const char* delim)
+std::string Join(const std::vector<std::string>& v, const char* delim)
 {
     if (!v.size()) return {};
 
@@ -126,7 +127,7 @@ std::string join(const std::vector<std::string>& v, const char* delim)
     return out.str();
 }
 
-std::vector<std::string> split(const std::string& sp, char delim, bool skipEmpty, bool trimmed)
+std::vector<std::string> Split(const std::string& sp, char delim, bool skipEmpty, bool trimmed)
 {
     std::vector<std::string> out;
     std::istringstream ss{sp};
@@ -135,16 +136,16 @@ std::vector<std::string> split(const std::string& sp, char delim, bool skipEmpty
     {
         if (skipEmpty && item.empty()) 
             continue;
-        
+
         if (trimmed)
-            trim(item);
+            Trim(item);
 
         out.push_back(item);
     }
     return out;
 }
 
-std::string basename(const std::string& path)
+std::string Basename(const std::string& path)
 {
     std::string name = path;
     auto slash = name.find_last_of('/');

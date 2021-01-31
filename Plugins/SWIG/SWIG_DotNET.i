@@ -5,6 +5,7 @@
 
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
+#define NWNX_SWIG_PARSING
 
 // Mark module class as static
 %pragma(csharp) moduleclassmodifiers="public static unsafe class"
@@ -221,6 +222,7 @@ MarshalType(unsigned long, ulong)
 %ignore MASK;
 %ignore ToString;
 %ignore NWSync::CNWSync;
+%ignore NWN_CLASS_EXTENSION_CGameObject;
 
 // Interfaces for multi-inheritance types.
 %interface_custom("CGameObject", "ICGameObject", CGameObject);

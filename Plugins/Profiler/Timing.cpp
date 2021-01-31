@@ -3,8 +3,6 @@
 #include "API/CExoBase.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
 #include <algorithm>
@@ -15,7 +13,6 @@ namespace Profiler {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::Hooking;
 using namespace NWNXLib::Services;
 
 uint8_t FastTimer::s_head = 0;
@@ -26,7 +23,7 @@ std::chrono::nanoseconds FastTimer::s_hookOverhead = std::chrono::nanoseconds(0)
 
 MetricsProxy* FastTimer::g_metricsForCalibration;
 
-static Hooking::FunctionHook *s_CheckForCDHook;
+static Hooks::Hook s_CheckForCDHook;
 
 void FastTimer::Start()
 {
@@ -50,7 +47,7 @@ void FastTimer::PrepareForCalibration(const std::chrono::nanoseconds val)
     s_hookOverhead = val;
 }
 
-void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* metrics)
+void FastTimer::Calibrate(const size_t runs, MetricsProxy* metrics)
 {
     g_metricsForCalibration = metrics;
 
@@ -81,8 +78,8 @@ void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* me
         unhookedResults.emplace_back(runTest(10));
     }
 
-    s_CheckForCDHook = hooks->Hook(Functions::_ZN16CExoBaseInternal10CheckForCDEj,
-                                   (void*)&ProfilerCalibrateHookFuncWithScope, Hooking::Order::Earliest);
+    s_CheckForCDHook = Hooks::HookFunction(Functions::_ZN16CExoBaseInternal10CheckForCDEj,
+                                   (void*)&ProfilerCalibrateHookFuncWithScope, Hooks::Order::Earliest);
     for (size_t i = 0; i < runs; ++i)
     {
         hookedResults.emplace_back(runTest(10));

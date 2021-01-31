@@ -3,8 +3,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {
@@ -12,11 +10,11 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook* s_CompareItem_hook;
+static Hooks::Hook s_CompareItem_hook;
 
-CompareVarsForMerge::CompareVarsForMerge(Services::HooksProxy* hooker)
+CompareVarsForMerge::CompareVarsForMerge()
 {
-    s_CompareItem_hook = hooker->Hook(Functions::_ZN8CNWSItem11CompareItemEPS_, (void*)&CNWSItem__CompareItem_hook, Hooking::Order::Late);
+    s_CompareItem_hook = Hooks::HookFunction(Functions::_ZN8CNWSItem11CompareItemEPS_, (void*)&CNWSItem__CompareItem_hook, Hooks::Order::Late);
 }
 
 int32_t CompareVarsForMerge::CNWSItem__CompareItem_hook(CNWSItem* thisPtr, CNWSItem* pOtherItem)

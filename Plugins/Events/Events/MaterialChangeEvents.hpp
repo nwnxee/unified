@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class MaterialChangeEvents
 {
 public:
-    MaterialChangeEvents(NWNXLib::Services::HooksProxy* hooker);
+    MaterialChangeEvents();
 
 private:
     static void SetPositionHook(CNWSObject*, Vector, int32_t);

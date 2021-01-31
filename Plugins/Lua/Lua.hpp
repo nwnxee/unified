@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "API/Constants.hpp"
 extern "C" {
 #include "lua.h"
@@ -16,6 +15,7 @@ extern "C" {
 namespace Lua {
 	using namespace NWNXLib::Services;
 	using namespace NWNXLib::API;
+	using namespace NWNXLib;
 	class Lua : public NWNXLib::Plugin
 	{
 	public:

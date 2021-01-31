@@ -1,9 +1,6 @@
 #include "WebHook.hpp"
 #include "API/CNWSModule.hpp"
 #include "External/httplib.h"
-#include "Services/Tasks/Tasks.hpp"
-#include "Services/Messaging/Messaging.hpp"
-#include "Encoding.hpp"
 #include <cmath>
 #include <sstream>
 #include <iomanip>
@@ -29,7 +26,7 @@ namespace WebHook {
 WebHook::WebHook(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    GetServices()->m_events->RegisterEvent("SendWebHookHTTPS", &SendWebHookHTTPS);
+    Events::RegisterEvent(PLUGIN_NAME, "SendWebHookHTTPS", &SendWebHookHTTPS);
 }
 
 WebHook::~WebHook()
@@ -50,11 +47,11 @@ std::string escape_json(const std::string &s) {
 
 ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
-    auto host = Services::Events::ExtractArgument<std::string>(args);
-    auto origPath = Services::Events::ExtractArgument<std::string>(args);
-    auto message = Services::Events::ExtractArgument<std::string>(args);
-    auto username = Services::Events::ExtractArgument<std::string>(args);
-    auto mrkdwn = Services::Events::ExtractArgument<int32_t>(args);
+    auto host = Events::ExtractArgument<std::string>(args);
+    auto origPath = Events::ExtractArgument<std::string>(args);
+    auto message = Events::ExtractArgument<std::string>(args);
+    auto username = Events::ExtractArgument<std::string>(args);
+    auto mrkdwn = Events::ExtractArgument<int32_t>(args);
 
     // If it's just a simple text string, construct the JSON
     if (message.find("\"text\":") == std::string::npos)
@@ -70,7 +67,7 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
     // For Discord, will wait for a response
     auto path = origPath + "?wait=true";
 
-    message = Encoding::ToUTF8(message);
+    message = String::ToUTF8(message);
     escape_json(message);
 
     static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
@@ -98,23 +95,21 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
     }
     else
     {
-        g_plugin->GetServices()->m_tasks->QueueOnAsyncThread([cli, message, host, path, origPath]()
+        Tasks::QueueOnAsyncThread([cli, message, host, path, origPath]()
         {
             auto res = cli->second->post(path.c_str(), message, "application/json");
-            g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
+            Tasks::QueueOnMainThread([message, host, path, origPath, res]()
             {
                 if (Core::g_CoreShuttingDown)
                     return;
 
-                auto messaging = g_plugin->GetServices()->m_messaging.get();
                 auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
-
                 if (res)
                 {
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(res->status)});
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"MESSAGE", message});
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"HOST", host});
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", origPath});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(res->status)});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"MESSAGE", message});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"HOST", host});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", origPath});
                     if (res->status == 200 || res->status == 201 || res->status == 204 || res->status == 429)
                     {
                         // Discord sends your rate limit information even on success so you can stagger calls if you want
@@ -122,46 +117,46 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
                         // in milliseconds and Slack sends it as seconds.
                         if (!res->get_header_value("X-RateLimit-Limit").empty())
                         {
-                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", res->get_header_value("X-RateLimit-Limit")});
-                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", res->get_header_value("X-RateLimit-Remaining")});
-                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", res->get_header_value("X-RateLimit-Reset")});
+                            MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", res->get_header_value("X-RateLimit-Limit")});
+                            MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", res->get_header_value("X-RateLimit-Remaining")});
+                            MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", res->get_header_value("X-RateLimit-Reset")});
                             if (!res->get_header_value("Retry-After").empty())
-                                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res->get_header_value("Retry-After")});
+                                MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res->get_header_value("Retry-After")});
                         }
                             // Slack rate limited
                         else if (!res->get_header_value("Retry-After").empty())
                         {
                             float fSlackRetry = stof(res->get_header_value("Retry-After")) * 1000.0f;
-                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
+                            MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
                         }
                         if (res->status != 429)
                         {
-                            messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
+                            MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
                             LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
                         }
                         else
                         {
-                            messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
+                            MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
                             LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s'. Rate Limited.", message, host, path);
                         }
                     }
                     else
                     {
-                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", res->body});
-                        messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
+                        MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", res->body});
+                        MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
                         LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.", message, host, path, res->status);
                     }
                 }
                 else
                 {
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", "Failed to post to server. Is the url correct?"});
-                    messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", "Failed to post to server. Is the url correct?"});
+                    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
                     LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host, path);
                 }
             });
         });
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

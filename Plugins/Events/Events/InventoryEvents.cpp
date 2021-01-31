@@ -11,7 +11,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -20,39 +19,39 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerGuiInventoryMessageHook;
-static NWNXLib::Hooking::FunctionHook* s_AddItemHook;
-static NWNXLib::Hooking::FunctionHook* s_RemoveItemHook;
-static NWNXLib::Hooking::FunctionHook* s_AddGoldHook;
-static NWNXLib::Hooking::FunctionHook* s_RemoveGoldHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerGuiInventoryMessageHook;
+static NWNXLib::Hooks::Hook s_AddItemHook;
+static NWNXLib::Hooks::Hook s_RemoveItemHook;
+static NWNXLib::Hooks::Hook s_AddGoldHook;
+static NWNXLib::Hooks::Hook s_RemoveGoldHook;
 
-InventoryEvents::InventoryEvents(Services::HooksProxy* hooker)
+InventoryEvents::InventoryEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", [hooker]()
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", []()
     {
-        s_HandlePlayerToServerGuiInventoryMessageHook = hooker->Hook(
+        s_HandlePlayerToServerGuiInventoryMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerGuiInventoryMessageHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerGuiInventoryMessageHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", [hooker]() {
-        s_AddItemHook = hooker->Hook(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii,
-                                     (void*)&AddItemHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", []() {
+        s_AddItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii,
+                                     (void*)&AddItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
-        s_RemoveItemHook = hooker->Hook(API::Functions::_ZN15CItemRepository10RemoveItemEP8CNWSItem,
-                                        (void*)&RemoveItemHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", []() {
+        s_RemoveItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository10RemoveItemEP8CNWSItem,
+                                        (void*)&RemoveItemHook, Hooks::Order::Earliest);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", [hooker]() {
-        s_AddGoldHook = hooker->Hook(API::Functions::_ZN12CNWSCreature7AddGoldEii,
-                                     (void*)&AddGoldHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", []() {
+        s_AddGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature7AddGoldEii,
+                                     (void*)&AddGoldHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", [hooker]() {
-        s_RemoveGoldHook = hooker->Hook(API::Functions::_ZN12CNWSCreature10RemoveGoldEii,
-                                        (void*)&RemoveGoldHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", []() {
+        s_RemoveGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RemoveGoldEii,
+                                        (void*)&RemoveGoldHook, Hooks::Order::Early);
     });
 }
 

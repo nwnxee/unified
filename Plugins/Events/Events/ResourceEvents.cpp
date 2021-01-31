@@ -7,7 +7,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 #include <sys/inotify.h>
 #include <unistd.h>
@@ -34,9 +33,9 @@ static int selfPipeFds[2];
 
 std::unique_ptr<std::thread> ResourceEvents::m_pollThread;
 
-ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
+ResourceEvents::ResourceEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_RESOURCE_.*", [tasks]()
+    Events::InitOnFirstSubscribe("NWNX_ON_RESOURCE_.*", []()
     {
         int ret = pipe2(selfPipeFds, O_NONBLOCK);
         int pipeReadFd = selfPipeFds[0];
@@ -69,11 +68,11 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
         // Manually add DEVELOPMENT
         AddAlias("DEVELOPMENT");
 
-        m_pollThread = std::make_unique<std::thread>([tasks, pipeReadFd, paths]()
+        m_pollThread = std::make_unique<std::thread>([pipeReadFd, paths]()
         {
-            auto QueueLogMessage = [tasks](const std::string &message, bool warn = true)
+            auto QueueLogMessage = [](const std::string &message, bool warn = true)
             {
-                tasks->QueueOnMainThread([message, warn]()
+                Tasks::QueueOnMainThread([message, warn]()
                 {
                     if (warn)
                         LOG_WARNING("%s", message);
@@ -150,7 +149,7 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
 
                         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-                        tasks->QueueOnMainThread([events]()
+                        Tasks::QueueOnMainThread([events]()
                         {
                             if (Core::g_CoreShuttingDown)
                                 return;

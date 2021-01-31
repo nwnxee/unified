@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class PolymorphEvents
 {
 public:
-    PolymorphEvents(NWNXLib::Services::HooksProxy* hooker);
+    PolymorphEvents();
 
 private:
     static int32_t OnApplyPolymorphHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);

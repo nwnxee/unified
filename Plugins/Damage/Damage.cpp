@@ -8,8 +8,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCombatRound.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Utils.hpp"
 
 #include <cstring>
 #include <bitset>
@@ -32,7 +30,7 @@ Damage::Damage(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetEventScript);
@@ -44,9 +42,9 @@ Damage::Damage(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_OnApplyDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooking::Order::Late);
-    m_SignalMeleeDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooking::Order::Late);
-    m_SignalRangedDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooking::Order::Late);
+    m_OnApplyDamageHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooks::Order::Late);
+    m_SignalMeleeDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooks::Order::Late);
+    m_SignalRangedDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooks::Order::Late);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
@@ -58,9 +56,9 @@ Damage::~Damage()
 
 ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto script = Services::Events::ExtractArgument<std::string>(args);
-    auto oidOwner = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto event = Events::ExtractArgument<std::string>(args);
+    const auto script = Events::ExtractArgument<std::string>(args);
+    auto oidOwner = Events::ExtractArgument<ObjectID>(args);
 
     if (oidOwner == Constants::OBJECT_INVALID)
     {
@@ -69,24 +67,25 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     }
     else
     {
+        auto owner = Utils::GetGameObject(oidOwner);
         if (script != "")
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script, true);
+            owner->nwnxSet(event + "_EVENT_SCRIPT", script, true);
             LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event, script);
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, event + "_EVENT_SCRIPT");
+            owner->nwnxRemove(event + "_EVENT_SCRIPT");
             LOG_INFO("Clearing %s Event Script for object 0x%08x", event, oidOwner);
         }
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 std::string Damage::GetEventScript(CNWSObject *pObject, const std::string &event)
 {
-    auto posScript = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pObject, event + "_EVENT_SCRIPT");
+    auto posScript = pObject->nwnxGet<std::string>(event + "_EVENT_SCRIPT");
     return posScript ? *posScript : g_plugin->m_EventScripts[event];
 }
 
@@ -98,9 +97,9 @@ ArgumentStack Damage::GetDamageEventData(ArgumentStack&&)
 
     for (int k = 12; k >= 0; k--)
     {
-        Services::Events::InsertArgument(stack, m_DamageData.vDamage[k]);
+        Events::InsertArgument(stack, m_DamageData.vDamage[k]);
     }
-    Services::Events::InsertArgument(stack, m_DamageData.oidDamager);
+    Events::InsertArgument(stack, m_DamageData.oidDamager);
 
     return stack;
 }
@@ -111,7 +110,7 @@ ArgumentStack Damage::SetDamageEventData(ArgumentStack&& args)
 
     for (int k = 0; k < 13; k++)
     {
-        m_DamageData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+        m_DamageData.vDamage[k] = Events::ExtractArgument<int32_t>(args);
     }
 
     return stack;
@@ -144,15 +143,15 @@ ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
-    Services::Events::InsertArgument(stack, m_AttackData.nSneakAttack);
-    Services::Events::InsertArgument(stack, m_AttackData.nAttackType);
-    Services::Events::InsertArgument(stack, m_AttackData.nAttackResult);
-    Services::Events::InsertArgument(stack, m_AttackData.nAttackNumber);
+    Events::InsertArgument(stack, m_AttackData.nSneakAttack);
+    Events::InsertArgument(stack, m_AttackData.nAttackType);
+    Events::InsertArgument(stack, m_AttackData.nAttackResult);
+    Events::InsertArgument(stack, m_AttackData.nAttackNumber);
     for (int k = 12; k >= 0; k--)
     {
-        Services::Events::InsertArgument(stack, m_AttackData.vDamage[k]);
+        Events::InsertArgument(stack, m_AttackData.vDamage[k]);
     }
-    Services::Events::InsertArgument(stack, m_AttackData.oidTarget);
+    Events::InsertArgument(stack, m_AttackData.oidTarget);
 
     return stack;
 }
@@ -163,9 +162,9 @@ ArgumentStack Damage::SetAttackEventData(ArgumentStack&& args)
 
     for (int k = 0; k < 13; k++)
     {
-        m_AttackData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+        m_AttackData.vDamage[k] = Events::ExtractArgument<int32_t>(args);
     }
-    m_AttackData.nAttackResult = Services::Events::ExtractArgument<int32_t>(args);
+    m_AttackData.nAttackResult = Events::ExtractArgument<int32_t>(args);
 
     return stack;
 }
@@ -223,21 +222,21 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     std::bitset<13> positive;
 
     // read input
-    auto oidSource = Services::Events::ExtractArgument<ObjectID>(args);
-    auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
+    auto oidSource = Events::ExtractArgument<ObjectID>(args);
+    auto oidTarget = Events::ExtractArgument<ObjectID>(args);
 
     for (int k = 0; k < 12; k++)
     {
-        vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+        vDamage[k] = Events::ExtractArgument<int32_t>(args);
         // need to distinguish between no damage dealt, and damage reduced to 0
         positive[k] = vDamage[k] > 0;
     }
-    int damagePower = Services::Events::ExtractArgument<int32_t>(args);
+    int damagePower = Events::ExtractArgument<int32_t>(args);
 
     int range = 0;
     try
     {
-        range = Services::Events::ExtractArgument<int>(args);
+        range = Events::ExtractArgument<int>(args);
     }
     catch(const std::runtime_error& e)
     {
@@ -279,7 +278,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
 
     pTarget->ApplyEffect(pEffect, false, true);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

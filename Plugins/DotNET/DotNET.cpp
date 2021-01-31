@@ -3,8 +3,6 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -33,14 +31,12 @@ static hostfxr_initialize_for_runtime_config_fn hostfxr_initialize_for_runtime_c
 static hostfxr_get_runtime_delegate_fn          hostfxr_get_runtime_delegate;
 static hostfxr_close_fn                         hostfxr_close;
 
-std::vector<std::unique_ptr<NWNXLib::Hooking::FunctionHook>> DotNET::s_managed_hooks;
-
 bool DotNET::InitThunks()
 {
     void *nethost = nullptr;
     void *hostfxr = nullptr;
 
-    if (auto nethost_path = Instance->GetServices()->m_config->Get<std::string>("NETHOST_PATH"))
+    if (auto nethost_path = Config::Get<std::string>("NETHOST_PATH"))
     {
         nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
         ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", nethost_path->c_str());
@@ -144,8 +140,8 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
     if (!InitThunks())
         return;
 
-    auto assembly   = GetServices()->m_config->Get<std::string>("ASSEMBLY");
-    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.Internal");
+    auto assembly   = Config::Get<std::string>("ASSEMBLY");
+    auto entrypoint = Config::Get<std::string>("ENTRYPOINT", "NWN.Internal");
 
     if (!assembly.has_value())
     {
@@ -265,8 +261,8 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     Handlers = *handlers;
 
     LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoop);
-    static Hooking::FunctionHook* MainLoopHook;
-    MainLoopHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+    static Hooks::Hook MainLoopHook;
+    MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
         (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
         {
             static uint64_t frame = 0;
@@ -281,12 +277,12 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
             return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
         },
-        Hooking::Order::VeryEarly);
+        Hooks::Order::VeryEarly);
 
 
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
-    static Hooking::FunctionHook* RunScriptHook;
-    RunScriptHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
+    static Hooks::Hook RunScriptHook;
+    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
         (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid) -> int32_t
         {
             if (!script || *script == "")
@@ -307,11 +303,11 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             }
             return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         },
-        Hooking::Order::Latest);
+        Hooks::Order::Latest);
 
     LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
-    static Hooking::FunctionHook* RunScriptSituationHook;
-    RunScriptSituationHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+    static Hooks::Hook RunScriptSituationHook;
+    RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
         (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid) -> int32_t
         {
             uint64_t eventId;
@@ -327,10 +323,10 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             }
             return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         },
-        Hooking::Order::Latest);
+        Hooks::Order::Latest);
 
     LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
-    Instance->GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
             int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);

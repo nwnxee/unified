@@ -16,10 +16,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -56,13 +52,13 @@ uint32_t Dialog::idxReply;
 int32_t  Dialog::scriptType;
 int32_t  Dialog::loopCount;
 
-static Hooking::FunctionHook *s_GetStartEntryHook;
-static Hooking::FunctionHook *s_GetStartEntryOneLinerHook;
-static Hooking::FunctionHook *s_SendDialogEntryHook;
-static Hooking::FunctionHook *s_SendDialogRepliesHook;
-static Hooking::FunctionHook *s_HandleReplyHook;
-static Hooking::FunctionHook *s_CheckScriptHook;
-static Hooking::FunctionHook *s_RunScriptHook;
+static NWNXLib::Hooks::Hook s_GetStartEntryHook;
+static NWNXLib::Hooks::Hook s_GetStartEntryOneLinerHook;
+static NWNXLib::Hooks::Hook s_SendDialogEntryHook;
+static NWNXLib::Hooks::Hook s_SendDialogRepliesHook;
+static NWNXLib::Hooks::Hook s_HandleReplyHook;
+static NWNXLib::Hooks::Hook s_CheckScriptHook;
+static NWNXLib::Hooks::Hook s_RunScriptHook;
 
 uint32_t Dialog::Hooks::GetStartEntry(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner)
 {
@@ -166,7 +162,7 @@ Dialog::Dialog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetCurrentNodeType);
@@ -179,21 +175,21 @@ Dialog::Dialog(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_GetStartEntryHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
-                                                       (void*)&Hooks::GetStartEntry, Hooking::Order::Early);
-    s_GetStartEntryOneLinerHook = GetServices()->m_hooks->Hook(
+    s_GetStartEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
+                                                       (void*)&Hooks::GetStartEntry, NWNXLib::Hooks::Order::Early);
+    s_GetStartEntryOneLinerHook = NWNXLib::Hooks::HookFunction(
             Functions::_ZN10CNWSDialog21GetStartEntryOneLinerEP10CNWSObjectR13CExoLocStringR7CResRefS5_R13CExoArrayListI11ScriptParamE,
-            (void*)&Hooks::GetStartEntryOneLiner, Hooking::Order::Early);
-    s_SendDialogEntryHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
-                                                         (void*)&Hooks::SendDialogEntry, Hooking::Order::Early);
-    s_SendDialogRepliesHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
-                                                           (void*)&Hooks::SendDialogReplies, Hooking::Order::Early);
-    s_HandleReplyHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
-                                                     (void*)&Hooks::HandleReply, Hooking::Order::Early);
-    s_CheckScriptHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-                                                     (void*)&Hooks::CheckScript, Hooking::Order::Early);
-    s_RunScriptHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-                                                   (void*)&Hooks::RunScript, Hooking::Order::Early);
+            (void*)&Hooks::GetStartEntryOneLiner, NWNXLib::Hooks::Order::Early);
+    s_SendDialogEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
+                                                         (void*)&Hooks::SendDialogEntry, NWNXLib::Hooks::Order::Early);
+    s_SendDialogRepliesHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
+                                                           (void*)&Hooks::SendDialogReplies, NWNXLib::Hooks::Order::Early);
+    s_HandleReplyHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
+                                                     (void*)&Hooks::HandleReply, NWNXLib::Hooks::Order::Early);
+    s_CheckScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                     (void*)&Hooks::CheckScript, NWNXLib::Hooks::Order::Early);
+    s_RunScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                   (void*)&Hooks::RunScript, NWNXLib::Hooks::Order::Early);
 }
 
 Dialog::~Dialog()
@@ -212,12 +208,12 @@ ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&&)
         default: retval = NODE_TYPE_INVALID;                              break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentScriptType(ArgumentStack&&)
 {
-    return Services::Events::Arguments(scriptType);
+    return Events::Arguments(scriptType);
 }
 
 ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
@@ -243,20 +239,20 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
             break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentNodeIndex(ArgumentStack&&)
 {
-    return Services::Events::Arguments(loopCount);
+    return Events::Arguments(loopCount);
 }
 
 ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
 {
     CExoString str;
 
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -290,14 +286,14 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
         pLocString->GetString(language, &str, gender, true);
     }
 
-    return Services::Events::Arguments(std::string(str.CStr()));
+    return Events::Arguments(std::string(str.CStr()));
 }
 
 ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 {
-    auto str = Services::Events::ExtractArgument<std::string>(args);
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto str = Events::ExtractArgument<std::string>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -332,12 +328,12 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
         pLocString->AddString(language, cexostr, gender);
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
+    auto oidObject = Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))
@@ -345,7 +341,7 @@ ArgumentStack Dialog::End(ArgumentStack&& args)
         pObject->StopDialog();
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

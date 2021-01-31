@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Tweaks {
 
 class ItemChargesCost
 {
 public:
-    ItemChargesCost(NWNXLib::Services::HooksProxy* hooker, int mode);
+    ItemChargesCost(int mode);
 
 private:
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSCreature.hpp"
 
 namespace CombatModes {

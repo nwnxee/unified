@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Tweaks {
 
 class SneakAttackCritImmunity
 {
 public:
-    SneakAttackCritImmunity(NWNXLib::Services::HooksProxy* hooker);
+    SneakAttackCritImmunity();
 
 private:
     static void CNWSCreature__ResolveSneakAttack_hook(CNWSCreature*, CNWSCreature*);

@@ -1,7 +1,5 @@
 #include "Tweaks/PlayerDyingHitPointLimit.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CNWSCreature.hpp"
@@ -16,12 +14,12 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 int16_t PlayerDyingHitPointLimit::m_hplimit;
-PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(Services::HooksProxy* hooker, int16_t hplimit)
+PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(int16_t hplimit)
 {
     m_hplimit = hplimit;
 
-    hooker->Hook(API::Functions::_ZN10CNWSObject12GetIsPCDyingEv, (void*)&CNWSObject__GetIsPCDying_Hook, Hooking::Order::Final);
-    hooker->Hook(API::Functions::_ZN10CNWSObject7GetDeadEv, (void*)&CNWSObject__GetDead_Hook, Hooking::Order::Final);
+    static auto s_GetIsPCDying = Hooks::HookFunction(API::Functions::_ZN10CNWSObject12GetIsPCDyingEv, (void*)&CNWSObject__GetIsPCDying_Hook, Hooks::Order::Final);
+    static auto s_GetDead      = Hooks::HookFunction(API::Functions::_ZN10CNWSObject7GetDeadEv, (void*)&CNWSObject__GetDead_Hook, Hooks::Order::Final);
 }
 
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* thisPtr)

@@ -1,17 +1,16 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 namespace Optimizations {
 
 class AsyncLogFlush
 {
 public:
-    AsyncLogFlush(NWNXLib::Services::HooksProxy* hooker, NWNXLib::Services::TasksProxy* tasker);
+    AsyncLogFlush();
 
 private:
     static void FlushLogFile_Hook(CExoDebugInternal*);
-    static NWNXLib::Services::TasksProxy* s_tasker;
 };
 
 }

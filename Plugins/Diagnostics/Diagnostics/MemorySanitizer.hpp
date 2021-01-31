@@ -1,6 +1,6 @@
 #pragma once
+#include "nwnx.hpp"
 
-#include "Common.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
@@ -13,7 +13,7 @@ struct Backtrace { void *bt[8]; };
 class MemorySanitizer
 {
 public:
-    MemorySanitizer(NWNXLib::Services::HooksProxy* hooker);
+    MemorySanitizer();
     ~MemorySanitizer();
 
     static void *malloc(size_t size);
@@ -23,7 +23,6 @@ public:
 
     static void FreePending();
 
-    static inline NWNXLib::Services::TasksProxy* tasker;
     static inline std::unordered_map<void*, Backtrace> active_allocations;
     static inline std::unordered_set<void*> pending_free;
 

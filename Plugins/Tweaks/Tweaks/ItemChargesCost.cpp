@@ -1,7 +1,5 @@
 #include "Tweaks/ItemChargesCost.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 #include "API/CExoArrayList.hpp"
 #include "API/CNWBaseItem.hpp"
@@ -18,9 +16,9 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static int s_chargesCostBehavior;
-static Hooking::FunctionHook *s_CalculateBaseCostsHook;
+static Hooks::Hook s_CalculateBaseCostsHook;
 
-ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode)
+ItemChargesCost::ItemChargesCost(int mode)
 {
     s_chargesCostBehavior = mode;
     if (mode < 1 || mode > 3)
@@ -28,8 +26,8 @@ ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode)
         LOG_INFO("Unknown value for NWNX_TWEAKS_ITEM_CHARGES_COST_MODE.");
         return;
     }
-    s_CalculateBaseCostsHook = hooker->Hook(Functions::_ZN8CNWSItem18CalculateBaseCostsEv,
-                                            (void*)&CNWSItem__CalculateBaseCosts_sharedhook, Hooking::Order::Early);
+    s_CalculateBaseCostsHook = Hooks::HookFunction(Functions::_ZN8CNWSItem18CalculateBaseCostsEv,
+                                            (void*)&CNWSItem__CalculateBaseCosts_sharedhook, Hooks::Order::Early);
 }
 
 void ItemChargesCost::CNWSItem__CalculateBaseCosts_sharedhook(CNWSItem* pThis)

@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class ClientEvents
 {
 public:
-    ClientEvents(NWNXLib::Services::HooksProxy* hooker);
+    ClientEvents();
 
 private:
     static void RemovePCFromWorldHook(CServerExoAppInternal*, CNWSPlayer*);

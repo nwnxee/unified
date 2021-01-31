@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class MapEvents
 {
 public:
-    MapEvents(NWNXLib::Services::HooksProxy* hooker);
+    MapEvents();
 
 private:
     static int32_t HandleMapPinSetMapPinAtMessageHook(CNWSMessage*, CNWSPlayer*);

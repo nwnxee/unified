@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class LevelEvents
 {
 public:
-    LevelEvents(NWNXLib::Services::HooksProxy* hooker);
+    LevelEvents();
 
 private:
     static void LevelUpHook(CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t);

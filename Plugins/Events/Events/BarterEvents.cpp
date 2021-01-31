@@ -11,7 +11,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -19,26 +18,26 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook* s_HandlePlayerToServerBarter_StartBarterHook;
-static Hooking::FunctionHook* s_SetListAcceptedHook;
-static Hooking::FunctionHook* s_SendServerToPlayerBarterCloseBarterHook;
+static Hooks::Hook s_HandlePlayerToServerBarter_StartBarterHook;
+static Hooks::Hook s_SetListAcceptedHook;
+static Hooks::Hook s_SendServerToPlayerBarterCloseBarterHook;
 
 static ObjectID m_initiatorOid;
 static ObjectID m_targetOid;
 
-BarterEvents::BarterEvents(Services::HooksProxy* hooker)
+BarterEvents::BarterEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", [hooker]() {
-        s_HandlePlayerToServerBarter_StartBarterHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", []() {
+        s_HandlePlayerToServerBarter_StartBarterHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer,
-                (void*)&HandlePlayerToServerBarter_StartBarterHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerBarter_StartBarterHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", [hooker]() {
-        s_SetListAcceptedHook = hooker->Hook(Functions::_ZN10CNWSBarter15SetListAcceptedEi,
-                                             (void*)&SetListAcceptedHook, Hooking::Order::Earliest);
-        s_SendServerToPlayerBarterCloseBarterHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", []() {
+        s_SetListAcceptedHook = Hooks::HookFunction(Functions::_ZN10CNWSBarter15SetListAcceptedEi,
+                                             (void*)&SetListAcceptedHook, Hooks::Order::Earliest);
+        s_SendServerToPlayerBarterCloseBarterHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage35SendServerToPlayerBarterCloseBarterEjji,
-                (void*)&SendServerToPlayerBarterCloseBarterHook, Hooking::Order::Earliest);
+                (void*)&SendServerToPlayerBarterCloseBarterHook, Hooks::Order::Earliest);
     });
 }
 

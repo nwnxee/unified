@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Events/Events.hpp"
-
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+#include "nwnx.hpp"
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 struct DamageDataStr
 {
@@ -39,9 +36,9 @@ private:
     ArgumentStack SetAttackEventData(ArgumentStack&& args);
     ArgumentStack DealDamage(ArgumentStack&& args);
 
-    NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
-    NWNXLib::Hooking::FunctionHook* m_SignalMeleeDamageHook;
-    NWNXLib::Hooking::FunctionHook* m_SignalRangedDamageHook;
+    NWNXLib::Hooks::Hook m_OnApplyDamageHook;
+    NWNXLib::Hooks::Hook m_SignalMeleeDamageHook;
+    NWNXLib::Hooks::Hook m_SignalRangedDamageHook;
 
     static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame);
     static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);

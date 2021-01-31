@@ -3,26 +3,25 @@
 #include "API/Functions.hpp"
 #include "API/CNWSObjectActionNode.hpp"
 #include "API/CNWSObject.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
 
-static NWNXLib::Hooking::FunctionHook* s_AIActionHealHook;
-static NWNXLib::Hooking::FunctionHook* s_OnApplyHealHook;
+static NWNXLib::Hooks::Hook s_AIActionHealHook;
+static NWNXLib::Hooks::Hook s_OnApplyHealHook;
 
-HealingEvents::HealingEvents(Services::HooksProxy* hooker)
+HealingEvents::HealingEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
-        s_AIActionHealHook = hooker->Hook(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode,
-                                          (void*)&AIActionHealHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", []() {
+        s_AIActionHealHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode,
+                                          (void*)&AIActionHealHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", [hooker]() {
-        s_OnApplyHealHook = hooker->Hook(API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti,
-                                         (void*)&OnApplyHealHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", []() {
+        s_OnApplyHealHook = Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti,
+                                         (void*)&OnApplyHealHook, Hooks::Order::Early);
     });
 }
 

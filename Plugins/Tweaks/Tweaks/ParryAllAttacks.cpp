@@ -5,8 +5,6 @@
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {
@@ -14,11 +12,11 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook* s_ResolveAttackRoll_hook;
-ParryAllAttacks::ParryAllAttacks(Services::HooksProxy* hooker)
+static Hooks::Hook s_ResolveAttackRoll_hook;
+ParryAllAttacks::ParryAllAttacks()
 {
-    s_ResolveAttackRoll_hook = hooker->Hook(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
-                                            (void*)&CNWSCreature__ResolveAttackRoll_hook, Hooking::Order::Late);
+    s_ResolveAttackRoll_hook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
+                                            (void*)&CNWSCreature__ResolveAttackRoll_hook, Hooks::Order::Late);
 }
 
 

@@ -5,8 +5,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {
@@ -14,12 +12,12 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook *s_AIActionItemCastSpellHook;
+static Hooks::Hook s_AIActionItemCastSpellHook;
 
-PreserveDepletedItems::PreserveDepletedItems(Services::HooksProxy* hooker)
+PreserveDepletedItems::PreserveDepletedItems()
 {
-    s_AIActionItemCastSpellHook = hooker->Hook(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
-                                               (void*)&CNWSCreature__AIActionItemCastSpell_hook, Hooking::Order::Late);
+    s_AIActionItemCastSpellHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
+                                               (void*)&CNWSCreature__AIActionItemCastSpell_hook, Hooks::Order::Late);
 }
 
 

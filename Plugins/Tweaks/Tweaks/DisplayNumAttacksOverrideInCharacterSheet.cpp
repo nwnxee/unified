@@ -1,6 +1,5 @@
 #include "Tweaks/DisplayNumAttacksOverrideInCharacterSheet.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "Utils.hpp"
 
 
 namespace Tweaks {
@@ -8,12 +7,12 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* s_GetAttacksPerRoundHook;
+NWNXLib::Hooks::Hook s_GetAttacksPerRoundHook;
 
-DisplayNumAttacksOverrideInCharacterSheet::DisplayNumAttacksOverrideInCharacterSheet(Services::HooksProxy* hooker)
+DisplayNumAttacksOverrideInCharacterSheet::DisplayNumAttacksOverrideInCharacterSheet()
 {
-    s_GetAttacksPerRoundHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats18GetAttacksPerRoundEv,
-                                            (void*)&GetAttacksPerRoundHook, Hooking::Order::Late);
+    s_GetAttacksPerRoundHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetAttacksPerRoundEv,
+                                            (void*)&GetAttacksPerRoundHook, Hooks::Order::Late);
 }
 
 uint8_t DisplayNumAttacksOverrideInCharacterSheet::GetAttacksPerRoundHook(CNWSCreatureStats *pCreatureStats)

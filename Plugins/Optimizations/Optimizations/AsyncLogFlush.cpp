@@ -1,7 +1,5 @@
 #include "Optimizations/AsyncLogFlush.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include "API/CExoDebugInternal.hpp"
 #include "API/CExoFile.hpp"
@@ -11,11 +9,9 @@ namespace Optimizations {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Services::TasksProxy* AsyncLogFlush::s_tasker;
-AsyncLogFlush::AsyncLogFlush(Services::HooksProxy* hooker, Services::TasksProxy* tasker)
+AsyncLogFlush::AsyncLogFlush()
 {
-    s_tasker = tasker;
-    hooker->Hook(API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv, (void*)&FlushLogFile_Hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv, (void*)&FlushLogFile_Hook, Hooks::Order::Final);
 }
 
 void AsyncLogFlush::FlushLogFile_Hook(CExoDebugInternal* pThis)
@@ -29,7 +25,7 @@ void AsyncLogFlush::FlushLogFile_Hook(CExoDebugInternal* pThis)
 
     if (pThis->m_bFilesOpen)
     {
-        s_tasker->QueueOnAsyncThread([pThis](){ pThis->m_pLogFile->Flush(); });
+        Tasks::QueueOnAsyncThread([pThis](){ pThis->m_pLogFile->Flush(); });
     }
 }
 

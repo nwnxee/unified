@@ -2,19 +2,18 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
 
-static Hooking::FunctionHook* s_UseSkillHook;
+static Hooks::Hook s_UseSkillHook;
 
-SkillEvents::SkillEvents(Services::HooksProxy* hooker)
+SkillEvents::SkillEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", [hooker]() {
-        s_UseSkillHook = hooker->Hook(API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji,
-                                      (void*)&UseSkillHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", []() {
+        s_UseSkillHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji,
+                                      (void*)&UseSkillHook, Hooks::Order::Early);
     });
 }
 

@@ -1,7 +1,6 @@
 #include "Events/JournalEvents.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -10,14 +9,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook *s_HandlePlayerToServerJournalMessageHook;
+static Hooks::Hook s_HandlePlayerToServerJournalMessageHook;
 
-JournalEvents::JournalEvents(Services::HooksProxy* hooker)
+JournalEvents::JournalEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_JOURNAL_(OPEN|CLOSE)_.*", [hooker]() {
-        s_HandlePlayerToServerJournalMessageHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_JOURNAL_(OPEN|CLOSE)_.*", []() {
+        s_HandlePlayerToServerJournalMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage34HandlePlayerToServerJournalMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerJournalMessageHook, Hooking::Order::Earliest);
+                (void*)&HandlePlayerToServerJournalMessageHook, Hooks::Order::Earliest);
     });
 }
 

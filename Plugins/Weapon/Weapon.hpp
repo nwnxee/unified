@@ -1,10 +1,8 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include <map>
 #include <set>
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
@@ -24,7 +22,7 @@ struct DevastatingCriticalDataStr
     bool     bBypass;
 };
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Weapon {
 
@@ -56,21 +54,21 @@ private:
     ArgumentStack SetOneHalfStrength                   (ArgumentStack&& args);
     ArgumentStack GetOneHalfStrength                   (ArgumentStack&& args);
 
-    NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponFocusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetWeaponImprovedCriticalHook;
-    NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponOverwhelmingCriticalHook;
-    NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponDevastatingCriticalHook;
-    NWNXLib::Hooking::FunctionHook* m_GetWeaponSpecializationHook;
-    NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponSpecializationHook;
-    NWNXLib::Hooking::FunctionHook* m_GetIsWeaponOfChoiceHook;
-    NWNXLib::Hooking::FunctionHook* m_GetMeleeDamageBonusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetRangedDamageBonusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetDamageBonusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetMeleeAttackBonusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetRangedAttackBonusHook;
-    NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
-    NWNXLib::Hooking::FunctionHook* m_ToggleModeHook;
+    NWNXLib::Hooks::Hook m_GetWeaponFocusHook;
+    NWNXLib::Hooks::Hook m_GetEpicWeaponFocusHook;
+    NWNXLib::Hooks::Hook m_GetWeaponImprovedCriticalHook;
+    NWNXLib::Hooks::Hook m_GetEpicWeaponOverwhelmingCriticalHook;
+    NWNXLib::Hooks::Hook m_GetEpicWeaponDevastatingCriticalHook;
+    NWNXLib::Hooks::Hook m_GetWeaponSpecializationHook;
+    NWNXLib::Hooks::Hook m_GetEpicWeaponSpecializationHook;
+    NWNXLib::Hooks::Hook m_GetIsWeaponOfChoiceHook;
+    NWNXLib::Hooks::Hook m_GetMeleeDamageBonusHook;
+    NWNXLib::Hooks::Hook m_GetRangedDamageBonusHook;
+    NWNXLib::Hooks::Hook m_GetDamageBonusHook;
+    NWNXLib::Hooks::Hook m_GetMeleeAttackBonusHook;
+    NWNXLib::Hooks::Hook m_GetRangedAttackBonusHook;
+    NWNXLib::Hooks::Hook m_GetAttackModifierVersusHook;
+    NWNXLib::Hooks::Hook m_ToggleModeHook;
 
     static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem* pItem);
     static int32_t GetEpicWeaponFocus               (CNWSCreatureStats *pStats, CNWSItem *pItem);

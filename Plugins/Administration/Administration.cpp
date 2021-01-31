@@ -1,4 +1,4 @@
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNetLayer.hpp"
@@ -17,22 +17,12 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Services/Events/Events.hpp"
-
 #include <unistd.h>
 #include <csignal>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
-
-static Plugin* g_plugin;
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    return g_plugin = new Plugin(services);
-}
-
 
 static CExoLinkedListNode* FindTURD(std::string playerName, std::string characterName)
 {
@@ -165,7 +155,7 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
         characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
     }
 
-    g_plugin->GetServices()->m_tasks->QueueOnMainThread(
+    Tasks::QueueOnMainThread(
         [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
