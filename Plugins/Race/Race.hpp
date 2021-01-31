@@ -65,7 +65,7 @@ private:
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_RaceDmgResist;
     unordered_map<uint16_t, unordered_map<uint16_t, uint8_t>>                         m_RaceFeat;
     unordered_map<uint16_t, unordered_map<uint32_t, pair<uint8_t, uint8_t>>>          m_RaceFeatUsage;
-    unordered_map<uint16_t, list<uint32_t>>                                           m_RaceImmunities;
+    unordered_map<uint16_t, vector<uint32_t>>                                         m_RaceImmunities;
     unordered_map<uint16_t, int32_t>                                                  m_RaceInitiative;
     unordered_map<uint16_t, int32_t>                                                  m_RaceMovementSpeed;
     unordered_map<uint16_t, uint16_t>                                                 m_RaceParent;
@@ -74,11 +74,11 @@ private:
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_RaceSaveVsRace;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_RaceSaveVsType;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_RaceSkill;
-    unordered_map<uint16_t, list<uint32_t>>                                           m_RaceSpellImmunities;
+    unordered_map<uint16_t, vector<uint32_t>>                                         m_RaceSpellImmunities;
     unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_RaceSRCharGen;
     unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_RaceSR;
-    unordered_map<uint16_t, std::vector<uint16_t>>                                    m_ChildRaces;
-    unordered_map<uint16_t, uint16_t>                                                 m_RaceFavoredEnemyFeat;
+    unordered_map<uint16_t, vector<uint16_t>>                                         m_ChildRaces;
+    unordered_map<uint16_t, vector<uint16_t>>                                         m_RaceFavoredEnemyFeat;
 
 
     static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
