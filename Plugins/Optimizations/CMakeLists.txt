@@ -1,4 +1,4 @@
 add_plugin(Optimizations
-        "Optimizations/AsyncLogFlush.cpp"
-        "Optimizations/GameObjectLookup.cpp"
+        "AsyncLogFlush.cpp"
+        "GameObjectLookup.cpp"
 )
