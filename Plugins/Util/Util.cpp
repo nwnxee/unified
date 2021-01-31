@@ -551,7 +551,7 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
     if (limit < 0)
     {
         // We queue it on the main thread so it'll reset after the current script is done executing
-        g_plugin->GetServices()->m_tasks->QueueOnMainThread(
+        Tasks::QueueOnMainThread(
             [](){ Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit; });
     }
     else

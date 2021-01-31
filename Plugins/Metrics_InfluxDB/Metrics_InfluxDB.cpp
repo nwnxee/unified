@@ -30,7 +30,7 @@ Metrics_InfluxDB::~Metrics_InfluxDB()
 
 void Metrics_InfluxDB::OnReceiveData(const std::vector<MetricData>& data)
 {
-    g_plugin->GetServices()->m_tasks->QueueOnAsyncThread(
+    Tasks::QueueOnAsyncThread(
         [dataCopy = std::vector<MetricData>(data)]() mutable
         {
             g_plugin->PushData(std::move(dataCopy));

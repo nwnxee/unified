@@ -70,13 +70,12 @@ int32_t ThreadWatchdog::MainLoopUpdate(CServerExoAppInternal *thisPtr)
                     // Now that metric is sitting in some big array, waiting for the main thread to process it.
                     // We're going to pretend to be the main thread.
                     Services::Metrics* metrics = g_plugin->GetServices()->m_metrics->GetProxyBase();
-                    Services::Tasks* tasks = g_plugin->GetServices()->m_tasks->GetProxyBase();
-                    metrics->Update(tasks);
+                    metrics->Update();
 
                     // Finally, we're going to pump the main thread task queue, so we don't accumulate a gazillion
                     // tasks, and so we remain productive until somebody can come along and figure out why we've
                     // hit a long stall.
-                    tasks->ProcessWorkOnMainThread();
+                    Tasks::ProcessMainThreadWork();
 
                     if (--killThreshold == 0)
                     {

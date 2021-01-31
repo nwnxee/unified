@@ -162,7 +162,7 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
         characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
     }
 
-    g_plugin->GetServices()->m_tasks->QueueOnMainThread(
+    Tasks::QueueOnMainThread(
         [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk

@@ -10,7 +10,7 @@ namespace Events {
 class ResourceEvents
 {
 public:
-    ResourceEvents(NWNXLib::Services::TasksProxy* tasks);
+    ResourceEvents();
     virtual ~ResourceEvents();
 
 private:

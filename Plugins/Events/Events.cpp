@@ -124,7 +124,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_matChangeEvents   = std::make_unique<MaterialChangeEvents>();
     m_objectEvents      = std::make_unique<ObjectEvents>();
     m_uuidEvents        = std::make_unique<UUIDEvents>();
-    m_resourceEvents    = std::make_unique<ResourceEvents>(GetServices()->m_tasks.get());
+    m_resourceEvents    = std::make_unique<ResourceEvents>();
     m_quickbarEvents    = std::make_unique<QuickbarEvents>();
     m_debugEvents       = std::make_unique<DebugEvents>();
     m_storeEvents       = std::make_unique<StoreEvents>();

@@ -21,7 +21,7 @@ Optimizations::Optimizations(Services::ProxyServiceList* services)
     if (Config::Get<bool>("ASYNC_LOG_FLUSH", false))
     {
         LOG_INFO("Game logs will be flushed asynchronously");
-        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_tasks.get());
+        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>();
     }
 
     if (Config::Get<bool>("GAME_OBJECT_LOOKUP", false))

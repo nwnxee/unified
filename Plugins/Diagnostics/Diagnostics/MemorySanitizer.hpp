@@ -23,7 +23,6 @@ public:
 
     static void FreePending();
 
-    static inline NWNXLib::Services::TasksProxy* tasker;
     static inline std::unordered_map<void*, Backtrace> active_allocations;
     static inline std::unordered_set<void*> pending_free;
 

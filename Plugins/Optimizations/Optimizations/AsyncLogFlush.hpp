@@ -7,11 +7,10 @@ namespace Optimizations {
 class AsyncLogFlush
 {
 public:
-    AsyncLogFlush(NWNXLib::Services::TasksProxy* tasker);
+    AsyncLogFlush();
 
 private:
     static void FlushLogFile_Hook(CExoDebugInternal*);
-    static NWNXLib::Services::TasksProxy* s_tasker;
 };
 
 }

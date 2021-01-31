@@ -95,10 +95,10 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
     }
     else
     {
-        g_plugin->GetServices()->m_tasks->QueueOnAsyncThread([cli, message, host, path, origPath]()
+        Tasks::QueueOnAsyncThread([cli, message, host, path, origPath]()
         {
             auto res = cli->second->post(path.c_str(), message, "application/json");
-            g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
+            Tasks::QueueOnMainThread([message, host, path, origPath, res]()
             {
                 if (Core::g_CoreShuttingDown)
                     return;
