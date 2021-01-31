@@ -1,31 +1,33 @@
-#include "Optimizations/AsyncLogFlush.hpp"
+#include "nwnx.hpp"
 
-#include "API/Functions.hpp"
 #include "API/CExoDebugInternal.hpp"
 #include "API/CExoFile.hpp"
 
 namespace Optimizations {
 
 using namespace NWNXLib;
-using namespace NWNXLib::API;
 
-AsyncLogFlush::AsyncLogFlush()
+void AsyncLogFlush() __attribute__((constructor));
+void AsyncLogFlush()
 {
-    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv, (void*)&FlushLogFile_Hook, Hooks::Order::Final);
-}
-
-void AsyncLogFlush::FlushLogFile_Hook(CExoDebugInternal* pThis)
-{
-    // Rotating log file, do synchronously
-    if (pThis->m_bRotateLogFile && ((pThis->m_nCurrentLogSize << 2) > pThis->m_nMaxLogSize))
+    if (Config::Get<bool>("ASYNC_LOG_FLUSH", false))
     {
-        pThis->m_pLogFile->Flush();
-        return;
-    }
+        LOG_INFO("Game logs will be flushed asynchronously");
+        static auto s_FlushLogFile = Hooks::HookFunction(API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv, 
+            (void*)+[](CExoDebugInternal* pThis)
+            {
+                // Rotating log file, do synchronously
+                if (pThis->m_bRotateLogFile && ((pThis->m_nCurrentLogSize << 2) > pThis->m_nMaxLogSize))
+                {
+                    pThis->m_pLogFile->Flush();
+                    return;
+                }
 
-    if (pThis->m_bFilesOpen)
-    {
-        Tasks::QueueOnAsyncThread([pThis](){ pThis->m_pLogFile->Flush(); });
+                if (pThis->m_bFilesOpen)
+                {
+                    Tasks::QueueOnAsyncThread([pThis](){ pThis->m_pLogFile->Flush(); });
+                }
+            }, Hooks::Order::Final);
     }
 }
 
