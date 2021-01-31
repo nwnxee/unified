@@ -24,13 +24,6 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Plugin* g_plugin;
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    return g_plugin = new Plugin(services);
-}
-
-
 static CExoLinkedListNode* FindTURD(std::string playerName, std::string characterName)
 {
     CExoLinkedListNode *foundNode = nullptr;

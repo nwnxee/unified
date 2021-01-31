@@ -45,21 +45,23 @@ Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxySer
         return nullptr;
     }
 
-    auto entry = (EntryFunction) dlsym(handle, PluginEntryName);
-    if (entry == nullptr)
+    Plugin* plugin;
+    if (auto entry = (EntryFunction) dlsym(handle, PluginEntryName))
     {
-        LOG_ERROR("Plugin '%s' does not expose entry function %s(): %s", path, PluginEntryName, dlerror());
-        dlclose(handle);
-        return nullptr;
+        LOG_DEBUG("Plugin '%s' exposed entry function %s()", path, PluginEntryName);
+        plugin = entry(services.get());
+        if (plugin == nullptr)
+        {
+            LOG_ERROR("Plugin '%s' entry function returned nullptr", path);
+            dlclose(handle);
+            return nullptr;
+        }
+    }
+    else
+    {
+        plugin = new Plugin(services.get());
     }
 
-    Plugin* plugin = entry(services.get());
-    if (plugin == nullptr)
-    {
-        LOG_ERROR("Plugin '%s' entry function returned nullptr", path);
-        dlclose(handle);
-        return nullptr;
-    }
     plugin->m_servicesOwning = std::move(services);
     plugin->m_name = basename;
     plugin->m_path = path;
