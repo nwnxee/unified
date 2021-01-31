@@ -5,11 +5,6 @@
 #include <condition_variable>
 #include <thread>
 
-
-namespace Core {
-extern NWNXCore* g_core;
-}
-
 namespace NWNXLib::Tasks
 {
 
@@ -65,9 +60,10 @@ void ProcessMainThreadWork()
     }
 }
 
+static bool s_shutdown = false;
 void AsyncWorkerThread()
 {
-    while (Core::g_core)
+    while (!s_shutdown)
     {
         while (auto work = s_asyncThreadQueue.Pop())
         {
@@ -77,10 +73,20 @@ void AsyncWorkerThread()
         std::unique_lock<std::mutex> signalLock(s_asyncSignalLock);
         s_asyncSignal.wait_for(signalLock,
             std::chrono::seconds(1),
-            []{ return !Core::g_core || !s_asyncThreadQueue.Empty(); }); 
+            []{ return s_shutdown || !s_asyncThreadQueue.Empty(); }); 
     }
 }
 
-static std::unique_ptr<std::thread> s_asyncWorker = std::make_unique<std::thread>(AsyncWorkerThread);
+static std::thread* s_asyncWorker;
+void StartAsyncWorkers()
+{
+    s_asyncWorker = new std::thread(AsyncWorkerThread);
+}
+void StopAsyncWorkers()
+{
+    s_shutdown = true;
+    s_asyncWorker->join();
+}
+
 
 }

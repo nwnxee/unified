@@ -74,6 +74,11 @@ void RestoreCrashHandlers()
 
 // TODO: Remove and allow auto-init post-load
 namespace NWNXLib::POS { void InitializeHooks(); }
+namespace NWNXLib::Tasks {
+    void StartAsyncWorkers();
+    void StopAsyncWorkers();
+}
+
 
 namespace Core {
 
@@ -476,6 +481,7 @@ void NWNXCore::Shutdown()
     {
         Plugin::UnloadAll();
         UnloadServices();
+        Tasks::StopAsyncWorkers();
         g_core = nullptr;
     }
 }
@@ -514,6 +520,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
         try
         {
+            Tasks::StartAsyncWorkers();
             g_core->InitialSetupHooks();
             g_core->InitialSetupPlugins();
             g_core->InitialSetupResourceDirectories();
