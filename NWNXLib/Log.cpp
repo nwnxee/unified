@@ -6,7 +6,6 @@
 #include <unordered_map>
 
 #include "External/rang/rang.hpp"
-#include "Services/Tasks/Tasks.hpp"
 
 namespace NWNXLib::Log {
 
@@ -16,7 +15,6 @@ static bool s_PrintPlugin;
 static bool s_PrintSource;
 static bool s_ColorOutput;
 static bool s_ForceColor;
-static NWNXLib::Services::Tasks* s_Tasks;
 void SetPrintTimestamp(bool value)
 {
     s_PrintTimestamp = value;
@@ -67,10 +65,6 @@ bool GetForceColor()
 {
     return s_ForceColor;
 }
-void SetAsync(NWNXLib::Services::Tasks* tasks)
-{
-    s_Tasks = tasks;
-}
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
 {
@@ -100,11 +94,11 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     if (logFile)
     {
         std::fprintf(logFile, "%s\n", message);
-        if (s_Tasks)
-        {
-            s_Tasks->QueueOnAsyncThread([&]() { std::fflush(logFile); });
-        }
-        else
+        //if (s_Tasks)
+        //{
+        //    s_Tasks->QueueOnAsyncThread([&]() { std::fflush(logFile); });
+        //}
+        //else
         {
             std::fflush(logFile);
         }

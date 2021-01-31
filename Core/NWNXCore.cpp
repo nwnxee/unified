@@ -103,7 +103,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     using namespace NWNXLib::Services;
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
-    services->m_tasks = std::make_unique<Services::Tasks>();
     services->m_metrics = std::make_unique<Services::Metrics>();
     services->m_perObjectStorage = std::make_unique<Services::PerObjectStorage>();
 
@@ -114,7 +113,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
 {
     std::unique_ptr<Services::ProxyServiceList> proxyServices = std::make_unique<Services::ProxyServiceList>();
 
-    proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
@@ -321,7 +319,7 @@ void NWNXCore::InitialSetupResourceDirectories()
             LOG_ERROR("Failed to open Custom Resman Definition File: %s", crdPath);
     }
 
-    m_services->m_tasks->QueueOnMainThread([resourceDirectories]
+    Tasks::QueueOnMainThread([resourceDirectories]
         {
             if (g_CoreShuttingDown)
                 return;
@@ -558,8 +556,8 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 
 int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppInternal)
 {
-    g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks.get());
-    g_core->m_services->m_tasks->ProcessWorkOnMainThread();
+    g_core->m_services->m_metrics->Update();
+    Tasks::ProcessMainThreadWork();
     Commands::RunScheduled();
 
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);

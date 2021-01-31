@@ -265,6 +265,7 @@ namespace Tasks
     using WorkItem = std::function<void()>;
     void QueueOnMainThread(WorkItem&& work);
     void QueueOnAsyncThread(WorkItem&& work);
+    void ProcessMainThreadWork();
 }
 
 }
