@@ -117,7 +117,6 @@ int32_t Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, uint8_t channe
                     channel == Constants::ChatChannel::DmTalk ||
                     channel == Constants::ChatChannel::DmWhisper)
                 {
-                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
                     auto *pSpeaker = Utils::AsNWSObject(server->GetGameObject(sender));
                     auto distance = g_plugin->m_hearingDistances[channel];
                     auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
@@ -136,7 +135,7 @@ int32_t Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, uint8_t channe
                         auto *pListener = static_cast<CNWSPlayer*>(pListenerClient);
                         auto *pListenerObj = Utils::AsNWSObject(pListener->GetGameObject());
 
-                        auto pDistance = *pPOS->Get<float>(pListenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));
+                        auto pDistance = *pListenerObj->nwnxGet<float>("HEARING_DISTANCE:" + std::to_string(channel));
                         if (pDistance >= 0)
                         {
                             distance = pDistance;
@@ -315,9 +314,9 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
         }
         else
         {
-            auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
             m_customHearingDistances = true;
-            pPOS->Set(playerOid, "HEARING_DISTANCE:" + std::to_string(channel), distance, true);
+            auto* playerObj = Utils::GetGameObject(playerOid);
+            playerObj->nwnxSet("HEARING_DISTANCE:" + std::to_string(channel), distance, true);
         }
     }
 
@@ -332,8 +331,8 @@ Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 
     if (playerOid != Constants::OBJECT_INVALID)
     {
-        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-        auto playerHearingDistance = *pPOS->Get<float>(playerOid, "HEARING_DISTANCE:" + std::to_string(channel));
+        auto* playerObj = Utils::GetGameObject(playerOid);
+        auto playerHearingDistance = *playerObj->nwnxGet<float>("HEARING_DISTANCE:" + std::to_string(channel));
         retVal = playerHearingDistance > 0 ? playerHearingDistance : m_hearingDistances[channel];
     }
     return Events::Arguments(retVal);

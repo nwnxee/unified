@@ -798,7 +798,7 @@ int32_t Weapon::GetMeleeDamageBonus(CNWSCreatureStats* pStats, int32_t bOffHand,
     else
     {
         nBaseItem = pWeapon->m_nBaseItem;
-        auto bStr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pWeapon, "ONE_HALF_STRENGTH");
+        auto bStr = pWeapon->nwnxGet<int32_t>("ONE_HALF_STRENGTH");
         if(bStr && bStr.value())
             nBonus += pStats->m_nStrengthModifier/2;
     }
@@ -867,7 +867,7 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
     else
     {
         nBaseItem = pWeapon->m_nBaseItem;
-        auto bStr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pWeapon, "ONE_HALF_STRENGTH");
+        auto bStr = pWeapon->nwnxGet<int32_t>("ONE_HALF_STRENGTH");
         if(bStr && bStr.value())
             nBonus += pStats->m_nStrengthModifier/2;
     }
@@ -1298,10 +1298,12 @@ ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
 
     auto bMulti = Events::ExtractArgument<int32_t>(args);
     bool bPersist = !!Events::ExtractArgument<int32_t>(args);
+
+    auto obj = Utils::GetGameObject(objectId);
     if(bMulti)
-        g_plugin->GetServices()->m_perObjectStorage->Set(objectId, "ONE_HALF_STRENGTH", 1, bPersist);
+        obj->nwnxSet("ONE_HALF_STRENGTH", 1, bPersist);
     else
-        g_plugin->GetServices()->m_perObjectStorage->Remove(objectId, "ONE_HALF_STRENGTH");
+        obj->nwnxRemove("ONE_HALF_STRENGTH");
 
     return Events::Arguments();
 }
@@ -1312,7 +1314,8 @@ ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
     int32_t retVal = 0;
     if(objectId != Constants::OBJECT_INVALID)
     {
-        auto exist = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(objectId, "ONE_HALF_STRENGTH");
+        auto obj = Utils::GetGameObject(objectId);
+        auto exist = obj->nwnxGet<int32_t>("ONE_HALF_STRENGTH");
         if(exist)
             retVal = exist.value();
     }

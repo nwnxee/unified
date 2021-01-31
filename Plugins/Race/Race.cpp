@@ -163,8 +163,7 @@ void Race::DoEffect(CNWSCreature *pCreature,
 
 void Race::ApplyRaceEffects(CNWSCreature *pCreature)
 {
-    auto pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    auto effectsLevelAdded = *pPOS->Get<int>(pCreature->m_idSelf, "RACEMODS_ADDED_LEVEL");
+    auto effectsLevelAdded = *pCreature->nwnxGet<int>("RACEMODS_ADDED_LEVEL");
 
     if (pCreature->m_pStats == nullptr || pCreature->m_pStats->GetLevel(true) == effectsLevelAdded)
         return;
@@ -392,7 +391,7 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
         g_plugin->DoEffect(pCreature, EffectTrueType::SpellResistanceIncrease, mod_SR);
     }
 
-    pPOS->Set(pCreature->m_idSelf, "RACEMODS_ADDED_LEVEL", nLevel);
+    pCreature->nwnxSet("RACEMODS_ADDED_LEVEL", nLevel);
 }
 
 int32_t Race::LoadCharacterFinishHook(CServerExoAppInternal *pServerExoAppInternal, CNWSPlayer *pPlayer, int32_t bUseSaveGameCharacter, int32_t bUseStateDataInSaveGame)

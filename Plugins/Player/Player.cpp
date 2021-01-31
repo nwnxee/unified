@@ -224,7 +224,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
                 (void*)+[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
                 {
                     // Don't remove the forced walk flag when various slowdown effects expire
-                    auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pObject->m_idSelf, "ALWAYS_WALK");
+                    auto walk = pObject->nwnxGet<int>("ALWAYS_WALK");
                     if (walk && *walk)
                         return 1;
 
@@ -245,11 +245,11 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         if (bSetCap)
         {
             pCreature->m_bForcedWalk = true;
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "ALWAYS_WALK", 1, true);
+            pCreature->nwnxSet("ALWAYS_WALK", 1, true);
         }
         else // remove the override
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "ALWAYS_WALK");
+            pCreature->nwnxRemove("ALWAYS_WALK");
 
             // Fake effect object for bsearch. Don't want to deal with alloc/free from real one..
             uint8_t key[sizeof(CGameEffect)];
@@ -494,7 +494,7 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
             Hooks::HookFunction(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
     (void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
             {
-                if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
+                if (auto restDuration = pCreature->nwnxGet<int>("REST_DURATION"))
                 {
                     uint8_t creatureLevel = pCreature->m_pStats->GetLevel(0);
                     int32_t originalValue;
@@ -512,13 +512,14 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
     {
         auto duration = Events::ExtractArgument<int32_t>(args);
 
+        auto playerObj = Utils::GetGameObject(pPlayer->m_oidNWSObject);
         if (duration < 0)
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_DURATION");
+            playerObj->nwnxRemove("REST_DURATION");
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration < 10 ? 10 : duration, true);
+            playerObj->nwnxSet("REST_DURATION", duration < 10 ? 10 : duration, true);
         }
     }
 
@@ -661,7 +662,7 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
             {
                 auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
 
-                if (auto animation = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_ANIMATION"))
+                if (auto animation = pCreature->nwnxGet<int>("REST_ANIMATION"))
                 {
                     if (retVal == 1/* In Progress*/)
                         pCreature->SetAnimation(*animation);
@@ -674,13 +675,14 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
     {
         auto animation = Events::ExtractArgument<int32_t>(args);
 
+        auto playerObj = Utils::GetGameObject(pPlayer->m_oidNWSObject);
         if (animation < 0)
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_ANIMATION");
+            playerObj->nwnxRemove("REST_ANIMATION");
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_ANIMATION", animation, true);
+            playerObj->nwnxSet("REST_ANIMATION", animation, true);
         }
     }
 
@@ -701,8 +703,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                             pObject->m_nObjectType == Constants::ObjectType::Item ||
                             pObject->m_nObjectType == Constants::ObjectType::Door)
                         {
-                            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
-                                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                            if (auto objectVisualTransformData = pObject->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
                                 auto *pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
 
@@ -724,14 +725,14 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
         const auto transform = Events::ExtractArgument<int32_t>(args);
         const auto value = Events::ExtractArgument<float>(args);
 
+        auto obj = Utils::GetGameObject(oidObject);
         if (transform < 0)
         {
-            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObject,
-                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            if (auto objectVisualTransformData = obj->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
                 auto pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
 
-                g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                obj->nwnxRemove("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
 
                 delete pObjectVisualTransformData;
             }
@@ -740,8 +741,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
         {
             ObjectVisualTransformData *pObjectVisualTransformData;
 
-            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObject,
-                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            if (auto objectVisualTransformData = obj->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
                 pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
             }
@@ -753,7 +753,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 pObjectVisualTransformData->m_translate = Vector{0.0f, 0.0f, 0.0f};
                 pObjectVisualTransformData->m_animationSpeed = 1.0f;
 
-                g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                obj->nwnxSet("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
                         pObjectVisualTransformData, [](void*p) { delete static_cast<ObjectVisualTransformData*>(p); });
             }
 
@@ -809,8 +809,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
-                                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                            if (auto loopingVisualEffectSet = pObject->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
                                 auto *pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
 
@@ -839,14 +838,14 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
 
+        auto target = Utils::GetGameObject(oidTarget);
         if (visualEffect < 0)
         {
-            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
-                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            if (auto loopingVisualEffectSet = target->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
                 auto pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
 
-                g_plugin->GetServices()->m_perObjectStorage->Remove(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                target->nwnxRemove("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
 
                 delete pLoopingVisualEffectSet;
             }
@@ -855,8 +854,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         {
             std::set<uint16_t> *pLoopingVisualEffectSet;
 
-            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
-                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            if (auto loopingVisualEffectSet = target->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
                 pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
             }
@@ -864,7 +862,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
             {
                 pLoopingVisualEffectSet = new std::set<uint16_t>();
 
-                g_plugin->GetServices()->m_perObjectStorage->Set(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                target->nwnxSet("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
                         pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
             }
 
@@ -889,8 +887,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                 {
                     if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        if (auto name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
-                                                                                                      "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                        if (auto name = pPlaceable->nwnxGet<std::string>("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
                             CExoString swapName = CExoString(*name);
 
@@ -913,11 +910,11 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
         {
             if (name.empty())
             {
-                GetServices()->m_perObjectStorage->Remove(pPlaceable->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                pPlaceable->nwnxRemove("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
             }
             else
             {
-                GetServices()->m_perObjectStorage->Set(pPlaceable->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+                pPlaceable->nwnxSet("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
             }
 
             if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pPlaceable->m_idSelf))
@@ -1074,8 +1071,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         LOG_ERROR("Attempt to possess a creature already possessed.");
         return Events::Arguments(0);
     }
-    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+    auto possessedOidPOS = pPossessor->nwnxGet<int>("possessedOid");
     if (possessedOidPOS)
     {
         LOG_ERROR("Attempt to possess a creature while already possessing.");
@@ -1087,8 +1083,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
             Hooks::HookFunction(Functions::_ZN12CNWSCreature14UnsummonMyselfEv,
             (void*)+[](CNWSCreature *pPossessed) -> void
             {
-                auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                auto possessorOidPOS = pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
+                auto possessorOidPOS = pPossessed->nwnxGet<int>("possessorOid");
                 auto pServer = Globals::AppManager()->m_pServerExoApp;
                 auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
 
@@ -1126,8 +1121,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
             Hooks::HookFunction(Functions::_ZN12CNWSCreature15PossessFamiliarEv,
                 (void*)+[](CNWSCreature *pPossessor) -> void
                 {
-                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto possessorOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
+                    auto possessorOidPOS = pPossessor->nwnxGet<int>("possessorOid");
                     if (possessorOidPOS)
                     {
                         LOG_ERROR("Attempt to possess a familiar while already possessing.");
@@ -1144,25 +1138,24 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                 {
                     pUnpossessFamiliarHook->CallOriginal<void>(pPossessor);
 
-                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+                    auto possessedOidPOS = pPossessor->nwnxGet<int>("possessedOid");
                     if (possessedOidPOS)
                     {
                         pPossessor->RemoveAssociate(*possessedOidPOS);
-                        pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
-                        pPOS->Remove(*possessedOidPOS, "possessorOid");
+                        pPossessor->nwnxRemove("possessedOid");
+                        Utils::GetGameObject(*possessedOidPOS)->nwnxRemove("possessorOid");
 
-                        auto possessedAssociateType = pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
+                        auto possessedAssociateType = pPossessor->nwnxGet<int>("possessedAssociateType");
                         if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
                         {
                             pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
-                            pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
+                            pPossessor->nwnxRemove("possessedAssociateType");
                         }
                     }
                 }, Hooks::Order::Early);
 
     // Save previous associate type so it can be set back after unpossess
-    pPOS->Set(possessorId, "possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
+    pPossessor->nwnxSet("possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
 
     // If they already have a familiar we temporarily remove it as an associate
     // then we add the possessed creature as a familiar. We then add the regular familiar back.
@@ -1180,8 +1173,8 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     if (bCreateQB)
         pPossessed->CreateDefaultQuickButtons();
 
-    pPOS->Set(possessorId, "possessedOid", (int32_t)possessedId);
-    pPOS->Set(possessedId, "possessorOid", (int32_t)possessorId);
+    pPossessor->nwnxSet("possessedOid", (int32_t)possessedId);
+    pPossessed->nwnxSet("possessorOid", (int32_t)possessorId);
 
     // Familiar possession gives the possessor mind immunity, we remove it if we don't want that
     if (!bMindImmune)
@@ -1273,7 +1266,7 @@ ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
                  {
                      if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
                      {
-                         if (auto name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,"CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                         if (auto name = pCreature->nwnxGet<std::string>("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                          {
                              CExoString swapName = CExoString(*name);
 
@@ -1296,11 +1289,11 @@ ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
         {
             if (name.empty())
             {
-                GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                pCreature->nwnxRemove("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
             }
             else
             {
-                GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+                pCreature->nwnxSet("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
             }
 
             if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
@@ -1417,7 +1410,7 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        if (auto cursorId = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,"OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                        if (auto cursorId = pObject->nwnxGet<int32_t>("OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
                             std::swap(*cursorId, pObject->m_nMouseCursor);
                             pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
@@ -1438,11 +1431,11 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
         {
             if (cursorId < 0)
             {
-                GetServices()->m_perObjectStorage->Remove(pObject->m_idSelf, "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                pObject->nwnxRemove("OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
             }
             else
             {
-                GetServices()->m_perObjectStorage->Set(pObject->m_idSelf, "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), cursorId);
+                pObject->nwnxSet("OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), cursorId);
             }
         }
     }
@@ -1457,7 +1450,7 @@ ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        if (auto hiliteColor = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                        if (auto hiliteColor = pObject->nwnxGet<int32_t>("OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
                             Vector vHiliteColor = {};
                             vHiliteColor.x = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f; // R
@@ -1484,11 +1477,11 @@ ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
         {
             if (hiliteColor < 0)
             {
-                GetServices()->m_perObjectStorage->Remove(pObject->m_idSelf, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                pObject->nwnxRemove("OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
             }
             else
             {
-                GetServices()->m_perObjectStorage->Set(pObject->m_idSelf, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), hiliteColor);
+                pObject->nwnxSet("OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), hiliteColor);
             }
         }
     }

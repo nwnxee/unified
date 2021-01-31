@@ -102,7 +102,8 @@ int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32
 
     std::string varName = std::to_string(messageType) + ":" + std::to_string(messageId);
 
-    if (auto personalState = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, varName))
+    auto playerObj = Utils::GetGameObject(playerId);
+    if (auto personalState = playerObj->nwnxGet<int>(varName))
     {
         value = !!*personalState;
     }
@@ -151,14 +152,14 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
     else
     {
         std::string varName = std::to_string(messageType) + ":" + std::to_string(messageId);
-
+        auto playerObj = Utils::GetGameObject(playerId);
         if (state == -1)
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
+            playerObj->nwnxRemove(varName);
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
+            playerObj->nwnxSet(varName, !!state, true);
         }
     }
     return Events::Arguments();

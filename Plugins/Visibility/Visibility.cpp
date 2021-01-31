@@ -88,7 +88,8 @@ int32_t Visibility::GetGlobalOverride(ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto globalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(targetId, "GLOBAL_VISIBILITY_OVERRIDE"))
+    auto target = Utils::GetGameObject(targetId);
+    if (auto globalOverride = target->nwnxGet<int>("GLOBAL_VISIBILITY_OVERRIDE"))
     {
         retVal = *globalOverride;
     }
@@ -100,7 +101,8 @@ int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto personalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, Utils::ObjectIDToString(targetId)))
+    auto player = Utils::GetGameObject(playerId);
+    if (auto personalOverride = player->nwnxGet<int>(Utils::ObjectIDToString(targetId)))
     {
         retVal = *personalOverride;
     }
@@ -135,10 +137,11 @@ ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
         playerId = targetId;
     }
 
+    auto player = Utils::GetGameObject(playerId);
     if (override < 0)
-        g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
+        player->nwnxRemove(varName);
     else
-        g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, override);
+        player->nwnxSet(varName, override);
 
     return Events::Arguments();
 }

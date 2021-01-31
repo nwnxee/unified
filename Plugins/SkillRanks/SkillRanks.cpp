@@ -672,8 +672,7 @@ char SkillRanks::GetSkillRankHook(CNWSCreatureStats* thisPtr, uint8_t nSkill, CN
     // Area set skill rank modifiers
     if (pArea)
     {
-        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-        if(auto areaMod = pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill))) 
+        if(auto areaMod = pArea->nwnxGet<int>(areaModPOSKey + std::to_string(nSkill))) 
         {
             retVal += *areaMod;
         }
@@ -891,8 +890,7 @@ ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
-    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    int32_t retVal = *pPOS->Get<int>(areaOid, areaModPOSKey + std::to_string(skillId));
+    int32_t retVal = *pArea->nwnxGet<int>(areaModPOSKey + std::to_string(skillId));
 
     return Events::Arguments(retVal);
 }
@@ -913,8 +911,7 @@ ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(modifier >= -127);
     ASSERT_OR_THROW(modifier < 127);
 
-    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier, true);
+    pArea->nwnxSet(areaModPOSKey + std::to_string(skillId), modifier, true);
 
     return Events::Arguments();
 }

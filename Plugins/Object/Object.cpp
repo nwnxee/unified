@@ -712,7 +712,7 @@ ArgumentStack Object::GetInt(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObject, "PERINT!" + varName))
+    if (auto value = Utils::GetGameObject(oidObject)->nwnxGet<int32_t>("PERINT!" + varName))
         retVal = *value;
 
     return Events::Arguments(retVal);
@@ -727,7 +727,7 @@ ArgumentStack Object::SetInt(ArgumentStack&& args)
     const auto value = Events::ExtractArgument<int32_t>(args);
     bool persist = Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, persist);
+    Utils::GetGameObject(oidObject)->nwnxSet("PERINT!" + varName, value, persist);
 
     return Events::Arguments();
 }
@@ -739,7 +739,7 @@ ArgumentStack Object::DeleteInt(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERINT!" + varName);
+    Utils::GetGameObject(oidObject)->nwnxRemove("PERINT!" + varName);
 
     return Events::Arguments();
 }
@@ -753,7 +753,7 @@ ArgumentStack Object::GetString(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObject, "PERSTR!" + varName))
+    if (auto value = Utils::GetGameObject(oidObject)->nwnxGet<std::string>("PERSTR!" + varName))
         retVal = *value;
 
     return Events::Arguments(retVal);
@@ -768,7 +768,7 @@ ArgumentStack Object::SetString(ArgumentStack&& args)
     const auto value = Events::ExtractArgument<std::string>(args);
     bool persist = Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, persist);
+    Utils::GetGameObject(oidObject)->nwnxSet("PERSTR!" + varName, value, persist);
 
     return Events::Arguments();
 }
@@ -780,7 +780,7 @@ ArgumentStack Object::DeleteString(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERSTR!" + varName);
+    Utils::GetGameObject(oidObject)->nwnxRemove("PERSTR!" + varName);
 
     return Events::Arguments();
 }
@@ -794,7 +794,7 @@ ArgumentStack Object::GetFloat(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<float>(oidObject, "PERFLT!" + varName))
+    if (auto value = Utils::GetGameObject(oidObject)->nwnxGet<float>("PERFLT!" + varName))
         retVal = *value;
 
     return Events::Arguments(retVal);
@@ -809,7 +809,7 @@ ArgumentStack Object::SetFloat(ArgumentStack&& args)
     const auto value = Events::ExtractArgument<float>(args);
     bool persist = Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, persist);
+    Utils::GetGameObject(oidObject)->nwnxSet("PERFLT!" + varName, value, persist);
 
     return Events::Arguments();
 }
@@ -822,7 +822,7 @@ ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
     const auto varName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERFLT!" + varName);
+    Utils::GetGameObject(oidObject)->nwnxRemove("PERFLT!" + varName);
 
     return Events::Arguments();
 }
@@ -834,7 +834,7 @@ ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
     const auto regex = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!regex.empty());
 
-    g_plugin->GetServices()->m_perObjectStorage->RemoveRegex(oidObject, "((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
+    Utils::GetGameObject(oidObject)->nwnxRemoveRegex("((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
 
     return Events::Arguments();
 }

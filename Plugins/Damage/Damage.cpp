@@ -67,14 +67,15 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     }
     else
     {
+        auto owner = Utils::GetGameObject(oidOwner);
         if (script != "")
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script, true);
+            owner->nwnxSet(event + "_EVENT_SCRIPT", script, true);
             LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event, script);
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, event + "_EVENT_SCRIPT");
+            owner->nwnxRemove(event + "_EVENT_SCRIPT");
             LOG_INFO("Clearing %s Event Script for object 0x%08x", event, oidOwner);
         }
     }
@@ -84,7 +85,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 
 std::string Damage::GetEventScript(CNWSObject *pObject, const std::string &event)
 {
-    auto posScript = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pObject, event + "_EVENT_SCRIPT");
+    auto posScript = pObject->nwnxGet<std::string>(event + "_EVENT_SCRIPT");
     return posScript ? *posScript : g_plugin->m_EventScripts[event];
 }
 
