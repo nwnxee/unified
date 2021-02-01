@@ -53,7 +53,7 @@
 %enddef
 
 // Extensions
-%typemap(cscode) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE [], SWIGTYPE (CLASS::*) %{
+%typemap(cscode) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE (CLASS::*) %{
   public System.IntPtr Pointer {
     get {
       return swigCPtr.Handle;
@@ -129,10 +129,6 @@
   }
 %}
 
-// Expose Managed Constructor
-SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
-
-// Typemap void* to IntPtr
 %define MarshalType(CTYPE, CSTYPE)
 %typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
@@ -166,6 +162,101 @@ SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 %}
 %enddef
 
+%define MapArray(TYPE, CSTYPE, NAME)
+%typemap(cstype) TYPE[ANY] "NAME"
+%typemap(csin)   TYPE[ANY] "NAME.getCPtr($csinput)"
+%typemap(csout, excode=SWIGEXCODE) TYPE[ANY] {
+    global::System.IntPtr cPtr = $imcall;$excode;
+    NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
+    return ret;
+  }
+%typemap(csvarout, excode=SWIGEXCODE2) TYPE[ANY] %{ 
+    get {
+        global::System.IntPtr cPtr = $imcall;$excode;
+        NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
+        return ret;
+    }
+%}
+%typemap(cscode) NAME %{
+  public CSTYPE this[int index] {
+    get {
+      return GetItem(index);
+    }
+    set {
+      SetItem(index, value);
+    }
+  }
+
+  public System.IntPtr Pointer {
+    get {
+      return swigCPtr.Handle;
+    }
+  }
+
+  public bool Equals($csclassname other) {
+    if (ReferenceEquals(null, other)) {
+      return false;
+    }
+
+    if (ReferenceEquals(this, other)) {
+      return true;
+    }
+
+    return Pointer.Equals(other.Pointer);
+  }
+
+  public override bool Equals(object obj) {
+    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
+  }
+
+  public override int GetHashCode() {
+    return swigCPtr.Handle.GetHashCode();
+  }
+
+  public static bool operator ==($csclassname left, $csclassname right) {
+    return Equals(left, right);
+  }
+
+  public static bool operator !=($csclassname left, $csclassname right) {
+    return !Equals(left, right);
+  }
+%}
+%enddef
+
+%define DefineArray(TYPE, CSTYPE, NAME)
+%{
+typedef TYPE NAME;
+%}
+typedef struct {} NAME;
+
+%extend NAME {
+NAME(int nElements) {
+  return new TYPE[nElements]();
+}
+
+~NAME() {
+  delete [] self;
+}
+
+TYPE GetItem(int index) {
+  return self[index];
+}
+
+void SetItem(int index, TYPE value) {
+  self[index] = value;
+}
+
+static NAME* FromPointer(TYPE *ptr) {
+  return (NAME *) ptr;
+}
+
+};
+%enddef
+
+// Expose Managed Constructor
+SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
+
+// Marshal native types to managed types.
 MarshalType(void, void)
 MarshalType(void*, void*) // void**
 MarshalType(signed char, sbyte)
@@ -345,4 +436,50 @@ MarshalType(unsigned long, ulong)
 %include "FunctionsLinux.hpp"
 %pragma(csharp) modulecode="}\n"
 
+// Array wrappers for structures
+MapArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
+MapArray(CExoArrayList<CSpell_Add *>, CExoArrayListCSpellAddPtr, CExoArrayListCSpellAddPtrArray)
+MapArray(CExoArrayList<CSpell_Delete *>, CExoArrayListCSpellDeletePtr, CExoArrayListCSpellDeletePtrArray)
+MapArray(CExoArrayList<ScriptParam>, CExoArrayListScriptParam, CExoArrayListScriptParamArray)
+MapArray(CExoArrayList<uint32_t>, CExoArrayListUInt32, CExoArrayListUInt32Array)
+MapArray(CExoString, CExoString, CExoStringArray);
+MapArray(CItemRepository*, CItemRepository, CItemRepositoryPtrArray);
+MapArray(CNWActionNode, CNWActionNode, CNWActionNodeArray);
+MapArray(CNWSCombatAttackData, CNWSCombatAttackData, CNWSCombatAttackDataArray);
+MapArray(CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfoArray);
+MapArray(CNWTileSet*, CNWTileSet, CNWTileSetPtrArray);
+MapArray(CObjectLookupTable*, CObjectLookupTable, CObjectLookupTablePtrArray);
+MapArray(CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntryArray);
+MapArray(CScriptParseTreeNode, CScriptParseTreeNode, CScriptParseTreeNodeArray);
+MapArray(CServerAIList, CServerAIList, CServerAIListArray);
+MapArray(CServerOptionLookup, CServerOptionLookup, CServerOptionLookupArray);
+MapArray(CTlkFile*, CTlkFile, CTlkFilePtrArray);
+MapArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptArray);
+MapArray(Vector, Vector, VectorArray);
+
+MapArray(CNWSTile, CNWSTile, CNWSTileArray);
+
 %include "NWNXLib.i"
+
+// Array wrappers for structures
+DefineArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
+DefineArray(CExoArrayList<CSpell_Add *>, CExoArrayListCSpellAddPtr, CExoArrayListCSpellAddPtrArray)
+DefineArray(CExoArrayList<CSpell_Delete *>, CExoArrayListCSpellDeletePtr, CExoArrayListCSpellDeletePtrArray)
+DefineArray(CExoArrayList<ScriptParam>, CExoArrayListScriptParam, CExoArrayListScriptParamArray)
+DefineArray(CExoArrayList<uint32_t>, CExoArrayListUInt32, CExoArrayListUInt32Array)
+DefineArray(CExoString, CExoString, CExoStringArray);
+DefineArray(CItemRepository*, CItemRepository, CItemRepositoryPtrArray);
+DefineArray(CNWActionNode, CNWActionNode, CNWActionNodeArray);
+DefineArray(CNWSCombatAttackData, CNWSCombatAttackData, CNWSCombatAttackDataArray);
+DefineArray(CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfoArray);
+DefineArray(CNWTileSet*, CNWTileSet, CNWTileSetPtrArray);
+DefineArray(CObjectLookupTable*, CObjectLookupTable, CObjectLookupTablePtrArray);
+DefineArray(CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntryArray);
+DefineArray(CScriptParseTreeNode, CScriptParseTreeNode, CScriptParseTreeNodeArray);
+DefineArray(CServerAIList, CServerAIList, CServerAIListArray);
+DefineArray(CServerOptionLookup, CServerOptionLookup, CServerOptionLookupArray);
+DefineArray(CTlkFile*, CTlkFile, CTlkFilePtrArray);
+DefineArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptArray);
+DefineArray(Vector, Vector, VectorArray);
+
+DefineArray(CNWSTile, CNWSTile, CNWSTileArray);
