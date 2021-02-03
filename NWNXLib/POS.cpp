@@ -439,7 +439,7 @@ void InitializeHooks()
             if (success)
                 GetObjectStorage(pThis->m_parent)->Deserialize(str.CStr());
 
-            return s_UUIDSaveToGffHook->CallOriginal<bool>(pThis, pRes, pStruct);
+            return s_UUIDLoadFromGffHook->CallOriginal<bool>(pThis, pRes, pStruct);
         }, Hooks::Order::VeryEarly);
 }
 
