@@ -7,6 +7,18 @@
 #include "API/CGameObject.hpp"
 #include "API/CGameObjectArray.hpp"
 
+#include "API/CNWSStore.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSTrigger.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSAreaOfEffectObject.hpp"
+#include "API/CNWSWaypoint.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSSoundObject.hpp"
 
 namespace Optimizations {
 
@@ -51,6 +63,7 @@ static uint8_t Delete(void*, uint32_t id, CGameObject** ptr);
 static uint8_t GetGameObject(void*, uint32_t id, CGameObject** ptr);
 
 static void SyncWithGameGOA();
+static void SetupWrapperHooks();
 
 void GameObjectLookup() __attribute__((constructor));
 void GameObjectLookup()
@@ -113,6 +126,8 @@ static void Initialize(uint32_t nLogGameObjectCache)
     goa.m_nNextCharArrayID[InternalObject]   = 0x7FFFFFFF;
     goa.m_nNextObjectArrayID[ExternalObject] = 0x80000000;
     goa.m_nNextCharArrayID[ExternalObject]   = 0xFFFFFFFF;
+
+    SetupWrapperHooks();
 }
 
 
@@ -336,6 +351,113 @@ static void SyncWithGameGOA()
         pGameObjectArray->m_nNextCharArrayID[0] = goa.m_nNextCharArrayID[0];
         pGameObjectArray->m_nNextCharArrayID[1] = goa.m_nNextCharArrayID[1];
     }
+}
+
+static void SetupWrapperHooks()
+{
+    static auto s_GetGameObj = Hooks::HookFunction(Functions::_ZN13CServerExoApp13GetGameObjectEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CGameObject *
+        {
+            CGameObject *obj;
+            GetGameObject(nullptr, oid, &obj);
+            return obj;
+        }, Hooks::Order::Final);
+    static auto s_GetStore = Hooks::HookFunction(Functions::_ZN13CServerExoApp22GetStoreByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSStore*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Store ? static_cast<CNWSStore*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetItem = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetItemByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSItem*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Item ? static_cast<CNWSItem*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetCreature = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetCreatureByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSCreature*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Creature ? static_cast<CNWSCreature*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetModule = Hooks::HookFunction(Functions::_ZN13CServerExoApp23GetModuleByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSModule*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Module ? static_cast<CNWSModule*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetArea = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetAreaByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSArea*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Area ? static_cast<CNWSArea*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetTrigger = Hooks::HookFunction(Functions::_ZN13CServerExoApp24GetTriggerByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSTrigger*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Trigger ? static_cast<CNWSTrigger*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetPlaceable = Hooks::HookFunction(Functions::_ZN13CServerExoApp26GetPlaceableByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSPlaceable*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Placeable ? static_cast<CNWSPlaceable*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetDoor = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetDoorByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSDoor*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Door ? static_cast<CNWSDoor*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetAreaOfEffect = Hooks::HookFunction(Functions::_ZN13CServerExoApp29GetAreaOfEffectByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSAreaOfEffectObject*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::AreaOfEffect ? static_cast<CNWSAreaOfEffectObject*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetWaypoint = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetWaypointByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSWaypoint*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Waypoint ? static_cast<CNWSWaypoint*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetEncounter = Hooks::HookFunction(Functions::_ZN13CServerExoApp26GetEncounterByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSEncounter*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Encounter ? static_cast<CNWSEncounter*>(obj) : nullptr;
+        }, Hooks::Order::Final);
+    static auto s_GetSoundObject = Hooks::HookFunction(Functions::_ZN13CServerExoApp28GetSoundObjectByGameObjectIDEj,
+        (void*)+[](CServerExoApp*, ObjectID oid) -> CNWSSoundObject*
+        {
+            CGameObject* obj;
+            if (GetGameObject(nullptr, oid, &obj) != Success)
+                return nullptr;
+            return obj->m_nObjectType == Constants::ObjectType::Sound ? static_cast<CNWSSoundObject*>(obj) : nullptr;
+        }, Hooks::Order::Final);
 }
 
 }
