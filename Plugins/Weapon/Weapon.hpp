@@ -22,6 +22,12 @@ struct DevastatingCriticalDataStr
     bool     bBypass;
 };
 
+struct MaxRangedAttackDistanceOverride
+{
+    float maxRangedAttackDistance;
+    float maxRangedPassiveAttackDistance;
+};
+
 using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Weapon {
@@ -53,6 +59,7 @@ private:
     ArgumentStack SetEventData                         (ArgumentStack&& args);
     ArgumentStack SetOneHalfStrength                   (ArgumentStack&& args);
     ArgumentStack GetOneHalfStrength                   (ArgumentStack&& args);
+    ArgumentStack SetMaxRangedAttackDistanceOverride   (ArgumentStack&& args);
 
     NWNXLib::Hooks::Hook m_GetWeaponFocusHook;
     NWNXLib::Hooks::Hook m_GetEpicWeaponFocusHook;
@@ -114,5 +121,7 @@ private:
     int m_GreaterFocusAttackBonus = 1;
     int m_GreaterWeaponSpecializationDamageBonus = 2;
     bool m_GASling = false;
+
+    std::unordered_map<uint32_t, MaxRangedAttackDistanceOverride> m_MaxRangedAttackDistanceOverrideMap;
 };
 }

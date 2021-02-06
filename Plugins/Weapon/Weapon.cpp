@@ -50,6 +50,7 @@ Weapon::Weapon(Services::ProxyServiceList* services)
     REGISTER(SetEventData);
     REGISTER(SetOneHalfStrength);
     REGISTER(GetOneHalfStrength);
+    REGISTER(SetMaxRangedAttackDistanceOverride);
 
 #undef REGISTER
 
@@ -1322,6 +1323,57 @@ ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
     }
 
     return Events::Arguments(retVal);
+}
+
+ArgumentStack Weapon::SetMaxRangedAttackDistanceOverride(ArgumentStack&& args)
+{
+    static Hooks::Hook s_MaxAttackRangeHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14MaxAttackRangeEjii,
+        (void*)+[](CNWSCreature *pCreature, ObjectID oidTarget, BOOL bBaseValue, BOOL bPassiveRange) -> float
+        {
+            if (auto *pEquippedWeapon = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand))
+            {
+                if (auto *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pEquippedWeapon->m_nBaseItem))
+                {
+                    if (pBaseItem->m_nWeaponRanged > 0)
+                    {
+                        auto mrado = g_plugin->m_MaxRangedAttackDistanceOverrideMap.find(pEquippedWeapon->m_nBaseItem);
+
+                        if (bPassiveRange)
+                            return mrado != g_plugin->m_MaxRangedAttackDistanceOverrideMap.end() ? mrado->second.maxRangedPassiveAttackDistance : 20.0f;
+                        else
+                            return mrado != g_plugin->m_MaxRangedAttackDistanceOverrideMap.end() ? mrado->second.maxRangedAttackDistance : 40.0f;
+                    }
+                }
+            }
+
+            return pCreature->DesiredAttackRange(oidTarget, bBaseValue) + 1.5f;
+        }, Hooks::Order::Final);
+
+    const auto baseItemId = args.extract<int32_t>();
+      ASSERT_OR_THROW(baseItemId >= Constants::BaseItem::MIN);
+      ASSERT_OR_THROW(baseItemId <= Constants::BaseItem::MAX);
+    const auto maxRangedAttackDistance = args.extract<float>();
+      ASSERT_OR_THROW(maxRangedAttackDistance >= 0.0f);
+    const auto maxRangedPassiveAttackDistance = args.extract<float>();
+      ASSERT_OR_THROW(maxRangedPassiveAttackDistance >= 0.0f);
+    const auto preferredAttackDistance = args.extract<float>();
+      ASSERT_OR_THROW(preferredAttackDistance >= 0.0f);
+
+    if (auto *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItemId))
+    {
+        if (pBaseItem->m_nWeaponRanged > 0)
+        {
+            pBaseItem->m_fPreferredAttackDist = preferredAttackDistance;
+
+            MaxRangedAttackDistanceOverride mrado{};
+            mrado.maxRangedAttackDistance = maxRangedAttackDistance;
+            mrado.maxRangedPassiveAttackDistance = maxRangedPassiveAttackDistance;
+
+            m_MaxRangedAttackDistanceOverrideMap[baseItemId] = mrado;
+        }
+    }
+
+    return {};
 }
 
 }
