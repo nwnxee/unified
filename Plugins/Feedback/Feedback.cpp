@@ -69,6 +69,11 @@ void Feedback::SendFeedbackMessageHook(CNWSCreature *pCreature, uint16_t nFeedba
     {
         s_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pMessageData, pFeedbackPlayer);
     }
+    else
+    {
+        // SendFeedbackMessage passes ownership of pData
+        delete pMessageData;
+    }
 }
 
 int32_t Feedback::SendServerToPlayerCCMessageHook(CNWSMessage *pMessage, uint32_t nPlayerId, uint8_t nMinor, CNWCCMessageData *pMessageData, CNWSCombatAttackData *pAttackData)

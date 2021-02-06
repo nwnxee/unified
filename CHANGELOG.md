@@ -51,7 +51,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Feedback: Fixed a memory leak when suppressing messages.
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.16...build8193.20
