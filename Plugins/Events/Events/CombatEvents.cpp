@@ -7,6 +7,7 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSCombatRound.hpp"
+#include "API/CNWCCMessageData.hpp"
 #include "Events.hpp"
 
 namespace Events {
@@ -18,6 +19,7 @@ using namespace NWNXLib::Services;
 static Hooks::Hook s_StartCombatRoundHook;
 static Hooks::Hook s_ApplyDisarmHook;
 static Hooks::Hook s_SendServerToPlayerAmbientBattleMusicPlayHook;
+static Hooks::Hook s_SendFeedbackMessageHook;
 
 CombatEvents::CombatEvents()
 {
@@ -33,6 +35,11 @@ CombatEvents::CombatEvents()
         s_SendServerToPlayerAmbientBattleMusicPlayHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji,
                 (void*)&SendServerToPlayerAmbientBattleMusicPlayHook, Hooks::Order::Earliest);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_COMBAT_DR_BROKEN.*", []() {
+        s_SendFeedbackMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
+                (void*)&SendFeedbackMessageHook, Hooks::Order::Earliest);
     });
 }
 
@@ -92,6 +99,24 @@ int32_t CombatEvents::SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage *
     }
 
     return s_SendServerToPlayerAmbientBattleMusicPlayHook->CallOriginal<int32_t>(pMessage, nPlayer, bPlay);
+}
+
+void CombatEvents::SendFeedbackMessageHook(CNWSCreature *pCreature, uint16_t nFeedbackID, CNWCCMessageData *pMessageData , CNWSPlayer *pFeedbackPlayer)
+{
+    if (!pMessageData ||
+        (nFeedbackID != 66 /*DAMAGE_RESISTANCE_REMAINING*/ && nFeedbackID != 67 /*DAMAGE_REDUCTION_REMAINING*/) ||
+        pCreature->m_idSelf != pMessageData->GetObjectID(0) ||
+        pMessageData->GetInteger(2)/*Remaining DR*/ != 0)
+    {
+        s_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pMessageData, pFeedbackPlayer);
+        return;
+    }
+
+    Events::PushEventData("TYPE", std::to_string(nFeedbackID == 66 ? 1 : 0));
+    Events::SignalEvent("NWNX_ON_COMBAT_DR_BROKEN_BEFORE", pCreature->m_idSelf);
+    s_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pMessageData, pFeedbackPlayer);
+    Events::PushEventData("TYPE", std::to_string(nFeedbackID == 66 ? 1 : 0));
+    Events::SignalEvent("NWNX_ON_COMBAT_DR_BROKEN_AFTER", pCreature->m_idSelf);
 }
 
 }
