@@ -46,7 +46,6 @@ static struct alignas(64)
     uint32_t       m_nNextObjectArrayID[2];
     uint32_t       m_nNextCharArrayID[2];
     ObjectNode*    m_pArray;
-    uint8_t*       m_pArrayUnaligned;
 } goa;
 
 
@@ -109,10 +108,9 @@ static void Initialize(uint32_t nLogGameObjectCache)
 
     // Make sure the allocation is properly aligned on a 4k page boundary
     const size_t array_size = goa.m_nArraySize * sizeof(ObjectNode);
-    goa.m_pArrayUnaligned = new uint8_t[array_size + 0x1000];
-    goa.m_pArray = (ObjectNode*)(((uintptr_t)goa.m_pArrayUnaligned + 0xFFF) & ~(0xFFFull));
-
+    goa.m_pArray = (ObjectNode*)aligned_alloc(0x1000, array_size);
     memset(goa.m_pArray, 0, array_size);
+
     for (uint32_t i = 0; i < goa.m_nArraySize; i++)
     {
         for (uint32_t j = 0; j < ObjectsInNode; j++)
@@ -138,7 +136,7 @@ static void Finalize()
         while (goa.m_pArray[index].m_objectPtr[0])
             delete goa.m_pArray[index].m_objectPtr[0];
     }
-    delete[] goa.m_pArrayUnaligned;
+    free(goa.m_pArray);
 }
 
 static uint32_t GetNextID(void*, BOOL bInternal, BOOL bCharacter)
