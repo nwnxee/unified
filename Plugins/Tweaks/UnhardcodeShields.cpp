@@ -19,11 +19,11 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 
-static Hooks::Hook s_ComputeArmorClassHook;
-static Hooks::Hook s_ComputeArmourClassHook;
+static Hooks::Hook s_CNWSItemItemComputeArmorClassHook;
+static Hooks::Hook s_CNWSCreatureComputeArmourClassHook;
 
-static int32_t ComputeArmorClassHook(CNWSItem*);
-static void ComputeArmourClassHook(CNWSCreature*, CNWSItem*, BOOL, BOOL);
+static int32_t CNWSItem_ComputeArmorClassHook(CNWSItem*);
+static void CNWSCreature_ComputeArmourClassHook(CNWSCreature*, CNWSItem*, BOOL, BOOL);
 
 void UnhardcodeShields() __attribute__((constructor));
 void UnhardcodeShields()
@@ -33,13 +33,13 @@ void UnhardcodeShields()
 
     LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
 
-    s_ComputeArmorClassHook = Hooks::HookFunction(Functions::_ZN8CNWSItem17ComputeArmorClassEv,
-                                                  (void*)&ComputeArmorClassHook, Hooks::Order::Final);
-    s_ComputeArmourClassHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ComputeArmourClassEP8CNWSItemii,
-                                                   (void*)&ComputeArmourClassHook, Hooks::Order::Late);
+    s_CNWSItemItemComputeArmorClassHook = Hooks::HookFunction(Functions::_ZN8CNWSItem17ComputeArmorClassEv,
+                                                  (void*)&CNWSItem_ComputeArmorClassHook, Hooks::Order::Final);
+    s_CNWSCreatureComputeArmourClassHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ComputeArmourClassEP8CNWSItemii,
+                                                   (void*)&CNWSCreature_ComputeArmourClassHook, Hooks::Order::Late);
 }
 
-static int32_t ComputeArmorClassHook(CNWSItem* thisPtr)
+static int32_t CNWSItem_ComputeArmorClassHook(CNWSItem* thisPtr)
 {
     auto pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(thisPtr->m_nBaseItem);
     int32_t nAC;
@@ -57,9 +57,9 @@ static int32_t ComputeArmorClassHook(CNWSItem* thisPtr)
     return nAC;
 }
 
-static void ComputeArmourClassHook(CNWSCreature* thisPtr, CNWSItem* pItemToEquip, BOOL bEquipping, BOOL bLoadingItem)
+static void CNWSCreature_ComputeArmourClassHook(CNWSCreature* thisPtr, CNWSItem* pItemToEquip, BOOL bEquipping, BOOL bLoadingItem)
 {
-    s_ComputeArmourClassHook->CallOriginal<void>(thisPtr, pItemToEquip, bEquipping, bLoadingItem);
+    s_CNWSCreatureComputeArmourClassHook->CallOriginal<void>(thisPtr, pItemToEquip, bEquipping, bLoadingItem);
 
     if (!bEquipping ||
         pItemToEquip->m_nBaseItem == Constants::BaseItem::SmallShield ||
