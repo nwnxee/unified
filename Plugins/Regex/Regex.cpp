@@ -1,59 +1,32 @@
-#include "Regex.hpp"
+#include "nwnx.hpp"
 
-
-#include <string>
-#include <stdio.h>
 #include <regex>
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
+using ArgumentStack = Events::ArgumentStack;
 
-static Regex::Regex* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new Regex::Regex(services);
-    return g_plugin;
-}
 
 namespace Regex {
 
-Regex::Regex(Services::ProxyServiceList* services)
-    : Plugin(services)
+NWNX_EXPORT ArgumentStack Search(ArgumentStack&& args)
 {
-
-#define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(Search);
-    REGISTER(Replace);
-
-#undef REGISTER
-
-}
-
-Regex::~Regex()
-{
-}
-
-ArgumentStack Regex::Search(ArgumentStack&& args)
-{
-    const auto str = Events::ExtractArgument<std::string>(args);
-    const auto regex = Events::ExtractArgument<std::string>(args);
+    const auto str = args.extract<std::string>();
+    const auto regex = args.extract<std::string>();
 
     std::regex rgx(regex);
     const auto retVal = std::regex_search(str, rgx);
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
-ArgumentStack Regex::Replace(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Replace(ArgumentStack&& args)
 {
-    const auto str = Events::ExtractArgument<std::string>(args);
-    const auto regex = Events::ExtractArgument<std::string>(args);
-    const auto rpl = Events::ExtractArgument<std::string>(args);
-    const auto firstOnly = Events::ExtractArgument<int32_t>(args);
+    const auto str = args.extract<std::string>();
+    const auto regex = args.extract<std::string>();
+    const auto rpl = args.extract<std::string>();
+    const auto firstOnly = args.extract<int32_t>();
 
     std::regex rgx(regex);
     std::string retVal;
@@ -62,7 +35,7 @@ ArgumentStack Regex::Replace(ArgumentStack&& args)
     else
         retVal = std::regex_replace(str, rgx, rpl);
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
 }
