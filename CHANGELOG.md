@@ -20,6 +20,10 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions
+- Admin: {Get/Set}MinLevel()
+- Admin: {Get/Set}MaxLevel()
+- Area: NWNX_Area_GetAmbientSound{Day/Night}()
+- Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
 - Creature: {Get/Set}PersonalSpace()
@@ -30,14 +34,11 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Encounter: {Get/Set}CanReset()
+- Object: {Get|Set}AILevel()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
 - Util: NWNX_Util_GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
-- Area: NWNX_Area_GetAmbientSound{Day/Night}()
-- Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
-- Admin: {Get/Set}MinLevel()
-- Admin: {Get/Set}MaxLevel()
-- Object: {Get|Set}AILevel()
+- Weapon: SetMaxRangedAttackDistanceOverride()
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
