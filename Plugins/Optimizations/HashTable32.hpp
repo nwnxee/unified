@@ -56,8 +56,10 @@ struct HashTable32
         }
     }
 
-    inline TopLevelNode& GetNode(uint32_t id) { return m_array[id & (BucketCount-1)]; }
-    inline void PrefetchNode(uint32_t id) { PREFETCH(&m_array[id & (BucketCount-1)]); }
+    inline uint32_t GetBucketCount() const { return BucketCount; }
+
+    inline TopLevelNode& GetNode(uint32_t id) const { return m_array[id & (BucketCount-1)]; }
+    inline void PrefetchNode(uint32_t id) const { PREFETCH(&m_array[id & (BucketCount-1)]); }
 
     bool Add(uint32_t id, T* ptr)
     {
@@ -109,8 +111,8 @@ struct HashTable32
                 const uint32_t movecnt = ItemsInNode - i - 1;
                 if (movecnt > 0)
                 {
-                    memmove(&node.m_ids[i],  &node.m_ids[i-1],  movecnt * sizeof(id));
-                    memmove(&node.m_ptrs[i], &node.m_ptrs[i-1], movecnt * sizeof(ptr));
+                    memmove(&node.m_ids[i],  &node.m_ids[i+1],  movecnt * sizeof(id));
+                    memmove(&node.m_ptrs[i], &node.m_ptrs[i+1], movecnt * sizeof(ptr));
                 }
                 if (node.m_vecSize > 0)
                 {
