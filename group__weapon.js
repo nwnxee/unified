@@ -27,6 +27,7 @@ var group__weapon =
     [ "NWNX_Weapon_BypassDevastatingCritical", "group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73", null ],
     [ "NWNX_Weapon_SetOneHalfStrength", "group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c", null ],
     [ "NWNX_Weapon_GetOneHalfStrength", "group__weapon.html#ga3656299a57ac60f31a0139b569319478", null ],
+    [ "NWNX_Weapon_SetMaxRangedAttackDistanceOverride", "group__weapon.html#gab6f2ce92fc80b5deac9c83c06a0b294c", null ],
     [ "NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS", "group__weapon.html#ga8b44b89c281c98729d2afb1312dc8afe", null ],
     [ "NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS", "group__weapon.html#gac044782b4fc6b0035aa9b499c0d8aa66", null ],
     [ "NWNX_WEAPON_GETDATA_DC", "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0", null ],
