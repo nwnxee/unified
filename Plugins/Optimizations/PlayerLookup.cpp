@@ -17,6 +17,7 @@ static Hooks::Hook s_DestroyPlayer0;
 static Hooks::Hook s_DestroyPlayer1;
 static Hooks::Hook s_GetIsDM;
 static Hooks::Hook s_GetIsPlayerDM;
+static Hooks::Hook s_GetClientObjectByObjectId;
 
 static void SetGameObject(CNWSPlayer* pThis, CNWSObject *pObject);
 static void DestroyPlayer0(CNWSPlayer* pThis);
@@ -24,6 +25,8 @@ static void DestroyPlayer1(CNWSPlayer* pThis);
 
 static BOOL GetIsDM(CNWSCreatureStats* pThis) __attribute__((hot));
 static BOOL GetIsPlayerDM(CNWSCreatureStats* pThis);
+
+static CNWSPlayer* GetClientObjectByObjectId(CServerExoApp*, uint32_t nObjectId) __attribute__((hot));
 
 void PlayerLookup() __attribute__((constructor));
 void PlayerLookup()
@@ -39,6 +42,8 @@ void PlayerLookup()
 
         s_GetIsDM        = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7GetIsDMEv, (void*)GetIsDM, Hooks::Order::Final);
         s_GetIsPlayerDM  = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetIsPlayerDMEv, (void*)GetIsPlayerDM, Hooks::Order::Final);
+        
+        s_GetClientObjectByObjectId  = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetClientObjectByObjectIdEj, (void*)GetClientObjectByObjectId, Hooks::Order::Final);
     }
 }
 
@@ -80,6 +85,11 @@ static BOOL GetIsPlayerDM(CNWSCreatureStats* pThis)
         return player->GetIsPlayerDM();
 
     return false;
+}
+
+static CNWSPlayer* GetClientObjectByObjectId(CServerExoApp*, uint32_t nObjectId)
+{
+    return s_playerobjects.Get(nObjectId);
 }
 
 }
