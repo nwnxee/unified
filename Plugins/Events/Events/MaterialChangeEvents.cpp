@@ -48,8 +48,8 @@ void MaterialChangeEvents::SetPositionHook(CNWSObject* thisPtr, Vector vPosition
             return;
         }
     }
-    else
-        s_SetPositionHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
+
+    s_SetPositionHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
 }
 
 }
