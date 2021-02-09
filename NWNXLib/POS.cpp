@@ -270,11 +270,11 @@ void Set(CGameObject *pGameObject, const std::string& prefix, const std::string&
     if (auto *pOS = GetObjectStorage(pGameObject))
         pOS->GetStringMap()[fullkey] = std::make_pair<>(std::move(value), persist);
 }
-void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, void *value, CleanupFunc cleanup)
+void Set(CGameObject *pGameObject, const std::string& prefix, const std::string& key, void *value, std::optional<CleanupFunc> cleanup)
 {
     auto fullkey = prefix + "!" + key;
     if (auto *pOS = GetObjectStorage(pGameObject))
-        pOS->GetPointerMap()[fullkey] = std::make_pair<>(value, cleanup);
+        pOS->GetPointerMap()[fullkey] = std::make_pair<>(value, cleanup.value_or(nullptr));
 }
 
 
@@ -457,7 +457,7 @@ void CGameObject::nwnxSet(const std::string& key, std::string value, bool persis
 {
     POS::Set(this, pn, key, value, persist);
 }
-void CGameObject::nwnxSet(const std::string& key, void *value, CleanupFunc cleanup, const char *pn)
+void CGameObject::nwnxSet(const std::string& key, void *value, std::optional<CleanupFunc> cleanup, const char *pn)
 {
     POS::Set(this, pn, key, value, cleanup);
 }
