@@ -27,12 +27,12 @@ struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_ownin
 #define DataBlockRef std::shared_ptr<DataBlock>
 
 #define NWN_CLASS_EXTENSION_CGameObject \
-    using CleanupFunc = std::optional<std::function<void(void*)>>;                                               \
-    void nwnxSet(const std::string& key, int value, bool persist = false, const char *pn = PLUGIN_NAME);         \
-    void nwnxSet(const std::string& key, float value, bool persist = false, const char *pn = PLUGIN_NAME);       \
-    void nwnxSet(const std::string& key, std::string value, bool persist = false, const char *pn = PLUGIN_NAME); \
-    void nwnxSet(const std::string& key, void *value, CleanupFunc cleanup, const char *pn = PLUGIN_NAME);        \
-    template <typename T> std::optional<T> nwnxGet(const std::string& key, const char *pn = PLUGIN_NAME);        \
-    void nwnxRemove(const std::string& key, const char *pn = PLUGIN_NAME);                                       \
-    void nwnxRemoveRegex(const std::string& regex, const char *pn = PLUGIN_NAME);                                \
+    using CleanupFunc = std::function<void(void*)>;                                                                         \
+    void nwnxSet(const std::string& key, int value, bool persist = false, const char *pn = PLUGIN_NAME);                    \
+    void nwnxSet(const std::string& key, float value, bool persist = false, const char *pn = PLUGIN_NAME);                  \
+    void nwnxSet(const std::string& key, std::string value, bool persist = false, const char *pn = PLUGIN_NAME);            \
+    void nwnxSet(const std::string& key, void *value, std::optional<CleanupFunc> cleanup, const char *pn = PLUGIN_NAME);    \
+    template <typename T> std::optional<T> nwnxGet(const std::string& key, const char *pn = PLUGIN_NAME);                   \
+    void nwnxRemove(const std::string& key, const char *pn = PLUGIN_NAME);                                                  \
+    void nwnxRemoveRegex(const std::string& regex, const char *pn = PLUGIN_NAME);                                           \
 
