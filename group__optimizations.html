@@ -111,6 +111,12 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_ASYNC_LOG_FLUSH</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Flushes the game log on an async thread, potentially improving performance  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_GAME_OBJECT_LOOKUP</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Optimizes object lookup code, improving performance  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_PLAYER_LOOKUP</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Optimizes Player client lookup from object IDs, improving performance  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_LUO_LOOKUP</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Optimizes LastUpdateObject lookup code, improving performance  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_ALTERNATE_GAME_OBJECT_UPDATE</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Uses an experimental alternative update mechanism. Requires <code>LUO_LOOKUP</code>.  </td></tr>
 </table>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
@@ -118,7 +124,7 @@ Environment Variables</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Feb 7 2021 11:26:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Feb 13 2021 16:46:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
