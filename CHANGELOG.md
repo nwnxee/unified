@@ -15,6 +15,8 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
 - DotNET: Added native function hook support.
+- Optimizations: Added `LuoLookup` optimization that speeds up per-player object updates.
+- Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
 
 ##### New Plugins
 - SWIG: Native Interop support added for DotNET.
@@ -44,6 +46,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
 - Race: SetFavoredEnemyFeat() now supports multiple feats per race.
 - Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
+- Optimizations: `GameObjectLookup` no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).
 
 ### Deprecated
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
