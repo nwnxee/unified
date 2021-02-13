@@ -5,6 +5,8 @@
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSPlaceable.hpp"
 
 namespace Optimizations {
 
@@ -14,6 +16,8 @@ using namespace NWNXLib::API;
 using LuoTable = HashTable32<CLastUpdateObject>;
 static HashTable32<LuoTable> s_playerluo;
 
+static float s_UpdateDistances[Constants::ObjectType::MAX + 1];
+
 
 static Hooks::Hook s_GetLastUpdateObject;
 static Hooks::Hook s_CreateNewLastUpdateObject;
@@ -22,6 +26,7 @@ static Hooks::Hook s_DeleteLastUpdateObjectsForObject;
 static Hooks::Hook s_DeleteLastUpdateObjectsInOtherAreas;
 static Hooks::Hook s_DestroyPlayer0;
 static Hooks::Hook s_DestroyPlayer1;
+static Hooks::Hook s_SendServerToPlayerGameObjUpdate;
 static CLastUpdateObject* GetLastUpdateObject(CNWSPlayer*, ObjectID) __attribute__((hot));
 static CLastUpdateObject* CreateNewLastUpdateObject(CNWSMessage*, CNWSPlayer*, CNWSObject*, uint32_t*, uint32_t*);
 static void TestObjectUpdateDifferences(CNWSMessage*, CNWSPlayer*, CNWSObject*, CLastUpdateObject**, uint32_t*, uint32_t*);
@@ -30,6 +35,8 @@ static void DeleteLastUpdateObjectsForObject(CNWSMessage*, CNWSPlayer*, OBJECT_I
 static void DeleteLastUpdateObjectsInOtherAreas(CNWSMessage*, CNWSPlayer*);
 static void DestroyPlayer0(CNWSPlayer* pThis);
 static void DestroyPlayer1(CNWSPlayer* pThis);
+static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage*, CNWSPlayer*, ObjectID);
+
 
 void LuoLookup() __attribute__((constructor));
 void LuoLookup()
@@ -47,6 +54,18 @@ void LuoLookup()
         s_TestObjectUpdateDifferences         = Hooks::HookFunction(Functions::_ZN11CNWSMessage27TestObjectUpdateDifferencesEP10CNWSPlayerP10CNWSObjectPP17CLastUpdateObjectPjS7_, (void*)TestObjectUpdateDifferences, Hooks::Order::Final);
         s_DeleteLastUpdateObjectsForObject    = Hooks::HookFunction(Functions::_ZN11CNWSMessage32DeleteLastUpdateObjectsForObjectEP10CNWSPlayerj, (void*)DeleteLastUpdateObjectsForObject, Hooks::Order::Final);
         s_DeleteLastUpdateObjectsInOtherAreas = Hooks::HookFunction(Functions::_ZN11CNWSMessage35DeleteLastUpdateObjectsInOtherAreasEP10CNWSPlayer, (void*)DeleteLastUpdateObjectsInOtherAreas, Hooks::Order::Final);
+
+        if (Config::Get<bool>("ALTERNATE_GAME_OBJECT_UPDATE", false))
+        {
+            LOG_INFO("Using alternative game object update mechanism");
+            s_SendServerToPlayerGameObjUpdate = Hooks::HookFunction(Functions::_ZN11CNWSMessage31SendServerToPlayerGameObjUpdateEP10CNWSPlayerj, (void*)SendServerToPlayerGameObjUpdate, Hooks::Order::Final);
+
+            auto dist = Config::Get<float>("OBJECT_UPDATE_DISTANCE", 45.0);
+            LOG_INFO("Object update distance is %f", dist);
+
+            for (int32_t i = 0; i <= Constants::ObjectType::MAX; i++)
+                s_UpdateDistances[i] = dist * dist;
+        }
     }
 }
 
@@ -132,7 +151,7 @@ static void MessageDeleteLuo(CNWSMessage* msg, CLastUpdateObject* luo, CNWSPlaye
 static void DeleteLastUpdateObjectsForObject(CNWSMessage* pThis, CNWSPlayer *pPlayer, OBJECT_ID oidTargetToRemove)
 {
     // Never remove yourself..
-    if (pPlayer->GetGameObject()->m_idSelf == oidTargetToRemove)
+    if (pPlayer->m_oidNWSObject == oidTargetToRemove)
         return;
 
     if (auto* luo = GetLastUpdateObject(pPlayer, oidTargetToRemove))
@@ -152,7 +171,7 @@ static void DeleteLastUpdateObjectsInOtherAreas(CNWSMessage* pThis, CNWSPlayer *
     auto oidDesiredArea   = pPlayerCreature ? pPlayerCreature->m_oidDesiredArea : Constants::OBJECT_INVALID;
 
     // if we're in some weird state where this is true, just delete everything
-    bool bDeleteAll = !pPlayerCreature || (oidArea == Constants::OBJECT_INVALID && oidDesiredArea == Constants::OBJECT_INVALID);
+    bool bDeleteAll = (oidArea == Constants::OBJECT_INVALID && oidDesiredArea == Constants::OBJECT_INVALID);
 
     auto DeleteSingleLuo = [&](CLastUpdateObject* luo) -> bool
     {
@@ -190,6 +209,134 @@ static void DeleteLastUpdateObjectsInOtherAreas(CNWSMessage* pThis, CNWSPlayer *
                 i--;
         }
     }
+}
+
+static inline void UpdateSingleObject(CNWSMessage* msg, CNWSPlayer* player, CNWSObject* pPlayerObj, CNWSObject *obj)
+{
+    if (msg->TestObjectVisible(obj, pPlayerObj))
+    {
+        CLastUpdateObject* luo;
+        uint32_t update = 0, appearance = 0;
+        msg->TestObjectUpdateDifferences(player, obj, &luo, &update, &appearance);
+        if (update || appearance)
+        {
+            msg->WriteGameObjUpdate_UpdateObject(player, obj, luo, update, appearance);
+        }
+        msg->StoreValuesInLastUpdateObject(player, luo, obj, update, appearance);
+    }
+    else
+    {
+        msg->DeleteLastUpdateObjectsForObject(player, obj->m_idSelf);
+    }
+}
+
+static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage* msg, CNWSPlayer *pPlayer, ObjectID)
+{
+    auto* pPlayerObj = Utils::AsNWSCreature(pPlayer->GetGameObject());
+    if (!pPlayerObj)
+        return false;
+
+    static uint32_t msgLimit = Config::Get<uint32_t>("GAMEOBJUPDATE_MESSAGE_LIMIT", 1024);
+    msg->CreateWriteMessage(msgLimit + 1024, pPlayer->m_nPlayerID, true);
+
+    DeleteLastUpdateObjectsInOtherAreas(msg, pPlayer);
+    auto& tbl = GetLuoTable(pPlayer);
+
+    CNWSArea* area = pPlayerObj->GetArea();
+    Vector vPos = pPlayerObj->m_vPosition;
+    if (!area)
+    {
+        area = Utils::AsNWSArea(Utils::GetGameObject(pPlayerObj->m_oidDesiredArea));
+        vPos = pPlayerObj->m_vDesiredAreaLocation;
+    }
+
+    const uint32_t specialStages = 30;
+    const uint32_t objectCount = area ? area->m_aGameObjects.num : 0;
+    const uint32_t totalStages = specialStages + objectCount;
+
+    uint32_t stage = 0;
+    while (msg->PeekAtWriteMessageSize() < msgLimit && stage != totalStages)
+    {
+        switch (stage)
+        {
+            case 0:
+            {
+                UpdateSingleObject(msg, pPlayer, pPlayerObj, pPlayerObj);
+                stage += 10;
+                break;
+            }
+            case 10:
+            {
+                msg->WriteGameObjUpdate_MajorGUIPanels(pPlayer);
+                stage += 10;
+                break;
+            }
+            case 20:
+            {
+                if (pPlayer->GetIsDM() && !pPlayer->GetIsPlayerDM())
+                    msg->WriteGameObjUpdate_DungeonMasterAIState(pPlayer);
+                else
+                    msg->WriteGameObjUpdate_PartyAIState(pPlayer);
+                stage += 10;
+                break;
+            }
+            default:
+            {
+                // ASSERT(area); // This really should not be possible.
+                auto ShouldUpdateObject = [&](CNWSObject* obj) -> bool
+                {
+                    if (tbl.Get(obj->m_idSelf))
+                        return true;
+
+                    if (auto* plc = Utils::AsNWSPlaceable(obj))
+                        if (plc->m_bStaticObject)
+                            return false;
+
+                    float x = obj->m_vPosition.x - vPos.x;
+                    float y = obj->m_vPosition.y - vPos.y;
+                    return (x*x + y*y) <= s_UpdateDistances[obj->m_nObjectType];
+                };
+
+                auto index = stage - specialStages;
+                if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(area->m_aGameObjects[index])))
+                {
+                    if (ShouldUpdateObject(obj))
+                        UpdateSingleObject(msg, pPlayer, pPlayerObj, obj);
+                }
+                stage++;
+                break;
+            }
+        }
+    }
+
+    msg->WriteGameObjUpdate_WorkRemaining(pPlayerObj, pPlayerObj->GetArea(), stage, totalStages);
+
+    uint8_t *pMessage;
+    uint32_t nSize;
+    if (msg->GetWriteMessage(&pMessage, &nSize))
+    {
+        if (nSize)
+        {
+            return msg->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                       Constants::MessageMajor::GameObjectUpdate,
+                       Constants::MessageGameObjectUpdateMinor::ObjectList,
+                       pMessage, nSize);
+        }
+        return true;
+    }
+    return false;
+}
+
+// No nwscript export, call it manually.
+extern "C" Events::ArgumentStack SetObjectUpdateDistance(Events::ArgumentStack&& args)
+{
+    const auto dist = args.extract<float>();
+    const auto objtype = args.extract<int32_t>();
+      ASSERT_OR_THROW(objtype >= 0);
+      ASSERT_OR_THROW(objtype <= Constants::ObjectType::MAX);
+
+    s_UpdateDistances[objtype] = dist * dist;
+    return {};
 }
 
 
