@@ -250,7 +250,7 @@ static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage* msg, CNWSPlayer *pPlaye
         vPos = pPlayerObj->m_vDesiredAreaLocation;
     }
 
-    const uint32_t specialStages = 30;
+    const uint32_t specialStages = 40;
     const uint32_t objectCount = area ? area->m_aGameObjects.num : 0;
     const uint32_t totalStages = specialStages + objectCount;
 
@@ -272,6 +272,12 @@ static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage* msg, CNWSPlayer *pPlaye
                 break;
             }
             case 20:
+            {
+                msg->WriteGameObjUpdate_MinorGUIPanels(pPlayer);
+                stage += 10;
+                break;
+            }
+            case 30:
             {
                 if (pPlayer->GetIsDM() && !pPlayer->GetIsPlayerDM())
                     msg->WriteGameObjUpdate_DungeonMasterAIState(pPlayer);
