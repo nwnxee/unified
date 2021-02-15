@@ -812,7 +812,7 @@ void Race::CreateDefaultQuickButtonsHook(CNWSCreature *pCreature)
 {
     SetOrRestoreRace(true, pCreature->m_pStats);
     s_CreateDefaultQuickButtonsHook->CallOriginal<void>(pCreature);
-    SetOrRestoreRace(true, pCreature->m_pStats);
+    SetOrRestoreRace(false, pCreature->m_pStats);
 }
 
 int32_t Race::LevelUpAutomaticHook(CNWSCreatureStats *pCreatureStats, uint8_t nClass, int32_t bReadyAllSpells, uint8_t nPackage)
