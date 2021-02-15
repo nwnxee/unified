@@ -253,6 +253,36 @@ static NAME* FromPointer(TYPE *ptr) {
 };
 %enddef
 
+%define DefineArrayPtr(TYPE, CSTYPE, NAME)
+%{
+typedef TYPE NAME;
+%}
+typedef struct {} NAME;
+
+%extend NAME {
+NAME(int nElements) {
+  return new TYPE[nElements]();
+}
+
+~NAME() {
+  delete [] self;
+}
+
+TYPE* GetItem(int index) {
+  return &self[index];
+}
+
+void SetItem(int index, TYPE* value) {
+  self[index] = *value;
+}
+
+static NAME* FromPointer(TYPE *ptr) {
+  return (NAME *) ptr;
+}
+
+};
+%enddef
+
 // Expose Managed Constructor
 SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 
@@ -482,4 +512,4 @@ DefineArray(CTlkFile*, CTlkFile, CTlkFilePtrArray);
 DefineArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptArray);
 DefineArray(Vector, Vector, VectorArray);
 
-DefineArray(CNWSTile, CNWSTile, CNWSTileArray);
+DefineArrayPtr(CNWSTile, CNWSTile, CNWSTileArray);
