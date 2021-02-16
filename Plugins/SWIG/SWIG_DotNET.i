@@ -60,6 +60,14 @@
     }
   }
 
+  public static unsafe implicit operator void*($csclassname self) {
+    return (void*)self.swigCPtr.Handle;
+  }
+
+  public static implicit operator System.IntPtr($csclassname self) {
+    return self.swigCPtr.Handle;
+  }
+
   public bool Equals($csclassname other) {
     if (ReferenceEquals(null, other)) {
       return false;
@@ -94,6 +102,14 @@
     get {
       return swigCPtr.Handle;
     }
+  }
+
+  public static implicit operator void*($csclassname self) {
+    return (void*)self.swigCPtr.Handle;
+  }
+
+  public static implicit operator System.IntPtr($csclassname self) {
+    return self.swigCPtr.Handle;
   }
 
   public bool Equals($csclassname other) {
@@ -162,6 +178,26 @@
 %}
 %enddef
 
+%define MarshalPtrPtr(CTYPE, CSTYPE)
+%typemap(ctype)  CTYPE*,CTYPE& "CTYPE*"
+%typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
+%typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
+%typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
+%typemap(in)     CTYPE*,CTYPE& %{ $1 = $input; %}
+%typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
+
+%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& { 
+    System.IntPtr retVal = $imcall;$excode
+    return (CSTYPE*)retVal;
+  }
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{ 
+    get {
+        System.IntPtr retVal = $imcall;$excode 
+        return (CSTYPE*)retVal; 
+    }
+%}
+%enddef
+
 %define MapArray(TYPE, CSTYPE, NAME)
 %typemap(cstype) TYPE[ANY] "NAME"
 %typemap(csin)   TYPE[ANY] "NAME.getCPtr($csinput)"
@@ -191,6 +227,14 @@
     get {
       return swigCPtr.Handle;
     }
+  }
+
+  public static implicit operator void*($csclassname self) {
+    return (void*)self.swigCPtr.Handle;
+  }
+
+  public static implicit operator System.IntPtr($csclassname self) {
+    return self.swigCPtr.Handle;
   }
 
   public bool Equals($csclassname other) {
@@ -304,6 +348,57 @@ MarshalType(unsigned short int, ushort)
 MarshalType(unsigned int, uint)
 MarshalType(unsigned int*, uint*) //unsigned int**
 MarshalType(unsigned long, ulong)
+
+// Marshal pointer to pointer types.
+MarshalPtrPtr(C2DA*, void*)
+MarshalPtrPtr(CAppManager*, void*)
+MarshalPtrPtr(CCombatInformationNode*, void*)
+MarshalPtrPtr(CEffectIconObject*, void*)
+MarshalPtrPtr(CExoBase*, void*)
+MarshalPtrPtr(CExoResMan*, void*)
+MarshalPtrPtr(CExoKeyTable*, void*)
+MarshalPtrPtr(CExoLinkedListNode*, void*)
+MarshalPtrPtr(CExoPackedFile*, void*)
+MarshalPtrPtr(CExoString*, void*)
+MarshalPtrPtr(CFeatUseListEntry*, void*)
+MarshalPtrPtr(CGameEffect*, void*)
+MarshalPtrPtr(CGameObject*, void*)
+MarshalPtrPtr(CGameObjectArrayNode*, void*)
+MarshalPtrPtr(CItemRepository*, System.IntPtr)
+MarshalPtrPtr(CKeyTableEntry*, void*)
+MarshalPtrPtr(CLastUpdateObject*, void*)
+MarshalPtrPtr(CLastUpdatePartyObject*, void*)
+MarshalPtrPtr(CLoopingVisualEffect*, void*)
+MarshalPtrPtr(CNWCCMessageData*, void*)
+MarshalPtrPtr(CNWItemProperty*, void*)
+MarshalPtrPtr(CNWLevelStats*, void*)
+MarshalPtrPtr(CNWPlaceableSurfaceMesh*, void*)
+MarshalPtrPtr(CNWRules*, void*)
+MarshalPtrPtr(CNWSAreaGridSuccessors*, void*)
+MarshalPtrPtr(CNWSExpression*, void*)
+MarshalPtrPtr(CNWSFaction*, void*)
+MarshalPtrPtr(CNWSItem*, void*)
+MarshalPtrPtr(CNWSObjectActionNode*, void*)
+MarshalPtrPtr(CNWSSpellScriptData*, void*)
+MarshalPtrPtr(CNWSStats_Spell*, void*)
+MarshalPtrPtr(CNWTileSet*, void*)
+MarshalPtrPtr(CNWVisibilityNode*, void*)
+MarshalPtrPtr(CObjectLookupTable*, void*)
+MarshalPtrPtr(CPathfindInfoIntraTileSuccessors*, void*)
+MarshalPtrPtr(CScriptCompiler*, void*)
+MarshalPtrPtr(CScriptLog*, void*)
+MarshalPtrPtr(CScriptParseTreeNode*, void*)
+MarshalPtrPtr(CSpell_Add*, void*)
+MarshalPtrPtr(CSpell_Delete*, void*)
+MarshalPtrPtr(CStoreCustomer*, void*)
+MarshalPtrPtr(CTlkFile*, void*)
+MarshalPtrPtr(CTlkTable*, void*)
+MarshalPtrPtr(CVirtualMachine*, void*)
+MarshalPtrPtr(CVirtualMachineScript*, void*)
+MarshalPtrPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
+MarshalPtrPtr(NWPlayerCharacterList_st*, void*)
+MarshalPtrPtr(SSubNetProfile*, void*)
+MarshalPtrPtr(Task::CExoTaskManager*, void*)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
