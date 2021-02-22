@@ -15,9 +15,11 @@ struct AttackDataStr
     int16_t  vDamage[13];
     uint8_t  nAttackNumber;
     uint8_t  nAttackResult;
-    uint8_t  nAttackType;
+    uint8_t  nAttackType;// TODO: Rename this to nWeaponAttackType some day, same for the nwscript struct
     uint8_t  nSneakAttack;
     uint8_t  bRanged;
+    int32_t  bKillingBlow;
+    uint16_t nAttackType_REAL;
 };
 
 namespace Damage {
