@@ -13,13 +13,14 @@ var searchData=
   ['bitfield_59',['BITFIELD',['../nwnx__redis__short_8nss.html#a8e9b0dcdd09694782a06d6498245db21',1,'nwnx_redis_short.nss']]],
   ['bitop_60',['BITOP',['../nwnx__redis__short_8nss.html#a30228c530313bcf1e01d89bcb8de1990',1,'nwnx_redis_short.nss']]],
   ['bitpos_61',['BITPOS',['../nwnx__redis__short_8nss.html#ae074f94aa4e0caa434041a0edaf5eb3c',1,'nwnx_redis_short.nss']]],
-  ['blinkleftvalid_62',['bLinkLeftValid',['../structNWNX__EffectUnpacked.html#a6616a557c8c9c73faa051ff023450212',1,'NWNX_EffectUnpacked']]],
-  ['blinkrightvalid_63',['bLinkRightValid',['../structNWNX__EffectUnpacked.html#a14f3744ff2467b6314841a0cd2e87350',1,'NWNX_EffectUnpacked']]],
-  ['blpop_64',['BLPOP',['../nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431',1,'nwnx_redis_short.nss']]],
-  ['brpop_65',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
-  ['brpoplpush_66',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
-  ['bshowicon_67',['bShowIcon',['../structNWNX__EffectUnpacked.html#a332fd2e3db2012dc15d2fff35b88332e',1,'NWNX_EffectUnpacked']]],
-  ['busable_68',['bUsable',['../structNWNX__IPUnpacked.html#aaa2c8bc13b51d3f6ceaf64e3b7fd5326',1,'NWNX_IPUnpacked']]],
-  ['bzpopmax_69',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
-  ['bzpopmin_70',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
+  ['bkillingblow_62',['bKillingBlow',['../structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d',1,'NWNX_Damage_AttackEventData']]],
+  ['blinkleftvalid_63',['bLinkLeftValid',['../structNWNX__EffectUnpacked.html#a6616a557c8c9c73faa051ff023450212',1,'NWNX_EffectUnpacked']]],
+  ['blinkrightvalid_64',['bLinkRightValid',['../structNWNX__EffectUnpacked.html#a14f3744ff2467b6314841a0cd2e87350',1,'NWNX_EffectUnpacked']]],
+  ['blpop_65',['BLPOP',['../nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431',1,'nwnx_redis_short.nss']]],
+  ['brpop_66',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
+  ['brpoplpush_67',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
+  ['bshowicon_68',['bShowIcon',['../structNWNX__EffectUnpacked.html#a332fd2e3db2012dc15d2fff35b88332e',1,'NWNX_EffectUnpacked']]],
+  ['busable_69',['bUsable',['../structNWNX__IPUnpacked.html#aaa2c8bc13b51d3f6ceaf64e3b7fd5326',1,'NWNX_IPUnpacked']]],
+  ['bzpopmax_70',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
+  ['bzpopmin_71',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
 ];

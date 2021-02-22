@@ -155,14 +155,20 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:abd9b45439358d4428a37e2a695e0eedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">1-based index of the attack in current combat round  <a href="structNWNX__Damage__AttackEventData.html#abd9b45439358d4428a37e2a695e0eedc">More...</a><br /></td></tr>
 <tr class="separator:abd9b45439358d4428a37e2a695e0eedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f860433eb2ee4d0af58701b077f226b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a2f860433eb2ee4d0af58701b077f226b">iAttackResult</a></td></tr>
-<tr class="memdesc:a2f860433eb2ee4d0af58701b077f226b"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=hit, 3=critical hit, 4=miss, 8=concealed  <a href="structNWNX__Damage__AttackEventData.html#a2f860433eb2ee4d0af58701b077f226b">More...</a><br /></td></tr>
+<tr class="memdesc:a2f860433eb2ee4d0af58701b077f226b"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit  <a href="structNWNX__Damage__AttackEventData.html#a2f860433eb2ee4d0af58701b077f226b">More...</a><br /></td></tr>
 <tr class="separator:a2f860433eb2ee4d0af58701b077f226b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f">iAttackType</a></td></tr>
-<tr class="memdesc:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=main hand, 2=offhand, 3-5=creature, 6=haste  <a href="structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f">More...</a><br /></td></tr>
+<tr class="memdesc:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Misnamed, should be WeaponAttackType) 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra  <a href="structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f">More...</a><br /></td></tr>
 <tr class="separator:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0">iSneakAttack</a></td></tr>
 <tr class="memdesc:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">0=neither, 1=sneak attack, 2=death attack, 3=both  <a href="structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0">More...</a><br /></td></tr>
 <tr class="separator:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc8b22f3369c1c20fcce3ac57d3f10e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#abcc8b22f3369c1c20fcce3ac57d3f10e">iAttackType_REAL</a></td></tr>
+<tr class="memdesc:abcc8b22f3369c1c20fcce3ac57d3f10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.  <a href="structNWNX__Damage__AttackEventData.html#abcc8b22f3369c1c20fcce3ac57d3f10e">More...</a><br /></td></tr>
+<tr class="separator:abcc8b22f3369c1c20fcce3ac57d3f10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a838f86200ed83ab9b52a84720168222d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">bKillingBlow</a></td></tr>
+<tr class="memdesc:a838f86200ed83ab9b52a84720168222d"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRUE if the hit is a killing blow.  <a href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">More...</a><br /></td></tr>
+<tr class="separator:a838f86200ed83ab9b52a84720168222d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Attack Event Data. </p>
@@ -451,7 +457,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>1=hit, 3=critical hit, 4=miss, 8=concealed </p>
+<p>1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit </p>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00048">48</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
@@ -469,7 +475,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>1=main hand, 2=offhand, 3-5=creature, 6=haste </p>
+<p>(Misnamed, should be WeaponAttackType) 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra </p>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00049">49</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
@@ -493,6 +499,42 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="abcc8b22f3369c1c20fcce3ac57d3f10e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcc8b22f3369c1c20fcce3ac57d3f10e">&#9670;&nbsp;</a></span>iAttackType_REAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Damage_AttackEventData::iAttackType_REAL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00051">51</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
+
+</div>
+</div>
+<a id="a838f86200ed83ab9b52a84720168222d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a838f86200ed83ab9b52a84720168222d">&#9670;&nbsp;</a></span>bKillingBlow</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Damage_AttackEventData::bKillingBlow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TRUE if the hit is a killing blow. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00052">52</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Plugins/Damage/NWScript/<a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a></li>
 </ul>
@@ -503,7 +545,7 @@ Public Attributes</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="structNWNX__Damage__AttackEventData.html">NWNX_Damage_AttackEventData</a></li>
 				<li class="footer">
-					Generated on Sat Feb 13 2021 20:30:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Feb 22 2021 16:13:47 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
