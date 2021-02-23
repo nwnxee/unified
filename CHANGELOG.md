@@ -9,7 +9,8 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
 - Events: added `NWNX_ON_INPUT_EMOTE_*` events to InputEvents, this event fires when a player uses a radial menu emote.
-- Events: added `NWNX_ON_COMBAT_DR_BROKEN_*` events to CombatEvents, this event fires when a creature's limited Damage{Resistance|Reduction} gets broken.  
+- Events: added `NWNX_ON_COMBAT_DR_BROKEN_*` events to CombatEvents, this event fires when a creature's limited Damage{Resistance|Reduction} gets broken.
+- Events: added `NWNX_ON_UNPOSSESS_FAMILIAR_*` events to AssociateEvents, this event fires when a player unpossesses a familiar . 
 - Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
 - Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
