@@ -186,8 +186,6 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
 
     NWNX_CallFunction(NWNX_Damage, sFunc);
 
-    data.bKillingBlow = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAttackType_REAL = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.oTarget       = NWNX_GetReturnValueObject(NWNX_Damage, sFunc);
     data.iBludgeoning  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iPierce       = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
@@ -206,6 +204,8 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iAttackResult = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iAttackType   = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iSneakAttack  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.bKillingBlow  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackType_REAL = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
 
     return data;
 }

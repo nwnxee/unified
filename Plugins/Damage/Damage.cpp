@@ -143,6 +143,8 @@ ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
+    Events::InsertArgument(stack, m_AttackData.nAttackType_REAL);
+    Events::InsertArgument(stack, m_AttackData.bKillingBlow);
     Events::InsertArgument(stack, m_AttackData.nSneakAttack);
     Events::InsertArgument(stack, m_AttackData.nAttackType);
     Events::InsertArgument(stack, m_AttackData.nAttackResult);
@@ -152,8 +154,6 @@ ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
         Events::InsertArgument(stack, m_AttackData.vDamage[k]);
     }
     Events::InsertArgument(stack, m_AttackData.oidTarget);
-    Events::InsertArgument(stack, m_AttackData.nAttackType_REAL);
-    Events::InsertArgument(stack, m_AttackData.bKillingBlow);
 
     return stack;
 }
