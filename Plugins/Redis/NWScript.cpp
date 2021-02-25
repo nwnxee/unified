@@ -21,7 +21,7 @@ void Redis::CleanState(CVirtualMachineStack *pVirtualMachineStack)
 {
     m_ClearStackHook->CallOriginal<void>(pVirtualMachineStack);
 
-    if (pVirtualMachineStack->m_pVMachine->m_nRecursionLevel == 0)
+    if (pVirtualMachineStack->m_pVMachine && pVirtualMachineStack->m_pVMachine->m_nRecursionLevel == -1)
     {
         LOG_DEBUG("Clearing all results after script exit.");
         s_results.clear();
