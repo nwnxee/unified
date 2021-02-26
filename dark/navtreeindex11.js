@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"nwnx__redis__short_8nss.html#a8de0aaac947c4a485f229c7e91f94284":[4,0,2,28,0,3,78],
+"nwnx__redis__short_8nss.html#a8e9b0dcdd09694782a06d6498245db21":[4,0,2,28,0,3,5],
+"nwnx__redis__short_8nss.html#a8ea8548fbfe0f2f327ec9f224f1b1520":[4,0,2,28,0,3,190],
+"nwnx__redis__short_8nss.html#a8f16bec7bd796e3490a8abbd9feb0f0f":[4,0,2,28,0,3,53],
 "nwnx__redis__short_8nss.html#a9395e8513b2154971bd49097ffd169b2":[4,0,2,28,0,3,112],
 "nwnx__redis__short_8nss.html#a940992c62e3c3f882372cf18a6c1c2ec":[4,0,2,28,0,3,217],
 "nwnx__redis__short_8nss.html#a941c378174461fc7c838922c172b6650":[4,0,2,28,0,3,102],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "structNWNX__EffectUnpacked.html#afda0d34cd6152afc231de7fd7f9fd374":[0,12,2,10],
 "structNWNX__Encounter__CreatureListEntry.html":[0,14,2],
 "structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9":[0,14,2,3],
-"structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566":[0,14,2,1],
-"structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601":[0,14,2,2],
-"structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6":[0,14,2,0],
-"structNWNX__IPUnpacked.html":[0,20,2],
-"structNWNX__IPUnpacked.html#a240e9078eb102d6be03ec5e517b083f9":[0,20,2,0]
+"structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566":[0,14,2,1]
 };

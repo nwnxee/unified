@@ -56,6 +56,8 @@ var group__object =
     [ "NWNX_Object_GetCurrentAnimation", "group__object.html#ga55f50560994dfdeb3a45fe8cf457a5b3", null ],
     [ "NWNX_Object_GetAILevel", "group__object.html#ga73c0bae422bd3bc0f8dc1fbcfeeecdce", null ],
     [ "NWNX_Object_SetAILevel", "group__object.html#ga0e48a65367a70d409138ea55c4c300df", null ],
+    [ "NWNX_Object_GetMapNote", "group__object.html#ga4da581cc592ca482b63628d11602188c", null ],
+    [ "NWNX_Object_SetMapNote", "group__object.html#ga98394f91f30d5a4910db9ada5a1f5853", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
