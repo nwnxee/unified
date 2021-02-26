@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
+- Tweaks: added `NWNX_TWEAKS_TURD_BY_CDKEY` to associate TURDs by CDKey/CharacterName instead of PlayerName/CharacterName. Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
 - DotNET: Added native function hook support.
 - Optimizations: Added `LuoLookup` optimization that speeds up per-player object updates.
 - Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
