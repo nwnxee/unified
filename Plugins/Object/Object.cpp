@@ -17,6 +17,7 @@
 #include "API/CNWSAreaOfEffectObject.hpp"
 #include "API/CNWSDoor.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
@@ -863,6 +864,34 @@ NWNX_EXPORT ArgumentStack SetAILevel(ArgumentStack&& args)
         ASSERT_OR_THROW(nLevel <= 4);
         auto *ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->SetAILevel(pObject, nLevel);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMapNote(ArgumentStack&& args)
+{
+    if (auto *pWaypoint = Utils::AsNWSWaypoint(object(args)))
+    {
+        auto nGender = args.extract<int32_t>();
+        auto nID = args.extract<int32_t>();
+
+        return Utils::ExtractLocString(pWaypoint->m_szMapNote, nID, nGender);
+    }
+
+    return "";
+}
+
+NWNX_EXPORT ArgumentStack SetMapNote(ArgumentStack&& args)
+{
+    if (auto *pWaypoint = Utils::AsNWSWaypoint(object(args)))
+    {
+        auto sMapNote = args.extract<std::string>();
+        auto nGender = args.extract<int32_t>();
+        auto nID = args.extract<int32_t>();
+
+        pWaypoint->m_bMapNote = true;
+        pWaypoint->m_szMapNote = Utils::CreateLocString(sMapNote, nID, nGender);
     }
 
     return {};
