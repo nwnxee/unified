@@ -23,4 +23,5 @@ add_plugin(Tweaks
     "PreserveDepletedItems.cpp"
     "SneakAttackCritImmunity.cpp"
     "StringToIntBaseToAuto.cpp"
+    "TURDByCDKey.cpp"
     "UnhardcodeShields.cpp")

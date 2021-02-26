@@ -35,7 +35,9 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS`: true or false
 * `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT`: true or false
 * `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET`: true or false
-
+* `NWNX_TWEAKS_TURD_BY_CDKEY`: true or false
+  - Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
+  
 ## Environment variable values
 
 ### NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST

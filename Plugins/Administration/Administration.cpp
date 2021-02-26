@@ -156,7 +156,7 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
     }
 
     Tasks::QueueOnMainThread(
-        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage]
+        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage, playerdir]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
             Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, kickMessage);
@@ -182,6 +182,8 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
             }
 
             CExoLinkedListNode *foundNode = FindTURD(playerName, chararacterFullName);
+            if (!foundNode)
+                foundNode = FindTURD(playerdir, chararacterFullName);
 
             if (foundNode)
             {
