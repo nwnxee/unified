@@ -32,7 +32,7 @@ void Redis::RegisterWithNWScript()
 {
     // NWScript: Executes a raw redis command with a variable argument list.
     // Returns a opaque identifier you can use to access the result
-    Events::RegisterEvent(GetName(), "Deferred",
+    Events::RegisterEvent(PLUGIN_NAME, "Deferred",
             [&](Events::ArgumentStack && arg)
             {
                 std::vector<std::string> v;
@@ -55,7 +55,7 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Returns the last query result type as a int.
-    Events::RegisterEvent(GetName(), "GetResultType",
+    Events::RegisterEvent(PLUGIN_NAME, "GetResultType",
             [&](Events::ArgumentStack && arg)
             {
                 const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
@@ -75,7 +75,7 @@ void Redis::RegisterWithNWScript()
 
     // NWScript: Get list length of result. Returns 0 if not a list.
     // N.B: Redis can return multi-list results. This is not handled here
-    Events::RegisterEvent(GetName(), "GetResultArrayLength",
+    Events::RegisterEvent(PLUGIN_NAME, "GetResultArrayLength",
             [&](Events::ArgumentStack && arg)
             {
                 const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
@@ -95,7 +95,7 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Get array element as a new result.
-    Events::RegisterEvent(GetName(), "GetResultArrayElement",
+    Events::RegisterEvent(PLUGIN_NAME, "GetResultArrayElement",
             [&](Events::ArgumentStack && arg)
             {
                 const auto arrayIndex = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
@@ -121,7 +121,7 @@ void Redis::RegisterWithNWScript()
             });
 
     // NWScript: Get a result force-cast to string.
-    Events::RegisterEvent(GetName(), "GetResultAsString",
+    Events::RegisterEvent(PLUGIN_NAME, "GetResultAsString",
             [&](Events::ArgumentStack && arg)
             {
                 const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
@@ -144,7 +144,7 @@ void Redis::RegisterWithNWScript()
 
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
-    Events::RegisterEvent(GetName(), "GetPubSubData",
+    Events::RegisterEvent(PLUGIN_NAME, "GetPubSubData",
             [&](Events::ArgumentStack &&)
             {
                 return Events::Arguments(m_internal->m_last_pubsub_channel, m_internal->m_last_pubsub_message);
