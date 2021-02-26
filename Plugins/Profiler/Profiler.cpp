@@ -159,7 +159,7 @@ Profiler::Profiler(Services::ProxyServiceList* services)
             });
     }
 
-    Events::RegisterEvent(GetName(), "PushPerfScope",
+    Events::RegisterEvent(PLUGIN_NAME, "PushPerfScope",
         [this](Events::ArgumentStack&& args)
         {
             std::string scopeName = Events::ExtractArgument<std::string>(args);
@@ -179,7 +179,7 @@ Profiler::Profiler(Services::ProxyServiceList* services)
         });
 
 
-    Events::RegisterEvent(GetName(), "PopPerfScope",
+    Events::RegisterEvent(PLUGIN_NAME, "PopPerfScope",
         [this](Events::ArgumentStack&&)
         {
             PopPerfScope();
