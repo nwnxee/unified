@@ -115,6 +115,7 @@ Added</h2>
 <li>Experimental: Added <code>NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD</code> to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.</li>
 <li>Tweaks: Added <code>NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT</code> to have GetDEXStat() always return a creature's full dexterity stat.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET</code> to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_TURD_BY_CDKEY</code> to associate TURDs by CDKey/CharacterName instead of PlayerName/CharacterName. Note: pass the CDKey instead of PlayerName when calling <a class="el" href="group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587" title="Delete the TURD of playerName + characterName.">NWNX_Administration_DeleteTURD()</a>.</li>
 <li>DotNET: Added native function hook support.</li>
 <li>Optimizations: Added <code>LuoLookup</code> optimization that speeds up per-player object updates.</li>
 <li>Optimizations: Added <code>PlayerLookup</code> optimization that speeds up some player related functions on highly populated servers.</li>
@@ -1000,7 +1001,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Feb 24 2021 09:44:58 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Feb 26 2021 11:41:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
