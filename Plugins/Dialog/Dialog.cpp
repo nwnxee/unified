@@ -19,11 +19,7 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
-namespace Dialog {
-
-//
 // Constants mirrored from NSS
 constexpr int32_t NODE_TYPE_INVALID       = -1;
 constexpr int32_t NODE_TYPE_STARTING_NODE = 0;
@@ -313,6 +309,4 @@ NWNX_EXPORT ArgumentStack End(ArgumentStack&& args)
         pObject->StopDialog();
 
     return {};
-}
-
 }

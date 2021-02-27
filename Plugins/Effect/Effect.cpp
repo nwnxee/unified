@@ -12,9 +12,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Effect {
 
 static std::string s_effectExpiredData;
 static uint32_t s_effectExpiredDepth;
@@ -245,6 +242,4 @@ NWNX_EXPORT ArgumentStack ReplaceEffect(ArgumentStack&& args)
         }
     }
     return found;
-}
-
 }

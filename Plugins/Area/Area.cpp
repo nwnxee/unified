@@ -17,10 +17,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-
-namespace Area {
 
 static std::set<ObjectID> s_ExportExclusionList;
 
@@ -921,6 +917,4 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundNightVolume(ArgumentStack&& args)
     }
 
     return 0;
-}
-
 }

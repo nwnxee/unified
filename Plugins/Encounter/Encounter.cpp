@@ -11,9 +11,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Encounter {
 
 static CNWSEncounter *encounter(ArgumentStack& args)
 {
@@ -290,6 +287,4 @@ NWNX_EXPORT ArgumentStack SetGeometry(ArgumentStack&& args)
         }
     }
     return {};
-}
-
 }

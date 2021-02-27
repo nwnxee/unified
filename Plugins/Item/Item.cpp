@@ -10,11 +10,8 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
-namespace Item {
-
-CNWSItem *item(ArgumentStack& args)
+static CNWSItem *item(ArgumentStack& args)
 {
     const auto objectId = args.extract<ObjectID>();
 
@@ -236,7 +233,4 @@ NWNX_EXPORT ArgumentStack GetMinEquipLevel(ArgumentStack&& args)
         return pItem->GetMinEquipLevel();
 
     return -1;
-}
-
-
 }

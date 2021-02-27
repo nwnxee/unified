@@ -12,7 +12,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 NWNX_EXPORT ArgumentStack PackIP(ArgumentStack&& args)
 {
@@ -34,8 +33,8 @@ NWNX_EXPORT ArgumentStack PackIP(ArgumentStack&& args)
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
     ip->m_bExpose = 1;
-    ip->m_nType = API::Constants::EffectTrueType::ItemProperty;
-    ip->m_nSubType = API::Constants::EffectDurationType::Permanent;
+    ip->m_nType = Constants::EffectTrueType::ItemProperty;
+    ip->m_nSubType = Constants::EffectDurationType::Permanent;
     ip->m_oidCreator = creator;
     ip->m_nSpellId = spellId;
 

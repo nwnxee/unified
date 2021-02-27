@@ -27,8 +27,6 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
-using ArgumentStack = Events::ArgumentStack;
-
 
 namespace ValidationFailureType
 {

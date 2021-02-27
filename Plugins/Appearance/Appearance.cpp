@@ -11,9 +11,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Appearance {
 
 enum OverrideType {
     AppearanceType  = 0,
@@ -301,6 +298,4 @@ NWNX_EXPORT ArgumentStack GetOverride(ArgumentStack&& args)
     }
 
     return retVal;
-}
-
 }

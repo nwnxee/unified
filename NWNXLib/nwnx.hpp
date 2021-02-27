@@ -62,6 +62,7 @@ namespace Events
     template <typename T> static std::optional<T> Pop();
     void Call(const std::string& pluginName, const std::string& eventName);
 }
+using ArgumentStack = Events::ArgumentStack;
 
 namespace Hooks
 {

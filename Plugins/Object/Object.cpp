@@ -29,9 +29,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Object {
 
 static CGameObject *cgameobject(ArgumentStack& args)
 {
@@ -895,6 +892,4 @@ NWNX_EXPORT ArgumentStack SetMapNote(ArgumentStack&& args)
     }
 
     return {};
-}
-
 }
