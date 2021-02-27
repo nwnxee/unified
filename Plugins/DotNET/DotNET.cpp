@@ -1,13 +1,9 @@
-#include "DotNET.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
-#include "API/CVirtualMachine.hpp"
-#include "API/CVirtualMachineScript.hpp"
-#include "API/Functions.hpp"
+#include "nwnx.hpp"
 
 #include <algorithm>
 #include <cstring>
-#include <chrono>
 #include <string>
+#include <vector>
 
 #include "sdk/coreclr_delegates.h"
 #include "sdk/hostfxr.h"
@@ -18,20 +14,16 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    return new DotNET::DotNET(services);
-}
-
-using namespace NWNXLib::Services;
-
 namespace DotNET {
+
+std::vector<void*> GetExports();
+static void DotNET() __attribute__((constructor));
 
 static hostfxr_initialize_for_runtime_config_fn hostfxr_initialize_for_runtime_config;
 static hostfxr_get_runtime_delegate_fn          hostfxr_get_runtime_delegate;
 static hostfxr_close_fn                         hostfxr_close;
 
-bool DotNET::InitThunks()
+static bool InitThunks()
 {
     void *nethost = nullptr;
     void *hostfxr = nullptr;
@@ -131,11 +123,8 @@ bool DotNET::InitThunks()
     return true;
 }
 
-DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
+static void DotNET()
 {
-    ASSERT_OR_THROW(Instance == nullptr);
-    Instance = this;
-
     // If the initial lib loads failed, we probably don't have .NET installed.
     if (!InitThunks())
         return;
@@ -174,166 +163,12 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
     if (rc != 0 || bootstrap == nullptr)
         LOG_FATAL("Unable to get %s.Bootstrap() function: dll='%s'; rc=0x%x", full_ep, dll, rc);
 
-    //
-    // Fill the function table to hand over to managed code
-    // NOTE: Only add new entries to the end of this table, DO NOT RESHUFFLE.
-    //
-    std::vector<void*> args;
-        args.push_back((void*)&GetFunctionPointer);
-        args.push_back((void*)&RegisterHandlers);
-        args.push_back((void*)&CallBuiltIn);
-        args.push_back((void*)&StackPushInteger);
-        args.push_back((void*)&StackPushFloat);
-        args.push_back((void*)&StackPushString);
-        args.push_back((void*)&StackPushString); // reserved utf8
-        args.push_back((void*)&StackPushObject);
-        args.push_back((void*)&StackPushVector);
-        args.push_back((void*)&StackPushGameDefinedStructure);
-        args.push_back((void*)&StackPopInteger);
-        args.push_back((void*)&StackPopFloat);
-        args.push_back((void*)&StackPopString);
-        args.push_back((void*)&StackPopString); // reserved utf8
-        args.push_back((void*)&StackPopObject);
-        args.push_back((void*)&StackPopVector);
-        args.push_back((void*)&StackPopGameDefinedStructure);
-        args.push_back((void*)&FreeGameDefinedStructure);
-        args.push_back((void*)&ClosureAssignCommand);
-        args.push_back((void*)&ClosureDelayCommand);
-        args.push_back((void*)&ClosureActionDoCommand);
-        args.push_back((void*)&nwnxSetFunction);
-        args.push_back((void*)&nwnxPushInt);
-        args.push_back((void*)&nwnxPushFloat);
-        args.push_back((void*)&nwnxPushObject);
-        args.push_back((void*)&nwnxPushString);
-        args.push_back((void*)&nwnxPushString); // reserved utf8
-        args.push_back((void*)&nwnxPushEffect);
-        args.push_back((void*)&nwnxPushItemProperty);
-        args.push_back((void*)&nwnxPopInt);
-        args.push_back((void*)&nwnxPopFloat);
-        args.push_back((void*)&nwnxPopObject);
-        args.push_back((void*)&nwnxPopString);
-        args.push_back((void*)&nwnxPopString); // reserved utf8
-        args.push_back((void*)&nwnxPopEffect);
-        args.push_back((void*)&nwnxPopItemProperty);
-        args.push_back((void*)&nwnxCallFunction);
-        args.push_back((void*)&GetNWNXExportedGlobals);
-        args.push_back((void*)&RequestHook);
-        args.push_back((void*)&ReturnHook);
+    std::vector<void*> args = GetExports();
     rc = bootstrap(args.data(), args.size()*sizeof(void*));
     if (rc != 0)
         LOG_FATAL("Failed to execute bootstrap function; rc=0x%x", rc);
 
     LOG_INFO("Managed code bootstrapped.");
-}
-
-DotNET::~DotNET() { }
-
-
-uintptr_t DotNET::GetFunctionPointer(const char *name)
-{
-    void *core = dlopen("NWNX_Core.so", RTLD_LAZY);
-    if (!core)
-    {
-        LOG_ERROR("Failed to open core handle: %s", dlerror());
-        return 0;
-    }
-    auto ret = reinterpret_cast<uintptr_t>(dlsym(core, name));
-    if (ret == 0)
-        LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
-    dlclose(core);
-    return ret;
-}
-
-
-void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
-{
-    if (size > sizeof(*handlers))
-    {
-        LOG_ERROR("RegisterHandlers argument contains too many entries, aborting");
-        return;
-    }
-    if (size < sizeof(*handlers))
-    {
-        LOG_WARNING("RegisterHandlers argument missing some entries - Managed/Unmanaged mismatch, update managed code");
-    }
-
-    LOG_INFO("Registering managed code handlers.");
-    Handlers = *handlers;
-
-    LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoop);
-    static Hooks::Hook MainLoopHook;
-    MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-        (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
-        {
-            static uint64_t frame = 0;
-            if (Handlers.MainLoop)
-            {
-                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
-                Handlers.MainLoop(frame);
-                int spAfter = Utils::PopScriptContext();
-                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-            }
-            ++frame;
-
-            return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
-        },
-        Hooks::Order::VeryEarly);
-
-
-    LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
-    static Hooks::Hook RunScriptHook;
-    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid) -> int32_t
-        {
-            if (!script || *script == "")
-                return 1;
-
-            LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
-            int spBefore = Utils::PushScriptContext(objId, !!valid);
-            int32_t retval = Handlers.RunScript(script->CStr(), objId);
-            int spAfter = Utils::PopScriptContext();
-            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-
-            // ~0 is returned if runscript request is not handled and needs to be forwarded
-            if (retval != ~0)
-            {
-                Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
-                Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
-                return 1;
-            }
-            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-        },
-        Hooks::Order::Latest);
-
-    LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
-    static Hooks::Hook RunScriptSituationHook;
-    RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
-        (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid) -> int32_t
-        {
-            uint64_t eventId;
-            if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
-            {
-                LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
-                int spBefore = Utils::PushScriptContext(objId, !!valid);
-                Handlers.Closure(eventId, objId);
-                int spAfter = Utils::PopScriptContext();
-                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                delete script;
-                return 1;
-            }
-            return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-        },
-        Hooks::Order::Latest);
-
-    LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
-    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
-        [](const std::vector<std::string>& message)
-        {
-            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
-            Handlers.SignalHandler(message[0].c_str());
-            int spAfter = Utils::PopScriptContext();
-            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-        });
 }
 
 }
