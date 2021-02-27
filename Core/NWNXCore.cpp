@@ -483,6 +483,8 @@ void NWNXCore::Shutdown()
         UnloadServices();
         Tasks::StopAsyncWorkers();
         g_core = nullptr;
+        if (Config::Get<bool>("HARD_EXIT", false))
+            exit(0);
     }
 }
 
