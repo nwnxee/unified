@@ -61,7 +61,7 @@ NWNX_EXPORT ArgumentStack SetAddGoldPieceValue(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetBaseGoldPieceValue(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
-        return pItem->m_nBaseUnitCost;
+        return (int32_t)pItem->m_nBaseUnitCost;
 
     return -1;
 }
