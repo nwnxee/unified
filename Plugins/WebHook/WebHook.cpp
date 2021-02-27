@@ -1,4 +1,4 @@
-#include "WebHook.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSModule.hpp"
 #include "External/httplib.h"
 #include <cmath>
@@ -7,32 +7,11 @@
 
 using namespace NWNXLib;
 
-static WebHook::WebHook* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new WebHook::WebHook(services);
-    return g_plugin;
-}
-
 namespace Core {
 extern bool g_CoreShuttingDown;
 }
 
-using namespace NWNXLib::Services;
-
-namespace WebHook {
-
-WebHook::WebHook(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-    Events::RegisterEvent(PLUGIN_NAME, "SendWebHookHTTPS", &SendWebHookHTTPS);
-}
-
-WebHook::~WebHook()
-{ }
-
-std::string escape_json(const std::string &s) {
+static std::string escape_json(const std::string &s) {
     std::ostringstream o;
     for (auto c = s.cbegin(); c != s.cend(); c++) {
         if (*c == '"' || *c == '\\' || ('\x00' <= *c && *c <= '\x1f')) {
@@ -45,13 +24,13 @@ std::string escape_json(const std::string &s) {
     return o.str();
 }
 
-ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SendWebHookHTTPS(ArgumentStack&& args)
 {
-    auto host = Events::ExtractArgument<std::string>(args);
-    auto origPath = Events::ExtractArgument<std::string>(args);
-    auto message = Events::ExtractArgument<std::string>(args);
-    auto username = Events::ExtractArgument<std::string>(args);
-    auto mrkdwn = Events::ExtractArgument<int32_t>(args);
+    auto host = args.extract<std::string>();
+    auto origPath = args.extract<std::string>();
+    auto message = args.extract<std::string>();
+    auto username = args.extract<std::string>();
+    auto mrkdwn = args.extract<int32_t>();
 
     // If it's just a simple text string, construct the JSON
     if (message.find("\"text\":") == std::string::npos)
@@ -156,7 +135,5 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
             });
         });
     }
-    return Events::Arguments();
-}
-
+    return {};
 }
