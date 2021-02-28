@@ -197,7 +197,7 @@ class BonusStacking
 {
 public:
     static void Init(NWNXLib::Services::ProxyServiceList* services);
-    static NWNXLib::Services::Events::ArgumentStack SetSpellBonusType(NWNXLib::Services::Events::ArgumentStack&& args);
+    static ArgumentStack SetSpellBonusType(ArgumentStack&& args);
 
 private:
     static int s_nAbilityStackingMode;
@@ -205,9 +205,9 @@ private:
     static int s_nSavingThrowStackingMode;
     static int s_nAttackBonusStackingMode;
     static bool s_bAlwaysStackPenalties;
-    static int32_t GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
+    static int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
         BOOL bForceMax, uint8_t nSaveType, uint8_t nSpecificType, uint8_t nSkill, uint8_t nAbilityScore, BOOL bOffHand);
-    static void CNWSCreatureStats__UpdateCombatInformation(bool before, CNWSCreatureStats* thisPtr);
+    static void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats* thisPtr);
 };
 
 }

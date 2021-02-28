@@ -30,12 +30,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "API/CServerExoAppInternal.hpp"
-#include "API/CFactionManager.hpp"
 
 
 using namespace NWNXLib;
@@ -198,7 +192,7 @@ Creature::Creature(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    BonusStacking::Init(GetServices());
+    BonusStacking::Init(services);
 }
 
 Creature::~Creature()

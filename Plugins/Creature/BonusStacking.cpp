@@ -1,8 +1,4 @@
 #include "Creature.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Services.hpp"
 #include "Utils.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CCombatInformation.hpp"
@@ -23,7 +19,6 @@ namespace Creature
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 int BonusStacking::s_nAbilityStackingMode = NostackMode::Disabled;
 int BonusStacking::s_nSkillStackingMode = NostackMode::Disabled;
@@ -34,36 +29,34 @@ std::vector<int32_t> g_nSpellBonusTypes;
 int32_t g_nSpellDefaultType = NostackType::Circumstance;
 int32_t g_nItemDefaultType = NostackType::Enhancement;
 
-NWNXLib::Hooking::FunctionHook* pGetTotalEffectBonusHook;
+static Hooks::Hook s_GetTotalEffectBonusHook = nullptr;
+static Hooks::Hook s_UpdateCombatInformation = nullptr;
 
-void BonusStacking::Init(Services::ProxyServiceList* services)
+void BonusStacking::Init(Services::ProxyServiceList*)
 {
-    s_nAbilityStackingMode = std::clamp(services->m_config->Get<int>("NOSTACK_ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nSkillStackingMode = std::clamp(services->m_config->Get<int>("NOSTACK_SKILL", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nSavingThrowStackingMode = std::clamp(services->m_config->Get<int>("NOSTACK_SAVINGTHROW", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nAttackBonusStackingMode = std::clamp(services->m_config->Get<int>("NOSTACK_ATTACKBONUS", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nAbilityStackingMode = std::clamp(Config::Get<int>("NOSTACK_ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nSkillStackingMode = std::clamp(Config::Get<int>("NOSTACK_SKILL", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nSavingThrowStackingMode = std::clamp(Config::Get<int>("NOSTACK_SAVINGTHROW", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nAttackBonusStackingMode = std::clamp(Config::Get<int>("NOSTACK_ATTACKBONUS", 0), 0, static_cast<int>(NostackMode::CustomTypes));
 
     if (s_nAbilityStackingMode || s_nSkillStackingMode || s_nSavingThrowStackingMode || s_nAttackBonusStackingMode)
     {
         LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
             " | Attack bonuses: %d", s_nAbilityStackingMode, s_nSkillStackingMode, s_nSavingThrowStackingMode, s_nAttackBonusStackingMode);
 
-        g_nSpellDefaultType = std::clamp(services->m_config->Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
-        g_nItemDefaultType = std::clamp(services->m_config->Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
-        s_bAlwaysStackPenalties = services->m_config->Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
+        g_nSpellDefaultType = std::clamp(Config::Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
+        g_nItemDefaultType = std::clamp(Config::Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
+        s_bAlwaysStackPenalties = Config::Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
 
-        services->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi>
-            (&GetTotalEffectBonus);
-        pGetTotalEffectBonusHook = services->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi);
-        services->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats23UpdateCombatInformationEv, void>
-            (&CNWSCreatureStats__UpdateCombatInformation);
+        s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
+        //s_UpdateCombatInformation = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23UpdateCombatInformationEv, (void*)&CNWSCreatureStats__UpdateCombatInformation, Hooks::Order::SharedHook);
 
-        services->m_events->RegisterEvent("SetSpellBonusType", [](ArgumentStack&& args) { return BonusStacking::SetSpellBonusType(std::move(args)); });
+        Events::RegisterEvent(PLUGIN_NAME, "SetSpellBonusType", [](ArgumentStack&& args) { return BonusStacking::SetSpellBonusType(std::move(args)); });
     }
 }
 
 inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAlignLaw,
-    uint8_t nEffectAlignLaw, uint8_t nAlignGood, uint8_t nEffectAlignGood);
+                               uint8_t nEffectAlignLaw, uint8_t nAlignGood, uint8_t nEffectAlignGood);
 inline void AddPositiveEffect(uint32_t nSpellId, uint32_t nEffectStrength);
 inline void AddNegativeEffect(uint32_t nSpellId, uint32_t nEffectStrength);
 inline void AddPositiveEffectOID(uint32_t nObjectId, uint32_t nEffectStrength);
@@ -86,7 +79,7 @@ uint32_t g_EffectsDamageFlags[MAX_DAMAGE_FLAGS];
 uint32_t g_EffectsDamageFlags2[MAX_DAMAGE_FLAGS];*/
 uint32_t g_nMaxValues[NostackType::Max + 1];
 
-int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
+int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
     BOOL bForceMax, uint8_t nSaveType, uint8_t nSpecificType, uint8_t nSkill, uint8_t nAbilityScore, BOOL bOffHand)
 {
     if (nEffectBonusType == Constants::EffectBonusType::Damage
@@ -96,7 +89,7 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
         || (nEffectBonusType == Constants::EffectBonusType::Skill && !s_nSkillStackingMode)
         )
     {
-        return pGetTotalEffectBonusHook->CallOriginal<int32_t>(thisPtr, nEffectBonusType, pObject,
+        return s_GetTotalEffectBonusHook->CallOriginal<int32_t>(thisPtr, nEffectBonusType, pObject,
             bElementalDamage, bForceMax, nSaveType, nSpecificType, nSkill, nAbilityScore, bOffHand);
     }
 
@@ -575,24 +568,26 @@ ArgumentStack BonusStacking::SetSpellBonusType(ArgumentStack&& args)
     if (!g_nSpellBonusTypes.size())
         g_nSpellBonusTypes.resize(Globals::Rules()->m_pSpellArray->m_nNumSpells, g_nSpellDefaultType);
 
-    const auto nSpellId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto nSpellId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(nSpellId >= 0);
     ASSERT_OR_THROW(nSpellId < Globals::Rules()->m_pSpellArray->m_nNumSpells);
-    const auto nBonusType = Services::Events::ExtractArgument<int32_t>(args);
+    const auto nBonusType = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(nBonusType >= 0);
     ASSERT_OR_THROW(nBonusType <= NostackType::Max);
 
     g_nSpellBonusTypes[nSpellId] = nBonusType;
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
-void BonusStacking::CNWSCreatureStats__UpdateCombatInformation(bool before, CNWSCreatureStats* thisPtr)
+void BonusStacking::CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats* thisPtr)
 {
-    if (before || !thisPtr->m_pCombatInformation || thisPtr->m_pCombatInformation->m_pAttackList.num < 2)
+    s_UpdateCombatInformation->CallOriginal<void>(thisPtr);
+
+    if (!thisPtr->m_pCombatInformation || thisPtr->m_pCombatInformation->m_pAttackList.num < 2)
         return;
 
     auto* pCurrentAttack = thisPtr->m_pBaseCreature->m_pcCombatRound->GetAttack(thisPtr->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
-    auto nSavedAttackType = pCurrentAttack->m_nWeaponAttackType;
+    //auto nSavedAttackType = pCurrentAttack->m_nWeaponAttackType;
     auto nAttackType = 0;
 
     while (thisPtr->m_pCombatInformation->m_pAttackList.num < 6)
