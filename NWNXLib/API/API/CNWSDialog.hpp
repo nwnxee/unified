@@ -1,6 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
+#include "ScriptParam.hpp"
 #include "CExoLinkedList.hpp"
 #include "CExoLocString.hpp"
 #include "CNWSDialogPlayer.hpp"
@@ -18,6 +20,7 @@ struct CNWSDialogReply;
 struct CNWSDialogSpeaker;
 struct CNWSObject;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;
@@ -56,10 +59,10 @@ struct CNWSDialog
     void Cleanup();
     BOOL LoadDialog(CResGFF * pRes, BOOL bLoadReplies);
     CNWSObject * GetSpeaker(CNWSObject * pNWSObjectOwner, const CExoString & sSpeaker);
-    BOOL CheckScript(CNWSObject * pNWSObjectSpeaker, const CResRef & sActive);
-    void RunScript(CNWSObject * pNWSObjectSpeaker, const CResRef & sScript);
+    BOOL CheckScript(CNWSObject* pNWSObjectSpeaker, const CResRef& sActive, const CExoArrayList<ScriptParam>& scriptParams);
+    void RunScript(CNWSObject* pNWSObjectSpeaker, const CResRef& sScript, const CExoArrayList<ScriptParam>& scriptParams);
     uint32_t GetStartEntry(CNWSObject * pNWSObjectOwner);
-    BOOL GetStartEntryOneLiner(CNWSObject * pNWSObjectOwner, CExoLocString & sOneLiner, CResRef & sSound, CResRef & sScript);
+    BOOL GetStartEntryOneLiner(CNWSObject * pNWSObjectOwner, CExoLocString & sOneLiner, CResRef & sSound, CResRef & sScript, CExoArrayList<ScriptParam> & scriptParams);
     float SetDialogDelay(CNWSObject * pNWSObjectOwner, CExoLocString sLocText, uint32_t nMinSeconds, BOOL bEnableNPCTiming);
     void AddJournalEntry(const CExoString & szPlotID, uint32_t nState, uint32_t nPlayerId);
     BOOL SendDialogEntry(CNWSObject * pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, BOOL bPlayHelloSound);
@@ -67,6 +70,7 @@ struct CNWSDialog
     BOOL HandleReply(uint32_t nPlayerID, CNWSObject * pNWSObjectOwner, uint32_t nReplyIndex, BOOL bEscapeDialog, uint32_t currentEntryIndex);
     BOOL RemovePlayer(OBJECT_ID oidRemove);
     BOOL IsPlayerInDialog(OBJECT_ID oidPlayer);
+    void LoadScriptParams(CResGFF * pRes, CExoArrayList<ScriptParam> & paramsList, CResStruct * pStructure, char * szFieldID);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSDialog

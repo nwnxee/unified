@@ -9,11 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
-
-class Tasks;
+namespace NWNXLib::Services {
 
 class Metrics
 {
@@ -50,7 +46,7 @@ public:
         std::chrono::nanoseconds&& interval);
     void ClearResampler(const std::string& measurementName);
 
-    void Update(Tasks* tasks);
+    void Update();
 
 private:
     std::vector<MetricData> m_data;
@@ -83,7 +79,5 @@ private:
 
     std::string ConstructName(const std::string& name);
 };
-
-}
 
 }

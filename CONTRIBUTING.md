@@ -33,7 +33,7 @@ Your code should be structured such that, if unused, it should have (near) zero 
 
 Additionally, please observe coding style rules:
 
-1.  Prefix members variables with m\_.
+1.  Prefix members variables with m\_, static globals with s\_.
 2.  Use lowerCamelCase for variables.
 3.  Use UpperCamelCase for functions.
 4.  Use UpperCamelCase for classes.

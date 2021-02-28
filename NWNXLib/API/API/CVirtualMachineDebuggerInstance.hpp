@@ -84,7 +84,6 @@ struct CVirtualMachineDebuggerInstance
     CExoString GenerateTypeValueFromStackLocation(int32_t nStackLocation, CExoString * pTypeString);
     CExoString GenerateCallStackParameterView(int32_t nStackLocation, CExoString * sVariableName, CExoString * sTypeName);
     CExoString GenerateCallStackView(int32_t nFunctionID, int32_t nInstructionPointer, int32_t nStackPointer);
-    void GenerateWatchWindowView(int32_t nFunctionID, int32_t nInstructionPointer, int32_t nStackPointer, int32_t nStackSize);
     void ToggleWatchWindowExpansion(CExoString sLineNumber);
     BOOL DebuggerSingleStep(BOOL bStepOver = false);
     int32_t FindEmptyWatchViewEntry();

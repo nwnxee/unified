@@ -46,7 +46,6 @@ struct CNWSCreatureStats_ClassInfo
     void SetNumberMemorizedSpellSlots(uint8_t nSpellLevel, uint8_t nNumSlots, BOOL bClear = true);
     uint8_t GetNumberBonusSpells(uint8_t nSpellLevel);
     void ModifyNumberBonusSpells(uint8_t nSpellLevel, int32_t nDelta);
-    void MemorizeAllNPCSpells();
     BOOL GetMemorizedSpellInSlotReady(uint8_t nSpellLevel, uint8_t nSpellSlot);
     void SetMemorizedSpellInSlotReady(uint8_t nSpellLevel, uint8_t nSpellSlot, BOOL bReady);
     uint8_t GetMemorizedSpellReadyCount(uint32_t nSpellID, uint8_t * nMinSpellLevel, uint8_t * nMinSpellSlot, uint8_t nRequestedMetaType = 0xFF);

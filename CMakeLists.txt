@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(NWNX-Unified)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMakeModules)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
+
+if (NOT CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    message( FATAL_ERROR "NWNX:EE can only be built with the CMAKE_BUILD_TYPE=RelWithDebInfo configuration." )
+endif()
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Includes the sanitizer package to facilitate debugging.
 # If you want to build with this support (I suggest you do), you should pass in one or all of the following:
@@ -11,10 +21,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
+execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
-set(TARGET_NWN_BUILD_REVISION 7)
+set(TARGET_NWN_BUILD_REVISION 20)
+set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
-set(NWNX64 1)
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
@@ -46,19 +57,10 @@ set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
 
-add_definitions(-D_FILE_OFFSET_BITS=64)
-
-# Define targets.
-# TAR_RELEASE_FINAL: Shipping version.
-# TAR_RELEASE: Fast testing version.
-# TAR_DEUBG: Slow testing version.
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTAR_RELEASE_FINAL=1 -DTAR_RELEASE=1 -DTAR_DEBUG=0")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=1 -DTAR_DEBUG=1")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=0 -DTAR_DEBUG=1")
-
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})
 add_definitions(-DNWNX_TARGET_NWN_BUILD_REVISION=${TARGET_NWN_BUILD_REVISION})
+add_definitions(-DNWNX_BUILD_SHA="${NWNX_BUILD_SHA}")
 
 # Provides the NWN API and other useful things as a static lib.
 add_subdirectory(NWNXLib)

@@ -1,4 +1,4 @@
-#include "Item.hpp"
+#include "nwnx.hpp"
 
 #include <sstream>
 #include "API/CAppManager.hpp"
@@ -10,60 +10,13 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-
-static Item::Item* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
-{
-  return new Plugin::Info
-  {
-    "Item",
-    "Functions exposing additional item properties",
-    "Various / sherincall / Bhaal",
-    "marca.argentea at gmail.com",
-    3,
-    true
-  };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Item::Item(params);
-    return g_plugin;
-}
-
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Item {
 
-Item::Item(const Plugin::CreateParams& params)
-  : Plugin(params)
+CNWSItem *item(ArgumentStack& args)
 {
-#define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(SetWeight);
-    REGISTER(SetBaseGoldPieceValue);
-    REGISTER(SetAddGoldPieceValue);
-    REGISTER(GetBaseGoldPieceValue);
-    REGISTER(GetAddGoldPieceValue);
-    REGISTER(SetBaseItemType);
-    REGISTER(SetItemAppearance);
-    REGISTER(GetEntireItemAppearance);
-    REGISTER(RestoreItemAppearance);
-    REGISTER(GetBaseArmorClass);
-    REGISTER(GetMinEquipLevel);
-
-#undef REGISTER
-}
-
-Item::~Item()
-{
-}
-
-CNWSItem *Item::item(ArgumentStack& args)
-{
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = args.extract<ObjectID>();
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -71,7 +24,7 @@ CNWSItem *Item::item(ArgumentStack& args)
         return nullptr;
     }
 
-    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+    auto *pGameObject = Utils::GetGameObject(objectId);
     auto *pItem = Utils::AsNWSItem(pGameObject);
     if (!pItem)
         LOG_NOTICE("NWNX_Item function called on non item object");
@@ -80,79 +33,65 @@ CNWSItem *Item::item(ArgumentStack& args)
 }
 
 
-ArgumentStack Item::SetWeight(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetWeight(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto w = Services::Events::ExtractArgument<int32_t>(args);
-        pItem->m_nWeight = w;
-        auto oidPossessor = pItem->m_oidPossessor;
-        auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
-        if (pCreature)
-        {
+        pItem->m_nWeight = args.extract<int32_t>();
+
+        if (auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pItem->m_oidPossessor)))
             pCreature->UpdateEncumbranceState(true);
-        }
     }
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Item::SetBaseGoldPieceValue(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetBaseGoldPieceValue(ArgumentStack&& args)
+{
+    if (auto *pItem = item(args))
+        pItem->m_nBaseUnitCost = args.extract<int32_t>();
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetAddGoldPieceValue(ArgumentStack&& args)
+{
+    if (auto *pItem = item(args))
+        pItem->m_nAdditionalCost = args.extract<int32_t>();
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetBaseGoldPieceValue(ArgumentStack&& args)
+{
+    if (auto *pItem = item(args))
+        return pItem->m_nBaseUnitCost;
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack GetAddGoldPieceValue(ArgumentStack&& args)
+{
+    if (auto *pItem = item(args))
+        return pItem->m_nAdditionalCost;
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetBaseItemType(ArgumentStack&& args)
+{
+    if (auto *pItem = item(args))
+        pItem->m_nBaseItem = args.extract<int32_t>();
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
 {
     if (auto *pItem = item(args))
     {
-        const auto g = Services::Events::ExtractArgument<int32_t>(args);
-        pItem->m_nBaseUnitCost = g;
-    }
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Item::SetAddGoldPieceValue(ArgumentStack&& args)
-{
-    if (auto *pItem = item(args))
-    {
-        const auto g = Services::Events::ExtractArgument<int32_t>(args);
-        pItem->m_nAdditionalCost = g;
-    }
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Item::GetBaseGoldPieceValue(ArgumentStack&& args)
-{
-    int32_t retval = -1;
-    if (auto *pItem = item(args))
-    {
-        retval = pItem->m_nBaseUnitCost;
-    }
-    return Services::Events::Arguments(retval);
-}
-
-ArgumentStack Item::GetAddGoldPieceValue(ArgumentStack&& args)
-{
-    int32_t retval = -1;
-    if (auto *pItem = item(args))
-    {
-        retval = pItem->m_nAdditionalCost;
-    }
-    return Services::Events::Arguments(retval);
-}
-
-ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
-{
-    if (auto *pItem = item(args))
-    {
-        const auto bt = Services::Events::ExtractArgument<int32_t>(args);
-        pItem->m_nBaseItem = bt;
-    }
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
-{
-    if (auto *pItem = item(args))
-    {
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
-        const auto idx   = Services::Events::ExtractArgument<int32_t>(args);
-        const auto val   = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type  = args.extract<int32_t>();
+        const auto idx   = args.extract<int32_t>();
+        const auto val   = args.extract<int32_t>();
 
         switch(type)
         {
@@ -197,38 +136,35 @@ ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
                 break;
         }
     }
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetEntireItemAppearance(ArgumentStack&& args)
 {
     std::stringstream retval;
     char buf[4];
-    int idx;
-    char part, texture;
-
 
     if (auto *pItem = item(args))
     {
-        for (idx = 0; idx < 6; idx++)
+        for (int idx = 0; idx < 6; idx++)
         {
             sprintf(buf, "%02X", pItem->m_nLayeredTextureColors[idx]);
             retval << buf;
         }
 
-        for (idx = 0; idx < 3; idx++)
+        for (int idx = 0; idx < 3; idx++)
         {
             sprintf(buf, "%02X", pItem->m_nModelPart[idx]);
             retval << buf;
         }
-        for (idx = 0; idx < 19; idx++)
+        for (int idx = 0; idx < 19; idx++)
         {
             sprintf(buf, "%02X", pItem->m_nArmorModelPart[idx]);
             retval << buf;
         }
-        for (texture=0; texture<6; texture++)
+        for (uint8_t texture = 0; texture < 6; texture++)
         {
-            for (part=0; part<19; part++)
+            for (uint8_t part = 0; part < 19; part++)
             {
                 sprintf(buf, "%02X", pItem->GetLayeredTextureColorPerPart(texture, part));
                 retval << buf;
@@ -236,44 +172,41 @@ ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retval.str());
+    return retval.str();
 }
 
-ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
 {
-
     if (auto *pItem = item(args))
     {
-        const auto sAppString = Services::Events::ExtractArgument<std::string>(args);
-        int  idx;
-        int  stringPos=0;
-        char texture, part;
+        const auto sAppString = args.extract<std::string>();
+        int  stringPos = 0;
         int  strLength = sAppString.length();
 
 
         if (strLength == 2*142 || strLength == 2*28)
         {
-            for (idx = 0; idx < 6; idx++)
+            for (int idx = 0; idx < 6; idx++)
             {
                 pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-                stringPos+=2;
+                stringPos += 2;
             }
 
-            for (idx = 0; idx < 3; idx++)
+            for (int idx = 0; idx < 3; idx++)
             {
                 pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
                 stringPos += 2;
             }
-            for (idx = 0; idx < 19; idx++)
+            for (int idx = 0; idx < 19; idx++)
             {
                 pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
                 stringPos += 2;
             }
             if (strLength == 2*142)
             {
-                for (texture = 0; texture < 6; texture++)
+                for (uint8_t texture = 0; texture < 6; texture++)
                 {
-                    for (part = 0; part < 19; part++)
+                    for (uint8_t part = 0; part < 19; part++)
                     {
                         pItem->SetLayeredTextureColorPerPart(texture, part, std::stoul(sAppString.substr(stringPos,2), nullptr, 16));
                         stringPos += 2;
@@ -286,27 +219,23 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
     {
         LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 284");
     }
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Item::GetBaseArmorClass(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetBaseArmorClass(ArgumentStack&& args)
 {
-    int32_t retval = -1;
     if (auto *pItem = item(args))
-    {
-        retval = pItem->m_nArmorValue;
-    }
-    return Services::Events::Arguments(retval);
+        return pItem->m_nArmorValue;
+
+    return -1;
 }
 
-ArgumentStack Item::GetMinEquipLevel(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetMinEquipLevel(ArgumentStack&& args)
 {
-    int32_t retval = -1;
     if (auto *pItem = item(args))
-    {
-        retval = pItem->GetMinEquipLevel();
-    }
-    return Services::Events::Arguments(retval);
+        return pItem->GetMinEquipLevel();
+
+    return -1;
 }
 
 

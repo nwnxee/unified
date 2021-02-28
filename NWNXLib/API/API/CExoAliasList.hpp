@@ -23,8 +23,8 @@ struct CExoAliasList
     void Add(CExoString alias, CExoString path);
     void Clear();
     void Delete(CExoString alias);
-    const CExoString & GetAliasPath(const CExoString & alias, int32_t nSize = 0);
-    CExoString ResolveFileName(const CExoString & sFileName, RESTYPE nType);
+    const CExoString & GetAliasPath(const CExoString & alias, int32_t nSize = 0) const;
+    CExoString ResolveFileName(const CExoString & sFileName, RESTYPE nType) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoAliasList

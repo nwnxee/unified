@@ -11,34 +11,19 @@
 #include "API/CExoLocString.hpp"
 #include "API/CExoString.hpp"
 #include "API/CResRef.hpp"
+#include "API/CExoArrayList.hpp"
+#include "API/ScriptParam.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static Dialog::Dialog* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Dialog",
-        "Functions exposing additional dialog properties",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Dialog::Dialog(params);
+    g_plugin = new Dialog::Dialog(services);
     return g_plugin;
 }
 
@@ -67,112 +52,117 @@ uint32_t Dialog::idxReply;
 int32_t  Dialog::scriptType;
 int32_t  Dialog::loopCount;
 
-void Dialog::Hooks::GetStartEntry(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner)
+static NWNXLib::Hooks::Hook s_GetStartEntryHook;
+static NWNXLib::Hooks::Hook s_GetStartEntryOneLinerHook;
+static NWNXLib::Hooks::Hook s_SendDialogEntryHook;
+static NWNXLib::Hooks::Hook s_SendDialogRepliesHook;
+static NWNXLib::Hooks::Hook s_HandleReplyHook;
+static NWNXLib::Hooks::Hook s_CheckScriptHook;
+static NWNXLib::Hooks::Hook s_RunScriptHook;
+
+uint32_t Dialog::Hooks::GetStartEntry(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
     loopCount = 0;
-    if (before)
-        statestack[++ssp] = DIALOG_STATE_START;
-    else ssp--;
+
+    statestack[++ssp] = DIALOG_STATE_START;
+    auto retVal = s_GetStartEntryHook->CallOriginal<uint32_t>(pThis, pNWSObjectOwner);
+    ssp--;
+
+    return retVal;
 }
 
-void Dialog::Hooks::GetStartEntryOneLiner(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript)
+int32_t Dialog::Hooks::GetStartEntryOneLiner(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner, CExoLocString *sOneLiner,
+                                          CResRef *sSound, CResRef *sScript, const CExoArrayList<ScriptParam> &scriptParams)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
     loopCount = 0;
-    (void)sOneLiner; (void)sSound; (void)sScript;
-    if (before)
-        statestack[++ssp] = DIALOG_STATE_START;
-    else ssp--;
+
+    statestack[++ssp] = DIALOG_STATE_START;
+    auto retVal = s_GetStartEntryOneLinerHook->CallOriginal<int32_t>(pThis, pNWSObjectOwner, sOneLiner, sSound, sScript, scriptParams);
+    ssp--;
+
+    return retVal;
 }
 
-void Dialog::Hooks::SendDialogEntry(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound)
+int32_t Dialog::Hooks::SendDialogEntry(CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, BOOL bPlayHelloSound)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
     loopCount = 0;
-    (void)nPlayerIdGUIOnly; (void)bPlayHelloSound;
-    if (before)
+
+    statestack[++ssp] = DIALOG_STATE_SEND_ENTRY;
+    idxEntry = iEntry;
+    auto retVal = s_SendDialogEntryHook->CallOriginal<int32_t>(pThis, pNWSObjectOwner, nPlayerIdGUIOnly, iEntry, bPlayHelloSound);
+    ssp--;
+
+    return retVal;
+}
+
+int32_t Dialog::Hooks::SendDialogReplies(CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly)
+{
+    pDialog = pThis;
+    pOwner = pNWSObjectOwner;
+    loopCount = 0;
+
+    statestack[++ssp] = DIALOG_STATE_SEND_REPLIES;
+    auto retVal = s_SendDialogRepliesHook->CallOriginal<int32_t>(pThis, pNWSObjectOwner, nPlayerIdGUIOnly);
+    ssp--;
+
+    return retVal;
+}
+
+int32_t Dialog::Hooks::HandleReply(CNWSDialog *pThis, uint32_t nPlayerID, CNWSObject *pNWSObjectOwner, uint32_t nReplyIndex,
+                                   BOOL bEscapeDialog, uint32_t currentEntryIndex)
+{
+    pDialog = pThis;
+    pOwner = pNWSObjectOwner;
+    loopCount = 0;
+
+    statestack[++ssp] = DIALOG_STATE_HANDLE_REPLY;
+    idxEntry = currentEntryIndex;
+    idxReply = nReplyIndex;
+    auto retVal = s_HandleReplyHook->CallOriginal<int32_t>(pThis, nPlayerID, pNWSObjectOwner, nReplyIndex, bEscapeDialog, currentEntryIndex);
+    ssp--;
+    return retVal;
+}
+
+int32_t Dialog::Hooks::CheckScript(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner, const CResRef *sActive, const CExoArrayList<ScriptParam> &scriptParams)
+{
+    pDialog = pThis;
+    pOwner = pNWSObjectOwner;
+
+    if (statestack[ssp] == DIALOG_STATE_HANDLE_REPLY)
     {
-        statestack[++ssp] = DIALOG_STATE_SEND_ENTRY;
-        idxEntry = iEntry;
+        statestack[ssp] = DIALOG_STATE_SEND_ENTRY;
+        idxReply = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
+        idxEntry = pDialog->m_pReplies[idxReply].m_pEntries[loopCount].m_nIndex;
     }
-    else ssp--;
+    scriptType = SCRIPT_TYPE_STARTING_CONDITIONAL;
+    auto retVal = s_CheckScriptHook->CallOriginal<int32_t>(pThis, pNWSObjectOwner, sActive, scriptParams);
+    loopCount++;
+    scriptType = SCRIPT_TYPE_OTHER;
+
+    return retVal;
 }
 
-void Dialog::Hooks::SendDialogReplies(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly)
+void Dialog::Hooks::RunScript(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner, const CResRef *sScript, const CExoArrayList<ScriptParam> &scriptParams)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
-    loopCount = 0;
-    (void)nPlayerIdGUIOnly;
-    if (before)
-        statestack[++ssp] = DIALOG_STATE_SEND_REPLIES;
-    else ssp--;
+
+    scriptType = SCRIPT_TYPE_ACTION_TAKEN;
+    s_RunScriptHook->CallOriginal<void>(pThis, pNWSObjectOwner, sScript, scriptParams);
+    scriptType = SCRIPT_TYPE_OTHER;
 }
 
-void Dialog::Hooks::HandleReply(bool before, CNWSDialog *pThis,
-    uint32_t nPlayerID, CNWSObject* pNWSObjectOwner, uint32_t nReplyIndex, int32_t bEscapeDialog, uint32_t currentEntryIndex)
-{
-    pDialog = pThis;
-    pOwner = pNWSObjectOwner;
-    loopCount = 0;
-    (void)bEscapeDialog; (void)nPlayerID;
-    if (before)
-    {
-        statestack[++ssp] = DIALOG_STATE_HANDLE_REPLY;
-        idxEntry = currentEntryIndex;
-        idxReply = nReplyIndex;
-    }
-    else ssp--;
-}
-
-void Dialog::Hooks::CheckScript(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner, const CResRef* sActive)
-{
-    pDialog = pThis;
-    pOwner = pNWSObjectOwner;
-    (void)sActive;
-    if (before)
-    {
-        if (statestack[ssp] == DIALOG_STATE_HANDLE_REPLY)
-        {
-            statestack[ssp] = DIALOG_STATE_SEND_ENTRY;
-            idxReply = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
-            idxEntry = pDialog->m_pReplies[idxReply].m_pEntries[loopCount].m_nIndex;
-        }
-        scriptType = SCRIPT_TYPE_STARTING_CONDITIONAL;
-    }
-    else
-    {
-        loopCount++;
-        scriptType = SCRIPT_TYPE_OTHER;
-    }
-}
-
-void Dialog::Hooks::RunScript(bool before, CNWSDialog *pThis,
-    CNWSObject* pNWSObjectOwner, const CResRef* sScript)
-{
-    pDialog = pThis;
-    pOwner = pNWSObjectOwner;
-    (void)sScript;
-    if (before)
-        scriptType = SCRIPT_TYPE_ACTION_TAKEN;
-    else
-        scriptType = SCRIPT_TYPE_OTHER;
-}
-
-Dialog::Dialog(const Plugin::CreateParams& params)
-    : Plugin(params)
+Dialog::Dialog(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetCurrentNodeType);
@@ -185,27 +175,21 @@ Dialog::Dialog(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
-            uint32_t, CNWSDialog*, CNWSObject*>(&Hooks::GetStartEntry);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog21GetStartEntryOneLinerEP10CNWSObjectR13CExoLocStringR7CResRefS5_,
-            int32_t, CNWSDialog*, CNWSObject*, CExoLocString*, CResRef*, CResRef*>(&Hooks::GetStartEntryOneLiner);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
-            int32_t, CNWSDialog*, CNWSObject*, uint32_t, uint32_t, int32_t>(&Hooks::SendDialogEntry);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
-            int32_t, CNWSDialog*, CNWSObject*, uint32_t>(&Hooks::SendDialogReplies);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
-            int32_t, CNWSDialog*, uint32_t , CNWSObject*, uint32_t, int32_t, uint32_t>(&Hooks::HandleReply);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRef,
-        int32_t, CNWSDialog *, CNWSObject*, const CResRef*>(&Hooks::CheckScript);
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRef,
-        void, CNWSDialog *, CNWSObject*, const CResRef*>(&Hooks::RunScript);
+    s_GetStartEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
+                                                       (void*)&Hooks::GetStartEntry, NWNXLib::Hooks::Order::Early);
+    s_GetStartEntryOneLinerHook = NWNXLib::Hooks::HookFunction(
+            Functions::_ZN10CNWSDialog21GetStartEntryOneLinerEP10CNWSObjectR13CExoLocStringR7CResRefS5_R13CExoArrayListI11ScriptParamE,
+            (void*)&Hooks::GetStartEntryOneLiner, NWNXLib::Hooks::Order::Early);
+    s_SendDialogEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
+                                                         (void*)&Hooks::SendDialogEntry, NWNXLib::Hooks::Order::Early);
+    s_SendDialogRepliesHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
+                                                           (void*)&Hooks::SendDialogReplies, NWNXLib::Hooks::Order::Early);
+    s_HandleReplyHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
+                                                     (void*)&Hooks::HandleReply, NWNXLib::Hooks::Order::Early);
+    s_CheckScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                     (void*)&Hooks::CheckScript, NWNXLib::Hooks::Order::Early);
+    s_RunScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                   (void*)&Hooks::RunScript, NWNXLib::Hooks::Order::Early);
 }
 
 Dialog::~Dialog()
@@ -224,12 +208,12 @@ ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&&)
         default: retval = NODE_TYPE_INVALID;                              break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentScriptType(ArgumentStack&&)
 {
-    return Services::Events::Arguments(scriptType);
+    return Events::Arguments(scriptType);
 }
 
 ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
@@ -255,20 +239,20 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
             break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentNodeIndex(ArgumentStack&&)
 {
-    return Services::Events::Arguments(loopCount);
+    return Events::Arguments(loopCount);
 }
 
 ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
 {
     CExoString str;
 
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -302,14 +286,14 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
         pLocString->GetString(language, &str, gender, true);
     }
 
-    return Services::Events::Arguments(std::string(str.CStr()));
+    return Events::Arguments(std::string(str.CStr()));
 }
 
 ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 {
-    auto str = Services::Events::ExtractArgument<std::string>(args);
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto str = Events::ExtractArgument<std::string>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -344,12 +328,12 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
         pLocString->AddString(language, cexostr, gender);
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    auto oidObject = Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))
@@ -357,7 +341,7 @@ ArgumentStack Dialog::End(ArgumentStack&& args)
         pObject->StopDialog();
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

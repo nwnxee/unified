@@ -5,17 +5,19 @@
 #include "API/Constants.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/BarterEvents.hpp"
+#include "Events/CalendarEvents.hpp"
 #include "Events/ClientEvents.hpp"
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
 #include "Events/ExamineEvents.hpp"
+#include "Events/FactionEvents.hpp"
 #include "Events/FeatEvents.hpp"
 #include "Events/ItemEvents.hpp"
 #include "Events/MapEvents.hpp"
 #include "Events/StealthEvents.hpp"
 #include "Events/SpellEvents.hpp"
 #include "Events/PartyEvents.hpp"
-#include "Events/HealerKitEvents.hpp"
+#include "Events/HealingEvents.hpp"
 #include "Events/SkillEvents.hpp"
 #include "Events/PolymorphEvents.hpp"
 #include "Events/EffectEvents.hpp"
@@ -29,49 +31,39 @@
 #include "Events/MaterialChangeEvents.hpp"
 #include "Events/ObjectEvents.hpp"
 #include "Events/UUIDEvents.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "Events/ResourceEvents.hpp"
+#include "Events/QuickbarEvents.hpp"
+#include "Events/DebugEvents.hpp"
+#include "Events/StoreEvents.hpp"
+#include "Events/JournalEvents.hpp"
 
 #include <algorithm>
 #include <regex>
 #include <string>
 
+static Events::Events* g_plugin;
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Events::Events* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Events",
-        "Provides an interface for plugins to create event-based systems, and exposes some events through that interface.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Events::Events(params);
+    g_plugin = new ::Events::Events(services);
     return g_plugin;
 }
 
 namespace Events {
 
-Events::Events(const Plugin::CreateParams& params)
-    : Plugin(params), m_eventDepth(0)
+Events::Events(Services::ProxyServiceList* services)
+    : Plugin(services), m_eventDepth(0)
 {
     if (g_plugin == nullptr) // :(
         g_plugin = this;
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    NWNXLib::Events::RegisterEvent(PLUGIN_NAME, #func, \
+        [this](NWNXLib::Events::ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SubscribeEvent);
     REGISTER(UnsubscribeEvent);
@@ -84,64 +76,73 @@ Events::Events(const Plugin::CreateParams& params)
     REGISTER(ToggleDispatchListMode);
     REGISTER(AddObjectToDispatchList);
     REGISTER(RemoveObjectFromDispatchList);
+    REGISTER(ToggleIDWhitelist);
+    REGISTER(AddIDToWhitelist);
+    REGISTER(RemoveIDFromWhitelist);
 
 #undef REGISTER
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
-        [](const std::vector<std::string> message)
+    MessageBus::Subscribe("NWNX_EVENT_SIGNAL_EVENT",
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             SignalEvent(message[0], std::strtoul(message[1].c_str(), nullptr, 16));
         });
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_PUSH_EVENT_DATA",
-        [](const std::vector<std::string> message)
+    MessageBus::Subscribe("NWNX_EVENT_PUSH_EVENT_DATA",
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             PushEventData(message[0], message[1]);
         });
 
-    auto hooker = GetServices()->m_hooks.get();
-    m_associateEvents   = std::make_unique<AssociateEvents>(hooker);
-    m_barterEvents      = std::make_unique<BarterEvents>(hooker);
-    m_clientEvents      = std::make_unique<ClientEvents>(hooker);
-    m_combatEvents      = std::make_unique<CombatEvents>(hooker);
-    m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
-    m_examineEvents     = std::make_unique<ExamineEvents>(hooker);
-    m_itemEvents        = std::make_unique<ItemEvents>(hooker);
-    m_featEvents        = std::make_unique<FeatEvents>(hooker);
-    m_stealthEvents     = std::make_unique<StealthEvents>(hooker);
-    m_spellEvents       = std::make_unique<SpellEvents>(hooker);
-    m_partyEvents       = std::make_unique<PartyEvents>(hooker);
-    m_healerKitEvents   = std::make_unique<HealerKitEvents>(hooker);
-    m_skillEvents       = std::make_unique<SkillEvents>(hooker);
-    m_mapEvents         = std::make_unique<MapEvents>(hooker);
-    m_polymorphEvents   = std::make_unique<PolymorphEvents>(hooker);
-    m_effectEvents      = std::make_unique<EffectEvents>(hooker);
-    m_quickChatEvents   = std::make_unique<QuickChatEvents>(hooker);
-    m_inventoryEvents   = std::make_unique<InventoryEvents>(hooker);
-    m_trapEvents        = std::make_unique<TrapEvents>(hooker);
-    m_timingBarEvents   = std::make_unique<TimingBarEvents>(hooker);
-    m_levelEvents       = std::make_unique<LevelEvents>(hooker);
-    m_PVPEvents         = std::make_unique<PVPEvents>(hooker);
-    m_inputEvents       = std::make_unique<InputEvents>(hooker);
-    m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(hooker);
-    m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
-    m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
+    m_associateEvents   = std::make_unique<AssociateEvents>();
+    m_barterEvents      = std::make_unique<BarterEvents>();
+    m_calendarEvents    = std::make_unique<CalendarEvents>();
+    m_clientEvents      = std::make_unique<ClientEvents>();
+    m_combatEvents      = std::make_unique<CombatEvents>();
+    m_dmActionEvents    = std::make_unique<DMActionEvents>();
+    m_examineEvents     = std::make_unique<ExamineEvents>();
+    m_factionEvents     = std::make_unique<FactionEvents>();
+    m_itemEvents        = std::make_unique<ItemEvents>();
+    m_featEvents        = std::make_unique<FeatEvents>();
+    m_stealthEvents     = std::make_unique<StealthEvents>();
+    m_spellEvents       = std::make_unique<SpellEvents>();
+    m_partyEvents       = std::make_unique<PartyEvents>();
+    m_healingEvents     = std::make_unique<HealingEvents>();
+    m_skillEvents       = std::make_unique<SkillEvents>();
+    m_mapEvents         = std::make_unique<MapEvents>();
+    m_polymorphEvents   = std::make_unique<PolymorphEvents>();
+    m_effectEvents      = std::make_unique<EffectEvents>();
+    m_quickChatEvents   = std::make_unique<QuickChatEvents>();
+    m_inventoryEvents   = std::make_unique<InventoryEvents>();
+    m_trapEvents        = std::make_unique<TrapEvents>();
+    m_timingBarEvents   = std::make_unique<TimingBarEvents>();
+    m_levelEvents       = std::make_unique<LevelEvents>();
+    m_PVPEvents         = std::make_unique<PVPEvents>();
+    m_inputEvents       = std::make_unique<InputEvents>();
+    m_matChangeEvents   = std::make_unique<MaterialChangeEvents>();
+    m_objectEvents      = std::make_unique<ObjectEvents>();
+    m_uuidEvents        = std::make_unique<UUIDEvents>();
+    m_resourceEvents    = std::make_unique<ResourceEvents>();
+    m_quickbarEvents    = std::make_unique<QuickbarEvents>();
+    m_debugEvents       = std::make_unique<DebugEvents>();
+    m_storeEvents       = std::make_unique<StoreEvents>();
+    m_journalEvents     = std::make_unique<JournalEvents>();
 }
 
 Events::~Events()
 {
 }
 
-void Events::PushEventData(const std::string tag, const std::string data)
+void Events::PushEventData(const std::string& tag, const std::string& data)
 {
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
     g_plugin->CreateNewEventDataIfNeeded();
-    g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
+    g_plugin->m_eventData.top().m_EventDataMap[tag] = data;
 }
 
-std::string Events::GetEventData(const std::string tag)
+std::string Events::GetEventData(const std::string& tag)
 {
     std::string retVal;
     if (g_plugin->m_eventDepth == 0 || g_plugin->m_eventData.empty())
@@ -164,7 +165,7 @@ std::string Events::GetEventData(const std::string tag)
     return retVal;
 }
 
-bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID target, std::string *result)
+bool Events::SignalEvent(const std::string& eventName, const ObjectID target, std::string *result)
 {
     bool skipped = false;
 
@@ -205,8 +206,8 @@ bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID tar
         }
     }
 
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
 
     g_plugin->m_eventData.pop();
 
@@ -215,24 +216,54 @@ bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID tar
 
 void Events::InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init)
 {
-    g_plugin->m_initList[eventName] = init;
+    g_plugin->m_initList[eventName] = std::move(init);
+}
+
+bool Events::IsIDInWhitelist(const std::string& eventName, int32_t id)
+{
+    bool retVal = false;
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+
+    if (idWhitelist == g_plugin->m_idWhitelist.end())
+        retVal = true;// Whitelist is not enabled for eventName
+    else
+    {
+        if(idWhitelist->second.find(id) != idWhitelist->second.end())
+            retVal = true;
+    }
+
+    return retVal;
+}
+
+void Events::ForceEnableWhitelist(const std::string& eventName)
+{
+    g_plugin->m_idWhitelist[eventName];
+}
+
+void Events::CreateNewEventDataIfNeeded()
+{
+    if (m_eventData.size() <= m_eventDepth)
+    {
+        EventParams params;
+        params.m_Skipped = false;
+        m_eventData.emplace(std::move(params));
+    }
 }
 
 void Events::RunEventInit(const std::string& eventName)
 {
     std::vector<std::string> erase;
-    for (auto it: m_initList)
+    for (const auto& it: m_initList)
     {
         if (std::regex_search(eventName, std::regex(it.first)))
         {
-            LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
-                        it.first, eventName);
+            LOG_DEBUG("Running init function for events '%s' (requested by event '%s')", it.first, eventName);
             it.second();
             erase.push_back(it.first);
         }
     }
 
-    for (auto e: erase)
+    for (const auto& e: erase)
     {
         m_initList.erase(e);
     }
@@ -240,8 +271,8 @@ void Events::RunEventInit(const std::string& eventName)
 
 ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
-    auto script = Services::Events::ExtractArgument<std::string>(args);
+    const auto event = args.extract<std::string>();
+    auto script = args.extract<std::string>();
 
     RunEventInit(event);
     auto& eventVector = m_eventMap[event];
@@ -256,14 +287,14 @@ ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
         eventVector.emplace_back(std::move(script));
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
+    const auto event = args.extract<std::string>();
       ASSERT_OR_THROW(!event.empty());
-    const auto script = Services::Events::ExtractArgument<std::string>(args);
+    const auto script = args.extract<std::string>();
       ASSERT_OR_THROW(!script.empty());
 
     auto& eventVector = m_eventMap[event];
@@ -279,31 +310,31 @@ ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
         eventVector.erase(it);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::PushEventData(ArgumentStack&& args)
 {
-    const auto tag = Services::Events::ExtractArgument<std::string>(args);
-    const auto data = Services::Events::ExtractArgument<std::string>(args);
+    const auto tag = args.extract<std::string>();
+    const auto data = args.extract<std::string>();
     PushEventData(tag, data);
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::SignalEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto event = args.extract<std::string>();
+    const auto object = args.extract<ObjectID>();
     bool signalled = SignalEvent(event, object);
 
-    return Services::Events::Arguments(signalled ? 1 : 0);
+    return signalled ? 1 : 0;
 }
 
 ArgumentStack Events::GetEventData(ArgumentStack&& args)
 {
-    std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
+    std::string data = GetEventData(args.extract<std::string>());
 
-    return Services::Events::Arguments(data);
+    return data;
 }
 
 ArgumentStack Events::SkipEvent(ArgumentStack&&)
@@ -316,7 +347,7 @@ ArgumentStack Events::SkipEvent(ArgumentStack&&)
 
     LOG_DEBUG("Skipping last event.");
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::SetEventResult(ArgumentStack&& args)
@@ -325,13 +356,13 @@ ArgumentStack Events::SetEventResult(ArgumentStack&& args)
     {
         throw std::runtime_error("Attempted to set event result in an invalid context.");
     }
-    const auto data = Services::Events::ExtractArgument<std::string>(args);
+    const auto data = args.extract<std::string>();
 
     m_eventData.top().m_Result = data;
 
     LOG_DEBUG("Received event result '%s'.", data);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::GetCurrentEvent(ArgumentStack&&)
@@ -347,32 +378,32 @@ ArgumentStack Events::GetCurrentEvent(ArgumentStack&&)
         retVal = g_plugin->m_eventData.top().m_EventName;
     }
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
 ArgumentStack Events::ToggleDispatchListMode(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const bool bEnable = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    const bool bEnable = args.extract<int32_t>() != 0;
 
     if (bEnable)
         g_plugin->m_dispatchList[eventName+scriptName];
     else
         g_plugin->m_dispatchList.erase(eventName+scriptName);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -381,16 +412,16 @@ ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
         eventDispatchList->second.insert(oidObject);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -399,17 +430,51 @@ ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
         eventDispatchList->second.erase(oidObject);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-void Events::CreateNewEventDataIfNeeded()
+ArgumentStack Events::ToggleIDWhitelist(ArgumentStack&& args)
 {
-    if (m_eventData.size() <= m_eventDepth)
+    const auto eventName = args.extract<std::string>();
+      ASSERT_OR_THROW(!eventName.empty());
+    const bool bEnable = args.extract<int32_t>() != 0;
+
+    if (bEnable)
+        g_plugin->m_idWhitelist[eventName];
+    else
+        g_plugin->m_idWhitelist.erase(eventName);
+
+    return {};
+}
+
+ArgumentStack Events::AddIDToWhitelist(ArgumentStack&& args)
+{
+    const auto eventName = args.extract<std::string>();
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto id = args.extract<int32_t>();
+
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+    if (idWhitelist != g_plugin->m_idWhitelist.end())
     {
-        EventParams params;
-        params.m_Skipped = false;
-        m_eventData.emplace(std::move(params));
+        idWhitelist->second.insert(id);
     }
+
+    return {};
+}
+
+ArgumentStack Events::RemoveIDFromWhitelist(ArgumentStack&& args)
+{
+    const auto eventName = args.extract<std::string>();
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto id = args.extract<int32_t>();
+
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+    if (idWhitelist != g_plugin->m_idWhitelist.end())
+    {
+        idWhitelist->second.erase(id);
+    }
+
+    return {};
 }
 
 }

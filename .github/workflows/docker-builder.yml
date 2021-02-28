@@ -1,0 +1,63 @@
+name: Build Docker Builder Factory
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'builder.Dockerfile'
+      - '**docker-builder.yml'
+  schedule:
+    - cron: '5 4 14 * *'
+jobs:
+  docker-builder:
+    runs-on: ubuntu-18.04
+    if: github.event_name == 'push' || github.event_name == 'schedule'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set outputs
+      id: vars
+      run: |
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ secrets.GHCR_USERNAME }}
+        password: ${{ secrets.CR_PAT }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        file: ./builder.Dockerfile
+        push: true
+        labels: |
+          org.opencontainers.image.title=NWNX:EE Builder Factory
+          org.opencontainers.image.description=This image serves as the factory for compiling the sources, and must be updated whenever the build dependencies change. This docker image created is pushed to Dockerhub and GHCR and is the base image when users build their own docker images for NWNX:EE.
+          org.opencontainers.image.author=NWNX:EE Community
+          org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+          org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+          org.opencontainers.image.revision=${{ github.sha }}
+        tags: |
+          ${{ github.repository_owner }}/builder:latest
+          ${{ github.repository_owner }}/builder:${{ steps.vars.outputs.sha_short }}
+          ghcr.io/${{ github.repository_owner }}/builder:latest
+          ghcr.io/${{ github.repository_owner }}/builder:${{ steps.vars.outputs.sha_short }}
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}

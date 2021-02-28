@@ -3,16 +3,15 @@
 
 This plugin facilitates renaming, overriding and customization of player names.
 
-@note Due to the conflict with this plugin and the @ref tweaks "NWNX_Tweaks" plugin to hide classes on the module character listing, this module also provides that functionality.
-
 ## Environment Variables
 
 | Variable Name | Value | Default | Notes |
 | -------------   | :----: | :----: |----------------------------- |
-| `NWNX_RENAME_ON_MODULE_CHAR_LIST` | 0-3 | 0 | This is the listing of players from the character selection screen before entering the server. Setting the value to 1 overrides their names if a global rename has been set, 2 also hides class information, 3 hides class information but keeps names as their original.
+| `NWNX_RENAME_ON_MODULE_CHAR_LIST` | true or false | false | This is the listing of players from the character selection screen before entering the server. Setting the value to true overrides their names if a global rename has been set.
 | `NWNX_RENAME_ON_PLAYER_LIST` | true or false | true | Renames the player name on the player list as well.
 | `NWNX_RENAME_ALLOW_DM` | true or false | false | DM observers will see global or personal overrides as well as being able to have their own name overridden for other observers.
 | `NWNX_RENAME_ANONYMOUS_NAME` | string | Someone | When using `NWNX_Rename_SetPCNameOverride` with `NWNX_RENAME_PLAYERNAME_ANONYMOUS` this is the string used for the \<PlayerName\>
+| `NWNX_RENAME_OVERWRITE_DISPLAY_NAME` | true or false | false | When set to `true`, global overrides change the display name globally - scripts and DMs included. When set to `false`, then name is only changed for players. Scripts and DMs see the original names (unless `NWNX_RENAME_ALLOW_DM` is set).
 
 ## Sample Include
 
@@ -71,7 +70,7 @@ void LoadNamesForPC(object oPC)
             {
                 NWNX_SQL_ReadNextRow();
                 NWNX_Rename_SetPCNameOverride(oOtherPC, NWNX_SQL_ReadDataInActiveRow(0),
-                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oPC);
+                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oPC);
             }
             NWNX_SQL_PrepareQuery(sSQL);
             NWNX_SQL_PreparedInt(0, nOtherPCID);
@@ -81,7 +80,7 @@ void LoadNamesForPC(object oPC)
             {
                 NWNX_SQL_ReadNextRow();
                 NWNX_Rename_SetPCNameOverride(oPC, NWNX_SQL_ReadDataInActiveRow(0),
-                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oOtherPC);
+                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oOtherPC);
             }
         }
         oOtherPC = GetNextPC();
@@ -147,7 +146,7 @@ void IntroducePlayers(object oPC, object oTarget, string sName, int iType = 0)
     {
         SendMessageToPC(oTarget, sMyName + " wants you to know them as " + sName + ".");
         NWNX_Rename_SetPCNameOverride(oPC, sName, RENAMED_PLAYER_PREFIX,
-                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oTarget);
+                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oTarget);
         SetDynamicNameDB(oPC, oTarget, sName);
     }
 }
@@ -159,7 +158,7 @@ void DubPlayer(object oPC, object oTarget, string sName)
         sTargetName = "Someone";
     SendMessageToPC(oPC, sTargetName + " will now be known as " + sName + " to you.");
     NWNX_Rename_SetPCNameOverride(oTarget, sName, RENAMED_PLAYER_PREFIX,
-                    RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oPC);
+                    RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oPC);
     SetDynamicNameDB(oTarget, oPC, sName, 1);
 }
 

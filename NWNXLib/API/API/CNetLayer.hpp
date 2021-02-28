@@ -15,6 +15,9 @@ struct CNetLayerPlayerInfo;
 struct CNetLayerSessionInfo;
 struct NWSyncAdvertisement;
 
+namespace NWSync {
+    struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 
@@ -37,9 +40,8 @@ struct CNetLayer
     BOOL SetPlayerPassword(CExoString sPlayerPassword);
     CExoString GetGameMasterPassword();
     BOOL SetGameMasterPassword(CExoString sGameMasterPassowrd);
-    CExoString minPassword();
-    BOOL SetServerAdminPassword(CExoString sServerAdminPassword);
     CExoString GetServerAdminPassword();
+    BOOL SetServerAdminPassword(CExoString sServerAdminPassword);
     BOOL EndServerMode();
     BOOL GetServerConnected();
     CNetLayerPlayerInfo * GetPlayerInfo(uint32_t nPlayerId);
@@ -55,13 +57,13 @@ struct CNetLayer
     BOOL GetAddressTranslationResult(const CExoString & sInternetAddress, CExoArrayList<uint32_t> & nIPv4);
     void EndAddressTranslation(const CExoString & sInternetAddress);
     BOOL StartEnumerateSessionsSection(uint32_t nEnumerateSection, uint32_t nSize, CExoString * sServerListToEnumerate);
-    BOOL EnumerateSessionsLoop();
+    //BOOL EnumerateSessionsLoop();
     BOOL GetAnySessionsEnumerated();
     BOOL EndEnumerateSessionsSection(uint32_t nEnumerateSection);
     BOOL EndEnumerateSessions();
     void CleanUpEnumerateSpecific();
     uint32_t GetSessionSectionStart(uint32_t sectionSectionId);
-    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, int32_t nVersionNumber, const CExoString & sPassword, uint32_t nTimeOut, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64 = "");
+    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, const CExoString & sPassword, uint32_t nTimeOut, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64 = "");
     BOOL RequestExtendedServerInfo(uint32_t nSessionId, BOOL bGetInfo = true, BOOL bGetPing = true);
     BOOL RequestServerDetails(uint32_t nConnectionId);
     BOOL StartPing(uint32_t nSessionId);
@@ -92,7 +94,8 @@ struct CNetLayer
     BOOL UpdateStatusLoop(uint32_t nApplicationType);
     BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
     void StoreMessage(uint8_t * pData, uint32_t nMsgLength);
-    BOOL GetGameMasterPermision();
+    BOOL GetGameMasterPermision() const;
+    void SetGameMasterPermission(BOOL state);
     BOOL TranslateAddressFromString(char * szAddress, uint32_t * nProtocol, uint8_t * pNetAddress1, uint8_t * pNetAddress2, uint32_t * nWPort);
     class CExoNet * GetExoNet();
     CExoString GetServerNetworkAddress();
@@ -113,10 +116,11 @@ struct CNetLayer
     BOOL GetConnectionsMustBeValidated();
     void SetConnectionsMustBeValidated(BOOL bValidateLoginWhileMasterServerIsNotResponding);
     BOOL GetEnumerateSpecificOverRelay();
-    void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken);
+    void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken[6]);
     CExoString GetRouterPortMapDescription();
-    void SetNWSyncData(const NWSyncAdvertisement & datra);
-    const NWSyncAdvertisement & GetNWSyncData();
+    void SetNWSyncData(const NWSync::Advertisement & datra);
+    const NWSyncAdvertisement & GetNWSyncData() const;
+    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayer

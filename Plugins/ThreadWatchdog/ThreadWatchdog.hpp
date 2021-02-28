@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include <memory>
 #include <thread>
 
@@ -10,11 +9,11 @@ namespace ThreadWatchdog {
 class ThreadWatchdog : public NWNXLib::Plugin
 {
 public:
-    ThreadWatchdog(const Plugin::CreateParams& params);
+    ThreadWatchdog(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ThreadWatchdog();
 
 private:
-    static void MainLoopUpdate(bool, CServerExoAppInternal*);
+    static int32_t MainLoopUpdate(CServerExoAppInternal*);
     std::unique_ptr<std::thread> m_watchdog;
 };
 

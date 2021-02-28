@@ -38,9 +38,10 @@ namespace VMStructure
         Location     = 2,
         Talent       = 3,
         ItemProperty = 4,
+        SQLQuery     = 5,
     };
     constexpr int32_t MIN = 0;
-    constexpr int32_t MAX = 4;
+    constexpr int32_t MAX = 5;
 }
 
 namespace VMCommand

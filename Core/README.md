@@ -12,12 +12,12 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_SKIP_ALL` | 0-1 | 0 | Changes the default plugin load state from 'load all' to 'skip all'. Use `NWNX_{PLUGIN}_SKIP=n` to enable specific plugins in this case.
 | `NWNX_CORE_LOG_LEVEL` | 0-7 | 0| Sets the default log level. `6` is a good level for live servers. `7`  includes debug messages which can be helpful if you're having issues.
 | `NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN` | 0-1 | 0 | Allows loading of NWNX_Experimental, use at your own risk.
-| `NWNX_CORE_LOCALE` | ru | Unset | Set the locale NWNX will use when encoding. Currently only supports Russian/Cyrillic (`ru`)
+| `NWNX_CORE_LOCALE` | string | Unset | Set the locale NWNX will use when encoding. Supported are cp1250, cp1251, cp1252 (default). Can also use two letter country codes (e.g. `'ru'`)
 | `NWNX_CORE_CRASH_ON_ASSERT_FAILURE` | 0-1 | 0 | Sets whether an ASSERT failure hard crashes the server.
 | `NWNX_CORE_SHUTDOWN_SCRIPT` | string | Unset | Sets which NWScript to run when the module shuts down.
 | `NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK` | 0-1 | 0 | When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.
 | `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` | string | UserDirectory/nwnx | The path of the /nwnx resource directory
-| `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY` | 0-1 | 0 | When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.
+| `NWNX_CORE_CUSTOM_RESMAN_DEFINITION` | string | Unset | A path to a file with custom resource directory aliases, see below for more info
 | `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` | int | 70000000 | Sets the resman priority of the UserDirectory/nwnx folder.
 | `NWNX_CORE_LOG_TIMESTAMP` | 0-1 | 1 | Set whether to show timestamp in logs printed by NWNX.
 | `NWNX_CORE_LOG_DATE` | 0-1 | 0 | Set whether to show date(Y-M-D) in logs printed by NWNX. Timestamps must be enabled.
@@ -26,6 +26,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
 | `NWNX_CORE_LOG_FORCE_COLOR` | 0-1| 0 | Sets whether to force color output.
 | `NWNX_CORE_LOG_ASYNC` | 0-1| 0 | Sets whether to flush the log to disk in an async thread.
+| `NWNX_CORE_HARD_EXIT` | 0-1| 0 | If set, NWNX will hard kill the process after it unloads.
 
 ## Console Commands
 
@@ -34,8 +35,21 @@ The core of NWNX:EE that does all the things.
 | `runscript <script name>` | Executes the given nwscript. Example: `runscript dm_killallplayers`
 | `eval <script chunk>` | Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
 | `evalx <script chunk>` | Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
-| `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. Example: `loglevel Events 7`
+| `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. `<plugin>` should not have the `NWNX_` prefix.  Example: `loglevel Events 7`
 | `logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]` | Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
+
+## Custom Resman Definition File
+
+A file that lets you specify additional resource directories that act the same as the `/development` and `/nwnx` folders.
+
+Each line in the file must contain the following: `ALIASNAME /full/path/to/folder <priority>`
+
+Example:
+
+```
+TEST /home/nwnx/test 70000001
+STUFF /home/nwnx/stuff 70000002
+```
 
 ## Plugin Management
 

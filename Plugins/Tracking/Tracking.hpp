@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include <memory>
 
 namespace Tracking {
@@ -10,7 +10,7 @@ class Activity;
 class Tracking : public NWNXLib::Plugin
 {
 public:
-    Tracking(const Plugin::CreateParams& params);
+    Tracking(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Tracking();
 
 private:

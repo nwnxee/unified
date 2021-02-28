@@ -1,19 +1,18 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "Targets/ITarget.hpp"
 
 #include <memory>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace SQL {
 
 class SQL : public NWNXLib::Plugin
 {
 public:
-    SQL(const Plugin::CreateParams& params);
+    SQL(NWNXLib::Services::ProxyServiceList* services);
     virtual ~SQL();
 
     ArgumentStack PrepareQuery                  (ArgumentStack&& args);

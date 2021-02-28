@@ -39,5 +39,24 @@ namespace NWN
         {
             Console.WriteLine("OnStart() called");
         }
+
+        //
+        // This is called once, just before the module load script is called.
+        // Unlike OnStart, NWScript functions are available to use here.
+        //
+        public static void OnModuleLoad()
+        {
+            Console.WriteLine("OnModuleLoad() called");
+        }
+
+        //
+        // This is called once, just before the server will shutdown. In here, you should
+        // save anything that might not be flushed to disk, and perform any last cleanup.
+        // NWScript functions are available to use.
+        //
+        public static void OnShutdown()
+        {
+            Console.WriteLine("OnShutdown() called");
+        }
     }
 }

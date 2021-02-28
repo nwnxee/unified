@@ -1,12 +1,12 @@
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
 
+#include "nwnx.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <regex>
 
 #include "PostgreSQL.hpp"
-#include "Services/Config/Config.hpp"
-
+using namespace NWNXLib;
 namespace SQL {
 
 PostgreSQL::PostgreSQL()
@@ -19,22 +19,22 @@ PostgreSQL::~PostgreSQL()
     PQfinish(m_conn);
 }
 
-void PostgreSQL::Connect(NWNXLib::Services::ConfigProxy* config)
+void PostgreSQL::Connect()
 {
-    const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
-    const std::string user = "user=" + config->Require<std::string>("USERNAME");
-    const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
+    const std::string host = "host=" + Config::Get<std::string>("HOST", "localhost");
+    const std::string user = "user=" + *Config::Get<std::string>("USERNAME");
+    const std::string pass = "password=" + *Config::Get<std::string>("PASSWORD");
 
     // Database technically is optional.  If not given, it will connect to the default
     // database of the given USERNAME.
-    const auto DB = config->Get<std::string>("DATABASE");
+    const auto DB = Config::Get<std::string>("DATABASE");
     if (DB)
     {
         LOG_DEBUG("DB set to %s", (*DB));
     }
     const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
 
-    const std::string port = "port=" + config->Get<std::string>("PORT", "5432");
+    const std::string port = "port=" + Config::Get<std::string>("PORT", "5432");
 
     // Build the m_connection string - this is used later in the PQping (PQping doesn't need the password).
     m_connectString = host + " " + port + " " + db + " " + user ;
@@ -98,6 +98,8 @@ bool PostgreSQL::PrepareQuery(const Query& query)
     LOG_DEBUG("Detected %d parameters.", m_paramCount);
 
     m_params.resize(m_paramCount);
+    m_formats.resize(m_paramCount);
+    m_lengths.resize(m_paramCount);
 
     PGresult *res = PQprepare(m_conn,      // connection
                         "",                // statement name, blank in this case.
@@ -149,8 +151,8 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         "",                                     // statement name (same as in the prepare above)
         m_paramCount,                           // m_paramCount from previous
         paramValues,                            // param data (can be null)
-        NULL,                                   // param lengths - only for binary data
-        NULL,                                   // param formats - server will infer text
+        m_lengths.data(),                                   // param lengths - only for binary data
+        m_formats.data(),                                   // param formats - server will infer text
         0);                                     // result format, 0=text, 1=binary
 
     // done with parameters.
@@ -223,16 +225,27 @@ void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
     LOG_DEBUG("Assigning position %d to value '%d'", position, value);
     m_params[position] = std::to_string(value);
+    m_formats[position] = 0;
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
     LOG_DEBUG("Assigning position %d to value '%f'", position, value);
     m_params[position] = std::to_string(value);
+    m_formats[position] = 0;
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
     LOG_DEBUG("Assigning position %d to value '%s'", position, value);
     m_params[position] = value;
+    m_formats[position] = 0;
+}
+
+void PostgreSQL::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
+{
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value.data());
+    m_params[position] = std::string(value.begin(), value.end());
+    m_lengths[position] = value.size();
+    m_formats[position] = 1;
 }
 
 int PostgreSQL::GetAffectedRows()

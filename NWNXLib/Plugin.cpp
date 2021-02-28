@@ -1,38 +1,89 @@
-#include "Plugin.hpp"
+#include "nwnx.hpp"
+#include <dlfcn.h>
 
-namespace NWNXLib {
-
-Plugin::Plugin(const CreateParams& params)
-    : m_services(params.m_services)
+namespace NWNXLib
 {
+
+constexpr char PluginEntryName[] = "PluginLoad";
+
+void* Plugin::GetExportedSymbol(const std::string& symbolName)
+{
+    if (symbolName[0] == '_')
+        return nullptr;
+    return dlsym(m_handle, symbolName.c_str());
 }
 
-Plugin::~Plugin()
+Plugin::Plugin(Services::ProxyServiceList* services) :
+    m_services(services) { }
+
+
+Plugin* Plugin::Find(const std::string& pluginName)
 {
+    for (auto* plugin : s_plugins)
+    {
+        if (!strcasecmp(pluginName.c_str(), plugin->m_name.c_str()))
+            return plugin;
+    }
+    return nullptr;
 }
 
-Plugin::Info::Info(std::string name,
-    std::string description,
-    std::string author,
-    std::string contact,
-    const Version version,
-    const bool hotswap,
-    const uint32_t flags,
-    const Version targetVersion)
-    : m_name(std::move(name)),
-      m_description(std::move(description)),
-      m_author(std::move(author)),
-      m_contact(std::move(contact)),
-      m_version(version),
-      m_hotswap(hotswap),
-      m_flags(flags),
-      m_targetVersion(targetVersion)
+Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxyServiceList>&& services)
 {
+    auto basename = String::Basename(path);
+
+    LOG_DEBUG("Loading plugin '%s'", basename);
+    if (Find(basename))
+    {
+        LOG_ERROR("Plugin '%s' already loaded.", basename);
+        return nullptr;
+    }
+
+    void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_NODELETE);
+    if (!handle)
+    {
+        LOG_ERROR("Unable to load plugin '%s': %s", path, dlerror());
+        return nullptr;
+    }
+
+    Plugin* plugin;
+    if (auto entry = (EntryFunction) dlsym(handle, PluginEntryName))
+    {
+        LOG_DEBUG("Plugin '%s' exposed entry function %s()", path, PluginEntryName);
+        plugin = entry(services.get());
+        if (plugin == nullptr)
+        {
+            LOG_ERROR("Plugin '%s' entry function returned nullptr", path);
+            dlclose(handle);
+            return nullptr;
+        }
+    }
+    else
+    {
+        plugin = new Plugin(services.get());
+    }
+
+    plugin->m_servicesOwning = std::move(services);
+    plugin->m_name = basename;
+    plugin->m_path = path;
+    plugin->m_handle = handle;
+    s_plugins.push_back(plugin);
+
+    LOG_INFO("Loaded plugin %s", path);
+    return plugin;
 }
 
-Services::ProxyServiceList* Plugin::GetServices()
+void Plugin::UnloadAll()
 {
-    return m_services;
+    while (!s_plugins.empty())
+    {
+        auto* plugin = s_plugins.back();
+        s_plugins.pop_back();
+        LOG_INFO("Unloading plugin %s", plugin->m_name);
+
+        auto handle = plugin->m_handle;
+        delete plugin;
+        dlclose(handle);
+    }
 }
 
 }

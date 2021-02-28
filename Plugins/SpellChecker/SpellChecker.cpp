@@ -5,7 +5,6 @@
 #include "API/Globals.hpp"
 #include <hunspell/hunspell.hxx>
 #include <iostream>
-#include "Services/Config/Config.hpp"
 
 #include <dlfcn.h>
 
@@ -15,39 +14,26 @@ using namespace NWNXLib::Services;
 
 static SpellChecker::SpellChecker* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SpellChecker",
-        "Function to check spelling",
-        "Morderon (With use of Hunspell)",
-        "will386@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SpellChecker::SpellChecker(params);
+    g_plugin = new SpellChecker::SpellChecker(services);
     return g_plugin;
 }
 
 
 namespace SpellChecker {
 
-SpellChecker::SpellChecker(const Plugin::CreateParams& params)
-    : Plugin(params)
+SpellChecker::SpellChecker(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(FindMisspell);
     REGISTER(GetSuggestSpell);
-    SpellChecker::Init(GetServices()->m_config.get());
+    SpellChecker::Init();
 #undef REGISTER
 
 }
@@ -68,7 +54,7 @@ uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
     }
     return var;
 }
-void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
+void SpellChecker::Init()
 {
     SpellChecker::handle = dlopen("libhunspell.so", RTLD_NOW | RTLD_NODELETE);
 
@@ -87,15 +73,15 @@ void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
 
     SpellChecker::free_e = reinterpret_cast<SpellChecker::Free_Exp>(EstbSymFunction( "Hunspell_free_list"));
 
-    SpellChecker::dic = config->Get<std::string>("PATH_DIC", "/usr/share/hunspell/en_US.dic");
-    SpellChecker::aff = config->Get<std::string>("PATH_AFF", "/usr/share/hunspell/en_US.aff");
+    SpellChecker::dic = Config::Get<std::string>("PATH_DIC", "/usr/share/hunspell/en_US.dic");
+    SpellChecker::aff = Config::Get<std::string>("PATH_AFF", "/usr/share/hunspell/en_US.aff");
 
     SpellChecker::created = setcreate(SpellChecker::aff.c_str(), SpellChecker::dic.c_str());
 
 }
 ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 {
-    std::string sentence = Services::Events::ExtractArgument<std::string>(args);
+    std::string sentence = Events::ExtractArgument<std::string>(args);
 
     std::string  word;
     std::vector <std::string> list;
@@ -119,12 +105,12 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
             output += list[i] + ",";
     }
 
-    return Services::Events::Arguments(output);
+    return Events::Arguments(output);
 }
 
 ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 {
-    std::string word = Services::Events::ExtractArgument<std::string>(args);
+    std::string word = Events::ExtractArgument<std::string>(args);
 
     const char* cword;
     int sc;
@@ -144,7 +130,7 @@ ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
             SpellChecker::free_e(SpellChecker::created, &wlst, ns);
         }
     }
-    return Services::Events::Arguments(output);
+    return Events::Arguments(output);
 }
 
 

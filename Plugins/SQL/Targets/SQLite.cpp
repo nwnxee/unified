@@ -1,10 +1,8 @@
 #if defined(NWNX_SQL_SQLITE_SUPPORT)
 
 #include "SQLite.hpp"
-#include "Services/Config/Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
-#include "Utils.hpp"
 
 #include <sqlite3.h>
 
@@ -27,9 +25,9 @@ SQLite::~SQLite()
     sqlite3_close(m_dbConn);
 }
 
-void SQLite::Connect(NWNXLib::Services::ConfigProxy* config)
+void SQLite::Connect()
 {
-    if (auto database = config->Get<std::string>("DATABASE"))
+    if (auto database = Config::Get<std::string>("DATABASE"))
     {
         m_dbName = database->c_str();
 
@@ -181,6 +179,12 @@ void SQLite::PrepareString(int32_t position, const std::string& value)
     ASSERT_OR_THROW(position >= 0);
 
     m_paramValues[position] = value;
+}
+
+void SQLite::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
+{
+    (void)position; (void)value;
+    ASSERT_FAIL_MSG("Binary format not implemented for SQLite");
 }
 
 int SQLite::GetAffectedRows()

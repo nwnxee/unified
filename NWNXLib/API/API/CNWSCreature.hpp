@@ -282,10 +282,9 @@ struct CNWSCreature : CNWSObject
     BOOL AddCastSpellActions(uint32_t nSpellId, int32_t nMultiClass, int32_t nDomainLevel, int32_t nMetaType, BOOL bSpontaneousCast, Vector vTargetLocation, OBJECT_ID oidTarget, BOOL bAreaTarget = false, BOOL bAddToFront = false, BOOL bFake = false, uint8_t nProjectilePathType = 0, BOOL bInstant = false, BOOL bAllowPolymorphedCast = false, int32_t nFeat = - 1, uint8_t nCasterLevel = 0xff);
     BOOL AddHealActions(OBJECT_ID oidTarget, OBJECT_ID oidItemUsed, int32_t nActivePropertyIndex = 0);
     BOOL AddSitActions(OBJECT_ID oidTarget);
-    BOOL AddItemCastSpellActions(OBJECT_ID oidItemUsed, int32_t nActivePropertyIndex, int32_t nSubPropertyIndex, Vector vTargetLocation, OBJECT_ID oidTarget, BOOL bAreaTarget = false);
+    BOOL AddItemCastSpellActions(OBJECT_ID oidItemUsed, int32_t nActivePropertyIndex, int32_t nSubPropertyIndex, Vector vTargetLocation, OBJECT_ID oidTarget, BOOL bAreaTarget = false, BOOL bDecrementCharges = true);
     BOOL AddTrapActions(OBJECT_ID oidTrap, uint8_t nAction, OBJECT_ID oidTargetObject, Vector vPosition, OBJECT_ID oidTargetArea);
     BOOL AddTauntActions(OBJECT_ID oidTarget);
-    BOOL AddDoorActions(OBJECT_ID oidDoor, uint8_t nAction, BOOL bAddToFront = false);
     BOOL AddCounterSpellActions(OBJECT_ID oidTarget);
     BOOL AddAppearActions(int32_t nAnimation = 63);
     BOOL AddDisappearActions(BOOL bReturning = false, int32_t nAnimation = 62);
@@ -331,7 +330,7 @@ struct CNWSCreature : CNWSObject
     BOOL GetUseMonkAbilities();
     BOOL UseSkill(uint8_t nSkill, uint8_t nSubSkill, OBJECT_ID oidTarget, Vector vTargetPosition, OBJECT_ID oidArea, OBJECT_ID oidUsedItem = 0x7f000000, int32_t nActivePropertyIndex = 0);
     BOOL UseFeat(uint16_t nFeat, uint16_t nSubFeat, OBJECT_ID oidTarget, OBJECT_ID oidArea, Vector * pvTarget = nullptr);
-    BOOL UseItem(OBJECT_ID oidItem, uint8_t nActivePropertyIndex, uint8_t nSubPropertyIndex, OBJECT_ID oidTarget, Vector vTargetPosition, OBJECT_ID oidArea);
+    BOOL UseItem(OBJECT_ID oidItem, uint8_t nActivePropertyIndex, uint8_t nSubPropertyIndex, OBJECT_ID oidTarget, Vector vTargetPosition, OBJECT_ID oidArea, BOOL bUseCharges = true);
     BOOL ToggleMode(uint8_t nMode);
     BOOL GetMode(uint8_t nMode);
     void SetMode(uint8_t nMode, BOOL bSet);
@@ -505,7 +504,6 @@ struct CNWSCreature : CNWSObject
     uint32_t AIActionCheckForceFollowObject(CNWSObjectActionNode * pNode);
     uint32_t AIActionDrive(CNWSObjectActionNode * pNode);
     uint32_t DriveUpdateLocation(BOOL bRun);
-    BOOL ComputeDriveDestination(uint8_t nDriveFlags, const Vector & vStartPoint, const Vector & vStartOrient);
     uint32_t AIActionCastSpell(CNWSObjectActionNode * pNode);
     uint32_t AIActionItemCastSpell(CNWSObjectActionNode * pNode);
     uint32_t AIActionRepositoryMove(CNWSObjectActionNode * pNode);
@@ -634,7 +632,6 @@ struct CNWSCreature : CNWSObject
     void RestoreItemPropertiesInRepository(CItemRepository * pItemRepository);
     BOOL BumpFriends(CNWSCreature * pBlockingCreature, const Vector & vStart, const Vector & vEnd);
     int32_t GetPVPReputation(OBJECT_ID oidSource);
-    int32_t GetPVPPlayerLikesMe(OBJECT_ID oidPC, uint8_t nPVPSetting);
     void InitialisePVPList();
     void SetAssociatesToForgetAggression(OBJECT_ID oidTarget);
     void RemoveDominationEffect();

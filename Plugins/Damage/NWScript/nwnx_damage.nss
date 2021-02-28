@@ -45,9 +45,11 @@ struct NWNX_Damage_AttackEventData
     int iSonic; ///< Sonic damage
     int iBase; ///< Base damage
     int iAttackNumber; ///< 1-based index of the attack in current combat round
-    int iAttackResult; ///< 1=hit, 3=critical hit, 4=miss, 8=concealed
-    int iAttackType;   ///< 1=main hand, 2=offhand, 3-5=creature, 6=haste
+    int iAttackResult; ///< 1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit
+    int iAttackType;   ///< (Misnamed, should be WeaponAttackType) 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra
     int iSneakAttack;  ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
+    int iAttackType_REAL; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
+    int bKillingBlow; ///< TRUE if the hit is a killing blow
 };
 
 /// @struct NWNX_Damage_DamageData
@@ -104,7 +106,8 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 /// @param data A NWNX_Damage_DamageData struct.
 /// @param oTarget The target object on whom the damage is dealt.
 /// @param oSource The source of the damage.
-void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF);
+/// @param iRanged Whether the attack should be treated as ranged by the engine (for example when considering damage inflicted by Acid Sheath and other such effects)
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF, int iRanged = FALSE);
 
 /// @}
 
@@ -201,6 +204,8 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iAttackResult = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iAttackType   = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iSneakAttack  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.bKillingBlow  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackType_REAL = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
 
     return data;
 }
@@ -227,10 +232,11 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
     NWNX_CallFunction(NWNX_Damage, sFunc);
 }
 
-void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource)
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource, int iRanged = FALSE)
 {
     string sFunc = "DealDamage";
 
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, iRanged);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPower);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSonic);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPositive);

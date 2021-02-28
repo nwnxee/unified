@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include "API/Version.hpp"
 
 
 struct CExoBase;

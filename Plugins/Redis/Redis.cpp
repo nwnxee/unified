@@ -1,11 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 
@@ -14,33 +9,20 @@ using namespace NWNXLib::API;
 
 static Redis::Redis* g_module;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info {
-        "Redis",
-        "redis.io plugin with PubSub support",
-        "niv",
-        "niv@nwnx.io",
-        1,
-        false
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    return (g_module = new Redis::Redis(params));
+    return (g_module = new Redis::Redis(services));
 }
 
 namespace Redis
 {
 
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 
-Redis::Redis(const Plugin::CreateParams& params)
-    : Plugin(params)
+Redis::Redis(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN20CVirtualMachineStack10ClearStackEv, void>(&CleanState);
+    m_ClearStackHook = Hooks::HookFunction(Functions::_ZN20CVirtualMachineStack10ClearStackEv, (void*)&CleanState, Hooks::Order::Early);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 

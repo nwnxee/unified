@@ -1,12 +1,7 @@
 #include "Profiler.hpp"
 
 #include "API/Functions.hpp"
-#include "Common.hpp"
 #include "ProfilerMacros.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Messaging/Messaging.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
 #include "Targets/MainLoop.hpp"
@@ -25,28 +20,14 @@ using namespace NWNXLib;
 
 static Profiler::Profiler* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Profiler",
-        "Acquires shared hooks to expose various useful metrics.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Profiler::Profiler(params);
+    g_plugin = new Profiler::Profiler(services);
     return g_plugin;
 }
 
 namespace Profiler {
 
-static Services::HooksProxy* g_hooks;
 static Services::MetricsProxy* g_metrics;
 
 static size_t g_calibrationRuns;
@@ -55,17 +36,16 @@ static std::chrono::milliseconds g_recalibrationPeriod;
 static bool g_recalibrate = false;
 static bool g_tickrate = false;
 
-Profiler::Profiler(const Plugin::CreateParams& params)
-    : Plugin(params)
+static Hooks::Hook s_MainLoopHook;
+
+Profiler::Profiler(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
-    g_hooks = GetServices()->m_hooks.get();
     g_metrics = GetServices()->m_metrics.get();
 
-    auto config = GetServices()->m_config.get();
-
-    if (config->Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
+    if (Config::Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
     {
-        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSTION_FORCE");
+        auto forcedOverhead = Config::Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
 
         if (forcedOverhead)
         {
@@ -74,62 +54,62 @@ Profiler::Profiler(const Plugin::CreateParams& params)
         else
         {
             FastTimer::PrepareForCalibration();
-            g_calibrationRuns = GetServices()->m_config->Get<size_t>("OVERHEAD_COMPENSATION_RUNS", 500);
-            FastTimer::Calibrate(g_calibrationRuns, GetServices()->m_hooks.get(), GetServices()->m_metrics.get());
+            g_calibrationRuns = Config::Get<size_t>("OVERHEAD_COMPENSATION_RUNS", 500);
+            FastTimer::Calibrate(g_calibrationRuns, GetServices()->m_metrics.get());
         }
 
-        g_recalibrate = config->Get<bool>("OVERHEAD_COMPENSATION_RECALIBRATE", false);
+        g_recalibrate = Config::Get<bool>("OVERHEAD_COMPENSATION_RECALIBRATE", false);
 
         if (g_recalibrate)
         {
-            g_recalibrationPeriod = std::chrono::milliseconds(config->Get<uint32_t>("OVERHEAD_COMPENSATION_RECALIBRATION_PERIOD", 1000));
+            g_recalibrationPeriod = std::chrono::milliseconds(Config::Get<uint32_t>("OVERHEAD_COMPENSATION_RECALIBRATION_PERIOD", 1000));
         }
     }
 
-    if (config->Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
+    if (Config::Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
     {
-        const bool overkillMode = config->Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
-        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_hooks, g_metrics);
+        const bool overkillMode = Config::Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
+        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_MAIN_LOOP", true))
+    if (Config::Get<bool>("ENABLE_MAIN_LOOP", true))
     {
-        m_mainLoop = std::make_unique<MainLoop>(g_hooks, g_metrics);
+        m_mainLoop = std::make_unique<MainLoop>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_NET_LAYER", true))
+    if (Config::Get<bool>("ENABLE_NET_LAYER", true))
     {
-        m_netLayer = std::make_unique<NetLayer>(g_hooks, g_metrics);
+        m_netLayer = std::make_unique<NetLayer>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_NET_MESSAGES", true))
+    if (Config::Get<bool>("ENABLE_NET_MESSAGES", true))
     {
-        m_netMessages = std::make_unique<NetMessages>(g_hooks, g_metrics);
+        m_netMessages = std::make_unique<NetMessages>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
+    if (Config::Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
     {
-        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_hooks, g_metrics);
+        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
+    if (Config::Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
     {
-        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_hooks, g_metrics);
+        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_PATHING", true))
+    if (Config::Get<bool>("ENABLE_PATHING", true))
     {
-        m_pathing = std::make_unique<Pathing>(g_hooks, g_metrics);
+        m_pathing = std::make_unique<Pathing>(g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_SCRIPTS", true))
+    if (Config::Get<bool>("ENABLE_SCRIPTS", true))
     {
-        const bool areaTimings = config->Get<bool>("SCRIPTS_AREA_TIMINGS", true);
-        const bool typeTimings = config->Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
-        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_hooks, g_metrics);
+        const bool areaTimings = Config::Get<bool>("SCRIPTS_AREA_TIMINGS", true);
+        const bool typeTimings = Config::Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
+        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_metrics);
     }
 
-    g_tickrate = config->Get<bool>("ENABLE_TICKRATE", true);
+    g_tickrate = Config::Get<bool>("ENABLE_TICKRATE", true);
 
     if (g_tickrate)
     {
@@ -139,7 +119,8 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     if (g_recalibrate || g_tickrate)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
+        s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+                                                      (void*)&MainLoopUpdate, Hooks::Order::Earliest);
     }
 
     // Resamples all of the automated timing data.
@@ -147,15 +128,15 @@ Profiler::Profiler(const Plugin::CreateParams& params)
     GetServices()->m_metrics->SetResampler("TimingEvent", sum, std::chrono::seconds(1));
 
     {
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
-        [this, sum](std::vector<std::string> message)
+        MessageBus::Subscribe("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
+        [this, sum](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 1);
-            SetPerfScopeResampler(std::move(message[0]));
+            SetPerfScopeResampler(message[0]);
         });
 
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_PUSH_PERF_SCOPE",
-            [this](std::vector<std::string> message)
+        MessageBus::Subscribe("NWNX_PROFILER_PUSH_PERF_SCOPE",
+            [this](const std::vector<std::string>& message)
             {
                 ASSERT(message.size() >= 1);
                 ASSERT(message.size() % 2 == 1);
@@ -171,42 +152,42 @@ Profiler::Profiler(const Plugin::CreateParams& params)
                 PushPerfScope(std::move(name), std::move(tags));
             });
 
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
-            [this](std::vector<std::string>)
+        MessageBus::Subscribe("NWNX_PROFILER_POP_PERF_SCOPE",
+            [this](const std::vector<std::string>&)
             {
                 PopPerfScope();
             });
     }
 
-    GetServices()->m_events->RegisterEvent("PushPerfScope",
-        [this](Services::Events::ArgumentStack&& args)
+    Events::RegisterEvent(PLUGIN_NAME, "PushPerfScope",
+        [this](Events::ArgumentStack&& args)
         {
-            std::string scopeName = Services::Events::ExtractArgument<std::string>(args);
+            std::string scopeName = Events::ExtractArgument<std::string>(args);
 
             NWNXLib::Services::MetricData::Tags tags;
 
             while (!args.empty())
             {
                 ASSERT(args.size() >= 2);
-                std::string tag = Services::Events::ExtractArgument<std::string>(args);
-                std::string value = Services::Events::ExtractArgument<std::string>(args);
+                std::string tag = Events::ExtractArgument<std::string>(args);
+                std::string value = Events::ExtractArgument<std::string>(args);
                 tags.emplace_back(std::make_pair(std::move(tag), std::move(value)));
             }
 
             PushPerfScope(std::move(scopeName), std::move(tags));
-            return Services::Events::Arguments();
+            return Events::Arguments();
         });
 
 
-    GetServices()->m_events->RegisterEvent("PopPerfScope",
-        [this](Services::Events::ArgumentStack&&)
+    Events::RegisterEvent(PLUGIN_NAME, "PopPerfScope",
+        [this](Events::ArgumentStack&&)
         {
             PopPerfScope();
-            return Services::Events::Arguments();
+            return Events::Arguments();
         });
 }
 
-void Profiler::SetPerfScopeResampler(std::string&& name)
+void Profiler::SetPerfScopeResampler(const std::string& name)
 {
     Services::Resamplers::ResamplerFuncPtr sum = &Services::Resamplers::template Sum<int64_t>;
     GetServices()->m_metrics->SetResampler(name, sum, std::chrono::seconds(1));
@@ -256,17 +237,12 @@ void Profiler::HandleRecalibration(const std::chrono::time_point<std::chrono::hi
         // We don't call the above function here because the goal is to "home in" on the lowest possible overhead value as the game progresses.
         // This will just run the test again and and, if a lower result is made available, it will use it.
 
-        FastTimer::Calibrate(g_calibrationRuns, g_hooks, g_metrics);
+        FastTimer::Calibrate(g_calibrationRuns, g_metrics);
     }
 }
 
-void Profiler::MainLoopUpdate(bool before, CServerExoAppInternal*)
+int32_t Profiler::MainLoopUpdate(CServerExoAppInternal *thisPtr)
 {
-    if (!before)
-    {
-        return;
-    }
-
     auto now = std::chrono::high_resolution_clock::now();
 
     if (g_recalibrate)
@@ -278,6 +254,8 @@ void Profiler::MainLoopUpdate(bool before, CServerExoAppInternal*)
     {
         HandleTickrateReporting(now);
     }
+
+    return s_MainLoopHook->CallOriginal<int32_t>(thisPtr);
 }
 
 }

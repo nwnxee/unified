@@ -1,8 +1,4 @@
-#include "Serialize.hpp"
-#include "Encoding.hpp"
-
-#include "Assert.hpp"
-#include "API/Types.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
@@ -16,11 +12,7 @@
 #include "API/CResGFF.hpp"
 #include "API/CResStruct.hpp"
 
-#include <string.h>
-
-
-
-namespace NWNXLib {
+namespace NWNXLib::Utils {
 
 std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlags)
 {
@@ -85,7 +77,10 @@ std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlag
             break;
     }
 
-    return std::vector<uint8_t>(pData, pData+dataLength);
+    std::vector<uint8_t> serialized(pData, pData+dataLength);
+    delete[] pData;
+
+    return serialized;
 }
 
 CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
@@ -164,12 +159,12 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 
 std::string SerializeGameObjectB64(CGameObject *pObject, bool bStripPCFlags)
 {
-    return Encoding::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
+    return String::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
 }
 
 CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
-    return DeserializeGameObject(Encoding::FromBase64(serializedB64));
+    return DeserializeGameObject(String::FromBase64(serializedB64));
 }
 
 } // NWNXLib

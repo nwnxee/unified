@@ -140,9 +140,9 @@ struct CNWSEffectListHandler : CGameEffectApplierRemover
     int32_t OnApplyPetrify(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemovePetrify(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplyCutsceneImmobile(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
-    int32_t OnRemoveCutsceneImmobile(CNWSObject * pObject, CGameEffect * pEffect);
+    //int32_t OnRemoveCutsceneImmobile(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplyDefensiveStance(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
-    int32_t OnRemoveDefensiveStance(CNWSObject * pObject, CGameEffect * pEffect);
+    //int32_t OnRemoveDefensiveStance(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplyKnockdown(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemoveKnockdown(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplyDisarm(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);

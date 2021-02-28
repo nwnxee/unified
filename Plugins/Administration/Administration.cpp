@@ -1,9 +1,11 @@
-#include "Administration.hpp"
+#include "nwnx.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CExoBase.hpp"
@@ -11,134 +13,106 @@
 #include "API/CServerInfo.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/Globals.hpp"
-#include "API/Types.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include <unistd.h>
 #include <csignal>
 
 using namespace NWNXLib;
-
-static Administration::Administration* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
-{
-    return new Plugin::Info
-    {
-        "Administration",
-        "Provides functionality to administrate a server.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Administration::Administration(params);
-    return g_plugin;
-}
-
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-namespace Administration {
-
-Administration::Administration(const Plugin::CreateParams& params)
-    : Plugin(params)
+static CExoLinkedListNode* FindTURD(std::string playerName, std::string characterName)
 {
+    CExoLinkedListNode *foundNode = nullptr;
 
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *node = turds->pHead; node; node = node->pNext)
+    {
+        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
 
-    REGISTER(GetPlayerPassword);
-    REGISTER(SetPlayerPassword);
-    REGISTER(ClearPlayerPassword);
-    REGISTER(GetDMPassword);
-    REGISTER(SetDMPassword);
-    REGISTER(ShutdownServer);
-    REGISTER(DeletePlayerCharacter);
-    REGISTER(AddBannedIP);
-    REGISTER(RemoveBannedIP);
-    REGISTER(AddBannedCDKey);
-    REGISTER(RemoveBannedCDKey);
-    REGISTER(AddBannedPlayerName);
-    REGISTER(RemoveBannedPlayerName);
-    REGISTER(GetBannedList);
-    REGISTER(SetModuleName);
-    REGISTER(SetServerName);
-    REGISTER(GetServerName);
-    REGISTER(GetPlayOption);
-    REGISTER(SetPlayOption);
-    REGISTER(DeleteTURD);
-    REGISTER(GetDebugValue);
-    REGISTER(SetDebugValue);
-    REGISTER(ReloadRules);
+        if (turd)
+        {
+            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
+            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
 
-#undef REGISTER
+            if (!turdLastName.empty())
+            {
+                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
+            }
+
+            if (turd->m_sCommunityName.CStr() == playerName &&
+                characterName == turdCharacterName)
+            {
+                foundNode = node;
+                break;
+            }
+        }
+    }
+    return foundNode;
 }
 
-Administration::~Administration()
-{
-}
-
-Events::ArgumentStack Administration::GetPlayerPassword(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack GetPlayerPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
     LOG_DEBUG("Returned player password '%s'.", password.m_sString);
-    return Events::Arguments(std::string(password.m_sString ? password.m_sString : ""));
+    return std::string(password.m_sString ? password.m_sString : "");
 }
 
-Events::ArgumentStack Administration::SetPlayerPassword(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetPlayerPassword(Events::ArgumentStack&& args)
 {
-    const auto newPass = Events::ExtractArgument<std::string>(args);
+    const auto newPass = args.extract<std::string>();
     LOG_NOTICE("Set player password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword(newPass.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::ClearPlayerPassword(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack ClearPlayerPassword(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Cleared player password.");
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword("");
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::GetDMPassword(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack GetDMPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
     LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
-    return Events::Arguments(std::string(password.m_sString ? password.m_sString : ""));
+    return std::string(password.m_sString ? password.m_sString : "");
 }
 
-Events::ArgumentStack Administration::SetDMPassword(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetDMPassword(Events::ArgumentStack&& args)
 {
-    const auto newPass = Events::ExtractArgument<std::string>(args);
+    const auto newPass = args.extract<std::string>();
     LOG_NOTICE("Set DM password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetGameMasterPassword(newPass.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::ShutdownServer(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack ShutdownServer(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Shutting down the server!");
-    if (kill(getpid(), SIGTERM) != 0)
-    {
-      LOG_ERROR("Shutdown failed: SIGTERM signal not sent successfully");
-    }
-    return Events::Arguments();
+    *Globals::ExitProgram() = true;
+    return {};
 }
 
-Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& args)
 {
-    const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
-    const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
+    const auto objectId = args.extract<ObjectID>();
+    const bool bPreserveBackup = !!args.extract<int32_t>();
+
+    // TODO: Remove the try/catch in some later release
+    std::string kickMessage;
+    try
+    {
+        kickMessage = args.extract<std::string>();
+    }
+    catch(const std::runtime_error& e)
+    {
+        LOG_WARNING("NWNX_Administration_DeletePlayerCharacter() called from NWScript without sKickMessage parameter. Please update nwnx_admin.nss");
+    }
 
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
@@ -146,9 +120,9 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     if (!player)
     {
         LOG_ERROR("Attempted to delete invalid player");
-        return Events::Arguments();
+        return {};
     }
-    API::Types::PlayerID playerId = player->m_nPlayerID;
+    PlayerID playerId = player->m_nPlayerID;
 
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();
@@ -163,20 +137,29 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";
+    std::string playerName = player->GetPlayerName().CStr();
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
     if( access( filename.c_str(), F_OK ) == -1 )
     {
         LOG_ERROR("File %s not found.", filename);
-        return Events::Arguments();
+        return {};
     }
 
-    GetServices()->m_tasks->QueueOnMainThread(
-        [filename, playerId, bPreserveBackup]
+    CNWSCreature* creature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectId);
+    std::string characterName, characterLastName;
+    if (creature && creature->m_pStats)
+    {
+        characterName = Utils::ExtractLocString(creature->m_pStats->m_lsFirstName);
+        characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
+    }
+
+    Tasks::QueueOnMainThread(
+        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage, playerdir]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
-            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
+            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, kickMessage);
 
             if (bPreserveBackup)
             {
@@ -190,92 +173,109 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
             {
                 unlink(filename.c_str());
             }
+
+            std::string chararacterFullName = characterName;
+
+            if (!characterLastName.empty())
+            {
+                chararacterFullName += characterName.empty() ? characterLastName : " " + characterLastName;
+            }
+
+            CExoLinkedListNode *foundNode = FindTURD(playerName, chararacterFullName);
+            if (!foundNode)
+                foundNode = FindTURD(playerdir, chararacterFullName);
+
+            if (foundNode)
+            {
+                LOG_NOTICE("Deleted TURD of %s (%s)", chararacterFullName, playerName);
+                Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
+            }
         });
 
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::AddBannedIP(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack AddBannedIP(Events::ArgumentStack&& args)
 {
-    const auto ip = Events::ExtractArgument<std::string>(args);
+    const auto ip = args.extract<std::string>();
     LOG_NOTICE("Banning IP %s", ip);
     Globals::AppManager()->m_pServerExoApp->AddIPToBannedList(ip.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::RemoveBannedIP(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack RemoveBannedIP(Events::ArgumentStack&& args)
 {
-    const auto ip = Events::ExtractArgument<std::string>(args);
+    const auto ip = args.extract<std::string>();
     LOG_NOTICE("Unbanning IP %s", ip);
     Globals::AppManager()->m_pServerExoApp->RemoveIPFromBannedList(ip.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::AddBannedCDKey(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack AddBannedCDKey(Events::ArgumentStack&& args)
 {
-    const auto key = Events::ExtractArgument<std::string>(args);
+    const auto key = args.extract<std::string>();
     LOG_NOTICE("Banning CDKey %s", key);
     Globals::AppManager()->m_pServerExoApp->AddCDKeyToBannedList(key.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::RemoveBannedCDKey(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack RemoveBannedCDKey(Events::ArgumentStack&& args)
 {
-    const auto key = Events::ExtractArgument<std::string>(args);
+    const auto key = args.extract<std::string>();
     LOG_NOTICE("Unbanning CDKey %s", key);
     Globals::AppManager()->m_pServerExoApp->RemoveCDKeyFromBannedList(key.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::AddBannedPlayerName(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack AddBannedPlayerName(Events::ArgumentStack&& args)
 {
-    const auto playername = Events::ExtractArgument<std::string>(args);
+    const auto playername = args.extract<std::string>();
     LOG_NOTICE("Banning Player name %s", playername);
     Globals::AppManager()->m_pServerExoApp->AddPlayerNameToBannedList(playername.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::RemoveBannedPlayerName(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack RemoveBannedPlayerName(Events::ArgumentStack&& args)
 {
-    const auto playername = Events::ExtractArgument<std::string>(args);
+    const auto playername = args.extract<std::string>();
     LOG_NOTICE("Unbanning Player name %s", playername);
     Globals::AppManager()->m_pServerExoApp->RemovePlayerNameFromBannedList(playername.c_str());
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::GetBannedList(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack GetBannedList(Events::ArgumentStack&&)
 {
     std::string list = Globals::AppManager()->m_pServerExoApp->GetBannedListString().CStr();
-    return Events::Arguments(list);
+    return list;
 }
 
-Events::ArgumentStack Administration::SetModuleName(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetModuleName(Events::ArgumentStack&& args)
 {
-    const auto newName = Events::ExtractArgument<std::string>(args);
+    const auto newName = args.extract<std::string>();
     LOG_NOTICE("Set module name to '%s'.", newName);
     Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo->m_sModuleName = newName.c_str();
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::SetServerName(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetServerName(Events::ArgumentStack&& args)
 {
-    const auto newName = Events::ExtractArgument<std::string>(args);
+    const auto newName = args.extract<std::string>();
     LOG_NOTICE("Set server name to '%s'.", newName);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetSessionName(CExoString(newName.c_str()));
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::GetServerName(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack GetServerName(Events::ArgumentStack&&)
 {
     CExoString serverName = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetSessionName();
-    return Events::Arguments(serverName.CStr());
+    return serverName.CStr();
 }
 
-Events::ArgumentStack Administration::GetPlayOption(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
-    const auto option = Events::ExtractArgument<int32_t>(args);
+    const auto option = args.extract<int32_t>();
 
     ASSERT_OR_THROW(option >= 0); ASSERT_OR_THROW(option <= 26);
 
@@ -394,13 +394,13 @@ Events::ArgumentStack Administration::GetPlayOption(Events::ArgumentStack&& args
             break;
     }
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
-Events::ArgumentStack Administration::SetPlayOption(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
 {
-    const auto option = Events::ExtractArgument<int32_t>(args);
-    const auto value = Events::ExtractArgument<int32_t>(args);
+    const auto option = args.extract<int32_t>();
+    const auto value = args.extract<int32_t>();
 
     ASSERT_OR_THROW(option >= 0); ASSERT_OR_THROW(option <= 26);
     ASSERT_OR_THROW(value >= 0);
@@ -448,11 +448,9 @@ Events::ArgumentStack Administration::SetPlayOption(Events::ArgumentStack&& args
             break;
 
         case 10: // NWNX_ADMINISTRATION_OPTION_PVP_SETTING
-        {
             ASSERT_OR_THROW(value <= 2);
             Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.nPVPSetting = value;
             break;
-        }
 
         case 11: // NWNX_ADMINISTRATION_OPTION_PAUSE_AND_PLAY
             Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPauseAndPlay = !!value;
@@ -523,43 +521,19 @@ Events::ArgumentStack Administration::SetPlayOption(Events::ArgumentStack&& args
             break;
     }
 
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack DeleteTURD(Events::ArgumentStack&& args)
 {
     int32_t retVal = false;
-    const auto playerName = Events::ExtractArgument<std::string>(args);
-    const auto characterName = Events::ExtractArgument<std::string>(args);
+    const auto playerName = args.extract<std::string>();
+    const auto characterName = args.extract<std::string>();
 
     ASSERT_OR_THROW(!playerName.empty());
     ASSERT_OR_THROW(!characterName.empty());
 
-    CExoLinkedListNode *foundNode = nullptr;
-
-    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-    for (auto *node = turds->pHead; node; node = node->pNext)
-    {
-        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
-
-        if (turd)
-        {
-            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
-            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
-
-            if (!turdLastName.empty())
-            {
-                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
-            }
-
-            if (turd->m_sCommunityName.CStr() == playerName &&
-                characterName == turdCharacterName)
-            {
-                foundNode = node;
-                break;
-            }
-        }
-    }
+    CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
 
     if (foundNode)
     {
@@ -568,14 +542,14 @@ Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
         retVal = true;
     }
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
-Events::ArgumentStack Administration::GetDebugValue(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack GetDebugValue(Events::ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
-    const auto debugType = Events::ExtractArgument<int32_t>(args);
+    const auto debugType = args.extract<int32_t>();
       ASSERT_OR_THROW(debugType >= 0);
       ASSERT_OR_THROW(debugType <= 3);
 
@@ -602,16 +576,16 @@ Events::ArgumentStack Administration::GetDebugValue(Events::ArgumentStack&& args
             break;
     }
 
-    return Events::Arguments(retVal);
+    return retVal;
 }
 
-Events::ArgumentStack Administration::SetDebugValue(Events::ArgumentStack&& args)
+NWNX_EXPORT Events::ArgumentStack SetDebugValue(Events::ArgumentStack&& args)
 {
-    const auto debugType = Events::ExtractArgument<int32_t>(args);
+    const auto debugType = args.extract<int32_t>();
      ASSERT_OR_THROW(debugType >= 0);
      ASSERT_OR_THROW(debugType <= 3);
 
-    const auto value = Events::ExtractArgument<int32_t>(args);
+    const auto value = args.extract<int32_t>();
       ASSERT_OR_THROW(value >= 0);
 
     switch (debugType)
@@ -637,14 +611,46 @@ Events::ArgumentStack Administration::SetDebugValue(Events::ArgumentStack&& args
             break;
     }
 
-    return Events::Arguments();
+    return {};
 }
 
-Events::ArgumentStack Administration::ReloadRules(Events::ArgumentStack&&)
+NWNX_EXPORT Events::ArgumentStack ReloadRules(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Reloading rules!");
     Globals::Rules()->ReloadAll();
-    return Events::Arguments();
+    return {};
 }
 
+NWNX_EXPORT Events::ArgumentStack GetMinLevel(Events::ArgumentStack&&)
+{
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    return pServerInfo->m_JoiningRestrictions.nMinLevel;
+}
+
+NWNX_EXPORT Events::ArgumentStack SetMinLevel(Events::ArgumentStack&& args)
+{
+    const auto nLevel = args.extract<int32_t>();
+    ASSERT_OR_THROW(nLevel >= 1);
+    ASSERT_OR_THROW(nLevel <= 255);
+    LOG_NOTICE("Set minimum level to %d.", nLevel);
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    pServerInfo->m_JoiningRestrictions.nMinLevel = nLevel;
+    return {};
+}
+
+NWNX_EXPORT Events::ArgumentStack GetMaxLevel(Events::ArgumentStack&&)
+{
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    return pServerInfo->m_JoiningRestrictions.nMaxLevel;
+}
+
+NWNX_EXPORT Events::ArgumentStack SetMaxLevel(Events::ArgumentStack&& args)
+{
+    const auto nLevel = args.extract<int32_t>();
+    ASSERT_OR_THROW(nLevel >= 1);
+    ASSERT_OR_THROW(nLevel <= 255);
+    LOG_NOTICE("Set maximum level to %d.", nLevel);
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    pServerInfo->m_JoiningRestrictions.nMaxLevel = nLevel;
+    return {};
 }

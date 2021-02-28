@@ -1,73 +1,32 @@
-#include "Regex.hpp"
+#include "nwnx.hpp"
 
-#include "Services/Config/Config.hpp"
-
-#include <string>
-#include <stdio.h>
 #include <regex>
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
+using ArgumentStack = Events::ArgumentStack;
 
-static Regex::Regex* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
-{
-    return new Plugin::Info
-    {
-        "Regex",
-        "Regular expression functions",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Regex::Regex(params);
-    return g_plugin;
-}
 
 namespace Regex {
 
-Regex::Regex(const Plugin::CreateParams& params)
-    : Plugin(params)
+NWNX_EXPORT ArgumentStack Search(ArgumentStack&& args)
 {
-
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(Search);
-    REGISTER(Replace);
-
-#undef REGISTER
-
-}
-
-Regex::~Regex()
-{
-}
-
-ArgumentStack Regex::Search(ArgumentStack&& args)
-{
-    const auto str = Services::Events::ExtractArgument<std::string>(args);
-    const auto regex = Services::Events::ExtractArgument<std::string>(args);
+    const auto str = args.extract<std::string>();
+    const auto regex = args.extract<std::string>();
 
     std::regex rgx(regex);
     const auto retVal = std::regex_search(str, rgx);
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
-ArgumentStack Regex::Replace(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Replace(ArgumentStack&& args)
 {
-    const auto str = Services::Events::ExtractArgument<std::string>(args);
-    const auto regex = Services::Events::ExtractArgument<std::string>(args);
-    const auto rpl = Services::Events::ExtractArgument<std::string>(args);
-    const auto firstOnly = Services::Events::ExtractArgument<int32_t>(args);
+    const auto str = args.extract<std::string>();
+    const auto regex = args.extract<std::string>();
+    const auto rpl = args.extract<std::string>();
+    const auto firstOnly = args.extract<int32_t>();
 
     std::regex rgx(regex);
     std::string retVal;
@@ -76,7 +35,7 @@ ArgumentStack Regex::Replace(ArgumentStack&& args)
     else
         retVal = std::regex_replace(str, rgx, rpl);
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
 }

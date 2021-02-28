@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "Services/Metrics/MetricData.hpp"
 
 #include <memory>
@@ -13,7 +13,7 @@ class InfluxDBClient;
 class Metrics_InfluxDB : public NWNXLib::Plugin
 {
 public:
-    Metrics_InfluxDB(const Plugin::CreateParams& params);
+    Metrics_InfluxDB(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Metrics_InfluxDB();
 
     static void OnReceiveData(const std::vector<NWNXLib::Services::MetricData>& data);

@@ -1,17 +1,16 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSEncounter.hpp"
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Encounter {
 
 class Encounter : public NWNXLib::Plugin
 {
 public:
-    Encounter(const Plugin::CreateParams& params);
+    Encounter(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Encounter();
 
 private:
@@ -22,8 +21,17 @@ private:
     ArgumentStack SetFactionId                              (ArgumentStack&& args);
     ArgumentStack GetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
+    ArgumentStack GetCanReset                               (ArgumentStack&& args);
+    ArgumentStack SetCanReset                               (ArgumentStack&& args);
     ArgumentStack GetResetTime                              (ArgumentStack&& args);
     ArgumentStack SetResetTime                              (ArgumentStack&& args);
+    ArgumentStack GetNumberOfSpawnPoints                    (ArgumentStack&& args);
+    ArgumentStack GetSpawnPointByIndex                      (ArgumentStack&& args);
+    ArgumentStack GetMinNumSpawned                          (ArgumentStack&& args);
+    ArgumentStack GetMaxNumSpawned                          (ArgumentStack&& args);
+    ArgumentStack GetCurrentNumSpawned                      (ArgumentStack&& args);
+    ArgumentStack GetGeometry                               (ArgumentStack&& args);
+    ArgumentStack SetGeometry                               (ArgumentStack&& args);
 
     CNWSEncounter *encounter(ArgumentStack& args);
 

@@ -19,16 +19,26 @@ __________________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ASSOCIATE_OBJECT_ID   | object | Convert to object with NWNX_Object_StringToObject()
+    ASSOCIATE_OBJECT_ID   | object | Convert to object with StringToObject()
 
 _______________________________________
     ## Stealth Events
-    - NWNX_ON_ENTER_STEALTH_BEFORE
-    - NWNX_ON_ENTER_STEALTH_AFTER
-    - NWNX_ON_EXIT_STEALTH_BEFORE
-    - NWNX_ON_EXIT_STEALTH_AFTER
+    - NWNX_ON_STEALTH_ENTER_BEFORE
+    - NWNX_ON_STEALTH_ENTER_AFTER
+    - NWNX_ON_STEALTH_EXIT_BEFORE
+    - NWNX_ON_STEALTH_EXIT_AFTER
 
     `OBJECT_SELF` = The creature entering or exiting stealth.
+
+    @note NWNX_ON_{ENTER|EXIT}_STEALTH_{BEFORE|AFTER} has been deprecated. Please use these new event names.
+_______________________________________
+    ## Detect Events
+    - NWNX_ON_DETECT_ENTER_BEFORE
+    - NWNX_ON_DETECT_ENTER_AFTER
+    - NWNX_ON_DETECT_EXIT_BEFORE
+    - NWNX_ON_DETECT_EXIT_AFTER
+
+    `OBJECT_SELF` = The creature entering or exiting detect mode.
 
 _______________________________________
     ## Examine Events
@@ -39,8 +49,42 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    EXAMINEE_OBJECT_ID    | object | Convert to object with NWNX_Object_StringToObject()
+    EXAMINEE_OBJECT_ID    | object | Convert to object with StringToObject()
     TRAP_EXAMINE_SUCCESS  | int    | For trap examine only, whether the examine succeeded
+
+_______________________________________
+    ## Faction Events
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_BEFORE
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_AFTER
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    FACTION_ID            | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    SUBJECT_FACTION_ID    | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    PREVIOUS_REPUTATION   | int    |
+    NEW_REPUTATION        | int    | Not yet clamped between 0-100. In the AFTER event, this will equal the EventResult set in the BEFORE event.
+
+_______________________________________
+    ## Validate Use Item Events
+    - NWNX_ON_VALIDATE_USE_ITEM_BEFORE
+    - NWNX_ON_VALIDATE_USE_ITEM_AFTER
+
+    `OBJECT_SELF` = The creature using the item
+
+    Event Data Tag          | Type   | Notes |
+    ------------------------|--------|-------|
+    ITEM_OBJECT_ID          | object | Convert to object with StringToObject()|
+    BEFORE_RESULT           | int    | TRUE/FALSE, only in _AFTER events|
+
+    @note The event result should be one of:
+      "0" - Equip denied
+      "1" - Equip okay
+      "2" - Swap currently equipped item
+      "3" - Unequip items in both hands before equipping
+    @note Setting the result of this event will NOT prevent the item from being equipped, only used (e.g. scrolls/wands). See the "NWNX_ON_VALIDATE_ITEM_EQUIP_*" events to control equip behaviour.
+    @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
 
 _______________________________________
     ## Use Item Events
@@ -51,13 +95,17 @@ _______________________________________
 
     Event Data Tag          | Type   | Notes |
     ------------------------|--------|-------|
-    ITEM_OBJECT_ID          | object | Convert to object with NWNX_Object_StringToObject()|
-    TARGET_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject()|
+    ITEM_OBJECT_ID          | object | Convert to object with StringToObject()|
+    TARGET_OBJECT_ID        | object | Convert to object with StringToObject()|
     ITEM_PROPERTY_INDEX     | int    | |
     ITEM_SUB_PROPERTY_INDEX | int    | |
     TARGET_POSITION_X       | float  | |
     TARGET_POSITION_Y       | float  | |
     TARGET_POSITION_Z       | float  | |
+    USE_CHARGES             | int  | |
+
+    @note You can set the event result to "0" (send feedback to the client that the item cannot be used, default)
+    or "1" to suppress that feedback.
 
 _______________________________________
     ## Item Container Events
@@ -70,7 +118,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    OWNER                 | object |Convert to object with NWNX_Object_StringToObject()
+    OWNER                 | object |Convert to object with StringToObject()
 
 _______________________________________
     ## Ammunition Reload Events
@@ -94,7 +142,25 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    SCROLL                | object | Convert to object with NWNX_Object_StringToObject()
+    SCROLL                | object | Convert to object with StringToObject()
+    RESULT                | int    | Returns TRUE in the _AFTER if the learning was successful, FALSE otherwise
+
+_______________________________________
+    ## Validate Item Equip Events
+    - NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE
+    - NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER
+
+    `OBJECT_SELF` = The creature trying to equip the item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM_OBJECT_ID        | object | Convert to object with StringToObject()|
+    SLOT                  | int    | INVENTORY_SLOT_* Constant|
+    BEFORE_RESULT         | int    | TRUE/FALSE, only in _AFTER events|
+
+    @note Manually setting the result of this event will skip all game checks for item slot validity. The client will block incompatible types (weapons into armor slots) in the GUI, but this will work using ActionEquipItem().
+    @note To show this item as unusable to the PC (red in the inventory), use in combination with the "NWNX_ON_VALIDATE_USE_ITEM_*" events.
+    @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
 
 _______________________________________
     ## Item Equip Events
@@ -105,7 +171,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()|
+    ITEM                  | object | Convert to object with StringToObject()|
     SLOT                  | int    | |
 
 _______________________________________
@@ -117,8 +183,9 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()
+    ITEM                  | object | Convert to object with StringToObject()
 
+    @note These events do not trigger when equipment is replaced by equipping another item.
 _______________________________________
     ## Item Destroy Events
     - NWNX_ON_ITEM_DESTROY_OBJECT_BEFORE
@@ -139,7 +206,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ITEM                  | object |Convert to object with NWNX_Object_StringToObject()
+    ITEM                  | object |Convert to object with StringToObject()
 
 _______________________________________
     ## Item Pay To Identify Events
@@ -150,8 +217,8 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()
-    STORE                 | object | Convert to object with NWNX_Object_StringToObject()
+    ITEM                  | object | Convert to object with StringToObject()
+    STORE                 | object | Convert to object with StringToObject()
 
 _______________________________________
     ## Item Split Events
@@ -162,8 +229,23 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes|
     ----------------------|--------|-------|
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()|
+    ITEM                  | object | Convert to object with StringToObject()|
     NUMBER_SPLIT_OFF      | int    | |
+
+_______________________________________
+    ## Acquire Item Events
+    - NWNX_ON_ITEM_ACQUIRE_BEFORE
+    - NWNX_ON_ITEM_ACQUIRE_AFTER
+
+    `OBJECT_SELF` = The creature trying to acquire the item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM                  | object | Convert to object with StringToObject() (May be OBJECT_INVALID in the AFTER event) |
+    GIVER                 | object | Convert to object with StringToObject() (will be INVALID if picked up from ground)|
+    RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
+
+    @note This event currently only works with creatures
 
 _______________________________________
     ## Feat Use Events
@@ -176,12 +258,34 @@ _______________________________________
     ----------------------|--------|-------|
     FEAT_ID               | int    | |
     SUBFEAT_ID            | int    | |
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject() |
-    AREA_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject() |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    AREA_OBJECT_ID        | object | Convert to object with StringToObject() |
     TARGET_POSITION_X     | float  | |
     TARGET_POSITION_Y     | float  | |
     TARGET_POSITION_Z     | float  | |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
+_______________________________________
+    ## Has Feat Events
+    - NWNX_ON_HASFEAT_BEFORE
+    - NWNX_ON_HAS_FEAT_AFTER
+
+    `OBJECT_SELF` = The player being checked for the feat
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    FEAT_ID               | int    | |
+    HAS_FEAT              | int    |  Whether they truly have the feat or not |
+
+    @note This event should definitely be used with the Event ID Whitelist, which is turned on by default
+    for this event. Until you add your Feat ID to the whitelist on module load this event will not function.
+    For example if you wish an event to fire when nwn is checking if the creature has Epic Dodge you would perform
+    the following functions on_module_load.
+    ```c
+    NWNX_Events_SubscribeEvent("NWNX_ON_HAS_FEAT_BEFORE", "event_has_feat");
+    NWNX_Events_AddIDToWhitelist("NWNX_ON_HAS_FEAT", FEAT_EPIC_DODGE);
+    ```
+    @warning Toggling the Whitelist to be off for this event will degrade performance.
 _______________________________________
     ## DM Give Events
     - NWNX_ON_DM_GIVE_GOLD_BEFORE
@@ -198,7 +302,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     AMOUNT                | int    | |
-    OBJECT                | object | Convert to object with NWNX_Object_StringToObject() |
+    OBJECT                | object | Convert to object with StringToObject() |
     ALIGNMENT_TYPE        | int    | Only valid for `NWNX_ON_DM_GIVE_ALIGNMENT_*` |
 
 _______________________________________
@@ -210,12 +314,15 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    AREA                  | object | Convert to object with NWNX_Object_StringToObject() |
+    AREA                  | object | Convert to object with StringToObject() |
     OBJECT                | object | Only returns a valid object in *_AFTER |
     OBJECT_TYPE           | int    | Returns `NWNX_EVENTS_OBJECT_TYPE_*` |
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
+    RESREF                | string | The resref of the object that's being spawned. |
+
+    @note When spawning a standard trap, the resref will be an index into traps.2da.
 
 _______________________________________
     ## DM Give Item Events
@@ -226,7 +333,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
     ITEM                  | object | Only returns a valid object in *_AFTER
 
 _______________________________________
@@ -270,7 +377,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
 
     @note If `TARGET` is `OBJECT_INVALID` for `NWNX_ON_DM_POSSESS_*`, the DM is unpossessing.
 
@@ -287,7 +394,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    TARGET_AREA           | object | Convert to object with NWNX_Object_StringToObject() |
+    TARGET_AREA           | object | Convert to object with StringToObject() |
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
@@ -315,7 +422,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     OPEN_INVENTORY        | int    | TRUE if opening an inventory, FALSE if closing
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
 
 _______________________________________
     ## DM Spawn Trap Events
@@ -326,8 +433,8 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    AREA                  | object | Convert to object with NWNX_Object_StringToObject()
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    AREA                  | object | Convert to object with StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
 
 _______________________________________
     ## DM Dump Locals Events
@@ -339,9 +446,22 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     TYPE                  | int    | 0 = dm_dumplocals, 1 = dm_dumparealocals, 3 = dm_dumpmodulelocals
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
 
     Note: For TYPE 1/2, use GetArea(TARGET) or GetModule()
+
+_______________________________________
+    ## DM PlayerDM Login/Logout Events
+    - NWNX_ON_DM_PLAYERDM_LOGIN_BEFORE
+    - NWNX_ON_DM_PLAYERDM_LOGIN_AFTER
+    - NWNX_ON_DM_PLAYERDM_LOGOUT_BEFORE
+    - NWNX_ON_DM_PLAYERDM_LOGOUT_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    PASSWORD              | string | The password the DM provided, only valid for NWNX_ON_DM_PLAYERDM_LOGIN_*
 
 _______________________________________
     ## DM Other Events
@@ -398,6 +518,17 @@ _______________________________________
     You can optionally pass a reason for this in the event result.
 
 _______________________________________
+    ## CombatEnter/Exit Events
+    - NWNX_ON_COMBAT_ENTER_BEFORE
+    - NWNX_ON_COMBAT_ENTER_AFTER
+    - NWNX_ON_COMBAT_EXIT_BEFORE
+    - NWNX_ON_COMBAT_EXIT_AFTER
+
+    `OBJECT_SELF` = The player entering/exiting combat.
+
+    @note Only works for PCs.
+
+_______________________________________
     ## Combat Round Start Events
     - NWNX_ON_START_COMBAT_ROUND_BEFORE
     - NWNX_ON_START_COMBAT_ROUND_AFTER
@@ -406,7 +537,20 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject()
+
+_______________________________________
+    ## Disarm Events
+    - NWNX_ON_DISARM_BEFORE
+    - NWNX_ON_DISARM_AFTER
+
+    `OBJECT_SELF` = The creature who is being disarmed
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    DISARMER_OBJECT_ID    | object | The object disarming the creature
+    FEAT_ID               | int    | The feat used to perform the disarming (Normal vs Improved Disarm)
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## Cast Spell Events
@@ -421,13 +565,15 @@ _______________________________________
     TARGET_POSITION_X     | float  | |
     TARGET_POSITION_Y     | float  | |
     TARGET_POSITION_Z     | float  | |
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject() |
-    ITEM_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject() |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    ITEM_OBJECT_ID        | object | Convert to object with StringToObject() |
     MULTI_CLASS           | int    | |
     SPELL_COUNTERED       | int    | Returns TRUE if spell was countered else FALSE |
     COUNTERING_SPELL      | int    | Returns TRUE if cast as counter else FALSE |
     PROJECTILE_PATH_TYPE  | int    | |
     IS_INSTANT_SPELL      | int    | Returns TRUE if spell was instant else FALSE |
+
+@note the stock nwscript GetMetaMagicFeat() function will return any metamagic used.
 
 _______________________________________
     ## Set Memorized Spell Slot Events
@@ -439,7 +585,6 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     SPELL_MULTICLASS      | int | Index of the spell casting class (0-2) |
-    SPELL_LEVEL           | int | |
     SPELL_SLOT            | int | |
     SPELL_ID              | int | |
     SPELL_DOMAIN          | int | |
@@ -461,6 +606,22 @@ _______________________________________
     SPELL_SLOT            | int    | |
 
 _______________________________________
+    ## Spell Interrupted Events
+    - NWNX_ON_SPELL_INTERRUPTED_BEFORE
+    - NWNX_ON_SPELL_INTERRUPTED_AFTER
+
+    `OBJECT_SELF` = The creature whose spell was interrupted
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SPELL_ID              | int | |
+    SPELL_CLASS           | int | Index of the spell casting class (0-2) |
+    SPELL_DOMAIN          | int | |
+    SPELL_METAMAGIC       | int | |
+    SPELL_FEAT            | int | |
+    SPELL_SPONTANEOUS     | int | |
+
+_______________________________________
     ## Healer Kit Use Events
     - NWNX_ON_HEALER_KIT_BEFORE
     - NWNX_ON_HEALER_KIT_AFTER
@@ -469,11 +630,23 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject() |
-    ITEM_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject() |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    ITEM_OBJECT_ID        | object | Convert to object with StringToObject() |
     ITEM_PROPERTY_INDEX   | int    | |
     MOVE_TO_TARGET        | int    | |
     ACTION_RESULT         | int    | |
+
+_______________________________________
+    ## Healing Events
+    - NWNX_ON_HEAL_BEFORE
+    - NWNX_ON_HEAL_AFTER
+
+    `OBJECT_SELF` = The creature performing the heal
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    HEAL_AMOUNT           | int    | How many HP the heal will provide |
 
 _______________________________________
     ## Party Action Events
@@ -486,14 +659,14 @@ _______________________________________
 
     Event           | Event Data Tag        | Type   | Notes |
     ----------------|-----------------------|--------|-------|
-    LEAVE | LEAVING | object | Convert to object with NWNX_Object_StringToObject() |
-    KICK  | KICKED  | object | Convert to object with NWNX_Object_StringToObject() |
-    TRANSFER_LEADERSHIP  | NEW_LEADER  | object | Convert to object with NWNX_Object_StringToObject() |
-    INVITE  | INVITED  | object | Convert to object with NWNX_Object_StringToObject() |
-    IGNORE_INVITATION  | INVITED_BY  | object | Convert to object with NWNX_Object_StringToObject() |
-    ACCEPT_INVITATION  | INVITED_BY  | object | Convert to object with NWNX_Object_StringToObject() |
-    REJECT_INVITATION  | INVITED_BY  | object | Convert to object with NWNX_Object_StringToObject() |
-    KICK_HENCHMAN  | INVITED_BY  | object | Convert to object with NWNX_Object_StringToObject() |
+    LEAVE | LEAVING | object | Convert to object with StringToObject() |
+    KICK  | KICKED  | object | Convert to object with StringToObject() |
+    TRANSFER_LEADERSHIP  | NEW_LEADER  | object | Convert to object with StringToObject() |
+    INVITE  | INVITED  | object | Convert to object with StringToObject() |
+    IGNORE_INVITATION  | INVITED_BY  | object | Convert to object with StringToObject() |
+    ACCEPT_INVITATION  | INVITED_BY  | object | Convert to object with StringToObject() |
+    REJECT_INVITATION  | INVITED_BY  | object | Convert to object with StringToObject() |
+    KICK_HENCHMAN  | INVITED_BY  | object | Convert to object with StringToObject() |
 
 _______________________________________
     ## Combat Mode Toggle Events
@@ -533,13 +706,14 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    USED_ITEM_OBJECT_ID   | object | Convert to object with NWNX_Object_StringToObject() |
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject() |
+    USED_ITEM_OBJECT_ID   | object | Convert to object with StringToObject() |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
     SKILL_ID              | int | |
     SUB_SKILL_ID          | int | |
     TARGET_POSITION_X     | float | |
     TARGET_POSITION_Y     | float | |
     TARGET_POSITION_Z     | float | |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
     @note Probably only really works with the following activated skills:
     `SKILL_ANIMAL_EMPATHY`, `SKILL_DISABLE_TRAP`, `SKILL_HEAL`, `SKILL_OPEN_LOCK`,
@@ -574,7 +748,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
     TARGET_INVISIBLE      | int    | TRUE/FALSE
     BEFORE_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
@@ -609,7 +783,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     UNIQUE_ID             | int    | |
-    CREATOR               | object | Convert to object with NWNX_Object_StringToObject() |
+    CREATOR               | object | Convert to object with StringToObject() |
     TYPE                  | int    | The effect type, does not match NWScript constants See: https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Effect.hpp#L8 |
     SUB_TYPE              | int    | SUBTYPE_* |
     DURATION_TYPE         | int    | DURATION_TYPE_* |
@@ -620,7 +794,7 @@ _______________________________________
     INT_PARAM_*           | int    | * = 1-8 |
     FLOAT_PARAM_*         | float  | * = 1-4 |
     STRING_PARAM_*        | string | * = 1-6 |
-    OBJECT_PARAM_*        | object | * = 1-4, Convert to object with NWNX_Object_StringToObject() |
+    OBJECT_PARAM_*        | object | * = 1-4, Convert to object with StringToObject() |
 
     @note Only fires for Temporary or Permanent effects, does not include VisualEffects or ItemProperty effects.
 
@@ -682,8 +856,8 @@ _______________________________________
     BARTER_COMPLETE               | int    | TRUE/FALSE - whether the barter completed successfully
     BARTER_INITIATOR_ITEM_COUNT   | int    | How many items the initiator traded away, only in _BEFORE events
     BARTER_TARGET_ITEM_COUNT      | int    | How many items the target traded away, only in _BEFORE events
-    BARTER_INITIATOR_ITEM_*       | object | Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
-    BARTER_TARGET_ITEM_*          | object | Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
+    BARTER_INITIATOR_ITEM_*       | object | Convert to object with StringToObject(), only in _BEFORE events
+    BARTER_TARGET_ITEM_*          | object | Convert to object with StringToObject(), only in _BEFORE events
 
 _______________________________________
     ## Trap Events
@@ -704,7 +878,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TRAP_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject()
+    TRAP_OBJECT_ID        | object | Convert to object with StringToObject()
     TRAP_FORCE_SET        | int    | TRUE/FALSE, only in ENTER events
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events (not ENTER)
 
@@ -762,6 +936,24 @@ _______________________________________
     @note Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")
 
 _______________________________________
+    ## Server Character Save Events
+    - NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE
+    - NWNX_ON_SERVER_CHARACTER_SAVE_AFTER
+
+    `OBJECT_SELF` = The player character being saved.
+
+    @note This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() & ExportAllCharacters() is called.
+
+_______________________________________
+     ## Export Character Events
+    - NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE
+    - NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Note: This event runs when the player clicks the "Save Character" button in the options menu to export their character to their localvault.
+
+_______________________________________
     ## Levelling Events
     - NWNX_ON_LEVEL_UP_BEFORE
     - NWNX_ON_LEVEL_UP_AFTER
@@ -785,7 +977,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()
+    ITEM                  | object | Convert to object with StringToObject()
 
 _______________________________________
     ## Gold Events
@@ -812,7 +1004,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET_OBJECT_ID      | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject()
     ATTITUDE              | int    | 0 = Dislike, 1 = Like
 
 _______________________________________
@@ -824,7 +1016,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    AREA                  | object | Convert to object with NWNX_Object_StringToObject() |
+    AREA                  | object | Convert to object with StringToObject() |
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
@@ -853,7 +1045,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
     PASSIVE               | int    | TRUE / FALSE
     CLEAR_ALL_ACTIONS     | int    | TRUE / FALSE
     ADD_TO_FRONT          | int    | TRUE / FALSE
@@ -867,7 +1059,66 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    TARGET                | object | Convert to object with StringToObject()
+
+ _______________________________________
+    ## Input Cast Spell Events
+    - NWNX_ON_INPUT_CAST_SPELL_BEFORE
+    - NWNX_ON_INPUT_CAST_SPELL_AFTER
+
+    `OBJECT_SELF` = The creature casting a spell
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with StringToObject()
+    SPELL_ID              | int    |
+    MULTICLASS            | int    |
+    DOMAIN_LEVEL          | int    |
+    META_TYPE             | int    |
+    INSTANT               | int    | TRUE / FALSE
+    PROJECTILE_PATH       | int    |
+    SPONTANEOUS           | int    | TRUE / FALSE
+    FAKE                  | int    | TRUE / FALSE
+    FEAT                  | int    | -1 when not cast from a feat
+    CASTER_LEVEL          | int    |
+    IS_AREA_TARGET        | int    | TRUE / FALSE
+    POS_X                 | float  |
+    POS_Y                 | float  |
+    POS_Z                 | float  |
+
+    @note This event runs the moment a creature starts casting
+
+_______________________________________
+    ## Input Keyboard Events
+    - NWNX_ON_INPUT_KEYBOARD_BEFORE
+    - NWNX_ON_INPUT_KEYBOARD_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    KEY                   | string | The key pressed by the player, one of the following: W A S D Q E
+
+    @note To stop the player from moving you can do something like below, since normal immobilizing effects stop the client
+          from sending input.
+
+          location locPlayer = GetLocation(oPlayer);
+          object oBoulder = CreateObject(OBJECT_TYPE_PLACEABLE, "plc_boulder", locPlayer, FALSE, "TESTPLC");
+          NWNX_Object_SetPosition(oPlayer, GetPositionFromLocation(locPlayer));
+          ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);
+
+_______________________________________
+    ## Input Keyboard Events
+    - NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE
+    - NWNX_ON_INPUT_TOGGLE_PAUSE_AFTER
+
+    `OBJECT_SELF` = The player or DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    PAUSE_STATE           | int    | TRUE = Pausing, FALSE = Unpausing
+
+    @note This event also fires when a non-dm player presses the spacebar.
 
 _______________________________________
     ## Object Lock Events
@@ -878,7 +1129,8 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    DOOR                  | object | Convert to object with NWNX_Object_StringToObject()
+    DOOR                  | object | Convert to object with StringToObject()
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## Object Unlock Events
@@ -889,9 +1141,10 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    DOOR                  | object | Convert to object with NWNX_Object_StringToObject()
-    THIEVES_TOOL          | object | Convert to object with NWNX_Object_StringToObject()
+    DOOR                  | object | Convert to object with StringToObject()
+    THIEVES_TOOL          | object | Convert to object with StringToObject()
     ACTIVE_PROPERTY_INDEX | int    |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## UUID Collision Events
@@ -906,6 +1159,182 @@ _______________________________________
 
     Note: To get the existing object with `UUID` you can use GetObjectByUUID(), be aware that this event runs before the
           object is added to the world which means many functions (for example `GetArea(OBJECT_SELF)`) will not work.
+
+_______________________________________
+    ## Resource Events
+    - NWNX_ON_RESOURCE_ADDED
+    - NWNX_ON_RESOURCE_REMOVED
+    - NWNX_ON_RESOURCE_MODIFIED
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ALIAS                 | string | NWNX for /nwnx, DEVELOPMENT for /development. Also supports valid aliases from the Custom Resman Definition File
+    RESREF                | string | The ResRef of the file
+    TYPE                  | int    | The type of the file, see NWNX_UTIL_RESREF_TYPE_*
+
+    Note: These events fire when a file gets added/removed/modified in resource folders like /nwnx, /development and those defined in the Custom Resman Definition File
+
+_______________________________________
+    ## ELC Events
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Note: NWNX_ELC must be loaded for these events to work. The `_AFTER` event only fires if the character successfully
+          completes validation.
+
+_______________________________________
+     ## Quickbar Events
+    - NWNX_ON_QUICKBAR_SET_BUTTON_BEFORE
+    - NWNX_ON_QUICKBAR_SET_BUTTON_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    BUTTON                | int    | The quickbar button slot, 0-35
+    TYPE                  | int    | The type of quickbar button set, see NWNX_PLAYER_QBS_TYPE_* in nwnx_player_qbs.nss
+
+    Note: Skipping the event does not prevent the client from changing the button clientside, the change won't however
+          be saved to the bic file.
+
+_______________________________________
+     ## Calendar Events
+    - NWNX_ON_CALENDAR_HOUR
+    - NWNX_ON_CALENDAR_DAY
+    - NWNX_ON_CALENDAR_MONTH
+    - NWNX_ON_CALENDAR_YEAR
+    - NWNX_ON_CALENDAR_DAWN
+    - NWNX_ON_CALENDAR_DUSK
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD                   | int    | The (Hour/Day/Month/Year) before the change. Not available in DAWN/DUSK.
+    NEW                   | int    | The (Hour/Day/Month/Year) after the change. Not available in DAWN/DUSK.
+
+_______________________________________
+    ## Broadcast Spell Cast Events
+    - NWNX_ON_BROADCAST_CAST_SPELL_BEFORE
+    - NWNX_ON_BROADCAST_CAST_SPELL_AFTER
+
+    `OBJECT_SELF` = The creature casting the spell
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SPELL_ID              | int    | |
+    MULTI_CLASS           | int    | |
+    FEAT                  | int    | 65535 if a feat wasn't used, otherwise the feat ID |
+
+_______________________________________
+    ## RunScript Debug Event
+    - NWNX_ON_DEBUG_RUN_SCRIPT_BEFORE
+    - NWNX_ON_DEBUG_RUN_SCRIPT_AFTER
+
+    `OBJECT_SELF` = The player executing the RunScript debug command
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SCRIPT_NAME           | string | The script to execute |
+    TARGET                | object | The target to run the script on. Convert to object with StringToObject() |
+
+    @note This event also runs for players that do not have permission to execute the command.
+
+_______________________________________
+    ## RunScriptChunk Debug Event
+    - NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_BEFORE
+    - NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_AFTER
+
+    `OBJECT_SELF` = The player executing the RunScriptChunk debug command
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SCRIPT_CHUNK          | string | The script chunk |
+    TARGET                | object | The target to run the script chunk on. Convert to object with StringToObject() |
+    WRAP_INTO_MAIN        | int    | TRUE if the WrapIntoMain checkbox is checked, otherwise FALSE |
+
+    @note This event also runs for players that do not have permission to execute the command.
+
+_______________________________________
+    ## Buy/Sell Store Events
+    - NWNX_ON_STORE_REQUEST_BUY_BEFORE
+    - NWNX_ON_STORE_REQUEST_BUY_AFTER
+    - NWNX_ON_STORE_REQUEST_SELL_BEFORE
+    - NWNX_ON_STORE_REQUEST_SELL_AFTER
+
+    `OBJECT_SELF` = The creature buying or selling an item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM                  | object | The item being bought or sold. Convert to object with StringToObject()  |
+    STORE                 | object | The store the item is being sold to or bought from. Convert to object with StringToObject() |
+    PRICE                 | int    | The buy or sell price |
+    RESULT                | int    | TRUE/FALSE whether the request was successful. Only in *_AFTER events.
+
+_______________________________________
+    ## Server Send Area Events
+    - NWNX_ON_SERVER_SEND_AREA_BEFORE
+    - NWNX_ON_SERVER_SEND_AREA_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    AREA                  | object | The area the server is sending. Convert to object with StringToObject() |
+    PLAYER_NEW_TO_MODULE  | int    | TRUE if it's the player's first time logging into the server since a restart |
+
+_______________________________________
+    ## Journal Open/Close Events
+    - NWNX_ON_JOURNAL_OPEN_BEFORE
+    - NWNX_ON_JOURNAL_OPEN_AFTER
+    - NWNX_ON_JOURNAL_CLOSE_BEFORE
+    - NWNX_ON_JOURNAL_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+
+_______________________________________
+    ## Input Emote Event
+    - NWNX_ON_INPUT_EMOTE_BEFORE
+    - NWNX_ON_INPUT_EMOTE_AFTER
+
+    `OBJECT_SELF` = The creature using a radial menu emote
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ANIMATION             | int    | An engine animation constant, convent to NWScript animation constant with NWNX_Consts_TranslateEngineAnimation() |
+
+    @note Some emotes have a voiceline that will still play when the event is skipped. These voicelines can be skipped in the NWNX_ON_QUICKCHAT_* event.
+
+_______________________________________
+    ## Combat Damage Resistance/Reduction Broken Event
+    - NWNX_ON_COMBAT_DR_BROKEN_BEFORE
+    - NWNX_ON_COMBAT_DR_BROKEN_AFTER
+
+    `OBJECT_SELF` = The creature whose DR gets broken
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TYPE                  | int    | 1 for DamageResistance, 0 for DamageReduction |
+
+    @note This event only fires when DR gets broken in combat.
+
+_______________________________________
+    ## Creature Unpossess Familiar Event
+    - NWNX_ON_UNPOSSESS_FAMILIAR_BEFORE
+    - NWNX_ON_UNPOSSESS_FAMILIAR_AFTER
+
+    `OBJECT_SELF` = The creature unpossessing a familiar
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    FAMILIAR              | object | The familiar. Convert to object with StringToObject()  |
 
 _______________________________________
 */
@@ -950,6 +1379,7 @@ void NWNX_Events_PushEventData(string tag, string data);
 
 /// Signals an event. This will dispatch a notification to all subscribed handlers.
 /// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
+/// @remark target will be available as OBJECT_SELF in subscribed event scripts.
 int NWNX_Events_SignalEvent(string evt, object target);
 
 /// Retrieves the event data for the currently executing script.
@@ -968,7 +1398,7 @@ string NWNX_Events_GetEventData(string tag);
 /// ONLY WORKS WITH THE FOLLOWING EVENTS:
 /// - Feat events
 /// - Item events
-/// - Healer's Kit event
+/// - Healing events
 /// - CombatMode events
 /// - Party events
 /// - Skill events
@@ -977,27 +1407,43 @@ string NWNX_Events_GetEventData(string tag);
 /// - Polymorph events
 /// - DMAction events
 /// - Client connect event
+/// - Client Export Character event
 /// - Spell events
 /// - QuickChat events
 /// - Barter event (START only)
 /// - Trap events
 /// - Sticky Player Name event
+/// - Server Character Save Events
 /// - Add/RemoveGold events
 /// - PVP Attitude Change events
 /// - {Enter|Exit}Stealth events
 /// - Object {Lock|Unlock} events
+/// - Quickbar Events
+/// - Input Pause Event
+/// - Input Emote Event
+/// - Debug events
+/// - Store events
+/// - Disarm event
+/// - {Enter|Exit}Detect events
+/// - Faction events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
 ///
 /// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 /// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Use Item event - "1" or "0" to send feedback whether item use is allowed
+/// - Validate Use Item Event - "1" or "0" to show the item is unusable (red) in the player inventory.
 /// - Healer's Kit event
 /// - Listen/Spot Detection events -> "1" or "0"
 /// - OnClientConnectBefore -> Reason for disconnect if skipped
 /// - Ammo Reload event -> Forced ammunition returned
 /// - Trap events -> "1" or "0"
 /// - Sticky Player Name event -> "1" or "0"
+/// - Heal event -> Amount of HP to heal
+/// - Has Feat event -> "1" or "0"
+/// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
+/// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
@@ -1014,6 +1460,30 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 
 /// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
+
+/// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
+/// on its whitelist.
+///
+/// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
+/// - NWNX_ON_CAST_SPELL -> SpellID
+/// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
+///
+/// @note This enables the whitelist for ALL scripts subscribed to sEvent.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param bEnable TRUE to enable the whitelist, FALSE to disable
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable);
+
+/// @brief Add nID to the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID);
+
+/// @brief Remove nID from the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID);
 
 /// @}
 
@@ -1112,6 +1582,33 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
+{
+    string sFunc = "ToggleIDWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)
+{
+    string sFunc = "AddIDToWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID)
+{
+    string sFunc = "RemoveIDFromWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }

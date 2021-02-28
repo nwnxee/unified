@@ -1,8 +1,5 @@
 #include "DotNET.hpp"
 
-#include "API/ALL_CLASSES.hpp"
-#include "API/Globals.hpp"
-#include "API/Constants.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
@@ -10,60 +7,17 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
-#include "Services/Services.hpp"
-#include "Services/Events/Events.hpp"
 
-#include "Assert.hpp"
-#include "Encoding.hpp"
-#include "Log.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 namespace DotNET {
 
-template <typename T>
-static int StackPushGameDefinedStructure(int id, T value)
-{
-    auto vm = Globals::VirtualMachine();
-    LOG_DEBUG("Pushing game defined structure %i at 0x%x.", id, value);
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    T gameStruct = reinterpret_cast<T>(value);
-    auto ret = vm->StackPushEngineStructure(id, gameStruct);
-    if (!ret)
-    {
-        LOG_WARNING("Failed to push game defined structure %i at 0x%x - recursion level %i.",
-            id, value, vm->m_nRecursionLevel);
-    }
-    return ret;
-}
-
-template <typename T>
-static T StackPopGameDefinedStructure(int id)
-{
-    auto vm = Globals::VirtualMachine();
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    void* value;
-    if (!vm->StackPopEngineStructure(id, &value))
-    {
-        LOG_WARNING("Failed to pop game defined structure %i - recursion level %i.",
-            id, vm->m_nRecursionLevel);
-        return nullptr;
-    }
-
-    LOG_DEBUG("Popped game defined structure %i at 0x%x.", id, value);
-    return reinterpret_cast<T>(value);
-}
-
-
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
     CVirtualMachineScript* script = new CVirtualMachineScript();
-    script->m_nCodeSize = 0;
     script->m_pCode = NULL;
-    script->m_nLoadedFromSave = 0;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
     script->m_nStackSize = 0;
@@ -75,9 +29,6 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 
     return script;
 }
-
-
-
 
 void DotNET::CallBuiltIn(int32_t id)
 {
@@ -129,7 +80,7 @@ void DotNET::StackPushString(const char* value)
     ASSERT(vm->m_nRecursionLevel >= 0);
 
     LOG_DEBUG("Pushing string '%s'.", value);
-    CExoString str(Encoding::FromUTF8(value).c_str());
+    CExoString str(String::FromUTF8(value).c_str());
 
     if (vm->StackPushString(str))
     {
@@ -176,29 +127,20 @@ void DotNET::StackPushVector(Vector value)
     }
 }
 
-void DotNET::StackPushEffect(CGameEffect* value)
+void DotNET::StackPushGameDefinedStructure(int32_t structId, void* value)
 {
-    PushedCount += StackPushGameDefinedStructure(0, value);
-}
+    auto vm = Globals::VirtualMachine();
+    LOG_DEBUG("Pushing game defined structure %i at 0x%x.", structId, value);
+    ASSERT(vm->m_nRecursionLevel >= 0);
 
-void DotNET::StackPushEvent(CScriptEvent* value)
-{
-    PushedCount += StackPushGameDefinedStructure(1, value);
-}
+    auto ret = vm->StackPushEngineStructure(structId, value);
+    if (!ret)
+    {
+        LOG_WARNING("Failed to push game defined structure %i at 0x%x - recursion level %i.",
+            structId, value, vm->m_nRecursionLevel);
+    }
 
-void DotNET::StackPushLocation(CScriptLocation* value)
-{
-    PushedCount += StackPushGameDefinedStructure(2, value);
-}
-
-void DotNET::StackPushTalent(CScriptTalent* value)
-{
-    PushedCount += StackPushGameDefinedStructure(3, value);
-}
-
-void DotNET::StackPushItemProperty(CGameEffect* value)
-{
-    PushedCount += StackPushGameDefinedStructure(4, value);
+    PushedCount += ret;
 }
 
 int32_t DotNET::StackPopInteger()
@@ -248,7 +190,7 @@ const char* DotNET::StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     // TODO: Less copies
-    return strdup(Encoding::ToUTF8(value.CStr()).c_str());
+    return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t DotNET::StackPopObject()
@@ -283,78 +225,30 @@ Vector DotNET::StackPopVector()
     return value;
 }
 
-CGameEffect* DotNET::StackPopEffect()
+void* DotNET::StackPopGameDefinedStructure(int32_t structId)
 {
-    return StackPopGameDefinedStructure<CGameEffect*>(0);
-}
+    auto vm = Globals::VirtualMachine();
+    ASSERT(vm->m_nRecursionLevel >= 0);
 
-CScriptEvent* DotNET::StackPopEvent()
-{
-    return StackPopGameDefinedStructure<CScriptEvent*>(1);
-}
-
-CScriptLocation* DotNET::StackPopLocation()
-{
-    return StackPopGameDefinedStructure<CScriptLocation*>(2);
-}
-
-CScriptTalent* DotNET::StackPopTalent()
-{
-    return StackPopGameDefinedStructure<CScriptTalent*>(3);
-}
-
-CGameEffect* DotNET::StackPopItemProperty()
-{
-    return StackPopGameDefinedStructure<CGameEffect*>(4);
-}
-
-void DotNET::FreeEffect(void* ptr)
-{
-    if (ptr)
+    void* value;
+    if (!vm->StackPopEngineStructure(structId, &value))
     {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing effect at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(0, ptr);
+        LOG_WARNING("Failed to pop game defined structure %i - recursion level %i.",
+            structId, vm->m_nRecursionLevel);
+        return nullptr;
     }
+
+    LOG_DEBUG("Popped game defined structure %i at 0x%x.", structId, value);
+    return value;
 }
 
-void DotNET::FreeEvent(void* ptr)
+void DotNET::FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing event at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(1, ptr);
-    }
-}
-
-void DotNET::FreeLocation(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing location at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(2, ptr);
-    }
-}
-
-void DotNET::FreeTalent(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing talent at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(3, ptr);
-    }
-}
-
-void DotNET::FreeItemProperty(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing item property at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(4, ptr);
+        LOG_DEBUG("Freeing game structure at 0x%x", ptr);
+        cmd->DestroyGameDefinedStructure(structId, ptr);
     }
 }
 
@@ -403,69 +297,79 @@ void DotNET::nwnxSetFunction(const char *plugin, const char *function)
 }
 void DotNET::nwnxPushInt(int32_t n)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, n);
+    Events::Push(n);
 }
 void DotNET::nwnxPushFloat(float f)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, f);
+    Events::Push(f);
 }
 void DotNET::nwnxPushObject(uint32_t o)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, (Types::ObjectID)o);
+    Events::Push((ObjectID)o);
 }
 void DotNET::nwnxPushString(const char *s)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, Encoding::FromUTF8(s));
+    Events::Push(String::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, e);
+    Events::Push(e);
 }
 void DotNET::nwnxPushItemProperty(CGameEffect *ip)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, ip);
+    Events::Push(ip);
 }
 int32_t DotNET::nwnxPopInt()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<int32_t>(nwnxActivePlugin, nwnxActiveFunction).value_or(0);
+    return Events::Pop<int32_t>().value_or(0);
 }
 float DotNET::nwnxPopFloat()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<float>(nwnxActivePlugin, nwnxActiveFunction).value_or(0.0f);
+    return Events::Pop<float>().value_or(0.0f);
 }
 uint32_t DotNET::nwnxPopObject()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<Types::ObjectID>(nwnxActivePlugin, nwnxActiveFunction).value_or(Constants::OBJECT_INVALID);
+    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 const char* DotNET::nwnxPopString()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    auto str = events->Pop<std::string>(nwnxActivePlugin, nwnxActiveFunction).value_or(std::string{""});
-    return strdup(Encoding::ToUTF8(str).c_str());
+    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    return strdup(String::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 CGameEffect* DotNET::nwnxPopItemProperty()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 void DotNET::nwnxCallFunction()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Call(nwnxActivePlugin, nwnxActiveFunction);
+    Events::Call(nwnxActivePlugin, nwnxActiveFunction);
+}
+
+NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
+{
+    return NWNXLib::API::Globals::ExportedGlobals;
+}
+
+void* DotNET::RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+{
+    auto funchook = s_managed_hooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
+    return funchook->GetOriginal();
+}
+
+void DotNET::ReturnHook(void* trampoline)
+{
+    for (auto it = s_managed_hooks.begin(); it != s_managed_hooks.end(); it++)
+    {
+        if (it->get()->GetOriginal() == trampoline)
+        {
+            s_managed_hooks.erase(it);
+            return;
+        }
+    }
 }
 
 }

@@ -1,19 +1,17 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include <bitset>
 #include <map>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace SkillRanks {
 
 class SkillRanks : public NWNXLib::Plugin
 {
 public:
-    SkillRanks(const Plugin::CreateParams& params);
+    SkillRanks(NWNXLib::Services::ProxyServiceList* services);
     virtual ~SkillRanks();
 
 private:
@@ -27,8 +25,8 @@ private:
     ArgumentStack GetAreaModifier             (ArgumentStack&& args);
     ArgumentStack SetAreaModifier             (ArgumentStack&& args);
 
-    static void LoadSkillInfoHook(bool, CNWRules*);
-    static int32_t GetSkillRankHook(CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t);
+    static void LoadRulesetInfoHook(CNWRules*);
+    static char GetSkillRankHook(CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t);
 
     uint8_t m_blindnessMod;
 

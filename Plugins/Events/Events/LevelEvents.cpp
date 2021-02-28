@@ -10,38 +10,47 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-LevelEvents::LevelEvents(HooksProxy* hooker)
+static Hooks::Hook s_LevelUpHook;
+static Hooks::Hook s_LevelUpAutomaticHook;
+static Hooks::Hook s_LevelDownHook;
+
+LevelEvents::LevelEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi, int32_t,
-                CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t>(&LevelUpHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", []() {
+        s_LevelUpHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi,
+                                     (void*)&LevelUpHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih, int32_t,
-                CNWSCreatureStats*, uint8_t, int32_t, uint8_t>(&LevelUpAutomaticHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", []() {
+        s_LevelUpAutomaticHook= Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
+                                             (void*)&LevelUpAutomaticHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats, int32_t,
-                CNWSCreatureStats*, CNWLevelStats*>(&LevelDownHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", []() {
+        s_LevelDownHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
+                                       (void*)&LevelDownHook, Hooks::Order::Earliest);
     });
 }
 
-void LevelEvents::LevelUpHook(bool before, CNWSCreatureStats* thisPtr, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t)
+void LevelEvents::LevelUpHook(CNWSCreatureStats *thisPtr, CNWLevelStats *pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2,
+                              uint8_t nSchool, int32_t bAddStatsToList)
 {
-    Events::SignalEvent(before ? "NWNX_ON_LEVEL_UP_BEFORE" : "NWNX_ON_LEVEL_UP_AFTER",
-                        thisPtr->m_pBaseCreature->m_idSelf);
+    Events::SignalEvent("NWNX_ON_LEVEL_UP_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
+    s_LevelUpHook->CallOriginal<void>(thisPtr, pLevelUpStats, nDomain1, nDomain2, nSchool, bAddStatsToList);
+    Events::SignalEvent("NWNX_ON_LEVEL_UP_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
 }
 
-void LevelEvents::LevelUpAutomaticHook(bool before, CNWSCreatureStats* thisPtr, uint8_t, int32_t, uint8_t)
+int32_t LevelEvents::LevelUpAutomaticHook(CNWSCreatureStats *thisPtr, uint8_t nClass, int32_t bReadyAllSpells, uint8_t nPackage)
 {
-    Events::SignalEvent(before ? "NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE" : "NWNX_ON_LEVEL_UP_AUTOMATIC_AFTER",
-                        thisPtr->m_pBaseCreature->m_idSelf);
+    Events::SignalEvent("NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
+    auto retVal = s_LevelUpAutomaticHook->CallOriginal<int32_t>(thisPtr, nClass, bReadyAllSpells, nPackage);
+    Events::SignalEvent("NWNX_ON_LEVEL_UP_AUTOMATIC_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
+    return retVal;
 }
 
-void LevelEvents::LevelDownHook(bool before, CNWSCreatureStats* thisPtr, CNWLevelStats*)
+void LevelEvents::LevelDownHook(CNWSCreatureStats *thisPtr, CNWLevelStats *pLevelUpStats)
 {
-    Events::SignalEvent(before ? "NWNX_ON_LEVEL_DOWN_BEFORE" : "NWNX_ON_LEVEL_DOWN_AFTER",
-                        thisPtr->m_pBaseCreature->m_idSelf);
+    Events::SignalEvent("NWNX_ON_LEVEL_DOWN_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
+    s_LevelDownHook->CallOriginal<void>(thisPtr, pLevelUpStats);
+    Events::SignalEvent("NWNX_ON_LEVEL_DOWN_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
 }
 
 }

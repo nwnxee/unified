@@ -9,8 +9,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "ProfilerMacros.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Profiler {
 
@@ -47,14 +45,13 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
             return tags;
         }
     ),
-    int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
+    int32_t, CNWSModule*, CPathfindInformation*, uint32_t)
 
-Pathing::Pathing(NWNXLib::Services::HooksProxy* hooker,
-    NWNXLib::Services::MetricsProxy* metrics)
+Pathing::Pathing(NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 
-    DEFINE_PROFILER_TARGET_FAST(hooker,
+    DEFINE_PROFILER_TARGET_FAST(
         PlotPath, API::Functions::_ZN10CNWSModule8PlotPathEP20CPathfindInformationj,
         int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
 }

@@ -40,6 +40,16 @@ const int NWNX_AREA_COLOR_TYPE_SUN_AMBIENT          = 2;
 const int NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE          = 3;
 /// @}
 
+/// @brief A tile info struct
+struct NWNX_Area_TileInfo
+{
+    int nID; ///< The tile's ID
+    int nHeight; ///< The tile's height
+    int nOrientation; ///< The tile's orientation
+    int nGridX; ///< The tile's grid x position
+    int nGridY; ///< The tile's grid y position
+};
+
 /// @brief Gets the number of players in area.
 /// @param area The area object.
 /// @return The player count for the area.
@@ -175,20 +185,25 @@ void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 /// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the transition as something other than a square.
 object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="");
 
-/// @brief Get the state of a tile animation loop
+/// @brief Get the state of a tile animation loop.
 /// @param oArea The area object.
 /// @param fTileX, fTileY The coordinates of the tile.
 /// @param nAnimLoop The loop to check. (1-3)
 /// @return TRUE if the loop is enabled.
 int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop);
 
-/// @brief Set the state of a tile animation loop
+/// @brief Set the state of a tile animation loop.
 /// @param oArea The area object.
 /// @param fTileX, fTileY The coordinates of the tile.
 /// @param nAnimLoop The loop to set (1-3).
 /// @param bEnabled TRUE or FALSE.
 /// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
+
+/// @brief Get the name of the tile model from any location.
+/// @param oArea The area name.
+/// @param fTileX, fTileY The coordinates of the tile.
+string NWNX_Area_GetTileModelResRef(object oArea, float fTileX, float fTileY);
 
 /// @brief Test to see if there's a direct, walkable line between two points in the area.
 /// @param oArea The area object.
@@ -217,6 +232,61 @@ int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE);
 /// @param fSize The size of the square.
 /// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the trigger as something other than a square.
 object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ, string sTag = "", float fSize = 1.0f);
+
+/// @brief Add oObject to the ExportGIT exclusion list, objects on this list won't be exported when NWNX_Area_ExportGIT() is called.
+/// @param oObject The object to add
+void NWNX_Area_AddObjectToExclusionList(object oObject);
+
+/// @brief Remove oObject from the ExportGIT exclusion list.
+/// @param oObject The object to add
+void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
+
+/// @brief Export the .git file of oArea to the UserDirectory/nwnx folder, or to the location of sAlias.
+/// @note Take care with local objects set on objects, they will likely not reference the same object after a server restart.
+/// @param oArea The area to export the .git file of.
+/// @param sFileName The filename, 16 characters or less and should be lowercase. If left blank the resref of oArea will be used.
+/// @param bExportVarTable If TRUE, local variables set on oArea will be exported too.
+/// @param bExportUUID If TRUE, the UUID of oArea will be exported, if it has one.
+/// @param nObjectFilter One or more OBJECT_TYPE_* constants. These object will not be exported. For example OBJECT_TYPE_CREATURE | OBJECT_TYPE_DOOR
+/// will not export creatures and doors. Use OBJECT_TYPE_ALL to filter all objects or 0 to export all objects.
+/// @param sAlias The alias of the resource directory to add the .git file to. Default: UserDirectory/nwnx
+/// @return TRUE if exported successfully, FALSE if not.
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX");
+
+/// @brief Get the tile info of the tile at [fTileX, fTileY] in oArea.
+/// @param oArea The area name.
+/// @param fTileX, fTileY The coordinates of the tile.
+/// @return A NWNX_Area_TileInfo struct with tile info.
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, float fTileY);
+
+/// @brief Export the .are file of oArea to the UserDirectory/nwnx folder, or to the location of sAlias.
+/// @param oArea The area to export the .are file of.
+/// @param sFileName The filename, 16 characters or less and should be lowercase. This will also be the resref of the area.
+/// @param sNewName Optional new name of the area. Leave blank to use the current name.
+/// @param sNewTag Optional new tag of the area. Leave blank to use the current tag.
+/// @param sAlias The alias of the resource directory to add the .are file to. Default: UserDirectory/nwnx
+/// @return TRUE if exported successfully, FALSE if not.
+int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", string sNewTag = "", string sAlias = "NWNX");
+
+/// @brief Get the ambient sound playing in an area during the day.
+/// @param oArea The area to get the sound of.
+/// @return The ambient soundtrack. See ambientsound.2da.
+int NWNX_Area_GetAmbientSoundDay(object oArea);
+
+/// @brief Get the ambient sound playing in an area during the night.
+/// @param oArea The area to get the sound of.
+/// @return The ambient soundtrack. See ambientsound.2da.
+int NWNX_Area_GetAmbientSoundNight(object oArea);
+
+/// @brief Get the volume of the ambient sound playing in an area during the day.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea);
+
+/// @brief Get the volume of the ambient sound playing in an area during the night.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
 
 /// @}
 
@@ -488,6 +558,17 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
 
+string NWNX_Area_GetTileModelResRef(object oArea, float fTileX, float fTileY)
+{
+    string sFunc = "GetTileModelResRef";
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Area, sFunc);
+}
 
 int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE)
 {
@@ -531,4 +612,109 @@ object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_AddObjectToExclusionList(object oObject)
+{
+    string sFunc = "AddObjectToExclusionList";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_RemoveObjectFromExclusionList(object oObject)
+{
+    string sFunc = "RemoveObjectFromExclusionList";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX")
+{
+    string sFunc = "ExportGIT";
+
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sAlias);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, nObjectFilter);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportUUID);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportVarTable);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sFileName);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, float fTileY)
+{
+    string sFunc = "GetTileInfo";
+
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    struct NWNX_Area_TileInfo str;
+
+    str.nGridY = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nGridX = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nOrientation = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nHeight = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nID = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+
+    return str;
+}
+
+int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", string sNewTag = "", string sAlias = "NWNX")
+{
+    string sFunc = "ExportARE";
+
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sAlias);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sNewTag);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sNewName);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sFileName);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundDay(object oArea)
+{
+    string sFunc = "GetAmbientSoundDay";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundNight(object oArea)
+{
+    string sFunc = "GetAmbientSoundNight";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundDayVolume";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundNightVolume";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 }

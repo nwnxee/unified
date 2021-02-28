@@ -1,28 +1,19 @@
 #pragma once
 
-#include "API/Types.hpp"
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
 #include "API/CNWSCreature.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class FeatEvents
 {
 public:
-    FeatEvents(NWNXLib::Services::HooksProxy* hooker);
+    FeatEvents();
 
 private:
-        static int32_t UseFeatHook
-        (
-            CNWSCreature* thisPtr,
-            uint16_t nFeat,
-            uint16_t nSubFeat,
-            NWNXLib::API::Types::ObjectID oidTarget,
-            NWNXLib::API::Types::ObjectID oidArea,
-            Vector* pvTarget
-        );
+        static int32_t UseFeatHook(CNWSCreature*, uint16_t, uint16_t, ObjectID, ObjectID, Vector*);
+        static int32_t HasFeatHook(CNWSCreatureStats*, uint16_t);
 };
 
 }

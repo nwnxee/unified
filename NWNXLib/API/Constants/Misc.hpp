@@ -251,4 +251,35 @@ namespace ObjectVisualTransform
     }
 }
 
+namespace AssociateType
+{
+    enum TYPE
+    {
+        None = 0,
+        Henchman = 1,
+        AnimalCompanion = 2,
+        Familiar = 3,
+        Summoned = 4,
+        Dominated = 5,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 5;
+    static_assert(MAX == Dominated);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+                "None",
+                "Henchman",
+                "AnimalCompanion",
+                "Familiar",
+                "Summoned",
+                "Dominated",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

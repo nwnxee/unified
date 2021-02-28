@@ -4,7 +4,17 @@
 <   <$ROHOMEPATH/nwnplayer.ini awk -f /nwn/prep-nwnplayer-ini.awk >$HOMEPATH/nwnplayer.ini
 < fi
 < 
-69a65,89
+70a66,70
+> if [[ "${NWN_MODULEURL}" != "" ]]; then
+>   args+=("-moduleurl" "${NWN_MODULEURL}")
+> else
+>   args+=("-module" "${NWN_MODULE:-DockerDemo}")
+> fi
+76a77,104
+> if [[ "${NWN_MODULEHASH}" != "" ]]; then
+>   args+=("-modulehash" "${NWN_MODULEHASH}")
+> fi
+> 
 > copycrashlog() {
 >   inotifywait -mq -e moved_to -e create "$HOMEPATH" --format "%f" | while read f
 >   do
@@ -29,14 +39,19 @@
 > }
 > 
 > copyruntimeconfiguration &
-> 
-71c91,93
+79c107,109
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 > exec ./nwserver-linux \
-96,107d117
+84d113
+<   -module "${NWN_MODULE:-DockerDemo}" \
+102c131
+<   ${args[@]}
+---
+>   "${args[@]}"
+103,114d131
 < RET=$?
 < set -e
 < 

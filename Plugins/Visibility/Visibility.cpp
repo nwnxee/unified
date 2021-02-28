@@ -1,95 +1,71 @@
-#include "Visibility.hpp"
+#include "nwnx.hpp"
 
 #include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
-#include "API/Functions.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-
-static Visibility::Visibility* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
-{
-    return new Plugin::Info
-    {
-        "Visibility",
-        "Allows the visibility of objects to be overridden globally or per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Visibility::Visibility(params);
-    return g_plugin;
-}
+using ArgumentStack = Events::ArgumentStack;
 
 
 namespace Visibility {
 
-Visibility::Visibility(const Plugin::CreateParams& params)
-    : Plugin(params)
-{
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+static int32_t GetGlobalOverride(ObjectID);
+static int32_t GetPersonalOverride(ObjectID, ObjectID);
 
-    REGISTER(GetVisibilityOverride);
-    REGISTER(SetVisibilityOverride);
+static Hooks::Hook s_TestObjectVisibleHook =
+        Hooks::HookFunction(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_,
+        (void*)+[](CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject) -> int32_t
+        {
+            if (pAreaObject->m_idSelf == pPlayerGameObject->m_idSelf)
+            {
+                return s_TestObjectVisibleHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
+            }
 
-#undef REGISTER
+            int32_t visiblityState;
+            int32_t personalOverride = GetPersonalOverride(pPlayerGameObject->m_idSelf, pAreaObject->m_idSelf);
+            int32_t globalOverride = GetGlobalOverride(pAreaObject->m_idSelf);
+            int32_t visibilityOverride = personalOverride != -1 ? personalOverride : globalOverride != -1 ? globalOverride : -1;
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
-    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_);
-}
+            switch (visibilityOverride)
+            {
+                case 0: // NWNX_VISIBILITY_VISIBLE
+                    visiblityState = -1;
+                    break;
 
-Visibility::~Visibility()
-{
-}
+                case 1: // NWNX_VISIBILITY_HIDDEN
+                    visiblityState = false;
+                    break;
 
-int32_t Visibility::TestObjectVisibleHook(
-    CNWSMessage *pThis,
-    CNWSObject *pAreaObject,
-    CNWSObject *pPlayerGameObject)
-{
-    if (pAreaObject->m_idSelf == pPlayerGameObject->m_idSelf)
-    {
-        return g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
-    }
+                case 2: // NWNX_VISIBILITY_DM_ONLY
+                    visiblityState = Utils::AsNWSCreature(pPlayerGameObject)->m_pStats->GetIsDM() ? -1 : false;
+                    break;
 
-    bool bInvisible = false;
-    int32_t personalOverride = GetPersonalOverride(pPlayerGameObject->m_idSelf, pAreaObject->m_idSelf);
-    int32_t globalOverride = GetGlobalOverride(pAreaObject->m_idSelf);
+                case 3: // NWNX_VISIBILITY_ALWAYS_VISIBLE
+                    visiblityState = true;
+                    break;
 
-    if (personalOverride != -1)
-    {
-        bInvisible = !!personalOverride;
-    }
-    else if (globalOverride != -1)
-    {
-        bInvisible = (globalOverride == 2) ? !Utils::AsNWSCreature(pPlayerGameObject)->m_pStats->m_bIsDM : !!globalOverride;
-    }
+                case 4: // NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY
+                    visiblityState = Utils::AsNWSCreature(pPlayerGameObject)->m_pStats->GetIsDM();
+                    break;
 
-    return bInvisible ? false : g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
-}
+                default:
+                    visiblityState = -1;
+            }
 
-int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
+            return visiblityState != -1 ? visiblityState : s_TestObjectVisibleHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
+        }, Hooks::Order::Late);
+
+
+static int32_t GetGlobalOverride(ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto globalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(targetId, "GLOBAL_VISIBILITY_OVERRIDE"))
+    auto *target = Utils::GetGameObject(targetId);
+    if (auto globalOverride = target->nwnxGet<int>("GLOBAL_VISIBILITY_OVERRIDE"))
     {
         retVal = *globalOverride;
     }
@@ -97,34 +73,38 @@ int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
     return retVal;
 }
 
-int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectID targetId)
+static int32_t GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 {
     int32_t retVal = -1;
 
-    if (auto personalOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, Utils::ObjectIDToString(targetId)))
+    auto *player = Utils::GetGameObject(playerId);
+    if (auto personalOverride = player->nwnxGet<int>(Utils::ObjectIDToString(targetId)))
     {
-        retVal = !!*personalOverride;
+        retVal = *personalOverride;
     }
 
     return retVal;
 }
 
-ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetVisibilityOverride(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = args.extract<ObjectID>();
+    const auto targetId = args.extract<ObjectID>();
+      ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
-ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetVisibilityOverride(ArgumentStack&& args)
 {
-    auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto override = Services::Events::ExtractArgument<int32_t>(args);
+    auto playerId = args.extract<ObjectID>();
+    const auto targetId = args.extract<ObjectID>();
+      ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
+    const auto override = args.extract<int32_t>();
+
     std::string varName = Utils::ObjectIDToString(targetId);
 
     if (playerId == Constants::OBJECT_INVALID)
@@ -133,16 +113,13 @@ ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
         playerId = targetId;
     }
 
-    if (override == -1)
-    {
-        g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
-    }
+    auto *player = Utils::GetGameObject(playerId);
+    if (override < 0)
+        player->nwnxRemove(varName);
     else
-    {
-        g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, override);
-    }
+        player->nwnxSet(varName, override);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 }
