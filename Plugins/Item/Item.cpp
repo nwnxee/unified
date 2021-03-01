@@ -11,28 +11,9 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static CNWSItem *item(ArgumentStack& args)
-{
-    const auto objectId = args.extract<ObjectID>();
-
-    if (objectId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Item function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pGameObject = Utils::GetGameObject(objectId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
-    if (!pItem)
-        LOG_NOTICE("NWNX_Item function called on non item object");
-
-    return pItem;
-}
-
-
 NWNX_EXPORT ArgumentStack SetWeight(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
     {
         pItem->m_nWeight = args.extract<int32_t>();
 
@@ -44,7 +25,7 @@ NWNX_EXPORT ArgumentStack SetWeight(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetBaseGoldPieceValue(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         pItem->m_nBaseUnitCost = args.extract<int32_t>();
 
     return {};
@@ -52,7 +33,7 @@ NWNX_EXPORT ArgumentStack SetBaseGoldPieceValue(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAddGoldPieceValue(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         pItem->m_nAdditionalCost = args.extract<int32_t>();
 
     return {};
@@ -60,7 +41,7 @@ NWNX_EXPORT ArgumentStack SetAddGoldPieceValue(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetBaseGoldPieceValue(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         return (int32_t)pItem->m_nBaseUnitCost;
 
     return -1;
@@ -68,7 +49,7 @@ NWNX_EXPORT ArgumentStack GetBaseGoldPieceValue(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAddGoldPieceValue(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         return pItem->m_nAdditionalCost;
 
     return -1;
@@ -76,7 +57,7 @@ NWNX_EXPORT ArgumentStack GetAddGoldPieceValue(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetBaseItemType(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         pItem->m_nBaseItem = args.extract<int32_t>();
 
     return {};
@@ -84,7 +65,7 @@ NWNX_EXPORT ArgumentStack SetBaseItemType(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
     {
         const auto type  = args.extract<int32_t>();
         const auto idx   = args.extract<int32_t>();
@@ -141,7 +122,7 @@ NWNX_EXPORT ArgumentStack GetEntireItemAppearance(ArgumentStack&& args)
     std::stringstream retval;
     char buf[4];
 
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
     {
         for (int idx = 0; idx < 6; idx++)
         {
@@ -174,7 +155,7 @@ NWNX_EXPORT ArgumentStack GetEntireItemAppearance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
     {
         const auto sAppString = args.extract<std::string>();
         int  stringPos = 0;
@@ -221,7 +202,7 @@ NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetBaseArmorClass(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         return pItem->m_nArmorValue;
 
     return -1;
@@ -229,7 +210,7 @@ NWNX_EXPORT ArgumentStack GetBaseArmorClass(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMinEquipLevel(ArgumentStack&& args)
 {
-    if (auto *pItem = item(args))
+    if (auto *pItem = Utils::PopItem(args))
         return pItem->GetMinEquipLevel();
 
     return -1;

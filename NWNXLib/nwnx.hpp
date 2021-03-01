@@ -242,6 +242,18 @@ namespace Utils
     // afterwards. The new object has a unique ObjectID
     CGameObject* DeserializeGameObject(const std::vector<uint8_t>& serialized);
     CGameObject* DeserializeGameObjectB64(const std::string& serializedB64);
+
+    CGameObject*   PopGameObject(ArgumentStack& args, bool throwOnFail=false);
+    CNWSObject*    PopObject(ArgumentStack& args, bool throwOnFail=false);
+    CNWSCreature*  PopCreature(ArgumentStack& args, bool throwOnFail=false);
+    CNWSArea*      PopArea(ArgumentStack& args, bool throwOnFail=false);
+    CNWSPlayer*    PopPlayer(ArgumentStack& args, bool throwOnFail=false);
+    CNWSItem*      PopItem(ArgumentStack& args, bool throwOnFail=false);
+    CNWSEncounter* PopEncounter(ArgumentStack& args, bool throwOnFail=false);
+    CNWSPlaceable* PopPlaceable(ArgumentStack& args, bool throwOnFail=false);
+    CNWSWaypoint*  PopWaypoint(ArgumentStack& args, bool throwOnFail=false);
+    CNWSTrigger*   PopTrigger(ArgumentStack& args, bool throwOnFail=false);
+    CNWSDoor*      PopDoor(ArgumentStack& args, bool throwOnFail=false);
 }
 
 namespace POS

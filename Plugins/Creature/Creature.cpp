@@ -44,22 +44,9 @@ static Hooks::Hook s_GetClassLevelHook = nullptr;
 static std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> s_RollModifier;
 static std::unordered_map<ObjectID, bool> s_ParryAllAttacks;
 
-static CNWSCreature *creature(ArgumentStack& args)
-{
-    const auto creatureId = args.extract<ObjectID>();
-
-    if (creatureId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Creature function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    return Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
-}
-
 NWNX_EXPORT ArgumentStack AddFeat(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -73,7 +60,7 @@ NWNX_EXPORT ArgumentStack AddFeat(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddFeatByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat  = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -95,7 +82,7 @@ NWNX_EXPORT ArgumentStack AddFeatByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RemoveFeat(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -109,7 +96,7 @@ NWNX_EXPORT ArgumentStack RemoveFeat(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetKnowsFeat(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -122,7 +109,7 @@ NWNX_EXPORT ArgumentStack GetKnowsFeat(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatCountByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
@@ -140,7 +127,7 @@ NWNX_EXPORT ArgumentStack GetFeatCountByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
@@ -161,7 +148,7 @@ NWNX_EXPORT ArgumentStack GetFeatByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatGrantLevel(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
         ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -188,7 +175,7 @@ NWNX_EXPORT ArgumentStack GetFeatGrantLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatCount(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_pStats->m_lstFeats.num;
 
     return -1;
@@ -196,7 +183,7 @@ NWNX_EXPORT ArgumentStack GetFeatCount(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatByIndex(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto index = args.extract<int32_t>();
 
@@ -208,7 +195,7 @@ NWNX_EXPORT ArgumentStack GetFeatByIndex(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMeetsFeatRequirements(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -223,7 +210,7 @@ NWNX_EXPORT ArgumentStack GetMeetsFeatRequirements(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetSpecialAbility(ArgumentStack&& args)
 {
     int32_t id = -1, ready = -1, level = -1;
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto index = args.extract<int32_t>();
 
@@ -242,7 +229,7 @@ NWNX_EXPORT ArgumentStack GetSpecialAbility(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetSpecialAbilityCount(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
         ASSERT_OR_THROW(pAbilities);
@@ -257,7 +244,7 @@ NWNX_EXPORT ArgumentStack GetSpecialAbilityCount(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddSpecialAbility(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
@@ -295,7 +282,7 @@ NWNX_EXPORT ArgumentStack AddSpecialAbility(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RemoveSpecialAbility(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto index = args.extract<int32_t>();
 
@@ -309,7 +296,7 @@ NWNX_EXPORT ArgumentStack RemoveSpecialAbility(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSpecialAbility(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto index = args.extract<int32_t>();
         const auto level = args.extract<int32_t>();
@@ -333,7 +320,7 @@ NWNX_EXPORT ArgumentStack SetSpecialAbility(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetClassByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
@@ -352,7 +339,7 @@ NWNX_EXPORT ArgumentStack GetClassByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetBaseAC(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto ac = args.extract<int32_t>();
           ASSERT_OR_THROW(ac >= -128);
@@ -365,7 +352,7 @@ NWNX_EXPORT ArgumentStack SetBaseAC(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetBaseAC(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_pStats->m_nACNaturalBase;
 
     return -1;
@@ -373,7 +360,7 @@ NWNX_EXPORT ArgumentStack GetBaseAC(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetRawAbilityScore(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto ability = args.extract<int32_t>();
         const auto value   = args.extract<int32_t>();
@@ -411,7 +398,7 @@ NWNX_EXPORT ArgumentStack SetRawAbilityScore(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetRawAbilityScore(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto ability = args.extract<int32_t>();
 
@@ -440,7 +427,7 @@ NWNX_EXPORT ArgumentStack GetRawAbilityScore(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ModifyRawAbilityScore(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto ability = args.extract<int32_t>();
         const auto offset  = args.extract<int32_t>();
@@ -478,7 +465,7 @@ NWNX_EXPORT ArgumentStack ModifyRawAbilityScore(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPrePolymorphAbilityScore(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto ability = args.extract<int32_t>();
 
@@ -503,7 +490,7 @@ NWNX_EXPORT ArgumentStack GetMemorisedSpell(ArgumentStack&& args)
 {
     int32_t id, ready, meta, domain;
     id = ready = meta = domain = -1;
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -537,7 +524,7 @@ NWNX_EXPORT ArgumentStack GetMemorisedSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMemorisedSpellCountByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -558,7 +545,7 @@ NWNX_EXPORT ArgumentStack GetMemorisedSpellCountByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMemorisedSpell(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -599,7 +586,7 @@ NWNX_EXPORT ArgumentStack SetMemorisedSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -620,7 +607,7 @@ NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetRemainingSpellSlots(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -647,7 +634,7 @@ NWNX_EXPORT ArgumentStack SetRemainingSpellSlots(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -668,7 +655,7 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetKnownSpell(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -692,7 +679,7 @@ NWNX_EXPORT ArgumentStack GetKnownSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetKnownSpellCount(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -713,7 +700,7 @@ NWNX_EXPORT ArgumentStack GetKnownSpellCount(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -739,7 +726,7 @@ NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -765,7 +752,7 @@ NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ClearMemorisedKnownSpells(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -788,7 +775,7 @@ NWNX_EXPORT ArgumentStack ClearMemorisedKnownSpells(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ClearMemorisedSpell(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -815,7 +802,7 @@ NWNX_EXPORT ArgumentStack ClearMemorisedSpell(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMaxHitPointsByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
@@ -833,7 +820,7 @@ NWNX_EXPORT ArgumentStack GetMaxHitPointsByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMaxHitPointsByLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
@@ -855,7 +842,7 @@ NWNX_EXPORT ArgumentStack SetMaxHitPointsByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMovementRate(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto rate = args.extract<int32_t>();
 
@@ -871,7 +858,7 @@ NWNX_EXPORT ArgumentStack SetMovementRate(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMovementRateFactor(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->GetMovementRateFactor();
 
     return 0.0f;
@@ -879,7 +866,7 @@ NWNX_EXPORT ArgumentStack GetMovementRateFactor(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMovementRateFactor(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const float factor = args.extract<float>();
         pCreature->SetMovementRateFactor(factor);
@@ -912,7 +899,7 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
             }
         }, Hooks::Order::Late);
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const float fCap = args.extract<float>();
 
@@ -932,7 +919,7 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAlignmentGoodEvil(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto value = args.extract<int32_t>();
           ASSERT_OR_THROW(value <= 32767);
@@ -944,7 +931,7 @@ NWNX_EXPORT ArgumentStack SetAlignmentGoodEvil(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAlignmentLawChaos(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto value = args.extract<int32_t>();
           ASSERT_OR_THROW(value <= 32767);
@@ -956,7 +943,7 @@ NWNX_EXPORT ArgumentStack SetAlignmentLawChaos(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetDomain(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -986,7 +973,7 @@ NWNX_EXPORT ArgumentStack SetDomain(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
@@ -1013,7 +1000,7 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetSoundset(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_nSoundSet;
 
     return -1;
@@ -1021,7 +1008,7 @@ NWNX_EXPORT ArgumentStack GetSoundset(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSoundset(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto soundset = args.extract<int32_t>();
           ASSERT_OR_THROW(soundset >= 0);
@@ -1033,7 +1020,7 @@ NWNX_EXPORT ArgumentStack SetSoundset(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto skill = args.extract<int32_t>();
         const auto rank = args.extract<int32_t>();
@@ -1049,7 +1036,7 @@ NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetClassByPosition(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto position = args.extract<int32_t>();
         const auto classID = args.extract<int32_t>();
@@ -1065,7 +1052,7 @@ NWNX_EXPORT ArgumentStack SetClassByPosition(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetLevelByPosition(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto position = args.extract<int32_t>();
         const auto level = args.extract<int32_t>();
@@ -1081,7 +1068,7 @@ NWNX_EXPORT ArgumentStack SetLevelByPosition(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetBaseAttackBonus(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto bab = args.extract<int32_t>();
           ASSERT_OR_THROW(bab >= 0);
@@ -1094,7 +1081,7 @@ NWNX_EXPORT ArgumentStack SetBaseAttackBonus(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAttacksPerRound(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto bBaseAPR = !!args.extract<int32_t>();
 
@@ -1108,7 +1095,7 @@ NWNX_EXPORT ArgumentStack GetAttacksPerRound(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetGender(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto gender = args.extract<int32_t>();
           ASSERT_OR_THROW(gender >= 0);
@@ -1122,7 +1109,7 @@ NWNX_EXPORT ArgumentStack SetGender(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RestoreFeats(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_pStats->ResetFeatRemainingUses();
 
     return {};
@@ -1130,7 +1117,7 @@ NWNX_EXPORT ArgumentStack RestoreFeats(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RestoreSpecialAbilities(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_pStats->ResetSpellLikeAbilities();
 
     return {};
@@ -1138,7 +1125,7 @@ NWNX_EXPORT ArgumentStack RestoreSpecialAbilities(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RestoreSpells(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= -1);
@@ -1159,7 +1146,7 @@ NWNX_EXPORT ArgumentStack RestoreSpells(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RestoreItems(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->RestoreItemProperties();
 
     return {};
@@ -1167,7 +1154,7 @@ NWNX_EXPORT ArgumentStack RestoreItems(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSize(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_nCreatureSize = args.extract<int32_t>();
 
     return {};
@@ -1175,7 +1162,7 @@ NWNX_EXPORT ArgumentStack SetSize(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetSkillPointsRemaining(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_pStats->m_nSkillPointsRemaining;
 
     return -1;
@@ -1183,7 +1170,7 @@ NWNX_EXPORT ArgumentStack GetSkillPointsRemaining(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSkillPointsRemaining(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto points = args.extract<int32_t>();
           ASSERT_OR_THROW(points >= 0);
@@ -1196,7 +1183,7 @@ NWNX_EXPORT ArgumentStack SetSkillPointsRemaining(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetRacialType(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto race = args.extract<int32_t>();
           ASSERT_OR_THROW(race >= Constants::RacialType::MIN);
@@ -1216,7 +1203,7 @@ NWNX_EXPORT ArgumentStack GetMovementType(ArgumentStack&& args)
     constexpr int32_t MOVEMENT_TYPE_SIDESTEP        = 3;
     constexpr int32_t MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         switch (pCreature->m_nAnimation)
         {
@@ -1251,7 +1238,7 @@ NWNX_EXPORT ArgumentStack SetWalkRateCap(ArgumentStack&& args)
 
         }, Hooks::Order::Late);
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fWalkRateCap = args.extract<float>();
 
@@ -1270,7 +1257,7 @@ NWNX_EXPORT ArgumentStack SetWalkRateCap(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetGold(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->SetGold(args.extract<int32_t>());
 
     return {};
@@ -1278,7 +1265,7 @@ NWNX_EXPORT ArgumentStack SetGold(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetCorpseDecayTime(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto nDecayTime = args.extract<int32_t>();
           ASSERT_OR_THROW(nDecayTime >= 0);
@@ -1290,7 +1277,7 @@ NWNX_EXPORT ArgumentStack SetCorpseDecayTime(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetBaseSavingThrow(ArgumentStack&& args)
 {
     // NOTE: The misc fields are used for creature save override, and will mess with ELC.
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto which = args.extract<int32_t>();
         switch (which)
@@ -1311,7 +1298,7 @@ NWNX_EXPORT ArgumentStack GetBaseSavingThrow(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetBaseSavingThrow(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto which = args.extract<int32_t>();
         const auto value = args.extract<int32_t>();
@@ -1368,7 +1355,7 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
             return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
         }, Hooks::Order::Late);
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_bPlayerCharacter)
         {
@@ -1397,7 +1384,7 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack LevelDown(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_bPlayerCharacter)
         {
@@ -1457,7 +1444,7 @@ NWNX_EXPORT ArgumentStack LevelDown(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetChallengeRating(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fCR = args.extract<float>();
           ASSERT_OR_THROW(fCR >= 0.0);
@@ -1468,7 +1455,7 @@ NWNX_EXPORT ArgumentStack SetChallengeRating(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAttackBonus(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto isMelee = args.extract<int32_t>();
         const auto isTouchAttack = args.extract<int32_t>();
@@ -1490,7 +1477,7 @@ NWNX_EXPORT ArgumentStack GetAttackBonus(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetHighestLevelOfFeat(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -1502,7 +1489,7 @@ NWNX_EXPORT ArgumentStack GetHighestLevelOfFeat(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatRemainingUses(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -1514,7 +1501,7 @@ NWNX_EXPORT ArgumentStack GetFeatRemainingUses(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFeatTotalUses(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -1526,7 +1513,7 @@ NWNX_EXPORT ArgumentStack GetFeatTotalUses(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFeatRemainingUses(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
@@ -1542,7 +1529,7 @@ NWNX_EXPORT ArgumentStack SetFeatRemainingUses(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetTotalEffectBonus(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         CNWSObject *versus = NULL;
         const auto bonusType = args.extract<int32_t>();
@@ -1568,7 +1555,7 @@ NWNX_EXPORT ArgumentStack GetTotalEffectBonus(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetOriginalName(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto name = args.extract<std::string>();
         const auto isLastName = args.extract<int32_t>();
@@ -1598,7 +1585,7 @@ NWNX_EXPORT ArgumentStack SetOriginalName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetOriginalName(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto isLastName = args.extract<int32_t>();
 
@@ -1617,7 +1604,7 @@ NWNX_EXPORT ArgumentStack GetOriginalName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSpellResistance(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto sr = args.extract<int32_t>();
           ASSERT_OR_THROW(sr >= -127);
@@ -1629,7 +1616,7 @@ NWNX_EXPORT ArgumentStack SetSpellResistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAnimalCompanionCreatureType(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto creatureType = args.extract<int32_t>();
           ASSERT_OR_THROW(creatureType >= 0);
@@ -1641,7 +1628,7 @@ NWNX_EXPORT ArgumentStack SetAnimalCompanionCreatureType(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFamiliarCreatureType(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto creatureType = args.extract<int32_t>();
           ASSERT_OR_THROW(creatureType >= 0);
@@ -1653,7 +1640,7 @@ NWNX_EXPORT ArgumentStack SetFamiliarCreatureType(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAnimalCompanionName(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto name = args.extract<std::string>();
         pCreature->m_pStats->m_sAnimalCompanionName = name;
@@ -1663,7 +1650,7 @@ NWNX_EXPORT ArgumentStack SetAnimalCompanionName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFamiliarName(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto name = args.extract<std::string>();
         pCreature->m_pStats->m_sFamiliarName = name;
@@ -1673,7 +1660,7 @@ NWNX_EXPORT ArgumentStack SetFamiliarName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetDisarmable(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_bDisarmable;
 
     return -1;
@@ -1681,7 +1668,7 @@ NWNX_EXPORT ArgumentStack GetDisarmable(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetDisarmable(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto disarmable = args.extract<int32_t>();
         ASSERT_OR_THROW(disarmable <= 1);
@@ -1694,7 +1681,7 @@ NWNX_EXPORT ArgumentStack SetDisarmable(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFaction(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto factionid = args.extract<int32_t>();
         auto* pFaction = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
@@ -1712,7 +1699,7 @@ NWNX_EXPORT ArgumentStack SetFaction(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFaction(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (auto *pFaction = pCreature->GetFaction())
             return pFaction->m_nFactionId;
@@ -1722,7 +1709,7 @@ NWNX_EXPORT ArgumentStack GetFaction(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFlatFooted(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->GetFlatFooted();
 
     return -1;
@@ -1732,7 +1719,7 @@ NWNX_EXPORT ArgumentStack SerializeQuickbar(ArgumentStack&& args)
 {
     std::string retVal;
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         uint8_t *pData = nullptr;
         int32_t dataLength = 0;
@@ -1755,7 +1742,7 @@ NWNX_EXPORT ArgumentStack SerializeQuickbar(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack DeserializeQuickbar(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto serializedB64 = args.extract<std::string>();
           ASSERT_OR_THROW(!serializedB64.empty());
@@ -1875,7 +1862,7 @@ NWNX_EXPORT ArgumentStack SetCasterLevelModifier(ArgumentStack&& args)
     if (!s_bCasterLevelHooksInitialized)
         InitCasterLevelHooks();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto nClass = args.extract<int32_t>();
         ASSERT_OR_THROW(nClass >= 0);
@@ -1896,7 +1883,7 @@ NWNX_EXPORT ArgumentStack GetCasterLevelModifier(ArgumentStack&& args)
     if (!s_bCasterLevelHooksInitialized)
         InitCasterLevelHooks();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
@@ -1912,7 +1899,7 @@ NWNX_EXPORT ArgumentStack SetCasterLevelOverride(ArgumentStack&& args)
     if (!s_bCasterLevelHooksInitialized)
         InitCasterLevelHooks();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
@@ -1933,7 +1920,7 @@ NWNX_EXPORT ArgumentStack GetCasterLevelOverride(ArgumentStack&& args)
     if (!s_bCasterLevelHooksInitialized)
         InitCasterLevelHooks();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
@@ -1946,7 +1933,7 @@ NWNX_EXPORT ArgumentStack GetCasterLevelOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack JumpToLimbo(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (!pCreature->m_bPlayerCharacter && !pCreature->m_pStats->m_bIsPC && !pCreature->m_pStats->m_bIsDMCharacterFile)
         {
@@ -2039,7 +2026,7 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierModifier(ArgumentStack&& args)
     if (!s_bCriticalMultiplierHooksInitialized)
         InitCriticalMultiplierHook();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto modifier = args.extract<int32_t>();
         auto hand = args.extract<int32_t>();
@@ -2065,7 +2052,7 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCriticalMultiplierModifier(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto hand = args.extract<int32_t>();
         auto baseitem = args.extract<int32_t>();
@@ -2089,7 +2076,7 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierOverride(ArgumentStack&& args)
     if (!s_bCriticalMultiplierHooksInitialized)
         InitCriticalMultiplierHook();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto Override = args.extract<int32_t>();
         auto hand = args.extract<int32_t>();
@@ -2115,7 +2102,7 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCriticalMultiplierOverride(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto hand = args.extract<int32_t>();
         auto baseitem = args.extract<int32_t>();
@@ -2215,7 +2202,7 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeModifier(ArgumentStack&& args)
     if (!s_bCriticalRangeHooksInitialized)
         InitCriticalRangeHook();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto Modifier = args.extract<int32_t>();
         auto hand = args.extract<int32_t>();
@@ -2241,7 +2228,7 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCriticalRangeModifier(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto hand = args.extract<int32_t>();
         auto baseitem = args.extract<int32_t>();
@@ -2265,7 +2252,7 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeOverride(ArgumentStack&& args)
     if (!s_bCriticalRangeHooksInitialized)
         InitCriticalRangeHook();
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         const auto Override = args.extract<int32_t>();
         auto hand = args.extract<int32_t>();
@@ -2291,7 +2278,7 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCriticalRangeOverride(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto hand = args.extract<int32_t>();
         auto baseitem = args.extract<int32_t>();
@@ -2312,7 +2299,7 @@ NWNX_EXPORT ArgumentStack GetCriticalRangeOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto oidAssociate = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
@@ -2334,7 +2321,7 @@ NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetEffectIconFlashing(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto iconId = args.extract<int32_t>();
           ASSERT_OR_THROW(iconId >= 0);
@@ -2362,7 +2349,7 @@ NWNX_EXPORT ArgumentStack OverrideDamageLevel(ArgumentStack&& args)
             return damageLevel.value_or(pGetDamageLevelHook->CallOriginal<uint8_t>(pThis));
         }, Hooks::Order::Late);
 
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto damageLevel = args.extract<int32_t>();
           ASSERT_OR_THROW(damageLevel <= 255);
@@ -2378,7 +2365,7 @@ NWNX_EXPORT ArgumentStack OverrideDamageLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetEncounter(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto encounterId = args.extract<ObjectID>();
 
@@ -2393,7 +2380,7 @@ NWNX_EXPORT ArgumentStack SetEncounter(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetEncounter(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
         return pCreature->m_oidEncounter;
 
     return Constants::OBJECT_INVALID;
@@ -2401,7 +2388,7 @@ NWNX_EXPORT ArgumentStack GetEncounter(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetIsBartering(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_pBarterInfo && pCreature->m_pBarterInfo->m_bWindowOpen;
 
     return false;
@@ -2409,7 +2396,7 @@ NWNX_EXPORT ArgumentStack GetIsBartering(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetLastItemCasterLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         auto casterLvl = args.extract<int32_t>();
           ASSERT_OR_THROW(casterLvl >= 0);
@@ -2420,7 +2407,7 @@ NWNX_EXPORT ArgumentStack SetLastItemCasterLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetLastItemCasterLevel(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_nLastItemCastSpellLevel;
 
     return 0;
@@ -2428,9 +2415,9 @@ NWNX_EXPORT ArgumentStack GetLastItemCasterLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetArmorClassVersus(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
-        auto *pVersus = creature(args);
+        auto *pVersus = Utils::PopCreature(args);
         auto bTouchAttack = args.extract<int32_t>();
         return pCreature->m_pStats->GetArmorClassVersus(pVersus, bTouchAttack);
     }
@@ -2439,7 +2426,7 @@ NWNX_EXPORT ArgumentStack GetArmorClassVersus(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetWalkAnimation(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_nWalkAnimation;
 
     return -1;
@@ -2447,7 +2434,7 @@ NWNX_EXPORT ArgumentStack GetWalkAnimation(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetWalkAnimation(ArgumentStack&& args)
 {
-    if (auto* pCreature = creature(args))
+    if (auto* pCreature = Utils::PopCreature(args))
     {
         auto animation = args.extract<int32_t>();
           ASSERT_OR_THROW(animation >= 0);
@@ -2706,7 +2693,7 @@ NWNX_EXPORT ArgumentStack SetParryAllAttacks(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetNoPermanentDeath(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_bNoPermDeath;
 
     return -1;
@@ -2714,7 +2701,7 @@ NWNX_EXPORT ArgumentStack GetNoPermanentDeath(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetNoPermanentDeath(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_bNoPermDeath = !!args.extract<int32_t>();
 
     return {};
@@ -2724,7 +2711,7 @@ NWNX_EXPORT ArgumentStack ComputeSafeLocation(ArgumentStack&& args)
 {
     Vector vNewPosition = {0.0, 0.0, 0.0};
 
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         Vector vCurrentPosition{};
         vCurrentPosition.z = args.extract<float>();
@@ -2749,9 +2736,9 @@ NWNX_EXPORT ArgumentStack ComputeSafeLocation(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack DoPerceptionUpdateOnCreature(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
-        if (auto *pTargetCreature = creature(args))
+        if (auto *pTargetCreature = Utils::PopCreature(args))
         {
             pCreature->DoPerceptionUpdateOnCreature(pTargetCreature);
         }
@@ -2762,7 +2749,7 @@ NWNX_EXPORT ArgumentStack DoPerceptionUpdateOnCreature(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPersonalSpace(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_pcPathfindInformation)
             return pCreature->m_pcPathfindInformation->m_fPersonalSpace;
@@ -2773,7 +2760,7 @@ NWNX_EXPORT ArgumentStack GetPersonalSpace(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPersonalSpace(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fPerspace = args.extract<float>();
           ASSERT_OR_THROW(fPerspace >= 0);
@@ -2789,7 +2776,7 @@ NWNX_EXPORT ArgumentStack SetPersonalSpace(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCreaturePersonalSpace(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_pcPathfindInformation)
             return pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace;
@@ -2800,7 +2787,7 @@ NWNX_EXPORT ArgumentStack GetCreaturePersonalSpace(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetCreaturePersonalSpace(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fCrePerspace = args.extract<float>();
           ASSERT_OR_THROW(fCrePerspace >= 0);
@@ -2813,7 +2800,7 @@ NWNX_EXPORT ArgumentStack SetCreaturePersonalSpace(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetHeight(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_pcPathfindInformation)
             return pCreature->m_pcPathfindInformation->m_fHeight;
@@ -2824,7 +2811,7 @@ NWNX_EXPORT ArgumentStack GetHeight(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetHeight(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fHeight = args.extract<float>();
           ASSERT_OR_THROW(fHeight >= 0);
@@ -2837,7 +2824,7 @@ NWNX_EXPORT ArgumentStack SetHeight(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetHitDistance(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         if (pCreature->m_pcPathfindInformation)
             return pCreature->m_pcPathfindInformation->m_fHitDistance;
@@ -2848,7 +2835,7 @@ NWNX_EXPORT ArgumentStack GetHitDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetHitDistance(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fHitDist = args.extract<float>();
           ASSERT_OR_THROW(fHitDist >= 0);
@@ -2861,7 +2848,7 @@ NWNX_EXPORT ArgumentStack SetHitDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPreferredAttackDistance(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
         return pCreature->m_fPreferredAttackDistance;
 
     return 0.0f;
@@ -2869,7 +2856,7 @@ NWNX_EXPORT ArgumentStack GetPreferredAttackDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPreferredAttackDistance(ArgumentStack&& args)
 {
-    if (auto *pCreature = creature(args))
+    if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto fPrefAtckDist = args.extract<float>();
           ASSERT_OR_THROW(fPrefAtckDist >= 0);

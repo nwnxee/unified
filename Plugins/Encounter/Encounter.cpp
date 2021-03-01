@@ -12,29 +12,9 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static CNWSEncounter *encounter(ArgumentStack& args)
-{
-    const auto encounterId = args.extract<ObjectID>();
-
-    if (encounterId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Encounter function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pEncounter = Globals::AppManager()->m_pServerExoApp->GetEncounterByGameObjectID(encounterId);
-
-    if (!pEncounter)
-    {
-        LOG_NOTICE("NWNX_Encounter function called on non-encounter object %x", encounterId);
-    }
-
-    return pEncounter;
-}
-
 NWNX_EXPORT ArgumentStack GetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nNumEncounterListEntries;
 
     return 0;
@@ -47,7 +27,7 @@ NWNX_EXPORT ArgumentStack GetEncounterCreatureByIndex(ArgumentStack&& args)
     int32_t unique = 0;
     int32_t alreadyUsed = 0;
 
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto index = args.extract<int32_t>();
         ASSERT_OR_THROW(index >= 0.0);
@@ -66,7 +46,7 @@ NWNX_EXPORT ArgumentStack GetEncounterCreatureByIndex(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetEncounterCreatureByIndex(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto index = args.extract<int32_t>();
         const auto resRef = args.extract<std::string>();
@@ -92,7 +72,7 @@ NWNX_EXPORT ArgumentStack SetEncounterCreatureByIndex(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFactionId(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nFactionId;
 
     return 0;
@@ -100,7 +80,7 @@ NWNX_EXPORT ArgumentStack GetFactionId(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFactionId(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         auto factionId = args.extract<int32_t>();
           ASSERT_OR_THROW(factionId >= 0);
@@ -112,7 +92,7 @@ NWNX_EXPORT ArgumentStack SetFactionId(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_bPlayerTriggeredOnly;
 
     return 0;
@@ -120,7 +100,7 @@ NWNX_EXPORT ArgumentStack GetPlayerTriggeredOnly(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         pEncounter->m_bPlayerTriggeredOnly = !!args.extract<int32_t>();
 
     return {};
@@ -128,7 +108,7 @@ NWNX_EXPORT ArgumentStack SetPlayerTriggeredOnly(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCanReset(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_bReset;
 
     return 0;
@@ -136,7 +116,7 @@ NWNX_EXPORT ArgumentStack GetCanReset(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetCanReset(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         pEncounter->m_bReset = !!args.extract<int32_t>();
 
     return {};
@@ -144,7 +124,7 @@ NWNX_EXPORT ArgumentStack SetCanReset(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetResetTime(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nResetTime;
 
     return 0;
@@ -152,7 +132,7 @@ NWNX_EXPORT ArgumentStack GetResetTime(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetResetTime(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         auto resetTime = args.extract<int32_t>();
           ASSERT_OR_THROW(resetTime >= 0);
@@ -165,7 +145,7 @@ NWNX_EXPORT ArgumentStack SetResetTime(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetNumberOfSpawnPoints(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nNumSpawnPoints;
 
     return 0;
@@ -175,7 +155,7 @@ NWNX_EXPORT ArgumentStack GetSpawnPointByIndex(ArgumentStack&& args)
 {
     float x = 0.0, y = 0.0, z = 0.0, o = 0.0;
 
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto index = args.extract<int32_t>();
         ASSERT_OR_THROW(index >= 0);
@@ -194,7 +174,7 @@ NWNX_EXPORT ArgumentStack GetSpawnPointByIndex(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMinNumSpawned(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nMinNumSpawnedCreatures;
 
     return 0;
@@ -202,7 +182,7 @@ NWNX_EXPORT ArgumentStack GetMinNumSpawned(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMaxNumSpawned(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nMaxSpawnedCreatures;
 
     return 0;
@@ -210,7 +190,7 @@ NWNX_EXPORT ArgumentStack GetMaxNumSpawned(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetCurrentNumSpawned(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
         return pEncounter->m_nNumSpawnedCreatures;
 
     return 0;
@@ -220,7 +200,7 @@ NWNX_EXPORT ArgumentStack GetGeometry(ArgumentStack&& args)
 {
     std::string retVal;
 
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         retVal.reserve(32 * pEncounter->m_nNumActivateVertices);
 
@@ -236,7 +216,7 @@ NWNX_EXPORT ArgumentStack GetGeometry(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetGeometry(ArgumentStack&& args)
 {
-    if (auto *pEncounter = encounter(args))
+    if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto sGeometry = args.extract<std::string>();
 
