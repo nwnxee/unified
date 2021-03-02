@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Admin: {Get/Set}MaxLevel()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
+- Area: NWNX_Area_CreateSoundObject()
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
 - Creature: {Get/Set}PersonalSpace()

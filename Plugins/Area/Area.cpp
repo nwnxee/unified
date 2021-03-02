@@ -12,6 +12,7 @@
 #include "API/CResList.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSSoundObject.hpp"
 
 #include <set>
 
@@ -921,6 +922,41 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundNightVolume(ArgumentStack&& args)
     }
 
     return 0;
+}
+
+NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
+{
+    if (auto *pArea = area(args))
+    {
+        Vector v;
+        v.x = args.extract<float>();
+        v.y = args.extract<float>();
+        v.z = args.extract<float>();
+
+        const std::string sResRef = args.extract<std::string>();
+        if(!sResRef.empty())
+        {
+            CResGFF resGFF(Constants::ResRefType::UTS, (char*)"UTS ", sResRef.c_str());
+            if(resGFF.m_bResourceLoaded)
+            {
+                CResStruct resStruct{};
+                resGFF.GetTopLevelStruct(&resStruct);
+                CNWSSoundObject *pSound = new CNWSSoundObject();
+                if(pSound->Load(&resGFF, &resStruct))
+                {
+                    pSound->AddToArea(pArea);
+                    pSound->ChangePosition(v);
+                    return pSound->m_idSelf;
+                }
+                else
+                {
+                    delete pSound;
+                }
+            }
+        }
+    }
+    
+    return Constants::OBJECT_INVALID;
 }
 
 }
