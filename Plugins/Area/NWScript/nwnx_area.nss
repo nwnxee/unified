@@ -290,7 +290,7 @@ int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
 
 /// @brief Create a sound object.
 /// @param oArea The area where to create the sound object.
-/// @param vPositon The area position where to create the sound object.
+/// @param vPosition The area position where to create the sound object.
 /// @param sResRef The ResRef of the sound object.
 /// @return The sound object.
 object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef);
