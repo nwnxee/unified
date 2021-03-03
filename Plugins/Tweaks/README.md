@@ -37,7 +37,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET`: true or false
 * `NWNX_TWEAKS_TURD_BY_CDKEY`: true or false
   - Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
- * `NWNX_TWEAKS_LANGUAGE_OVERRIDE`: between 1 and 5, or between 128 and 131
+* `NWNX_TWEAKS_LANGUAGE_OVERRIDE`: between 1 and 5, or between 128 and 131
   
 ## Environment variable values
 
