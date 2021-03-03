@@ -48,6 +48,7 @@ var group__area =
     [ "NWNX_Area_GetAmbientSoundNight", "group__area.html#gad2b840855bcbff623f74b6f052a1115b", null ],
     [ "NWNX_Area_GetAmbientSoundDayVolume", "group__area.html#ga556e1a68f9df6876c3a527f08a540993", null ],
     [ "NWNX_Area_GetAmbientSoundNightVolume", "group__area.html#gaaaa5a20b21e0d637b40269f1db8f8196", null ],
+    [ "NWNX_Area_CreateSoundObject", "group__area.html#gad70afa4be08555a35a98d2cfdbbe0200", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
     [ "NWNX_AREA_PVP_SETTING_FULL_PVP", "group__area.html#ga8a6f21649b08da34ecc397f7fd621176", null ],

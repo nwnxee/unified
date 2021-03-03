@@ -43,17 +43,17 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__admin.html#gacc48b5662c7918ffd418f58126575ec3",
-"group__creature.html#ga1b5c0ec814404f0df67ae03333d708e2",
-"group__creature.html#gacd4022d011b84e8b015b4bbe5abca7fa",
-"group__dialog.html#ga6b127836f03d2364863a1ad143b9c0dd",
-"group__feat.html#ga80583e6668b92e91464d05a06be108f5",
-"group__object.html#gaa0ab247a3a39693f8601a7622262ae05",
-"group__player.html#gacd1c1162e2432e9e61eea99322364c13",
-"group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea",
-"group__visibility.html#ga73fcf065d1a80de6d797e2e89b1563ba",
-"nwnx__redis_8nss.html#a7088469190fc9b6d2eec0103063939e2",
-"nwnx__redis__short_8nss.html#a8de0aaac947c4a485f229c7e91f94284",
-"structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601"
+"group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb",
+"group__creature.html#gacb4f736a792fe146e85ae56e147db0ad",
+"group__dialog.html#ga585de74ec3701f197d499d887248936c",
+"group__feat.html#ga74662062e826877cd9a1973e030d98ad",
+"group__object.html#gaa063bd43940aa65e2e0a483a7d1e4916",
+"group__player.html#gacac5076de03030e5d2c8fd210d63248d",
+"group__skillranks.html#gade61f23332c91cd4c5b15b63472d4041",
+"group__visibility.html#ga5b2573bd4362436cd1c49422e042ae52",
+"nwnx__redis_8nss.html#a6f517d9f9e047db8e25c8b79bffa9636",
+"nwnx__redis__short_8nss.html#a8b70e3762b848421946ef1584ac6b1f4",
+"structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
