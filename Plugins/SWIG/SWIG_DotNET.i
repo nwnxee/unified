@@ -146,9 +146,11 @@
 %}
 
 %define MarshalType(CTYPE, CSTYPE)
-%typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
+%typemap(ctype) CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.In, global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPArray)]") CTYPE[ANY] "CSTYPE[]"
+%typemap(imtype,
+         inattributes="[global::System.Runtime.InteropServices.In, global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPArray)]",
+         out="CSTYPE*") CTYPE[ANY] "CSTYPE[]"
 %typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
 %typemap(cstype) CTYPE[ANY] "CSTYPE[]"
 %typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
@@ -166,14 +168,26 @@
         return (CSTYPE*)retVal; 
     }
 %}
-%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] { 
-    CSTYPE[] retVal = $imcall;$excode
+%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] {
+    CSTYPE* arrayPtr = $imcall;$excode
+    CSTYPE[] retVal = new CSTYPE[$1_dim0];
+
+    for(int i = 0; i < $1_dim0; i++) {
+      retVal[i] = arrayPtr[i];
+    }
+
     return retVal;
   }
 %typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{ 
     get {
-        CSTYPE[] retVal = $imcall;$excode
-        return retVal;
+      CSTYPE* arrayPtr = $imcall;$excode
+      CSTYPE[] retVal = new CSTYPE[$1_dim0];
+
+      for(int i = 0; i < $1_dim0; i++) {
+        retVal[i] = arrayPtr[i];
+      }
+
+      return retVal;
     }
 %}
 %enddef
