@@ -1,6 +1,7 @@
 %module NWNXLib
 
 %include <stdint.i>
+%include <std_string.i>
 %include <swiginterface.i>
 
 #pragma SWIG nowarn=317
