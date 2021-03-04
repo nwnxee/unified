@@ -24,7 +24,7 @@ void LanguageOverride()
     LOG_INFO("Language override set to %d", s_Lang);
 
     static Hooks::Hook s_GetPlayerLanguage_hook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal17GetPlayerLanguageEj,
-        (void*)+[](CServerExoAppInternal __attribute__((unused)) *pThis, uint32_t __attribute__((unused)) nPlayerID) -> int32_t
+        (void*)+[](CServerExoAppInternal*, uint32_t) -> int32_t
         {
             return s_Lang;
         }, Hooks::Order::Final);

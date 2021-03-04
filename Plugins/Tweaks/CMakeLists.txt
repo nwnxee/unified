@@ -26,3 +26,4 @@ add_plugin(Tweaks
     "StringToIntBaseToAuto.cpp"
     "TURDByCDKey.cpp"
     "UnhardcodeShields.cpp")
+    
