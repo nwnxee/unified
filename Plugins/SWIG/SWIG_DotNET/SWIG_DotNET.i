@@ -1,7 +1,11 @@
 %module NWNXLib
 
 %include <stdint.i>
+%include <std_string.i>
+%include <std_vector.i>
 %include <swiginterface.i>
+
+%include "std_unordered_map.i"
 
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
@@ -622,3 +626,8 @@ DefineArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptA
 DefineArray(Vector, Vector, VectorArray);
 
 DefineArrayPtr(CNWSTile, CNWSTile, CNWSTileArray);
+
+// Std templates
+%template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
+%template(UnorderedMapCExoStringCNWSScriptVar) std::unordered_map<CExoString, CNWSScriptVar>;
+%template(UnorderedMapStringCachedRulesetEntry) std::unordered_map<std::string, CachedRulesetEntry>;

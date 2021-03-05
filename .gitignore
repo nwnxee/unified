@@ -11,6 +11,6 @@ out/
 CMakeSettings.json
 
 # SWIG
-Plugins/SWIG/SWIG_*/*
-Plugins/SWIG/SWIG_*Interop.cpp
-Plugins/SWIG/NWNXLib.i
+Plugins/SWIG/SWIG_*/out
+Plugins/SWIG/SWIG_*/SWIG_*Interop.cpp
+Plugins/SWIG/SWIG_*/NWNXLib.i
