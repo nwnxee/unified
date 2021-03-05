@@ -155,14 +155,15 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     [ "Environment Variables", "group__tweaks.html#autotoc_md427", null ],
     [ "Environment variable values", "group__tweaks.html#autotoc_md428", [
       [ "NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST", "group__tweaks.html#autotoc_md429", null ],
-      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md430", null ]
+      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md430", null ],
+      [ "NWNX_TWEAKS_LANGUAGE_OVERRIDE", "group__tweaks.html#autotoc_md431", null ]
     ] ],
-    [ "Environment Variables", "group__util.html#autotoc_md431", null ],
-    [ "Function Documentation and Examples", "group__weapon.html#autotoc_md432", null ],
-    [ "Available functions", "group__weapon.html#autotoc_md433", null ],
-    [ "Example for Critical Event Script", "group__weapon.html#autotoc_md434", null ],
-    [ "Limitations", "group__webhook.html#autotoc_md435", null ],
-    [ "Example usage", "group__webhook.html#autotoc_md436", null ],
+    [ "Environment Variables", "group__util.html#autotoc_md432", null ],
+    [ "Function Documentation and Examples", "group__weapon.html#autotoc_md433", null ],
+    [ "Available functions", "group__weapon.html#autotoc_md434", null ],
+    [ "Example for Critical Event Script", "group__weapon.html#autotoc_md435", null ],
+    [ "Limitations", "group__webhook.html#autotoc_md436", null ],
+    [ "Example usage", "group__webhook.html#autotoc_md437", null ],
     [ "nwnx.nss", "nwnx_8nss.html", "nwnx_8nss" ],
     [ "nwnx_consts.nss", "nwnx__consts_8nss.html", "nwnx__consts_8nss" ],
     [ "nwnx_tests.nss", "nwnx__tests_8nss.html", "nwnx__tests_8nss" ]
