@@ -37,6 +37,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET`: true or false
 * `NWNX_TWEAKS_TURD_BY_CDKEY`: true or false
   - Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
+* `NWNX_TWEAKS_LANGUAGE_OVERRIDE`: between 1 and 5, or between 128 and 131
   
 ## Environment variable values
 
@@ -57,3 +58,18 @@ Values between 1 and 3 are valid. Any of those values will adjust the item cost 
 | 1 | Cost will be capped at 50 charges. Any charges over 50 won't affect the item cost. |
 | 2 | Up to 50 charges the cost will be the same as it was in 1.69. Any charges over 50 will add less value, capping at twice the cost at 250 charges. |
 | 3 | Cost will be calculated linearly based on the number of charges the same it was in 1.69, making items with 250 charges 5 times as expensive as 50 charges ones. |
+
+### NWNX_TWEAKS_LANGUAGE_OVERRIDE
+
+| Value | Description |
+|---:|----|
+| 1 | French |
+| 2 | German |
+| 3 | Italian |
+| 4 | Spanish |
+| 5 | Polish |
+| 6 | Italian |
+| 128 | Korean |
+| 129 | Chinese traditional |
+| 130 | Chinese simplified |
+| 131 | Japanese |

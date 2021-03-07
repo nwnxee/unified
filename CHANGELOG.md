@@ -26,8 +26,9 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 ##### New NWScript Functions
 - Admin: {Get/Set}MinLevel()
 - Admin: {Get/Set}MaxLevel()
-- Area: NWNX_Area_GetAmbientSound{Day/Night}()
-- Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
+- Area: GetAmbientSound{Day/Night}()
+- Area: GetAmbientSound{Day/Night}Volume
+- Area: CreateSoundObject()
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
 - Creature: {Get/Set}PersonalSpace()
@@ -42,7 +43,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Object: {Get|Set}MapNote()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
-- Util: NWNX_Util_GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
+- Util: GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
 - Weapon: SetMaxRangedAttackDistanceOverride()
 
 ### Changed
