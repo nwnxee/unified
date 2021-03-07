@@ -10,8 +10,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = Events::ArgumentStack;
-
 
 struct TileData
 {

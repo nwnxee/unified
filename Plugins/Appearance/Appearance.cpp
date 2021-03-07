@@ -11,9 +11,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Appearance {
 
 enum OverrideType {
     AppearanceType  = 0,
@@ -109,28 +106,9 @@ static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook =
         }, Hooks::Order::Early);
 
 
-static CNWSPlayer *Player(ArgumentStack& args)
-{
-    const auto playerId = args.extract<ObjectID>();
-
-    if (playerId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Appearance function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
-    if (!pPlayer)
-    {
-        LOG_NOTICE("NWNX_Appearance function called on non-player object %x", playerId);
-    }
-
-    return pPlayer;
-}
-
 NWNX_EXPORT ArgumentStack SetOverride(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Player(args))
+    if (auto *pPlayer = Utils::PopPlayer(args))
     {
         const auto oidCreature = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
@@ -228,7 +206,7 @@ NWNX_EXPORT ArgumentStack GetOverride(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
-    if (auto *pPlayer = Player(args))
+    if (auto *pPlayer = Utils::PopPlayer(args))
     {
         const auto oidCreature = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
@@ -301,6 +279,4 @@ NWNX_EXPORT ArgumentStack GetOverride(ArgumentStack&& args)
     }
 
     return retVal;
-}
-
 }

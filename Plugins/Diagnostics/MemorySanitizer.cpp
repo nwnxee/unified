@@ -1,14 +1,31 @@
-#include "Diagnostics/MemorySanitizer.hpp"
+#include "nwnx.hpp"
 
 #include "API/Functions.hpp"
+#include <unordered_map>
+#include <unordered_set>
+#include <mutex>
 #include <dlfcn.h>
 #include <execinfo.h>
 
 
-namespace Diagnostics {
+namespace Diagnostics::MemorySanitizer {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
+
+struct Backtrace { void *bt[8]; };
+
+static std::unordered_map<void*, Backtrace> active_allocations;
+static std::unordered_set<void*> pending_free;
+
+static std::recursive_mutex lock;
+static bool enabled = false;
+
+static void *(*real_calloc)(size_t, size_t);
+static void *(*real_realloc)(void *, size_t);
+static void  (*real_free)(void *);
+static void *(*real_malloc)(size_t);
+
 
 static thread_local bool meta = false;
 struct MetaFunction
@@ -18,8 +35,17 @@ struct MetaFunction
     ~MetaFunction() { meta = oldmeta; }
 };
 
-MemorySanitizer::MemorySanitizer()
+void MemorySanitizer() __attribute__((constructor));
+void MemorySanitizerDestructor() __attribute__((destructor));
+static void ResolveSymbols();
+static void FreePending();
+
+void MemorySanitizer()
 {
+    if (!Config::Get<bool>("MEMORY_SANITIZER", false))
+        return;
+
+    LOG_INFO("Memory sanitizer enabled");
     if (real_malloc == nullptr)
     {
         LOG_WARNING("NWNX_Diagnostics.so is not preloaded, memory sanitizer will not work.");
@@ -35,7 +61,7 @@ MemorySanitizer::MemorySanitizer()
             }, Hooks::Order::Earliest);
     enabled = true;
 }
-MemorySanitizer::~MemorySanitizer()
+void MemorySanitizerDestructor()
 {
     if (enabled)
     {
@@ -43,7 +69,7 @@ MemorySanitizer::~MemorySanitizer()
     }
 }
 
-void MemorySanitizer::ReportError(void *ptr)
+static void ReportError(void *ptr)
 {
     try
     {
@@ -79,7 +105,7 @@ void MemorySanitizer::ReportError(void *ptr)
 #define MSAN_ASSERT(cond, ptr, fmt, ...)      \
   do { if (!(cond)) {                         \
         ASSERT_MSG(cond, fmt, ##__VA_ARGS__); \
-        MemorySanitizer::ReportError(ptr);    \
+        ReportError(ptr);    \
   } } while(0)
 
 constexpr uint8_t  UNINIT = 0x69;
@@ -129,7 +155,7 @@ static inline size_t CheckFence(void *ptr)
 
 
 
-void *MemorySanitizer::malloc(size_t size)
+void *malloc(size_t size)
 {
     ResolveSymbols();
     if (!enabled || meta) return real_malloc(size);
@@ -146,7 +172,7 @@ void *MemorySanitizer::malloc(size_t size)
 
     return ptr;
 }
-void MemorySanitizer::free(void *ptr)
+void free(void *ptr)
 {
     ResolveSymbols();
     if (!enabled || meta) return real_free(ptr);
@@ -170,7 +196,7 @@ void MemorySanitizer::free(void *ptr)
     pending_free.insert(ptr);
 }
 
-void *MemorySanitizer::calloc(size_t num, size_t size)
+void *calloc(size_t num, size_t size)
 {
     // dlsym calls calloc(), so just return null to avoid infinite recursion
     //ResolveSymbols();
@@ -182,7 +208,7 @@ void *MemorySanitizer::calloc(size_t num, size_t size)
     memset(ptr, 0, fullsize);
     return ptr;
 }
-void *MemorySanitizer::realloc(void *ptr, size_t size)
+void *realloc(void *ptr, size_t size)
 {
     ResolveSymbols();
     if (!enabled || meta) return real_realloc(ptr, size);
@@ -195,7 +221,7 @@ void *MemorySanitizer::realloc(void *ptr, size_t size)
     return newptr;
 }
 
-void MemorySanitizer::FreePending()
+static void FreePending()
 {
     MetaFunction mf;
     std::lock_guard<std::recursive_mutex> guard(lock);
@@ -217,7 +243,7 @@ void MemorySanitizer::FreePending()
     pending_free.clear();
 }
 
-void MemorySanitizer::ResolveSymbols()
+static void ResolveSymbols()
 {
     if (real_calloc) return;
     MetaFunction mf;

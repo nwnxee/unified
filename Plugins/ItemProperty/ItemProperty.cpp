@@ -1,4 +1,4 @@
-#include "ItemProperty.hpp"
+#include "nwnx.hpp"
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -13,58 +13,28 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ItemProperty::ItemProperty* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new ItemProperty::ItemProperty(services);
-    return g_plugin;
-}
-
-
-namespace ItemProperty {
-
-ItemProperty::ItemProperty(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-#define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(PackIP);
-    REGISTER(UnpackIP);
-    REGISTER(GetActiveProperty);
-
-#undef REGISTER
-
-}
-
-ItemProperty::~ItemProperty()
-{
-}
-
-ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack PackIP(ArgumentStack&& args)
 {
     CGameEffect *ip = new CGameEffect(true);
 
-    auto propname     = Events::ExtractArgument<int32_t>(args);
-    auto subtype      = Events::ExtractArgument<int32_t>(args);
-    auto costtable    = Events::ExtractArgument<int32_t>(args);
-    auto costvalue    = Events::ExtractArgument<int32_t>(args);
-    auto param1       = Events::ExtractArgument<int32_t>(args);
-    auto param1value  = Events::ExtractArgument<int32_t>(args);
-    auto usesperday   = Events::ExtractArgument<int32_t>(args);
-    auto chance       = Events::ExtractArgument<int32_t>(args);
-    auto usable       = Events::ExtractArgument<int32_t>(args);
-    auto spellId      = Events::ExtractArgument<int32_t>(args);
+    auto propname     = args.extract<int32_t>();
+    auto subtype      = args.extract<int32_t>();
+    auto costtable    = args.extract<int32_t>();
+    auto costvalue    = args.extract<int32_t>();
+    auto param1       = args.extract<int32_t>();
+    auto param1value  = args.extract<int32_t>();
+    auto usesperday   = args.extract<int32_t>();
+    auto chance       = args.extract<int32_t>();
+    auto usable       = args.extract<int32_t>();
+    auto spellId      = args.extract<int32_t>();
 
-    auto creator      = Events::ExtractArgument<ObjectID>(args);
-    auto tag          = Events::ExtractArgument<std::string>(args);
+    auto creator      = args.extract<ObjectID>();
+    auto tag          = args.extract<std::string>();
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
     ip->m_bExpose = 1;
-    ip->m_nType = API::Constants::EffectTrueType::ItemProperty;
-    ip->m_nSubType = API::Constants::EffectDurationType::Permanent;
+    ip->m_nType = Constants::EffectTrueType::ItemProperty;
+    ip->m_nSubType = Constants::EffectDurationType::Permanent;
     ip->m_oidCreator = creator;
     ip->m_nSpellId = spellId;
 
@@ -81,10 +51,10 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 
     return Events::Arguments(ip);
 }
-ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack UnpackIP(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto ip = Events::ExtractArgument<CGameEffect*>(args);
+    auto ip = args.extract<CGameEffect*>();
 
     Events::InsertArgument(stack, ip->GetString(0).CStr());
     Events::InsertArgument(stack, (ObjectID)ip->m_oidCreator);
@@ -103,16 +73,16 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack ItemProperty::GetActiveProperty(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetActiveProperty(ArgumentStack&& args)
 {
-    auto objectId = Events::ExtractArgument<ObjectID>(args);
+    auto objectId = args.extract<ObjectID>();
       ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
     auto *pItem = Utils::AsNWSItem(pGameObject);
       ASSERT_OR_THROW(pItem);
 
-    auto index = Events::ExtractArgument<int32_t>(args);
+    auto index = args.extract<int32_t>();
     auto ip = pItem->GetActiveProperty(index);
       ASSERT_OR_THROW(ip);
 
@@ -129,6 +99,4 @@ ArgumentStack ItemProperty::GetActiveProperty(ArgumentStack&& args)
     Events::InsertArgument(stack, ip->m_nSubType);
     Events::InsertArgument(stack, ip->m_nPropertyName);
     return stack;
-}
-
 }

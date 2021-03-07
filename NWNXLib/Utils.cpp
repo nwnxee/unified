@@ -37,7 +37,9 @@ namespace Core {
 
 namespace NWNXLib::Utils {
 
-using namespace API::Constants;
+using namespace NWNXLib;
+using namespace NWNXLib::API;
+using namespace NWNXLib::API::Constants;
 
 std::string ObjectIDToString(const ObjectID id)
 {
@@ -449,5 +451,79 @@ bool IsValidCustomResourceDirectoryAlias(const std::string& alias)
     const auto& crda = Core::g_core->GetCustomResourceDirectoryAliases();
     return std::find(crda.begin(), crda.end(), alias) != crda.end();
 }
+
+CGameObject* PopGameObject(ArgumentStack& args, bool throwOnFail)
+{
+    const auto objectId = args.extract<ObjectID>();
+
+    if (objectId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("Function called on OBJECT_INVALID");
+        if (throwOnFail)
+            throw std::runtime_error("Function called on OBJECT_INVALID");
+
+        return nullptr;
+    }
+
+    return Utils::GetGameObject(objectId);
+}
+CNWSObject* PopObject(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSObject(PopGameObject(args, throwOnFail));
+}
+CNWSCreature* PopCreature(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSCreature(PopGameObject(args, throwOnFail));
+}
+CNWSArea* PopArea(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSArea(PopGameObject(args, throwOnFail));
+}
+CNWSItem* PopItem(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSItem(PopGameObject(args, throwOnFail));
+}
+CNWSEncounter* PopEncounter(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSEncounter(PopGameObject(args, throwOnFail));
+}
+CNWSPlaceable* PopPlaceable(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSPlaceable(PopGameObject(args, throwOnFail));
+}
+CNWSWaypoint* PopWaypoint(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSWaypoint(PopGameObject(args, throwOnFail));
+}
+CNWSTrigger* PopTrigger(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSTrigger(PopGameObject(args, throwOnFail));
+}
+CNWSDoor* PopDoor(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSDoor(PopGameObject(args, throwOnFail));
+}
+CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
+{
+    const auto playerId = args.extract<ObjectID>();
+
+    if (playerId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("Function called on OBJECT_INVALID");
+        if (throwOnFail)
+            throw std::runtime_error("Function called on OBJECT_INVALID");
+        return nullptr;
+    }
+
+    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
+    if (!pPlayer)
+    {
+        LOG_NOTICE("Function called on non-player object %x", playerId);
+        if (throwOnFail)
+            throw std::runtime_error("Function called on non-player object");
+    }
+    return pPlayer;
+}
+
 
 }

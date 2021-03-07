@@ -1,4 +1,4 @@
-#include "Effect.hpp"
+#include "nwnx.hpp"
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -13,109 +13,81 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Effect::Effect* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new Effect::Effect(services);
-    return g_plugin;
-}
+static std::string s_effectExpiredData;
+static uint32_t s_effectExpiredDepth;
+static ObjectID s_effectExpiredCreator;
 
 
-namespace Effect {
-
-Effect::Effect(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-#define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(PackEffect);
-    REGISTER(UnpackEffect);
-    REGISTER(SetEffectExpiredScript);
-    REGISTER(GetEffectExpiredData);
-    REGISTER(GetEffectExpiredCreator);
-    REGISTER(ReplaceEffect);
-
-#undef REGISTER
-
-}
-
-Effect::~Effect()
-{
-}
-
-ArgumentStack Effect::PackEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack PackEffect(ArgumentStack&& args)
 {
     CGameEffect *eff = new CGameEffect(true);
 
-    eff->m_sCustomTag = Events::ExtractArgument<std::string>(args).c_str();
+    eff->m_sCustomTag = args.extract<std::string>().c_str();
 
-    auto vector1z = Events::ExtractArgument<float>(args);
-    auto vector1y = Events::ExtractArgument<float>(args);
-    auto vector1x = Events::ExtractArgument<float>(args);
+    auto vector1z = args.extract<float>();
+    auto vector1y = args.extract<float>();
+    auto vector1x = args.extract<float>();
     eff->m_vParamVector[1] = {vector1x, vector1y, vector1z};
 
-    auto vector0z = Events::ExtractArgument<float>(args);
-    auto vector0y = Events::ExtractArgument<float>(args);
-    auto vector0x = Events::ExtractArgument<float>(args);
+    auto vector0z = args.extract<float>();
+    auto vector0y = args.extract<float>();
+    auto vector0x = args.extract<float>();
     eff->m_vParamVector[0] = {vector0x, vector0y, vector0z};
 
-    eff->m_oidParamObjectID[3] = Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[2] = Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[1] = Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[0] = Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[3] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[2] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[1] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[0] = args.extract<ObjectID>();
 
-    eff->m_sParamString[5] = Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[4] = Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[3] = Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[2] = Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[1] = Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[0] = Events::ExtractArgument<std::string>(args).c_str();
+    eff->m_sParamString[5] = args.extract<std::string>().c_str();
+    eff->m_sParamString[4] = args.extract<std::string>().c_str();
+    eff->m_sParamString[3] = args.extract<std::string>().c_str();
+    eff->m_sParamString[2] = args.extract<std::string>().c_str();
+    eff->m_sParamString[1] = args.extract<std::string>().c_str();
+    eff->m_sParamString[0] = args.extract<std::string>().c_str();
 
-    eff->m_nParamFloat[3] = Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[2] = Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[1] = Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[0] = Events::ExtractArgument<float>(args);
+    eff->m_nParamFloat[3] = args.extract<float>();
+    eff->m_nParamFloat[2] = args.extract<float>();
+    eff->m_nParamFloat[1] = args.extract<float>();
+    eff->m_nParamFloat[0] = args.extract<float>();
 
     eff->SetNumIntegers(8); // allocate array
-    eff->m_nParamInteger[7] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[6] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[5] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[4] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[3] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[2] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[1] = Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[0] = Events::ExtractArgument<int32_t>(args);
+    eff->m_nParamInteger[7] = args.extract<int32_t>();
+    eff->m_nParamInteger[6] = args.extract<int32_t>();
+    eff->m_nParamInteger[5] = args.extract<int32_t>();
+    eff->m_nParamInteger[4] = args.extract<int32_t>();
+    eff->m_nParamInteger[3] = args.extract<int32_t>();
+    eff->m_nParamInteger[2] = args.extract<int32_t>();
+    eff->m_nParamInteger[1] = args.extract<int32_t>();
+    eff->m_nParamInteger[0] = args.extract<int32_t>();
     // Overwrite num integers from 8
-    eff->m_nNumIntegers = Events::ExtractArgument<int32_t>(args);
+    eff->m_nNumIntegers = args.extract<int32_t>();
 
-    auto bRightLinkValid = Events::ExtractArgument<int32_t>(args);
-    auto *pRightLink = Events::ExtractArgument<CGameEffect*>(args);
+    auto bRightLinkValid = args.extract<int32_t>();
+    auto *pRightLink = args.extract<CGameEffect*>();
     eff->m_pLinkRight = (bRightLinkValid) ? pRightLink : nullptr;
 
-    auto bLeftLinkValid = Events::ExtractArgument<int32_t>(args);
-    auto *pLeftLink = Events::ExtractArgument<CGameEffect*>(args);
+    auto bLeftLinkValid = args.extract<int32_t>();
+    auto *pLeftLink = args.extract<CGameEffect*>();
     eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
 
-    eff->m_nCasterLevel       = Events::ExtractArgument<int32_t>(args);
-    eff->m_bShowIcon          = Events::ExtractArgument<int32_t>(args);
-    eff->m_bExpose            = Events::ExtractArgument<int32_t>(args);
-    eff->m_nSpellId           = Events::ExtractArgument<int32_t>(args);
-    eff->m_oidCreator         = Events::ExtractArgument<ObjectID>(args);
-    eff->m_nExpiryTimeOfDay   = Events::ExtractArgument<int32_t>(args);
-    eff->m_nExpiryCalendarDay = Events::ExtractArgument<int32_t>(args);
-    eff->m_fDuration          = Events::ExtractArgument<float>(args);
-    eff->m_nSubType           = Events::ExtractArgument<int32_t>(args);
-    eff->m_nType              = Events::ExtractArgument<int32_t>(args);
+    eff->m_nCasterLevel       = args.extract<int32_t>();
+    eff->m_bShowIcon          = args.extract<int32_t>();
+    eff->m_bExpose            = args.extract<int32_t>();
+    eff->m_nSpellId           = args.extract<int32_t>();
+    eff->m_oidCreator         = args.extract<ObjectID>();
+    eff->m_nExpiryTimeOfDay   = args.extract<int32_t>();
+    eff->m_nExpiryCalendarDay = args.extract<int32_t>();
+    eff->m_fDuration          = args.extract<float>();
+    eff->m_nSubType           = args.extract<int32_t>();
+    eff->m_nType              = args.extract<int32_t>();
 
     if (bLeftLinkValid || bRightLinkValid)
         eff->UpdateLinked();
 
     return Events::Arguments(eff);
 }
-ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack UnpackEffect(ArgumentStack&& args)
 {
     ArgumentStack stack;
     auto eff = Events::ExtractArgument<CGameEffect*>(args);
@@ -192,7 +164,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetEffectExpiredScript(ArgumentStack&& args)
 {
     static Hooks::Hook pOnEffectRemovedHook =
             Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
@@ -201,15 +173,15 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                 CExoString &sScriptName = pEffect->m_sParamString[4];
                 if (!sScriptName.IsEmpty())
                 {
-                    g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
-                    g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
+                    s_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
+                    s_effectExpiredCreator = pEffect->m_oidCreator;
 
                     LOG_DEBUG("(SetEffectExpiredScript) Running script '%s' on object '%x' with data '%s'",
-                        sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
+                        sScriptName.CStr(), pObject->m_idSelf, s_effectExpiredData);
 
-                    ++g_plugin->m_effectExpiredDepth;
+                    ++s_effectExpiredDepth;
                     Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
-                    --g_plugin->m_effectExpiredDepth;
+                    --s_effectExpiredDepth;
                 }
                 return pOnEffectRemovedHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
             }, Hooks::Order::Early);
@@ -217,39 +189,35 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
     auto effect = Events::ExtractArgument<CGameEffect*>(args);
 
     // Script name
-    effect->m_sParamString[4] = Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[4] = args.extract<std::string>().c_str();
     // Data
-    effect->m_sParamString[5] = Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[5] = args.extract<std::string>().c_str();
 
-    return Events::Arguments(effect);
+    return effect;
 }
 
-ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetEffectExpiredData(ArgumentStack&&)
 {
-    if (g_plugin->m_effectExpiredDepth == 0)
-    {
+    if (s_effectExpiredDepth == 0)
         throw std::runtime_error("Attempted to get effect expired data in an invalid context.");
-    }
 
-    return Events::Arguments(g_plugin->m_effectExpiredData);
+    return s_effectExpiredData;
 }
 
-ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetEffectExpiredCreator(ArgumentStack&&)
 {
-    if (g_plugin->m_effectExpiredDepth == 0)
-    {
+    if (s_effectExpiredDepth == 0)
         throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
-    }
 
-    return Events::Arguments(g_plugin->m_effectExpiredCreator);
+    return s_effectExpiredCreator;
 }
 
-ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack ReplaceEffect(ArgumentStack&& args)
 {
     int found = 0;
-    auto objId = Events::ExtractArgument<ObjectID>(args);
-    auto eOld  = Events::ExtractArgument<CGameEffect*>(args);
-    auto eNew  = Events::ExtractArgument<CGameEffect*>(args);
+    auto objId = args.extract<ObjectID>();
+    auto eOld  = args.extract<CGameEffect*>();
+    auto eNew  = args.extract<CGameEffect*>();
 
     ASSERT_OR_THROW(eNew->m_nType == eOld->m_nType);
 
@@ -274,6 +242,4 @@ ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
         }
     }
     return found;
-}
-
 }

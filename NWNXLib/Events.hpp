@@ -26,9 +26,21 @@ namespace NWNXLib::Events
     template <typename T> std::optional<T> Pop()
     {
         if (s_returns.empty())
+        {
             LOG_ERROR("Tried to get a return value when one did not exist.");
+        }
         else if (!s_returns.top().Holds<T>())
+        {
+            if constexpr (std::is_same_v<T, int32_t>)
+            {
+                if (s_returns.top().Holds<ObjectID>())
+                {
+                    LOG_WARNING("Returning value '%s' as int32_t", s_returns.top());
+                    return static_cast<T>(s_returns.extract<ObjectID>());
+                }
+            }
             LOG_ERROR("Type mismatch in return values");
+        }
         else
         {
             LOG_DEBUG("Returning value '%s'", s_returns.top());

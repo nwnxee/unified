@@ -18,36 +18,12 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-
-namespace Area {
 
 static std::set<ObjectID> s_ExportExclusionList;
 
-static CNWSArea *area(ArgumentStack& args)
-{
-    const auto areaId = args.extract<ObjectID>();
-
-    if (areaId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Area function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
-
-    if (!pArea)
-    {
-        LOG_NOTICE("NWNX_Area function called on non-area object %x", areaId);
-    }
-
-    return pArea;
-}
-
 NWNX_EXPORT ArgumentStack GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nPlayersInArea;
 
     return 0;
@@ -55,7 +31,7 @@ NWNX_EXPORT ArgumentStack GetNumberOfPlayersInArea(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetLastEntered(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_oidLastEntered;
 
     return Constants::OBJECT_INVALID;
@@ -63,7 +39,7 @@ NWNX_EXPORT ArgumentStack GetLastEntered(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetLastLeft(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_oidLastLeft;
 
     return Constants::OBJECT_INVALID;
@@ -71,7 +47,7 @@ NWNX_EXPORT ArgumentStack GetLastLeft(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPVPSetting(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nPVPSetting;
 
     return 0;
@@ -79,7 +55,7 @@ NWNX_EXPORT ArgumentStack GetPVPSetting(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPVPSetting(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         auto pvpSetting = args.extract<int32_t>();
           ASSERT_OR_THROW(pvpSetting >= Constants::PvPSetting::MIN);
@@ -93,7 +69,7 @@ NWNX_EXPORT ArgumentStack SetPVPSetting(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAreaSpotModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nAreaSpotModifier;
 
     return 0;
@@ -101,7 +77,7 @@ NWNX_EXPORT ArgumentStack GetAreaSpotModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAreaSpotModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         pArea->m_nAreaSpotModifier = args.extract<int32_t>();
 
     return {};
@@ -109,7 +85,7 @@ NWNX_EXPORT ArgumentStack SetAreaSpotModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAreaListenModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nAreaListenModifier;
 
     return 0;
@@ -117,7 +93,7 @@ NWNX_EXPORT ArgumentStack GetAreaListenModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAreaListenModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         pArea->m_nAreaListenModifier = args.extract<int32_t>();
 
     return {};
@@ -125,7 +101,7 @@ NWNX_EXPORT ArgumentStack SetAreaListenModifier(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetNoRestingAllowed(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_bNoRestingAllowed;
 
     return 0;
@@ -133,7 +109,7 @@ NWNX_EXPORT ArgumentStack GetNoRestingAllowed(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetNoRestingAllowed(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         pArea->m_bNoRestingAllowed = !!args.extract<int32_t>();
 
     return {};
@@ -141,7 +117,7 @@ NWNX_EXPORT ArgumentStack SetNoRestingAllowed(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetWindPower(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nWindAmount;
 
     return 0;
@@ -149,7 +125,7 @@ NWNX_EXPORT ArgumentStack GetWindPower(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetWindPower(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto windPower = args.extract<int32_t>();
           ASSERT_OR_THROW(windPower >= 0);
@@ -163,7 +139,7 @@ NWNX_EXPORT ArgumentStack SetWindPower(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetWeatherChance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
@@ -182,7 +158,7 @@ NWNX_EXPORT ArgumentStack GetWeatherChance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetWeatherChance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
@@ -210,7 +186,7 @@ NWNX_EXPORT ArgumentStack SetWeatherChance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetFogClipDistance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_fFogClipDistance;
 
     return 0.0f;
@@ -218,7 +194,7 @@ NWNX_EXPORT ArgumentStack GetFogClipDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetFogClipDistance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto distance = args.extract<float>();
           ASSERT_OR_THROW(distance >= 0.0);
@@ -231,7 +207,7 @@ NWNX_EXPORT ArgumentStack SetFogClipDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetShadowOpacity(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_nShadowOpacity;
 
     return 0;
@@ -239,7 +215,7 @@ NWNX_EXPORT ArgumentStack GetShadowOpacity(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetShadowOpacity(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto shadowOpacity = args.extract<int32_t>();
           ASSERT_OR_THROW(shadowOpacity >= 0);
@@ -253,7 +229,7 @@ NWNX_EXPORT ArgumentStack SetShadowOpacity(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetDayNightCycle(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
         return pArea->m_bUseDayNightCycle ? 0 : pArea->m_bIsNight + 1;
 
     return 0;
@@ -261,7 +237,7 @@ NWNX_EXPORT ArgumentStack GetDayNightCycle(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetDayNightCycle(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
@@ -291,7 +267,7 @@ NWNX_EXPORT ArgumentStack SetDayNightCycle(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetSunMoonColors(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
@@ -311,7 +287,7 @@ NWNX_EXPORT ArgumentStack GetSunMoonColors(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSunMoonColors(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
@@ -344,7 +320,7 @@ NWNX_EXPORT ArgumentStack SetSunMoonColors(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack CreateTransition(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         auto targetOid = args.extract<ObjectID>();
         auto *pTargetObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(targetOid));
@@ -399,7 +375,7 @@ NWNX_EXPORT ArgumentStack CreateTransition(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetTileAnimationLoop(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
@@ -429,7 +405,7 @@ NWNX_EXPORT ArgumentStack GetTileAnimationLoop(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetTileAnimationLoop(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
@@ -466,7 +442,7 @@ NWNX_EXPORT ArgumentStack SetTileAnimationLoop(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetTileModelResRef(ArgumentStack&& args)
 {
-    if (auto* pArea = area(args))
+    if (auto* pArea = Utils::PopArea(args))
     {
         const auto tileX = args.extract<float>();
         ASSERT_OR_THROW(tileX >= 0.0f);
@@ -488,7 +464,7 @@ NWNX_EXPORT ArgumentStack GetTileModelResRef(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack TestDirectLine(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto fStartX = args.extract<float>();
           ASSERT_OR_THROW(fStartX >= 0.0f);
@@ -512,7 +488,7 @@ NWNX_EXPORT ArgumentStack TestDirectLine(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMusicIsPlaying(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto bBattleMusic = !!args.extract<int32_t>();
 
@@ -524,7 +500,7 @@ NWNX_EXPORT ArgumentStack GetMusicIsPlaying(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack CreateGenericTrigger(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto fX = args.extract<float>();
           ASSERT_OR_THROW(fX >= 0.0f);
@@ -581,7 +557,7 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(fileName.size() <= 16);
@@ -713,7 +689,7 @@ NWNX_EXPORT ArgumentStack GetTileInfo(ArgumentStack&& args)
 {
     int32_t id = -1, height = -1, orientation = -1, x = -1, y = -1;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
@@ -737,7 +713,7 @@ NWNX_EXPORT ArgumentStack ExportARE(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
@@ -882,7 +858,7 @@ NWNX_EXPORT ArgumentStack ExportARE(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAmbientSoundDay(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         if (pArea->m_pAmbientSound != nullptr)
             return pArea->m_pAmbientSound->m_nSoundDayTrack;
@@ -893,7 +869,7 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundDay(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAmbientSoundNight(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         if (pArea->m_pAmbientSound != nullptr)
             return pArea->m_pAmbientSound->m_nSoundNightTrack;
@@ -904,7 +880,7 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundNight(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAmbientSoundDayVolume(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         if (pArea->m_pAmbientSound != nullptr)
             return pArea->m_pAmbientSound->m_nDayVolume;
@@ -915,7 +891,7 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundDayVolume(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAmbientSoundNightVolume(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         if (pArea->m_pAmbientSound != nullptr)
             return pArea->m_pAmbientSound->m_nNightVolume;
@@ -926,7 +902,7 @@ NWNX_EXPORT ArgumentStack GetAmbientSoundNightVolume(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
         Vector v;
         v.x = args.extract<float>();
@@ -957,6 +933,4 @@ NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
     }
     
     return Constants::OBJECT_INVALID;
-}
-
 }
