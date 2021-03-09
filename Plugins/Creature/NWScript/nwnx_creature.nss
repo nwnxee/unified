@@ -895,6 +895,7 @@ float NWNX_Creature_GetPreferredAttackDistance(object oCreature);
 /// @param fPrefAtckDist The creatures preferred attack distance.
 void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist);
 
+
 /// @brief Get the skill penalty from wearing armor.
 /// @param oCreature The creature.
 int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
@@ -902,6 +903,21 @@ int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
 /// @brief Get the skill penalty from wearing a shield.
 /// @param oCreature The creature.
 int NWNX_Creature_GetShieldCheckPenalty(object oCreature);
+
+/// @brief Sets a chance for normal Effect Immunities to be bypassed
+/// @param oCreature The affected creature
+/// @param nImmunityType 'IMMUNITY_TYPE_*' to bypass. By default affects outgoing effects (oCreature -> another creature). Use a negative (-IMMUNITY_TYPE_*) to affect incoming effects instead (another creature -> oCreature) use 255/-255 to bypass ALL Immunities.
+/// @param nChance The chance (of 100%) to bypass the immunity check. A Positive chance results in NOT IMMUNE. A Negative chance results in IMMUNE.
+/// @param bPersist Whether the modifier should persist to .bic file (for PCs)
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+/// @note Where an Outgoing and Incoming bypass both attempt opposing outcomes, both are ignored and the immunity status without bypass will apply.
+void NWNX_Creature_SetBypassEffectImmunity(object oCreature, int nImmunityType, int nChance = 100, int bPersist = FALSE);
+
+/// @brief Gets a chance for normal Effect Immunities to be bypassed
+/// @param oCreature The target creature
+/// @param nImmunityType 'IMMUNITY_TYPE_*' to retrive the current chance for bypass: Positive gets outgoing effects (oCreature -> another creature). Negative (-IMMUNITY_TYPE_*) gets incoming effects (another creature -> oCreature).
+/// @return the current critical hit multiplier modifier for the creature
+int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType);
 
 /// @}
 
@@ -2315,6 +2331,27 @@ int NWNX_Creature_GetShieldCheckPenalty(object oCreature)
 {
     string sFunc = "GetShieldCheckPenalty";
 
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetBypassEffectImmunity(object oCreature, int nImmunityType, int nChance = 100, int bPersist = FALSE)
+{
+    string sFunc = "SetBypassEffectImmunity";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersist);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nChance);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nImmunityType);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType)
+{
+    string sFunc = "GetBypassEffectImmunity";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nImmunityType);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);

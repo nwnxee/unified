@@ -2882,6 +2882,77 @@ NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
     {
         return pCreature->m_pStats->m_nShieldCheckPenalty;
     }
+    return 0;
+}
 
+NWNX_EXPORT ArgumentStack SetBypassEffectImmunity(ArgumentStack&& args)
+{
+    static Hooks::Hook pGetEffectImmunity_hook =
+        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats17GetEffectImmunityEhP12CNWSCreaturei,
+        (void*)+[](CNWSCreatureStats *pThis, uint8_t nType, CNWSCreature * pVersus, int32_t bConsiderFeats) -> int32_t
+        {
+            int32_t BypassCounter = 0;
+
+            auto ReturnImmBypass = [&](CNWSCreature *pBypassCreature, std::string Bypass)
+            {
+                if (auto BypassChance = pBypassCreature->nwnxGet<int32_t>(Bypass))
+                {
+                    if (rand() % 100 < abs(BypassChance.value()))
+                    {
+                        if (BypassChance.value() > 0) //Positive being "Force not immune"
+                            BypassCounter -= 1;
+                        else //Negative being "Force as immune"
+                            BypassCounter += 1;
+                    }
+                }
+            };
+
+            ReturnImmBypass(pThis->m_pBaseCreature, "BYPASS_EFF_IMM_IN" + std::to_string(nType));
+            ReturnImmBypass(pVersus, "BYPASS_EFF_IMM_OUT" + std::to_string(nType));
+            ReturnImmBypass(pThis->m_pBaseCreature, "BYPASS_EFF_IMM_IN255"); //255 used for "all"
+            ReturnImmBypass(pVersus, "BYPASS_EFF_IMM_OUT255"); //255 used for "all"
+
+            if (BypassCounter > 0)
+                return true;
+            else if (BypassCounter < 0)
+                return false;
+            else
+                return pGetEffectImmunity_hook->CallOriginal<int32_t>(pThis, nType, pVersus, bConsiderFeats);
+        }, Hooks::Order::Late);
+
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        const auto immunityType = args.extract<int32_t>();
+        const auto chance = args.extract<int32_t>();
+        const bool persist = !!args.extract<int32_t>();
+
+        std::string varname;
+        if (immunityType > 0)
+            varname = "BYPASS_EFF_IMM_OUT" + std::to_string(immunityType);
+        else
+            varname = "BYPASS_EFF_IMM_IN" + std::to_string(abs(immunityType));
+
+        if (chance)
+            pCreature->nwnxSet(varname, chance, persist);
+        else
+            pCreature->nwnxRemove(varname);
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetBypassEffectImmunity(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        auto immunityType = args.extract<int32_t>();
+
+        std::string varname;
+        if (immunityType > 0)
+            varname = "BYPASS_EFF_IMM_OUT" + std::to_string(immunityType);
+        else
+            varname = "BYPASS_EFF_IMM_IN" + std::to_string(abs(immunityType));
+
+        return pCreature->nwnxGet<int32_t>(varname).value_or(0);
+    }
     return 0;
 }
