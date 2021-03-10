@@ -40,10 +40,6 @@ struct EffectData
     OBJECT_ID objectId = Constants::OBJECT_INVALID;
     uint32_t spellId = ~0;
     int32_t strength = 0;
-    int32_t operator+(const int32_t& rhs)
-    {
-        return strength + rhs;
-    }
 };
 
 constexpr auto MAX_DAMAGE_FLAGS = 13;
@@ -325,85 +321,61 @@ inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAl
 
 inline int32_t GetUnstackedBonus(bool negative, int mode)
 {
+    auto begin = negative ? g_negativeEffects.cbegin() : g_positiveEffects.cbegin();
+    auto end = negative ? g_negativeEffects.cend() : g_positiveEffects.cend();
+
+    int32_t itemBonus = 0, spellBonus = 0;
+
     switch (mode)
     {
         default:
         case NostackMode::Disabled:
         {
-            uint32_t bonus = 0;
-            if (!negative)
-                std::for_each(g_positiveEffects.cbegin(), g_positiveEffects.cend(), [&bonus](const EffectData& data) { bonus += data.strength; });
-            else
-                std::for_each(g_negativeEffects.cbegin(), g_negativeEffects.cend(), [&bonus](const EffectData& data) { bonus += data.strength; });
-            return bonus;
+            return std::accumulate(begin, end, 0, [](uint32_t acc, const EffectData& data) { return acc + data.strength; });
         }
         case NostackMode::NoStacking: //No stacking at all
         {
             int32_t bonus = 0;
-
-            auto getMaxEffects = [&](const EffectData& data) { bonus += data.strength; };
-
-            if (!negative)
-                std::for_each(g_positiveEffects.cbegin(), g_positiveEffects.cend(), getMaxEffects);
-            else
-                std::for_each(g_negativeEffects.cbegin(), g_negativeEffects.cend(), getMaxEffects);
-
+            std::for_each(begin, end, [&](const EffectData& data) { bonus = std::max(bonus, data.strength); });
             return bonus;
         }
         case NostackMode::AllowOneSpell: //Allow highest spell bonus to stack with highest item bonus
         {
-            int32_t nMaxItemEffect = 0, nMaxSpellEffect = 0;
-            auto getMaxEffects = [&](const EffectData& data)
+            std::for_each(begin, end, [&](const EffectData& data)
             {
                 if (data.spellId != ~0u)
-                    nMaxSpellEffect = std::max(data.strength, nMaxSpellEffect);
+                    spellBonus = std::max(data.strength, spellBonus);
                 else
-                    nMaxItemEffect = std::max(data.strength, nMaxItemEffect);
-            };
+                    itemBonus = std::max(data.strength, itemBonus);
+            });
 
-            if (!negative)
-                std::for_each(g_positiveEffects.cbegin(), g_positiveEffects.cend(), getMaxEffects);
-            else
-                std::for_each(g_negativeEffects.cbegin(), g_negativeEffects.cend(), getMaxEffects);
-
-            return nMaxItemEffect + nMaxSpellEffect;
+            return itemBonus + spellBonus;
         }
         case NostackMode::AllowAllSpells: //Allow all spell bonuses to stack with highest item bonus
         {
-            int32_t nMaxItemEffect = 0, nSumSpellEffect = 0;
-            auto getEffectBonuses = [&](const EffectData& data)
+            std::for_each(begin, end, [&](const EffectData& data)
             {
                 if (data.spellId != ~0u)
-                    nSumSpellEffect += data.strength;
+                    spellBonus += data.strength;
                 else
-                    nMaxItemEffect = std::max(data.strength, nMaxItemEffect);
-            };
+                    itemBonus = std::max(data.strength, itemBonus);
+            });
 
-            if (!negative)
-                std::for_each(g_positiveEffects.cbegin(), g_positiveEffects.cend(), getEffectBonuses);
-            else
-                std::for_each(g_negativeEffects.cbegin(), g_negativeEffects.cend(), getEffectBonuses);
-
-            return nMaxItemEffect + nSumSpellEffect;
+            return itemBonus + spellBonus;
         }
         case NostackMode::CustomTypes: //Use per-spell defined types
         {
             std::fill_n(g_nMaxValues, NostackType::Max + 1, 0);
-            auto getEffectBonuses = [&](const EffectData& data)
+            std::for_each(begin, end, [&](const EffectData& data)
             {
                 int nBonusType = g_nItemDefaultType;
                 if (data.spellId != ~0u)
                     nBonusType = data.spellId >= g_nSpellBonusTypes.size() ? g_nSpellDefaultType : g_nSpellBonusTypes[data.spellId];
-                if (nBonusType == 1)
+                if (nBonusType == NostackType::Circumstance)
                     g_nMaxValues[nBonusType] += data.strength;
                 else
                     g_nMaxValues[nBonusType] = std::max(g_nMaxValues[nBonusType], data.strength);
-            };
-
-            if (!negative)
-                std::for_each(g_positiveEffects.cbegin(), g_positiveEffects.cend(), getEffectBonuses);
-            else
-                std::for_each(g_negativeEffects.cbegin(), g_negativeEffects.cend(), getEffectBonuses);
+            });
 
             return std::accumulate(g_nMaxValues, g_nMaxValues + NostackType::Max + 1, 0);
         }
