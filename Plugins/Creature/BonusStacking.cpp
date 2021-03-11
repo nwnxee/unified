@@ -63,7 +63,6 @@ static int32_t g_nSpellDefaultType = NostackType::Circumstance;
 static int32_t g_nItemDefaultType = NostackType::Enhancement;
 
 static Hooks::Hook s_GetTotalEffectBonusHook = nullptr;
-//static Hooks::Hook s_UpdateCombatInformation = nullptr;
 
 struct EffectData
 {
@@ -101,7 +100,6 @@ void BonusStacking()
         s_bSeparateInvalidOidEffects = Config::Get<bool>("NOSTACK_SEPARATE_INVALID_OID_EFFECTS", false);
 
         s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
-        //s_UpdateCombatInformation = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23UpdateCombatInformationEv, (void*)&CNWSCreatureStats__UpdateCombatInformation, Hooks::Order::SharedHook);
     }
 
     g_positiveEffects.reserve(50);
@@ -451,39 +449,6 @@ NWNX_EXPORT ArgumentStack SetSpellBonusType(ArgumentStack&& args)
     g_nSpellBonusTypes[nSpellId] = nBonusType;
 
     return {};
-}
-
-void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats* thisPtr)
-{
-    //s_UpdateCombatInformation->CallOriginal<void>(thisPtr);
-
-    if (!thisPtr->m_pCombatInformation || thisPtr->m_pCombatInformation->m_pAttackList.num < 2)
-        return;
-
-    auto* pCurrentAttack = thisPtr->m_pBaseCreature->m_pcCombatRound->GetAttack(thisPtr->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
-    //auto nSavedAttackType = pCurrentAttack->m_nWeaponAttackType;
-    auto nAttackType = 0;
-
-    while (thisPtr->m_pCombatInformation->m_pAttackList.num < 6)
-        thisPtr->m_pCombatInformation->m_pAttackList.Add(new CCombatInformationNode());
-
-    for (int i = 1; i < 3; i++)
-    {
-        nAttackType = i;
-        if (i > 5)
-            nAttackType++;
-        pCurrentAttack->m_nWeaponAttackType = nAttackType;
-
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nModifier = thisPtr->m_pBaseCreature->GetTotalEffectBonus(1, nullptr, 0, 0, 0, 0, 0, 0, 0);
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nVersusRace = Constants::RacialType::All;
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nVersusAlignGoodEvil = 0;
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nVersusAlignLawChaos = 0;
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nWeaponWield = nAttackType;
-        thisPtr->m_pCombatInformation->m_pAttackList.element[i]->m_nModifierType = Constants::EffectTrueType::AttackIncrease;
-
-        thisPtr->m_pCombatInformation->m_pAttackList.num = i;
-    }
-
 }
 
 }
