@@ -189,7 +189,7 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
     return n;
 }
 
-void __NWNX_Effect_ResolvePack(string sFunc, int bReplace=FALSE)
+void __NWNX_Effect_ResolvePack(string sFunc, struct NWNX_EffectUnpacked e, int bReplace=FALSE)
 {
     if(!bReplace)
         NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
@@ -262,7 +262,7 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
 {
     string sFunc = "PackEffect";
 
-    __NWNX_Effect_ResolvePack(sFunc);
+    __NWNX_Effect_ResolvePack(sFunc, e);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
@@ -335,7 +335,7 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 {
     string sFunc = "ReplaceEffectByIndex";
 
-    __NWNX_Effect_ResolvePack(sFunc, TRUE);
+    __NWNX_Effect_ResolvePack(sFunc, e, TRUE);
 
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);

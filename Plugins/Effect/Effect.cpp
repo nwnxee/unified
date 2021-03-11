@@ -131,7 +131,7 @@ ArgumentStack Effect::ResolveUnpack(CGameEffect *eff, bool bLink /*=true*/)
     return stack;
 }
 
-void Effect::ResolvePack(CGameEffect *eff, bool bReplace/*=false*/)
+void Effect::ResolvePack(CGameEffect *eff, ArgumentStack& args, bool bReplace/*=false*/)
 {
     eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
 
@@ -174,6 +174,7 @@ void Effect::ResolvePack(CGameEffect *eff, bool bReplace/*=false*/)
     // Overwrite num integers from 8
     eff->m_nNumIntegers = Services::Events::ExtractArgument<int32_t>(args);
 
+    bool bUpdateLinks = false;
     if(!bReplace)
     {
         auto bRightLinkValid = Services::Events::ExtractArgument<int32_t>(args);
@@ -183,7 +184,11 @@ void Effect::ResolvePack(CGameEffect *eff, bool bReplace/*=false*/)
         auto bLeftLinkValid = Services::Events::ExtractArgument<int32_t>(args);
         auto *pLeftLink = Services::Events::ExtractArgument<CGameEffect*>(args);
         eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
+
+        if (bLeftLinkValid || bRightLinkValid)
+            bUpdateLinks = true;
     }
+
     eff->m_nCasterLevel       = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_bShowIcon          = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_bExpose            = Services::Events::ExtractArgument<int32_t>(args);
@@ -197,7 +202,7 @@ void Effect::ResolvePack(CGameEffect *eff, bool bReplace/*=false*/)
     if(!bReplace)
         eff->m_nType              = Services::Events::ExtractArgument<int32_t>(args);
 
-    if (bLeftLinkValid || bRightLinkValid)
+    if(bUpdateLinks)
         eff->UpdateLinked();
 }
 
@@ -205,7 +210,7 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 {
     CGameEffect *eff = new CGameEffect(true);
 
-    ResolvePack(eff);
+    ResolvePack(eff, args);
 
     return Services::Events::Arguments(eff);
 }
@@ -354,7 +359,7 @@ ArgumentStack Effect::ReplaceEffectByIndex(ArgumentStack&& args)
           ASSERT_OR_THROW(element < pObject->m_appliedEffects.num);
         auto eff = pObject->m_appliedEffects.element[element];
 
-        ResolvePack(eff, true);
+        ResolvePack(eff, args, true);
     }
 
     return Services::Events::Arguments();

@@ -36,7 +36,7 @@ private:
     static int32_t  GetEffectImmunityHook(CNWSCreatureStats *pStats, uint8_t nType, CNWSCreature * pVersus, BOOL bConsiderFeats=true);
 
     ArgumentStack ResolveUnpack(CGameEffect *eff, bool bLink=true);
-    void ResolvePack(CGameEffect *eff, bool bReplace=false);
+    void ResolvePack(CGameEffect *eff, ArgumentStack& args, bool bReplace=false);
     void InitEffectImmHook();
 };
 

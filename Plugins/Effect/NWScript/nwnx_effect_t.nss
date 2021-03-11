@@ -120,7 +120,7 @@ void main()
             replace = unpacked;
             replace.nParam0=ABILITY_CONSTITUTION;
             sID = replace.sID;
-            NWNX_Effect_ReplaceEffectByElement(oCreature, i, replace);
+            NWNX_Effect_ReplaceEffectByIndex(oCreature, i, replace);
         }
     }
     NWNX_Tests_Report("NWNX_Effect", "GetTrueEffect", nFound);
