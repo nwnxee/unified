@@ -2,13 +2,8 @@
 
 #include <regex>
 
-
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
-using ArgumentStack = Events::ArgumentStack;
-
-
-namespace Regex {
 
 NWNX_EXPORT ArgumentStack Search(ArgumentStack&& args)
 {
@@ -36,6 +31,4 @@ NWNX_EXPORT ArgumentStack Replace(ArgumentStack&& args)
         retVal = std::regex_replace(str, rgx, rpl);
 
     return retVal;
-}
-
 }

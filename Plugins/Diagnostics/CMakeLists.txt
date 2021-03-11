@@ -1,4 +1,3 @@
 add_plugin(Diagnostics
-        "Diagnostics.cpp"
-        "Diagnostics/MemorySanitizer.cpp"
+        "MemorySanitizer.cpp"
 )

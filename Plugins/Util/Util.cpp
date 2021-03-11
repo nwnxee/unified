@@ -30,9 +30,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
-
-namespace Util {
 
 static int32_t s_tickCount;
 static size_t s_resRefIndex;
@@ -121,10 +118,12 @@ NWNX_EXPORT ArgumentStack GetAsciiTableString(ArgumentStack&&)
     return std::string(table);
 }
 
+namespace { // temporary fix for conflict with CExoResMan::Hash::SHA1
 NWNX_EXPORT ArgumentStack Hash(ArgumentStack&& args)
 {
     const auto str = args.extract<std::string>();
     return (int32_t)std::hash<std::string>{}(str);
+}
 }
 
 NWNX_EXPORT ArgumentStack GetCustomToken(ArgumentStack&& args)
@@ -633,7 +632,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
     if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
     {
         CResStruct resStruct{};
-        CResGFF gff(Constants::ResRefType::UTD, "UTD ", resRef);
+        CResGFF gff(Constants::ResRefType::UTD, (char*)"UTD ", resRef);
 
         if (gff.m_bLoaded)
         {
@@ -790,6 +789,4 @@ NWNX_EXPORT ArgumentStack GetHighResTimeStamp(ArgumentStack&&)
     auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
 
     return {(int32_t)(count / 1000000), (int32_t)(count % 1000000)};
-}
-
 }

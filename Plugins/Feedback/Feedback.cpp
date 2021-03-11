@@ -10,10 +10,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = Events::ArgumentStack;
-
-
-namespace Feedback {
 
 static std::set<int32_t> s_GlobalHiddenMessageSet;
 static bool s_FeedbackMessageWhitelist = false;
@@ -163,6 +159,4 @@ NWNX_EXPORT ArgumentStack SetFeedbackMode(ArgumentStack&& args)
         s_CombatMessageWhitelist = !!state;
 
     return {};
-}
-
 }

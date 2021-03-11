@@ -8,10 +8,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using ArgumentStack = Events::ArgumentStack;
-
-
-namespace Visibility {
 
 static int32_t GetGlobalOverride(ObjectID);
 static int32_t GetPersonalOverride(ObjectID, ObjectID);
@@ -120,6 +116,4 @@ NWNX_EXPORT ArgumentStack SetVisibilityOverride(ArgumentStack&& args)
         player->nwnxSet(varName, override);
 
     return {};
-}
-
 }
