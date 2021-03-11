@@ -1,5 +1,5 @@
-#include "Creature.hpp"
-#include "Utils.hpp"
+#include "nwnx.hpp"
+
 #include "API/CAppManager.hpp"
 #include "API/CCombatInformation.hpp"
 #include "API/CCombatInformationNode.hpp"
@@ -20,20 +20,50 @@
 namespace Creature
 {
 
+namespace NostackMode
+{
+typedef enum
+{
+    Disabled,
+    NoStacking,
+    AllowOneSpell,
+    AllowAllSpells,
+    CustomTypes
+} TYPE;
+}
+
+namespace NostackType
+{
+typedef enum
+{
+    Enhancement,
+    Circumstance,
+    Competence,
+    Insight,
+    Luck,
+    Morale,
+    Profane,
+    Resistance,
+    Sacred,
+    Max = 20,
+} TYPE;
+}
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-int BonusStacking::s_nAbilityStackingMode = NostackMode::Disabled;
-int BonusStacking::s_nSkillStackingMode = NostackMode::Disabled;
-int BonusStacking::s_nSavingThrowStackingMode = NostackMode::Disabled;
-int BonusStacking::s_nAttackBonusStackingMode = NostackMode::Disabled;
-bool BonusStacking::s_bAlwaysStackPenalties = false;
+static int s_nAbilityStackingMode = NostackMode::Disabled;
+static int s_nSkillStackingMode = NostackMode::Disabled;
+static int s_nSavingThrowStackingMode = NostackMode::Disabled;
+static int s_nAttackBonusStackingMode = NostackMode::Disabled;
+static bool s_bAlwaysStackPenalties = false;
+static bool s_bSeparateInvalidOidEffects = false;
 static std::vector<int32_t> g_nSpellBonusTypes;
 static int32_t g_nSpellDefaultType = NostackType::Circumstance;
 static int32_t g_nItemDefaultType = NostackType::Enhancement;
 
 static Hooks::Hook s_GetTotalEffectBonusHook = nullptr;
-static Hooks::Hook s_UpdateCombatInformation = nullptr;
+//static Hooks::Hook s_UpdateCombatInformation = nullptr;
 
 struct EffectData
 {
@@ -48,7 +78,12 @@ static std::vector<EffectData> g_positiveEffects;
 static std::vector<EffectData> g_negativeEffects;
 static int32_t g_nMaxValues[NostackType::Max + 1];
 
-void BonusStacking::Init(Services::ProxyServiceList*)
+void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats*);
+int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature*, uint8_t, CNWSObject*, BOOL, BOOL, uint8_t, uint8_t, uint8_t, uint8_t, BOOL);
+
+
+void BonusStacking() __attribute__((constructor));
+void BonusStacking()
 {
     s_nAbilityStackingMode = std::clamp(Config::Get<int>("NOSTACK_ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
     s_nSkillStackingMode = std::clamp(Config::Get<int>("NOSTACK_SKILL", 0), 0, static_cast<int>(NostackMode::CustomTypes));
@@ -63,11 +98,10 @@ void BonusStacking::Init(Services::ProxyServiceList*)
         g_nSpellDefaultType = std::clamp(Config::Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
         g_nItemDefaultType = std::clamp(Config::Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
         s_bAlwaysStackPenalties = Config::Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
+        s_bSeparateInvalidOidEffects = Config::Get<bool>("NOSTACK_SEPARATE_INVALID_OID_EFFECTS", false);
 
         s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
         //s_UpdateCombatInformation = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23UpdateCombatInformationEv, (void*)&CNWSCreatureStats__UpdateCombatInformation, Hooks::Order::SharedHook);
-
-        Events::RegisterEvent(PLUGIN_NAME, "SetSpellBonusType", [](ArgumentStack&& args) { return BonusStacking::SetSpellBonusType(std::move(args)); });
     }
 
     g_positiveEffects.reserve(50);
@@ -78,7 +112,32 @@ inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAl
                                uint8_t nEffectAlignLaw, uint8_t nAlignGood, uint8_t nEffectAlignGood);
 inline int32_t GetUnstackedBonus(bool negative = false, int mode = 0);
 
-int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
+void AddEffect(EffectData&& effectData, bool negative)
+{
+    auto& effectList = negative ? g_negativeEffects : g_positiveEffects;
+    if(effectData.spellId == ~0u)
+    {
+        auto effect = std::find_if(effectList.begin(), effectList.end(), [&](EffectData& data) { return data.objectId == effectData.objectId; });
+        if (effect != effectList.end())
+            effect->strength = std::max(effectData.strength, effect->strength);
+        else
+            effectList.emplace_back(EffectData{effectData.objectId, ~0u, effectData.strength});
+    }
+    else if (effectData.objectId == Constants::OBJECT_INVALID && s_bSeparateInvalidOidEffects)
+    {
+
+    }
+    else
+    {
+        auto effect = std::find_if(effectList.begin(), effectList.end(), [&](EffectData& data) { return data.spellId == effectData.spellId; });
+        if (effect != effectList.end())
+            effect->strength = std::max(effectData.strength, effect->strength);
+        else
+            effectList.emplace_back(EffectData{ ~0u, effectData.spellId, effectData.strength });
+    }
+}
+
+int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
     BOOL bForceMax, uint8_t nSaveType, uint8_t nSpecificType, uint8_t nSkill, uint8_t nAbilityScore, BOOL bOffHand)
 {
     if (nEffectBonusType == Constants::EffectBonusType::Damage
@@ -150,19 +209,12 @@ int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, 
                 {
                     int32_t nEffectStrength = pEffect->GetInteger(0);
 
-                    if (pEffect->m_nType == Constants::EffectTrueType::AttackIncrease)
+                    if (nEffectWeaponType == 0 || nEffectBonusType != Constants::EffectBonusType::TouchAttack)
                     {
-                        if (nEffectWeaponType == 0 || nEffectBonusType != Constants::EffectBonusType::TouchAttack)
-                        {
-                            g_positiveEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
-                        }
-                    }
-                    else if (pEffect->m_nType == Constants::EffectTrueType::AttackDecrease)
-                    {
-                        if (nEffectWeaponType == 0 || nEffectBonusType != Constants::EffectBonusType::TouchAttack)
-                        {
-                            g_negativeEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
-                        }
+                        if (pEffect->m_nType == Constants::EffectTrueType::AttackIncrease)
+                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
+                        else if (pEffect->m_nType == Constants::EffectTrueType::AttackDecrease)
+                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
                     }
                 }
             }
@@ -203,11 +255,11 @@ int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, 
 
                     if (pEffect->m_nType == Constants::EffectTrueType::SavingThrowIncrease)
                     {
-                        g_positiveEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
                     }
                     else if (pEffect->m_nType == Constants::EffectTrueType::SavingThrowDecrease)
                     {
-                        g_negativeEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
                     }
                 }
             }
@@ -247,11 +299,11 @@ int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, 
 
                 if (pEffect->m_nType == Constants::EffectTrueType::AbilityIncrease)
                 {
-                    g_positiveEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
                 }
                 else if (pEffect->m_nType == Constants::EffectTrueType::AbilityDecrease)
                 {
-                    g_negativeEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
                 }
             }
 
@@ -286,11 +338,11 @@ int32_t BonusStacking::CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, 
 
                     if (pEffect->m_nType == Constants::EffectTrueType::SkillIncrease)
                     {
-                        g_positiveEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
                     }
                     else if (pEffect->m_nType == Constants::EffectTrueType::SkillDecrease)
                     {
-                        g_negativeEffects.emplace_back(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength });
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
                     }
                 }
             }
@@ -384,25 +436,26 @@ inline int32_t GetUnstackedBonus(bool negative, int mode)
     return 0;
 }
 
-ArgumentStack BonusStacking::SetSpellBonusType(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetSpellBonusType(ArgumentStack&& args)
 {
     if (!g_nSpellBonusTypes.size())
         g_nSpellBonusTypes.resize(Globals::Rules()->m_pSpellArray->m_nNumSpells, g_nSpellDefaultType);
 
-    const auto nSpellId = Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(nSpellId >= 0);
-    ASSERT_OR_THROW(nSpellId < Globals::Rules()->m_pSpellArray->m_nNumSpells);
-    const auto nBonusType = Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(nBonusType >= 0);
-    ASSERT_OR_THROW(nBonusType <= NostackType::Max);
+    const auto nSpellId = args.extract<int32_t>();
+      ASSERT_OR_THROW(nSpellId >= 0);
+      ASSERT_OR_THROW(nSpellId < Globals::Rules()->m_pSpellArray->m_nNumSpells);
+    const auto nBonusType = args.extract<int32_t>();
+      ASSERT_OR_THROW(nBonusType >= 0);
+      ASSERT_OR_THROW(nBonusType <= NostackType::Max);
 
     g_nSpellBonusTypes[nSpellId] = nBonusType;
-    return Events::Arguments();
+
+    return {};
 }
 
-void BonusStacking::CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats* thisPtr)
+void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats* thisPtr)
 {
-    s_UpdateCombatInformation->CallOriginal<void>(thisPtr);
+    //s_UpdateCombatInformation->CallOriginal<void>(thisPtr);
 
     if (!thisPtr->m_pCombatInformation || thisPtr->m_pCombatInformation->m_pAttackList.num < 2)
         return;
