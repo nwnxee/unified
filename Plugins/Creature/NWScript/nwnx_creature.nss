@@ -76,7 +76,7 @@ const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
 /// @name Spell Effect Bonus Types
 /// @anchor spell_bonus_types
 ///
-/// Used with NWNX_Creature_GetTotalEffectBonus() these are the types of temporary bonuses from effects.
+/// Used with NWNX_Creature_SetSpellBonusType() these are the effect bonus types.
 /// @{
 const int NWNX_CREATURE_EFFECT_TYPE_ENHANCEMENT  = 0;
 const int NWNX_CREATURE_EFFECT_TYPE_CIRCUMSTANCE = 1;
