@@ -58,5 +58,5 @@ Set this value to true if you are adding effects through scripts that you want t
 This is needed because scripted effects, unless created from a spellscript, always have an INVALID_OBJECT creator and a spellId of -1.
 
 This is a quick fix, if you want to control each of the scripted effect types you will need to unpack the effect, set a valid spellId and use the
-`SetSpellBonusType()` function to set the bonus for that spellId. The spellId doesn't have to be a valid spell, it's just used as aa reference
-to keep track of which effects should stack.
+`SetSpellBonusType()` function to set the bonus for that spellId. The spellId has to be a valid spell, so either reuse one of the existing spells
+that don't give a bonus effect (i.e. healing or damaging spells) or add a dummy spell to your spells.2da.
