@@ -31,7 +31,6 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
