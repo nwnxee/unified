@@ -115,10 +115,6 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 /// @return FALSE/0 on failure TRUE/1 on success.
 int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 
-/// @brief Disables effect-level immunities.
-/// @param nEnable set to true to turn on.
-void NWNX_Effect_SetEffectImmunityBypass(int nEnable);
-
 /// @}
 
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
@@ -351,11 +347,4 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
-}
-
-void NWNX_Effect_SetEffectImmunityBypass(int nEnable)
-{
-    string sFunc = "SetEffectImmunityBypass";
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nEnable);
-    NWNX_CallFunction(NWNX_Effect, sFunc);
 }

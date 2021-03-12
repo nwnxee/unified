@@ -124,13 +124,9 @@ void main()
         }
     }
     NWNX_Tests_Report("NWNX_Effect", "GetTrueEffect", nFound);
-    NWNX_Tests_Report("NWNX_Effect", "ReplaceEffectByElement", GetAbilityScore(oCreature, ABILITY_CONSTITUTION)>nCon);
+    NWNX_Tests_Report("NWNX_Effect", "ReplaceEffectByIndex", GetAbilityScore(oCreature, ABILITY_CONSTITUTION)>nCon);
     NWNX_Tests_Report("NWNX_Effect", "RemoveEffectById", NWNX_Effect_RemoveEffectById(oCreature, sID));
-    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectImmunity(IMMUNITY_TYPE_ABILITY_DECREASE), oCreature);
-    NWNX_Effect_SetEffectImmunityBypass(TRUE);
-    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectAbilityDecrease(ABILITY_CONSTITUTION, 7), oCreature);
-    NWNX_Effect_SetEffectImmunityBypass(FALSE);
-    NWNX_Tests_Report("NWNX_Effect", "SetEffectImmunityBypass", GetAbilityScore(oCreature,ABILITY_CONSTITUTION)<nCon);
+
 
     WriteTimestampedLogEntry("NWNX_Effect unit test end.");
 }
