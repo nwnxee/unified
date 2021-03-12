@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 #include <cstring>
 
 namespace Events {
@@ -13,28 +12,28 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinSetMapPinAtHook;
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinChangePinHook;
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinDestroyMapPinHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerMapPinSetMapPinAtHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerMapPinChangePinHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerMapPinDestroyMapPinHook;
 
-MapEvents::MapEvents(Services::HooksProxy* hooker)
+MapEvents::MapEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", [hooker]() {
-        s_HandlePlayerToServerMapPinSetMapPinAtHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
-            (&HandleMapPinSetMapPinAtMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", []() {
+        s_HandlePlayerToServerMapPinSetMapPinAtHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer,
+                (void*)&HandleMapPinSetMapPinAtMessageHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_CHANGE_PIN_.*", [hooker]() {
-        s_HandlePlayerToServerMapPinChangePinHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
-            (&HandleMapPinChangePinMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_CHANGE_PIN_.*", []() {
+        s_HandlePlayerToServerMapPinChangePinHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer,
+                (void*)&HandleMapPinChangePinMessageHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_DESTROY_PIN_.*", [hooker]() {
-        s_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
-            (&HandleMapPinDestroyMapPinMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_DESTROY_PIN_.*", []() {
+        s_HandlePlayerToServerMapPinDestroyMapPinHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer,
+                (void*)&HandleMapPinDestroyMapPinMessageHook, Hooks::Order::Early);
     });
 
 }

@@ -1,15 +1,14 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/Vector.hpp"
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Events {
 
 class ObjectEvents
 {
 public:
-    ObjectEvents(NWNXLib::Services::HooksProxy* hooker);
+    ObjectEvents();
 
 private:
     static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);

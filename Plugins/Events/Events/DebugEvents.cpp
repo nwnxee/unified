@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -13,14 +12,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerCheatMessageHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerCheatMessageHook;
 
-DebugEvents::DebugEvents(Services::HooksProxy* hooker)
+DebugEvents::DebugEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", [hooker]() {
-        s_HandlePlayerToServerCheatMessageHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh>
-                (&HandlePlayerToServerCheatMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", []() {
+        s_HandlePlayerToServerCheatMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerCheatMessageHook, Hooks::Order::Early);
     });
 }
 

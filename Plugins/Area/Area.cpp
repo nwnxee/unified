@@ -1,5 +1,6 @@
-#include "Area.hpp"
+#include "nwnx.hpp"
 
+#include "API/CNWSArea.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSModule.hpp"
@@ -11,292 +12,158 @@
 #include "API/CResList.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
+#include "API/CNWSSoundObject.hpp"
 
+#include <set>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Area::Area* g_plugin;
+static std::set<ObjectID> s_ExportExclusionList;
 
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
+NWNX_EXPORT ArgumentStack GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
-    g_plugin = new Area::Area(services);
-    return g_plugin;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nPlayersInArea;
+
+    return 0;
 }
 
-
-namespace Area {
-
-Area::Area(Services::ProxyServiceList* services)
-    : Plugin(services)
+NWNX_EXPORT ArgumentStack GetLastEntered(ArgumentStack&& args)
 {
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_oidLastEntered;
 
-    REGISTER(GetNumberOfPlayersInArea);
-    REGISTER(GetLastEntered);
-    REGISTER(GetLastLeft);
-    REGISTER(GetPVPSetting);
-    REGISTER(SetPVPSetting);
-    REGISTER(GetAreaSpotModifier);
-    REGISTER(SetAreaSpotModifier);
-    REGISTER(GetAreaListenModifier);
-    REGISTER(SetAreaListenModifier);
-    REGISTER(GetNoRestingAllowed);
-    REGISTER(SetNoRestingAllowed);
-    REGISTER(GetWindPower);
-    REGISTER(SetWindPower);
-    REGISTER(GetWeatherChance);
-    REGISTER(SetWeatherChance);
-    REGISTER(GetFogClipDistance);
-    REGISTER(SetFogClipDistance);
-    REGISTER(GetShadowOpacity);
-    REGISTER(SetShadowOpacity);
-    REGISTER(GetDayNightCycle);
-    REGISTER(SetDayNightCycle);
-    REGISTER(GetSunMoonColors);
-    REGISTER(SetSunMoonColors);
-    REGISTER(CreateTransition);
-    REGISTER(GetTileAnimationLoop);
-    REGISTER(SetTileAnimationLoop);
-    REGISTER(GetTileModelResRef);
-    REGISTER(TestDirectLine);
-    REGISTER(GetMusicIsPlaying);
-    REGISTER(CreateGenericTrigger);
-    REGISTER(AddObjectToExclusionList);
-    REGISTER(RemoveObjectFromExclusionList);
-    REGISTER(ExportGIT);
-    REGISTER(GetTileInfo);
-    REGISTER(ExportARE);
-
-#undef REGISTER
+    return Constants::OBJECT_INVALID;
 }
 
-Area::~Area()
+NWNX_EXPORT ArgumentStack GetLastLeft(ArgumentStack&& args)
 {
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_oidLastLeft;
+
+    return Constants::OBJECT_INVALID;
 }
 
-CNWSArea *Area::area(ArgumentStack& args)
+NWNX_EXPORT ArgumentStack GetPVPSetting(ArgumentStack&& args)
 {
-    const auto areaId = Services::Events::ExtractArgument<ObjectID>(args);
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nPVPSetting;
 
-    if (areaId == Constants::OBJECT_INVALID)
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetPVPSetting(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
     {
-        LOG_NOTICE("NWNX_Area function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
-
-    if (!pArea)
-    {
-        LOG_NOTICE("NWNX_Area function called on non-area object %x", areaId);
-    }
-
-    return pArea;
-}
-
-ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
-{
-    int32_t retVal = 0;
-
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nPlayersInArea;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
-{
-    ObjectID retVal = Constants::OBJECT_INVALID;
-
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_oidLastEntered;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
-{
-    ObjectID retVal = Constants::OBJECT_INVALID;
-
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_oidLastLeft;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Area::GetPVPSetting(ArgumentStack&& args)
-{
-    int32_t retVal = 0;
-
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nPVPSetting;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
-{
-    if (auto *pArea = area(args))
-    {
-        auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
+        auto pvpSetting = args.extract<int32_t>();
           ASSERT_OR_THROW(pvpSetting >= Constants::PvPSetting::MIN);
           ASSERT_OR_THROW(pvpSetting <= Constants::PvPSetting::MAX);
 
         pArea->m_nPVPSetting = pvpSetting;
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetAreaSpotModifier(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetAreaSpotModifier(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nAreaSpotModifier;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nAreaSpotModifier;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetAreaSpotModifier(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetAreaSpotModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
-    {
-        const auto spotModifier = Services::Events::ExtractArgument<int32_t>(args);
+    if (auto *pArea = Utils::PopArea(args))
+        pArea->m_nAreaSpotModifier = args.extract<int32_t>();
 
-        pArea->m_nAreaSpotModifier = spotModifier;
-    }
-
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetAreaListenModifier(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetAreaListenModifier(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nAreaListenModifier;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nAreaListenModifier;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetAreaListenModifier(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetAreaListenModifier(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
-    {
-        const auto listenModifier = Services::Events::ExtractArgument<int32_t>(args);
+    if (auto *pArea = Utils::PopArea(args))
+        pArea->m_nAreaListenModifier = args.extract<int32_t>();
 
-        pArea->m_nAreaListenModifier = listenModifier;
-    }
-
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetNoRestingAllowed(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_bNoRestingAllowed;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_bNoRestingAllowed;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetNoRestingAllowed(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
-    {
-        const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
+    if (auto *pArea = Utils::PopArea(args))
+        pArea->m_bNoRestingAllowed = !!args.extract<int32_t>();
 
-        pArea->m_bNoRestingAllowed = !!noRestingAllowed;
-    }
-
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetWindPower(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetWindPower(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nWindAmount;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nWindAmount;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetWindPower(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetWindPower(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto windPower = Services::Events::ExtractArgument<int32_t>(args);
+        const auto windPower = args.extract<int32_t>();
           ASSERT_OR_THROW(windPower >= 0);
           ASSERT_OR_THROW(windPower <= 2);
 
         pArea->m_nWindAmount = windPower;
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetWeatherChance(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
-
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
+          ASSERT_OR_THROW(type >= 0);
+          ASSERT_OR_THROW(type <= 2);
 
         switch (type)
         {
-            case 0:
-                retVal = pArea->m_nChanceOfRain;
-                break;
-
-            case 1:
-                retVal = pArea->m_nChanceOfSnow;
-                break;
-
-            case 2:
-                retVal = pArea->m_nChanceOfLightning;
-                break;
-
-            default:
-                retVal = 0;
-                break;
+            case 0: return pArea->m_nChanceOfRain;
+            case 1: return pArea->m_nChanceOfSnow;
+            case 2: return pArea->m_nChanceOfLightning;
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetWeatherChance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
-
-        auto chance = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
+          ASSERT_OR_THROW(type >= 0);
+          ASSERT_OR_THROW(type <= 2);
+        const auto chance = args.extract<int32_t>();
           ASSERT_OR_THROW(chance >= 0);
           ASSERT_OR_THROW(chance <= 100);
 
@@ -305,98 +172,76 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
             case 0:
                 pArea->m_nChanceOfRain = chance;
                 break;
-
             case 1:
                 pArea->m_nChanceOfSnow = chance;
                 break;
-
             case 2:
                 pArea->m_nChanceOfLightning = chance;
-                break;
-
-            default:
                 break;
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetFogClipDistance(ArgumentStack&& args)
 {
-    float retVal = 0.0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_fFogClipDistance;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_fFogClipDistance;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0.0f;
 }
 
-ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetFogClipDistance(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto distance = Services::Events::ExtractArgument<float>(args);
+        const auto distance = args.extract<float>();
           ASSERT_OR_THROW(distance >= 0.0);
 
         pArea->m_fFogClipDistance = distance;
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetShadowOpacity(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_nShadowOpacity;
 
-    if (auto *pArea = area(args))
-    {
-        retVal = pArea->m_nShadowOpacity;
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetShadowOpacity(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto shadowOpacity = Services::Events::ExtractArgument<int32_t>(args);
+        const auto shadowOpacity = args.extract<int32_t>();
           ASSERT_OR_THROW(shadowOpacity >= 0);
           ASSERT_OR_THROW(shadowOpacity <= 100);
 
         pArea->m_nShadowOpacity = shadowOpacity;
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetDayNightCycle(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    if (auto *pArea = Utils::PopArea(args))
+        return pArea->m_bUseDayNightCycle ? 0 : pArea->m_bIsNight + 1;
 
-    if (auto *pArea = area(args))
-    {
-        if (pArea->m_bUseDayNightCycle)
-        {
-            retVal = 0;
-        }
-        else
-        {
-            retVal = pArea->m_bIsNight + 1;
-        }
-    }
-
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetDayNightCycle(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
+          ASSERT_OR_THROW(type >= 0);
+          ASSERT_OR_THROW(type <= 2);
 
         switch (type)
         {
@@ -414,59 +259,40 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
                 pArea->m_bUseDayNightCycle = 0;
                 pArea->m_bIsNight = 1;
                 break;
-
-            default:
-                break;
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetSunMoonColors(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetSunMoonColors(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto type = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type <= 3);
 
         switch (type)
         {
-            case 0:
-                retVal = pArea->m_nMoonAmbientColor;
-                break;
-
-            case 1:
-                retVal = pArea->m_nMoonDiffuseColor;
-                break;
-
-            case 2:
-                retVal = pArea->m_nSunAmbientColor;
-                break;
-
-            case 3:
-                retVal = pArea->m_nSunDiffuseColor;
-                break;
-
-            default:
-                break;
+            case 0: return pArea->m_nMoonAmbientColor;
+            case 1: return pArea->m_nMoonDiffuseColor;
+            case 2: return pArea->m_nSunAmbientColor;
+            case 3: return pArea->m_nSunDiffuseColor;
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetSunMoonColors(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto type = Services::Events::ExtractArgument<int32_t>(args);
+        const auto type = args.extract<int32_t>();
           ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type <= 3);
-        auto color = Services::Events::ExtractArgument<int32_t>(args);
+        const auto color = args.extract<int32_t>();
           ASSERT_OR_THROW(color >= 0);
 
         // Switch from RGB to BGR
@@ -477,52 +303,45 @@ ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
             case 0:
                 pArea->m_nMoonAmbientColor = swappedColor;
                 break;
-
             case 1:
                 pArea->m_nMoonDiffuseColor = swappedColor;
                 break;
-
             case 2:
                 pArea->m_nSunAmbientColor = swappedColor;
                 break;
-
             case 3:
                 pArea->m_nSunDiffuseColor = swappedColor;
-                break;
-
-            default:
                 break;
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::CreateTransition(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack CreateTransition(ArgumentStack&& args)
 {
-    ObjectID retVal = Constants::OBJECT_INVALID;
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto targetOid = Services::Events::ExtractArgument<ObjectID>(args);
+        auto targetOid = args.extract<ObjectID>();
         auto *pTargetObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(targetOid));
         if (pTargetObject == nullptr ||
             (pTargetObject->m_nObjectType != Constants::ObjectType::Door &&
              pTargetObject->m_nObjectType != Constants::ObjectType::Waypoint))
         {
             LOG_ERROR("Transition destination object is not valid. Valid targets are doors or waypoints.");
-            return Services::Events::Arguments(retVal);
+            return Constants::OBJECT_INVALID;
         }
 
         Vector vTransitionPosition;
-        vTransitionPosition.x = Services::Events::ExtractArgument<float>(args);
+        vTransitionPosition.x = args.extract<float>();
         ASSERT_OR_THROW(vTransitionPosition.x >= 0.0f);
         ASSERT_OR_THROW(vTransitionPosition.x < pArea->m_nWidth * 10.0f);
-        vTransitionPosition.y = Services::Events::ExtractArgument<float>(args);
+        vTransitionPosition.y = args.extract<float>();
         ASSERT_OR_THROW(vTransitionPosition.y >= 0.0f);
         ASSERT_OR_THROW(vTransitionPosition.y < pArea->m_nHeight * 10.0f);
-        vTransitionPosition.z = Services::Events::ExtractArgument<float>(args);
+        vTransitionPosition.z = args.extract<float>();
 
-        const auto size = Services::Events::ExtractArgument<float>(args);
+        const auto size = args.extract<float>();
         ASSERT_OR_THROW(size > 0.0f);
         ASSERT_OR_THROW(vTransitionPosition.x + size < pArea->m_nWidth * 10.0f);
         ASSERT_OR_THROW(vTransitionPosition.y + size < pArea->m_nHeight * 10.0f);
@@ -534,7 +353,7 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
         trigger->CreateNewGeometry(size, vTransitionPosition, pArea);
 
         // Set its tag if supplied
-        const auto tag = Services::Events::ExtractArgument<std::string>(args);
+        const auto tag = args.extract<std::string>();
         if (!tag.empty())
         {
             trigger->m_sTag = CExoString(tag.c_str());
@@ -548,23 +367,21 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
 
         // And add to area
         trigger->AddToArea(pArea, vTransitionPosition.x, vTransitionPosition.y, vTransitionPosition.z, false);
-        retVal = trigger->m_idSelf;
+        return trigger->m_idSelf;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Constants::OBJECT_INVALID;
 }
 
-ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetTileAnimationLoop(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
-        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        const auto tileY = args.extract<float>();
           ASSERT_OR_THROW(tileY >= 0.0f);
-        const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
+        const auto tileAnimLoop = args.extract<int32_t>();
           ASSERT_OR_THROW(tileAnimLoop >= 1);
           ASSERT_OR_THROW(tileAnimLoop <= 3);
 
@@ -572,20 +389,9 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
         {
             switch(tileAnimLoop)
             {
-                case 1:
-                    retVal = pTile->m_nAnimLoop1;
-                    break;
-
-                case 2:
-                    retVal = pTile->m_nAnimLoop2;
-                    break;
-
-                case 3:
-                    retVal = pTile->m_nAnimLoop3;
-                    break;
-
-                default:
-                    break;
+                case 1: return pTile->m_nAnimLoop1;
+                case 2: return pTile->m_nAnimLoop2;
+                case 3: return pTile->m_nAnimLoop3;
             }
         }
         else
@@ -594,21 +400,21 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetTileAnimationLoop(ArgumentStack&& args)
 {
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
-        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        const auto tileY = args.extract<float>();
           ASSERT_OR_THROW(tileY >= 0.0f);
-        const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
+        const auto tileAnimLoop = args.extract<int32_t>();
           ASSERT_OR_THROW(tileAnimLoop >= 1);
           ASSERT_OR_THROW(tileAnimLoop <= 3);
-        const auto tileEnabled = !!Services::Events::ExtractArgument<int32_t>(args);
+        const auto tileEnabled = !!args.extract<int32_t>();
 
         if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
         {
@@ -617,16 +423,11 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
                 case 1:
                     pTile->m_nAnimLoop1 = tileEnabled;
                     break;
-
                 case 2:
                     pTile->m_nAnimLoop2 = tileEnabled;
                     break;
-
                 case 3:
                     pTile->m_nAnimLoop3 = tileEnabled;
-                    break;
-
-                default:
                     break;
             }
         }
@@ -636,22 +437,21 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetTileModelResRef(ArgumentStack&& args)
 {
-    std::string retVal = "";
-    if (auto* pArea = area(args))
+    if (auto* pArea = Utils::PopArea(args))
     {
-        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        const auto tileX = args.extract<float>();
         ASSERT_OR_THROW(tileX >= 0.0f);
-        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        const auto tileY = args.extract<float>();
         ASSERT_OR_THROW(tileY >= 0.0f);
 
         if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
         {
-            retVal = pTile->m_pTileData->GetModelResRef().GetResRefStr();
+            return pTile->m_pTileData->GetModelResRef().GetResRefStr();
         }
         else
         {
@@ -659,61 +459,56 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return "";
 }
 
-ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack TestDirectLine(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto fStartX = Services::Events::ExtractArgument<float>(args);
+        const auto fStartX = args.extract<float>();
           ASSERT_OR_THROW(fStartX >= 0.0f);
-        const auto fStartY = Services::Events::ExtractArgument<float>(args);
+        const auto fStartY = args.extract<float>();
           ASSERT_OR_THROW(fStartY >= 0.0f);
-        const auto fEndX = Services::Events::ExtractArgument<float>(args);
+        const auto fEndX = args.extract<float>();
           ASSERT_OR_THROW(fEndX >= 0.0f);
-        const auto fEndY = Services::Events::ExtractArgument<float>(args);
+        const auto fEndY = args.extract<float>();
           ASSERT_OR_THROW(fEndY >= 0.0f);
-        const auto fPerSpace = Services::Events::ExtractArgument<float>(args);
+        const auto fPerSpace = args.extract<float>();
           ASSERT_OR_THROW(fPerSpace >= 0.0f);
-        const auto fHeight = Services::Events::ExtractArgument<float>(args);
+        const auto fHeight = args.extract<float>();
             ASSERT_OR_THROW(fHeight >= 0.0f);
-        const auto bIgnoreDoors = Services::Events::ExtractArgument<int32_t>(args);
+        const auto bIgnoreDoors = args.extract<int32_t>();
 
-        retVal = pArea->TestDirectLine(fStartX, fStartY, fEndX, fEndY, fPerSpace, fHeight, bIgnoreDoors);
+        return pArea->TestDirectLine(fStartX, fStartY, fEndX, fEndY, fPerSpace, fHeight, bIgnoreDoors);
     }
 
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetMusicIsPlaying(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto bBattleMusic = Services::Events::ExtractArgument<int32_t>(args) != 0;
+        const auto bBattleMusic = !!args.extract<int32_t>();
 
-        retVal = bBattleMusic ? pArea->m_pAmbientSound->m_bBattlePlaying : pArea->m_pAmbientSound->m_bMusicPlaying;
+        return bBattleMusic ? pArea->m_pAmbientSound->m_bBattlePlaying : pArea->m_pAmbientSound->m_bMusicPlaying;
     }
 
-    return Services::Events::Arguments(retVal);
+    return 0;
 }
 
-ArgumentStack Area::CreateGenericTrigger(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack CreateGenericTrigger(ArgumentStack&& args)
 {
-    ObjectID oidTrigger = Constants::OBJECT_INVALID;
-
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto fX = Services::Events::ExtractArgument<float>(args);
+        const auto fX = args.extract<float>();
           ASSERT_OR_THROW(fX >= 0.0f);
-        const auto fY = Services::Events::ExtractArgument<float>(args);
+        const auto fY = args.extract<float>();
           ASSERT_OR_THROW(fY >= 0.0f);
-        const auto fZ = Services::Events::ExtractArgument<float>(args);
-        const auto tag = Services::Events::ExtractArgument<std::string>(args);
-        const auto fSize = Services::Events::ExtractArgument<float>(args);
+        const auto fZ = args.extract<float>();
+        const auto tag = args.extract<std::string>();
+        const auto fSize = args.extract<float>();
           ASSERT_OR_THROW(fSize >= 0.0f);
 
         Vector vPosition = {fX, fY, fZ};
@@ -732,51 +527,51 @@ ArgumentStack Area::CreateGenericTrigger(ArgumentStack&& args)
 
         pTrigger->AddToArea(pArea, vPosition.x, vPosition.y, vPosition.z);
 
-        oidTrigger = pTrigger->m_idSelf;
+        return pTrigger->m_idSelf;
     }
 
-    return Services::Events::Arguments(oidTrigger);
+    return Constants::OBJECT_INVALID;
 }
 
-ArgumentStack Area::AddObjectToExclusionList(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddObjectToExclusionList(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
-    m_ExportExclusionList.emplace(oidObject);
+    s_ExportExclusionList.emplace(oidObject);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::RemoveObjectFromExclusionList(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RemoveObjectFromExclusionList(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
-    m_ExportExclusionList.erase(oidObject);
+    s_ExportExclusionList.erase(oidObject);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Area::ExportGIT(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        auto fileName = Services::Events::ExtractArgument<std::string>(args);
+        auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(fileName.size() <= 16);
         if (fileName.empty())
             fileName = pArea->m_cResRef.GetResRefStr();
 
-        const auto exportVarTable = !!Services::Events::ExtractArgument<int32_t>(args);
-        const auto exportUUID = !!Services::Events::ExtractArgument<int32_t>(args);
-        const auto objectFilter = Services::Events::ExtractArgument<int32_t>(args);
+        const auto exportVarTable = !!args.extract<int32_t>();
+        const auto exportUUID = !!args.extract<int32_t>();
+        const auto objectFilter = args.extract<int32_t>();
 
         std::string alias;
         try
         {
-            alias = Services::Events::ExtractArgument<std::string>(args);
+            alias = args.extract<std::string>();
         }
         catch (const std::runtime_error& e)
         {
@@ -802,7 +597,7 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
             {
                 if (auto *pGameObject = Utils::GetGameObject(pArea->m_aGameObjects[i]))
                 {
-                    if (m_ExportExclusionList.find(pGameObject->m_idSelf) != m_ExportExclusionList.end())
+                    if (s_ExportExclusionList.find(pGameObject->m_idSelf) != s_ExportExclusionList.end())
                         continue;
 
                     if (auto *pCreature = Utils::AsNWSCreature(pGameObject))
@@ -887,18 +682,18 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
-ArgumentStack Area::GetTileInfo(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetTileInfo(ArgumentStack&& args)
 {
     int32_t id = -1, height = -1, orientation = -1, x = -1, y = -1;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        const auto tileX = args.extract<float>();
           ASSERT_OR_THROW(tileX >= 0.0f);
-        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        const auto tileY = args.extract<float>();
           ASSERT_OR_THROW(tileY >= 0.0f);
 
         if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
@@ -911,21 +706,21 @@ ArgumentStack Area::GetTileInfo(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(id, height, orientation, x, y);
+    return {id, height, orientation, x, y};
 }
 
-ArgumentStack Area::ExportARE(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack ExportARE(ArgumentStack&& args)
 {
     int32_t retVal = false;
 
-    if (auto *pArea = area(args))
+    if (auto *pArea = Utils::PopArea(args))
     {
-        const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+        const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
-        const auto newName = Services::Events::ExtractArgument<std::string>(args);
-        const auto newTag = Services::Events::ExtractArgument<std::string>(args);
-        auto alias = Services::Events::ExtractArgument<std::string>(args);
+        const auto newName = args.extract<std::string>();
+        const auto newTag = args.extract<std::string>();
+        auto alias = args.extract<std::string>();
           ASSERT_OR_THROW(!alias.empty());
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
@@ -1058,7 +853,84 @@ ArgumentStack Area::ExportARE(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
+NWNX_EXPORT ArgumentStack GetAmbientSoundDay(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+            return pArea->m_pAmbientSound->m_nSoundDayTrack;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetAmbientSoundNight(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+            return pArea->m_pAmbientSound->m_nSoundNightTrack;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetAmbientSoundDayVolume(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+            return pArea->m_pAmbientSound->m_nDayVolume;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetAmbientSoundNightVolume(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+            return pArea->m_pAmbientSound->m_nNightVolume;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        Vector v;
+        v.x = args.extract<float>();
+        v.y = args.extract<float>();
+        v.z = args.extract<float>();
+
+        const std::string sResRef = args.extract<std::string>();
+        if(!sResRef.empty())
+        {
+            CResGFF resGFF(Constants::ResRefType::UTS, (char*)"UTS ", sResRef.c_str());
+            if(resGFF.m_bResourceLoaded)
+            {
+                CResStruct resStruct{};
+                resGFF.GetTopLevelStruct(&resStruct);
+                CNWSSoundObject *pSound = new CNWSSoundObject();
+                if(pSound->Load(&resGFF, &resStruct))
+                {
+                    pSound->AddToArea(pArea);
+                    pSound->ChangePosition(v);
+                    return pSound->m_idSelf;
+                }
+                else
+                {
+                    delete pSound;
+                }
+            }
+        }
+    }
+    
+    return Constants::OBJECT_INVALID;
 }

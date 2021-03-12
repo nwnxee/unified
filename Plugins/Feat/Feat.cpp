@@ -16,7 +16,6 @@
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
 #include <cmath>
 
 using namespace NWNXLib;
@@ -36,30 +35,43 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Feat {
 
+static Hooks::Hook s_GetTotalEffectBonusHook;
+static Hooks::Hook s_SavingThrowRollHook;
+static Hooks::Hook s_GetWeaponPowerHook;
+static Hooks::Hook s_AddFeatHook;
+static Hooks::Hook s_RemoveFeatHook;
+static Hooks::Hook s_OnApplyBonusFeatHook;
+static Hooks::Hook s_OnRemoveBonusFeatHook;
+static Hooks::Hook s_EatTURDHook;
+
 Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
 
 #undef REGISTER
 
-    m_ShowEffectIcon = GetServices()->m_config->Get<bool>("SHOW_EFFECT_ICON", false);
+    m_ShowEffectIcon = Config::Get<bool>("SHOW_EFFECT_ICON", false);
 
     // We want the feat bonuses to not count toward limits
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, int32_t, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t>(&GetTotalEffectBonusHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti, int32_t, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t>(&SavingThrowRollHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti, int32_t, CNWSCreature*, CNWSObject*, int32_t>(&GetWeaponPowerHook);
+    s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
+                                                             (void*)&GetTotalEffectBonusHook, Hooks::Order::Early);
+    s_SavingThrowRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
+                                                         (void*)&SavingThrowRollHook, Hooks::Order::Early);
+    s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
+                                                        (void*)&GetWeaponPowerHook, Hooks::Order::Early);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats7AddFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&AddFeatHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&RemoveFeatHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
-
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, int32_t, CNWSPlayer*, CNWSPlayerTURD*>(&EatTURDHook);
+    s_AddFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7AddFeatEt, (void*)&AddFeatHook, Hooks::Order::Early);
+    s_RemoveFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, (void*)&RemoveFeatHook, Hooks::Order::Early);
+    s_OnApplyBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti,
+                                                          (void*)&OnApplyBonusFeatHook, Hooks::Order::Early);
+    s_OnRemoveBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect,
+                                                           (void*)&OnRemoveBonusFeatHook, Hooks::Order::Early);
+    s_EatTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&EatTURDHook, Hooks::Order::Early);
 }
 
 Feat::~Feat()
@@ -308,12 +320,12 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     // SPELLSAVEDC
     if (g_plugin->m_FeatSpellSaveDC[nFeat] != 0)
     {
-        static NWNXLib::Hooking::FunctionHook* pCalculateSpellSaveDC_hook;
+        static NWNXLib::Hooks::Hook pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
         {
-            pCalculateSpellSaveDC_hook = g_plugin->GetServices()->m_hooks->RequestExclusiveHook
-                    <Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi>(
-                    +[](CNWSCreature *pThis, int32_t nSpellID) -> int
+            pCalculateSpellSaveDC_hook = Hooks::HookFunction(
+                    Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi,
+                    (void*)+[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
                         int iMods = 0;
                         for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
@@ -324,7 +336,7 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                             }
                         }
                         return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
-                    });
+                    }, Hooks::Order::Late);
         }
     }
 
@@ -370,141 +382,126 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     }
 }
 
-void Feat::SavingThrowRollHook(
-        bool before,
-        CNWSCreature *pCreature,
-        uint8_t nSaveType,
-        uint16_t,
-        uint8_t nSpecificType,
-        uint32_t oidSaveVersus,
-        int32_t, uint16_t, int32_t)
+uint8_t Feat::SavingThrowRollHook(CNWSCreature *pCreature, uint8_t nSaveType, uint16_t nDifficultyClass, uint8_t nSpecificType,
+                               ObjectID oidSaveVersus, int32_t bPrint, uint16_t nFeat, int32_t bQueueFeedback)
 {
-    auto server = Globals::AppManager()->m_pServerExoApp;
-    static uint16_t savingThrowBonusLimit;
-    if (before)
-    {
-        savingThrowBonusLimit = server->GetSavingThrowBonusLimit();
+    auto *pServerExoApp = Globals::AppManager()->m_pServerExoApp;
+    uint16_t savingThrowBonusLimit = pServerExoApp->GetSavingThrowBonusLimit();
 
-        auto tgtCreature = server->GetCreatureByGameObjectID(oidSaveVersus);
-        for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
-        {
-            auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
-            auto modSaveBonus = g_plugin->m_FeatSave[nFeat][nSaveType] + g_plugin->m_FeatSave[nFeat][Constants::SavingThrow::All];
-            uint8_t modSaveVSRaceBonus = 0;
-            if (tgtCreature)
-            {
-                std::list<uint8_t> saveBonuses = {};
-                for (int32_t k = 0; k <= Constants::SavingThrow::MAX; k++)
-                {
-                    saveBonuses.push_front(g_plugin->m_FeatSaveVsRace[nFeat][k][tgtCreature->m_pStats->m_nRace]);
-                    saveBonuses.push_front(g_plugin->m_FeatSaveVsTypeRace[nFeat][k][nSpecificType][tgtCreature->m_pStats->m_nRace]);
-                }
-                modSaveVSRaceBonus = *std::max_element(saveBonuses.begin(), saveBonuses.end());
-            }
-            auto modSaveVSTypeBonus = g_plugin->m_FeatSaveVsType[nFeat][nSaveType][nSpecificType] +
-                                      g_plugin->m_FeatSaveVsType[nFeat][Constants::SavingThrow::All][nSpecificType];
-            server->SetSavingThrowBonusLimit(
-                    server->GetSavingThrowBonusLimit() + modSaveBonus + modSaveVSRaceBonus + modSaveVSTypeBonus);
-        }
-    }
-    else
+    auto *pTargetCreature = pServerExoApp->GetCreatureByGameObjectID(oidSaveVersus);
+    for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
     {
-        server->SetSavingThrowBonusLimit(savingThrowBonusLimit);
+        auto nListFeat = pCreature->m_pStats->m_lstFeats.element[j];
+        auto modSaveBonus = g_plugin->m_FeatSave[nFeat][nSaveType] + g_plugin->m_FeatSave[nListFeat][Constants::SavingThrow::All];
+        uint8_t modSaveVSRaceBonus = 0;
+        if (pTargetCreature)
+        {
+            std::list<uint8_t> saveBonuses = {};
+            for (int32_t k = 0; k <= Constants::SavingThrow::MAX; k++)
+            {
+                saveBonuses.push_front(g_plugin->m_FeatSaveVsRace[nListFeat][k][pTargetCreature->m_pStats->m_nRace]);
+                saveBonuses.push_front(g_plugin->m_FeatSaveVsTypeRace[nListFeat][k][nSpecificType][pTargetCreature->m_pStats->m_nRace]);
+            }
+            modSaveVSRaceBonus = *std::max_element(saveBonuses.begin(), saveBonuses.end());
+        }
+        auto modSaveVSTypeBonus = g_plugin->m_FeatSaveVsType[nListFeat][nSaveType][nSpecificType] +
+                                  g_plugin->m_FeatSaveVsType[nListFeat][Constants::SavingThrow::All][nSpecificType];
+        pServerExoApp->SetSavingThrowBonusLimit(
+                pServerExoApp->GetSavingThrowBonusLimit() + modSaveBonus + modSaveVSRaceBonus + modSaveVSTypeBonus);
     }
+
+    auto retVal = s_SavingThrowRollHook->CallOriginal<uint8_t>(pCreature, nSaveType, nDifficultyClass, nSpecificType,
+                                                               oidSaveVersus, bPrint, nFeat, bQueueFeedback);
+
+    pServerExoApp->SetSavingThrowBonusLimit(savingThrowBonusLimit);
+
+    return retVal;
 }
 
-void Feat::GetTotalEffectBonusHook(
-        bool before,
-        CNWSCreature *pCreature,
-        uint8_t nEffectBonusType,
-        CNWSObject *pObject,
-        int32_t, int32_t, uint8_t, uint8_t, uint8_t nSkill, uint8_t, int32_t)
+int32_t Feat::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBonusType, CNWSObject *pObject,
+                                      int32_t bElementalDamage, int32_t bForceMax, uint8_t nSaveType, uint8_t nSpecificType,
+                                      uint8_t nSkill, uint8_t nAbilityScore, int32_t bOffHand)
 {
-    auto server = Globals::AppManager()->m_pServerExoApp;
-    static uint16_t attackBonusLimit;
-    static uint16_t abilityBonusLimit;
-    static uint16_t saveBonusLimit;
+    auto *pServerExoApp = Globals::AppManager()->m_pServerExoApp;
+    uint16_t attackBonusLimit = pServerExoApp->GetAttackBonusLimit();
+    uint16_t abilityBonusLimit = pServerExoApp->GetAbilityBonusLimit();
+    uint16_t saveBonusLimit = pServerExoApp->GetSavingThrowBonusLimit();
 
-    if (before)
+    CNWSCreature* pTargetCreature = nullptr;
+    if (pObject != nullptr)
     {
-        if (nEffectBonusType == 1)
-            attackBonusLimit = server->GetAttackBonusLimit();
-        else if (nEffectBonusType == 3)
-            saveBonusLimit = server->GetSavingThrowBonusLimit();
-        else if (nEffectBonusType == 4)
-            abilityBonusLimit = server->GetAbilityBonusLimit();
-        CNWSCreature* tgtCreature = nullptr;
-        if (pObject != nullptr)
-        {
-            tgtCreature = server->GetCreatureByGameObjectID(pObject->m_idSelf);
-        }
-        for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
-        {
-            auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
-            if (nEffectBonusType == 1)
-            {
-                auto modABBonus = g_plugin->m_FeatAB[nFeat];
-                uint8_t modABVSRaceBonus = 0;
-                if (tgtCreature)
-                    modABVSRaceBonus = g_plugin->m_FeatABVsRace[nFeat][tgtCreature->m_pStats->m_nRace];
-                server->SetAttackBonusLimit(server->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
-            }
-            else if (nEffectBonusType == 3)
-            {
-                auto modSaveBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
-                uint8_t modSaveVSRaceBonus = 0;
-                if (tgtCreature)
-                {
-                    std::list<uint8_t> saveBonuses = {};
-                    auto featRace = g_plugin->m_FeatSaveVsRace[nFeat][tgtCreature->m_pStats->m_nRace];
-                    saveBonuses.push_front(featRace[Constants::SavingThrow::All]);
-                    saveBonuses.push_front(featRace[Constants::SavingThrow::Fortitude]);
-                    saveBonuses.push_front(featRace[Constants::SavingThrow::Reflex]);
-                    saveBonuses.push_front(featRace[Constants::SavingThrow::Will]);
-                    modSaveVSRaceBonus = *std::max_element(saveBonuses.begin(), saveBonuses.end());
-                }
-                server->SetSavingThrowBonusLimit(server->GetSavingThrowBonusLimit() + modSaveBonus + modSaveVSRaceBonus);
-            }
-            else if (nEffectBonusType == 4)
-            {
-                auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
-                server->SetAbilityBonusLimit(server->GetAbilityBonusLimit() + modAbilityBonus);
-            }
-        }
+        pTargetCreature = pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     }
-    else
-    {
-        if (nEffectBonusType == 1)
-            server->SetAttackBonusLimit(attackBonusLimit);
-        else if (nEffectBonusType == 3)
-            server->SetSavingThrowBonusLimit(saveBonusLimit);
-        else if (nEffectBonusType == 4)
-            server->SetAbilityBonusLimit(abilityBonusLimit);
-    }
-}
 
-void Feat::GetWeaponPowerHook(bool before, CNWSCreature *pCreature, CNWSObject *pObject, int32_t)
-{
-    auto server = Globals::AppManager()->m_pServerExoApp;
-    static uint16_t attackBonusLimit;
-    if (before)
+    for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
     {
-        attackBonusLimit = server->GetAttackBonusLimit();
-        for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
+        auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
+        if (nEffectBonusType == 1)
         {
-            auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
             auto modABBonus = g_plugin->m_FeatAB[nFeat];
             uint8_t modABVSRaceBonus = 0;
-            auto tgtCreature = server->GetCreatureByGameObjectID(pObject->m_idSelf);
-            if (tgtCreature)
-                modABVSRaceBonus = g_plugin->m_FeatABVsRace[nFeat][tgtCreature->m_pStats->m_nRace];
-            server->SetAttackBonusLimit(server->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
+            if (pTargetCreature)
+                modABVSRaceBonus = g_plugin->m_FeatABVsRace[nFeat][pTargetCreature->m_pStats->m_nRace];
+            pServerExoApp->SetAttackBonusLimit(pServerExoApp->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
+        }
+        else if (nEffectBonusType == 3)
+        {
+            auto modSaveBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
+            uint8_t modSaveVSRaceBonus = 0;
+            if (pTargetCreature)
+            {
+                std::list<uint8_t> saveBonuses = {};
+                auto featRace = g_plugin->m_FeatSaveVsRace[nFeat][pTargetCreature->m_pStats->m_nRace];
+                saveBonuses.push_front(featRace[Constants::SavingThrow::All]);
+                saveBonuses.push_front(featRace[Constants::SavingThrow::Fortitude]);
+                saveBonuses.push_front(featRace[Constants::SavingThrow::Reflex]);
+                saveBonuses.push_front(featRace[Constants::SavingThrow::Will]);
+                modSaveVSRaceBonus = *std::max_element(saveBonuses.begin(), saveBonuses.end());
+            }
+            pServerExoApp->SetSavingThrowBonusLimit(
+                    pServerExoApp->GetSavingThrowBonusLimit() + modSaveBonus + modSaveVSRaceBonus);
+        }
+        else if (nEffectBonusType == 4)
+        {
+            auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
+            pServerExoApp->SetAbilityBonusLimit(pServerExoApp->GetAbilityBonusLimit() + modAbilityBonus);
         }
     }
-    else
+
+    auto retVal = s_GetTotalEffectBonusHook->CallOriginal<int32_t>(pCreature, nEffectBonusType, pObject, bElementalDamage,
+                                                                   bForceMax, nSaveType, nSpecificType, nSkill, nAbilityScore, bOffHand);
+
+    if (nEffectBonusType == 1)
+        pServerExoApp->SetAttackBonusLimit(attackBonusLimit);
+    else if (nEffectBonusType == 3)
+        pServerExoApp->SetSavingThrowBonusLimit(saveBonusLimit);
+    else if (nEffectBonusType == 4)
+        pServerExoApp->SetAbilityBonusLimit(abilityBonusLimit);
+
+    return retVal;
+}
+
+int32_t Feat::GetWeaponPowerHook(CNWSCreature *pCreature, CNWSObject *pObject, int32_t bOffHand)
+{
+    auto *pServerExoApp = Globals::AppManager()->m_pServerExoApp;
+    uint16_t attackBonusLimit = pServerExoApp->GetAttackBonusLimit();
+
+    for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
     {
-        server->SetAttackBonusLimit(attackBonusLimit);
+        auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
+        auto modABBonus = g_plugin->m_FeatAB[nFeat];
+        uint8_t modABVSRaceBonus = 0;
+        auto *pTargetCreature = pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
+        if (pTargetCreature)
+            modABVSRaceBonus = g_plugin->m_FeatABVsRace[nFeat][pTargetCreature->m_pStats->m_nRace];
+        pServerExoApp->SetAttackBonusLimit(pServerExoApp->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
     }
+
+    auto retVal = s_GetWeaponPowerHook->CallOriginal<int32_t>(pCreature, pObject, bOffHand);
+
+    pServerExoApp->SetAttackBonusLimit(attackBonusLimit);
+
+    return retVal;
 }
 
 void Feat::AddFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
@@ -573,40 +570,42 @@ void Feat::AddRemoveBonusSpell(CNWSCreatureStats *pCreatureStats, uint16_t featI
     }
 }
 
-void Feat::AddFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
+void Feat::AddFeatHook(CNWSCreatureStats *pCreatureStats, uint16_t nFeat)
 {
-    if (before)
-        AddFeatEffects(pCreatureStats, featId);
+    AddFeatEffects(pCreatureStats, nFeat);
+    s_AddFeatHook->CallOriginal<void>(pCreatureStats, nFeat);
 }
 
-void Feat::OnApplyBonusFeatHook(bool before, CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, int32_t)
+int32_t Feat::OnApplyBonusFeatHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect, int32_t bLoadingGame)
 {
-    auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
-    if (pCreatureStats && before)
-        AddFeatEffects(pCreatureStats, pEffect->GetInteger(0));
+    if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        AddFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
+
+    return s_OnApplyBonusFeatHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect, bLoadingGame);
 }
 
-void Feat::RemoveFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
+void Feat::RemoveFeatHook(CNWSCreatureStats *pCreatureStats, uint16_t nFeat)
 {
-    if (before)
-        RemoveFeatEffects(pCreatureStats, featId);
+    RemoveFeatEffects(pCreatureStats, nFeat);
+    s_RemoveFeatHook->CallOriginal<void>(pCreatureStats, nFeat);
 }
 
-void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObject *pObject, CGameEffect *pEffect)
+int32_t Feat::OnRemoveBonusFeatHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect)
 {
-    auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
-    if (pCreatureStats && before)
-        RemoveFeatEffects(pCreatureStats, pEffect->GetInteger(0));
+    if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        AddFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
+
+    return s_OnRemoveBonusFeatHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
 }
 
-void Feat::EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD *pPlayerTURD)
+void Feat::EatTURDHook(CNWSPlayer *pPlayer, CNWSPlayerTURD *pTURD)
 {
-    if (before && pPlayerTURD)
+    if (pTURD)
     {
         std::vector<uint64_t> remove(128);
-        for (int i = 0; i < pPlayerTURD->m_appliedEffects.num; i++)
+        for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
         {
-            auto *eff = pPlayerTURD->m_appliedEffects.element[i];
+            auto *eff = pTURD->m_appliedEffects.element[i];
 
             std::string sCustomTag = eff->m_sCustomTag.CStr();
             if (sCustomTag.find("NWNX_Feat_FeatMod_", 0) == 0)
@@ -615,8 +614,10 @@ void Feat::EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD *pPlayerTURD)
             }
         }
         for (auto id: remove)
-            pPlayerTURD->RemoveEffectById(id);
+            pTURD->RemoveEffectById(id);
     }
+
+    s_EatTURDHook->CallOriginal<void>(pPlayer, pTURD);
 }
 
 bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, int32_t param2, int32_t param3, int32_t param4)
@@ -905,17 +906,17 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
 {
-    auto featId = Services::Events::ExtractArgument<int>(args);
-    auto featMod = static_cast<FeatModifier>(Services::Events::ExtractArgument<int>(args));
-    auto param1 = Services::Events::ExtractArgument<int>(args);
-    auto param2 = Services::Events::ExtractArgument<int>(args);
-    auto param3 = Services::Events::ExtractArgument<int>(args);
-    auto param4 = Services::Events::ExtractArgument<int>(args);
+    auto featId = Events::ExtractArgument<int>(args);
+    auto featMod = static_cast<FeatModifier>(Events::ExtractArgument<int>(args));
+    auto param1 = Events::ExtractArgument<int>(args);
+    auto param2 = Events::ExtractArgument<int>(args);
+    auto param3 = Events::ExtractArgument<int>(args);
+    auto param4 = Events::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
         g_plugin->m_Feats.insert(featId);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

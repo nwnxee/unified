@@ -1,17 +1,16 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Tracking {
 
 class Activity
 {
 public:
-    Activity(NWNXLib::Services::MetricsProxy* metrics, NWNXLib::Services::HooksProxy* hooks);
+    Activity(NWNXLib::Services::MetricsProxy* metrics);
 
 private:
-    static void MainLoopUpdate(bool, CServerExoAppInternal* thisPtr);
+    static int32_t MainLoopUpdate(CServerExoAppInternal*);
 };
 
 }

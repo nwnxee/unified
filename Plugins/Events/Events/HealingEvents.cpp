@@ -3,34 +3,29 @@
 #include "API/Functions.hpp"
 #include "API/CNWSObjectActionNode.hpp"
 #include "API/CNWSObject.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
 
-static NWNXLib::Hooking::FunctionHook* s_AIActionHealHook;
-static NWNXLib::Hooking::FunctionHook* s_OnApplyHealHook;
+static NWNXLib::Hooks::Hook s_AIActionHealHook;
+static NWNXLib::Hooks::Hook s_OnApplyHealHook;
 
-HealingEvents::HealingEvents(Services::HooksProxy* hooker)
+HealingEvents::HealingEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
-        s_AIActionHealHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionHealHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", []() {
+        s_AIActionHealHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode,
+                                          (void*)&AIActionHealHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", [hooker]() {
-        s_OnApplyHealHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
-                (&OnApplyHealHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", []() {
+        s_OnApplyHealHook = Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti,
+                                         (void*)&OnApplyHealHook, Hooks::Order::Early);
     });
 }
 
-uint32_t HealingEvents::AIActionHealHook(
-    CNWSCreature *pCreature,
-    CNWSObjectActionNode *pNode)
+uint32_t HealingEvents::AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     uint32_t retVal;
     std::string sAux;
@@ -64,11 +59,7 @@ uint32_t HealingEvents::AIActionHealHook(
     return retVal;
 }
 
-int32_t HealingEvents::OnApplyHealHook(
-        CNWSEffectListHandler *pThis,
-        CNWSObject *pObject,
-        CGameEffect *pGameEffect,
-        int32_t bLoadingGame)
+int32_t HealingEvents::OnApplyHealHook(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pGameEffect, int32_t bLoadingGame)
 {
     uint32_t retVal;
     std::string sAux;

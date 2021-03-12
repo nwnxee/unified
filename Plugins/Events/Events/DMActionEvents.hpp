@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Common.hpp"
+#include "nwnx.hpp"
 #include <cstdint>
 
 namespace Events {
@@ -9,7 +8,7 @@ namespace Events {
 class DMActionEvents
 {
 public:
-    DMActionEvents(NWNXLib::Services::HooksProxy* hooker);
+    DMActionEvents();
 
 private:
     static int32_t HandleGiveEvent(CNWSMessage*, CNWSPlayer*, uint8_t, int32_t, const std::string&, int32_t);

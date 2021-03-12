@@ -1,20 +1,19 @@
-
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class CombatEvents
 {
 public:
-    CombatEvents(NWNXLib::Services::HooksProxy* hooker);
+    CombatEvents();
 
 private:
-    static void StartCombatRoundHook(bool, CNWSCombatRound*, uint32_t);
+    static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
     static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject *, CGameEffect *, BOOL);
-    static void SendServerToPlayerAmbientBattleMusicPlayHook(bool, CNWSMessage*, PlayerID oidPlayer, BOOL bPlay);
+    static int32_t SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage*, PlayerID oidPlayer, BOOL bPlay);
+    static void SendFeedbackMessageHook(CNWSCreature*, uint16_t, CNWCCMessageData*, CNWSPlayer*);
 };
 
 }

@@ -13,6 +13,7 @@ static Time::Time* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
+    LOG_WARNING("Time plugin is deprecated.  Please migrate to inc_sqlite_time.");
     g_plugin = new Time::Time(services);
     return g_plugin;
 }
@@ -24,7 +25,7 @@ Time::Time(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSystemDate);
@@ -47,7 +48,7 @@ ArgumentStack Time::GetTimeStamp(ArgumentStack&&)
 
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dur).count();
 
-    return Services::Events::Arguments((int)seconds);
+    return Events::Arguments((int)seconds);
 }
 
 ArgumentStack Time::GetHighResTimeStamp(ArgumentStack&&)
@@ -57,7 +58,7 @@ ArgumentStack Time::GetHighResTimeStamp(ArgumentStack&&)
 
     auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
 
-    return Services::Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
+    return Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
 }
 
 ArgumentStack Time::GetSystemDate(ArgumentStack&&)
@@ -68,7 +69,7 @@ ArgumentStack Time::GetSystemDate(ArgumentStack&&)
     std::stringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), "%m/%d/%Y");
 
-    return Services::Events::Arguments(ss.str());
+    return Events::Arguments(ss.str());
 }
 
 ArgumentStack Time::GetSystemTime(ArgumentStack&&)
@@ -79,7 +80,7 @@ ArgumentStack Time::GetSystemTime(ArgumentStack&&)
     std::stringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S");
 
-    return Services::Events::Arguments(ss.str());
+    return Events::Arguments(ss.str());
 }
 
 }

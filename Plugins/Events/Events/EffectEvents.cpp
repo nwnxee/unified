@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -12,14 +11,20 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
+static Hooks::Hook s_OnEffectAppliedHook;
+static Hooks::Hook s_OnEffectRemovedHook;
 
-EffectEvents::EffectEvents(Services::HooksProxy* hooker)
+EffectEvents::EffectEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", [hooker]() {
-       hooker->RequestSharedHook<NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti, int32_t>(&OnEffectAppliedHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", []() {
+        s_OnEffectAppliedHook = Hooks::HookFunction(
+                NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
+                (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", [hooker]() {
-        hooker->RequestSharedHook<NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(&OnEffectRemovedHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", []() {
+        s_OnEffectRemovedHook = Hooks::HookFunction(
+                NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
+                (void*)&OnEffectRemovedHook, Hooks::Order::Earliest);
     });
 }
 
@@ -79,14 +84,20 @@ void EffectEvents::HandleEffectHook(const std::string& event, bool before, CNWSO
     Events::SignalEvent(before ? "NWNX_ON_EFFECT_" + event + "_BEFORE" : "NWNX_ON_EFFECT_" + event + "_AFTER" , pObject->m_idSelf);
 }
 
-void EffectEvents::OnEffectAppliedHook(bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect, int32_t)
+int32_t EffectEvents::OnEffectAppliedHook(CNWSEffectListHandler *thisPtr, CNWSObject* pObject, CGameEffect* pEffect, int32_t bLoadingGame)
 {
-    HandleEffectHook("APPLIED", before, pObject, pEffect);
+    HandleEffectHook("APPLIED", true, pObject, pEffect);
+    auto retVal = s_OnEffectAppliedHook->CallOriginal<int32_t>(thisPtr, pObject, pEffect, bLoadingGame);
+    HandleEffectHook("APPLIED", false, pObject, pEffect);
+    return retVal;
 }
 
-void EffectEvents::OnEffectRemovedHook(bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect)
+int32_t EffectEvents::OnEffectRemovedHook(CNWSEffectListHandler *thisPtr, CNWSObject* pObject, CGameEffect* pEffect)
 {
-    HandleEffectHook("REMOVED", before, pObject, pEffect);
+    HandleEffectHook("REMOVED", true, pObject, pEffect);
+    auto retVal = s_OnEffectRemovedHook->CallOriginal<int32_t>(thisPtr, pObject, pEffect);
+    HandleEffectHook("REMOVED", false, pObject, pEffect);
+    return retVal;
 }
 
 }

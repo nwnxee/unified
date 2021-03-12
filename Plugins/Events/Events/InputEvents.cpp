@@ -7,7 +7,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -16,37 +15,40 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerInputWalkToWaypointHook;
-static NWNXLib::Hooking::FunctionHook* s_AddAttackActionsHook;
-static NWNXLib::Hooking::FunctionHook* s_AddCastSpellActionsHook;
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerInputMessageHook;
+static Hooks::Hook s_HandlePlayerToServerInputWalkToWaypointHook;
+static Hooks::Hook s_AddAttackActionsHook;
+static Hooks::Hook s_AddMoveToPointActionToFrontHook;
+static Hooks::Hook s_AddCastSpellActionsHook;
+static Hooks::Hook s_HandlePlayerToServerInputMessageHook;
 
-InputEvents::InputEvents(Services::HooksProxy* hooker)
+InputEvents::InputEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
-        s_HandlePlayerToServerInputWalkToWaypointHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer>
-            (&HandlePlayerToServerInputWalkToWaypointHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", []() {
+        s_HandlePlayerToServerInputWalkToWaypointHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer,
+                (void*)&HandlePlayerToServerInputWalkToWaypointHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", [hooker]() {
-        s_AddAttackActionsHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii>
-            (&AddAttackActionsHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", []() {
+        s_AddAttackActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii,
+                                              (void*)&AddAttackActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii, int32_t>(&AddMoveToPointActionToFrontHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", []() {
+        s_AddMoveToPointActionToFrontHook = Hooks::HookFunction(
+                API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii,
+                (void*)&AddMoveToPointActionToFrontHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", [hooker]() {
-        s_AddCastSpellActionsHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih>
-            (&AddCastSpellActionsHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", []() {
+        s_AddCastSpellActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih,
+                                                 (void*)&AddCastSpellActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", [hooker]() {
-        s_HandlePlayerToServerInputMessageHook = hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh>(&HandlePlayerToServerInputMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", []() {
+        s_HandlePlayerToServerInputMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -123,15 +125,30 @@ int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, ObjectID oidT
     return retVal;
 }
 
-void InputEvents::AddMoveToPointActionToFrontHook(bool before, CNWSCreature *pCreature, uint16_t, Vector,
-        ObjectID, ObjectID oidObjectMovingTo, int32_t, float, float, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t)
+int32_t InputEvents::AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, uint16_t nGroupId, Vector vNewWalkPosition,
+        ObjectID oidNewWalkArea, ObjectID oidObjectMovingTo, int32_t bRunToPoint, float fRange, float fTimeout,
+        int32_t bClientMoving, int32_t nClientPathNumber, int32_t nMoveToPosition, int32_t nMoveMode, int32_t bStraightLine,
+        int32_t bCheckedActionPoint)
 {
+    int32_t retVal;
     if (oidObjectMovingTo != Constants::OBJECT_INVALID)
     {
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
-
-        Events::SignalEvent(before ? "NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE" : "NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER", pCreature->m_idSelf);
+        retVal = s_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(
+                pCreature, nGroupId, vNewWalkPosition, oidNewWalkArea, oidObjectMovingTo, bRunToPoint, fRange, fTimeout,
+                bClientMoving, nClientPathNumber, nMoveToPosition, nMoveMode, bStraightLine, bCheckedActionPoint);
     }
+    else
+    {
+        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
+        Events::SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE", pCreature->m_idSelf);
+        retVal = s_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(
+                pCreature, nGroupId, vNewWalkPosition, oidNewWalkArea, oidObjectMovingTo, bRunToPoint, fRange, fTimeout,
+                bClientMoving, nClientPathNumber, nMoveToPosition, nMoveMode, bStraightLine, bCheckedActionPoint);
+        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
+        Events::SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER", pCreature->m_idSelf);
+    }
+
+    return retVal;
 }
 
 int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t nSpellId, int32_t nMultiClass, int32_t nDomainLevel,

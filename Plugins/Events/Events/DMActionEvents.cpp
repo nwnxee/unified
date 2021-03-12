@@ -10,7 +10,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 #include <vector>
 
 
@@ -21,14 +20,14 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerDungeonMasterMessageHook;
+static Hooks::Hook s_HandlePlayerToServerDungeonMasterMessageHook;
 
-DMActionEvents::DMActionEvents(NWNXLib::Services::HooksProxy* hooker)
+DMActionEvents::DMActionEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", [hooker]() {
-        s_HandlePlayerToServerDungeonMasterMessageHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi>
-            (&HandleDMMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", []() {
+        s_HandlePlayerToServerDungeonMasterMessageHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi,
+                (void*)&HandleDMMessageHook, Hooks::Order::Early);
     });
 }
 

@@ -2,11 +2,6 @@
 #include "Targets/MySQL.hpp"
 #include "Targets/PostgreSQL.hpp"
 #include "Targets/SQLite.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Serialize.hpp"
-#include "Utils.hpp"
-#include "Encoding.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
@@ -36,7 +31,7 @@ SQL::SQL(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(PrepareQuery);
@@ -58,7 +53,7 @@ SQL::SQL(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
+    m_queryMetrics = Config::Get<bool>("QUERY_METRICS", false);
 
     if (m_queryMetrics)
     {
@@ -66,7 +61,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
     }
 
-    auto type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
+    auto type = Config::Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
     LOG_INFO("Connecting to type %s", type);
@@ -99,7 +94,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Invalid database type selected.");
     }
 
-    m_utf8 = GetServices()->m_config->Get<bool>("USE_UTF8", false);
+    m_utf8 = Config::Get<bool>("USE_UTF8", false);
 
     Reconnect(19);
 }
@@ -116,7 +111,7 @@ bool SQL::Reconnect(int32_t attempts)
     {
         try
         {
-            m_target->Connect(GetServices()->m_config.get());
+            m_target->Connect();
             LOG_NOTICE("Reconnect successful.");
             break;
         }
@@ -143,7 +138,7 @@ Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
 
     if (m_utf8)
     {
-        m_activeQuery = Encoding::ToUTF8(m_activeQuery);
+        m_activeQuery = String::ToUTF8(m_activeQuery);
     }
 
     m_activeResults = ResultSet();
@@ -270,7 +265,7 @@ Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
         throw std::runtime_error("Trying to access column outside of range.");
     }
 
-    return Events::Arguments(m_utf8 ? Encoding::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
+    return Events::Arguments(m_utf8 ? String::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
 }
 Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
 {
@@ -296,7 +291,7 @@ Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
     }
     else
     {
-        m_target->PrepareString(position, m_utf8 ? Encoding::ToUTF8(value) : value);
+        m_target->PrepareString(position, m_utf8 ? String::ToUTF8(value) : value);
     }
     return Events::Arguments();
 }
@@ -349,10 +344,10 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
     {
         CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
         if (base64) {
-            std::string serializedObject = SerializeGameObjectB64(pObject);
+            std::string serializedObject = Utils::SerializeGameObjectB64(pObject);
             m_target->PrepareString(position, serializedObject);
         } else {
-            std::vector<uint8_t> serializedObjectVec = SerializeGameObject(pObject);
+            std::vector<uint8_t> serializedObjectVec = Utils::SerializeGameObject(pObject);
             m_target->PrepareBinary(position, serializedObjectVec);
         }
     }
@@ -380,7 +375,7 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
 
     std::string serialized = m_activeRow[column];
     ObjectID retval = API::Constants::OBJECT_INVALID;
-    CGameObject *pObject = base64 ? DeserializeGameObjectB64(serialized) : DeserializeGameObject(std::vector<uint8_t>(serialized.begin(), serialized.end()));
+    CGameObject *pObject = base64 ? Utils::DeserializeGameObjectB64(serialized) : Utils::DeserializeGameObject(std::vector<uint8_t>(serialized.begin(), serialized.end()));
     if (pObject)
     {
         retval = static_cast<ObjectID>(pObject->m_idSelf);
@@ -412,7 +407,7 @@ Events::ArgumentStack SQL::GetAffectedRows(Events::ArgumentStack&&)
 
 Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
 {
-    return Events::Arguments(GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
+    return Events::Arguments(Config::Get<std::string>("TYPE", "MYSQL"));
 }
 
 Events::ArgumentStack SQL::DestroyPreparedQuery(Events::ArgumentStack&&)

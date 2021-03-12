@@ -53,6 +53,16 @@ int NWNX_Encounter_GetPlayerTriggeredOnly(object encounter);
 /// @param playerTriggeredOnly TRUE/FALSE
 void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggeredOnly);
 
+/// @brief Get if the encounter respawns or not.
+/// @param encounter The encounter object.
+/// @return TRUE if the encounter does respawn, FALSE otherwise.
+int NWNX_Encounter_GetCanReset(object encounter);
+
+/// @brief Set if the encounter respawns or not.
+/// @param encounter The encounter object.
+/// @param reset Does the encounter respawn TRUE or FALSE.
+void NWNX_Encounter_SetCanReset(object encounter, int reset);
+
 /// @brief Get the reset time of encounter.
 /// @param encounter The encounter object.
 /// @return The seconds the encounter is defined to reset.
@@ -184,6 +194,26 @@ void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggered
     string sFunc = "SetPlayerTriggeredOnly";
 
     NWNX_PushArgumentInt(NWNX_Encounter, sFunc, playerTriggeredOnly);
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+}
+
+int NWNX_Encounter_GetCanReset(object encounter)
+{
+    string sFunc = "GetCanReset";
+
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+}
+
+void NWNX_Encounter_SetCanReset(object encounter, int reset)
+{
+    string sFunc = "SetCanReset";
+
+    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, reset);
     NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);

@@ -845,6 +845,56 @@ vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, flo
 /// @param oTargetCreature The target creature.
 void NWNX_Creature_DoPerceptionUpdateOnCreature(object oCreature, object oTargetCreature);
 
+/// @brief Get a creatures personal space (meters from center to non-creature objects).
+/// @param oCreature The creature.
+/// @return The creatures personal space.
+float NWNX_Creature_GetPersonalSpace(object oCreature);
+
+/// @brief Set a creatures personal space (meters from center to non-creature objects).
+/// @param oCreature The creature.
+/// @param fPerspace The creatures personal space.
+void NWNX_Creature_SetPersonalSpace(object oCreature, float fPerspace);
+
+/// @brief Get a creatures creature personal space (meters from center to other creatures).
+/// @param oCreature The creature.
+/// @return The creatures creature personal space.
+float NWNX_Creature_GetCreaturePersonalSpace(object oCreature);
+
+/// @brief Set a creatures creature personal space (meters from center to other creatures).
+/// @param oCreature The creature.
+/// @param fCrePerspace The creatures creature personal space.
+void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace);
+
+/// @brief Get a creatures height.
+/// @param oCreature The creature.
+/// @return The creatures height.
+float NWNX_Creature_GetHeight(object oCreature);
+
+/// @brief Set a creatures height.
+/// @param oCreature The creature.
+/// @param fHeight The creatures height.
+void NWNX_Creature_SetHeight(object oCreature, float fHeight);
+
+/// @brief Get a creatures hit distance.
+/// @param oCreature The creature.
+/// @return The creatures hit distance.
+float NWNX_Creature_GetHitDistance(object oCreature);
+
+/// @brief Set a creatures hit distance.
+/// @param oCreature The creature.
+/// @param fHitDist The creatures hit distance.
+void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist);
+
+/// @brief Get a creatures preferred attack distance.
+/// @param oCreature The creature.
+/// @return The creatures preferred attack distance.
+float NWNX_Creature_GetPreferredAttackDistance(object oCreature);
+
+/// @brief Set a creatures preferred attack distance.
+/// @param oCreature The creature.
+/// @param fPrefAtckDist The creatures preferred attack distance.
+void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2145,6 +2195,101 @@ void NWNX_Creature_DoPerceptionUpdateOnCreature(object oCreature, object oTarget
     string sFunc = "DoPerceptionUpdateOnCreature";
 
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oTargetCreature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetPersonalSpace(object oCreature)
+{
+    string sFunc = "GetPersonalSpace";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetPersonalSpace(object oCreature, float fPerspace)
+{
+    string sFunc = "SetPersonalSpace";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fPerspace);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetCreaturePersonalSpace(object oCreature)
+{
+    string sFunc = "GetCreaturePersonalSpace";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace)
+{
+    string sFunc = "SetCreaturePersonalSpace";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fCrePerspace);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetHeight(object oCreature)
+{
+    string sFunc = "GetHeight";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetHeight(object oCreature, float fHeight)
+{
+    string sFunc = "SetHeight";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHeight);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetHitDistance(object oCreature)
+{
+    string sFunc = "GetHitDistance";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist)
+{
+    string sFunc = "SetHitDistance";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHitDist);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetPreferredAttackDistance(object oCreature)
+{
+    string sFunc = "GetPreferredAttackDistance";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist)
+{
+    string sFunc = "SetPreferredAttackDistance";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fPrefAtckDist);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

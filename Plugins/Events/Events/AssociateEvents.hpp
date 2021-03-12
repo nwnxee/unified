@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class AssociateEvents
 {
 public:
-    AssociateEvents(NWNXLib::Services::HooksProxy* hooker);
+    AssociateEvents();
 
 private:
-    static void AddAssociateHook(bool, CNWSCreature*, ObjectID, uint16_t);
-    static void RemoveAssociateHook(bool, CNWSCreature*, ObjectID);
+    static void AddAssociateHook(CNWSCreature*, ObjectID, uint16_t);
+    static void RemoveAssociateHook(CNWSCreature*, ObjectID);
+    static void UnpossessFamiliarHook(CNWSCreature*);
 };
 
 }

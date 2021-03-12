@@ -1,9 +1,10 @@
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
 
 #include "MySQL.hpp"
-#include "Services/Config/Config.hpp"
 
 #include <string.h>
+
+using namespace NWNXLib;
 
 namespace SQL {
 
@@ -20,13 +21,13 @@ MySQL::~MySQL()
     mysql_close(&m_mysql);
 }
 
-void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
+void MySQL::Connect()
 {
-    const auto host     = config->Get<std::string>("HOST", "localhost");
-    const auto port     = config->Get<int32_t>("PORT", 0);
-    const auto username = config->Require<std::string>("USERNAME");
-    const auto password = config->Require<std::string>("PASSWORD");
-    const auto database = config->Get<std::string>("DATABASE");
+    const auto host     =  Config::Get<std::string>("HOST", "localhost");
+    const auto port     =  Config::Get<int32_t>("PORT", 0);
+    const auto username = *Config::Get<std::string>("USERNAME");
+    const auto password = *Config::Get<std::string>("PASSWORD");
+    const auto database =  Config::Get<std::string>("DATABASE");
     if (database)
     {
         LOG_DEBUG("DB set to %s", (*database));
@@ -41,7 +42,7 @@ void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }
 
-    if (auto charset = config->Get<std::string>("CHARACTER_SET"))
+    if (auto charset = Config::Get<std::string>("CHARACTER_SET"))
     {
         LOG_INFO("Connection character set is '%s'", *charset);
         if (mysql_set_character_set(&m_mysql, charset->c_str()))

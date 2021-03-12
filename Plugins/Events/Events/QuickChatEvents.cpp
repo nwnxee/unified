@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 #include <cstring>
 
 
@@ -14,14 +13,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerQuickChatMessageHook = nullptr;
+static Hooks::Hook s_HandlePlayerToServerQuickChatMessageHook = nullptr;
 
-QuickChatEvents::QuickChatEvents(Services::HooksProxy* hooker)
+QuickChatEvents::QuickChatEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", [hooker]() {
-        m_HandlePlayerToServerQuickChatMessageHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>
-            (&HandlePlayerToServerQuickChatMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", []() {
+        s_HandlePlayerToServerQuickChatMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerQuickChatMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -39,7 +38,7 @@ int32_t QuickChatEvents::HandlePlayerToServerQuickChatMessageHook(CNWSMessage *t
 
     if (PushAndSignal("NWNX_ON_QUICKCHAT_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerQuickChatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+        retVal = s_HandlePlayerToServerQuickChatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
     }
     else
     {

@@ -9,33 +9,59 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
 - Events: added `NWNX_ON_INPUT_EMOTE_*` events to InputEvents, this event fires when a player uses a radial menu emote.
+- Events: added `NWNX_ON_COMBAT_DR_BROKEN_*` events to CombatEvents, this event fires when a creature's limited Damage{Resistance|Reduction} gets broken.
+- Events: added `NWNX_ON_UNPOSSESS_FAMILIAR_*` events to AssociateEvents, this event fires when a player unpossesses a familiar.
 - Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
 - Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
+- Tweaks: added `NWNX_TWEAKS_TURD_BY_CDKEY` to associate TURDs by CDKey/CharacterName instead of PlayerName/CharacterName. Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
+- DotNET: Added native function hook support.
+- Optimizations: Added `LuoLookup` optimization that speeds up per-player object updates.
+- Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
 
 ##### New Plugins
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions
+- Admin: {Get/Set}MinLevel()
+- Admin: {Get/Set}MaxLevel()
+- Area: GetAmbientSound{Day/Night}()
+- Area: GetAmbientSound{Day/Night}Volume
+- Area: CreateSoundObject()
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
+- Creature: {Get/Set}PersonalSpace()
+- Creature: {Get/Set}CreaturePersonalSpace()
+- Creature: {Get/Set}Height()
+- Creature: {Get/Set}HitDistance()
+- Creature: {Get/Set}PreferredAttackDistance()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
+- Encounter: {Get/Set}CanReset()
+- Object: {Get|Set}AILevel()
+- Object: {Get|Set}MapNote()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
+- Util: GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
+- Weapon: SetMaxRangedAttackDistanceOverride()
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
+- Damage: added `iAttackType_REAL` and `bKillingBlow` to the `AttackEventData` struct. Updated struct documentation.
+- Race: SetFavoredEnemyFeat() now supports multiple feats per race.
+- Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
+- Optimizations: `GameObjectLookup` no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).
 
 ### Deprecated
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
+- Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
 ### Removed
 - N/A
 
 ### Fixed
-- N/A
+- Feedback: Fixed a memory leak when suppressing messages.
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.16...build8193.20

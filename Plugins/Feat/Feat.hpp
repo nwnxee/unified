@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include <list>
 #include <map>
 #include <set>
@@ -10,7 +8,7 @@ using namespace std;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-using ArgumentStack = Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Feat {
 
@@ -93,14 +91,14 @@ private:
     static void AddRemoveBonusSpell(CNWSCreatureStats*, uint16_t, bool bAdd = true);
     static bool DoFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
 
-    static void AddFeatHook(bool, CNWSCreatureStats*, uint16_t);
-    static void RemoveFeatHook(bool, CNWSCreatureStats*, uint16_t);
-    static void OnApplyBonusFeatHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
-    static void OnRemoveBonusFeatHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
-    static void SavingThrowRollHook(bool, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
-    static void GetWeaponPowerHook(bool, CNWSCreature*, CNWSObject*, int32_t);
-    static void GetTotalEffectBonusHook(bool, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
-    static void EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD*);
+    static void AddFeatHook(CNWSCreatureStats*, uint16_t);
+    static void RemoveFeatHook(CNWSCreatureStats*, uint16_t);
+    static int32_t  OnApplyBonusFeatHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+    static int32_t  OnRemoveBonusFeatHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
+    static uint8_t SavingThrowRollHook(CNWSCreature*, uint8_t, uint16_t, uint8_t, ObjectID, int32_t, uint16_t, int32_t);
+    static int32_t GetWeaponPowerHook(CNWSCreature*, CNWSObject*, int32_t);
+    static int32_t GetTotalEffectBonusHook(CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
+    static void EatTURDHook(CNWSPlayer*, CNWSPlayerTURD*);
 };
 
 }

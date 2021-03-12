@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -13,17 +12,17 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_RequestBuyHook;
-static NWNXLib::Hooking::FunctionHook* s_RequestSellHook;
+static NWNXLib::Hooks::Hook s_RequestBuyHook;
+static NWNXLib::Hooks::Hook s_RequestSellHook;
 
-StoreEvents::StoreEvents(Services::HooksProxy* hooker)
+StoreEvents::StoreEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_BUY_.*", [hooker]() {
-        s_RequestBuyHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10RequestBuyEjjj>(&RequestBuyHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_BUY_.*", []() {
+        s_RequestBuyHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RequestBuyEjjj, (void*)&RequestBuyHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_SELL_.*", [hooker]() {
-        s_RequestSellHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature11RequestSellEjj>(&RequestSellHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_SELL_.*", []() {
+        s_RequestSellHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11RequestSellEjj, (void*)&RequestSellHook, Hooks::Order::Early);
     });
 }
 

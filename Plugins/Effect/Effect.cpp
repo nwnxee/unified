@@ -1,297 +1,223 @@
-#include "Effect.hpp"
+#include "nwnx.hpp"
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWSObject.hpp"
-#include "Utils.hpp"
 
 #include <string>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Effect::Effect* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new Effect::Effect(services);
-    return g_plugin;
-}
+static std::string s_effectExpiredData;
+static uint32_t s_effectExpiredDepth;
+static ObjectID s_effectExpiredCreator;
 
 
-namespace Effect {
-
-Effect::Effect(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(PackEffect);
-    REGISTER(UnpackEffect);
-    REGISTER(SetEffectExpiredScript);
-    REGISTER(GetEffectExpiredData);
-    REGISTER(GetEffectExpiredCreator);
-    REGISTER(ReplaceEffect);
-    REGISTER(GetTrueEffectCount);
-    REGISTER(GetTrueEffect);
-    REGISTER(ReplaceEffectByIndex);
-    REGISTER(RemoveEffectById);
-    REGISTER(SetEffectImmunityBypass);
-
-#undef REGISTER
-
-}
-
-Effect::~Effect()
-{
-}
-
-ArgumentStack Effect::ResolveUnpack(CGameEffect *eff, bool bLink /*=true*/)
-{
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, std::to_string(eff->m_nID));
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nType);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nSubType);
-    Services::Events::InsertArgument(stack, (float)eff->m_fDuration);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryCalendarDay);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryTimeOfDay);
-    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidCreator);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nSpellId);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nCasterLevel);
-
-    if(bLink)
-    {
-        CGameEffect *leftLinkEff = nullptr;
-        if (eff->m_pLinkLeft != nullptr)
-        {
-            leftLinkEff = new CGameEffect(true);
-            leftLinkEff->CopyEffect(eff->m_pLinkLeft, 0);
-        }
-        Services::Events::InsertArgument(stack, leftLinkEff);
-        Services::Events::InsertArgument(stack, eff->m_pLinkLeft != nullptr);
-
-        CGameEffect *rightLinkEff = nullptr;
-        if (eff->m_pLinkRight != nullptr)
-        {
-            rightLinkEff = new CGameEffect(true);
-            rightLinkEff->CopyEffect(eff->m_pLinkRight, 0);
-        }
-        Services::Events::InsertArgument(stack, rightLinkEff);
-        Services::Events::InsertArgument(stack, eff->m_pLinkRight != nullptr);
-    }
-
-    Services::Events::InsertArgument(stack, (int32_t)eff->m_nNumIntegers);
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 0 ? eff->m_nParamInteger[0] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 1 ? eff->m_nParamInteger[1] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 2 ? eff->m_nParamInteger[2] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 3 ? eff->m_nParamInteger[3] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 4 ? eff->m_nParamInteger[4] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 5 ? eff->m_nParamInteger[5] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 6 ? eff->m_nParamInteger[6] : -1));
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 7 ? eff->m_nParamInteger[7] : -1));
-
-    Services::Events::InsertArgument(stack, (float)eff->m_nParamFloat[0]);
-    Services::Events::InsertArgument(stack, (float)eff->m_nParamFloat[1]);
-    Services::Events::InsertArgument(stack, (float)eff->m_nParamFloat[2]);
-    Services::Events::InsertArgument(stack, (float)eff->m_nParamFloat[3]);
-
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[0].CStr()));
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[1].CStr()));
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[2].CStr()));
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[3].CStr()));
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[4].CStr()));
-    Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[5].CStr()));
-
-    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[0]);
-    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[1]);
-    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[2]);
-    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[3]);
-
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].x);
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].y);
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].z);
-
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].x);
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].y);
-    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].z);
-
-    Services::Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
-
-    return stack;
-}
-
-void Effect::ResolvePack(CGameEffect *eff, ArgumentStack& args, bool bReplace/*=false*/)
-{
-    eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
-
-    auto vector1z = Services::Events::ExtractArgument<float>(args);
-    auto vector1y = Services::Events::ExtractArgument<float>(args);
-    auto vector1x = Services::Events::ExtractArgument<float>(args);
-    eff->m_vParamVector[1] = {vector1x, vector1y, vector1z};
-
-    auto vector0z = Services::Events::ExtractArgument<float>(args);
-    auto vector0y = Services::Events::ExtractArgument<float>(args);
-    auto vector0x = Services::Events::ExtractArgument<float>(args);
-    eff->m_vParamVector[0] = {vector0x, vector0y, vector0z};
-
-    eff->m_oidParamObjectID[3] = Services::Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[2] = Services::Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[1] = Services::Events::ExtractArgument<ObjectID>(args);
-    eff->m_oidParamObjectID[0] = Services::Events::ExtractArgument<ObjectID>(args);
-
-    eff->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[3] = Services::Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[2] = Services::Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[1] = Services::Events::ExtractArgument<std::string>(args).c_str();
-    eff->m_sParamString[0] = Services::Events::ExtractArgument<std::string>(args).c_str();
-
-    eff->m_nParamFloat[3] = Services::Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[2] = Services::Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[1] = Services::Events::ExtractArgument<float>(args);
-    eff->m_nParamFloat[0] = Services::Events::ExtractArgument<float>(args);
-
-    eff->SetNumIntegers(8); // allocate array
-    eff->m_nParamInteger[7] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[6] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[5] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[4] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[3] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[2] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[1] = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nParamInteger[0] = Services::Events::ExtractArgument<int32_t>(args);
-    // Overwrite num integers from 8
-    eff->m_nNumIntegers = Services::Events::ExtractArgument<int32_t>(args);
-
-    bool bUpdateLinks = false;
-    if(!bReplace)
-    {
-        auto bRightLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-        auto *pRightLink = Services::Events::ExtractArgument<CGameEffect*>(args);
-        eff->m_pLinkRight = (bRightLinkValid) ? pRightLink : nullptr;
-
-        auto bLeftLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-        auto *pLeftLink = Services::Events::ExtractArgument<CGameEffect*>(args);
-        eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
-
-        if (bLeftLinkValid || bRightLinkValid)
-            bUpdateLinks = true;
-    }
-
-    eff->m_nCasterLevel       = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_bShowIcon          = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_bExpose            = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nSpellId           = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_oidCreator         = Services::Events::ExtractArgument<ObjectID>(args);
-    eff->m_nExpiryTimeOfDay   = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_nExpiryCalendarDay = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_fDuration          = Services::Events::ExtractArgument<float>(args);
-    eff->m_nSubType           = Services::Events::ExtractArgument<int32_t>(args);
-
-    if(!bReplace)
-        eff->m_nType              = Services::Events::ExtractArgument<int32_t>(args);
-
-    if(bUpdateLinks)
-        eff->UpdateLinked();
-}
-
-ArgumentStack Effect::PackEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack PackEffect(ArgumentStack&& args)
 {
     CGameEffect *eff = new CGameEffect(true);
 
-    ResolvePack(eff, args);
+    eff->m_sCustomTag = args.extract<std::string>().c_str();
 
-    return Services::Events::Arguments(eff);
+    auto vector1z = args.extract<float>();
+    auto vector1y = args.extract<float>();
+    auto vector1x = args.extract<float>();
+    eff->m_vParamVector[1] = {vector1x, vector1y, vector1z};
+
+    auto vector0z = args.extract<float>();
+    auto vector0y = args.extract<float>();
+    auto vector0x = args.extract<float>();
+    eff->m_vParamVector[0] = {vector0x, vector0y, vector0z};
+
+    eff->m_oidParamObjectID[3] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[2] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[1] = args.extract<ObjectID>();
+    eff->m_oidParamObjectID[0] = args.extract<ObjectID>();
+
+    eff->m_sParamString[5] = args.extract<std::string>().c_str();
+    eff->m_sParamString[4] = args.extract<std::string>().c_str();
+    eff->m_sParamString[3] = args.extract<std::string>().c_str();
+    eff->m_sParamString[2] = args.extract<std::string>().c_str();
+    eff->m_sParamString[1] = args.extract<std::string>().c_str();
+    eff->m_sParamString[0] = args.extract<std::string>().c_str();
+
+    eff->m_nParamFloat[3] = args.extract<float>();
+    eff->m_nParamFloat[2] = args.extract<float>();
+    eff->m_nParamFloat[1] = args.extract<float>();
+    eff->m_nParamFloat[0] = args.extract<float>();
+
+    eff->SetNumIntegers(8); // allocate array
+    eff->m_nParamInteger[7] = args.extract<int32_t>();
+    eff->m_nParamInteger[6] = args.extract<int32_t>();
+    eff->m_nParamInteger[5] = args.extract<int32_t>();
+    eff->m_nParamInteger[4] = args.extract<int32_t>();
+    eff->m_nParamInteger[3] = args.extract<int32_t>();
+    eff->m_nParamInteger[2] = args.extract<int32_t>();
+    eff->m_nParamInteger[1] = args.extract<int32_t>();
+    eff->m_nParamInteger[0] = args.extract<int32_t>();
+    // Overwrite num integers from 8
+    eff->m_nNumIntegers = args.extract<int32_t>();
+
+    auto bRightLinkValid = args.extract<int32_t>();
+    auto *pRightLink = args.extract<CGameEffect*>();
+    eff->m_pLinkRight = (bRightLinkValid) ? pRightLink : nullptr;
+
+    auto bLeftLinkValid = args.extract<int32_t>();
+    auto *pLeftLink = args.extract<CGameEffect*>();
+    eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
+
+    eff->m_nCasterLevel       = args.extract<int32_t>();
+    eff->m_bShowIcon          = args.extract<int32_t>();
+    eff->m_bExpose            = args.extract<int32_t>();
+    eff->m_nSpellId           = args.extract<int32_t>();
+    eff->m_oidCreator         = args.extract<ObjectID>();
+    eff->m_nExpiryTimeOfDay   = args.extract<int32_t>();
+    eff->m_nExpiryCalendarDay = args.extract<int32_t>();
+    eff->m_fDuration          = args.extract<float>();
+    eff->m_nSubType           = args.extract<int32_t>();
+    eff->m_nType              = args.extract<int32_t>();
+
+    if (bLeftLinkValid || bRightLinkValid)
+        eff->UpdateLinked();
+
+    return Events::Arguments(eff);
 }
-
-ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack UnpackEffect(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto eff = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto eff = Events::ExtractArgument<CGameEffect*>(args);
 
-    stack = ResolveUnpack(eff, true);
+    Events::InsertArgument(stack, (int32_t)eff->m_nType);
+    Events::InsertArgument(stack, (int32_t)eff->m_nSubType);
+    Events::InsertArgument(stack, (float)eff->m_fDuration);
+    Events::InsertArgument(stack, (int32_t)eff->m_nExpiryCalendarDay);
+    Events::InsertArgument(stack, (int32_t)eff->m_nExpiryTimeOfDay);
+    Events::InsertArgument(stack, (ObjectID)eff->m_oidCreator);
+    Events::InsertArgument(stack, (int32_t)eff->m_nSpellId);
+    Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
+    Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
+    Events::InsertArgument(stack, (int32_t)eff->m_nCasterLevel);
+
+    // The DestroyGameEffect at the end of this function will delete any linked effects
+    // as well so we make a copy of the linked effects and send those for unpacking
+    CGameEffect *leftLinkEff = nullptr;
+    if (eff->m_pLinkLeft != nullptr)
+    {
+        leftLinkEff = new CGameEffect(true);
+        leftLinkEff->CopyEffect(eff->m_pLinkLeft, 0);
+    }
+    Events::InsertArgument(stack, leftLinkEff);
+    Events::InsertArgument(stack, eff->m_pLinkLeft != nullptr);
+
+    CGameEffect *rightLinkEff = nullptr;
+    if (eff->m_pLinkRight != nullptr)
+    {
+        rightLinkEff = new CGameEffect(true);
+        rightLinkEff->CopyEffect(eff->m_pLinkRight, 0);
+    }
+    Events::InsertArgument(stack, rightLinkEff);
+    Events::InsertArgument(stack, eff->m_pLinkRight != nullptr);
+
+    Events::InsertArgument(stack, (int32_t)eff->m_nNumIntegers);
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 0 ? eff->m_nParamInteger[0] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 1 ? eff->m_nParamInteger[1] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 2 ? eff->m_nParamInteger[2] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 3 ? eff->m_nParamInteger[3] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 4 ? eff->m_nParamInteger[4] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 5 ? eff->m_nParamInteger[5] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 6 ? eff->m_nParamInteger[6] : -1));
+    Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 7 ? eff->m_nParamInteger[7] : -1));
+
+    Events::InsertArgument(stack, (float)eff->m_nParamFloat[0]);
+    Events::InsertArgument(stack, (float)eff->m_nParamFloat[1]);
+    Events::InsertArgument(stack, (float)eff->m_nParamFloat[2]);
+    Events::InsertArgument(stack, (float)eff->m_nParamFloat[3]);
+
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[0].CStr()));
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[1].CStr()));
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[2].CStr()));
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[3].CStr()));
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[4].CStr()));
+    Events::InsertArgument(stack, std::string(eff->m_sParamString[5].CStr()));
+
+    Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[0]);
+    Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[1]);
+    Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[2]);
+    Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[3]);
+
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[0].x);
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[0].y);
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[0].z);
+
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[1].x);
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[1].y);
+    Events::InsertArgument(stack, (float)eff->m_vParamVector[1].z);
+
+    Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
 
     Utils::DestroyGameEffect(eff);
     return stack;
 }
 
-ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetEffectExpiredScript(ArgumentStack&& args)
 {
-    static bool bOnEffectRemovedHook;
-
-    if (!bOnEffectRemovedHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(
-            +[](bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
+    static Hooks::Hook pOnEffectRemovedHook =
+            Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
+            (void*)+[](CNWSEffectListHandler *pEffectListHandler, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
             {
-                if (before)
+                CExoString &sScriptName = pEffect->m_sParamString[4];
+                if (!sScriptName.IsEmpty())
                 {
-                    CExoString &sScriptName = pEffect->m_sParamString[4];
-                    if (!sScriptName.IsEmpty())
-                    {
-                        g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
-                        g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
+                    s_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
+                    s_effectExpiredCreator = pEffect->m_oidCreator;
 
-                        LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
-                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
+                    LOG_DEBUG("(SetEffectExpiredScript) Running script '%s' on object '%x' with data '%s'",
+                        sScriptName.CStr(), pObject->m_idSelf, s_effectExpiredData);
 
-                        ++g_plugin->m_effectExpiredDepth;
-                        Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
-                        --g_plugin->m_effectExpiredDepth;
-                    }
+                    ++s_effectExpiredDepth;
+                    Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
+                    --s_effectExpiredDepth;
                 }
-            });
+                return pOnEffectRemovedHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
+            }, Hooks::Order::Early);
 
-        bOnEffectRemovedHook = true;
-    }
-
-    auto effect = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto effect = Events::ExtractArgument<CGameEffect*>(args);
 
     // Script name
-    effect->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[4] = args.extract<std::string>().c_str();
     // Data
-    effect->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[5] = args.extract<std::string>().c_str();
 
-    return Services::Events::Arguments(effect);
+    return effect;
 }
 
-ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetEffectExpiredData(ArgumentStack&&)
 {
-    if (g_plugin->m_effectExpiredDepth == 0)
-    {
+    if (s_effectExpiredDepth == 0)
         throw std::runtime_error("Attempted to get effect expired data in an invalid context.");
-    }
 
-    return Services::Events::Arguments(g_plugin->m_effectExpiredData);
+    return s_effectExpiredData;
 }
 
-ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetEffectExpiredCreator(ArgumentStack&&)
 {
-    if (g_plugin->m_effectExpiredDepth == 0)
-    {
+    if (s_effectExpiredDepth == 0)
         throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
-    }
 
-    return Services::Events::Arguments(g_plugin->m_effectExpiredCreator);
+    return s_effectExpiredCreator;
 }
 
-ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack ReplaceEffect(ArgumentStack&& args)
 {
     int found = 0;
-    auto objId = Services::Events::ExtractArgument<ObjectID>(args);
-    auto eOld  = Services::Events::ExtractArgument<CGameEffect*>(args);
-    auto eNew  = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto objId = args.extract<ObjectID>();
+    auto eOld  = args.extract<CGameEffect*>();
+    auto eNew  = args.extract<CGameEffect*>();
 
     ASSERT_OR_THROW(eNew->m_nType == eOld->m_nType);
 
@@ -316,89 +242,4 @@ ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
         }
     }
     return found;
-}
-
-ArgumentStack Effect::GetTrueEffectCount(ArgumentStack&& args)
-{
-    int32_t retVal = 0;
-    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (auto *pObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId)))
-    {
-        retVal = pObject->m_appliedEffects.num;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Effect::GetTrueEffect(ArgumentStack&& args)
-{
-    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
-    auto *pObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
-      ASSERT_OR_THROW(pObject);
-    auto it = Services::Events::ExtractArgument<int32_t>(args);
-      ASSERT_OR_THROW(it >= 0);
-      ASSERT_OR_THROW(it < pObject->m_appliedEffects.num);
-
-    auto *eff = pObject->m_appliedEffects.element[it];
-
-    ArgumentStack stack = ResolveUnpack(eff, false);
-
-    return stack;
-}
-
-ArgumentStack Effect::ReplaceEffectByIndex(ArgumentStack&& args)
-{
-    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if(auto *pObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId)))
-    {
-        auto element = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(element >= 0);
-          ASSERT_OR_THROW(element < pObject->m_appliedEffects.num);
-        auto eff = pObject->m_appliedEffects.element[element];
-
-        ResolvePack(eff, args, true);
-    }
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Effect::RemoveEffectById(ArgumentStack&& args)
-{
-    int32_t ret = 0;
-    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (auto *pObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId)))
-    {
-        auto id = Services::Events::ExtractArgument<std::string>(args);
-        ret = pObject->RemoveEffectById(std::stol(id));
-    }
-
-    return Services::Events::Arguments(ret);
-}
-
-int32_t Effect::GetEffectImmunityHook(CNWSCreatureStats *pStats, uint8_t nType, CNWSCreature * pVersus, BOOL bConsiderFeats)
-{
-    if(g_plugin->m_bBypassImm)
-        return false;
-
-    return g_plugin->m_GetEffectImmunityHook->CallOriginal<BOOL>(pStats, nType, pVersus, bConsiderFeats);
-}
-
-void Effect::InitEffectImmHook()
-{
-    g_plugin->m_GetEffectImmunityHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats17GetEffectImmunityEhP12CNWSCreaturei>(&GetEffectImmunityHook);
-}
-
-ArgumentStack Effect::SetEffectImmunityBypass(ArgumentStack&& args)
-{
-    if(!g_plugin->m_GetEffectImmunityHook)
-        InitEffectImmHook();
-
-    g_plugin->m_bBypassImm = Services::Events::ExtractArgument<int32_t>(args);
-    return Services::Events::Arguments();
-}
-
 }

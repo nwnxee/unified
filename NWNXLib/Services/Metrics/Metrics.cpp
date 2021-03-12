@@ -1,7 +1,8 @@
+#include "nwnx.hpp"
 #include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.cpp"
 
 #include <algorithm>
+#include <thread>
 
 namespace NWNXLib::Services {
 
@@ -114,7 +115,7 @@ void Metrics::ClearResampler(const std::string& measurementName)
     m_resamplers.erase(existingResampler);
 }
 
-void Metrics::Update(Tasks* tasks)
+void Metrics::Update()
 {
     for (auto& resampler : m_resamplers)
     {
@@ -134,8 +135,8 @@ void Metrics::Update(Tasks* tasks)
             std::swap(data->m_unsampled, data->m_processing);
             data->m_isWorkingAsynchronously = true;
 
-            tasks->QueueOnAsyncThread(
-                [this, data, now, tasks]
+            Tasks::QueueOnAsyncThread(
+                [this, data, now]
                 {
                     auto targetTimepoint = now;
 
@@ -157,7 +158,7 @@ void Metrics::Update(Tasks* tasks)
                     data->m_lastFlush = targetTimepoint;
                     data->m_processing.clear();
 
-                    tasks->QueueOnMainThread(
+                    Tasks::QueueOnMainThread(
                         [this, resampledData = std::move(resampledData)]() mutable
                         {
                             this->Push(std::move(resampledData));

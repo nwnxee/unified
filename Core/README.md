@@ -26,6 +26,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
 | `NWNX_CORE_LOG_FORCE_COLOR` | 0-1| 0 | Sets whether to force color output.
 | `NWNX_CORE_LOG_ASYNC` | 0-1| 0 | Sets whether to flush the log to disk in an async thread.
+| `NWNX_CORE_HARD_EXIT` | 0-1| 0 | If set, NWNX will hard kill the process after it unloads.
 
 ## Console Commands
 

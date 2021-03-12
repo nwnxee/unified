@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include <algorithm>
 #include <string>
 #include <random>
@@ -37,23 +36,23 @@ private:
 class Array
 {
 public:
-    Array(NWNXLib::Services::EventsProxy& events);
+    Array();
 
 private:
-    static NWNXLib::Services::Events::ArgumentStack ArrayAt(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayClear(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayContains(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayCopy(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayErase(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayFind(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayInsert(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayPushBack(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayResize(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArrayShuffle(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArraySize(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArraySortAscending(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArraySortDescending(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack ArraySet(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayAt(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayClear(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayContains(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayCopy(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayErase(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayFind(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayInsert(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayPushBack(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayResize(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArrayShuffle(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArraySize(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArraySortAscending(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArraySortDescending(NWNXLib::Events::ArgumentStack&& args);
+    static NWNXLib::Events::ArgumentStack ArraySet(NWNXLib::Events::ArgumentStack&& args);
 
     friend class ArrayImpl<float>;
     friend class ArrayImpl<int32_t>;

@@ -1,6 +1,5 @@
 #include "Experimentals/AdjustReputationFix.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CFactionManager.hpp"
@@ -16,9 +15,9 @@ namespace Experimental {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-AdjustReputationFix::AdjustReputationFix(Services::HooksProxy* hooker)
+AdjustReputationFix::AdjustReputationFix()
 {
-    hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature16AdjustReputationEii, void>(&CNWSCreature__AdjustReputation_Hook);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AdjustReputationEii, (void*)&CNWSCreature__AdjustReputation_Hook, Hooks::Order::Final);
 }
 
 void AdjustReputationFix::CNWSCreature__AdjustReputation_Hook(CNWSCreature *pThis, int32_t nFactionId, int32_t nAdjustment)

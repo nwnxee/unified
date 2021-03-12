@@ -1,7 +1,6 @@
 #include "Events/JournalEvents.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -10,32 +9,44 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-JournalEvents::JournalEvents(Services::HooksProxy* hooker)
+static Hooks::Hook s_HandlePlayerToServerJournalMessageHook;
+
+JournalEvents::JournalEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_JOURNAL_(OPEN|CLOSE)_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage34HandlePlayerToServerJournalMessageEP10CNWSPlayerh, int32_t>(&HandlePlayerToServerJournalMessageHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_JOURNAL_(OPEN|CLOSE)_.*", []() {
+        s_HandlePlayerToServerJournalMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage34HandlePlayerToServerJournalMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerJournalMessageHook, Hooks::Order::Earliest);
     });
 }
 
-void JournalEvents::HandlePlayerToServerJournalMessageHook(bool before, CNWSMessage*, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t JournalEvents::HandlePlayerToServerJournalMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
+    int32_t retVal;
     switch (nMinor)
     {
         case MessageJournalMinor::QuestScreenOpen:
         {
-            Events::SignalEvent(before ? "NWNX_ON_JOURNAL_OPEN_BEFORE" : "NWNX_ON_JOURNAL_OPEN_AFTER", pPlayer->m_oidNWSObject);
+            Events::SignalEvent("NWNX_ON_JOURNAL_OPEN_BEFORE", pPlayer->m_oidNWSObject);
+            retVal = s_HandlePlayerToServerJournalMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            Events::SignalEvent("NWNX_ON_JOURNAL_OPEN_AFTER", pPlayer->m_oidNWSObject);
             break;
         }
 
         case MessageJournalMinor::QuestScreenClosed:
         {
-            Events::SignalEvent(before ? "NWNX_ON_JOURNAL_CLOSE_BEFORE" : "NWNX_ON_JOURNAL_CLOSE_AFTER", pPlayer->m_oidNWSObject);
+            Events::SignalEvent("NWNX_ON_JOURNAL_CLOSE_BEFORE", pPlayer->m_oidNWSObject);
+            retVal = s_HandlePlayerToServerJournalMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            Events::SignalEvent("NWNX_ON_JOURNAL_CLOSE_AFTER", pPlayer->m_oidNWSObject);
             break;
         }
 
         default:
+            retVal = s_HandlePlayerToServerJournalMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
             break;
     }
+
+    return retVal;
 }
 
 }

@@ -339,6 +339,29 @@ void NWNX_Object_SetHasInventory(object obj, int bHasInventory);
 /// @return -1 on error or the engine animation constant
 int NWNX_Object_GetCurrentAnimation(object oObject);
 
+/// @brief Gets the AI level of an object.
+/// @param oObject The object.
+/// @return The AI level (AI_LEVEL_* -1 to 4).
+int NWNX_Object_GetAILevel(object oObject);
+
+/// @brief Sets the AI level of an object.
+/// @param oObject The object.
+/// @param nLevel The level to set (AI_LEVEL_* -1 to 4).
+void NWNX_Object_SetAILevel(object oObject, int nLevel);
+
+/// @brief Retrieves the Map Note (AKA Map Pin) from a waypoint - Returns even if currently disabled.
+/// @param oObject The Waypoint object
+/// @param nID The Language ID (default English)
+/// @param nGender 0 = Male, 1 = Female
+string NWNX_Object_GetMapNote(object oObject, int nID = 0, int nGender = 0);
+
+/// @brief Sets a Map Note (AKA Map Pin) to any waypoint, even if no previous map note. Only updates for clients on area-load. Use SetMapPinEnabled() as required.
+/// @param oObject The Waypoint object
+/// @param sMapNote The contents to set as the Map Note.
+/// @param nID The Language ID (default English)
+/// @param nGender 0 = Male, 1 = Female
+void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nGender = 0);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -831,4 +854,47 @@ int NWNX_Object_GetCurrentAnimation(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetAILevel(object oObject)
+{
+    string sFunc = "GetAILevel";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetAILevel(object oObject, int nLevel)
+{
+    string sFunc = "SetAILevel";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nLevel);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_GetMapNote(object oObject, int nID = 0, int nGender = 0)
+{
+    string sFunc = "GetMapNote";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nGender);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nID);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nGender = 0)
+{
+    string sFunc = "SetMapNote";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nGender);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nID);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sMapNote);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }

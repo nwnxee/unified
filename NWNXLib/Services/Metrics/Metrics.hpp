@@ -11,8 +11,6 @@
 
 namespace NWNXLib::Services {
 
-class Tasks;
-
 class Metrics
 {
 public: // Structures
@@ -48,7 +46,7 @@ public:
         std::chrono::nanoseconds&& interval);
     void ClearResampler(const std::string& measurementName);
 
-    void Update(Tasks* tasks);
+    void Update();
 
 private:
     std::vector<MetricData> m_data;

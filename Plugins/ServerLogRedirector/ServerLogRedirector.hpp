@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 
 namespace ServerLogRedirector {
 
@@ -11,8 +11,8 @@ public:
     virtual ~ServerLogRedirector();
 
 private:
-    static void WriteToLogFileHook(bool, CExoDebugInternal*, CExoString*);
-    static void WriteToErrorFileHook(bool, CExoDebugInternal*, CExoString*);
+    static void WriteToLogFileHook(CExoDebugInternal*, CExoString*);
+    static void WriteToErrorFileHook(CExoDebugInternal*, CExoString*);
 };
 
 }

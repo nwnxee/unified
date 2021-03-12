@@ -2,7 +2,6 @@
 #include "API/CNWSObject.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 
 namespace Events {
@@ -11,23 +10,20 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_AddLockObjectActionHook;
-static NWNXLib::Hooking::FunctionHook* s_AddUnlockObjectActionHook;
+static NWNXLib::Hooks::Hook s_AddLockObjectActionHook;
+static NWNXLib::Hooks::Hook s_AddUnlockObjectActionHook;
 
-ObjectEvents::ObjectEvents(Services::HooksProxy* hooker)
+ObjectEvents::ObjectEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_LOCK_.*", [hooker]() {
-        s_AddLockObjectActionHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN10CNWSObject19AddLockObjectActionEj>
-            (&AddLockObjectActionHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_LOCK_.*", []() {
+        s_AddLockObjectActionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject19AddLockObjectActionEj,
+                                                 (void*)&AddLockObjectActionHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_UNLOCK_.*", [hooker]() {
-        s_AddUnlockObjectActionHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji>
-            (&AddUnlockObjectActionHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_UNLOCK_.*", []() {
+        s_AddUnlockObjectActionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji,
+                                                   (void*)&AddUnlockObjectActionHook, Hooks::Order::Early);
     });
-
 }
 
 int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor)

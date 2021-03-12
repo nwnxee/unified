@@ -1,6 +1,5 @@
 #include "Experimentals/DisableLevelUpValidation.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CFactionManager.hpp"
@@ -21,9 +20,9 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-DisableLevelUpValidation::DisableLevelUpValidation(Services::HooksProxy* hooker)
+DisableLevelUpValidation::DisableLevelUpValidation()
 {
-    hooker->RequestExclusiveHook<API::Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(&ValidateLevelUpHook);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh, (void*)&ValidateLevelUpHook, Hooks::Order::Final);
 }
 
 uint32_t DisableLevelUpValidation::ValidateLevelUpHook(CNWSCreatureStats* pCreatureStats, CNWLevelStats* pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool)

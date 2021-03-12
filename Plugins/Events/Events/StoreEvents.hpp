@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class StoreEvents
 {
 public:
-    StoreEvents(NWNXLib::Services::HooksProxy* hooker);
+    StoreEvents();
 
 private:
     static int32_t RequestBuyHook(CNWSCreature*, ObjectID, ObjectID, ObjectID);

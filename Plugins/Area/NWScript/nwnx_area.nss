@@ -268,6 +268,33 @@ struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, floa
 /// @return TRUE if exported successfully, FALSE if not.
 int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", string sNewTag = "", string sAlias = "NWNX");
 
+/// @brief Get the ambient sound playing in an area during the day.
+/// @param oArea The area to get the sound of.
+/// @return The ambient soundtrack. See ambientsound.2da.
+int NWNX_Area_GetAmbientSoundDay(object oArea);
+
+/// @brief Get the ambient sound playing in an area during the night.
+/// @param oArea The area to get the sound of.
+/// @return The ambient soundtrack. See ambientsound.2da.
+int NWNX_Area_GetAmbientSoundNight(object oArea);
+
+/// @brief Get the volume of the ambient sound playing in an area during the day.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea);
+
+/// @brief Get the volume of the ambient sound playing in an area during the night.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
+
+/// @brief Create a sound object.
+/// @param oArea The area where to create the sound object.
+/// @param vPosition The area position where to create the sound object.
+/// @param sResRef The ResRef of the sound object.
+/// @return The sound object.
+object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -657,4 +684,59 @@ int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", st
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundDay(object oArea)
+{
+    string sFunc = "GetAmbientSoundDay";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundNight(object oArea)
+{
+    string sFunc = "GetAmbientSoundNight";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundDayVolume";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundNightVolume";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef)
+{
+    string sFunc = "CreateSoundObject";
+
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sResRef);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, vPosition.z);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, vPosition.x);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
 }

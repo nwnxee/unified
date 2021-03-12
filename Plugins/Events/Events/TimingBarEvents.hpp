@@ -1,18 +1,17 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Events {
 
 class TimingBarEvents
 {
 public:
-    TimingBarEvents(NWNXLib::Services::HooksProxy* hooker);
+    TimingBarEvents();
 
 private:
-    static void HandlePlayerToServerInputCancelGuiTimingEventHook(bool, CNWSMessage*, CNWSPlayer*);
-    static void SendServerToPlayerGuiTimingEventHook(bool, CNWSMessage*, CNWSPlayer*, int32_t, uint8_t, uint32_t);
+    static int32_t SendServerToPlayerGuiTimingEventHook(CNWSMessage*, CNWSPlayer*, int32_t, uint8_t, uint32_t);
+    static int32_t HandlePlayerToServerInputCancelGuiTimingEventHook(CNWSMessage*, CNWSPlayer*);
 };
 
 }

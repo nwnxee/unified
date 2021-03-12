@@ -11,7 +11,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
 
 namespace Events {
 
@@ -19,29 +18,30 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerBarter_StartBarterHook;
+static Hooks::Hook s_HandlePlayerToServerBarter_StartBarterHook;
+static Hooks::Hook s_SetListAcceptedHook;
+static Hooks::Hook s_SendServerToPlayerBarterCloseBarterHook;
 
 static ObjectID m_initiatorOid;
 static ObjectID m_targetOid;
 
-BarterEvents::BarterEvents(Services::HooksProxy* hooker)
+BarterEvents::BarterEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", [hooker]() {
-        m_HandlePlayerToServerBarter_StartBarterHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
-            (&HandlePlayerToServerBarter_StartBarterHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", []() {
+        s_HandlePlayerToServerBarter_StartBarterHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer,
+                (void*)&HandlePlayerToServerBarter_StartBarterHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", [hooker]() {
-        hooker->RequestSharedHook<Functions::_ZN10CNWSBarter15SetListAcceptedEi, int32_t,
-                CNWSBarter*, int32_t>(&SetListAcceptedHook);
-        hooker->RequestSharedHook<Functions::_ZN11CNWSMessage35SendServerToPlayerBarterCloseBarterEjji, int32_t,
-                CNWSMessage*, uint32_t, uint32_t, int32_t>(&SendServerToPlayerBarterCloseBarterHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", []() {
+        s_SetListAcceptedHook = Hooks::HookFunction(Functions::_ZN10CNWSBarter15SetListAcceptedEi,
+                                             (void*)&SetListAcceptedHook, Hooks::Order::Earliest);
+        s_SendServerToPlayerBarterCloseBarterHook = Hooks::HookFunction(
+                Functions::_ZN11CNWSMessage35SendServerToPlayerBarterCloseBarterEjji,
+                (void*)&SendServerToPlayerBarterCloseBarterHook, Hooks::Order::Earliest);
     });
 }
 
-int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
-        CNWSMessage* pMessage,
-        CNWSPlayer* pPlayer)
+int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(CNWSMessage* pMessage, CNWSPlayer* pPlayer)
 {
     int32_t retVal;
 
@@ -55,7 +55,7 @@ int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
 
     if (PushAndSignal("NWNX_ON_BARTER_START_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerBarter_StartBarterHook->CallOriginal<int32_t>(pMessage, pPlayer);
+        retVal = s_HandlePlayerToServerBarter_StartBarterHook->CallOriginal<int32_t>(pMessage, pPlayer);
     }
     else
         retVal = false;
@@ -65,22 +65,37 @@ int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
     return retVal;
 }
 
-void BarterEvents::SetListAcceptedHook(bool before, CNWSBarter *pBarter, int32_t bAccepted)
+int32_t BarterEvents::SetListAcceptedHook(CNWSBarter *pBarter, int32_t bAccepted)
 {
     if (pBarter && bAccepted)
-        EndedBarter(before, pBarter, bAccepted);
+    {
+        EndedBarter(true, pBarter, bAccepted);
+        auto retVal = s_SetListAcceptedHook->CallOriginal<int32_t>(pBarter, bAccepted);
+        EndedBarter(false, pBarter, bAccepted);
+        return retVal;
+    }
+
+    return s_SetListAcceptedHook->CallOriginal<int32_t>(pBarter, bAccepted);
 }
 
-void BarterEvents::SendServerToPlayerBarterCloseBarterHook(bool before, CNWSMessage*, ObjectID nInitiatorId, ObjectID, int32_t bAccepted)
+int32_t BarterEvents::SendServerToPlayerBarterCloseBarterHook(CNWSMessage *pMessage, ObjectID nInitiatorId,
+                                                              ObjectID nRecipientId, int32_t bAccepted)
 {
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
-    uint32_t oidPlayer = static_cast<CNWSPlayer*>(exoApp->GetClientObjectByPlayerId(nInitiatorId, 0))->m_oidPCObject;
+    uint32_t oidPlayer = static_cast<CNWSPlayer*>(exoApp->GetClientObjectByPlayerId(nInitiatorId))->m_oidNWSObject;
     CNWSCreature* pCreature = exoApp->GetCreatureByGameObjectID(oidPlayer);
     auto *pBarter = pCreature->GetBarterInfo(0);
 
     // We only need to run the END on a CANCEL BARTER for the initiator
-    if (pBarter->m_bInitiator && !bAccepted)
-        EndedBarter(before, pBarter, bAccepted);
+    if (pBarter && pBarter->m_bInitiator && !bAccepted)
+    {
+        EndedBarter(true, pBarter, bAccepted);
+        auto retVal = s_SendServerToPlayerBarterCloseBarterHook->CallOriginal<int32_t>(pMessage, nInitiatorId, nRecipientId, bAccepted);
+        EndedBarter(false, pBarter, bAccepted);
+        return retVal;
+    }
+
+    return s_SendServerToPlayerBarterCloseBarterHook->CallOriginal<int32_t>(pMessage, nInitiatorId, nRecipientId, bAccepted);
 }
 
 void BarterEvents::EndedBarter(bool before, CNWSBarter *pBarter, int32_t bAccepted)
