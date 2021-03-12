@@ -115,15 +115,18 @@ void AddEffect(EffectData&& effectData, bool negative)
     auto& effectList = negative ? g_negativeEffects : g_positiveEffects;
     if(effectData.spellId == ~0u)
     {
-        auto effect = std::find_if(effectList.begin(), effectList.end(), [&](EffectData& data) { return data.objectId == effectData.objectId; });
-        if (effect != effectList.end())
-            effect->strength = std::max(effectData.strength, effect->strength);
+        if (effectData.objectId == Constants::OBJECT_INVALID && s_bSeparateInvalidOidEffects)
+        {
+            effectList.emplace_back(EffectData{ effectData.objectId, ~0u, effectData.strength });
+        }
         else
-            effectList.emplace_back(EffectData{effectData.objectId, ~0u, effectData.strength});
-    }
-    else if (effectData.objectId == Constants::OBJECT_INVALID && s_bSeparateInvalidOidEffects)
-    {
-
+        {
+            auto effect = std::find_if(effectList.begin(), effectList.end(), [&](EffectData& data) { return data.objectId == effectData.objectId; });
+            if (effect != effectList.end())
+                effect->strength = std::max(effectData.strength, effect->strength);
+            else
+                effectList.emplace_back(EffectData{ effectData.objectId, ~0u, effectData.strength });
+        }
     }
     else
     {
