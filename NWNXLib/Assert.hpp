@@ -7,7 +7,7 @@ namespace NWNXLib::Assert {
     #define ASSERT_IMPL(condition) \
         do \
         { \
-            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, nullptr); \
+            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, ""); \
         } while (0)
 
     #define ASSERT_MSG_IMPL(condition, format, ...) \
@@ -17,7 +17,7 @@ namespace NWNXLib::Assert {
         } while (0)
 
     #define ASSERT_FAIL_IMPL() \
-        ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, nullptr)
+        ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, "")
 
     #define ASSERT_FAIL_MSG_IMPL(format, ...) \
         ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, (format), ##__VA_ARGS__)

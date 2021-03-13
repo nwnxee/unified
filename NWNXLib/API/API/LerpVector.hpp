@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "LerpFloat.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
