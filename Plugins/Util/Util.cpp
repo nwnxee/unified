@@ -106,12 +106,12 @@ NWNX_EXPORT ArgumentStack GetCurrentScriptName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAsciiTableString(ArgumentStack&&)
 {
-    static char table[256];
+    static char table[257];
 
     if (table[0] == 0)
     {
         table[0] = 1; // Can't pass NULL or it will terminate the string
-        for (size_t i = 1; i < sizeof(table); i++)
+        for (size_t i = 1; i < 0xFF; i++)
             table[i] = i;
     }
 

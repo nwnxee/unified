@@ -4,8 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.20-HEAD
-https://github.com/nwnxee/unified/compare/build8193.20...HEAD
+## 8193.21-HEAD
+https://github.com/nwnxee/unified/compare/build8193.21...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.20
+https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 
 ### Added
 - Events: added `NWNX_ON_INPUT_EMOTE_*` events to InputEvents, this event fires when a player uses a radial menu emote.
@@ -57,11 +81,9 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
 - Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
-### Removed
-- N/A
-
 ### Fixed
 - Feedback: Fixed a memory leak when suppressing messages.
+- Utils: Fixed a memory corruption in `GetAsciiTableString()`
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.16...build8193.20

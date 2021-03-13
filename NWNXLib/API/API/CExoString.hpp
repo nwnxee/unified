@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include <string>
+#include <vector>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -65,6 +66,7 @@ struct CExoString
     BOOL StripNonAlphaNumeric(BOOL bFileName = true, BOOL bEmail = false, BOOL bMasterServer = false);
     CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f") const;
     CExoString AsTAG() const;
+    std::vector<CExoString> Split(const CExoString & delimiter) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoString

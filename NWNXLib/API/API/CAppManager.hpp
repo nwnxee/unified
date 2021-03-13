@@ -54,6 +54,11 @@ struct CAppManager
     // CExoLocString GetHostedModuleDescription();
     // CExoString GetHostedPublicInternetAddressAndPort();
     void ConnectToServer(CExoString sAddress, BOOL bPasswordRequired);
+    class CWorldTimer * GetWorldTimer();
+    CExoString GetCryptoKxPublicKeyBase64();
+    CExoString GetPublicCdKey();
+    uint8_t GetPlatformId();
+    uint8_t GetLanguageId();
 
 
 #ifdef NWN_CLASS_EXTENSION_CAppManager

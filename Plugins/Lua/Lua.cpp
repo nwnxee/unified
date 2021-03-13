@@ -137,11 +137,11 @@ namespace Lua {
             lua_getglobal(m_luaInstance, runScriptTable.c_str());
             m_runScriptTable = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
 
-            s_RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-                (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid)
+            s_RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+                (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId)
                 {
                     bool skip = script->m_sString && g_plugin->OnScript(script->m_sString, objId, !!valid);
-                    return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+                    return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
                 },
                 Hooks::Order::Latest);
         }
