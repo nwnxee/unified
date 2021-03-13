@@ -17,9 +17,6 @@
 #include <algorithm>
 #include <numeric>
 
-namespace Creature
-{
-
 namespace NostackMode
 {
 typedef enum
@@ -452,6 +449,4 @@ NWNX_EXPORT ArgumentStack SetSpellBonusType(ArgumentStack&& args)
     s_nSpellBonusTypes[nSpellId] = nBonusType;
 
     return {};
-}
-
 }

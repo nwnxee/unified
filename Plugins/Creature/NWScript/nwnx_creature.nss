@@ -919,11 +919,6 @@ int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
 /// @param oCreature The creature.
 int NWNX_Creature_GetShieldCheckPenalty(object oCreature);
 
-/// @brief Sets a spell bonus type to be used by the NoStack feature.
-/// @param spell The spell ID from spells.2da.
-/// @param type The new type.
-void NWNX_Creature_SetSpellBonusType(int spell, int type);
-
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2339,14 +2334,4 @@ int NWNX_Creature_GetShieldCheckPenalty(object oCreature)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_SetSpellBonusType(int spell, int type)
-{
-    string sFunc = "SetSpellBonusType";
-
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, type);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, spell);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
