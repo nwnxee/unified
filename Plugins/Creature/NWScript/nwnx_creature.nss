@@ -903,10 +903,6 @@ int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
 /// @param oCreature The creature.
 int NWNX_Creature_GetShieldCheckPenalty(object oCreature);
 
-/// @brief Get the combined skill penalty from wearing armor and shield.
-/// @param oCreature The creature.
-int NWNX_Creature_GetTotalCheckPenalty(object oCreature);
-
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2318,15 +2314,6 @@ int NWNX_Creature_GetArmorCheckPenalty(object oCreature)
 int NWNX_Creature_GetShieldCheckPenalty(object oCreature)
 {
     string sFunc = "GetShieldCheckPenalty";
-
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
-}
-
-int NWNX_Creature_GetTotalCheckPenalty(object oCreature)
-{
-    string sFunc = "GetTotalCheckPenalty";
 
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);

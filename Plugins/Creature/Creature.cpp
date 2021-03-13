@@ -2885,13 +2885,3 @@ NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
 
     return 0;
 }
-
-NWNX_EXPORT ArgumentStack GetTotalCheckPenalty(ArgumentStack&& args)
-{
-    if (auto* pCreature = Utils::PopCreature(args))
-    {
-        return pCreature->m_pStats->m_nArmorCheckPenalty + pCreature->m_pStats->m_nShieldCheckPenalty;
-    }
-
-    return 0;
-}
