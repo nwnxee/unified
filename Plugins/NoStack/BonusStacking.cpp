@@ -81,20 +81,20 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature*, uint8_t, CNWSObject*, B
 void BonusStacking() __attribute__((constructor));
 void BonusStacking()
 {
-    s_nAbilityStackingMode = std::clamp(Config::Get<int>("NOSTACK_ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nSkillStackingMode = std::clamp(Config::Get<int>("NOSTACK_SKILL", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nSavingThrowStackingMode = std::clamp(Config::Get<int>("NOSTACK_SAVINGTHROW", 0), 0, static_cast<int>(NostackMode::CustomTypes));
-    s_nAttackBonusStackingMode = std::clamp(Config::Get<int>("NOSTACK_ATTACKBONUS", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nAbilityStackingMode = std::clamp(Config::Get<int>("ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nSkillStackingMode = std::clamp(Config::Get<int>("SKILL", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nSavingThrowStackingMode = std::clamp(Config::Get<int>("SAVINGTHROW", 0), 0, static_cast<int>(NostackMode::CustomTypes));
+    s_nAttackBonusStackingMode = std::clamp(Config::Get<int>("ATTACKBONUS", 0), 0, static_cast<int>(NostackMode::CustomTypes));
 
     if (s_nAbilityStackingMode || s_nSkillStackingMode || s_nSavingThrowStackingMode || s_nAttackBonusStackingMode)
     {
         LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
             " | Attack bonuses: %d", s_nAbilityStackingMode, s_nSkillStackingMode, s_nSavingThrowStackingMode, s_nAttackBonusStackingMode);
 
-        s_nSpellDefaultType = std::clamp(Config::Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
-        s_nItemDefaultType = std::clamp(Config::Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
-        s_bAlwaysStackPenalties = Config::Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
-        s_bSeparateInvalidOidEffects = Config::Get<bool>("NOSTACK_SEPARATE_INVALID_OID_EFFECTS", false);
+        s_nSpellDefaultType = std::clamp(Config::Get<int>("SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
+        s_nItemDefaultType = std::clamp(Config::Get<int>("ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
+        s_bAlwaysStackPenalties = Config::Get<bool>("ALWAYS_STACK_PENALTIES", false);
+        s_bSeparateInvalidOidEffects = Config::Get<bool>("SEPARATE_INVALID_OID_EFFECTS", false);
 
         s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
 
