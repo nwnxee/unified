@@ -131,6 +131,8 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetHitDistance", "group__creature.html#gaf7db82f03c9c44452a4003139c992edc", null ],
     [ "NWNX_Creature_GetPreferredAttackDistance", "group__creature.html#ga5c920d130feaac48d02758af4fd9f777", null ],
     [ "NWNX_Creature_SetPreferredAttackDistance", "group__creature.html#gabc272bf0a40b296512e7963b7369ee39", null ],
+    [ "NWNX_Creature_GetArmorCheckPenalty", "group__creature.html#ga1300b28822e4534d0210593c8e65042c", null ],
+    [ "NWNX_Creature_GetShieldCheckPenalty", "group__creature.html#ga6f6d31fc7c93583af61cc9c8f884d844", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
