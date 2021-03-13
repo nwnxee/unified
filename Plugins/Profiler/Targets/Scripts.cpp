@@ -21,7 +21,7 @@ static bool g_typeTimings;
 
 DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
     (
-        [](CVirtualMachine*, CExoString* script, uint32_t oid, bool) -> Services::MetricData::Tags
+        [](CVirtualMachine*, CExoString* script, uint32_t oid, bool, int32_t) -> Services::MetricData::Tags
         {
             using namespace NWNXLib::API;
             using namespace NWNXLib::API::Constants;
@@ -79,7 +79,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
             return tags;
         }
     ),
-    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t)
+    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t, int32_t)
 
 Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     NWNXLib::Services::MetricsProxy* metrics)
@@ -89,8 +89,8 @@ Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     g_typeTimings = typeTimings;
 
     DEFINE_PROFILER_TARGET_FAST(
-        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-        int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t);
+        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+        int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t, int32_t);
 }
 
 }
