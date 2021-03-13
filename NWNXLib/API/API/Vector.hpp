@@ -17,7 +17,8 @@ struct Vector
     float y;
     float z;
 
-
+    Vector() : x(0.0f), y(0.0f), z(0.0f) { }
+    Vector(float xx, float yy, float zz) : x(xx), y(yy), z(zz) { }
 
 #ifdef NWN_CLASS_EXTENSION_Vector
     NWN_CLASS_EXTENSION_Vector
