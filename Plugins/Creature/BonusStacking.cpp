@@ -58,9 +58,9 @@ static int s_nSavingThrowStackingMode = NostackMode::Disabled;
 static int s_nAttackBonusStackingMode = NostackMode::Disabled;
 static bool s_bAlwaysStackPenalties = false;
 static bool s_bSeparateInvalidOidEffects = false;
-static std::vector<int32_t> g_nSpellBonusTypes;
-static int32_t g_nSpellDefaultType = NostackType::Circumstance;
-static int32_t g_nItemDefaultType = NostackType::Enhancement;
+static std::vector<int32_t> s_nSpellBonusTypes;
+static int32_t s_nSpellDefaultType = NostackType::Circumstance;
+static int32_t s_nItemDefaultType = NostackType::Enhancement;
 
 static Hooks::Hook s_GetTotalEffectBonusHook = nullptr;
 
@@ -73,9 +73,9 @@ struct EffectData
 
 constexpr auto MAX_DAMAGE_FLAGS = 13;
 
-static std::vector<EffectData> g_positiveEffects;
-static std::vector<EffectData> g_negativeEffects;
-static int32_t g_nMaxValues[NostackType::Max + 1];
+static std::vector<EffectData> s_positiveEffects;
+static std::vector<EffectData> s_negativeEffects;
+static int32_t s_nMaxValues[NostackType::Max + 1];
 
 void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats*);
 int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature*, uint8_t, CNWSObject*, BOOL, BOOL, uint8_t, uint8_t, uint8_t, uint8_t, BOOL);
@@ -94,16 +94,16 @@ void BonusStacking()
         LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
             " | Attack bonuses: %d", s_nAbilityStackingMode, s_nSkillStackingMode, s_nSavingThrowStackingMode, s_nAttackBonusStackingMode);
 
-        g_nSpellDefaultType = std::clamp(Config::Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
-        g_nItemDefaultType = std::clamp(Config::Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
+        s_nSpellDefaultType = std::clamp(Config::Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int32_t>(NostackType::Max));
+        s_nItemDefaultType = std::clamp(Config::Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
         s_bAlwaysStackPenalties = Config::Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
         s_bSeparateInvalidOidEffects = Config::Get<bool>("NOSTACK_SEPARATE_INVALID_OID_EFFECTS", false);
 
         s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
-    }
 
-    g_positiveEffects.reserve(50);
-    g_negativeEffects.reserve(50);
+        s_positiveEffects.reserve(50);
+        s_negativeEffects.reserve(50);
+    }
 }
 
 inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAlignLaw,
@@ -112,7 +112,7 @@ inline int32_t GetUnstackedBonus(bool negative = false, int mode = 0);
 
 void AddEffect(EffectData&& effectData, bool negative)
 {
-    auto& effectList = negative ? g_negativeEffects : g_positiveEffects;
+    auto& effectList = negative ? s_negativeEffects : s_positiveEffects;
     if(effectData.spellId == ~0u)
     {
         if (effectData.objectId == Constants::OBJECT_INVALID && s_bSeparateInvalidOidEffects)
@@ -178,8 +178,8 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
         }
     }
 
-    g_positiveEffects.resize(0);
-    g_negativeEffects.resize(0);
+    s_positiveEffects.resize(0);
+    s_negativeEffects.resize(0);
 
     switch (nEffectBonusType)
     {
@@ -374,8 +374,8 @@ inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAl
 
 inline int32_t GetUnstackedBonus(bool negative, int mode)
 {
-    auto begin = negative ? g_negativeEffects.cbegin() : g_positiveEffects.cbegin();
-    auto end = negative ? g_negativeEffects.cend() : g_positiveEffects.cend();
+    auto begin = negative ? s_negativeEffects.cbegin() : s_positiveEffects.cbegin();
+    auto end = negative ? s_negativeEffects.cend() : s_positiveEffects.cend();
 
     int32_t itemBonus = 0, spellBonus = 0;
 
@@ -418,19 +418,19 @@ inline int32_t GetUnstackedBonus(bool negative, int mode)
         }
         case NostackMode::CustomTypes: //Use per-spell defined types
         {
-            std::fill_n(g_nMaxValues, NostackType::Max + 1, 0);
+            std::fill_n(s_nMaxValues, NostackType::Max + 1, 0);
             std::for_each(begin, end, [&](const EffectData& data)
             {
-                int nBonusType = g_nItemDefaultType;
+                int nBonusType = s_nItemDefaultType;
                 if (data.spellId != ~0u)
-                    nBonusType = data.spellId >= g_nSpellBonusTypes.size() ? g_nSpellDefaultType : g_nSpellBonusTypes[data.spellId];
+                    nBonusType = data.spellId >= s_nSpellBonusTypes.size() ? s_nSpellDefaultType : s_nSpellBonusTypes[data.spellId];
                 if (nBonusType == NostackType::Circumstance)
-                    g_nMaxValues[nBonusType] += data.strength;
+                    s_nMaxValues[nBonusType] += data.strength;
                 else
-                    g_nMaxValues[nBonusType] = std::max(g_nMaxValues[nBonusType], data.strength);
+                    s_nMaxValues[nBonusType] = std::max(s_nMaxValues[nBonusType], data.strength);
             });
 
-            return std::accumulate(g_nMaxValues, g_nMaxValues + NostackType::Max + 1, 0);
+            return std::accumulate(s_nMaxValues, s_nMaxValues + NostackType::Max + 1, 0);
         }
     }
 
@@ -439,8 +439,8 @@ inline int32_t GetUnstackedBonus(bool negative, int mode)
 
 NWNX_EXPORT ArgumentStack SetSpellBonusType(ArgumentStack&& args)
 {
-    if (!g_nSpellBonusTypes.size())
-        g_nSpellBonusTypes.resize(Globals::Rules()->m_pSpellArray->m_nNumSpells, g_nSpellDefaultType);
+    if (!s_nSpellBonusTypes.size())
+        s_nSpellBonusTypes.resize(Globals::Rules()->m_pSpellArray->m_nNumSpells, s_nSpellDefaultType);
 
     const auto nSpellId = args.extract<int32_t>();
       ASSERT_OR_THROW(nSpellId >= 0);
@@ -449,7 +449,7 @@ NWNX_EXPORT ArgumentStack SetSpellBonusType(ArgumentStack&& args)
       ASSERT_OR_THROW(nBonusType >= 0);
       ASSERT_OR_THROW(nBonusType <= NostackType::Max);
 
-    g_nSpellBonusTypes[nSpellId] = nBonusType;
+    s_nSpellBonusTypes[nSpellId] = nBonusType;
 
     return {};
 }
