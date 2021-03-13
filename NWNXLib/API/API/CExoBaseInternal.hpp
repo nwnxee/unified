@@ -21,6 +21,7 @@ struct CExoBaseInternal
     int32_t m_nResTypes;
     RESTYPE * m_pnResTypes;
     CExoString * m_psResTypeNames;
+    CExoString m_sInstallDirectory;
 
     CExoBaseInternal();
     ~CExoBaseInternal();

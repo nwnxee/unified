@@ -2767,7 +2767,7 @@ NWNX_EXPORT ArgumentStack SetPersonalSpace(ArgumentStack&& args)
         if (pCreature->m_pcPathfindInformation)
         {
             pCreature->m_pcPathfindInformation->m_fPersonalSpace = fPerspace;
-            pCreature->m_pcPathfindInformation->ComputeStepTolerance();
+            pCreature->m_pcPathfindInformation->ComputeGridStepTolerance();
         }
     }
 
@@ -2864,4 +2864,24 @@ NWNX_EXPORT ArgumentStack SetPreferredAttackDistance(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetArmorCheckPenalty(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->m_pStats->m_nArmorCheckPenalty;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->m_pStats->m_nShieldCheckPenalty;
+    }
+
+    return 0;
 }

@@ -3,6 +3,7 @@
 
 #include "CExoString.hpp"
 #include "CScriptLocation.hpp"
+#include "CassowarySolverEngineStructure.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -21,6 +22,7 @@ struct CNWSScriptVar
     OBJECT_ID m_objectId;
     CExoString m_string;
     CScriptLocation m_location;
+    CassowarySolverEngineStructure m_cswy;
 
     CNWSScriptVar();
     CNWSScriptVar(const CNWSScriptVar &);

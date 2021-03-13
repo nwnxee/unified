@@ -43,7 +43,7 @@ struct CPathfindInformation
     float m_fNewPointEndY;
     float m_fNewPointEndZ;
     float m_fPointTolerance;
-    int32_t m_nStepTolerance;
+    int32_t m_nGridStepTolerance;
     OBJECT_ID m_oidNewPointEndArea;
     float m_fNewPointStartX;
     float m_fNewPointStartY;
@@ -84,26 +84,14 @@ struct CPathfindInformation
     int32_t m_nWalkedPathCutPoints;
     Vector m_vWalkedPathCutNewLastPoint;
     Vector m_vWalkedPathCutNewLastOrientation;
-    int32_t m_nGridStartLocationX;
-    int32_t m_nGridStartLocationY;
-    int32_t m_nGridStartLocationZ;
+    int32_t m_nGridSearchTargetStepDistance;
     Vector2 m_vGridSearchZeroLocation;
     Vector2 m_vGridSearchStepX;
     Vector2 m_vGridSearchStepY;
-    Vector m_vGridZeroLocation;
-    Vector m_vGridStepX;
-    Vector m_vGridStepY;
-    Vector m_vGridStepZ;
     int32_t * m_pnGridStepsArray;
     int32_t m_nGridStepsTaken;
     int32_t m_nGridSearchLimit;
-    float m_fGridSearchObjectDistance;
-    int32_t m_nGridSearchLastDistance;
-    void * m_pGridSearchLastTransTable;
     Vector2 m_vGridSearchStartPoint;
-    Vector2 m_vGridSearchEndPoint;
-    Vector m_vGridSearchLastStartPoint;
-    Vector m_vGridSearchLastEndPoint;
     int32_t m_nPathToClosestPointSize;
     int32_t * m_pnPathToClosestPointArray;
     int32_t m_nPathToClosestPointDistance;
@@ -137,6 +125,7 @@ struct CPathfindInformation
     void SetFirstTileFValueAlternatives(int32_t level, int32_t nCurrentAlternative, int32_t nAlternatives, CPathfindInfoIntraTileSuccessors * pSuccessors);
     void CreateFirstTileFValueAlternatives(int32_t nSize);
     void DeleteFirstTileFValueAlternatives();
+    float GetGridStepSize();
     bool GetGridPointSearched(int32_t nX, int32_t nY);
     void SetGridPointSearched(int32_t nX, int32_t nY, bool bSet);
     int32_t CreateGridSearchPath();
@@ -145,7 +134,7 @@ struct CPathfindInformation
     void SetGridSearchPathInfo(int32_t nID, CNWGridSearchPath nGridSearch);
     int32_t GetGridSearchActivePaths();
     void SetGridSearchActivePaths(int32_t nCount);
-    void ComputeStepTolerance();
+    void ComputeGridStepTolerance();
 
 
 #ifdef NWN_CLASS_EXTENSION_CPathfindInformation

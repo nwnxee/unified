@@ -31,6 +31,7 @@ struct CItemRepository
     BOOL AddItem(CNWSItem * * pItem, uint8_t x = 0xff, uint8_t y = 0xff, BOOL bAllowEncumbrance = false, BOOL bMergeItem = true);
     uint8_t CalculatePage(uint8_t x, uint8_t y);
     BOOL CheckFit(CNWSItem * pItem, uint8_t x, uint8_t y);
+    BOOL CheckBaseItemFits(uint32_t nBaseItemType, uint8_t x, uint8_t y);
     BOOL CheckItemOverlaps(CNWSItem * pSourceItem, CNWSItem * pDroppingItem, uint8_t x, uint8_t y);
     OBJECT_ID FindItemWithBaseItemId(uint32_t nBaseItemId, int32_t nTh = 0);
     OBJECT_ID FindItemWithTag(CExoString * pTag);

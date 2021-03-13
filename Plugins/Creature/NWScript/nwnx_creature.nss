@@ -911,6 +911,14 @@ float NWNX_Creature_GetPreferredAttackDistance(object oCreature);
 /// @param fPrefAtckDist The creatures preferred attack distance.
 void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist);
 
+/// @brief Get the skill penalty from wearing armor.
+/// @param oCreature The creature.
+int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
+
+/// @brief Get the skill penalty from wearing a shield.
+/// @param oCreature The creature.
+int NWNX_Creature_GetShieldCheckPenalty(object oCreature);
+
 /// @brief Sets a spell bonus type to be used by the NoStack feature.
 /// @param spell The spell ID from spells.2da.
 /// @param type The new type.
@@ -2313,6 +2321,24 @@ void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckD
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fPrefAtckDist);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetArmorCheckPenalty(object oCreature)
+{
+    string sFunc = "GetArmorCheckPenalty";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetShieldCheckPenalty(object oCreature)
+{
+    string sFunc = "GetShieldCheckPenalty";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
 void NWNX_Creature_SetSpellBonusType(int spell, int type)
