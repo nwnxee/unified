@@ -30,6 +30,7 @@ struct CLoopingVisualEffect;
 struct CNWCCMessageData;
 struct CNWSAnimBase;
 struct CNWSArea;
+struct CNWSAreaOfEffectObject;
 struct CNWSCreature;
 struct CNWSDialog;
 struct CNWSExpression;
@@ -212,8 +213,8 @@ struct CNWSObject : CGameObject
     virtual char GetDamageImmunity(uint8_t nType);
     virtual char GetDamageImmunityByFlags(uint16_t nFlags);
     void SetDamageImmunity(uint16_t nFlags, int32_t nValue);
-    int32_t DoSpellLevelAbsorption(CNWSObject * pCaster);
-    int32_t DoSpellImmunity(CNWSObject * pCaster);
+    int32_t DoSpellLevelAbsorption(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
+    int32_t DoSpellImmunity(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
     uint8_t GetDamageLevel();
     void DeleteCurrentAIAction();
     void ApplyEffect(CGameEffect * e, BOOL bLoadingGame = false, BOOL bInitialApplication = false);
@@ -270,6 +271,7 @@ struct CNWSObject : CGameObject
     void LoadTextureOverrides(CResGFF * pRes, CResStruct * pStruct);
     void LoadSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
     void SaveSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
+    BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
     void SetVisualTransformData(const ObjectVisualTransformData & data);
     void SetMaterialShaderParamI(const CExoString & sMaterialName, const CExoString & sParamName, int nValue);
     void SetMaterialShaderParamVec4(const CExoString & sMaterialName, const CExoString & sParamName, float fValue1, float fValue2, float fValue3, float fValue4);
@@ -306,6 +308,7 @@ struct CNWSObject : CGameObject
     uint32_t AIActionSetCommandable(CNWSObjectActionNode * pNode);
     virtual void UpdateEffectPtrs();
     virtual void UpdateAttributesOnEffect(CGameEffect * e, BOOL bLoadingGame = false);
+    virtual CExoString * GetScriptName(int32_t nScript);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSObject

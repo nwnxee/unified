@@ -26,6 +26,8 @@ namespace NWSync { struct CNWSync { void *m_pInternal; char *m_tmp1; uint32_t m_
 struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_owning;};
 #define DataBlockRef std::shared_ptr<DataBlock>
 
+struct CUUID { uint64_t ab = 0, cd = 0; };
+
 #define NWN_CLASS_EXTENSION_CGameObject \
     using CleanupFunc = std::function<void(void*)>;                                                                         \
     void nwnxSet(const std::string& key, int value, bool persist = false, const char *pn = PLUGIN_NAME);                    \

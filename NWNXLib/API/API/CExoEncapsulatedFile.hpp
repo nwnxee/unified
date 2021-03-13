@@ -39,7 +39,7 @@ struct CExoEncapsulatedFile : CExoPackedFile
     virtual BOOL OpenAsyncFile();
     virtual uint32_t ReadResource(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
     virtual void ReadResourceAsync(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
-    virtual BOOL LoadHeader(uint8_t nType = 0);
+    virtual BOOL LoadHeader(const char * expectOid, uint8_t nType = 0);
     virtual BOOL UnloadHeader();
 
 

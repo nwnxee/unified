@@ -16,7 +16,6 @@
 #include "NWMODULECUTSCENE.hpp"
 #include "NWMODULEEXPANSION.hpp"
 #include "NWPLAYERLISTITEM.hpp"
-#include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
 #include <memory>
@@ -58,6 +57,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL m_bNWSyncPublishHaks;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
+    CUUID m_cModUUID;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
     CExoString m_sDDResourceName;
@@ -137,7 +137,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     Vector m_vPlayerTargetPosition;
     std::shared_ptr<void*> m_sqlite3;
 
-    CNWSModule(CExoString sModuleFilename, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
+    CNWSModule(CExoString sModuleFilename, CUUID cModUUID, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     ~CNWSModule();
     virtual CNWSModule * AsNWSModule();
     void DoUpdate();
@@ -164,7 +164,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveModuleFinish(CExoString & sFilePath, CExoString & sFileName);
     uint32_t GetPlayerIndexInPlayerList(CNWSPlayer * pPlayer);
     uint32_t GetPrimaryPlayerIndex();
-    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPlayerCharacterList_st *> & lstChars);
+    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPLAYERCHARACTERLISTITEM *> & lstChars);
     void SetIntraAreaGoal(CPathfindInformation * pcPathfindInformation);
     void UnloadModule();
     OBJECT_ID GetWaypoint(const CExoString & sTag);
@@ -192,6 +192,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     void CleanUpLimboList();
     uint8_t IsOfficialCampaign(void );
     void DestroyModuleSqliteDatabase();
+    BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);

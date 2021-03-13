@@ -23,6 +23,8 @@ struct CExoLocString
     CExoLocString();
     CExoLocString(const CExoLocString & cLocString);
     ~CExoLocString();
+    CExoLocString(STRREF simple);
+    CExoLocString(const CExoString & simple, int32_t lang = - 1);
     int32_t operator==(CExoLocString & LocString);
     int32_t operator!=(CExoLocString & LocString);
     CExoLocString & operator=(const CExoLocString & CExoLocString);
@@ -36,6 +38,7 @@ struct CExoLocString
     BOOL GetStringInternal(int32_t nID, CExoString * pString) const;
     void RemoveString(int32_t nID);
     void RemoveString(int32_t nID, uint8_t bGender);
+    CExoString GetSimple(uint8_t nGender = 0x0) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoLocString

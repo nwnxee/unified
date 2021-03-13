@@ -2767,7 +2767,7 @@ NWNX_EXPORT ArgumentStack SetPersonalSpace(ArgumentStack&& args)
         if (pCreature->m_pcPathfindInformation)
         {
             pCreature->m_pcPathfindInformation->m_fPersonalSpace = fPerspace;
-            pCreature->m_pcPathfindInformation->ComputeStepTolerance();
+            pCreature->m_pcPathfindInformation->ComputeGridStepTolerance();
         }
     }
 
