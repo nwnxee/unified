@@ -2865,3 +2865,23 @@ NWNX_EXPORT ArgumentStack SetPreferredAttackDistance(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetArmorCheckPenalty(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->m_pStats->m_nArmorCheckPenalty;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->m_pStats->m_nShieldCheckPenalty;
+    }
+
+    return 0;
+}
