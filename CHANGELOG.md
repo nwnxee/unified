@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Creature: {Get/Set}BypassEffectImmunity()
 
 ### Changed
 - N/A
@@ -60,7 +60,6 @@ https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 - Creature: {Get/Set}Height()
 - Creature: {Get/Set}HitDistance()
 - Creature: {Get/Set}PreferredAttackDistance()
-- Creature: {Get/Set}BypassEffectImmunity()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Encounter: {Get/Set}CanReset()
