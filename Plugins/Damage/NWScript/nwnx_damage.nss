@@ -46,9 +46,9 @@ struct NWNX_Damage_AttackEventData
     int iBase; ///< Base damage
     int iAttackNumber; ///< 1-based index of the attack in current combat round
     int iAttackResult; ///< 1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit
-    int iAttackType;   ///< (Misnamed, should be WeaponAttackType) 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra
-    int iSneakAttack;  ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
-    int iAttackType_REAL; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
+    int iWeaponAttackType; ///< 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra
+    int iSneakAttack; ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
+    int iAttackType; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
     int bKillingBlow; ///< TRUE if the hit is a killing blow
 };
 
@@ -186,26 +186,26 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
 
     NWNX_CallFunction(NWNX_Damage, sFunc);
 
-    data.oTarget       = NWNX_GetReturnValueObject(NWNX_Damage, sFunc);
-    data.iBludgeoning  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iPierce       = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iSlash        = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iMagical      = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAcid         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iCold         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iDivine       = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iElectrical   = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iFire         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iNegative     = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iPositive     = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iSonic        = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iBase         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAttackNumber = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAttackResult = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAttackType   = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iSneakAttack  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.bKillingBlow  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.iAttackType_REAL = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.oTarget           = NWNX_GetReturnValueObject(NWNX_Damage, sFunc);
+    data.iBludgeoning      = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iPierce           = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iSlash            = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iMagical          = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAcid             = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iCold             = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iDivine           = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iElectrical       = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iFire             = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iNegative         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iPositive         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iSonic            = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iBase             = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackNumber     = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackResult     = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iWeaponAttackType = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iSneakAttack      = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.bKillingBlow      = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackType       = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
 
     return data;
 }
