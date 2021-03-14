@@ -30,7 +30,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - N/A
 
 ### Removed
-- N/A
+- Data and Time plugins have been removed. Compatibility scripts are provided [here](Compatibility/)
 
 ### Fixed
 - N/A
