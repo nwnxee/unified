@@ -60,9 +60,10 @@ namespace MessageMajor
         PlayModuleCharacterList                = 0x31,
         CustomToken                            = 0x32,
         Cutscene                               = 0x33,
+        Resman                                 = 0x34,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 0x33;
+    constexpr int32_t MAX   = 0x34;
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -120,6 +121,7 @@ namespace MessageMajor
             "PlayModuleCharacterList",
             "CustomToken",
             "Cutscene",
+            "Resman",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
@@ -1779,6 +1781,31 @@ namespace MessageCutsceneMinor
             "StopFade",
             "BlackScreen",
             "HideGui",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
+namespace MessageResmanMinor
+{
+    enum TYPE
+    {
+        Override                            = 0x01,
+        TlkOverride                         = 0x02,
+        TlkOverrideList                     = 0x03,
+    };
+    constexpr int32_t MIN   = 1;
+    constexpr int32_t MAX   = 0x03;
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "Null",
+            "Override",
+            "TlkOverride",
+            "TlkOverrideList",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];

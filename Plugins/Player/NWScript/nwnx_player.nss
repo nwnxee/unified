@@ -382,6 +382,14 @@ struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, stri
 /// @param oPlayer The player object.
 void NWNX_Player_CloseStore(object oPlayer);
 
+/// @brief Override nStrRef from the TlkTable with sOverride for oPlayer only.
+/// @param oPlayer The player.
+/// @param nStrRef The StrRef.
+/// @param sOverride The new value for nStrRef or "" to remove the override.
+/// @param bRestoreGlobal If TRUE, when removing a personal override it will attempt to restore the global override if it exists.
+/// @note Overrides will not persist through relogging.
+void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -958,6 +966,17 @@ void NWNX_Player_CloseStore(object oPlayer)
 {
     string sFunc = "CloseStore";
 
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE)
+{
+    string sFunc = "SetTlkOverride";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bRestoreGlobal);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sOverride);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nStrRef);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
