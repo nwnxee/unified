@@ -55,6 +55,17 @@ void Call(const std::string& pluginName, const std::string& eventName)
         {
             LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName, eventName, err.what());
         }
+
+        if (!s_arguments.empty())
+        {
+            LOG_WARNING("Argument stack not empty after running %s::%s from %s.ncs. Discarding unused arguments",
+                pluginName, eventName, Utils::GetCurrentScript());
+            while (!s_arguments.empty())
+            {
+                LOG_DEBUG("Discarding argument '%s'", s_arguments.top().toString());
+                s_arguments.pop();
+            }
+        }
     }
     else
     {
