@@ -117,7 +117,7 @@ struct CServerExoApp : CBaseExoApp
     BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
     BOOL Initialize();
     BOOL UnloadModule();
-    BOOL LoadModule(CExoString moduleResRef, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
+    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
     BOOL RunModule();
     CExoString GetPlayerListString();
     CExoString GetBannedListString();

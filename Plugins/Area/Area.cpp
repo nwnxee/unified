@@ -275,10 +275,10 @@ NWNX_EXPORT ArgumentStack GetSunMoonColors(ArgumentStack&& args)
 
         switch (type)
         {
-            case 0: return pArea->m_nMoonAmbientColor;
-            case 1: return pArea->m_nMoonDiffuseColor;
-            case 2: return pArea->m_nSunAmbientColor;
-            case 3: return pArea->m_nSunDiffuseColor;
+            case 0: return (int32_t)pArea->m_nMoonAmbientColor;
+            case 1: return (int32_t)pArea->m_nMoonDiffuseColor;
+            case 2: return (int32_t)pArea->m_nSunAmbientColor;
+            case 3: return (int32_t)pArea->m_nSunDiffuseColor;
         }
     }
 

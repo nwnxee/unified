@@ -90,8 +90,8 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
 
     LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
     static Hooks::Hook RunScriptHook;
-    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid) -> int32_t
+    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId) -> int32_t
         {
             if (!script || *script == "")
                 return 1;
@@ -109,7 +109,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
                 Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
                 return 1;
             }
-            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
         },
         Hooks::Order::Latest);
 

@@ -200,7 +200,7 @@ struct CServerExoAppInternal
     void MarkUpdateClientsForObject(OBJECT_ID oidObjectToUpdate);
     void UpdateClientGameObjectsForPlayer(CNWSPlayer * pPlayer, BOOL bForce, uint64_t nCurrentSystemTime = 0);
     BOOL UnloadModule();
-    BOOL LoadModule(CExoString moduleResRef, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
+    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
     BOOL GetModuleExists(const CExoString & sModuleResRef);
     BOOL RunModule();
     void VomitServerOptionsToLog();

@@ -84,6 +84,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandBeginConversation(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandBlackScreen(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandBootPC(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandCassowary(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandCastSpell(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandChangeFaction(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandClearAllActions(int32_t nCommandId, int32_t nParameters);
@@ -205,6 +206,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetAttemptedAttackTarget(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAttemptedSpellTarget(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetBaseAttackBonus(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetBaseItemFitsInInventory(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetBaseItemType(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetBattleTrack(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetBlockingDoor(int32_t nCommandId, int32_t nParameters);
@@ -228,6 +230,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetCreatureSize(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCreatureWingType(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCurrentAction(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetCurrentlyRunningEvent(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCutsceneCameraMoveRate(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCutsceneMode(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetDamageDealtByType(int32_t nCommandId, int32_t nParameters);
@@ -246,6 +249,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetEffectDuration(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectDurationRemaining(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectDurationType(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetEffectParameter(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectSpellId(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectSubType(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectTag(int32_t nCommandId, int32_t nParameters);
@@ -613,6 +617,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandSetTextureOverride(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTime(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTileLightColor(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandSetTlkOverride(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTransitionTarget(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTrapInfo(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetUseableFlag(int32_t nCommandId, int32_t nParameters);
