@@ -49,7 +49,7 @@ var NAVTREEINDEX =
 "group__feat.html#ga2330652ba535628c66ddf6b81f0dc726",
 "group__object.html#ga4a898fa34997eadf515e390daabc42e1",
 "group__player.html#ga94fef51c2bc9006b20e0323c67a08dbe",
-"group__skillranks.html#autotoc_md410",
+"group__skillranks.html#autotoc_md411",
 "group__util.html#gab1478de40af08e03284db6fe313f319c",
 "nwnx__redis_8nss.html#a37208feb836df8082fc4cf84b2aa0563",
 "nwnx__redis__short_8nss.html#a52a022c06f0b4fad43e92e43a88638f8",
