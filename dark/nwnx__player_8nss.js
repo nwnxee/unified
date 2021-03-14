@@ -47,6 +47,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_AddCustomJournalEntry", "group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035", null ],
     [ "NWNX_Player_GetJournalEntry", "group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7", null ],
     [ "NWNX_Player_CloseStore", "group__player.html#ga8e0a7d8bb62c2549bb4690ff90cf1ed5", null ],
+    [ "NWNX_Player_SetTlkOverride", "group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],
