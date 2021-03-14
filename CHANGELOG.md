@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
 
 ##### New NWScript Functions
-- N/A
+- Creature: {Get/Set}BypassEffectImmunity()
 
 ### Changed
 - N/A
