@@ -54,6 +54,8 @@ void printeff(struct NWNX_EffectUnpacked n)
 
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
 
+    s += "sItemProp = " + "'" + n.sItemProp + "'" + "\n";
+
     WriteTimestampedLogEntry(s);
 }
 

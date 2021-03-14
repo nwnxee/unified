@@ -51,8 +51,9 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
-- Effect: (Un)PackEffect functions now can retrieve the id. _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
+- Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. _**ABI breaking:** You will need to update nwnx_effect.nss if you are using these functions_.
 - Damage: added `iAttackType_REAL` and `bKillingBlow` to the `AttackEventData` struct. Updated struct documentation.
+- ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
 - Race: SetFavoredEnemyFeat() now supports multiple feats per race.
 - Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
 - Optimizations: `GameObjectLookup` no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).
