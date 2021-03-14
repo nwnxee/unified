@@ -93,11 +93,15 @@ ArgumentStack ResolveUnpack(CGameEffect *eff, bool bLink)
 
     Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
 
+    Events::InsertArgument(stack, std::to_string(eff->m_nItemPropertySourceId));
+
     return stack;
 }
 
 void ResolvePack(CGameEffect *eff, ArgumentStack& args, bool bReplace)
 {
+    eff->m_nItemPropertySourceId = std::stoul(args.extract<std::string>());
+
     eff->m_sCustomTag = args.extract<std::string>().c_str();
 
     auto vector1z = args.extract<float>();

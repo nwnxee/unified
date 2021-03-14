@@ -55,6 +55,8 @@ struct NWNX_EffectUnpacked
     vector vParam1; ///< @todo Describe
 
     string sTag; ///< @todo Describe
+
+    string sItemProp; ///< @todo Describe
 };
 
 /// @brief Convert native effect type to unpacked structure.
@@ -120,6 +122,8 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
 {
     struct NWNX_EffectUnpacked n;
+
+    n.sItemProp = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
     n.sTag = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
@@ -243,6 +247,8 @@ void __NWNX_Effect_ResolvePack(string sFunc, struct NWNX_EffectUnpacked e, int b
     NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
 
     NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
+
+    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sItemProp);
 }
 
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
