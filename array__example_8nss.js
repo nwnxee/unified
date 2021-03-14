@@ -90,9 +90,9 @@ var array__example_8nss =
     [ "InfluxDB setup", "group__metrics__influxdb.html#autotoc_md318", null ],
     [ "Environment Variables", "group__metrics__influxdb.html#autotoc_md319", null ],
     [ "Environment Variables", "group__nostack.html#autotoc_md320", [
-      [ "NWNX__NOSTACK_*", "group__nostack.html#autotoc_md321", null ],
-      [ "NWNX__NOSTACK_*_DEFAULT_TYPE", "group__nostack.html#autotoc_md322", null ],
-      [ "NWNX__NOSTACK_SEPARATE_INVALID_OID_EFFECTS", "group__nostack.html#autotoc_md323", null ]
+      [ "NWNX_NOSTACK_*", "group__nostack.html#autotoc_md321", null ],
+      [ "NWNX_NOSTACK_*_DEFAULT_TYPE", "group__nostack.html#autotoc_md322", null ],
+      [ "NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS", "group__nostack.html#autotoc_md323", null ]
     ] ],
     [ "Environment Variables", "group__optimizations.html#autotoc_md324", null ],
     [ "Function Documentation and Examples", "group__player.html#autotoc_md325", null ],
