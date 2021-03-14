@@ -15,9 +15,15 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ##### New NWScript Functions
 - Creature: {Get/Set}BypassEffectImmunity()
+- Effect: GetTrueEffectCount()
+- Effect: GetTrueEffect()
+- Effect: RemoveEffectById()
+- Effect: ReplaceEffectByIndex()
 
 ### Changed
 - The argument stack is now cleared after every NWNX function call.
+- Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. _**ABI breaking:** You will need to update nwnx_effect.nss if you are using these functions_.
+- ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
 
 ### Deprecated
 - N/A

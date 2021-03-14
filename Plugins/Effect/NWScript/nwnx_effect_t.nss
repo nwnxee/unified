@@ -4,6 +4,8 @@
 void printeff(struct NWNX_EffectUnpacked n)
 {
     string s = "Unpacked effect: \n";
+
+    s += "sID = " + n.sID + "\n";
     s += "nType = " + IntToString(n.nType) + "\n";
     s += "nSubType = " + IntToString(n.nSubType) + "\n";
 
@@ -52,6 +54,8 @@ void printeff(struct NWNX_EffectUnpacked n)
 
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
 
+    s += "sItemProp = " + "'" + n.sItemProp + "'" + "\n";
+
     WriteTimestampedLogEntry(s);
 }
 
@@ -97,6 +101,34 @@ void main()
         }
         e = GetNextEffect(oCreature);
     }
+
+    e = EffectLinkEffects(EffectAbilityIncrease(ABILITY_STRENGTH, 6), EffectAbilityIncrease(ABILITY_DEXTERITY, 7));
+    int i;
+    int nCount = NWNX_Effect_GetTrueEffectCount(oCreature);
+    int nCon = GetAbilityScore(oCreature, ABILITY_CONSTITUTION);
+    int nFound;
+    string sID;
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, e, oCreature);
+    struct NWNX_EffectUnpacked replace;
+    NWNX_Tests_Report("NWNX_Effect", "GetTrueEffectCount", NWNX_Effect_GetTrueEffectCount(oCreature) > nCount);
+    for(i=0;i<NWNX_Effect_GetTrueEffectCount(oCreature);i++)
+    {
+        unpacked = NWNX_Effect_GetTrueEffect(oCreature, i);
+        printeff(unpacked);
+        if(unpacked.nType == 36 && unpacked.nParam0 == ABILITY_DEXTERITY && unpacked.nParam1 == 7)
+        {
+            nFound = TRUE;
+            //lets replace it too
+            replace = unpacked;
+            replace.nParam0=ABILITY_CONSTITUTION;
+            sID = replace.sID;
+            NWNX_Effect_ReplaceEffectByIndex(oCreature, i, replace);
+        }
+    }
+    NWNX_Tests_Report("NWNX_Effect", "GetTrueEffect", nFound);
+    NWNX_Tests_Report("NWNX_Effect", "ReplaceEffectByIndex", GetAbilityScore(oCreature, ABILITY_CONSTITUTION)>nCon);
+    NWNX_Tests_Report("NWNX_Effect", "RemoveEffectById", NWNX_Effect_RemoveEffectById(oCreature, sID));
+
 
     WriteTimestampedLogEntry("NWNX_Effect unit test end.");
 }

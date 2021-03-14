@@ -9,6 +9,7 @@ const string NWNX_ItemProperty = "NWNX_ItemProperty"; ///< @private
 /// @brief An unpacked itemproperty.
 struct NWNX_IPUnpacked
 {
+    string sID; ///< @todo Describe
     int nProperty; ///< @todo Describe
     int nSubType; ///< @todo Describe
     int nCostTable; ///< @todo Describe
@@ -50,6 +51,7 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
 
     struct NWNX_IPUnpacked n;
 
+    n.sID             = NWNX_GetReturnValueString(NWNX_ItemProperty, sFunc);
     n.nProperty       = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nSubType        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nCostTable      = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
@@ -65,6 +67,7 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
 
     return n;
 }
+
 itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
 {
     string sFunc = "PackIP";

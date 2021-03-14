@@ -9,6 +9,7 @@ const string NWNX_Effect = "NWNX_Effect"; ///< @private
 /// An unpacked effect
 struct NWNX_EffectUnpacked
 {
+    string sID; ///< @todo Describe
     int nType; ///< @todo Describe
     int nSubType; ///< @todo Describe
 
@@ -54,6 +55,8 @@ struct NWNX_EffectUnpacked
     vector vParam1; ///< @todo Describe
 
     string sTag; ///< @todo Describe
+
+    string sItemProp; ///< @todo Describe
 };
 
 /// @brief Convert native effect type to unpacked structure.
@@ -90,16 +93,38 @@ object NWNX_Effect_GetEffectExpiredCreator();
 /// @return Number of internal effects updated.
 int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew);
 
+/// @brief Gets the true effect count
+/// @param oObject The object to get the count of.
+/// @return the number of effects (item properties and other non-exposed effects included)
+int NWNX_Effect_GetTrueEffectCount(object oObject);
+
+/// @brief Gets a specific effect on an object. This can grab effects normally hidden from developers, such as item properties.
+/// @param oObject The object with the effect
+/// @param nIndex The point in the array to retrieve (0 to GetTrueEffectCount())
+/// @return A constructed NWNX_EffectUnpacked.
+struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nIndex);
+
+/// @brief Replaces an already applied effect with another.
+/// @param oObject The object with the effect to replace
+/// @param nIndex The array element to be replaced
+/// @param e The unpacked effect to replace it with.
+/// @note Cannot replace an effect with a different type or ID.
+void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_EffectUnpacked e);
+
+/// @brief Removes effect by ID
+/// @param oObject The object to remove the effect from
+/// @param sID The id of the effect, can be retrieved by unpacking effects.
+/// @return FALSE/0 on failure TRUE/1 on success.
+int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
+
 /// @}
 
-struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
+struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
 {
-    string sFunc = "UnpackEffect";
-
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
-    NWNX_CallFunction(NWNX_Effect, sFunc);
-
     struct NWNX_EffectUnpacked n;
+
+    n.sItemProp = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+
     n.sTag = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
     float fZ = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
@@ -134,10 +159,18 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
     n.nParam0 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.nNumIntegers = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
 
-    n.bLinkRightValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.eLinkRight = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
-    n.bLinkLeftValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.eLinkLeft = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+    if(bLink)
+    {
+        n.bLinkRightValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+        n.eLinkRight = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+        n.bLinkLeftValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+        n.eLinkLeft = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+    }
+    else
+    {
+        n.bLinkRightValid = FALSE;
+        n.bLinkLeftValid = FALSE;
+    }
 
     n.nCasterLevel = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.bShowIcon = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
@@ -151,14 +184,16 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 
     n.nSubType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.nType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+    n.sID = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
     return n;
 }
-effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
-{
-    string sFunc = "PackEffect";
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
+void __NWNX_Effect_ResolvePack(string sFunc, struct NWNX_EffectUnpacked e, int bReplace=FALSE)
+{
+    if(!bReplace)
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
+
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
 
     NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fDuration);
@@ -171,10 +206,13 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bShowIcon);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nCasterLevel);
 
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkLeft);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkLeftValid);
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkRight);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkRightValid);
+    if(!bReplace)
+    {
+        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkLeft);
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkLeftValid);
+        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkRight);
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkRightValid);
+    }
 
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nNumIntegers);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam0);
@@ -209,6 +247,24 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
 
     NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
+
+    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sItemProp);
+}
+
+struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
+{
+    string sFunc = "UnpackEffect";
+
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return __NWNX_Effect_ResolveUnpack(sFunc);
+}
+effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
+{
+    string sFunc = "PackEffect";
+
+    __NWNX_Effect_ResolvePack(sFunc, e);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
@@ -256,4 +312,45 @@ int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew)
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+}
+
+int NWNX_Effect_GetTrueEffectCount(object oObject)
+{
+    string sFunc = "GetTrueEffectCount";
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
+}
+
+struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nIndex)
+{
+    string sFunc = "GetTrueEffect";
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return __NWNX_Effect_ResolveUnpack(sFunc, FALSE);
+}
+
+void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_EffectUnpacked e)
+{
+    string sFunc = "ReplaceEffectByIndex";
+
+    __NWNX_Effect_ResolvePack(sFunc, e, TRUE);
+
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+}
+
+int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
+{
+    string sFunc = "RemoveEffectById";
+    NWNX_PushArgumentString(NWNX_Effect, sFunc, sID);
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
 }

@@ -68,6 +68,7 @@ NWNX_EXPORT ArgumentStack UnpackIP(ArgumentStack&& args)
     Events::InsertArgument(stack, ip->GetInteger(2));
     Events::InsertArgument(stack, ip->GetInteger(1));
     Events::InsertArgument(stack, ip->GetInteger(0));
+    Events::InsertArgument(stack, std::to_string(ip->m_nItemPropertySourceId));
 
     Utils::DestroyGameEffect(ip);
     return stack;
