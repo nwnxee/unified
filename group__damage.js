@@ -35,9 +35,9 @@ var group__damage =
       [ "iBase", "structNWNX__Damage__AttackEventData.html#ae50e334035835e815d0e7ab0891afe1e", null ],
       [ "iAttackNumber", "structNWNX__Damage__AttackEventData.html#abd9b45439358d4428a37e2a695e0eedc", null ],
       [ "iAttackResult", "structNWNX__Damage__AttackEventData.html#a2f860433eb2ee4d0af58701b077f226b", null ],
-      [ "iAttackType", "structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f", null ],
+      [ "iWeaponAttackType", "structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873", null ],
       [ "iSneakAttack", "structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0", null ],
-      [ "iAttackType_REAL", "structNWNX__Damage__AttackEventData.html#abcc8b22f3369c1c20fcce3ac57d3f10e", null ],
+      [ "iAttackType", "structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f", null ],
       [ "bKillingBlow", "structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d", null ]
     ] ],
     [ "NWNX_Damage_DamageData", "structNWNX__Damage__DamageData.html", [

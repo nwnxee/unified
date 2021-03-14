@@ -1,5 +1,7 @@
 var modules =
 [
+    [ "Data", "group__data.html", "group__data" ],
+    [ "Time", "group__time.html", "group__time" ],
     [ "NWNX", "group__nwnx.html", "group__nwnx" ],
     [ "Administration", "group__admin.html", "group__admin" ],
     [ "Appearance", "group__appearance.html", "group__appearance" ],
@@ -8,7 +10,6 @@ var modules =
     [ "Combat Modes", "group__combatmodes.html", "group__combatmodes" ],
     [ "Creature", "group__creature.html", "group__creature" ],
     [ "Damage", "group__damage.html", "group__damage" ],
-    [ "Data", "group__data.html", "group__data" ],
     [ "Diagnostics", "group__diagnostics.html", "group__diagnostics" ],
     [ "Dialog", "group__dialog.html", "group__dialog" ],
     [ "DotNET", "group__dotnet.html", "group__dotnet" ],
@@ -41,7 +42,6 @@ var modules =
     [ "SQL", "group__sql.html", "group__sql" ],
     [ "ThreadWatchdog", "group__threadwatchdog.html", "group__threadwatchdog" ],
     [ "Tileset", "group__tileset.html", "group__tileset" ],
-    [ "Time", "group__time.html", "group__time" ],
     [ "Tracking", "group__tracking.html", "group__tracking" ],
     [ "Tweaks", "group__tweaks.html", "group__tweaks" ],
     [ "Util", "group__util.html", "group__util" ],

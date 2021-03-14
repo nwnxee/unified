@@ -1,6 +1,5 @@
 var group__time =
 [
-    [ "Readme", "group__time.html#time", null ],
     [ "inc_sqlite_time.nss", "inc__sqlite__time_8nss.html", null ],
     [ "nwnx_time.nss", "nwnx__time_8nss.html", null ],
     [ "SQLite_MillisecondTimeStamp", "structSQLite__MillisecondTimeStamp.html", [

@@ -1,6 +1,5 @@
 var group__data =
 [
-    [ "Readme", "group__data.html#data", "group__data_data_dup" ],
     [ "Array At", "group__data__array__at.html", "group__data__array__at" ],
     [ "Array Contains", "group__data__array__contains.html", "group__data__array__contains" ],
     [ "Array Find", "group__data__array__find.html", "group__data__array__find" ],
