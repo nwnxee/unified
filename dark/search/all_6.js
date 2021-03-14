@@ -1,16 +1,19 @@
 var searchData=
 [
-  ['geoadd_163',['GEOADD',['../nwnx__redis__short_8nss.html#a3744b71d4fa9b9363fdc997909a864a2',1,'nwnx_redis_short.nss']]],
-  ['geodist_164',['GEODIST',['../nwnx__redis__short_8nss.html#a40db82e7d1ef791e660aad47632735e9',1,'nwnx_redis_short.nss']]],
-  ['geohash_165',['GEOHASH',['../nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f',1,'nwnx_redis_short.nss']]],
-  ['geopos_166',['GEOPOS',['../nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85',1,'nwnx_redis_short.nss']]],
-  ['georadius_167',['GEORADIUS',['../nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f',1,'nwnx_redis_short.nss']]],
-  ['georadiusbymember_168',['GEORADIUSBYMEMBER',['../nwnx__redis__short_8nss.html#ae76e50982756c8c36c308c154a44c6cc',1,'nwnx_redis_short.nss']]],
-  ['get_169',['GET',['../nwnx__redis__short_8nss.html#a3ef0bab4ce4f18dff779e435a21a0145',1,'nwnx_redis_short.nss']]],
-  ['getbit_170',['GETBIT',['../nwnx__redis__short_8nss.html#a71f5308ce35c90b21c13642778d1936a',1,'nwnx_redis_short.nss']]],
-  ['getrange_171',['GETRANGE',['../nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d',1,'nwnx_redis_short.nss']]],
-  ['getrowcount_172',['GetRowCount',['../inc__array_8nss.html#a395c070df08788ac1995ae046b1ae4e1',1,'inc_array.nss']]],
-  ['getset_173',['GETSET',['../nwnx__redis__short_8nss.html#a22ff63475aafe0b74924663c682d4d17',1,'nwnx_redis_short.nss']]],
-  ['gettablecreatestring_174',['GetTableCreateString',['../inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87',1,'inc_array.nss']]],
-  ['gettablename_175',['GetTableName',['../inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676',1,'inc_array.nss']]]
+  ['fclasslevelmod_149',['fClassLevelMod',['../structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2',1,'NWNX_SkillRanks_SkillFeat']]],
+  ['fduration_150',['fDuration',['../structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38',1,'NWNX_EffectUnpacked']]],
+  ['feat_151',['Feat',['../group__feat.html',1,'']]],
+  ['feedback_152',['Feedback',['../group__feedback.html',1,'']]],
+  ['fheighttransition_153',['fHeightTransition',['../structNWNX__Tileset__TilesetData.html#ac66c0a4836ce34987948f9af09df6709',1,'NWNX_Tileset_TilesetData']]],
+  ['flushall_154',['FLUSHALL',['../nwnx__redis__short_8nss.html#aca3002c3a5361f14abbb146c877bd1ac',1,'nwnx_redis_short.nss']]],
+  ['flushdb_155',['FLUSHDB',['../nwnx__redis__short_8nss.html#abebbb105482c9e1ae315e9228ab0e7b7',1,'nwnx_redis_short.nss']]],
+  ['forientation_156',['fOrientation',['../structNWNX__Tileset__TileDoorData.html#a63e63fe2cc264b297f8eec33a4972977',1,'NWNX_Tileset_TileDoorData']]],
+  ['fparam0_157',['fParam0',['../structNWNX__EffectUnpacked.html#a35f34194735bf87011027e76349b7074',1,'NWNX_EffectUnpacked']]],
+  ['fparam1_158',['fParam1',['../structNWNX__EffectUnpacked.html#aa78592d4b82d8395fe3552333271a315',1,'NWNX_EffectUnpacked']]],
+  ['fparam2_159',['fParam2',['../structNWNX__EffectUnpacked.html#a7f21f59f525f1dc6ea93333c3358f858',1,'NWNX_EffectUnpacked']]],
+  ['fparam3_160',['fParam3',['../structNWNX__EffectUnpacked.html#ab38506290be8f1df06a216ee0c4756d0',1,'NWNX_EffectUnpacked']]],
+  ['fx_161',['fX',['../structNWNX__Tileset__TileDoorData.html#a13c99bb578bbc84c38ef0cdf68e44b8d',1,'NWNX_Tileset_TileDoorData']]],
+  ['fy_162',['fY',['../structNWNX__Tileset__TileDoorData.html#afe7d809a6de5f72329bde4cc8c3e331d',1,'NWNX_Tileset_TileDoorData']]],
+  ['fz_163',['fZ',['../structNWNX__Tileset__TileDoorData.html#afc94ab09db9ffb667788d7366c7f7849',1,'NWNX_Tileset_TileDoorData']]],
+  ['funchook_20_2d_20an_20api_20hook_20library_164',['Funchook - an API hook library',['../md_NWNXLib_External_funchook_README.html',1,'']]]
 ];

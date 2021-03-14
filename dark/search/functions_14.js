@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['wait_2956',['WAIT',['../nwnx__redis__short_8nss.html#a3d2504c4499e2661f9fef80f41df198e',1,'nwnx_redis_short.nss']]],
-  ['watch_2957',['WATCH',['../nwnx__redis__short_8nss.html#a814bb7f9a1d72b334cf6c1efb19c8f33',1,'nwnx_redis_short.nss']]]
+  ['unlink_2968',['UNLINK',['../nwnx__redis__short_8nss.html#aa1fa7cbf23cda9c2431f3c44a2eb3175',1,'nwnx_redis_short.nss']]],
+  ['unwatch_2969',['UNWATCH',['../nwnx__redis__short_8nss.html#a3a728ec56f956f7c8dc04740fb06ea53',1,'nwnx_redis_short.nss']]]
 ];

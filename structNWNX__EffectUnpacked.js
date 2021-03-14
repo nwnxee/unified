@@ -1,5 +1,6 @@
 var structNWNX__EffectUnpacked =
 [
+    [ "sID", "structNWNX__EffectUnpacked.html#af8359fa155769e64a50e9391be009801", null ],
     [ "nType", "structNWNX__EffectUnpacked.html#a50ac28a82740b466e44088470b411582", null ],
     [ "nSubType", "structNWNX__EffectUnpacked.html#ab31d1e6bf3a66d482598d900eea7f511", null ],
     [ "fDuration", "structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38", null ],
@@ -39,5 +40,6 @@ var structNWNX__EffectUnpacked =
     [ "oParam3", "structNWNX__EffectUnpacked.html#a099a70008ff66f2a79cd34902104d688", null ],
     [ "vParam0", "structNWNX__EffectUnpacked.html#a2a662e0b9af4a7c7aff93d810cb87f54", null ],
     [ "vParam1", "structNWNX__EffectUnpacked.html#a02dd1d1841933c337c9ee948e6264d4f", null ],
-    [ "sTag", "structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193", null ]
+    [ "sTag", "structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193", null ],
+    [ "sItemProp", "structNWNX__EffectUnpacked.html#a4c8db350b2f07bd5ce4deaeb60471730", null ]
 ];

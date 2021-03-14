@@ -6,5 +6,11 @@ var nwnx__effect_8nss =
     [ "NWNX_Effect_GetEffectExpiredData", "group__effect.html#gabb4f9e4e4b8315cda42c1e7dc4d2dff3", null ],
     [ "NWNX_Effect_GetEffectExpiredCreator", "group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484", null ],
     [ "NWNX_Effect_ReplaceEffect", "group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b", null ],
+    [ "NWNX_Effect_GetTrueEffectCount", "group__effect.html#gad5ee5799b1d4ce82fb0f28a602152739", null ],
+    [ "NWNX_Effect_GetTrueEffect", "group__effect.html#ga2e0dcb3e029747151deefd63cbcb1197", null ],
+    [ "NWNX_Effect_ReplaceEffectByIndex", "group__effect.html#gae8ddfbe898a7449551e3a6cf53c64f8c", null ],
+    [ "NWNX_Effect_RemoveEffectById", "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f", null ],
+    [ "__NWNX_Effect_ResolveUnpack", "nwnx__effect_8nss.html#acbfeb3be3729a96462b64ba13e7a7562", null ],
+    [ "__NWNX_Effect_ResolvePack", "nwnx__effect_8nss.html#af14767a39e8daf9e79c644ae52069400", null ],
     [ "NWNX_Effect", "group__effect.html#ga92cd5f42fe610803f30f5383242cd6cc", null ]
 ];

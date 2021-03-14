@@ -3,6 +3,7 @@ var group__effect =
     [ "Readme", "group__effect.html#effect", null ],
     [ "nwnx_effect.nss", "nwnx__effect_8nss.html", null ],
     [ "NWNX_EffectUnpacked", "structNWNX__EffectUnpacked.html", [
+      [ "sID", "structNWNX__EffectUnpacked.html#af8359fa155769e64a50e9391be009801", null ],
       [ "nType", "structNWNX__EffectUnpacked.html#a50ac28a82740b466e44088470b411582", null ],
       [ "nSubType", "structNWNX__EffectUnpacked.html#ab31d1e6bf3a66d482598d900eea7f511", null ],
       [ "fDuration", "structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38", null ],
@@ -42,12 +43,17 @@ var group__effect =
       [ "oParam3", "structNWNX__EffectUnpacked.html#a099a70008ff66f2a79cd34902104d688", null ],
       [ "vParam0", "structNWNX__EffectUnpacked.html#a2a662e0b9af4a7c7aff93d810cb87f54", null ],
       [ "vParam1", "structNWNX__EffectUnpacked.html#a02dd1d1841933c337c9ee948e6264d4f", null ],
-      [ "sTag", "structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193", null ]
+      [ "sTag", "structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193", null ],
+      [ "sItemProp", "structNWNX__EffectUnpacked.html#a4c8db350b2f07bd5ce4deaeb60471730", null ]
     ] ],
     [ "NWNX_Effect_UnpackEffect", "group__effect.html#ga10a9c2babd8ee53cf383342585b239e7", null ],
     [ "NWNX_Effect_PackEffect", "group__effect.html#ga8c7e4f71ab7b12105e5051ec90e9fd2e", null ],
     [ "NWNX_Effect_SetEffectExpiredScript", "group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec", null ],
     [ "NWNX_Effect_GetEffectExpiredData", "group__effect.html#gabb4f9e4e4b8315cda42c1e7dc4d2dff3", null ],
     [ "NWNX_Effect_GetEffectExpiredCreator", "group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484", null ],
-    [ "NWNX_Effect_ReplaceEffect", "group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b", null ]
+    [ "NWNX_Effect_ReplaceEffect", "group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b", null ],
+    [ "NWNX_Effect_GetTrueEffectCount", "group__effect.html#gad5ee5799b1d4ce82fb0f28a602152739", null ],
+    [ "NWNX_Effect_GetTrueEffect", "group__effect.html#ga2e0dcb3e029747151deefd63cbcb1197", null ],
+    [ "NWNX_Effect_ReplaceEffectByIndex", "group__effect.html#gae8ddfbe898a7449551e3a6cf53c64f8c", null ],
+    [ "NWNX_Effect_RemoveEffectById", "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f", null ]
 ];
