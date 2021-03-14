@@ -11,7 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills
 
 ##### New Plugins
-- N/A
+- NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
 
 ##### New NWScript Functions
 - N/A
