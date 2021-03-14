@@ -16,8 +16,7 @@ static NWNXLib::Hooks::Hook s_DoListenDetectionHook;
 
 StealthEvents::StealthEvents()
 {
-    // TODO: Deprecate ON_E*_STEALTH in favor of ON_STEALTH_E*
-    Events::InitOnFirstSubscribe("NWNX_ON_(E.*_STEALTH_.*|STEALTH_E.*)", []() {
+    Events::InitOnFirstSubscribe("NWNX_ON_STEALTH_E.*", []() {
         s_SetStealthModeHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature14SetStealthModeEh,
                                             (void*)&SetStealthModeHook, Hooks::Order::Early);
     });
@@ -46,9 +45,7 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
 
     if (!currentlyStealthed && willBeStealthed)
     {
-        // TODO: Deprecate ON_E*_STEALTH in favor of ON_STEALTH_E*
-        if (Events::SignalEvent("NWNX_ON_ENTER_STEALTH_BEFORE", thisPtr->m_idSelf) &&
-            Events::SignalEvent("NWNX_ON_STEALTH_ENTER_BEFORE", thisPtr->m_idSelf, &sResult))
+        if (Events::SignalEvent("NWNX_ON_STEALTH_ENTER_BEFORE", thisPtr->m_idSelf, &sResult))
         {
             s_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
         }
@@ -82,15 +79,11 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
                 thisPtr->ClearActivities(1);
         }
 
-        // TODO: Deprecate ON_E*_STEALTH in favor of ON_STEALTH_E*
-        Events::SignalEvent("NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
         Events::SignalEvent("NWNX_ON_STEALTH_ENTER_AFTER", thisPtr->m_idSelf);
     }
     else if (currentlyStealthed && !willBeStealthed)
     {
-        // TODO: Deprecate ON_E*_STEALTH in favor of ON_STEALTH_E*
-        if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf) &&
-            Events::SignalEvent("NWNX_ON_STEALTH_EXIT_BEFORE", thisPtr->m_idSelf))
+        if (Events::SignalEvent("NWNX_ON_STEALTH_EXIT_BEFORE", thisPtr->m_idSelf))
         {
             s_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
         }
@@ -99,8 +92,6 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
             thisPtr->SetActivity(1, true);
         }
 
-        // TODO: Deprecate ON_E*_STEALTH in favor of ON_STEALTH_E*
-        Events::SignalEvent("NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
         Events::SignalEvent("NWNX_ON_STEALTH_EXIT_AFTER", thisPtr->m_idSelf);
     }
 }

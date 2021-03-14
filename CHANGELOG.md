@@ -33,6 +33,8 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ### Removed
 - Data and Time plugins have been removed. Compatibility scripts are provided [here](Compatibility/)
+- ***API BREAKING*** Events: removed deprecated `NWNX_ON_{ENTER|EXIT}_STEALTH_*` events. Use `NWNX_ON_STEALTH_{ENTER|EXIT}_*`
+- Tweaks: removed deprecated `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` environment variable. Use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 
 ### Fixed
 - N/A
