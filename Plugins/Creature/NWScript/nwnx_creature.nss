@@ -895,7 +895,6 @@ float NWNX_Creature_GetPreferredAttackDistance(object oCreature);
 /// @param fPrefAtckDist The creatures preferred attack distance.
 void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist);
 
-
 /// @brief Get the skill penalty from wearing armor.
 /// @param oCreature The creature.
 int NWNX_Creature_GetArmorCheckPenalty(object oCreature);
