@@ -206,7 +206,7 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @brief Export an object to the UserDirectory/nwnx folder.
 /// @param sFileName The filename without extension, 16 or less characters.
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
-void NWNX_Object_Export(string sFileName, object oObject);
+void NWNX_Object_Export(object oObject, string sFileName);
 
 /// @brief Get oObject's integer variable sVarName.
 /// @param oObject The object to get the variable from.
@@ -624,12 +624,12 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_Export(string sFileName, object oObject)
+void NWNX_Object_Export(object oObject, string sFileName)
 {
     string sFunc = "Export";
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sFileName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 

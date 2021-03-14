@@ -521,14 +521,11 @@ NWNX_EXPORT ArgumentStack AddIconEffect(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
 {
-    const auto fileName = args.extract<std::string>();
-      ASSERT_OR_THROW(!fileName.empty());
-      ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto oidObject = args.extract<ObjectID >();
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-
-    if (auto *pGameObject = Utils::GetGameObject(oidObject))
+    if (auto *pGameObject = Utils::PopObject(args))
     {
+        const auto fileName = args.extract<std::string>();
+          ASSERT_OR_THROW(!fileName.empty());
+          ASSERT_OR_THROW(fileName.size() <= 16);
         auto ExportObject = [&](RESTYPE resType) -> void
         {
             std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
