@@ -102,17 +102,7 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
 {
     const auto objectId = args.extract<ObjectID>();
     const bool bPreserveBackup = !!args.extract<int32_t>();
-
-    // TODO: Remove the try/catch in some later release
-    std::string kickMessage;
-    try
-    {
-        kickMessage = args.extract<std::string>();
-    }
-    catch(const std::runtime_error& e)
-    {
-        LOG_WARNING("NWNX_Administration_DeletePlayerCharacter() called from NWScript without sKickMessage parameter. Please update nwnx_admin.nss");
-    }
+    const auto kickMessage = args.extract<std::string>();
 
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);

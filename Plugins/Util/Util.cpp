@@ -335,8 +335,6 @@ NWNX_EXPORT ArgumentStack GetLastCreatedObject(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
 {
-    std::string retVal;
-
     const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
       ASSERT_OR_THROW(scriptName.size() <= 16);
@@ -344,16 +342,7 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
       ASSERT_OR_THROW(!scriptData.empty());
     const auto wrapIntoMain = args.extract<int32_t>();
 
-    std::string alias;
-    try
-    {
-        alias = Events::ExtractArgument<std::string>(args);
-    }
-    catch (const std::runtime_error& e)
-    {
-        LOG_WARNING("NWNX_Util_AddScript() called without alias parameter, please update nwnx_util.nss");
-        alias = "NWNX";
-    }
+    auto alias = args.extract<std::string>();
 
     if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
     {
@@ -374,16 +363,16 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
 
     s_scriptCompiler->SetOutputAlias(alias);
 
-    if (s_scriptCompiler->CompileScriptChunk(scriptData.c_str(), wrapIntoMain != 0) == 0)
+    if (s_scriptCompiler->CompileScriptChunk(scriptData, wrapIntoMain != 0) == 0)
     {
-        auto writeFileResult = s_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str());
+        auto writeFileResult = s_scriptCompiler->WriteFinalCodeToFile(scriptName);
         if (writeFileResult != 0)
-            retVal = Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr();
+            return Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr();
     }
     else
-        retVal = s_scriptCompiler->m_sCapturedError.CStr();
+        return s_scriptCompiler->m_sCapturedError.CStr();
 
-    return retVal;
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack GetNSSContents(ArgumentStack&& args)
@@ -413,23 +402,12 @@ NWNX_EXPORT ArgumentStack GetNSSContents(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AddNSSFile(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-
     const auto fileName = args.extract<std::string>();
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
     const auto contents = args.extract<std::string>();
 
-    std::string alias;
-    try
-    {
-        alias = Events::ExtractArgument<std::string>(args);
-    }
-    catch (const std::runtime_error& e)
-    {
-        LOG_WARNING("NWNX_Util_AddNSSFile() called without alias parameter, please update nwnx_util.nss");
-        alias = "NWNX";
-    }
+    auto alias = args.extract<std::string>();
 
     if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
     {
@@ -439,36 +417,17 @@ NWNX_EXPORT ArgumentStack AddNSSFile(ArgumentStack&& args)
 
     auto file = CExoFile((alias + ":" + fileName).c_str(), Constants::ResRefType::NSS, "w");
 
-    if (file.FileOpened())
-    {
-        if (file.Write(contents))
-        {
-            retVal = file.Flush();
-        }
-    }
-
-    return retVal;
+    return file.FileOpened() && file.Write(contents) && file.Flush();
 }
 
 NWNX_EXPORT ArgumentStack RemoveNWNXResourceFile(ArgumentStack&& args)
 {
-    int32_t retVal;
-
     const auto fileName = args.extract<std::string>();
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
     const auto type = args.extract<int32_t>();
 
-    std::string alias;
-    try
-    {
-        alias = Events::ExtractArgument<std::string>(args);
-    }
-    catch (const std::runtime_error& e)
-    {
-        LOG_WARNING("NWNX_Util_RemoveNWNXResourceFile() called without alias parameter, please update nwnx_util.nss");
-        alias = "NWNX";
-    }
+    auto alias = args.extract<std::string>();
 
     if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
     {
@@ -476,11 +435,9 @@ NWNX_EXPORT ArgumentStack RemoveNWNXResourceFile(ArgumentStack&& args)
         alias = "NWNX";
     }
 
-    CExoString exoFileName = (alias + ":" + fileName).c_str();
+    CExoString exoFileName = alias + ":" + fileName;
 
-    retVal = Globals::ExoResMan()->RemoveFile(exoFileName, type);
-
-    return retVal;
+    return Globals::ExoResMan()->RemoveFile(exoFileName, type);
 }
 
 NWNX_EXPORT ArgumentStack SetInstructionLimit(ArgumentStack&& args)
@@ -609,16 +566,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
     const auto posZ = args.extract<float>();
     const auto facing = args.extract<float>();
     const auto tag = args.extract<std::string>();
-
-    int32_t appearance = -1;
-    try
-    {
-        appearance = args.extract<int32_t>();
-    }
-    catch (const std::runtime_error& e)
-    {
-        LOG_WARNING("NWNX_Util_CreateDoor() called without appearance parameter, please update nwnx_util.nss");
-    }
+    const auto appearance = args.extract<int32_t>();
 
     auto resRef = CResRef(strResRef);
     Vector position = {posX, posY, posZ};
@@ -626,7 +574,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
     if (!Globals::ExoResMan()->Exists(resRef, Constants::ResRefType::UTD, nullptr))
     {
         LOG_WARNING("CreateDoor: ResRef '%s' does not exist", resRef.GetResRefStr());
-        return Events::Arguments(Constants::OBJECT_INVALID);
+        return Constants::OBJECT_INVALID;
     }
 
     if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))

@@ -134,7 +134,7 @@ bool SQL::Reconnect(int32_t attempts)
 
 Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
 {
-    m_activeQuery = Events::ExtractArgument<std::string>(args);
+    m_activeQuery = args.extract<std::string>();
 
     if (m_utf8)
     {
@@ -146,11 +146,11 @@ Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
     if (!m_target->IsConnected() && !Reconnect(3))
     {
         LOG_ERROR("Database connection lost. Aborting.");
-        return Events::Arguments(0);
+        return false;
     }
 
     m_queryPrepared = m_target->PrepareQuery(m_activeQuery);
-    return Events::Arguments(static_cast<int32_t>(m_queryPrepared));
+    return m_queryPrepared;
 }
 
 Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
@@ -158,7 +158,7 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
     if (!m_queryPrepared)
     {
         LOG_WARNING("Trying to execute prepared query without successful PrepareQuery() call");
-        return Events::Arguments(0);
+        return 0;
     }
 
     // NOTE: There is a time-of-check-to-time-of-use race condition here.
@@ -171,7 +171,7 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
         if (!Reconnect())
         {
             LOG_ERROR("Database connection lost. Aborting.");
-            return Events::Arguments(0);
+            return 0;
         }
         else
         {
@@ -180,7 +180,7 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
             if (!m_target->PrepareQuery(m_activeQuery))
             {
                 LOG_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError());
-                return Events::Arguments(0);
+                return 0;
             }
 
         }
@@ -236,12 +236,12 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
         LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError);
     }
 
-    return Events::Arguments(querySucceeded ? queryId : 0);
+    return querySucceeded ? queryId : 0;
 }
 
 Events::ArgumentStack SQL::ReadyToReadNextRow(Events::ArgumentStack&&)
 {
-    return Events::Arguments(m_activeResults.empty() ? 0 : 1);
+    return m_activeResults.empty() ? 0 : 1;
 }
 
 Events::ArgumentStack SQL::ReadNextRow(Events::ArgumentStack&&)
@@ -253,12 +253,12 @@ Events::ArgumentStack SQL::ReadNextRow(Events::ArgumentStack&&)
 
     m_activeRow = std::move(m_activeResults.front());
     m_activeResults.pop();
-    return Events::Arguments();
+    return {};
 }
 
 Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
 {
-    const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
+    const size_t column = args.extract<int32_t>();
 
     if (column >= m_activeRow.size())
     {
@@ -269,8 +269,8 @@ Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
 }
 Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
 {
-    auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<int32_t>(args);
+    const auto position = args.extract<int32_t>();
+    const auto value = args.extract<int32_t>();
     if (position >= m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:0x%08x) out of bounds", position, value);
@@ -279,12 +279,12 @@ Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
     {
         m_target->PrepareInt(position, value);
     }
-    return Events::Arguments();
+    return {};
 }
 Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
 {
-    auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<std::string>(args);
+    const auto position = args.extract<int32_t>();
+    const auto value = args.extract<std::string>();
     if (position >= m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value);
@@ -293,12 +293,12 @@ Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
     {
         m_target->PrepareString(position, m_utf8 ? String::ToUTF8(value) : value);
     }
-    return Events::Arguments();
+    return {};
 }
 Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
 {
-    auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<float>(args);
+    const auto position = args.extract<int32_t>();
+    const auto value = args.extract<float>();
     if (position >= m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:'%f') out of bounds", position, value);
@@ -307,12 +307,12 @@ Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
     {
         m_target->PrepareFloat(position, value);
     }
-    return Events::Arguments();
+    return {};
 }
 Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
 {
-    auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<ObjectID>(args);
+    auto position = args.extract<int32_t>();
+    auto value = args.extract<ObjectID>();
     int32_t valInt;
     std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
     if (position >= m_target->GetPreparedQueryParamCount())
@@ -323,18 +323,13 @@ Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
     {
         m_target->PrepareInt(position, valInt);
     }
-    return Events::Arguments();
+    return {};
 }
 Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
 {
-    auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<ObjectID>(args);
-    int32_t base64 = true;
-    try
-    {
-        base64 = Events::ExtractArgument<int32_t>(args);
-    }
-    catch (std::runtime_error& e){}
+    auto position = args.extract<int32_t>();
+    auto value = args.extract<ObjectID>();
+    bool base64 = !!args.extract<int32_t>();
 
     if (position >= m_target->GetPreparedQueryParamCount())
     {
@@ -351,22 +346,17 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
             m_target->PrepareBinary(position, serializedObjectVec);
         }
     }
-    return Events::Arguments();
+    return {};
 }
 
 Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& args)
 {
-    const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
-    const auto owner = Events::ExtractArgument<ObjectID>(args);
-    const auto x = Events::ExtractArgument<float>(args);
-    const auto y = Events::ExtractArgument<float>(args);
-    const auto z = Events::ExtractArgument<float>(args);
-    int32_t base64 = true;
-    try
-    {
-        base64 = Events::ExtractArgument<int32_t>(args);
-    }
-    catch (std::runtime_error& e){}
+    const size_t column = args.extract<int32_t>();
+    const auto owner = args.extract<ObjectID>();
+    const auto x = args.extract<float>();
+    const auto y = args.extract<float>();
+    const auto z = args.extract<float>();
+    const bool base64 = !!args.extract<int32_t>();
 
     if (column >= m_activeRow.size())
     {
@@ -397,34 +387,34 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
             LOG_INFO("No valid owner given, object %x deserialized outside world bounds", retval);
         }
     }
-    return Events::Arguments(retval);
+    return retval;
 }
 
 Events::ArgumentStack SQL::GetAffectedRows(Events::ArgumentStack&&)
 {
-    return Events::Arguments(m_target->GetAffectedRows());
+    return m_target->GetAffectedRows();
 }
 
 Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
 {
-    return Events::Arguments(Config::Get<std::string>("TYPE", "MYSQL"));
+    return Config::Get<std::string>("TYPE", "MYSQL");
 }
 
 Events::ArgumentStack SQL::DestroyPreparedQuery(Events::ArgumentStack&&)
 {
     m_target->DestroyPreparedQuery();
     m_queryPrepared = false;
-    return Events::Arguments();
+    return {};
 }
 
 Events::ArgumentStack SQL::GetLastError(Events::ArgumentStack&&)
 {
-    return Events::Arguments(m_target->GetLastError(true));
+    return m_target->GetLastError(true);
 }
 
 Events::ArgumentStack SQL::GetPreparedQueryParamCount(Events::ArgumentStack&&)
 {
-    return Events::Arguments(m_queryPrepared ? m_target->GetPreparedQueryParamCount() : -1);
+    return m_queryPrepared ? m_target->GetPreparedQueryParamCount() : -1;
 }
 
 }

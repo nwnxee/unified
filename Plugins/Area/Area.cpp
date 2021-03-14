@@ -568,16 +568,7 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
         const auto exportUUID = !!args.extract<int32_t>();
         const auto objectFilter = args.extract<int32_t>();
 
-        std::string alias;
-        try
-        {
-            alias = args.extract<std::string>();
-        }
-        catch (const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Area_ExportGIT() called without alias parameter, please update nwnx_area.nss");
-            alias = "NWNX";
-        }
+        auto alias = args.extract<std::string>();
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
         {
