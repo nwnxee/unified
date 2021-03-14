@@ -35,6 +35,7 @@
 #include "API/CExoLocString.hpp"
 #include "API/CNWSPlayerStoreGUI.hpp"
 #include "API/CExoResMan.hpp"
+#include "API/CTlkTable.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -1616,6 +1617,28 @@ NWNX_EXPORT ArgumentStack CloseStore(ArgumentStack&& args)
     {
         if (auto *pPlayerStoreGUI = pPlayer->m_pStoreGUI)
             pPlayerStoreGUI->CloseStore(pPlayer, true);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        const auto strRef = args.extract<int32_t>();
+          ASSERT_OR_THROW(strRef >= 0);
+        auto override = args.extract<std::string>();
+        const auto restoreGlobal = !!args.extract<int32_t>();
+
+        if (override.empty() && restoreGlobal)
+        {
+            if (Globals::TlkTable()->m_overrides.find(strRef) != Globals::TlkTable()->m_overrides.end())
+                override = Globals::TlkTable()->m_overrides[strRef].CStr();
+        }
+
+        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+            pMessage->SendServerToPlayerSetTlkOverride(pPlayer->m_nPlayerID, strRef, override);
     }
 
     return {};
