@@ -21,16 +21,7 @@ static int32_t HandlePlayerToServerPlayModuleCharacterList_StartHook(CNWSMessage
 void HidePlayersOnCharList() __attribute__((constructor));
 void HidePlayersOnCharList()
 {
-    // TODO: Remove at some point
-    if (Config::Get<bool>("HIDE_DMS_ON_CHAR_LIST", false))
-    {
-        s_HideCharBehavior = 1;
-        LOG_INFO("NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST has been deprecated, please use NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST = 1");
-    }
-    else
-    {
-        s_HideCharBehavior = Config::Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0);
-    }
+    s_HideCharBehavior = Config::Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0);
 
     if (s_HideCharBehavior == 0)
         return;
