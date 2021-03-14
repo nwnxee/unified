@@ -5,22 +5,22 @@ Functions and variables to control stacking of multiple bonuses of the same type
 
 ## Environment Variables
 
-* `NWNX__NOSTACK_*`: See below.
-* `NWNX__NOSTACK_SPELL_DEFAULT_TYPE`: Between 0 and 20. See below.
-* `NWNX__NOSTACK_ITEM_DEFAULT_TYPE`: Between 0 and 20. See below.
-* `NWNX__NOSTACK_ALWAYS_STACK_PENALTIES`: true or false. Defaults to false.
-* `NWNX__NOSTACK_SEPARATE_INVALID_OID_EFFECTS`: true or false. Defaults to false.
+* `NWNX_NOSTACK_*`: See below.
+* `NWNX_NOSTACK_SPELL_DEFAULT_TYPE`: Between 0 and 20. See below.
+* `NWNX_NOSTACK_ITEM_DEFAULT_TYPE`: Between 0 and 20. See below.
+* `NWNX_NOSTACK_ALWAYS_STACK_PENALTIES`: true or false. Defaults to false.
+* `NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS`: true or false. Defaults to false.
 
-### NWNX__NOSTACK_*
+### NWNX_NOSTACK_*
 
 The following environment variables are available.
 
 | ENV VAR | Description |
 |---|----|
-| NWNX__NOSTACK_ABILITY | Controls whether ability scores should stack or not |
-| NWNX__NOSTACK_SKILL | Controls whether skill bonuses should stack or not |
-| NWNX__NOSTACK_SAVINGTHROW | Controls whether saving throw bonuses should stack or not |
-| NWNX__NOSTACK_ATTACKBONUS | Controls whether attack bonuses should stack or not |
+| NWNX_NOSTACK_ABILITY | Controls whether ability scores should stack or not |
+| NWNX_NOSTACK_SKILL | Controls whether skill bonuses should stack or not |
+| NWNX_NOSTACK_SAVINGTHROW | Controls whether saving throw bonuses should stack or not |
+| NWNX_NOSTACK_ATTACKBONUS | Controls whether attack bonuses should stack or not |
 
 Each of the variables can take one of the following values.
 
@@ -32,7 +32,7 @@ Each of the variables can take one of the following values.
 | 3 | It will only prevent stacking of effects from items. Spell effects will stack as usual. |
 | 4 | Stacking will be determined by effect type that can be set using NWscript functions. |
 
-### NWNX__NOSTACK_*_DEFAULT_TYPE
+### NWNX_NOSTACK_*_DEFAULT_TYPE
 This variable takes one of the following values, assigning all effects this modifier type by default.
 This is used only when mode is set to 4. Per-spell overrides can be defined using the
 `NWNX_NoStack_SetSpellBonusType(int spellId, int type)` function. Effects of different types
@@ -53,7 +53,7 @@ Feats and other spell-like effects use spellIds from spells.2da to determine the
 | 8 | Sacred bonus. |
 | 9-20 | Custom bonus types. |
 
-### NWNX__NOSTACK_SEPARATE_INVALID_OID_EFFECTS
+### NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS
 Set this value to true if you are adding effects through scripts that you want to stack with each other.
 This is needed because scripted effects, unless created from a spellscript, always have an INVALID_OBJECT creator and a spellId of -1.
 
