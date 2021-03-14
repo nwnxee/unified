@@ -8,12 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ### Added
-- Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills
 
 ##### New Plugins
 - NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
 
 ##### New NWScript Functions
+- Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills
 - Creature: {Get/Set}BypassEffectImmunity()
 - Effect: GetTrueEffectCount()
 - Effect: GetTrueEffect()
