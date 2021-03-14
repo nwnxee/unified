@@ -25,7 +25,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_SetTriggerGeometry", "group__object.html#ga3ba2a01f7ba3088280c122708bb0ba84", null ],
     [ "NWNX_Object_AddIconEffect", "group__object.html#ga6536ea0753ecd950170841649053e566", null ],
     [ "NWNX_Object_RemoveIconEffect", "group__object.html#ga9fb809f301e75d9fcdc64ed0fd8bb4ce", null ],
-    [ "NWNX_Object_Export", "group__object.html#ga091bdd0e7c99ed5254ca138db05d7156", null ],
+    [ "NWNX_Object_Export", "group__object.html#ga248baa30ff85960bf6b559554125fff4", null ],
     [ "NWNX_Object_GetInt", "group__object.html#gafed465042375a88ec4194f1da7819813", null ],
     [ "NWNX_Object_SetInt", "group__object.html#ga9b295885844e07263c10712a6ebf955e", null ],
     [ "NWNX_Object_DeleteInt", "group__object.html#gae1de0d766b2f4a005f7c7a3fdab53b0b", null ],

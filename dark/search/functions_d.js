@@ -363,7 +363,7 @@ var searchData=
   ['nwnx_5fobject_5fdeserialize_2423',['NWNX_Object_Deserialize',['../group__object.html#gad151049205ee996b9e779b848f7eac6e',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fdospellimmunity_2424',['NWNX_Object_DoSpellImmunity',['../group__object.html#ga78eef6c5393f4c24778bee5681514f01',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fdospelllevelabsorption_2425',['NWNX_Object_DoSpellLevelAbsorption',['../group__object.html#ga0543152520c56d3c3d3d724a38409f7d',1,'nwnx_object.nss']]],
-  ['nwnx_5fobject_5fexport_2426',['NWNX_Object_Export',['../group__object.html#ga091bdd0e7c99ed5254ca138db05d7156',1,'nwnx_object.nss']]],
+  ['nwnx_5fobject_5fexport_2426',['NWNX_Object_Export',['../group__object.html#ga248baa30ff85960bf6b559554125fff4',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetailevel_2427',['NWNX_Object_GetAILevel',['../group__object.html#ga73c0bae422bd3bc0f8dc1fbcfeeecdce',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetappearance_2428',['NWNX_Object_GetAppearance',['../group__object.html#gaf809aa376e569c45f734efa2567094b8',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetautoremovekey_2429',['NWNX_Object_GetAutoRemoveKey',['../group__object.html#ga2fdf79d12491d8da974b94d5d6399a31',1,'nwnx_object.nss']]],

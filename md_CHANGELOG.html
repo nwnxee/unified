@@ -132,6 +132,7 @@ Changed</h2>
 <li>Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__effect_8nss.html">nwnx_effect.nss</a> if you are using these functions</em>.</li>
 <li>ItemProperty: UnpackIP now can retrieve the item property's id. <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__itemprop_8nss.html">nwnx_itemprop.nss</a> if you are using these functions</em>.</li>
 <li><em><b>API BREAKING</b></em> Damage: The <a class="el" href="structNWNX__Damage__AttackEventData.html" title="Attack Event Data.">NWNX_Damage_AttackEventData</a> fields have changed their names: <code>iAttackType -&gt; iWeaponAttackType</code>, <code>iAttackType_REAL -&gt; iAttackType</code>.</li>
+<li><em><b>API BREAKING</b></em> Object: The <code>NWNX_Object_Export</code> function has had its arguments reordered.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Deprecated</h2>
@@ -725,7 +726,7 @@ Fixed</h2>
 Added</h2>
 <ul>
 <li>Core: Added the environment variable <code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code> to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked</li>
-<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga091bdd0e7c99ed5254ca138db05d7156" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gabe413b0610a460dfc310fafc1149ba6d" title="Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
+<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga248baa30ff85960bf6b559554125fff4" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gabe413b0610a460dfc310fafc1149ba6d" title="Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>, setting this to true will delete all contents in the <code>/nwnx</code> folder on startup of the server. Default: false</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code> which lets you change the resman priority of the <code>/nwnx</code> folder. Default: 70000000</li>
 <li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code>, <code>logformat</code><ul>
@@ -1045,7 +1046,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Mar 14 2021 18:27:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 14 2021 18:56:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
