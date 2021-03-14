@@ -98,13 +98,13 @@ int NWNX_Effect_GetTrueEffectCount(object oObject);
 
 /// @brief Gets a specific effect on an object. This can grab effects normally hidden from developers, such as item properties.
 /// @param oObject The object with the effect
-/// @param nElement The point in the array to retrieve (0 to GetTrueEffectCount())
+/// @param nIndex The point in the array to retrieve (0 to GetTrueEffectCount())
 /// @return A constructed NWNX_EffectUnpacked.
-struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nElement);
+struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nIndex);
 
 /// @brief Replaces an already applied effect with another.
 /// @param oObject The object with the effect to replace
-/// @param nElement The array element to be replaced
+/// @param nIndex The array element to be replaced
 /// @param e The unpacked effect to replace it with.
 /// @note Cannot replace an effect with a different type or ID.
 void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_EffectUnpacked e);
@@ -317,10 +317,10 @@ int NWNX_Effect_GetTrueEffectCount(object oObject)
     return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
 }
 
-struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nElement)
+struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nIndex)
 {
     string sFunc = "GetTrueEffect";
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nElement);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
