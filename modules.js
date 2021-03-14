@@ -24,6 +24,7 @@ var modules =
     [ "LUA", "group__lua.html", "group__lua" ],
     [ "MaxLevel", "group__maxlevel.html", "group__maxlevel" ],
     [ "Metrics InfluxDB", "group__metrics__influxdb.html", "group__metrics__influxdb" ],
+    [ "NoStack", "group__nostack.html", "group__nostack" ],
     [ "Object", "group__object.html", "group__object" ],
     [ "Optimizations", "group__optimizations.html", "group__optimizations" ],
     [ "Player", "group__player.html", "group__player" ],
