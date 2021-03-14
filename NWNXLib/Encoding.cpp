@@ -54,6 +54,26 @@ void SetDefaultLocale(const std::string& locale)
 }
 
 
+static uint16_t map_cp1252[0x20] =
+{
+    0x20ac, 0x0081, 0x201a, 0x0192, 0x201e, 0x2026, 0x2020, 0x2021,
+    0x02c6, 0x2030, 0x0160, 0x2039, 0x0152, 0x008d, 0x017d, 0x008f,
+    0x0090, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014,
+    0x02dc, 0x2122, 0x0161, 0x203a, 0x0153, 0x009d, 0x017e, 0x0178
+};
+
+static uint16_t map_cp1251[0x40] =
+{
+    0x0402, 0x0403, 0x201a, 0x0453, 0x201e, 0x2026, 0x2020, 0x2021,
+    0x20ac, 0x2030, 0x0409, 0x2039, 0x040a, 0x040c, 0x040b, 0x040f,
+    0x0452, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014,
+    0x0098, 0x2122, 0x0459, 0x203a, 0x045a, 0x045c, 0x045b, 0x045f,
+    0x00a0, 0x040e, 0x045e, 0x0408, 0x00a4, 0x0490, 0x00a6, 0x00a7,
+    0x0401, 0x00a9, 0x0404, 0x00ab, 0x00ac, 0x00ad, 0x00ae, 0x0407,
+    0x00b0, 0x00b1, 0x0406, 0x0456, 0x0491, 0x00b5, 0x00b6, 0x00b7,
+    0x0451, 0x2116, 0x0454, 0x00bb, 0x0458, 0x0405, 0x0455, 0x0457
+}
+
 static uint16_t map_cp1250[0x80] =
 {
     0x20ac, 0x0081, 0x201a, 0x0083, 0x201e, 0x2026, 0x2020, 0x2021,
@@ -71,7 +91,7 @@ static uint16_t map_cp1250[0x80] =
     0x0155, 0x00e1, 0x00e2, 0x0103, 0x00e4, 0x013a, 0x0107, 0x00e7,
     0x010d, 0x00e9, 0x0119, 0x00eb, 0x011b, 0x00ed, 0x00ee, 0x010f,
     0x0111, 0x0144, 0x0148, 0x00f3, 0x00f4, 0x0151, 0x00f6, 0x00f7,
-    0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9,
+    0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9
 };
 
 std::string ToUTF8(const char *str, Locale locale)
@@ -89,39 +109,43 @@ std::string ToUTF8(const char *str, Locale locale)
 
     for (; *str; ++str)
     {
-        if (!(*str & 0x80))
+        int codepoint = static_cast<uint8_t>(*str);
+        if (codepoint >= 0x80)
         {
-            utf8.push_back(*str);
-        }
-        else
-        {
-            int codepoint = static_cast<uint8_t>(*str);
             switch (locale)
             {
                 case cp1252:
-                    utf8.push_back(0xc2 | static_cast<char>(codepoint >> 6));
-                    utf8.push_back(0xbf & static_cast<char>(codepoint & 0xFF));
+                    if (codepoint <= 0x9F)
+                        codepoint = map_cp1252[codepoint & 0x1F];
                     break;
                 case cp1251:
-                    if (codepoint == 168)
-                        codepoint = 177;
-                    if (codepoint > 176 && codepoint < 256)
-                    {
-                        codepoint += 848;
-                    }
-                    utf8.push_back(0xc0 | static_cast<char>(codepoint >> 6));
-                    utf8.push_back((0xbf & static_cast<char>(codepoint & 0xFF)) | 0x80);
+                    if (codepoint <= 0xBF)
+                        codepoint = map_cp1251[codepoint & 0x3F];
+                    else
+                        codepoint += 0x350;
                     break;
                 case cp1250:
-                    codepoint = map_cp1250[codepoint & 0x7f];
-                    utf8.push_back(0xc0 | static_cast<char>(codepoint >> 6));
-                    utf8.push_back((0xbf & static_cast<char>(codepoint & 0xFF)) | 0x80);
+                    codepoint = map_cp1250[codepoint & 0x7F];
                     break;
                 default:
                     utf8.push_back('?');
                     ASSERT_FAIL_MSG("Unknown locale");
                     break;
             }
+        }
+
+        if (codepoint <= 0x7F)
+            utf8.push_back(*str);
+        else if (codepoint <= 0x7FF)
+        {
+            utf8.push_back(0xc0 | static_cast<char>((codepoint >> 6) & 0x1F));
+            utf8.push_back(0x80 | static_cast<char>(codepoint & 0x3F));
+        }
+        else //if (codepoint <= 0xFFFF)
+        {
+            utf8.push_back(0xe0 | static_cast<char>((codepoint >> 12) & 0xF));
+            utf8.push_back(0x80 | static_cast<char>((codepoint >> 6) & 0x3F));
+            utf8.push_back(0x80 | static_cast<char>(codepoint & 0x3F));
         }
     }
     LOG_DEBUG("ToUTF: \"%s\" -> \"%s\"", tmp, utf8);
