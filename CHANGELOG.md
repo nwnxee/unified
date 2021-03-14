@@ -4,8 +4,38 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.20-HEAD
-https://github.com/nwnxee/unified/compare/build8193.20...HEAD
+## 8193.21-HEAD
+https://github.com/nwnxee/unified/compare/build8193.21...HEAD
+
+### Added
+- Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills
+
+##### New Plugins
+- NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
+
+##### New NWScript Functions
+- Creature: {Get/Set}BypassEffectImmunity()
+- Effect: GetTrueEffectCount()
+- Effect: GetTrueEffect()
+- Effect: RemoveEffectById()
+- Effect: ReplaceEffectByIndex()
+
+### Changed
+- The argument stack is now cleared after every NWNX function call.
+- Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. _**ABI breaking:** You will need to update nwnx_effect.nss if you are using these functions_.
+- ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.20
+https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 
 ### Added
 - Events: added `NWNX_ON_INPUT_EMOTE_*` events to InputEvents, this event fires when a player uses a radial menu emote.
@@ -36,9 +66,6 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Creature: {Get/Set}Height()
 - Creature: {Get/Set}HitDistance()
 - Creature: {Get/Set}PreferredAttackDistance()
-- Effect: GetTrueEffectCount()
-- Effect: ReplaceEffectByIndex()
-- Effect: RemoveEffectById()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Encounter: {Get/Set}CanReset()
@@ -51,9 +78,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
-- Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. _**ABI breaking:** You will need to update nwnx_effect.nss if you are using these functions_.
 - Damage: added `iAttackType_REAL` and `bKillingBlow` to the `AttackEventData` struct. Updated struct documentation.
-- ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
 - Race: SetFavoredEnemyFeat() now supports multiple feats per race.
 - Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
 - Optimizations: `GameObjectLookup` no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).
@@ -62,11 +87,9 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
 - Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
-### Removed
-- N/A
-
 ### Fixed
 - Feedback: Fixed a memory leak when suppressing messages.
+- Utils: Fixed a memory corruption in `GetAsciiTableString()`
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.16...build8193.20
@@ -177,11 +200,6 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Creature: {Get|Set}LastItemCasterLeve()
 - Creature: GetArmorClassVersus()
 - Effect: ReplaceEffect()
-- Effect: GetTrueEffectCount()
-- Effect: GetTrueEffect()
-- Effect: RemoveEffectById()
-- Effect: ReplaceEffectByElement()
-- Effect: SetEffectImmunityBypass()
 - Player: ToggleDM()
 - ItemProperty: GetActiveProperty()
 - Object: DoSpellImmunity()
@@ -200,7 +218,6 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Administration: added an optional sKickReason parameter to DeleteCharacter()
 - Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
-- Effect: UnpackEffect additionally now supports outputting the effect ID.
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
 - Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon****Feat and will be used in addition to any set feats
