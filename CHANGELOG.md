@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - Creature: {Get/Set}BypassEffectImmunity()
 
 ### Changed
-- N/A
+- The argument stack is now cleared after every NWNX function call.
 
 ### Deprecated
 - N/A
