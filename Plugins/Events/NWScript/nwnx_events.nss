@@ -1426,6 +1426,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Disarm event
 /// - {Enter|Exit}Detect events
 /// - Faction events
+/// - UnpossessFamiliar event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

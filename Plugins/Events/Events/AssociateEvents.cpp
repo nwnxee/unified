@@ -52,11 +52,17 @@ void AssociateEvents::UnpossessFamiliarHook(CNWSCreature *thisPtr)
 {
     std::string sFamiliarOID = Utils::ObjectIDToString(thisPtr->GetAssociateId(Constants::AssociateType::Familiar));
 
-    Events::PushEventData("FAMILIAR", sFamiliarOID);
-    Events::SignalEvent("NWNX_ON_UNPOSSESS_FAMILIAR_BEFORE", thisPtr->m_idSelf);
-    s_UnpossessFamiliarHook->CallOriginal<void>(thisPtr);
-    Events::PushEventData("FAMILIAR", sFamiliarOID);
-    Events::SignalEvent("NWNX_ON_UNPOSSESS_FAMILIAR_AFTER", thisPtr->m_idSelf);
+    auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
+        Events::PushEventData("FAMILIAR", sFamiliarOID);
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignalEvent("NWNX_ON_UNPOSSESS_FAMILIAR_BEFORE"))
+    {
+        s_UnpossessFamiliarHook->CallOriginal<void>(thisPtr);
+    }
+
+    PushAndSignalEvent("NWNX_ON_UNPOSSESS_FAMILIAR_AFTER");
 }
 
 }
