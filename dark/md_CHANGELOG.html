@@ -128,6 +128,7 @@ Changed</h2>
 <ul>
 <li>The argument stack is now cleared after every NWNX function call.</li>
 <li>Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__effect_8nss.html">nwnx_effect.nss</a> if you are using these functions</em>.</li>
+<li>Events: <code>NWNX_ON_UNPOSSESS_FAMILIAR_*</code> is now skippable.</li>
 <li>ItemProperty: UnpackIP now can retrieve the item property's id. <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__itemprop_8nss.html">nwnx_itemprop.nss</a> if you are using these functions</em>.</li>
 <li><em><b>API BREAKING</b></em> Damage: The <a class="el" href="structNWNX__Damage__AttackEventData.html" title="Attack Event Data.">NWNX_Damage_AttackEventData</a> fields have changed their names: <code>iAttackType -&gt; iWeaponAttackType</code>, <code>iAttackType_REAL -&gt; iAttackType</code>.</li>
 <li><em><b>API BREAKING</b></em> Object: The <code>NWNX_Object_Export</code> function has had its arguments reordered.</li>
@@ -1046,7 +1047,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Mar 14 2021 19:57:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Mar 15 2021 16:56:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
