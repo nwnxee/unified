@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ### Added
+- Events: added skippable event `NWNX_ON_CLIENT_LEVEL_UP_BEGIN_*` which fires when a player clicks the levelup button.
 - Tweaks: added `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` to send TlkTable overrides before Character Generation.
 
 ##### New Plugins
