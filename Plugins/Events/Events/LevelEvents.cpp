@@ -1,6 +1,7 @@
 #include "Events/LevelEvents.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSPlayer.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
 
@@ -13,6 +14,7 @@ using namespace NWNXLib::Services;
 static Hooks::Hook s_LevelUpHook;
 static Hooks::Hook s_LevelUpAutomaticHook;
 static Hooks::Hook s_LevelDownHook;
+static Hooks::Hook s_HandlePlayerToServerLevelUpMessageHook;
 
 LevelEvents::LevelEvents()
 {
@@ -27,6 +29,10 @@ LevelEvents::LevelEvents()
     Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", []() {
         s_LevelDownHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
                                        (void*)&LevelDownHook, Hooks::Order::Earliest);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_.*", []() {
+        s_HandlePlayerToServerLevelUpMessageHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage34HandlePlayerToServerLevelUpMessageEP10CNWSPlayerh,
+                                                                       (void*)&HandlePlayerToServerLevelUpMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -51,6 +57,24 @@ void LevelEvents::LevelDownHook(CNWSCreatureStats *thisPtr, CNWLevelStats *pLeve
     Events::SignalEvent("NWNX_ON_LEVEL_DOWN_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
     s_LevelDownHook->CallOriginal<void>(thisPtr, pLevelUpStats);
     Events::SignalEvent("NWNX_ON_LEVEL_DOWN_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
+}
+
+int32_t LevelEvents::HandlePlayerToServerLevelUpMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+{
+    if (nMinor == Constants::MessageLevelUpMinor::Begin)
+    {
+        int32_t retVal = false;
+        if (Events::SignalEvent("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_BEFORE", pPlayer->m_oidNWSObject))
+        {
+            retVal = s_HandlePlayerToServerLevelUpMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+        }
+
+        Events::SignalEvent("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_AFTER", pPlayer->m_oidNWSObject);
+
+        return retVal;
+    }
+    else
+        return s_HandlePlayerToServerLevelUpMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
 }
 
 }
