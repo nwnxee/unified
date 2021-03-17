@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ### Added
+- Tweaks: added `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` to send TlkTable overrides before Character Generation.
 
 ##### New Plugins
 - NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
