@@ -23,6 +23,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - Effect: RemoveEffectById()
 - Effect: ReplaceEffectByIndex()
 - Player: SetTlkOverride()
+- Util: GetTTY()
 
 ### Changed
 - The argument stack is now cleared after every NWNX function call.
