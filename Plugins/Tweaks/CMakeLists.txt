@@ -22,6 +22,7 @@ add_plugin(Tweaks
     "PlayerDyingHitPointLimit.cpp"
     "PreserveActionsOnDMPossess.cpp"
     "PreserveDepletedItems.cpp"
+    "RetainLocalVariablesOnItemSplit.cpp"
     "SendTlkOverrideBeforeChargen.cpp"
     "SneakAttackCritImmunity.cpp"
     "StringToIntBaseToAuto.cpp"

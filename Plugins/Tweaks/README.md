@@ -39,6 +39,7 @@ Tweaks stuff. See below.
   - Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
 * `NWNX_TWEAKS_LANGUAGE_OVERRIDE`: between 1 and 5, or between 128 and 131
 * `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN`: true or false
+* `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT`: true or false
   
 ## Environment variable values
 
