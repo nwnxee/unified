@@ -39,6 +39,7 @@ var nwnx__util_8nss =
     [ "NWNX_Util_SetDawnHour", "group__util.html#gac122f4f23c7758540e8fe00bc28fe61e", null ],
     [ "NWNX_Util_SetDuskHour", "group__util.html#ga271625868161100e33f790e57cc37636", null ],
     [ "NWNX_Util_GetHighResTimeStamp", "group__util.html#gab1478de40af08e03284db6fe313f319c", null ],
+    [ "NWNX_Util_GetTTY", "group__util.html#gadfdd32feae60ad5d4835d455a6990c38", null ],
     [ "NWNX_Util", "group__util.html#ga5b42918210c34bc2856fd77a858a8baa", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
