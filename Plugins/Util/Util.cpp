@@ -26,7 +26,7 @@
 #include <regex>
 #include <cmath>
 #include <chrono>
-
+#include <unistd.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -738,3 +738,13 @@ NWNX_EXPORT ArgumentStack GetHighResTimeStamp(ArgumentStack&&)
 
     return {(int32_t)(count / 1000000), (int32_t)(count % 1000000)};
 }
+
+NWNX_EXPORT ArgumentStack GetTTY(ArgumentStack&&)
+{
+    std::string retval;
+    auto tty = ttyname(STDIN_FILENO);
+    if (tty)
+       retval = tty;
+    return retval;
+}
+

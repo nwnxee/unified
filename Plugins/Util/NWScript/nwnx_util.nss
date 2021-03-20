@@ -251,6 +251,9 @@ void NWNX_Util_SetDuskHour(int nDuskHour);
 /// @return Returns the number of microseconds since midnight on January 1, 1970.
 struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp();
 
+/// @return Return name of a terminal, "" if not a TTY
+string NWNX_Util_GetTTY();
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -621,3 +624,12 @@ struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp()
     t.seconds = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
     return t;
 }
+
+string NWNX_Util_GetTTY()
+{
+    string sFunc = "GetTTY";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
