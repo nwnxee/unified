@@ -48,13 +48,15 @@ int32_t CNWSCreature__GetWeaponPower(CNWSCreature* thisPtr, CNWSObject* pTarget,
     CNWSItem* pAttackWeapon = nullptr;
     if (bOffhand)
     {
-        auto* pItem = pCombatRound->GetCurrentAttackWeapon(2);
-        // Make sure it isn't a ranged weapon or a shield (shouldn't happen)
-        if (auto* pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pAttackWeapon->m_nBaseItem))
+        if (auto* pItem = pCombatRound->GetCurrentAttackWeapon(2))
         {
-            if (!pBaseItem->m_nWeaponRanged && pBaseItem->m_nWeaponType && pBaseItem->m_nWeaponWield != 7)
+            // Make sure it isn't a ranged weapon or a shield (shouldn't happen)
+            if (auto* pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pItem->m_nBaseItem))
             {
-                pAttackWeapon = pItem;
+                if (!pBaseItem->m_nWeaponRanged && pBaseItem->m_nWeaponType && pBaseItem->m_nWeaponWield != 7)
+                {
+                    pAttackWeapon = pItem;
+                }
             }
         }
     }
