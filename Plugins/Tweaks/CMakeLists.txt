@@ -27,4 +27,5 @@ add_plugin(Tweaks
     "SneakAttackCritImmunity.cpp"
     "StringToIntBaseToAuto.cpp"
     "TURDByCDKey.cpp"
-    "UnhardcodeShields.cpp")
+    "UnhardcodeShields.cpp"
+    "PreventAttackBonusBypassingReductions.cpp")

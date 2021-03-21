@@ -40,6 +40,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_LANGUAGE_OVERRIDE`: between 1 and 5, or between 128 and 131
 * `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN`: true or false
 * `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT`: true or false
+* `NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION`: true or false
   
 ## Environment variable values
 
