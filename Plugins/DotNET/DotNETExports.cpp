@@ -76,7 +76,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
             static uint64_t frame = 0;
             if (s_handlers.MainLoop)
             {
-                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
                 s_handlers.MainLoop(frame);
                 int spAfter = Utils::PopScriptContext();
                 ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
@@ -97,7 +97,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
                 return 1;
 
             LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
-            int spBefore = Utils::PushScriptContext(objId, !!valid);
+            int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
             int32_t retval = s_handlers.RunScript(script->CStr(), objId);
             int spAfter = Utils::PopScriptContext();
             ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
@@ -122,7 +122,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
             if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
             {
                 LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
-                int spBefore = Utils::PushScriptContext(objId, !!valid);
+                int spBefore = Utils::PushScriptContext(objId, 0, !!valid);
                 s_handlers.Closure(eventId, objId);
                 int spAfter = Utils::PopScriptContext();
                 ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
@@ -137,7 +137,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
     MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
-            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
+            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
             s_handlers.SignalHandler(message[0].c_str());
             int spAfter = Utils::PopScriptContext();
             ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);

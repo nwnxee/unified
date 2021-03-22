@@ -398,7 +398,7 @@ void AddDestroyObjectEvent(ObjectID oid)
     pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
-int PushScriptContext(ObjectID oid, bool valid)
+int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 {
     auto vm = API::Globals::VirtualMachine();
     auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
@@ -413,6 +413,7 @@ int PushScriptContext(ObjectID oid, bool valid)
 
     vm->m_oidObjectRunScript[vm->m_nRecursionLevel]    = oid;
     vm->m_bValidObjectRunScript[vm->m_nRecursionLevel] = valid;
+    vm->m_pVirtualMachineScript[vm->m_nRecursionLevel].m_nScriptEventID = scriptEventId;
     cmd->m_oidObjectRunScript    = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
     cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
 
