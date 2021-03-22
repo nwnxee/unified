@@ -226,7 +226,7 @@ namespace Utils
     void AddDestroyObjectEvent(ObjectID oid);
 
     // Returns the SP
-    int PushScriptContext(ObjectID oid, bool valid = true);
+    int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid = true);
     int PopScriptContext();
 
     void SetOrientation(CNWSObject *pObject, float facing);
