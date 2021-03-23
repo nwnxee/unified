@@ -33,7 +33,7 @@ namespace Events {
         Events::InitOnFirstSubscribe("NWNX_ON_POSSESS_FAMILIAR_.*", []() {
             s_PossessFamiliarHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15PossessCreatureEj,
                 (void*)&PossessFamiliarHook, Hooks::Order::Earliest);
-        }
+        });
     }
 
     void AssociateEvents::AddAssociateHook(CNWSCreature* thisPtr, ObjectID oidAssociate, uint16_t nAssociateType)
