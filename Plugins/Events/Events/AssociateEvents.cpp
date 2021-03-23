@@ -31,7 +31,7 @@ namespace Events {
         });
 
         Events::InitOnFirstSubscribe("NWNX_ON_POSSESS_FAMILIAR_.*", []() {
-            s_PossessFamiliarHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15PossessCreatureEj,
+            s_PossessFamiliarHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15PossessFamiliarEv,
                 (void*)&PossessFamiliarHook, Hooks::Order::Earliest);
         });
     }
@@ -77,9 +77,9 @@ namespace Events {
     {
         std::string sFamiliarOID = Utils::ObjectIDToString(thisPtr->GetAssociateId(Constants::AssociateType::Familiar));
 
-        auto PushAndSignalEvent = [&](const std::string& ej) -> bool {
+        auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
             Events::PushEventData("FAMILIAR", sFamiliarOID);
-            return Events::SignalEvent(ej, thisPtr->m_idSelf);
+            return Events::SignalEvent(ev, thisPtr->m_idSelf);
         };
 
         if (PushAndSignalEvent("NWNX_ON_POSSESS_FAMILIAR_BEFORE"))
