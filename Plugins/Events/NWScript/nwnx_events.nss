@@ -1347,6 +1347,16 @@ _______________________________________
     ----------------------|--------|-------
 
 _______________________________________
+    ## Creature Possess Familiar Event
+    - NWNX_ON_POSSESS_FAMILIAR_BEFORE
+    - NWNX_ON_POSSESS_FAMILIAR_AFTER
+
+    `OBJECT_SELF` = The creature possessing a familiar
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    FAMILIAR              | object | The familiar. Convert to object with StringToObject()  |
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
