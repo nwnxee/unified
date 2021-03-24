@@ -574,10 +574,15 @@ MarshalPtrPtr(Task::CExoTaskManager*, void*)
 %template(CResHelperNCS) CResHelper<CResNCS,2010>;
 
 // Add function defines to subclass in module.
-%pragma(csharp) modulecode="public static class Functions {\n"
-%include "Functions.hpp"
+%define NWNXLIB_FUNCTION(name, address)
+    %pragma(csharp) modulecode="    public const uint name = address;"
+%enddef
+
+%pragma(csharp) modulecode="  public static class Functions {"
 %include "FunctionsLinux.hpp"
-%pragma(csharp) modulecode="}\n"
+%pragma(csharp) modulecode="  }\n"
+
+#undef NWNXLIB_FUNCTION
 
 // Array wrappers for structures
 MapArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
