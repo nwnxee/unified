@@ -54,7 +54,7 @@ void AssociateEvents::RemoveAssociateHook(CNWSCreature* thisPtr, ObjectID oidAss
     Events::SignalEvent("NWNX_ON_REMOVE_ASSOCIATE_AFTER", thisPtr->m_idSelf);
 }
 
-void AssociateEvents::UnpossessFamiliarHook(CNWSCreature* thisPtr)
+void AssociateEvents::UnpossessFamiliarHook(CNWSCreature *thisPtr)
 {
     std::string sFamiliarOID = Utils::ObjectIDToString(thisPtr->GetAssociateId(Constants::AssociateType::Familiar));
 
