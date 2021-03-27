@@ -9,7 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 
 ### Added
 - Events: added skippable event `NWNX_ON_CLIENT_LEVEL_UP_BEGIN_*` which fires when a player clicks the levelup button.
-- Events: added skippable event 'NWNX_ON_POSSESS_FAMILIAR_*' which fires when a player attempts to possess their familiar.
+- Events: added skippable event `NWNX_ON_POSSESS_FAMILIAR_*` which fires when a player attempts to possess their familiar.
 - Tweaks: added `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` to send TlkTable overrides before Character Generation.
 - Tweaks: added `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT` to retain local variables when an item is split.
 
