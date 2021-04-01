@@ -448,8 +448,14 @@ int32_t Race::GetWeaponPowerHook(CNWSCreature *pCreature, CNWSObject *pObject, i
     uint8_t modABVSRaceBonus = 0;
     auto *pTargetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     if (pTargetCreature)
-        modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace] +
-                           g_plugin->m_RaceABVsRace[nRace][g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace]];
+    {
+        modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+        auto parRace = g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace];
+        if(parRace != RacialType::Invalid)
+            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][parRace];
+    }
+
+
     pServerExoApp->SetAttackBonusLimit(pServerExoApp->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
 
     auto retVal = s_GetWeaponPowerHook->CallOriginal<int32_t>(pCreature, pObject, bOffHand);
@@ -534,8 +540,10 @@ int32_t Race::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
         uint8_t modABVSRaceBonus = 0;
         if (pTargetCreature)
         {
-            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace] +
-                               g_plugin->m_RaceABVsRace[nRace][g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace]];
+            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+            auto parRace = g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace];
+            if(parRace != RacialType::Invalid)
+                modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][parRace];
         }
         pServerExoApp->SetAttackBonusLimit(attackBonusLimit + modABBonus + modABVSRaceBonus);
     }
