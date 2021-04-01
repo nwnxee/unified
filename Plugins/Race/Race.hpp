@@ -101,6 +101,8 @@ private:
     static void LoadRaceInfoHook(CNWRules*);
     static int32_t CheckItemRaceRestrictionsHook(CNWSCreature*, CNWSItem*);
     static int32_t GetFavoredEnemyBonusHook(CNWSCreatureStats*, CNWSCreature*);
+    static int32_t GetAttackModifierVersus(CNWSCreatureStats *pStats, CNWSCreature* pCreature);
+
 };
 
 }

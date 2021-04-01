@@ -18,6 +18,7 @@
 #include "API/Functions.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/Constants/Effect.hpp"
+#include "API/CNWSCombatRound.hpp"
 #include <cmath>
 
 using namespace NWNXLib;
@@ -48,6 +49,7 @@ static Hooks::Hook s_LevelUpAutomaticHook;
 static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook;
 static Hooks::Hook s_LoadRaceInfoHook;
 static Hooks::Hook s_ValidateCharacterHook;
+static Hooks::Hook m_GetAttackModifierVersusHook;
 
 // Replaced completely
 static Hooks::Hook s_ResolveInitiativeHook;
@@ -81,6 +83,9 @@ Race::Race(Services::ProxyServiceList* services)
                                                          (void*)&SavingThrowRollHook, Hooks::Order::Early);
     s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
                                                         (void*)&GetWeaponPowerHook, Hooks::Order::Early);
+
+    m_GetAttackModifierVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Race::GetAttackModifierVersus, Hooks::Order::Late);
 
 #define HOOK_APPLY_EFFECT(_address) \
     static Hooks::Hook CAT(pOnApplyHook, __LINE__) = Hooks::HookFunction(_address, \
@@ -1162,6 +1167,35 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
     LOG_INFO("%s: Setting Favored Enemy Feat to %s.", Globals::Rules()->m_lstRaces[raceId].GetNameText().CStr(), pFeat->GetNameText().CStr());
 
     return Events::Arguments();
+}
+
+int32_t Race::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
+{
+    int32_t modABVSRaceBonus = 0;
+    if(pCreature)
+    {
+        auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
+
+        if((pStats->HasFeat(Feat::BattleTrainingVersusOrcs) && parRace == RacialType::HumanoidOrc) ||
+            (pStats->HasFeat(Feat::BattleTrainingVersusGoblins) && parRace == RacialType::HumanoidGoblinoid) ||
+            (pStats->HasFeat(Feat::BattleTrainingVersusReptilians) && perRace == RacialType::HumanoidReptilian))
+        {
+            modABVSRaceBonus += Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
+
+            if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
+            {
+                auto sDebugMsg = CExoString(" + ") +
+                                 CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1))) +
+                                 CExoString(" (Offensive training/battle training)") ;
+                auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
+                pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
+            }
+        }
+
+    }
+
+    return m_GetAttackModifierVersusHook->CallOriginal<int32_t>(pStats, pCreature) + modABVSRaceBonus;
+
 }
 
 }
