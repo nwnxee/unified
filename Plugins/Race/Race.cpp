@@ -448,7 +448,8 @@ int32_t Race::GetWeaponPowerHook(CNWSCreature *pCreature, CNWSObject *pObject, i
     uint8_t modABVSRaceBonus = 0;
     auto *pTargetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     if (pTargetCreature)
-        modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+        modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace] +
+                           g_plugin->m_RaceABVsRace[nRace][g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace]];
     pServerExoApp->SetAttackBonusLimit(pServerExoApp->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
 
     auto retVal = s_GetWeaponPowerHook->CallOriginal<int32_t>(pCreature, pObject, bOffHand);
@@ -481,7 +482,7 @@ void Race::ApplyEffectHook(CNWSObject *pObject, CGameEffect *pEffect)
     int32_t i;
     for(uint16_t &nChild : vChild)
     {
-        pEffectNew = new CGameEffect(true);
+        pEffectNew = new CGameEffect(false);
         pEffectNew->m_nNumIntegers = pEffect->m_nNumIntegers;
         for(i = 0; i < pEffect->m_nNumIntegers; i++)
             pEffectNew->m_nParamInteger[i] = pEffect->m_nParamInteger[i];
@@ -526,16 +527,16 @@ int32_t Race::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
         pTargetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     }
 
-    if (pTargetCreature)
-        SetOrRestoreRace(true, nullptr, pTargetCreature->m_pStats);
-
     auto nRace = pCreature->m_pStats->m_nRace;
     if (nEffectBonusType == 1)
     {
         auto modABBonus = g_plugin->m_RaceAB[nRace];
         uint8_t modABVSRaceBonus = 0;
         if (pTargetCreature)
-            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+        {
+            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace] +
+                               g_plugin->m_RaceABVsRace[nRace][g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace]];
+        }
         pServerExoApp->SetAttackBonusLimit(attackBonusLimit + modABBonus + modABVSRaceBonus);
     }
     else if (nEffectBonusType == 5)
@@ -547,8 +548,6 @@ int32_t Race::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
     auto retVal = s_GetTotalEffectBonusHook->CallOriginal<int32_t>(pCreature, nEffectBonusType, pObject, bElementalDamage,
                                                                    bForceMax, nSaveType, nSpecificType, nSkill, nAbilityScore, bOffHand);
 
-    if (pTargetCreature)
-        SetOrRestoreRace(false, nullptr, pTargetCreature->m_pStats);
 
     if (nEffectBonusType == 1)
         pServerExoApp->SetAttackBonusLimit(attackBonusLimit);
