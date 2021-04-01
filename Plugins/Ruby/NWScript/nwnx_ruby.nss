@@ -6,7 +6,7 @@
 
 const string NWNX_Ruby = "NWNX_Ruby"; ///< @private
 
-string NWNX_Ruby_Evaluate (string sCode);
+string NWNX_Ruby_Evaluate(string sCode);
 
 /// @brief Evaluates some ruby code.
 /// @param sCode The code to evaluate.
@@ -15,9 +15,9 @@ string NWNX_Ruby_Evaluate(string sCode)
 {
     string sFunc = "Evaluate";
 
-    NWNX_PushArgumentString (NWNX_Ruby, sFunc, sCode);
-    NWNX_CallFunction (NWNX_Ruby, sFunc);
-    return NWNX_GetReturnValueString (NWNX_Ruby, sFunc);
+    NWNX_PushArgumentString(sCode);
+    NWNX_CallFunction(NWNX_Ruby, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 /// @}

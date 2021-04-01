@@ -29,15 +29,15 @@ string NWNX_SpellChecker_FindMisspell(string sentence)
 {
     string sFunc = "FindMisspell";
 
-    NWNX_PushArgumentString(NWNX_SpellChecker, sFunc, sentence);
+    NWNX_PushArgumentString(sentence);
     NWNX_CallFunction(NWNX_SpellChecker, sFunc);
-    return NWNX_GetReturnValueString(NWNX_SpellChecker, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_SpellChecker_GetSuggestSpell(string word)
 {
     string sFunc = "GetSuggestSpell";
-    NWNX_PushArgumentString(NWNX_SpellChecker, sFunc, word);
+    NWNX_PushArgumentString(word);
     NWNX_CallFunction(NWNX_SpellChecker, sFunc);
-    return NWNX_GetReturnValueString(NWNX_SpellChecker, sFunc);
+    return NWNX_GetReturnValueString();
 }

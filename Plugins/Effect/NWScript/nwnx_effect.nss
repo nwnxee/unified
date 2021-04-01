@@ -123,48 +123,48 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
 {
     struct NWNX_EffectUnpacked n;
 
-    n.sItemProp = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+    n.sItemProp = NWNX_GetReturnValueString();
 
-    n.sTag = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+    n.sTag = NWNX_GetReturnValueString();
 
-    float fZ = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    float fY = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    float fX = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    float fZ = NWNX_GetReturnValueFloat();
+    float fY = NWNX_GetReturnValueFloat();
+    float fX = NWNX_GetReturnValueFloat();
     n.vParam1 = Vector(fX, fY, fZ);
-    fZ = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    fY = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    fX = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    fZ = NWNX_GetReturnValueFloat();
+    fY = NWNX_GetReturnValueFloat();
+    fX = NWNX_GetReturnValueFloat();
     n.vParam0 = Vector(fX, fY, fZ);
-    n.oParam3 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
-    n.oParam2 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
-    n.oParam1 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
-    n.oParam0 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
-    n.sParam5 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.sParam4 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.sParam3 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.sParam2 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.sParam1 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.sParam0 = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
-    n.fParam3 = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    n.fParam2 = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    n.fParam1 = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    n.fParam0 = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
-    n.nParam7 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam6 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam5 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam4 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam3 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam2 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam1 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nParam0 = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nNumIntegers = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+    n.oParam3 = NWNX_GetReturnValueObject();
+    n.oParam2 = NWNX_GetReturnValueObject();
+    n.oParam1 = NWNX_GetReturnValueObject();
+    n.oParam0 = NWNX_GetReturnValueObject();
+    n.sParam5 = NWNX_GetReturnValueString();
+    n.sParam4 = NWNX_GetReturnValueString();
+    n.sParam3 = NWNX_GetReturnValueString();
+    n.sParam2 = NWNX_GetReturnValueString();
+    n.sParam1 = NWNX_GetReturnValueString();
+    n.sParam0 = NWNX_GetReturnValueString();
+    n.fParam3 = NWNX_GetReturnValueFloat();
+    n.fParam2 = NWNX_GetReturnValueFloat();
+    n.fParam1 = NWNX_GetReturnValueFloat();
+    n.fParam0 = NWNX_GetReturnValueFloat();
+    n.nParam7 = NWNX_GetReturnValueInt();
+    n.nParam6 = NWNX_GetReturnValueInt();
+    n.nParam5 = NWNX_GetReturnValueInt();
+    n.nParam4 = NWNX_GetReturnValueInt();
+    n.nParam3 = NWNX_GetReturnValueInt();
+    n.nParam2 = NWNX_GetReturnValueInt();
+    n.nParam1 = NWNX_GetReturnValueInt();
+    n.nParam0 = NWNX_GetReturnValueInt();
+    n.nNumIntegers = NWNX_GetReturnValueInt();
 
     if(bLink)
     {
-        n.bLinkRightValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-        n.eLinkRight = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
-        n.bLinkLeftValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-        n.eLinkLeft = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+        n.bLinkRightValid = NWNX_GetReturnValueInt();
+        n.eLinkRight = NWNX_GetReturnValueEffect();
+        n.bLinkLeftValid = NWNX_GetReturnValueInt();
+        n.eLinkLeft = NWNX_GetReturnValueEffect();
     }
     else
     {
@@ -172,19 +172,19 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
         n.bLinkLeftValid = FALSE;
     }
 
-    n.nCasterLevel = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.bShowIcon = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.bExpose = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nSpellId = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.oCreator = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
+    n.nCasterLevel = NWNX_GetReturnValueInt();
+    n.bShowIcon = NWNX_GetReturnValueInt();
+    n.bExpose = NWNX_GetReturnValueInt();
+    n.nSpellId = NWNX_GetReturnValueInt();
+    n.oCreator = NWNX_GetReturnValueObject();
 
-    n.nExpiryTimeOfDay = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nExpiryCalendarDay = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.fDuration = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    n.nExpiryTimeOfDay = NWNX_GetReturnValueInt();
+    n.nExpiryCalendarDay = NWNX_GetReturnValueInt();
+    n.fDuration = NWNX_GetReturnValueFloat();
 
-    n.nSubType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.sID = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+    n.nSubType = NWNX_GetReturnValueInt();
+    n.nType = NWNX_GetReturnValueInt();
+    n.sID = NWNX_GetReturnValueString();
 
     return n;
 }
@@ -192,70 +192,70 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
 void __NWNX_Effect_ResolvePack(string sFunc, struct NWNX_EffectUnpacked e, int bReplace=FALSE)
 {
     if(!bReplace)
-        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
+        NWNX_PushArgumentInt(e.nType);
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
+    NWNX_PushArgumentInt(e.nSubType);
 
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fDuration);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nExpiryCalendarDay);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nExpiryTimeOfDay);
+    NWNX_PushArgumentFloat(e.fDuration);
+    NWNX_PushArgumentInt(e.nExpiryCalendarDay);
+    NWNX_PushArgumentInt(e.nExpiryTimeOfDay);
 
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oCreator);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSpellId);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bExpose);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bShowIcon);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nCasterLevel);
+    NWNX_PushArgumentObject(e.oCreator);
+    NWNX_PushArgumentInt(e.nSpellId);
+    NWNX_PushArgumentInt(e.bExpose);
+    NWNX_PushArgumentInt(e.bShowIcon);
+    NWNX_PushArgumentInt(e.nCasterLevel);
 
     if(!bReplace)
     {
-        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkLeft);
-        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkLeftValid);
-        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkRight);
-        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkRightValid);
+        NWNX_PushArgumentEffect(e.eLinkLeft);
+        NWNX_PushArgumentInt(e.bLinkLeftValid);
+        NWNX_PushArgumentEffect(e.eLinkRight);
+        NWNX_PushArgumentInt(e.bLinkRightValid);
     }
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nNumIntegers);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam0);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam1);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam2);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam3);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam4);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam5);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam6);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam7);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam0);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam1);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam2);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam3);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam0);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam1);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam2);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam3);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam4);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam5);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam0);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam1);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam2);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam3);
+    NWNX_PushArgumentInt(e.nNumIntegers);
+    NWNX_PushArgumentInt(e.nParam0);
+    NWNX_PushArgumentInt(e.nParam1);
+    NWNX_PushArgumentInt(e.nParam2);
+    NWNX_PushArgumentInt(e.nParam3);
+    NWNX_PushArgumentInt(e.nParam4);
+    NWNX_PushArgumentInt(e.nParam5);
+    NWNX_PushArgumentInt(e.nParam6);
+    NWNX_PushArgumentInt(e.nParam7);
+    NWNX_PushArgumentFloat(e.fParam0);
+    NWNX_PushArgumentFloat(e.fParam1);
+    NWNX_PushArgumentFloat(e.fParam2);
+    NWNX_PushArgumentFloat(e.fParam3);
+    NWNX_PushArgumentString(e.sParam0);
+    NWNX_PushArgumentString(e.sParam1);
+    NWNX_PushArgumentString(e.sParam2);
+    NWNX_PushArgumentString(e.sParam3);
+    NWNX_PushArgumentString(e.sParam4);
+    NWNX_PushArgumentString(e.sParam5);
+    NWNX_PushArgumentObject(e.oParam0);
+    NWNX_PushArgumentObject(e.oParam1);
+    NWNX_PushArgumentObject(e.oParam2);
+    NWNX_PushArgumentObject(e.oParam3);
 
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.x);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.y);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.z);
+    NWNX_PushArgumentFloat(e.vParam0.x);
+    NWNX_PushArgumentFloat(e.vParam0.y);
+    NWNX_PushArgumentFloat(e.vParam0.z);
 
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.x);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.y);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
+    NWNX_PushArgumentFloat(e.vParam1.x);
+    NWNX_PushArgumentFloat(e.vParam1.y);
+    NWNX_PushArgumentFloat(e.vParam1.z);
 
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
+    NWNX_PushArgumentString(e.sTag);
 
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sItemProp);
+    NWNX_PushArgumentString(e.sItemProp);
 }
 
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 {
     string sFunc = "UnpackEffect";
 
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+    NWNX_PushArgumentEffect(e);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return __NWNX_Effect_ResolveUnpack(sFunc);
@@ -267,20 +267,20 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     __NWNX_Effect_ResolvePack(sFunc, e);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
-    return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueEffect();
 }
 
 effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "")
 {
     string sFunc = "SetEffectExpiredScript";
 
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, data);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, script);
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+    NWNX_PushArgumentString(data);
+    NWNX_PushArgumentString(script);
+    NWNX_PushArgumentEffect(e);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueEffect();
 }
 
 string NWNX_Effect_GetEffectExpiredData()
@@ -289,7 +289,7 @@ string NWNX_Effect_GetEffectExpiredData()
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 object NWNX_Effect_GetEffectExpiredCreator()
@@ -298,36 +298,36 @@ object NWNX_Effect_GetEffectExpiredCreator()
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueObject();
 }
 
 int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew)
 {
     string sFunc = "ReplaceEffect";
 
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eNew);
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eOld);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, obj);
+    NWNX_PushArgumentEffect(eNew);
+    NWNX_PushArgumentEffect(eOld);
+    NWNX_PushArgumentObject(obj);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Effect_GetTrueEffectCount(object oObject)
 {
     string sFunc = "GetTrueEffectCount";
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
+    return  NWNX_GetReturnValueInt();
 }
 
 struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nIndex)
 {
     string sFunc = "GetTrueEffect";
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return __NWNX_Effect_ResolveUnpack(sFunc, FALSE);
@@ -339,8 +339,8 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 
     __NWNX_Effect_ResolvePack(sFunc, e, TRUE);
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
 }
@@ -348,9 +348,9 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
 {
     string sFunc = "RemoveEffectById";
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, sID);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_PushArgumentString(sID);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    return  NWNX_GetReturnValueInt(NWNX_Effect,sFunc);
+    return  NWNX_GetReturnValueInt();
 }

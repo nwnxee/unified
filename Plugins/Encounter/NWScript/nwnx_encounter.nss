@@ -121,10 +121,10 @@ int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)
 {
     string sFunc = "GetNumberOfCreaturesInEncounterList";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 struct NWNX_Encounter_CreatureListEntry NWNX_Encounter_GetEncounterCreatureByIndex(object encounter, int index)
@@ -132,15 +132,15 @@ struct NWNX_Encounter_CreatureListEntry NWNX_Encounter_GetEncounterCreatureByInd
     string sFunc = "GetEncounterCreatureByIndex";
     struct NWNX_Encounter_CreatureListEntry creatureEntry;
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, index);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(index);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    creatureEntry.alreadyUsed = NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
-    creatureEntry.unique = NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
-    creatureEntry.challengeRating = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
-    creatureEntry.resref = NWNX_GetReturnValueString(NWNX_Encounter, sFunc);
+    creatureEntry.alreadyUsed = NWNX_GetReturnValueInt();
+    creatureEntry.unique = NWNX_GetReturnValueInt();
+    creatureEntry.challengeRating = NWNX_GetReturnValueFloat();
+    creatureEntry.resref = NWNX_GetReturnValueString();
 
     return creatureEntry;
 }
@@ -149,12 +149,12 @@ void NWNX_Encounter_SetEncounterCreatureByIndex(object encounter, int index, str
 {
     string sFunc = "SetEncounterCreatureByIndex";
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, creatureEntry.alreadyUsed);
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, creatureEntry.unique);
-    NWNX_PushArgumentFloat(NWNX_Encounter, sFunc, creatureEntry.challengeRating);
-    NWNX_PushArgumentString(NWNX_Encounter, sFunc, creatureEntry.resref);
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, index);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(creatureEntry.alreadyUsed);
+    NWNX_PushArgumentInt(creatureEntry.unique);
+    NWNX_PushArgumentFloat(creatureEntry.challengeRating);
+    NWNX_PushArgumentString(creatureEntry.resref);
+    NWNX_PushArgumentInt(index);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
@@ -163,18 +163,18 @@ int NWNX_Encounter_GetFactionId(object encounter)
 {
     string sFunc = "GetFactionId";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Encounter_SetFactionId(object encounter, int factionId)
 {
     string sFunc = "SetFactionId";
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, factionId);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(factionId);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
@@ -183,18 +183,18 @@ int NWNX_Encounter_GetPlayerTriggeredOnly(object encounter)
 {
     string sFunc = "GetPlayerTriggeredOnly";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggeredOnly)
 {
     string sFunc = "SetPlayerTriggeredOnly";
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, playerTriggeredOnly);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(playerTriggeredOnly);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
@@ -203,18 +203,18 @@ int NWNX_Encounter_GetCanReset(object encounter)
 {
     string sFunc = "GetCanReset";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Encounter_SetCanReset(object encounter, int reset)
 {
     string sFunc = "SetCanReset";
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, reset);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(reset);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
@@ -223,18 +223,18 @@ int NWNX_Encounter_GetResetTime(object encounter)
 {
     string sFunc = "GetResetTime";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Encounter_SetResetTime(object encounter, int resetTime)
 {
     string sFunc = "SetResetTime";
 
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, resetTime);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(resetTime);
+    NWNX_PushArgumentObject(encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
@@ -243,24 +243,24 @@ int NWNX_Encounter_GetNumberOfSpawnPoints(object encounter)
 {
     string sFunc = "GetNumberOfSpawnPoints";
   
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 location NWNX_Encounter_GetSpawnPointByIndex(object encounter, int index)
 {
     string sFunc = "GetSpawnPointByIndex";
   
-    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, index);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentInt(index);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
-    float o = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
-    float z = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
-    float y = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
-    float x = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
+    float o = NWNX_GetReturnValueFloat();
+    float z = NWNX_GetReturnValueFloat();
+    float y = NWNX_GetReturnValueFloat();
+    float x = NWNX_GetReturnValueFloat();
   
     return Location(GetArea(encounter), Vector(x, y, z), o);
 }
@@ -269,47 +269,47 @@ int NWNX_Encounter_GetMinNumSpawned(object encounter)
 {
     string sFunc = "GetMinNumSpawned";
   
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Encounter_GetMaxNumSpawned(object encounter)
 {
     string sFunc = "GetMaxNumSpawned";
   
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Encounter_GetCurrentNumSpawned(object encounter)
 {
     string sFunc = "GetCurrentNumSpawned";
   
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_PushArgumentObject(encounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
-    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Encounter_GetGeometry(object oEncounter)
 {
     string sFunc = "GetGeometry";
 
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, oEncounter);
+    NWNX_PushArgumentObject(oEncounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Encounter, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 void NWNX_Encounter_SetGeometry(object oEncounter, string sGeometry)
 {
     string sFunc = "SetGeometry";
 
-    NWNX_PushArgumentString(NWNX_Encounter, sFunc, sGeometry);
-    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, oEncounter);
+    NWNX_PushArgumentString(sGeometry);
+    NWNX_PushArgumentObject(oEncounter);
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 }
