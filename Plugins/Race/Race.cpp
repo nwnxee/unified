@@ -49,7 +49,8 @@ static Hooks::Hook s_LevelUpAutomaticHook;
 static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook;
 static Hooks::Hook s_LoadRaceInfoHook;
 static Hooks::Hook s_ValidateCharacterHook;
-static Hooks::Hook m_GetAttackModifierVersusHook;
+static Hooks::Hook s_GetAttackModifierVersusHook;
+static Hooks::Hook s_GetArmorClassVersusHook;
 
 // Replaced completely
 static Hooks::Hook s_ResolveInitiativeHook;
@@ -84,8 +85,11 @@ Race::Race(Services::ProxyServiceList* services)
     s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
                                                         (void*)&GetWeaponPowerHook, Hooks::Order::Early);
 
-    m_GetAttackModifierVersusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Race::GetAttackModifierVersus, Hooks::Order::Late);
+    s_GetAttackModifierVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Race::GetAttackModifierVersusHook, Hooks::Order::Late);
+
+    s_GetArmorClassVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats19GetArmorClassVersusEP12CNWSCreaturei, (void*)&Race::GetArmorClassVersusHook, Hooks::Order::Late);
 
 #define HOOK_APPLY_EFFECT(_address) \
     static Hooks::Hook CAT(pOnApplyHook, __LINE__) = Hooks::HookFunction(_address, \
@@ -1169,7 +1173,7 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
     return Events::Arguments();
 }
 
-int32_t Race::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
+int32_t Race::GetAttackModifierVersusHook(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
 {
     int32_t modABVSRaceBonus = 0;
     if(pCreature)
@@ -1180,7 +1184,7 @@ int32_t Race::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* p
             (pStats->HasFeat(Feat::BattleTrainingVersusGoblins) && parRace == RacialType::HumanoidGoblinoid) ||
             (pStats->HasFeat(Feat::BattleTrainingVersusReptilians) && parRace == RacialType::HumanoidReptilian))
         {
-            modABVSRaceBonus += Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
+            modABVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
 
             if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
             {
@@ -1194,7 +1198,23 @@ int32_t Race::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* p
 
     }
 
-    return m_GetAttackModifierVersusHook->CallOriginal<int32_t>(pStats, pCreature) + modABVSRaceBonus;
+    return s_GetAttackModifierVersusHook->CallOriginal<int32_t>(pStats, pCreature) + modABVSRaceBonus;
+
+}
+
+int16_t Race::GetArmorClassVersusHook(CNWSCreatureStats* pStats, CNWSCreature* pCreature = nullptr, BOOL bVsTouchAttack = false)
+{
+    int32_t modACVSRaceBonus = 0;
+    if(pCreature)
+    {
+        auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
+
+        if(pStats->HasFeat(Feat::BattleTrainingVersusGiants) && parRace == RacialType::Giant)
+            modACVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("DEFENSIVE_TRAINING_MODIFIER", 4);
+
+    }
+
+    return s_GetArmorClassVersusHook->CallOriginal<int16_t>(pStats, pCreature, bVsTouchAttack) + modACVSRaceBonus;
 
 }
 
