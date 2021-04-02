@@ -167,22 +167,22 @@ struct NWNX_Tileset_TilesetData NWNX_Tileset_GetTilesetData(string sTileset)
 {
     string sFunc = "GetTilesetData";
 
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
     struct NWNX_Tileset_TilesetData str;
-    str.bHasHeightTransition = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.bInterior = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.sUnlocalizedName = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.nDisplayNameStrRef = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.sFloorTerrain = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sDefaultTerrain = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sBorderTerrain = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.nNumGroups = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.nNumCrossers = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.nNumTerrain = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.fHeightTransition = NWNX_GetReturnValueFloat(NWNX_Tileset, sFunc);
-    str.nNumTileData = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
+    str.bHasHeightTransition = NWNX_GetReturnValueInt();
+    str.bInterior = NWNX_GetReturnValueInt();
+    str.sUnlocalizedName = NWNX_GetReturnValueString();
+    str.nDisplayNameStrRef = NWNX_GetReturnValueInt();
+    str.sFloorTerrain = NWNX_GetReturnValueString();
+    str.sDefaultTerrain = NWNX_GetReturnValueString();
+    str.sBorderTerrain = NWNX_GetReturnValueString();
+    str.nNumGroups = NWNX_GetReturnValueInt();
+    str.nNumCrossers = NWNX_GetReturnValueInt();
+    str.nNumTerrain = NWNX_GetReturnValueInt();
+    str.fHeightTransition = NWNX_GetReturnValueFloat();
+    str.nNumTileData = NWNX_GetReturnValueInt();
 
     return str;
 }
@@ -191,37 +191,37 @@ string NWNX_Tileset_GetTilesetTerrain(string sTileset, int nIndex)
 {
     string sFunc = "GetTilesetTerrain";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Tileset_GetTilesetCrosser(string sTileset, int nIndex)
 {
     string sFunc = "GetTilesetCrosser";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 struct NWNX_Tileset_TilesetGroupData NWNX_Tileset_GetTilesetGroupData(string sTileset, int nIndex)
 {
     string sFunc = "GetTilesetGroupData";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
     struct NWNX_Tileset_TilesetGroupData str;
-    str.nColumns = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.nRows = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.nStrRef = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
-    str.sName = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    str.nColumns = NWNX_GetReturnValueInt();
+    str.nRows = NWNX_GetReturnValueInt();
+    str.nStrRef = NWNX_GetReturnValueInt();
+    str.sName = NWNX_GetReturnValueString();
 
     return str;
 }
@@ -230,51 +230,51 @@ int NWNX_Tileset_GetTilesetGroupTile(int nIndex)
 {
     string sFunc = "GetTilesetGroupTile";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
+    NWNX_PushArgumentInt(nIndex);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Tileset_GetTileModel(string sTileset, int nTileID)
 {
     string sFunc = "GetTileModel";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nTileID);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nTileID);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Tileset_GetTileMinimapTexture(string sTileset, int nTileID)
 {
     string sFunc = "GetTileMinimapTexture";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nTileID);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nTileID);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 struct NWNX_Tileset_TileEdgesAndCorners NWNX_Tileset_GetTileEdgesAndCorners(string sTileset, int nTileID)
 {
     string sFunc = "GetTileEdgesAndCorners";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nTileID);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nTileID);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
     struct NWNX_Tileset_TileEdgesAndCorners str;
-    str.sLeft = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sBottomLeft = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sBottom = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sBottomRight = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sRight = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sTopRight = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sTop = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
-    str.sTopLeft = NWNX_GetReturnValueString(NWNX_Tileset, sFunc);
+    str.sLeft = NWNX_GetReturnValueString();
+    str.sBottomLeft = NWNX_GetReturnValueString();
+    str.sBottom = NWNX_GetReturnValueString();
+    str.sBottomRight = NWNX_GetReturnValueString();
+    str.sRight = NWNX_GetReturnValueString();
+    str.sTopRight = NWNX_GetReturnValueString();
+    str.sTop = NWNX_GetReturnValueString();
+    str.sTopLeft = NWNX_GetReturnValueString();
 
     return str;
 }
@@ -283,28 +283,28 @@ int NWNX_Tileset_GetTileNumDoors(string sTileset, int nTileID)
 {
     string sFunc = "GetTileNumDoors";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nTileID);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nTileID);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 struct NWNX_Tileset_TileDoorData NWNX_Tileset_GetTileDoorData(string sTileset, int nTileID, int nIndex = 0)
 {
     string sFunc = "GetTileDoorData";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nTileID);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileset);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentInt(nTileID);
+    NWNX_PushArgumentString(sTileset);
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 
     struct NWNX_Tileset_TileDoorData str;
-    str.fOrientation = NWNX_GetReturnValueFloat(NWNX_Tileset, sFunc);
-    str.fZ = NWNX_GetReturnValueFloat(NWNX_Tileset, sFunc);
-    str.fY = NWNX_GetReturnValueFloat(NWNX_Tileset, sFunc);
-    str.fX = NWNX_GetReturnValueFloat(NWNX_Tileset, sFunc);
-    str.nType = NWNX_GetReturnValueInt(NWNX_Tileset, sFunc);
+    str.fOrientation = NWNX_GetReturnValueFloat();
+    str.fZ = NWNX_GetReturnValueFloat();
+    str.fY = NWNX_GetReturnValueFloat();
+    str.fX = NWNX_GetReturnValueFloat();
+    str.nType = NWNX_GetReturnValueInt();
 
     return str;
 }
@@ -313,8 +313,8 @@ void NWNX_Tileset_SetAreaTileOverride(string sAreaResRef, string sOverrideName)
 {
     string sFunc = "SetAreaTileOverride";
 
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sOverrideName);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sAreaResRef);
+    NWNX_PushArgumentString(sOverrideName);
+    NWNX_PushArgumentString(sAreaResRef);
 
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 }
@@ -323,10 +323,10 @@ void NWNX_Tileset_CreateTileOverride(string sOverrideName, string sTileSet, int 
 {
     string sFunc = "CreateTileOverride";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nHeight);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nWidth);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sTileSet);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sOverrideName);
+    NWNX_PushArgumentInt(nHeight);
+    NWNX_PushArgumentInt(nWidth);
+    NWNX_PushArgumentString(sTileSet);
+    NWNX_PushArgumentString(sOverrideName);
 
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 }
@@ -335,7 +335,7 @@ void NWNX_Tileset_DeleteTileOverride(string sOverrideName)
 {
     string sFunc = "DeleteTileOverride";
 
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sOverrideName);
+    NWNX_PushArgumentString(sOverrideName);
 
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 }
@@ -344,18 +344,18 @@ void NWNX_Tileset_SetOverrideTileData(string sOverrideName, int nIndex, struct N
 {
     string sFunc = "SetOverrideTileData";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.bAnimLoop3);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.bAnimLoop2);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.bAnimLoop1);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nSourceLightColor2);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nSourceLightColor1);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nMainLightColor2);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nMainLightColor1);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nHeight);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nOrientation);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, strCustomTileData.nTileID);
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sOverrideName);
+    NWNX_PushArgumentInt(strCustomTileData.bAnimLoop3);
+    NWNX_PushArgumentInt(strCustomTileData.bAnimLoop2);
+    NWNX_PushArgumentInt(strCustomTileData.bAnimLoop1);
+    NWNX_PushArgumentInt(strCustomTileData.nSourceLightColor2);
+    NWNX_PushArgumentInt(strCustomTileData.nSourceLightColor1);
+    NWNX_PushArgumentInt(strCustomTileData.nMainLightColor2);
+    NWNX_PushArgumentInt(strCustomTileData.nMainLightColor1);
+    NWNX_PushArgumentInt(strCustomTileData.nHeight);
+    NWNX_PushArgumentInt(strCustomTileData.nOrientation);
+    NWNX_PushArgumentInt(strCustomTileData.nTileID);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentString(sOverrideName);
 
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 }
@@ -364,8 +364,8 @@ void NWNX_Tileset_DeleteOverrideTileData(string sOverrideName, int nIndex)
 {
     string sFunc = "DeleteOverrideTileData";
 
-    NWNX_PushArgumentInt(NWNX_Tileset, sFunc, nIndex);
-    NWNX_PushArgumentString(NWNX_Tileset, sFunc, sOverrideName);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentString(sOverrideName);
 
     NWNX_CallFunction(NWNX_Tileset, sFunc);
 }

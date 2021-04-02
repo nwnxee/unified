@@ -51,10 +51,10 @@ void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, in
 {
     string sFunc = "SetOverride";
 
-    NWNX_PushArgumentInt(NWNX_Appearance, sFunc, nValue);
-    NWNX_PushArgumentInt(NWNX_Appearance, sFunc, nType);
-    NWNX_PushArgumentObject(NWNX_Appearance, sFunc, oCreature);
-    NWNX_PushArgumentObject(NWNX_Appearance, sFunc, oPlayer);
+    NWNX_PushArgumentInt(nValue);
+    NWNX_PushArgumentInt(nType);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_PushArgumentObject(oPlayer);
 
     NWNX_CallFunction(NWNX_Appearance, sFunc);
 }
@@ -63,11 +63,11 @@ int NWNX_Appearance_GetOverride(object oPlayer, object oCreature, int nType)
 {
     string sFunc = "GetOverride";
 
-    NWNX_PushArgumentInt(NWNX_Appearance, sFunc, nType);
-    NWNX_PushArgumentObject(NWNX_Appearance, sFunc, oCreature);
-    NWNX_PushArgumentObject(NWNX_Appearance, sFunc, oPlayer);
+    NWNX_PushArgumentInt(nType);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_PushArgumentObject(oPlayer);
 
     NWNX_CallFunction(NWNX_Appearance, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Appearance, sFunc);
+    return NWNX_GetReturnValueInt();
 }

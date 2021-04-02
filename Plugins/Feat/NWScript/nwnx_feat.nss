@@ -52,12 +52,12 @@ void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1 = 0xDEADBEEF, in
 {
     string sFunc = "SetFeatModifier";
 
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iParam4);
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iParam3);
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iParam2);
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iParam1);
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iMod);
-    NWNX_PushArgumentInt(NWNX_Feat, sFunc, iFeat);
+    NWNX_PushArgumentInt(iParam4);
+    NWNX_PushArgumentInt(iParam3);
+    NWNX_PushArgumentInt(iParam2);
+    NWNX_PushArgumentInt(iParam1);
+    NWNX_PushArgumentInt(iMod);
+    NWNX_PushArgumentInt(iFeat);
 
     NWNX_CallFunction(NWNX_Feat, sFunc);
 }

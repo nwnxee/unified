@@ -33,8 +33,8 @@ void NWNX_NoStack_SetSpellBonusType(int spell, int type)
 {
     string sFunc = "SetSpellBonusType";
 
-    NWNX_PushArgumentInt(NWNX_NoStack, sFunc, type);
-    NWNX_PushArgumentInt(NWNX_NoStack, sFunc, spell);
+    NWNX_PushArgumentInt(type);
+    NWNX_PushArgumentInt(spell);
 
     NWNX_CallFunction(NWNX_NoStack, sFunc);
 }

@@ -59,19 +59,19 @@ int NWNX_Visibility_GetVisibilityOverride(object oPlayer, object oTarget)
 {
     string sFunc = "GetVisibilityOverride";
 
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, oTarget);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, oPlayer);
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Visibility, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Visibility, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Visibility_SetVisibilityOverride(object oPlayer, object oTarget, int nOverride)
 {
     string sFunc = "SetVisibilityOverride";
 
-    NWNX_PushArgumentInt(NWNX_Visibility, sFunc, nOverride);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, oTarget);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, oPlayer);
+    NWNX_PushArgumentInt(nOverride);
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Visibility, sFunc);
 }

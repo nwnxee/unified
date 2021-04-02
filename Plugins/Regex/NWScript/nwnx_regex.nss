@@ -24,19 +24,19 @@ string NWNX_Regex_Replace(string str, string regex, string replace = "", int fir
 int NWNX_Regex_Search(string str, string regex)
 {
     string sFunc = "Search";
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, regex);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, str);
+    NWNX_PushArgumentString(regex);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Regex, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Regex, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0)
 {
     string sFunc = "Replace";
-    NWNX_PushArgumentInt(NWNX_Regex, sFunc, firstOnly);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, replace);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, regex);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, str);
+    NWNX_PushArgumentInt(firstOnly);
+    NWNX_PushArgumentString(replace);
+    NWNX_PushArgumentString(regex);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Regex, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Regex, sFunc);
+    return NWNX_GetReturnValueString();
 }

@@ -428,12 +428,12 @@ int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INV
     string sFunc = "GetMessageHidden";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
@@ -441,10 +441,10 @@ void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object o
     string sFunc = "SetMessageHidden";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -453,12 +453,12 @@ int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_IN
     string sFunc = "GetMessageHidden";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
@@ -466,10 +466,10 @@ void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object 
     string sFunc = "SetMessageHidden";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -478,12 +478,12 @@ int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
     string sFunc = "GetMessageHidden";
     int nMessageType = 2;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(0);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJECT_INVALID)
@@ -491,10 +491,10 @@ void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJ
     string sFunc = "SetMessageHidden";
     int nMessageType = 2;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(0);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -503,8 +503,8 @@ void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
     string sFunc = "SetFeedbackMode";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentInt(bWhitelist);
+    NWNX_PushArgumentInt(nMessageType);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -513,7 +513,7 @@ void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
     string sFunc = "SetFeedbackMode";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentInt(bWhitelist);
+    NWNX_PushArgumentInt(nMessageType);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }

@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
 
 ##### New NWScript Functions
-- Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills
+- Creature: Get{Armor|Shield}CheckPenalty()
 - Creature: {Get/Set}BypassEffectImmunity()
 - Effect: GetTrueEffectCount()
 - Effect: GetTrueEffect()
@@ -33,6 +33,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
 - ***API BREAKING*** Damage: The NWNX_Damage_AttackEventData fields have changed their names: `iAttackType -> iWeaponAttackType`, `iAttackType_REAL -> iAttackType`.
 - ***API BREAKING*** Object: The `NWNX_Object_Export` function has had its arguments reordered.
+- ***ABI BREAKING:*** `nwnx.nss` has changed, please update all your `nwnx_*.nss` scripts including `nwnx.nss` and recompile. Existing compiled scripts will still work.
 
 ### Deprecated
 - N/A
