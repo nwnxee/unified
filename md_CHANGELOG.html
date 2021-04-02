@@ -121,7 +121,7 @@ New Plugins</h4>
 <h4><a class="anchor" id="autotoc_md12"></a>
 New NWScript Functions</h4>
 <ul>
-<li>Creature: Get{Armor|Shield}CheckPenalty() for dex-based skills</li>
+<li>Creature: Get{Armor|Shield}CheckPenalty()</li>
 <li>Creature: {Get/Set}BypassEffectImmunity()</li>
 <li>Effect: GetTrueEffectCount()</li>
 <li>Effect: GetTrueEffect()</li>
@@ -139,6 +139,7 @@ Changed</h2>
 <li>ItemProperty: UnpackIP now can retrieve the item property's id. <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__itemprop_8nss.html">nwnx_itemprop.nss</a> if you are using these functions</em>.</li>
 <li><em><b>API BREAKING</b></em> Damage: The <a class="el" href="structNWNX__Damage__AttackEventData.html" title="Attack Event Data.">NWNX_Damage_AttackEventData</a> fields have changed their names: <code>iAttackType -&gt; iWeaponAttackType</code>, <code>iAttackType_REAL -&gt; iAttackType</code>.</li>
 <li><em><b>API BREAKING</b></em> Object: The <code>NWNX_Object_Export</code> function has had its arguments reordered.</li>
+<li><em><b>ABI BREAKING:</b></em> <code><a class="el" href="nwnx_8nss.html">nwnx.nss</a></code> has changed, please update all your <code>nwnx_*.nss</code> scripts including <code><a class="el" href="nwnx_8nss.html">nwnx.nss</a></code> and recompile. Existing compiled scripts will still work.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Deprecated</h2>
@@ -1054,7 +1055,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Mar 27 2021 13:28:01 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Apr 2 2021 11:31:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
