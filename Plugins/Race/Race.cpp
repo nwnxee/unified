@@ -1178,7 +1178,7 @@ int32_t Race::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* p
 
         if((pStats->HasFeat(Feat::BattleTrainingVersusOrcs) && parRace == RacialType::HumanoidOrc) ||
             (pStats->HasFeat(Feat::BattleTrainingVersusGoblins) && parRace == RacialType::HumanoidGoblinoid) ||
-            (pStats->HasFeat(Feat::BattleTrainingVersusReptilians) && perRace == RacialType::HumanoidReptilian))
+            (pStats->HasFeat(Feat::BattleTrainingVersusReptilians) && parRace == RacialType::HumanoidReptilian))
         {
             modABVSRaceBonus += Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
 
