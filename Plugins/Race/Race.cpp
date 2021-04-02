@@ -1180,9 +1180,9 @@ int32_t Race::GetAttackModifierVersusHook(CNWSCreatureStats* pStats, CNWSCreatur
     {
         auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
 
-        if((pStats->HasFeat(Feat::BattleTrainingVersusOrcs) && parRace == RacialType::HumanoidOrc) ||
-            (pStats->HasFeat(Feat::BattleTrainingVersusGoblins) && parRace == RacialType::HumanoidGoblinoid) ||
-            (pStats->HasFeat(Feat::BattleTrainingVersusReptilians) && parRace == RacialType::HumanoidReptilian))
+        if((parRace == RacialType::HumanoidOrc && pStats->HasFeat(Feat::BattleTrainingVersusOrcs)) ||
+            (parRace == RacialType::HumanoidGoblinoid && pStats->HasFeat(Feat::BattleTrainingVersusGoblins)) ||
+            (parRace == RacialType::HumanoidReptilian && pStats->HasFeat(Feat::BattleTrainingVersusReptilians)))
         {
             modABVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
 
@@ -1209,7 +1209,7 @@ int16_t Race::GetArmorClassVersusHook(CNWSCreatureStats* pStats, CNWSCreature* p
     {
         auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
 
-        if(pStats->HasFeat(Feat::BattleTrainingVersusGiants) && parRace == RacialType::Giant)
+        if(parRace == RacialType::Giant && pStats->HasFeat(Feat::BattleTrainingVersusGiants))
             modACVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("DEFENSIVE_TRAINING_MODIFIER", 4);
 
     }
