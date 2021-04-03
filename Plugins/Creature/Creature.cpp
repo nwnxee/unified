@@ -1809,9 +1809,9 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
                 nModifier = nLevelModifier.value();
 
             //Make sure m_nLevel doesn't over/underflow
-            nModifier = std::min(nModifier, 255 - pThis->m_ClassInfo[nMultiClass].m_nLevel);
+            nModifier = std::min(nModifier, 255 - retVal);
             if (nModifier < 0)
-                nModifier = -std::min(-nModifier, static_cast<int32_t>(pThis->m_ClassInfo[nMultiClass].m_nLevel));
+                nModifier = -std::min(-nModifier, static_cast<int32_t>(retVal));
 
             retVal += nModifier;
         }
