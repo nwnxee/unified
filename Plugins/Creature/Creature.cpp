@@ -1799,18 +1799,14 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
 
         if (nClass != Constants::ClassType::Invalid)
         {
+            auto nLevelOverride = pThis->m_pBaseCreature->nwnxGet<int>("CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+            if (nLevelOverride)
+                return std::clamp(nLevelOverride.value(), 0, 255);
+
             int32_t nModifier = 0;
             auto nLevelModifier = pThis->m_pBaseCreature->nwnxGet<int>("CASTERLEVEL_MODIFIER" + std::to_string(nClass));
             if (nLevelModifier)
                 nModifier = nLevelModifier.value();
-
-            auto nLevelOverride = pThis->m_pBaseCreature->nwnxGet<int>("CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
-            if (nLevelOverride)
-            {
-                auto nLevel = nLevelOverride.value();
-                nModifier = nLevel - retVal;
-            }
-
 
             //Make sure m_nLevel doesn't over/underflow
             nModifier = std::min(nModifier, 255 - pThis->m_ClassInfo[nMultiClass].m_nLevel);
