@@ -1334,7 +1334,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    FAMILIAR              | object | The familiar. Convert to object with StringToObject()  |
+    FAMILIAR              | object | The familiar. Convert to object with StringToObject() |
 
 _______________________________________
     ## Client Levelup Begin Event
@@ -1355,7 +1355,31 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    FAMILIAR              | object | The familiar. Convert to object with StringToObject()  |
+    FAMILIAR              | object | The familiar. Convert to object with StringToObject() |
+_______________________________________
+    ## Player CharacterSheet Permitted Event
+    - NWNX_ON_CHARACTER_SHEET_PERMITTED_BEFORE
+    - NWNX_ON_CHARACTER_SHEET_PERMITTED_AFTER
+
+    `OBJECT_SELF` = The player trying to view a charactersheet
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with StringToObject() |
+
+    @note When skipping this event, be sure to set the event result.
+_______________________________________
+    ## Player CharacterSheet Open/Close Events
+    - NWNX_ON_CHARACTER_SHEET_OPEN_BEFORE
+    - NWNX_ON_CHARACTER_SHEET_OPEN_AFTER
+    - NWNX_ON_CHARACTER_SHEET_CLOSE_BEFORE
+    - NWNX_ON_CHARACTER_SHEET_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player opening or closing a charactersheet
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with StringToObject() |
 _______________________________________
 */
 /*
@@ -1448,6 +1472,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Faction events
 /// - UnpossessFamiliar event
 /// - ClientLevelUpBegin event
+/// - CharacterSheetPermitted event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
@@ -1466,6 +1491,7 @@ void NWNX_Events_SkipEvent();
 /// - Has Feat event -> "1" or "0"
 /// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
 /// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
+/// - CharacterSheetPermitted event -> "1" allow the player to view the character sheet or "0" to disallow
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
