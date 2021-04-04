@@ -117,6 +117,12 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 /// @return FALSE/0 on failure TRUE/1 on success.
 int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 
+
+/// @brief Applys an effect, bypassing any processing done by ApplyEffectToObject/Location
+/// @param eEffect The effect to be applied.
+/// @param oObject The object to apply it to.
+void ApplyEffect(effect eEffect, object oObject)
+
 /// @}
 
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
@@ -353,4 +359,12 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return  NWNX_GetReturnValueInt();
+}
+
+void ApplyEffect(effect eEffect, object oObject)
+{
+    string sFunc = "ApplyEffect";
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eEffect);
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
 }
