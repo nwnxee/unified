@@ -121,7 +121,7 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 /// @brief Applys an effect, bypassing any processing done by ApplyEffectToObject
 /// @param eEffect The effect to be applied.
 /// @param oObject The object to apply it to.
-void ApplyEffect(effect eEffect, object oObject)
+void ApplyEffect(effect eEffect, object oObject);
 
 /// @}
 
@@ -364,7 +364,7 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
 void ApplyEffect(effect eEffect, object oObject)
 {
     string sFunc = "ApplyEffect";
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eEffect);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
+    NWNX_PushArgumentEffect(eEffect);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 }
