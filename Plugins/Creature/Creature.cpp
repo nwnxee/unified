@@ -2956,3 +2956,14 @@ NWNX_EXPORT ArgumentStack GetBypassEffectImmunity(ArgumentStack&& args)
     }
     return 0;
 }
+
+NWNX_EXPORT ArgumentStack SetLastKiller(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto killerId = args.extract<ObjectID>();
+        pCreature->m_oidKiller = killerId;
+    }
+    return {};
+}
+

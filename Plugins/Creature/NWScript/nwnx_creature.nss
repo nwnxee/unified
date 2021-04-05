@@ -2355,3 +2355,12 @@ int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType)
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt();
 }
+
+void NWNX_Creature_SetLastKiller(object oCreature, object oKiller)
+{
+    string sFunc = "SetLastKiller";
+
+    NWNX_PushArgumentObject(oKiller);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
