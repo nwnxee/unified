@@ -119,13 +119,13 @@ Example 1</h4>
 <div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = 27; <span class="comment">// The row number for the new Travel skill</span></div>
 <div class="line">skillFeat.iFeat = 1801; <span class="comment">// The row number for the Skill Focus Travel feat</span></div>
 <div class="line">skillFeat.iModifier = 3;</div>
-<div class="line"><span class="comment">// Defining feats with the focusFeat setting helps with mass changing modifiers</span></div>
-<div class="line">skillFeat.focusFeat = 1;</div>
+<div class="line"><span class="comment">// Defining feats with the iFocusFeat setting helps with mass changing modifiers</span></div>
+<div class="line">skillFeat.iFocusFeat = 1;</div>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
 <div class="line"> </div>
 <div class="line">skillFeat.iFeat = 1802; <span class="comment">// The row number for the Epic Skill Focus Travel feat</span></div>
 <div class="line">skillFeat.iModifier = 10;</div>
-<div class="line">skillFeat.focusFeat = 2; <span class="comment">// 2 for Epic Focus</span></div>
+<div class="line">skillFeat.iFocusFeat = 2; <span class="comment">// 2 for Epic Focus</span></div>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
 </div><!-- fragment --></li>
 </ul>
@@ -809,7 +809,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Apr 5 2021 07:42:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 7 2021 15:23:55 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
