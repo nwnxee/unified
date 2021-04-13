@@ -5,7 +5,11 @@
 #include "API/CExoBase.hpp"
 #include "API/CExoResMan.hpp"
 
-#include <filesystem>
+#include <dirent.h>
+#include <fstream>
+#include <sys/stat.h>
+
+#include "API/CTlkTable.hpp"
 
 namespace Compiler
 {
@@ -13,14 +17,15 @@ namespace Compiler
 using namespace NWNXLib;
 using namespace API;
 
-static void CleanOutput(const std::filesystem::path&);
-static void CreateResourceDirectory(const CExoString&, const std::filesystem::path&);
+static bool DirectoryExists(const std::string& path);
+static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension);
+static void CleanOutput(const std::string& outputPath);
+static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority);
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString&);
-static int Compile(const std::filesystem::path&, const std::filesystem::path&, std::unique_ptr<CScriptCompiler>);
+static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler);
 static void RemoveResourceDirectory(const CExoString&);
 
 void Compiler() __attribute__((constructor));
-
 void Compiler()
 {
     const auto source = Config::Get<std::string>("SRC_DIR");
@@ -32,8 +37,8 @@ void Compiler()
         return;
     }
 
-    const std::filesystem::path sourcePath(source.value());
-    const std::filesystem::path outputPath(output.value());
+    const auto& sourcePath = source.value();
+    const auto& outputPath = output.value();
 
     if (sourcePath == outputPath)
     {
@@ -41,56 +46,94 @@ void Compiler()
         return;
     }
 
-    if (!exists(sourcePath))
+    if (!DirectoryExists(sourcePath))
     {
-        LOG_INFO("Skipping compilation. Source directory %s does not exist.", source.value());
+        LOG_INFO("Skipping compilation. Cannot find or access source directory %s.", source.value());
         return;
     }
 
-    if (Config::Get<bool>("CLEAN_COMPILE", false) && exists(outputPath))
+    if(!DirectoryExists(outputPath))
     {
-        CleanOutput(output.value());
+        mkdir(outputPath.c_str(), 0);
+        if (!DirectoryExists(outputPath))
+        {
+            LOG_INFO("Skipping compilation. Cannot write to output directory %s.", source.value());
+            return;
+        }
+    }
+    else if (Config::Get<bool>("CLEAN_COMPILE", false))
+    {
+        CleanOutput(outputPath);
     }
 
     const auto sourceAlias = CExoString("NWNXCOMPILE_SRC");
     const auto outputAlias = CExoString("NWNXCOMPILE_OUT");
 
-    if (!Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(sourceAlias).IsEmpty() || !Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(outputAlias).IsEmpty())
+    if (!Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(outputAlias).IsEmpty())
     {
-        LOG_WARNING("Skipping compilation. A Resource Directory with %s, or %s already exists. Please remove these entries from nwn.ini.", sourceAlias.CStr(), outputAlias.CStr());
+        LOG_WARNING("Skipping compilation. A Resource Directory with %s already exists. Please remove this entry from nwn.ini.", outputAlias.CStr());
         return;
     }
 
-    CreateResourceDirectory(sourceAlias, sourcePath);
-    CreateResourceDirectory(outputAlias, outputPath);
+    LOG_INFO("Creating resource dirs.");
 
-    const auto result = Compile(sourcePath, outputPath, CreateAndConfigureCompiler(outputAlias));
-
-    RemoveResourceDirectory(sourceAlias);
-    RemoveResourceDirectory(outputAlias);
-
-    if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
-    {
-        exit(result);
-    }
-}
-
-static void CleanOutput(const std::filesystem::path& outputPath)
-{
-    for (const auto& entry : std::filesystem::directory_iterator(outputPath))
-    {
-        if (entry.path().extension() == ".ncs")
+    Tasks::QueueOnMainThread([sourceAlias, sourcePath, outputAlias, outputPath]
         {
-            std::filesystem::remove(entry.path());
+            CreateResourceDirectory(sourceAlias, sourcePath, 90000001);
+            CreateResourceDirectory(outputAlias, outputPath, 90000000);
+
+            const auto result = Compile(sourcePath, outputPath, CreateAndConfigureCompiler(outputAlias));
+
+            RemoveResourceDirectory(sourceAlias);
+            RemoveResourceDirectory(outputAlias);
+
+            if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
+            {
+                exit(result);
+            }
+        });
+}
+
+static bool DirectoryExists(const std::string& path)
+{
+    struct stat info;
+    return stat (path.c_str(), &info) == 0 && info.st_mode & S_IFDIR;
+}
+
+static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension)
+{
+    std::vector<std::string> files;
+    if (auto* dir = opendir(path.c_str()))
+    {
+        while (auto* entry = readdir(dir))
+        {
+            if ((entry->d_type == DT_UNKNOWN || entry->d_type == DT_REG || entry->d_type == DT_LNK) && String::EndsWith(entry->d_name, extension))
+            {
+                files.emplace_back(entry->d_name);
+            }
         }
+        closedir(dir);
+    }
+
+    std::sort(std::begin(files), std::end(files));
+
+    return files;
+}
+
+static void CleanOutput(const std::string& outputPath)
+{
+    const auto files = GetFiles(outputPath, ".ncs");
+    for (const auto& file : files)
+    {
+        remove(file.c_str());
     }
 }
 
-static void CreateResourceDirectory(const CExoString& alias, const std::filesystem::path& path)
+static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority)
 {
     Globals::ExoBase()->m_pcExoAliasList->Add(alias, path.c_str());
     Globals::ExoResMan()->CreateDirectory(alias);
-    Globals::ExoResMan()->AddResourceDirectory(alias, UINT32_MAX, true);
+    Globals::ExoResMan()->AddResourceDirectory(alias, priority, true);
 }
 
 static void RemoveResourceDirectory(const CExoString& alias)
@@ -107,41 +150,65 @@ static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoStr
     scriptCompiler->SetCompileSymbolicOutput(Config::Get<int>("SYMBOLIC_OUTPUT", 0));
     scriptCompiler->SetGenerateDebuggerOutput(Config::Get<int>("GENERATE_DEBUGGER_OUTPUT", 0));
     scriptCompiler->SetOptimizeBinaryCodeLength(Config::Get<bool>("OPTIMIZE_BINARY_CODE_LENGTH", true));
-    scriptCompiler->SetCompileConditionalOrMain(true);
     scriptCompiler->SetIdentifierSpecification("nwscript");
+    scriptCompiler->SetCompileConditionalOrMain(true);
+    scriptCompiler->SetCompileConditionalFile(true);
+    scriptCompiler->SetAutomaticCleanUpAfterCompiles(true);
 
     scriptCompiler->SetOutputAlias(outputAlias);
 
     return scriptCompiler;
 }
 
-static int Compile(const std::filesystem::path& sourcePath, const std::filesystem::path& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler)
+static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler)
 {
     const auto continueOnError = Config::Get<bool>("CONTINUE_ON_ERROR", false);
     auto exitCode = 0;
 
-    for (const auto& sourceFile : std::filesystem::directory_iterator(sourcePath))
+    const auto sourceFiles = GetFiles(sourcePath, ".nss");
+    for (const auto& sourceFile : sourceFiles)
     {
-        auto outputFile = outputPath / sourceFile.path().stem() / ".ncs";
-        if (exists(outputFile) && last_write_time(outputFile) > sourceFile.last_write_time())
-        {
-            LOG_INFO("%s - Compilation skipped as the output file is newer.", sourceFile.path().c_str());
-            continue;
-        }
+        auto scriptName = String::Basename(sourceFile);
 
-        LOG_INFO("Compiling: %s", sourceFile.path().c_str());
-        const auto result = scriptCompiler->CompileFile(sourceFile.path().filename().c_str());
+        auto sourceFilePath = sourcePath;
+        sourceFilePath.append("/").append(sourceFile);
 
-        if (result == 0)
+        auto outFilePath = outputPath;
+        outFilePath.append("/").append(scriptName).append(".ncs");
+
+        LOG_INFO("Compiling: %s", sourceFilePath.c_str());
+
+        std::ifstream sourceStream(sourceFilePath);
+        std::string sourceContent((std::istreambuf_iterator<char>(sourceStream)), std::istreambuf_iterator<char>());
+
+        const auto compileResult = scriptCompiler->CompileScriptChunk(sourceContent.c_str(), false);
+        if (compileResult == 0)
         {
-            LOG_INFO("Succeeded: %s", outputFile.c_str());
+            auto writeFileResult = scriptCompiler->WriteFinalCodeToFile(scriptName);
+            LOG_INFO("Succeeded: %s", outFilePath);
+
+            if (writeFileResult != 0)
+            {
+                exitCode = writeFileResult;
+                LOG_ERROR("Write failed: %s", Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr());
+                if (!continueOnError)
+                {
+                    break;
+                }
+            }
         }
         else
         {
-            exitCode = result;
+            const auto* error = scriptCompiler->m_sCapturedError.CStr();
 
-            LOG_ERROR("Failed: %s", scriptCompiler->m_sCapturedError.CStr());
+            if (String::EndsWith(error, "NO FUNCTION MAIN() IN SCRIPT\n"))
+            {
+                LOG_INFO("Skipping include file %s: The file does not define a main() or StartingConditional() function.", sourceFilePath);
+                continue;
+            }
 
+            exitCode = compileResult;
+            LOG_ERROR("Failed: %s", error);
             if (!continueOnError)
             {
                 break;
