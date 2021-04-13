@@ -13,7 +13,6 @@
 
 namespace Compiler
 {
-
 using namespace NWNXLib;
 using namespace API;
 
@@ -22,10 +21,12 @@ static std::vector<std::string> GetFiles(const std::string& path, const std::str
 static void CleanOutput(const std::string& outputPath);
 static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority);
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString&);
-static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler);
+static int Compile(const std::string& sourcePath, const std::string& outputPath,
+                   std::unique_ptr<CScriptCompiler> scriptCompiler);
 static void RemoveResourceDirectory(const CExoString&);
 
 void Compiler() __attribute__((constructor));
+
 void Compiler()
 {
     const auto source = Config::Get<std::string>("SRC_DIR");
@@ -52,7 +53,7 @@ void Compiler()
         return;
     }
 
-    if(!DirectoryExists(outputPath))
+    if (!DirectoryExists(outputPath))
     {
         mkdir(outputPath.c_str(), 0);
         if (!DirectoryExists(outputPath))
@@ -75,29 +76,27 @@ void Compiler()
         return;
     }
 
-    LOG_INFO("Creating resource dirs.");
-
     Tasks::QueueOnMainThread([sourceAlias, sourcePath, outputAlias, outputPath]
+    {
+        CreateResourceDirectory(sourceAlias, sourcePath, 90000001);
+        CreateResourceDirectory(outputAlias, outputPath, 90000000);
+
+        const auto result = Compile(sourcePath, outputPath, CreateAndConfigureCompiler(outputAlias));
+
+        RemoveResourceDirectory(sourceAlias);
+        RemoveResourceDirectory(outputAlias);
+
+        if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
         {
-            CreateResourceDirectory(sourceAlias, sourcePath, 90000001);
-            CreateResourceDirectory(outputAlias, outputPath, 90000000);
-
-            const auto result = Compile(sourcePath, outputPath, CreateAndConfigureCompiler(outputAlias));
-
-            RemoveResourceDirectory(sourceAlias);
-            RemoveResourceDirectory(outputAlias);
-
-            if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
-            {
-                exit(result);
-            }
-        });
+            exit(result);
+        }
+    });
 }
 
 static bool DirectoryExists(const std::string& path)
 {
     struct stat info;
-    return stat (path.c_str(), &info) == 0 && info.st_mode & S_IFDIR;
+    return stat(path.c_str(), &info) == 0 && info.st_mode & S_IFDIR;
 }
 
 static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension)
@@ -218,5 +217,4 @@ static int Compile(const std::string& sourcePath, const std::string& outputPath,
 
     return exitCode;
 }
-
 }
