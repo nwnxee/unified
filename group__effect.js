@@ -55,5 +55,6 @@ var group__effect =
     [ "NWNX_Effect_GetTrueEffectCount", "group__effect.html#gad5ee5799b1d4ce82fb0f28a602152739", null ],
     [ "NWNX_Effect_GetTrueEffect", "group__effect.html#ga2e0dcb3e029747151deefd63cbcb1197", null ],
     [ "NWNX_Effect_ReplaceEffectByIndex", "group__effect.html#gae8ddfbe898a7449551e3a6cf53c64f8c", null ],
-    [ "NWNX_Effect_RemoveEffectById", "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f", null ]
+    [ "NWNX_Effect_RemoveEffectById", "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f", null ],
+    [ "NWNX_Effect_Apply", "group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045", null ]
 ];

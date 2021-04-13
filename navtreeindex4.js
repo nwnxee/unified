@@ -26,8 +26,8 @@ var NAVTREEINDEX4 =
 "group__dialog.html#ga8706494ed0cbd36894cc81b56434585c":[4,0,3,8,0,0,20],
 "group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0":[0,11,5],
 "group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0":[4,0,3,8,0,0,3],
-"group__dialog.html#gab2099dec23a537e86459a370683a54a1":[0,11,24],
 "group__dialog.html#gab2099dec23a537e86459a370683a54a1":[4,0,3,8,0,0,23],
+"group__dialog.html#gab2099dec23a537e86459a370683a54a1":[0,11,24],
 "group__dialog.html#gab982690e3426cf384e6e1ae32d9edc58":[0,11,4],
 "group__dialog.html#gab982690e3426cf384e6e1ae32d9edc58":[4,0,3,8,0,0,2],
 "group__dialog.html#gac27125df80f467600b814596e30b329e":[0,11,2],
@@ -72,6 +72,8 @@ var NAVTREEINDEX4 =
 "group__dotnet.html#dotnet":[0,12,0],
 "group__effect.html":[0,13],
 "group__effect.html#effect":[0,13,0],
+"group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045":[4,0,3,10,0,0,10],
+"group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045":[0,13,13],
 "group__effect.html#ga10a9c2babd8ee53cf383342585b239e7":[4,0,3,10,0,0,0],
 "group__effect.html#ga10a9c2babd8ee53cf383342585b239e7":[0,13,3],
 "group__effect.html#ga2e0dcb3e029747151deefd63cbcb1197":[4,0,3,10,0,0,7],
@@ -82,7 +84,7 @@ var NAVTREEINDEX4 =
 "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f":[0,13,12],
 "group__effect.html#ga8c7e4f71ab7b12105e5051ec90e9fd2e":[4,0,3,10,0,0,1],
 "group__effect.html#ga8c7e4f71ab7b12105e5051ec90e9fd2e":[0,13,4],
-"group__effect.html#ga92cd5f42fe610803f30f5383242cd6cc":[4,0,3,10,0,0,12],
+"group__effect.html#ga92cd5f42fe610803f30f5383242cd6cc":[4,0,3,10,0,0,13],
 "group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484":[4,0,3,10,0,0,4],
 "group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484":[0,13,7],
 "group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b":[4,0,3,10,0,0,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "group__feat.html#feat":[0,18,0],
 "group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c":[4,0,3,15,0,0,0],
 "group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c":[0,18,2],
-"group__feat.html#ga142085a49f08ec20a435d6d1afac7bb8":[4,0,3,15,0,0,9],
-"group__feat.html#ga142085a49f08ec20a435d6d1afac7bb8":[0,18,10],
-"group__feat.html#ga2330652ba535628c66ddf6b81f0dc726":[4,0,3,15,0,0,25]
+"group__feat.html#ga142085a49f08ec20a435d6d1afac7bb8":[4,0,3,15,0,0,9]
 };
