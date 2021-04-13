@@ -18,6 +18,7 @@
 #include "API/Functions.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/Constants/Effect.hpp"
+#include "API/CNWSCombatRound.hpp"
 #include <cmath>
 
 using namespace NWNXLib;
@@ -48,6 +49,8 @@ static Hooks::Hook s_LevelUpAutomaticHook;
 static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook;
 static Hooks::Hook s_LoadRaceInfoHook;
 static Hooks::Hook s_ValidateCharacterHook;
+static Hooks::Hook s_GetAttackModifierVersusHook;
+static Hooks::Hook s_GetArmorClassVersusHook;
 
 // Replaced completely
 static Hooks::Hook s_ResolveInitiativeHook;
@@ -81,6 +84,12 @@ Race::Race(Services::ProxyServiceList* services)
                                                          (void*)&SavingThrowRollHook, Hooks::Order::Early);
     s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
                                                         (void*)&GetWeaponPowerHook, Hooks::Order::Early);
+
+    s_GetAttackModifierVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Race::GetAttackModifierVersusHook, Hooks::Order::Late);
+
+    s_GetArmorClassVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats19GetArmorClassVersusEP12CNWSCreaturei, (void*)&Race::GetArmorClassVersusHook, Hooks::Order::Late);
 
 #define HOOK_APPLY_EFFECT(_address) \
     static Hooks::Hook CAT(pOnApplyHook, __LINE__) = Hooks::HookFunction(_address, \
@@ -448,7 +457,14 @@ int32_t Race::GetWeaponPowerHook(CNWSCreature *pCreature, CNWSObject *pObject, i
     uint8_t modABVSRaceBonus = 0;
     auto *pTargetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     if (pTargetCreature)
+    {
         modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+        auto parRace = g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace];
+        if(parRace != RacialType::Invalid)
+            modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][parRace];
+    }
+
+
     pServerExoApp->SetAttackBonusLimit(pServerExoApp->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
 
     auto retVal = s_GetWeaponPowerHook->CallOriginal<int32_t>(pCreature, pObject, bOffHand);
@@ -481,7 +497,7 @@ void Race::ApplyEffectHook(CNWSObject *pObject, CGameEffect *pEffect)
     int32_t i;
     for(uint16_t &nChild : vChild)
     {
-        pEffectNew = new CGameEffect(true);
+        pEffectNew = new CGameEffect(false);
         pEffectNew->m_nNumIntegers = pEffect->m_nNumIntegers;
         for(i = 0; i < pEffect->m_nNumIntegers; i++)
             pEffectNew->m_nParamInteger[i] = pEffect->m_nParamInteger[i];
@@ -526,16 +542,18 @@ int32_t Race::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
         pTargetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
     }
 
-    if (pTargetCreature)
-        SetOrRestoreRace(true, nullptr, pTargetCreature->m_pStats);
-
     auto nRace = pCreature->m_pStats->m_nRace;
     if (nEffectBonusType == 1)
     {
         auto modABBonus = g_plugin->m_RaceAB[nRace];
         uint8_t modABVSRaceBonus = 0;
         if (pTargetCreature)
+        {
             modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][pTargetCreature->m_pStats->m_nRace];
+            auto parRace = g_plugin->m_RaceParent[pTargetCreature->m_pStats->m_nRace];
+            if(parRace != RacialType::Invalid)
+                modABVSRaceBonus = g_plugin->m_RaceABVsRace[nRace][parRace];
+        }
         pServerExoApp->SetAttackBonusLimit(attackBonusLimit + modABBonus + modABVSRaceBonus);
     }
     else if (nEffectBonusType == 5)
@@ -547,8 +565,6 @@ int32_t Race::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
     auto retVal = s_GetTotalEffectBonusHook->CallOriginal<int32_t>(pCreature, nEffectBonusType, pObject, bElementalDamage,
                                                                    bForceMax, nSaveType, nSpecificType, nSkill, nAbilityScore, bOffHand);
 
-    if (pTargetCreature)
-        SetOrRestoreRace(false, nullptr, pTargetCreature->m_pStats);
 
     if (nEffectBonusType == 1)
         pServerExoApp->SetAttackBonusLimit(attackBonusLimit);
@@ -1155,6 +1171,51 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
     LOG_INFO("%s: Setting Favored Enemy Feat to %s.", Globals::Rules()->m_lstRaces[raceId].GetNameText().CStr(), pFeat->GetNameText().CStr());
 
     return Events::Arguments();
+}
+
+int32_t Race::GetAttackModifierVersusHook(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
+{
+    int32_t modABVSRaceBonus = 0;
+    if(pCreature)
+    {
+        auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
+
+        if((parRace == RacialType::HumanoidOrc && pStats->HasFeat(Feat::BattleTrainingVersusOrcs)) ||
+            (parRace == RacialType::HumanoidGoblinoid && pStats->HasFeat(Feat::BattleTrainingVersusGoblins)) ||
+            (parRace == RacialType::HumanoidReptilian && pStats->HasFeat(Feat::BattleTrainingVersusReptilians)))
+        {
+            modABVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
+
+            if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
+            {
+                auto sDebugMsg = CExoString(" + ") +
+                                 CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1))) +
+                                 CExoString(" (Offensive training/battle training)") ;
+                auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
+                pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
+            }
+        }
+
+    }
+
+    return s_GetAttackModifierVersusHook->CallOriginal<int32_t>(pStats, pCreature) + modABVSRaceBonus;
+
+}
+
+int16_t Race::GetArmorClassVersusHook(CNWSCreatureStats* pStats, CNWSCreature* pCreature = nullptr, BOOL bVsTouchAttack = false)
+{
+    int32_t modACVSRaceBonus = 0;
+    if(pCreature)
+    {
+        auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
+
+        if(parRace == RacialType::Giant && pStats->HasFeat(Feat::BattleTrainingVersusGiants))
+            modACVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("DEFENSIVE_TRAINING_MODIFIER", 4);
+
+    }
+
+    return s_GetArmorClassVersusHook->CallOriginal<int16_t>(pStats, pCreature, bVsTouchAttack) + modACVSRaceBonus;
+
 }
 
 }

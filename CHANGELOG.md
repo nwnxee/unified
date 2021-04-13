@@ -47,7 +47,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - Tweaks: removed deprecated `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` environment variable. Use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 
 ### Fixed
-- N/A
+- Race: Effects vs Child Races are now functional. Battle Training Vs. * feats now apply their bonus against child races as well.
 
 ## 8193.20
 https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
