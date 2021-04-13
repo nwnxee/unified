@@ -1793,28 +1793,25 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
 {
     auto retVal = s_GetClassLevelHook->CallOriginal<uint8_t>(pThis, nMultiClass, bUseNegativeLevel);
 
-    if (s_bAdjustCasterLevel || nMultiClass < pThis->m_nNumMultiClasses)
+    if (s_bAdjustCasterLevel && nMultiClass < pThis->m_nNumMultiClasses)
     {
         auto nClass = pThis->m_ClassInfo[nMultiClass].m_nClass;
 
         if (nClass != Constants::ClassType::Invalid)
         {
-            int32_t nModifier = 0;
             auto nLevelOverride = pThis->m_pBaseCreature->nwnxGet<int>("CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
             if (nLevelOverride)
-            {
-                auto nLevel = std::max(nLevelOverride.value(), 255);
-                nModifier = nLevel - pThis->m_ClassInfo[nMultiClass].m_nLevel;
-            }
+                return std::clamp(nLevelOverride.value(), 0, 255);
 
+            int32_t nModifier = 0;
             auto nLevelModifier = pThis->m_pBaseCreature->nwnxGet<int>("CASTERLEVEL_MODIFIER" + std::to_string(nClass));
             if (nLevelModifier)
                 nModifier = nLevelModifier.value();
 
             //Make sure m_nLevel doesn't over/underflow
-            nModifier = std::min(nModifier, 255 - pThis->m_ClassInfo[nMultiClass].m_nLevel);
+            nModifier = std::min(nModifier, 255 - retVal);
             if (nModifier < 0)
-                nModifier = -std::min(-nModifier, static_cast<int32_t>(pThis->m_ClassInfo[nMultiClass].m_nLevel));
+                nModifier = -std::min(-nModifier, static_cast<int32_t>(retVal));
 
             retVal += nModifier;
         }
@@ -1825,7 +1822,7 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
 static void InitCasterLevelHooks()
 {
     s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
-                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Early);
+                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ExecuteCommandGetCasterLevelHook =
             Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
