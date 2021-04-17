@@ -33,7 +33,6 @@ struct CExoBaseInternal
     RESTYPE GetResTypeFromExtension(const CExoString & sExtension);
     void LoadAliases(int32_t idxIniFile);
     void ShutDown();
-    void SpawnExternalApplication(const CExoString & sAppName, const CExoString & sParams, BOOL bShutDownNWN);
     BOOL CheckForCD(uint32_t nLanguage);
 
 

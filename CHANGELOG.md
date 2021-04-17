@@ -4,8 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.21-HEAD
-https://github.com/nwnxee/unified/compare/build8193.21...HEAD
+## 8193.22-HEAD
+https://github.com/nwnxee/unified/compare/build8193.22...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.21
+https://github.com/nwnxee/unified/compare/build8193.21...build8193.22
 
 ### Added
 - Events: added skippable event `NWNX_ON_CLIENT_LEVEL_UP_BEGIN_*` which fires when a player clicks the levelup button.
@@ -38,9 +62,6 @@ https://github.com/nwnxee/unified/compare/build8193.21...HEAD
 - ***API BREAKING*** Damage: The NWNX_Damage_AttackEventData fields have changed their names: `iAttackType -> iWeaponAttackType`, `iAttackType_REAL -> iAttackType`.
 - ***API BREAKING*** Object: The `NWNX_Object_Export` function has had its arguments reordered.
 - ***ABI BREAKING:*** `nwnx.nss` has changed, please update all your `nwnx_*.nss` scripts including `nwnx.nss` and recompile. Existing compiled scripts will still work.
-
-### Deprecated
-- N/A
 
 ### Removed
 - Data and Time plugins have been removed. Compatibility scripts are provided [here](Compatibility/)

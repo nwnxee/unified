@@ -46,7 +46,6 @@ struct CAppManager
     void DestroyServer();
     void SetDungeonMasterEXERunning(BOOL bDM);
     BOOL GetDungeonMasterEXERunning();
-    BOOL SpawnExternalScriptDebugger();
     void DisplayScriptDebuggerPopup();
     void DestroyScriptDebuggerPopup();
     BOOL SetDDCipherForModule(CExoString moduleName);
