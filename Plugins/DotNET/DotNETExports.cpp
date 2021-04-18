@@ -20,6 +20,7 @@ using MainLoopHandlerType  = void (*)(uint64_t);
 using RunScriptHandlerType = int (*)(const char *, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
+using CallbackType = void (*)();
 
 struct AllHandlers
 {
@@ -502,6 +503,22 @@ static void ReturnHook(void* trampoline)
     }
 }
 
+static void QueueOnMainThread(CallbackType managedWork)
+{
+    Tasks::QueueOnMainThread([managedWork]
+    {
+       managedWork();
+    });
+}
+
+static void QueueOnAsyncThread(CallbackType managedWork)
+{
+    Tasks::QueueOnAsyncThread([managedWork]
+    {
+        managedWork();
+    });
+}
+
 std::vector<void*> GetExports()
 {
     //
@@ -549,6 +566,8 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&GetNWNXExportedGlobals);
     exports.push_back((void*)&RequestHook);
     exports.push_back((void*)&ReturnHook);
+    exports.push_back((void*)&QueueOnMainThread);
+    exports.push_back((void*)&QueueOnAsyncThread);
     return exports;
 }
 
