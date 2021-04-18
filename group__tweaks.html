@@ -104,44 +104,70 @@ $(document).ready(function(){initNavTree('group__tweaks.html',''); initResizable
 
 <h3><a id="tweaks"></a>Readme</h3><div class="textblock">Tweaks stuff. See below.<h2><a class="anchor" id="autotoc_md449"></a>
 Environment Variables</h2>
-<ul>
-<li><code>NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST</code>: true or false</li>
-<li><code>NWNX_TWEAKS_PLAYER_DYING_HP_LIMIT</code>: Between 0 and -127</li>
-<li><code>NWNX_TWEAKS_DISABLE_PAUSE</code>: true or false</li>
-<li><code>NWNX_TWEAKS_DISABLE_QUICKSAVE</code>: true or false</li>
-<li><code>NWNX_TWEAKS_COMPARE_VARIABLES_WHEN_MERGING</code>: true or false</li>
-<li><code>NWNX_TWEAKS_PARRY_ALL_ATTACKS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</code>: true or false</li>
-<li><code>NWNX_TWEAKS_PRESERVE_DEPLETED_ITEMS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_DISABLE_SHADOWS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST</code>: true or false <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>Use <code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code></dd></dl>
-</li>
-<li><code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code>: between 1 and 3</li>
-<li><code>NWNX_TWEAKS_DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED</code>: true or false</li>
-<li><code>NWNX_TWEAKS_STRINGTOINT_BASE_TO_AUTO</code>: true or false</li>
-<li><code>NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT</code>: true or false</li>
-<li><code>NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG</code>: true or false</li>
-<li><code>NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</code>: Between 1 and 3</li>
-<li><code>NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG</code>: true or false</li>
-<li><code>NWNX_TWEAKS_UNHARDCODE_SHIELDS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_BLOCK_DM_SPAWNITEM</code>: true or false</li>
-<li><code>NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE</code>: true or false</li>
-<li><code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code>: true or false</li>
-<li><code>NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS</code>: true or false</li>
-<li><code>NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT</code>: true or false</li>
-<li><code>NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET</code>: true or false</li>
-<li><code>NWNX_TWEAKS_TURD_BY_CDKEY</code>: true or false<ul>
-<li>Note: pass the CDKey instead of PlayerName when calling <a class="el" href="group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587" title="Delete the TURD of playerName + characterName.">NWNX_Administration_DeleteTURD()</a>.</li>
-</ul>
-</li>
-<li><code>NWNX_TWEAKS_LANGUAGE_OVERRIDE</code>: between 1 and 5, or between 128 and 131</li>
-<li><code>NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN</code>: true or false</li>
-<li><code>NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT</code>: true or false</li>
-<li><code>NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION</code>: true or false</li>
-</ul>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Variable Name </th><th class="markdownTableHeadNone">Value </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Hides the classes of players on the loginscreen playerlist.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_PLAYER_DYING_HP_LIMIT</code> </td><td class="markdownTableBodyNone">Between 0 and -127 </td><td class="markdownTableBodyNone">Changes the hp limit where a creature is considered to be dying.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DISABLE_PAUSE</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Disables DM pause.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DISABLE_QUICKSAVE</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Disables DM quicksave.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_COMPARE_VARIABLES_WHEN_MERGING</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">When trying to merge items, local variables are also considered.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_PARRY_ALL_ATTACKS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Removes the number of parried attacks per round limit.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Allow sneakattacks on creatures that are immune to critical hits.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_PRESERVE_DEPLETED_ITEMS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Items that run out of charges are not destroyed.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code> </td><td class="markdownTableBodyNone">between 1 and 3 </td><td class="markdownTableBodyNone">See <a href="https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_players_on_char_list">here</a>.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Disables monk abilities (ac, speed, etc) when polymorphed.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_STRINGTOINT_BASE_TO_AUTO</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Changes the base of the StringToInt() nwscript function from base10 to automatic.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Dead creatures will fire the on area exit event.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">DMs possessing a creature will not clear their actions.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes a bug with greater sanctuary.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</code> </td><td class="markdownTableBodyNone">Between 1 and 3 </td><td class="markdownTableBodyNone">See <a href="https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_item_charges_cost_mode">here</a>.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes dispel checks vs. effects created by deleted objects.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Adds prestige class levels to caster level.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes a bug where scrolls/potions could have unlimited uses.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_UNHARDCODE_SHIELDS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">baseitems.2da will be used to define shield AC for shields and shield-like items.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_BLOCK_DM_SPAWNITEM</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Disables the dm_spawnitem console command.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Allows armor with a max DEX bonus of under 1.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes a (rare?) inventory crash bug.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Effects on logged out player characters will be removed when a caster rests.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Creatures will always have their full dex states, even when immobilized/entangled.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">The number of attacks per round overridden by SetBaseAttackBonus() will show on the character sheet.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_TURD_BY_CDKEY</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">TURDs are associated by CDKey/CharacterName instead of PlayerName/CharacterName. Pass the CDKey instead of PlayerName when calling <a class="el" href="group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587" title="Delete the TURD of playerName + characterName.">NWNX_Administration_DeleteTURD()</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_LANGUAGE_OVERRIDE</code> </td><td class="markdownTableBodyNone">between 1 and 5, or between 128 and 131 </td><td class="markdownTableBodyNone">See <a href="https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_language_override">here</a>.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">TlkTable entries overridden by SetTlkOverride() will be sent before Character Generation.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">When splitting an item, local variables will be copied.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Prevents attack bonus effects from bypassing damage reductions.  </td></tr>
+</table>
 <h2><a class="anchor" id="autotoc_md450"></a>
 Environment variable values</h2>
 <h3><a class="anchor" id="autotoc_md451"></a>
@@ -202,7 +228,7 @@ NWNX_TWEAKS_LANGUAGE_OVERRIDE</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Apr 18 2021 08:05:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Apr 18 2021 12:29:54 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
