@@ -276,6 +276,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga98394f91f30d5a4910db9ada5a1f5853"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga98394f91f30d5a4910db9ada5a1f5853">NWNX_Object_SetMapNote</a> (object oObject, string sMapNote, int nID=0, int nGender=0)</td></tr>
 <tr class="memdesc:ga98394f91f30d5a4910db9ada5a1f5853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a Map Note (AKA Map Pin) to any waypoint, even if no previous map note. Only updates for clients on area-load. Use SetMapPinEnabled() as required.  <a href="group__object.html#ga98394f91f30d5a4910db9ada5a1f5853">More...</a><br /></td></tr>
 <tr class="separator:ga98394f91f30d5a4910db9ada5a1f5853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7e6bd03c53974433edb5581fa92dd2b5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga7e6bd03c53974433edb5581fa92dd2b5">NWNX_Object_GetLastSpellCastFeat</a> (object oObject)</td></tr>
+<tr class="memdesc:ga7e6bd03c53974433edb5581fa92dd2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the last spell cast feat of oObject.  <a href="group__object.html#ga7e6bd03c53974433edb5581fa92dd2b5">More...</a><br /></td></tr>
+<tr class="separator:ga7e6bd03c53974433edb5581fa92dd2b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga11f4a73b409e6d3726f84fd4c556344c"></a>
@@ -303,7 +306,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00367">367</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00373">373</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -350,7 +353,7 @@ As of build 8193.14, this function takes O(n) time, where n is the number of loc
 As of build 8193.14, this function may return variable type UNKNOWN if the value is the default (0/0.0/""/OBJECT_INVALID) for the type. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Object__LocalVariable.html" title="A local variable structure.">NWNX_Object_LocalVariable</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00377">377</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00383">383</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -381,7 +384,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 <dl class="section remark"><dt>Remarks</dt><dd>This is the counterpart to ObjectToString. </dd></dl>
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated:</a></b></dt><dd>Use the basegame StringToObject() function. This will be removed in a future NWNX release. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00391">391</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00397">397</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -427,7 +430,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00398">398</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00404">404</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -457,7 +460,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The hit points. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00411">411</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00417">417</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -496,7 +499,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00421">421</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00427">427</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -536,7 +539,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00431">431</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00437">437</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -566,7 +569,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 <dl class="section return"><dt>Returns</dt><dd>A base64 string representation of the object. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>includes locals, inventory, etc </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00441">441</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00447">447</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -596,7 +599,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00451">451</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00457">457</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -625,7 +628,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The name of the dialog resref. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00461">461</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00467">467</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -664,7 +667,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00471">471</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00477">477</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -704,7 +707,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00481">481</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00487">487</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -733,7 +736,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appearance id. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00491">491</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00497">497</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -773,7 +776,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the object has the visual effect applied to it </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00501">501</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00507">507</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -813,7 +816,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if an item of base item type can fit in object's inventory </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00513">513</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00519">519</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -853,7 +856,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Damage immunity as a percentage. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00525">525</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00531">531</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -899,7 +902,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00537">537</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00543">543</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -928,7 +931,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if placeable is static. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00549">549</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00555">555</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -968,7 +971,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00559">559</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00565">565</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -997,7 +1000,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE/FALSE or -1 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00569">569</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00575">575</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1039,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00579">579</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00585">585</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1065,7 +1068,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A string of vertex positions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00589">589</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00595">595</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1107,7 +1110,7 @@ As of build 8193.14, this function may return variable type UNKNOWN if the value
 <dd>
 The minimum number of vertices is 3. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00599">599</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00605">605</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1157,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00608">608</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00614">614</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1193,7 +1196,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00618">618</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00624">624</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1232,7 +1235,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00627">627</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00633">633</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1275,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value or 0 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00636">636</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00642">642</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1325,7 +1328,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00647">647</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00653">653</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1364,7 +1367,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00658">658</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00664">664</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1407,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00667">667</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00673">673</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1460,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00678">678</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00684">684</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1496,7 +1499,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00689">689</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00695">695</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1536,7 +1539,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value or 0.0f on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00698">698</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00704">704</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1589,7 +1592,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00709">709</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00715">715</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1628,7 +1631,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00720">720</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00726">726</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1671,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00729">729</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00735">735</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1709,7 +1712,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if vPosition is inside oTrigger's geometry. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00738">738</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00744">744</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1738,7 +1741,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The object's type (NWNX_OBJECT_TYPE_INTERNAL_*) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00751">751</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00757">757</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1779,7 +1782,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00761">761</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00767">767</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1819,7 +1822,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00772">772</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00778">778</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1847,7 +1850,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00781">781</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00787">787</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1876,7 +1879,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The UUID or "" when the object does not have or cannot have an UUID </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00789">789</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00795">795</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1905,7 +1908,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if oDoor has a visible model </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00799">799</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00805">805</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1934,7 +1937,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if oObject is destroyable. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00809">809</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00815">815</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -1974,7 +1977,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>-1 if defender has no immunity, 2 if the defender is immune </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00819">819</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00825">825</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2014,7 +2017,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>-1 defender no immunity. 2 if immune. 3 if immune, but the immunity has a limit (example: mantles) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00829">829</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00835">835</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2054,7 +2057,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Only works on placeables. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00839">839</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00845">845</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2084,7 +2087,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>-1 on error or the engine animation constant </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00849">849</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00855">855</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2113,7 +2116,7 @@ The minimum number of vertices is 3. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The AI level (AI_LEVEL_* -1 to 4). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00859">859</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00865">865</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2152,7 +2155,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00869">869</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00875">875</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2198,7 +2201,7 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00879">879</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00885">885</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2251,7 +2254,37 @@ The minimum number of vertices is 3. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00891">891</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00897">897</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7e6bd03c53974433edb5581fa92dd2b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7e6bd03c53974433edb5581fa92dd2b5">&#9670;&nbsp;</a></span>NWNX_Object_GetLastSpellCastFeat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Object_GetLastSpellCastFeat </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the last spell cast feat of oObject. </p>
+<dl class="section note"><dt>Note</dt><dd>Should be called in a spell script. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oObject</td><td>The object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The feat ID, or 65535 when not cast by a feat, or -1 on error. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__object_8nss_source.html#l00908">908</a> of file <a class="el" href="nwnx__object_8nss_source.html">nwnx_object.nss</a>.</p>
 
 </div>
 </div>
@@ -2630,7 +2663,7 @@ The minimum number of vertices is 3. </dd></dl>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Apr 17 2021 15:18:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Apr 18 2021 08:05:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

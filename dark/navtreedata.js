@@ -48,12 +48,12 @@ var NAVTREEINDEX =
 "group__dialog.html#ga02897365405b702936fb2e2491c3dc70",
 "group__feat.html#ga142085a49f08ec20a435d6d1afac7bb8",
 "group__object.html#ga3037db60c526f5ddfd2f2c934c6c5fe8",
-"group__player.html#ga8e0a7d8bb62c2549bb4690ff90cf1ed5",
-"group__serverlogredirector.html",
-"group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a",
-"nwnx__redis_8nss.html#a2d154aa5a4ef2e80a9f5880133e15abc",
-"nwnx__redis__short_8nss.html#a4d1850c0780722e2aa6e2b373f1f1e62",
-"structNWNX__Damage__DamageEventData.html#a1c094e1f187bab209e34e9af867cf404"
+"group__player.html#ga8cbc1210d8c9da7aaafce86852ccb53b",
+"group__ruby.html#gac0c336ba4029249c325c8736a848abd9",
+"group__util.html#gaa3475205c5acd4e78df18d9e3620e06a",
+"nwnx__redis_8nss.html#a2b1f8d59ee5c0b984f7c34e5628c1ce9",
+"nwnx__redis__short_8nss.html#a4c3b0074ba5759bfc4d0b099aa7ae7e5",
+"structNWNX__Damage__DamageEventData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
