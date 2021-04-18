@@ -873,3 +873,13 @@ NWNX_EXPORT ArgumentStack SetMapNote(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetLastSpellCastFeat(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        return pObject->m_nLastSpellCastFeat;
+    }
+
+    return -1;
+}
