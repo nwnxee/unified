@@ -362,6 +362,12 @@ string NWNX_Object_GetMapNote(object oObject, int nID = 0, int nGender = 0);
 /// @param nGender 0 = Male, 1 = Female
 void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nGender = 0);
 
+/// @brief Gets the last spell cast feat of oObject.
+/// @note Should be called in a spell script.
+/// @param oObject The object.
+/// @return The feat ID, or 65535 when not cast by a feat, or -1 on error.
+int NWNX_Object_GetLastSpellCastFeat(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -897,4 +903,14 @@ void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nG
     NWNX_PushArgumentString(sMapNote);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetLastSpellCastFeat(object oObject)
+{
+    string sFunc = "GetLastSpellCastFeat";
+
+    NWNX_PushArgumentObject(oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt();
 }

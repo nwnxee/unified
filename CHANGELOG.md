@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Object: GetLastSpellCastFeat()
 
 ### Changed
 - N/A
@@ -51,6 +51,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...build8193.22
 - Effect: GetTrueEffect()
 - Effect: RemoveEffectById()
 - Effect: ReplaceEffectByIndex()
+- Effect: Apply()
 - Player: SetTlkOverride()
 - Util: GetTTY()
 
