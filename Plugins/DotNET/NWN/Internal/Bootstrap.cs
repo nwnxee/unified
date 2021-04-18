@@ -133,6 +133,10 @@ namespace NWN
         public delegate IntPtr RequestHookDelegate(IntPtr address, IntPtr managedFuncPtr, int priority);
         [SuppressUnmanagedCodeSecurity][UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void ReturnHookDelegate(IntPtr hook);
+        [SuppressUnmanagedCodeSecurity][UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void QueueOnMainThreadDelegate(IntPtr managedCallbackFuncPtr);
+        [SuppressUnmanagedCodeSecurity][UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void QueueOnAsyncThreadDelegate(IntPtr managedCallbackFuncPtr);
 
         [StructLayout(LayoutKind.Sequential)]
         public readonly struct BootstrapArgs
@@ -177,6 +181,8 @@ namespace NWN
             public readonly GetNWNXExportedGlobalsDelegate        GetNWNXExportedGlobals;
             public readonly RequestHookDelegate                   RequestHook;
             public readonly ReturnHookDelegate                    ReturnHook;
+            public readonly QueueOnMainThreadDelegate             QueueOnMainThread;
+            public readonly QueueOnAsyncThreadDelegate            QueueOnAsyncThread;
         }
         public static BootstrapArgs NativeFunctions;
         private static AllHandlers _handlers;
