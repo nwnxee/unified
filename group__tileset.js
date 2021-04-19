@@ -55,7 +55,7 @@ var group__tileset =
     [ "NWNX_Tileset_GetTilesetTerrain", "group__tileset.html#ga1486694caa032fb4c14a3893f4a03474", null ],
     [ "NWNX_Tileset_GetTilesetCrosser", "group__tileset.html#gad5bfecaa36b537ace241662b2fa715af", null ],
     [ "NWNX_Tileset_GetTilesetGroupData", "group__tileset.html#ga0fef8a55cc5bedf3e8b468a36bf3a890", null ],
-    [ "NWNX_Tileset_GetTilesetGroupTile", "group__tileset.html#gad8635435688d3eb9c8d923a08ad84370", null ],
+    [ "NWNX_Tileset_GetTilesetGroupTile", "group__tileset.html#gabb37973c04de9bc0d4ebc9b0e155f772", null ],
     [ "NWNX_Tileset_GetTileModel", "group__tileset.html#gabb66ad0ecb55058a890e7ca00ed182ed", null ],
     [ "NWNX_Tileset_GetTileMinimapTexture", "group__tileset.html#ga0325903af8f1957b494faa267650f348", null ],
     [ "NWNX_Tileset_GetTileEdgesAndCorners", "group__tileset.html#ga852bd6b1fb8a6a8f216f48e3a1bc18d7", null ],

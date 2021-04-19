@@ -1161,7 +1161,7 @@ var searchData=
   ['nwnx_5ftileset_5fgettilesetcrosser_1438',['NWNX_Tileset_GetTilesetCrosser',['../group__tileset.html#gad5bfecaa36b537ace241662b2fa715af',1,'nwnx_tileset.nss']]],
   ['nwnx_5ftileset_5fgettilesetdata_1439',['NWNX_Tileset_GetTilesetData',['../group__tileset.html#gae1ca3b9434ed1c2f61456d78980ed5dd',1,'nwnx_tileset.nss']]],
   ['nwnx_5ftileset_5fgettilesetgroupdata_1440',['NWNX_Tileset_GetTilesetGroupData',['../group__tileset.html#ga0fef8a55cc5bedf3e8b468a36bf3a890',1,'nwnx_tileset.nss']]],
-  ['nwnx_5ftileset_5fgettilesetgrouptile_1441',['NWNX_Tileset_GetTilesetGroupTile',['../group__tileset.html#gad8635435688d3eb9c8d923a08ad84370',1,'nwnx_tileset.nss']]],
+  ['nwnx_5ftileset_5fgettilesetgrouptile_1441',['NWNX_Tileset_GetTilesetGroupTile',['../group__tileset.html#gabb37973c04de9bc0d4ebc9b0e155f772',1,'nwnx_tileset.nss']]],
   ['nwnx_5ftileset_5fgettilesetterrain_1442',['NWNX_Tileset_GetTilesetTerrain',['../group__tileset.html#ga1486694caa032fb4c14a3893f4a03474',1,'nwnx_tileset.nss']]],
   ['nwnx_5ftileset_5fsetareatileoverride_1443',['NWNX_Tileset_SetAreaTileOverride',['../group__tileset.html#ga9195028a6d1135581ad319a3cdd99d9c',1,'nwnx_tileset.nss']]],
   ['nwnx_5ftileset_5fsetoverridetiledata_1444',['NWNX_Tileset_SetOverrideTileData',['../group__tileset.html#ga94e84316437d0c601784427f75ce1f30',1,'nwnx_tileset.nss']]],

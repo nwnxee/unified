@@ -231,9 +231,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0fef8a55cc5bedf3e8b468a36bf3a890"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structNWNX__Tileset__TilesetGroupData.html">NWNX_Tileset_TilesetGroupData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tileset.html#ga0fef8a55cc5bedf3e8b468a36bf3a890">NWNX_Tileset_GetTilesetGroupData</a> (string sTileset, int nIndex)</td></tr>
 <tr class="memdesc:ga0fef8a55cc5bedf3e8b468a36bf3a890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get general data of the group at nIndex in sTileset.  <a href="group__tileset.html#ga0fef8a55cc5bedf3e8b468a36bf3a890">More...</a><br /></td></tr>
 <tr class="separator:ga0fef8a55cc5bedf3e8b468a36bf3a890"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad8635435688d3eb9c8d923a08ad84370"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tileset.html#gad8635435688d3eb9c8d923a08ad84370">NWNX_Tileset_GetTilesetGroupTile</a> (int nIndex)</td></tr>
-<tr class="memdesc:gad8635435688d3eb9c8d923a08ad84370"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get tile ID of the tile at nIndex.  <a href="group__tileset.html#gad8635435688d3eb9c8d923a08ad84370">More...</a><br /></td></tr>
-<tr class="separator:gad8635435688d3eb9c8d923a08ad84370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabb37973c04de9bc0d4ebc9b0e155f772"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tileset.html#gabb37973c04de9bc0d4ebc9b0e155f772">NWNX_Tileset_GetTilesetGroupTile</a> (string sTileset, int nGroupIndex, int nTileIndex)</td></tr>
+<tr class="memdesc:gabb37973c04de9bc0d4ebc9b0e155f772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the tile ID at nTileIndex in nGroupIndex of sTileset.  <a href="group__tileset.html#gabb37973c04de9bc0d4ebc9b0e155f772">More...</a><br /></td></tr>
+<tr class="separator:gabb37973c04de9bc0d4ebc9b0e155f772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabb66ad0ecb55058a890e7ca00ed182ed"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tileset.html#gabb66ad0ecb55058a890e7ca00ed182ed">NWNX_Tileset_GetTileModel</a> (string sTileset, int nTileID)</td></tr>
 <tr class="memdesc:gabb66ad0ecb55058a890e7ca00ed182ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model name of a tile in sTileset.  <a href="group__tileset.html#gabb66ad0ecb55058a890e7ca00ed182ed">More...</a><br /></td></tr>
 <tr class="separator:gabb66ad0ecb55058a890e7ca00ed182ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,7 +291,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structNWNX__Tileset__TilesetData.html" title="A structure containing general tileset data.">NWNX_Tileset_TilesetData</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00166">166</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00167">167</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -331,7 +331,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The terrain name or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00190">190</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00189">189</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -371,7 +371,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The crosser name or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00201">201</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00198">198</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -411,12 +411,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structNWNX__Tileset__TilesetGroupData.html" title="A structure containing the group data for a tileset.">NWNX_Tileset_TilesetGroupData</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00212">212</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00207">207</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
-<a id="gad8635435688d3eb9c8d923a08ad84370"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad8635435688d3eb9c8d923a08ad84370">&#9670;&nbsp;</a></span>NWNX_Tileset_GetTilesetGroupTile()</h2>
+<a id="gabb37973c04de9bc0d4ebc9b0e155f772"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabb37973c04de9bc0d4ebc9b0e155f772">&#9670;&nbsp;</a></span>NWNX_Tileset_GetTilesetGroupTile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,24 +424,41 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int NWNX_Tileset_GetTilesetGroupTile </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nIndex</em></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sTileset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nGroupIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nTileIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get tile ID of the tile at nIndex. </p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="group__tileset.html#ga0fef8a55cc5bedf3e8b468a36bf3a890" title="Get general data of the group at nIndex in sTileset.">NWNX_Tileset_GetTilesetGroupData()</a> needs to be called first. </dd></dl>
+<p>Get the tile ID at nTileIndex in nGroupIndex of sTileset. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nIndex</td><td>The index of the tile. Range: (<a class="el" href="structNWNX__Tileset__TilesetGroupData.html#a0a2b1f76c67d6bec23b9019682784067" title="The number of rows the group has.">NWNX_Tileset_TilesetGroupData.nRows</a> * <a class="el" href="structNWNX__Tileset__TilesetGroupData.html#a046c239ee967d9c5a8007997d873400d" title="The number of columns the group has.">NWNX_Tileset_TilesetGroupData.nColumns</a>) &gt; nIndex &gt;= 0 </td></tr>
+    <tr><td class="paramname">sTileset</td><td>The tileset. </td></tr>
+    <tr><td class="paramname">nGroupIndex</td><td>The index of the group. Range: <a class="el" href="structNWNX__Tileset__TilesetData.html#a010d411b92f707702a3a40cebcb37f67" title="The number of groups in the tileset.">NWNX_Tileset_TilesetData.nNumGroups</a> &gt; nGroupIndex &gt;= 0 </td></tr>
+    <tr><td class="paramname">nTileIndex</td><td>The index of the tile. Range: (<a class="el" href="structNWNX__Tileset__TilesetGroupData.html#a0a2b1f76c67d6bec23b9019682784067" title="The number of rows the group has.">NWNX_Tileset_TilesetGroupData.nRows</a> * <a class="el" href="structNWNX__Tileset__TilesetGroupData.html#a046c239ee967d9c5a8007997d873400d" title="The number of columns the group has.">NWNX_Tileset_TilesetGroupData.nColumns</a>) &gt; nTileIndex &gt;= 0 </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The tile ID or 0 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00229">229</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00222">222</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -481,7 +498,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The model name or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00239">239</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00232">232</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -521,7 +538,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The minimap texture name or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00250">250</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00241">241</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -561,7 +578,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structNWNX__Tileset__TileEdgesAndCorners.html" title="A structure containing the edge and corner types of a tile.">NWNX_Tileset_TileEdgesAndCorners</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00261">261</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00250">250</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -601,7 +618,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The amount of doors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00282">282</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00269">269</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -648,7 +665,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structNWNX__Tileset__TileDoorData.html" title="A structure containing the door data for a tile.">NWNX_Tileset_TileDoorData</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00293">293</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00278">278</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -687,7 +704,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00312">312</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00295">295</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -740,7 +757,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00322">322</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00302">302</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -769,7 +786,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00334">334</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00311">311</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -816,7 +833,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00343">343</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00317">317</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -855,7 +872,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00363">363</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__tileset_8nss_source.html#l00334">334</a> of file <a class="el" href="nwnx__tileset_8nss_source.html">nwnx_tileset.nss</a>.</p>
 
 </div>
 </div>
@@ -864,15 +881,15 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructNWNX__Tileset__CustomTileData_html"><div class="ttname"><a href="structNWNX__Tileset__CustomTileData.html">NWNX_Tileset_CustomTileData</a></div><div class="ttdoc">A structure containing custom tile data,.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00059">nwnx_tileset.nss:59</a></div></div>
 <div class="ttc" id="aarray__example_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="array__example_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="array__example_8nss_source.html#l00133">array_example.nss:133</a></div></div>
 <div class="ttc" id="astructNWNX__Tileset__CustomTileData_html_a1bee0e1c334d3b979be6aca7649c7151"><div class="ttname"><a href="structNWNX__Tileset__CustomTileData.html#a1bee0e1c334d3b979be6aca7649c7151">NWNX_Tileset_CustomTileData::nTileID</a></div><div class="ttdeci">int nTileID</div><div class="ttdoc">The tile ID. See the tileset's .set file.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00061">nwnx_tileset.nss:61</a></div></div>
-<div class="ttc" id="agroup__tileset_html_ga9195028a6d1135581ad319a3cdd99d9c"><div class="ttname"><a href="group__tileset.html#ga9195028a6d1135581ad319a3cdd99d9c">NWNX_Tileset_SetAreaTileOverride</a></div><div class="ttdeci">void NWNX_Tileset_SetAreaTileOverride(string sAreaResRef, string sOverrideName)</div><div class="ttdoc">Override the tiles of sAreaResRef with data in sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00312">nwnx_tileset.nss:312</a></div></div>
-<div class="ttc" id="agroup__tileset_html_ga94e84316437d0c601784427f75ce1f30"><div class="ttname"><a href="group__tileset.html#ga94e84316437d0c601784427f75ce1f30">NWNX_Tileset_SetOverrideTileData</a></div><div class="ttdeci">void NWNX_Tileset_SetOverrideTileData(string sOverrideName, int nIndex, struct NWNX_Tileset_CustomTileData strCustomTileData)</div><div class="ttdoc">Set custom tile data for the tile at nIndex in sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00343">nwnx_tileset.nss:343</a></div></div>
-<div class="ttc" id="agroup__tileset_html_gab0b2375da6f16031c7acd91d67105ecf"><div class="ttname"><a href="group__tileset.html#gab0b2375da6f16031c7acd91d67105ecf">NWNX_Tileset_CreateTileOverride</a></div><div class="ttdeci">void NWNX_Tileset_CreateTileOverride(string sOverrideName, string sTileSet, int nWidth, int nHeight)</div><div class="ttdoc">Create a tile override named sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00322">nwnx_tileset.nss:322</a></div></div>
+<div class="ttc" id="agroup__tileset_html_ga9195028a6d1135581ad319a3cdd99d9c"><div class="ttname"><a href="group__tileset.html#ga9195028a6d1135581ad319a3cdd99d9c">NWNX_Tileset_SetAreaTileOverride</a></div><div class="ttdeci">void NWNX_Tileset_SetAreaTileOverride(string sAreaResRef, string sOverrideName)</div><div class="ttdoc">Override the tiles of sAreaResRef with data in sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00295">nwnx_tileset.nss:295</a></div></div>
+<div class="ttc" id="agroup__tileset_html_ga94e84316437d0c601784427f75ce1f30"><div class="ttname"><a href="group__tileset.html#ga94e84316437d0c601784427f75ce1f30">NWNX_Tileset_SetOverrideTileData</a></div><div class="ttdeci">void NWNX_Tileset_SetOverrideTileData(string sOverrideName, int nIndex, struct NWNX_Tileset_CustomTileData strCustomTileData)</div><div class="ttdoc">Set custom tile data for the tile at nIndex in sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00317">nwnx_tileset.nss:317</a></div></div>
+<div class="ttc" id="agroup__tileset_html_gab0b2375da6f16031c7acd91d67105ecf"><div class="ttname"><a href="group__tileset.html#gab0b2375da6f16031c7acd91d67105ecf">NWNX_Tileset_CreateTileOverride</a></div><div class="ttdeci">void NWNX_Tileset_CreateTileOverride(string sOverrideName, string sTileSet, int nWidth, int nHeight)</div><div class="ttdoc">Create a tile override named sOverrideName.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00302">nwnx_tileset.nss:302</a></div></div>
 <div class="ttc" id="astructNWNX__Tileset__CustomTileData_html_a03d7816f7820a8a5ce99e487c490da55"><div class="ttname"><a href="structNWNX__Tileset__CustomTileData.html#a03d7816f7820a8a5ce99e487c490da55">NWNX_Tileset_CustomTileData::nHeight</a></div><div class="ttdeci">int nHeight</div><div class="ttdoc">The height of the tile.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__tileset_8nss_source.html#l00063">nwnx_tileset.nss:63</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Apr 19 2021 08:04:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Apr 19 2021 08:28:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
