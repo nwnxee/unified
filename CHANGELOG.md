@@ -46,7 +46,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...build8193.22
 ##### New NWScript Functions
 - Creature: Get{Armor|Shield}CheckPenalty()
 - Creature: {Get/Set}BypassEffectImmunity()
-- Creature: {Get/Set}LastKiller()
+- Creature: SetLastKiller()
 - Effect: GetTrueEffectCount()
 - Effect: GetTrueEffect()
 - Effect: RemoveEffectById()
