@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 - Object: GetLastSpellCastFeat()
 
 ### Changed
-- N/A
+- ***ABI BREAKING:*** Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.
 
 ### Deprecated
 - N/A
