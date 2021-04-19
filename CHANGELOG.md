@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 
 ### Changed
 - ***ABI BREAKING:*** Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.
+- ***API BREAKING:*** Tileset: NWNX_Tileset_GetTilesetGroupTile() needs the tileset name and group index in addition to the tile index.
 
 ### Deprecated
 - N/A
