@@ -918,6 +918,11 @@ void NWNX_Creature_SetBypassEffectImmunity(object oCreature, int nImmunityType, 
 /// @return the current critical hit multiplier modifier for the creature
 int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType);
 
+/// @brief Sets the killer of oCreature to oKiller.
+/// @param oCreature The target creature.
+/// @param oKiller The killer.
+void NWNX_Creature_SetLastKiller(object oCreature, object oKiller);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
