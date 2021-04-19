@@ -11,7 +11,48 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-struct TileData
+struct CachedTilesetTileDoor
+{
+    int32_t type;
+    Vector position;
+    float orientation;
+};
+struct CachedTilesetTile
+{
+    std::string tileModel;
+    std::string minimapTexture;
+    std::string tl, t, tr, r, br, b, bl, l;
+    int32_t numDoors;
+    std::vector<CachedTilesetTileDoor> doors;
+};
+struct CachedTilesetGroup
+{
+    std::string name;
+    int32_t strRef;
+    int32_t rows;
+    int32_t columns;
+    std::vector<int32_t> tiles;
+};
+struct CachedTileset
+{
+    int32_t numTiles;
+    int32_t numTerrains;
+    int32_t numCrossers;
+    int32_t numGroups;
+    int32_t displayNameStrRef;
+    int32_t isInterior;
+    int32_t hasHeightTransition;
+    float heightTransition;
+    std::string borderTerrain;
+    std::string defaultTerrain;
+    std::string floorTerrain;
+    std::string unlocalizedName;
+    std::vector<std::string> terrains;
+    std::vector<std::string> crossers;
+    std::vector<CachedTilesetTile> tiles;
+    std::vector<CachedTilesetGroup> groups;
+};
+struct TileOverrideTile
 {
     int32_t id;
     uint8_t orientation;
@@ -32,11 +73,13 @@ struct TileOverride
     int32_t width;
     int32_t height;
 
-    std::unordered_map<int32_t, TileData> tileData;
+    std::unordered_map<int32_t, TileOverrideTile> tileData;
 };
-static std::vector<int32_t> s_GroupTilesVector;
+
+static std::unordered_map<std::string, CachedTileset> s_CachedTilesets;
 static std::unordered_map<std::string, std::string> s_AreaTileOverrideMap;
 static std::unordered_map<std::string, TileOverride> s_TileOverrideMap;
+
 static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
         API::Functions::_ZN8CNWSArea15LoadTileSetInfoEP10CResStruct,
         (void*)+[](CNWSArea *pArea, CResStruct *pStruct) -> int32_t
@@ -102,162 +145,197 @@ static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
             return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
         }, Hooks::Order::Late);
 
+static CachedTileset* GetCachedTileset(const std::string& tileset)
+{
+    auto cachedTilesetIterator = s_CachedTilesets.find(tileset);
+    if (cachedTilesetIterator != s_CachedTilesets.end())
+    {
+        return &cachedTilesetIterator->second;
+    }
+
+    auto *pTileset = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset));
+
+    if (!pTileset)
+        return nullptr;
+
+    if (!pTileset->m_pRes->Demand())
+    {
+        Globals::AppManager()->m_pNWTileSetManager->UnregisterTileSet(pTileset);
+        return nullptr;
+    }
+
+    CachedTileset cachedTileset{};
+    char section[32];
+    char entry[32];
+    char value[256];
+
+    cachedTileset.numTiles = pTileset->m_nNumTileData;
+    cachedTileset.heightTransition = pTileset->m_fHeightTransition;
+    pTileset->m_pRes->GetSectionEntryValue((char*)"TERRAIN TYPES", (char*)"Count", value);
+    cachedTileset.numTerrains = atoi(value);
+    pTileset->m_pRes->GetSectionEntryValue((char*)"CROSSER TYPES", (char*)"Count", value);
+    cachedTileset.numCrossers = atoi(value);
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GROUPS", (char*)"Count", value);
+    cachedTileset.numGroups = atoi(value);
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"Interior", value);
+    cachedTileset.isInterior = atoi(value);
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"DisplayName", value);
+    cachedTileset.displayNameStrRef = atoi(value);
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"UnlocalizedName", value);
+    cachedTileset.unlocalizedName = value;
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"Border", value);
+    cachedTileset.borderTerrain = value;
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"Default", value);
+    cachedTileset.defaultTerrain = value;
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"Floor", value);
+    cachedTileset.floorTerrain = value;
+    pTileset->m_pRes->GetSectionEntryValue((char*)"GENERAL", (char*)"HasHeightTransition", value);
+    cachedTileset.hasHeightTransition = atoi(value);
+
+    cachedTileset.terrains.reserve(cachedTileset.numTerrains);
+    for (int32_t terrain = 0; terrain < cachedTileset.numTerrains; terrain++)
+    {
+        std::sprintf(section, "TERRAIN%i", terrain);
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Name", value);
+        cachedTileset.terrains.emplace_back(value);
+    }
+
+    cachedTileset.crossers.reserve(cachedTileset.numCrossers);
+    for (int32_t crosser = 0; crosser < cachedTileset.numCrossers; crosser++)
+    {
+        std::sprintf(section, "CROSSER%i", crosser);
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Name", value);
+        cachedTileset.crossers.emplace_back(value);
+    }
+
+    cachedTileset.groups.reserve(cachedTileset.numGroups);
+    for (int32_t group = 0; group < cachedTileset.numGroups; group++)
+    {
+        std::sprintf(section, "GROUP%i", group);
+        CachedTilesetGroup cachedTilesetGroup{};
+
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Name", value);
+        cachedTilesetGroup.name = value;
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"StrRef", value);
+        cachedTilesetGroup.strRef = atoi(value);
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Rows", value);
+        cachedTilesetGroup.rows = atoi(value);
+        pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Columns", value);
+        cachedTilesetGroup.columns = atoi(value);
+
+        int32_t numTiles = cachedTilesetGroup.rows * cachedTilesetGroup.columns;
+        cachedTilesetGroup.tiles.reserve(numTiles);
+        for (int groupTile = 0; groupTile < numTiles; groupTile++)
+        {
+            std::sprintf(entry, "Tile%i", groupTile);
+            pTileset->m_pRes->GetSectionEntryValue(section, entry, value);
+            cachedTilesetGroup.tiles.emplace_back(atoi(value));
+        }
+
+        cachedTileset.groups.emplace_back(cachedTilesetGroup);
+    }
+
+    cachedTileset.tiles.reserve(cachedTileset.numTiles);
+    for (int32_t tile = 0; tile < cachedTileset.numTiles; tile++)
+    {
+        CachedTilesetTile cachedTilesetTile{};
+
+        if (auto *pTileData = pTileset->GetTileData(tile))
+        {
+            cachedTilesetTile.tileModel = pTileData->GetModelResRef().GetResRefStr();
+            cachedTilesetTile.minimapTexture = pTileData->GetMapIcon().GetResRefStr();
+            cachedTilesetTile.tl = pTileData->m_sCornerTopLeft.CStr();
+            cachedTilesetTile.t = pTileData->m_sEdgeTop.CStr();
+            cachedTilesetTile.tr = pTileData->m_sCornerTopRight.CStr();
+            cachedTilesetTile.r = pTileData->m_sEdgeRight.CStr();
+            cachedTilesetTile.br = pTileData->m_sCornerBottomRight.CStr();
+            cachedTilesetTile.b = pTileData->m_sEdgeBottom.CStr();
+            cachedTilesetTile.bl = pTileData->m_sCornerBottomLeft.CStr();
+            cachedTilesetTile.l = pTileData->m_sEdgeLeft.CStr();
+            cachedTilesetTile.numDoors = pTileData->m_nNumDoors;
+
+            cachedTilesetTile.doors.reserve(cachedTilesetTile.numDoors);
+            for(int32_t door = 0; door < cachedTilesetTile.numDoors; door++)
+            {
+                CachedTilesetTileDoor cachedTilesetTileDoor{};
+                std::sprintf(section, "TILE%iDOOR%i", tile, door);
+
+                pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Type", value);
+                cachedTilesetTileDoor.type = atoi(value);
+                pTileset->m_pRes->GetSectionEntryValue(section, (char*)"X", value);
+                cachedTilesetTileDoor.position.x = atof(value);
+                pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Y", value);
+                cachedTilesetTileDoor.position.y = atof(value);
+                pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Z", value);
+                cachedTilesetTileDoor.position.z = atof(value);
+                pTileset->m_pRes->GetSectionEntryValue(section, (char*)"Orientation", value);
+                cachedTilesetTileDoor.orientation = atof(value);
+
+                cachedTilesetTile.doors.emplace_back(cachedTilesetTileDoor);
+            }
+        }
+
+        cachedTileset.tiles.emplace_back(cachedTilesetTile);
+    }
+
+    pTileset->m_pRes->Release();
+    pTileset->m_pRes->Dump();
+    Globals::AppManager()->m_pNWTileSetManager->UnregisterTileSet(pTileset);
+
+    auto it = s_CachedTilesets.emplace(tileset, cachedTileset);
+
+    return it.second ? &it.first->second : nullptr;
+}
 
 NWNX_EXPORT ArgumentStack GetTilesetData(ArgumentStack&& args)
 {
-    int32_t numTiles = 0, numTerrain = 0, numCrossers = 0, numGroups = 0, displayNameStrRef = -1, isInterior = 0, hasHeightTransition = 0;
-    float heightTransition = 0.0f;
-    std::string borderTerrain, defaultTerrain, floorTerrain, unlocalizedName;
-
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        numTiles = pTileSet->m_nNumTileData;
-        heightTransition = pTileSet->GetHeightTransition();
-
-        if (pTileSet->m_pRes->Demand())
-        {
-            char section[24];
-            char entry[24];
-            char value[64];
-
-            std::sprintf(section, "TERRAIN TYPES");
-            std::sprintf(entry, "Count");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            numTerrain = std::strtol(value, nullptr, 0);
-
-            std::sprintf(section, "CROSSER TYPES");
-            std::sprintf(entry, "Count");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            numCrossers = std::strtol(value, nullptr, 0);
-
-            std::sprintf(section, "GROUPS");
-            std::sprintf(entry, "Count");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            numGroups = std::strtol(value, nullptr, 0);
-
-            std::sprintf(section, "GENERAL");
-            std::sprintf(entry, "Interior");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            isInterior = std::strtol(value, nullptr, 0);
-
-            std::sprintf(entry, "DisplayName");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            displayNameStrRef = std::strtol(value, nullptr, 0);
-
-            std::sprintf(entry, "UnlocalizedName");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            unlocalizedName = value;
-
-            std::sprintf(entry, "Border");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            borderTerrain = value;
-
-            std::sprintf(entry, "Default");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            defaultTerrain = value;
-
-            std::sprintf(entry, "Floor");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            floorTerrain = value;
-
-            std::sprintf(entry, "HasHeightTransition");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            hasHeightTransition = std::strtol(value, nullptr, 0);
-
-            pTileSet->m_pRes->Release();
-            pTileSet->m_pRes->Dump();
-        }
+        return {pCachedTileset->numTiles, pCachedTileset->heightTransition, pCachedTileset->numTerrains, pCachedTileset->numCrossers,
+                pCachedTileset->numGroups, pCachedTileset->borderTerrain, pCachedTileset->defaultTerrain, pCachedTileset->floorTerrain,
+                pCachedTileset->displayNameStrRef, pCachedTileset->unlocalizedName, pCachedTileset->isInterior, pCachedTileset->hasHeightTransition};
     }
-    else
-        LOG_WARNING("GetTilesetData: Failed to Register Tileset: %s", tileset);
 
-    return {numTiles, heightTransition, numTerrain, numCrossers, numGroups, borderTerrain, defaultTerrain, floorTerrain,
-    displayNameStrRef, unlocalizedName, isInterior, hasHeightTransition};
+    return {0, 0.0f, 0, 0, 0, "", "", "", 0, "", 0, 0};
 }
 
 NWNX_EXPORT ArgumentStack GetTilesetTerrain(ArgumentStack&& args)
 {
-    std::string retVal;
-
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
     const auto terrainIndex = args.extract<int32_t>();
       ASSERT_OR_THROW(terrainIndex >= 0);
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (pTileSet->m_pRes->Demand())
+        if (terrainIndex < pCachedTileset->numTerrains)
         {
-            char section[24];
-            char entry[16];
-            char value[64];
-
-            std::sprintf(section, "TERRAIN TYPES");
-            std::sprintf(entry, "Count");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            int32_t numTerrain = std::strtol(value, nullptr, 0);
-
-            if (terrainIndex < numTerrain)
-            {
-                std::sprintf(section, "TERRAIN%i", terrainIndex);
-                std::sprintf(entry, "Name");
-                pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-
-                retVal = value;
-            }
-
-            pTileSet->m_pRes->Release();
-            pTileSet->m_pRes->Dump();
+            return pCachedTileset->terrains[terrainIndex];
         }
     }
-    else
-        LOG_WARNING("GetTilesetTerrain: Failed to Register Tileset: %s", tileset);
 
-    return retVal;
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack GetTilesetCrosser(ArgumentStack&& args)
 {
-    std::string retVal;
-
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
     const auto crosserIndex = args.extract<int32_t>();
       ASSERT_OR_THROW(crosserIndex >= 0);
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (pTileSet->m_pRes->Demand())
+        if (crosserIndex < pCachedTileset->numCrossers)
         {
-            char section[24];
-            char entry[16];
-            char value[64];
-
-            std::sprintf(section, "CROSSER TYPES");
-            std::sprintf(entry, "Count");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            int32_t numCrossers = std::strtol(value, nullptr, 0);
-
-            if (crosserIndex < numCrossers)
-            {
-                std::sprintf(section, "CROSSER%i", crosserIndex);
-                std::sprintf(entry, "Name");
-                pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-
-                retVal = value;
-            }
-
-            pTileSet->m_pRes->Release();
-            pTileSet->m_pRes->Dump();
+            return pCachedTileset->crossers[crosserIndex];
         }
     }
-    else
-        LOG_WARNING("GetTilesetCrosser: Failed to Register Tileset: %s", tileset);
 
-    return retVal;
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack GetTilesetGroupData(ArgumentStack&& args)
@@ -267,111 +345,75 @@ NWNX_EXPORT ArgumentStack GetTilesetGroupData(ArgumentStack&& args)
     const auto groupIndex = args.extract<int32_t>();
       ASSERT_OR_THROW(groupIndex >= 0);
 
-    std::string name;
-    int32_t strRef = 0, rows = 0, columns = 0;
-
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (pTileSet->m_pRes->Demand())
+        if (groupIndex < pCachedTileset->numGroups)
         {
-            char section[24];
-            char entry[16];
-            char value[64];
-            std::sprintf(section, "GROUP%i", groupIndex);
-
-            std::sprintf(entry, "Name");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            name = value;
-
-            std::sprintf(entry, "StrRef");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            strRef = std::strtof(value, nullptr);
-
-            std::sprintf(entry, "Rows");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            rows = std::strtof(value, nullptr);
-
-            std::sprintf(entry, "Columns");
-            pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-            columns = std::strtof(value, nullptr);
-
-            int32_t numTiles = rows * columns;
-            s_GroupTilesVector.clear();
-            s_GroupTilesVector.reserve(numTiles);
-
-            for (int tile = 0; tile < numTiles; tile++)
-            {
-                std::sprintf(entry, "Tile%i", tile);
-                pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                int32_t tileId = std::strtof(value, nullptr);
-
-                s_GroupTilesVector.emplace_back(tileId);
-            }
-
-            pTileSet->m_pRes->Release();
-            pTileSet->m_pRes->Dump();
+            return {pCachedTileset->groups[groupIndex].name, pCachedTileset->groups[groupIndex].strRef,
+                    pCachedTileset->groups[groupIndex].rows, pCachedTileset->groups[groupIndex].columns};
         }
     }
-    else
-        LOG_WARNING("GetTilesetGroupData: Failed to Register Tileset: %s", tileset);
 
-    return {name, strRef, rows, columns};
+    return {"", 0, 0, 0};
 }
 
 NWNX_EXPORT ArgumentStack GetTilesetGroupTile(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
+    const auto tileset = args.extract<std::string>();
+      ASSERT_OR_THROW(!tileset.empty());
+    const auto groupIndex = args.extract<int32_t>();
+      ASSERT_OR_THROW(groupIndex >= 0);
     const auto tileIndex = args.extract<int32_t>();
       ASSERT_OR_THROW(tileIndex >= 0);
 
-    if ((size_t)tileIndex < s_GroupTilesVector.size())
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        retVal = s_GroupTilesVector[tileIndex];
+        if (groupIndex < pCachedTileset->numGroups)
+        {
+            if ((size_t)tileIndex < pCachedTileset->groups[groupIndex].tiles.size())
+            {
+                return pCachedTileset->groups[groupIndex].tiles[tileIndex];
+            }
+        }
     }
 
-    return retVal;
+    return 0;
 }
 
 NWNX_EXPORT ArgumentStack GetTileModel(ArgumentStack&& args)
 {
-    std::string retVal;
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
     const auto tileId = args.extract<int32_t>();
       ASSERT_OR_THROW(tileId >= 0);
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (auto *pTileData = pTileSet->GetTileData(tileId))
+        if (tileId < pCachedTileset->numTiles)
         {
-            retVal = pTileData->GetModelResRef().GetResRefStr();
+            return pCachedTileset->tiles[tileId].tileModel;
         }
     }
-    else
-        LOG_WARNING("GetTileModel: Failed to Register Tileset: %s", tileset);
 
-    return retVal;
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack GetTileMinimapTexture(ArgumentStack&& args)
 {
-    std::string retVal;
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
     const auto tileId = args.extract<int32_t>();
       ASSERT_OR_THROW(tileId >= 0);
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (auto *pTileData = pTileSet->GetTileData(tileId))
+        if (tileId < pCachedTileset->numTiles)
         {
-            retVal = pTileData->GetMapIcon().GetResRefStr();
+            return pCachedTileset->tiles[tileId].minimapTexture;
         }
     }
-    else
-        LOG_WARNING("GetTileMinimapTexture: Failed to Register Tileset: %s", tileset);
 
-    return retVal;
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack GetTileEdgesAndCorners(ArgumentStack&& args)
@@ -381,47 +423,35 @@ NWNX_EXPORT ArgumentStack GetTileEdgesAndCorners(ArgumentStack&& args)
     const auto tileId = args.extract<int32_t>();
       ASSERT_OR_THROW(tileId >= 0);
 
-    std::string tl, t, tr, r, br, b, bl, l;
-
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (auto *pTileData = pTileSet->GetTileData(tileId))
+        if (tileId < pCachedTileset->numTiles)
         {
-            tl = pTileData->m_sCornerTopLeft.CStr();
-            t = pTileData->m_sEdgeTop.CStr();
-            tr = pTileData->m_sCornerTopRight.CStr();
-            r = pTileData->m_sEdgeRight.CStr();
-            br = pTileData->m_sCornerBottomRight.CStr();
-            b = pTileData->m_sEdgeBottom.CStr();
-            bl = pTileData->m_sCornerBottomLeft.CStr();
-            l = pTileData->m_sEdgeLeft.CStr();
+            return {pCachedTileset->tiles[tileId].tl, pCachedTileset->tiles[tileId].t, pCachedTileset->tiles[tileId].tr,
+                    pCachedTileset->tiles[tileId].r, pCachedTileset->tiles[tileId].br, pCachedTileset->tiles[tileId].b,
+                    pCachedTileset->tiles[tileId].bl, pCachedTileset->tiles[tileId].l};
         }
     }
-    else
-        LOG_WARNING("GetTileEdgesAndCorners: Failed to Register Tileset: %s", tileset);
 
-    return {tl, t, tr, r, br, b, bl, l};
+    return {"", "", "", "", "", "", "", ""};
 }
 
 NWNX_EXPORT ArgumentStack GetTileNumDoors(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
     const auto tileset = args.extract<std::string>();
       ASSERT_OR_THROW(!tileset.empty());
     const auto tileId = args.extract<int32_t>();
       ASSERT_OR_THROW(tileId >= 0);
 
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (auto *pTileData = pTileSet->GetTileData(tileId))
+        if (tileId < pCachedTileset->numTiles)
         {
-            retVal = pTileData->m_nNumDoors;
+            return pCachedTileset->tiles[tileId].numDoors;
         }
     }
-    else
-        LOG_WARNING("GetTileNumDoors: Failed to Register Tileset: %s", tileset);
 
-    return retVal;
+    return 0;
 }
 
 NWNX_EXPORT ArgumentStack GetTileDoorData(ArgumentStack&& args)
@@ -433,52 +463,22 @@ NWNX_EXPORT ArgumentStack GetTileDoorData(ArgumentStack&& args)
     const auto doorIndex = args.extract<int32_t>();
       ASSERT_OR_THROW(doorIndex >= 0);
 
-    int32_t type = -1;
-    float x = 0.0f, y = 0.0f, z = 0.0f, orientation = 0.0f;
-
-    if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
+    if (auto *pCachedTileset = GetCachedTileset(tileset))
     {
-        if (auto *pTileData = pTileSet->GetTileData(tileId))
+        if (tileId < pCachedTileset->numTiles)
         {
-            if (doorIndex < pTileData->m_nNumDoors)
+            if (doorIndex < pCachedTileset->tiles[tileId].numDoors)
             {
-                if (pTileSet->m_pRes->Demand())
-                {
-                    char section[24];
-                    char entry[16];
-                    char value[64];
-                    std::sprintf(section, "TILE%iDOOR%i", tileId, doorIndex);
-
-                    std::sprintf(entry, "Type");
-                    pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                    type = std::strtol(value, nullptr, 0);
-
-                    std::sprintf(entry, "X");
-                    pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                    x = std::strtof(value, nullptr);
-
-                    std::sprintf(entry, "Y");
-                    pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                    y = std::strtof(value, nullptr);
-
-                    std::sprintf(entry, "Z");
-                    pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                    z = std::strtof(value, nullptr);
-
-                    std::sprintf(entry, "Orientation");
-                    pTileSet->m_pRes->GetSectionEntryValue(section, entry, value);
-                    orientation = std::strtof(value, nullptr);
-
-                    pTileSet->m_pRes->Release();
-                    pTileSet->m_pRes->Dump();
-                }
+                return {pCachedTileset->tiles[tileId].doors[doorIndex].type,
+                        pCachedTileset->tiles[tileId].doors[doorIndex].position.x,
+                        pCachedTileset->tiles[tileId].doors[doorIndex].position.y,
+                        pCachedTileset->tiles[tileId].doors[doorIndex].position.z,
+                        pCachedTileset->tiles[tileId].doors[doorIndex].orientation};
             }
         }
     }
-    else
-        LOG_WARNING("GetTileDoorData: Failed to Register Tileset: %s", tileset);
 
-    return {type, x, y, z, orientation};
+    return {-1, 0.0f, 0.0f, 0.0f, 0.0f};
 }
 
 NWNX_EXPORT ArgumentStack SetAreaTileOverride(ArgumentStack&& args)
