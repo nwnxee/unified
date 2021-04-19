@@ -194,7 +194,7 @@ var searchData=
   ['nwnx_5fcreature_5fsetheight_2259',['NWNX_Creature_SetHeight',['../group__creature.html#ga502bc6e9e35007d7fe56266eec92dc6b',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsethitdistance_2260',['NWNX_Creature_SetHitDistance',['../group__creature.html#gaf7db82f03c9c44452a4003139c992edc',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetlastitemcasterlevel_2261',['NWNX_Creature_SetLastItemCasterLevel',['../group__creature.html#gaaf4852e6a077da9128b3923ff52701df',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fsetlastkiller_2262',['NWNX_Creature_SetLastKiller',['../nwnx__creature_8nss.html#aa064e2886118310f391f0d6c4901f33d',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fsetlastkiller_2262',['NWNX_Creature_SetLastKiller',['../group__creature.html#gaa064e2886118310f391f0d6c4901f33d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetlevelbyposition_2263',['NWNX_Creature_SetLevelByPosition',['../group__creature.html#ga69f0f037d2b2ccc1185da9588fe5901c',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetmaxhitpointsbylevel_2264',['NWNX_Creature_SetMaxHitPointsByLevel',['../group__creature.html#gaf0464ca588c7ed2019b1c60b9d483efb',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetmemorisedspell_2265',['NWNX_Creature_SetMemorisedSpell',['../group__creature.html#ga30d3cd4e4cf4fe71c22ad910c62a33ef',1,'nwnx_creature.nss']]],
