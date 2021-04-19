@@ -319,13 +319,14 @@ NWNX_EXPORT ArgumentStack RemoveEffectById(ArgumentStack&& args)
     return false;
 }
 
-NWNX_EXPORT ArgumentStack ApplyEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Apply(ArgumentStack&& args)
 {
+    auto *pEffect = args.extract<CGameEffect*>();
     auto *pObject = Utils::PopObject(args);
-    if(pObject)
+
+    if(pObject && pEffect)
     {
-        auto eEffect = args.extract<CGameEffect*>();
-        pObject->ApplyEffect(eEffect, false, true);
+        pObject->ApplyEffect(pEffect, false, true);
     }
 
     return {};
