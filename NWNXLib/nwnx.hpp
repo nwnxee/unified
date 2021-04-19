@@ -173,6 +173,18 @@ namespace String
     std::string Basename(const std::string& path);
 }
 
+namespace VectorMath
+{
+    float MagnitudeSquared(const Vector& v);
+    float Magnitude(const Vector& v);
+    float Dot(const Vector& a, const Vector& b);
+    Vector Add(const Vector& a, const Vector& b);
+    Vector Subtract(const Vector& a, const Vector& b);
+    Vector Multiply(const Vector& v, float s);
+    Vector Normalize(const Vector &v);
+    Vector Lineproject(const Vector &a, const Vector &b, const Vector &c);
+}
+
 namespace Utils
 {
     std::string ObjectIDToString(const ObjectID id);
