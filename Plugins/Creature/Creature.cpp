@@ -27,6 +27,10 @@
 #include "API/CEffectIconObject.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CPathfindInformation.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CNWSSpellScriptData.hpp"
+#include "API/CNWSpellArray.hpp"
+#include "API/CNWSpell.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -2961,6 +2965,76 @@ NWNX_EXPORT ArgumentStack SetLastKiller(ArgumentStack&& args)
         auto killerId = args.extract<ObjectID>();
         pCreature->m_oidKiller = killerId;
     }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
+{
+    if (auto *pCaster = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<ObjectID>();
+        auto oidArea = args.extract<ObjectID>();
+        auto x = args.extract<float>();
+          ASSERT_OR_THROW(x >= 0.0f);
+        auto y = args.extract<float>();
+          ASSERT_OR_THROW(y >= 0.0f);
+        auto z = args.extract<float>();
+          ASSERT_OR_THROW(z >= 0.0f);
+        auto spellID = args.extract<int32_t>();
+          ASSERT_OR_THROW(spellID >= 0);
+        auto casterLevel = args.extract<int32_t>();
+          ASSERT_OR_THROW(casterLevel >= 0);
+        auto delay = args.extract<float>();
+          ASSERT_OR_THROW(delay >= 0.0f);
+        auto projectilePathType = args.extract<int32_t>();
+        auto projectileSpellID = args.extract<int32_t>();
+
+        auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(spellID);
+        auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
+        auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea));
+
+        if (!pSpell || (!pTarget && !pArea))
+            return {};
+
+        ObjectID oidTargetArea = pTarget ? pTarget->m_oidArea : pArea->m_idSelf;
+
+        if (pCaster->m_oidArea != oidTargetArea)
+            return {};
+
+        Vector vTargetPosition = pTarget ? pTarget->m_vPosition : Vector(x, y, z);
+        auto delayMs = (int32_t)(delay * 1000);
+
+        if (delayMs > 0)
+        {
+            switch (projectilePathType)
+            {
+                case 0: case 1:  case 2: case 3: break;
+                case 4: projectilePathType = 5; break;
+                default: projectilePathType = 0; break;
+            }
+
+            pCaster->BroadcastSafeProjectile(pCaster->m_idSelf, pTarget ? pTarget->m_idSelf : Constants::OBJECT_INVALID,
+                                             pCaster->m_vPosition, vTargetPosition, delayMs,
+                                             projectilePathType == 0 ? 6 : 7,
+                                             Globals::Rules()->m_pSpellArray->GetSpell(projectileSpellID) ? projectileSpellID : spellID,
+                                             1, projectilePathType);
+        }
+
+        auto *pSpellScriptData = new CNWSSpellScriptData;
+        pSpellScriptData->m_nSpellId = spellID;
+        pSpellScriptData->m_nFeatId = 0xFFFF;
+        pSpellScriptData->m_oidCaster = pCaster->m_idSelf;
+        pSpellScriptData->m_oidTarget = pTarget ? pTarget->m_idSelf : Constants::OBJECT_INVALID;
+        pSpellScriptData->m_oidItem = Constants::OBJECT_INVALID;
+        pSpellScriptData->m_vTargetPosition = vTargetPosition;
+        pSpellScriptData->m_sScript = pSpell->m_sImpactScript;
+        pSpellScriptData->m_oidArea = oidTargetArea;
+        pSpellScriptData->m_nItemCastLevel = casterLevel;
+
+        Globals::AppManager()->m_pServerExoApp->GetServerAIMaster()->AddEventDeltaTime(
+                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::Event::ItemOnHitSpellImpact, (void*)pSpellScriptData);
+    }
+
     return {};
 }
 

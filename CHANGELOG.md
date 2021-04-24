@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Creature: DoItemCastSpell()
 - Object: GetLastSpellCastFeat()
 
 ### Changed
