@@ -159,14 +159,14 @@
 %typemap(in)     CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
 %typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
 
-%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& { 
+%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& {
     global::System.IntPtr retVal = $imcall;$excode
     return (CSTYPE*)retVal;
   }
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{ 
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{
     get {
-        global::System.IntPtr retVal = $imcall;$excode 
-        return (CSTYPE*)retVal; 
+        global::System.IntPtr retVal = $imcall;$excode
+        return (CSTYPE*)retVal;
     }
 %}
 %typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] {
@@ -175,12 +175,12 @@
 
     return retVal; // CSTYPE[$1_dim0]
   }
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{ 
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{
     get {
       global::System.IntPtr arrayPtr = $imcall;$excode
       NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
 
-      return retVal; // CSTYPE[$1_dim0] 
+      return retVal; // CSTYPE[$1_dim0]
     }
 %}
 %enddef
@@ -193,14 +193,14 @@
 %typemap(in)     CTYPE*,CTYPE& %{ $1 = $input; %}
 %typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
 
-%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& { 
+%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& {
     global::System.IntPtr retVal = $imcall;$excode
     return (CSTYPE*)retVal;
   }
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{ 
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{
     get {
-        global::System.IntPtr retVal = $imcall;$excode 
-        return (CSTYPE*)retVal; 
+        global::System.IntPtr retVal = $imcall;$excode
+        return (CSTYPE*)retVal;
     }
 %}
 %enddef
@@ -213,7 +213,7 @@
     NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
     return ret;
   }
-%typemap(csvarout, excode=SWIGEXCODE2) TYPE[ANY] %{ 
+%typemap(csvarout, excode=SWIGEXCODE2) TYPE[ANY] %{
     get {
         global::System.IntPtr cPtr = $imcall;$excode;
         NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
@@ -338,7 +338,7 @@ static NAME* FromPointer(TYPE *ptr) {
 SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 
 // Marshal native types to managed types.
-MarshalType(void, void, global::System.IntPtr) 
+MarshalType(void, void, global::System.IntPtr)
 MarshalType(void*, void*, global::System.IntPtr) // void**
 MarshalType(signed char, sbyte, sbyte)
 MarshalType(char*, char*, global::System.IntPtr) // char**
@@ -595,6 +595,9 @@ MapArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptArra
 MapArray(Vector, Vector, VectorArray);
 
 MapArray(CNWSTile, CNWSTile, CNWSTileArray);
+MapArray(CNWSQuickbarButton, CNWSQuickbarButton, CNWSQuickbarButtonArray);
+MapArray(CTlkTableToken, CTlkTableToken, CTlkTableTokenArray);
+MapArray(CTlkTableTokenCustom, CTlkTableTokenCustom, CTlkTableTokenCustomArray);
 
 %include "NWNXLib.i"
 
@@ -620,6 +623,9 @@ DefineArray(CVirtualMachineScript, CVirtualMachineScript, CVirtualMachineScriptA
 DefineArray(Vector, Vector, VectorArray);
 
 DefineArrayPtr(CNWSTile, CNWSTile, CNWSTileArray);
+DefineArrayPtr(CNWSQuickbarButton, CNWSQuickbarButton, CNWSQuickbarButtonArray);
+DefineArrayPtr(CTlkTableToken, CTlkTableToken, CTlkTableTokenArray);
+DefineArrayPtr(CTlkTableTokenCustom, CTlkTableTokenCustom, CTlkTableTokenCustomArray);
 
 // Std templates
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
