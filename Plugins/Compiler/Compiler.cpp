@@ -164,6 +164,7 @@ static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoStr
     scriptCompiler->SetIdentifierSpecification("nwscript");
     scriptCompiler->SetCompileConditionalOrMain(true);
     scriptCompiler->SetCompileConditionalFile(true);
+    scriptCompiler->SetAutomaticCleanUpAfterCompiles(false);
 
     scriptCompiler->SetOutputAlias(outputAlias);
 
