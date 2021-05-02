@@ -7,6 +7,7 @@
 
 #include <dirent.h>
 #include <fstream>
+#include <unistd.h>
 #include <sys/stat.h>
 
 #include "API/CTlkTable.hpp"
@@ -17,12 +18,12 @@ using namespace NWNXLib;
 using namespace API;
 
 static bool DirectoryExists(const std::string& path);
+static bool CompiledOutputIsNewer(const std::string& sourceFile, const std::string& outputFile);
 static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension);
 static void CleanOutput(const std::string& outputPath);
 static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority);
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString&);
-static int Compile(const std::string& sourcePath, const std::string& outputPath,
-                   std::unique_ptr<CScriptCompiler> scriptCompiler);
+static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler);
 static void RemoveResourceDirectory(const CExoString&);
 
 void Compiler() __attribute__((constructor));
@@ -95,8 +96,17 @@ void Compiler()
 
 static bool DirectoryExists(const std::string& path)
 {
-    struct stat info;
-    return stat(path.c_str(), &info) == 0 && info.st_mode & S_IFDIR;
+    return access(path.c_str(), F_OK) == 0;
+}
+
+static bool CompiledOutputIsNewer(const std::string& sourceFile, const std::string& outputFile)
+{
+    struct stat sourceInfo{};
+    struct stat outputInfo{};
+
+    stat(sourceFile.c_str(), &sourceInfo);
+
+    return stat(outputFile.c_str(), &outputInfo) == 0 && outputInfo.st_mtim.tv_sec > sourceInfo.st_mtim.tv_sec;
 }
 
 static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension)
@@ -130,9 +140,11 @@ static void CleanOutput(const std::string& outputPath)
 
 static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority)
 {
-    Globals::ExoBase()->m_pcExoAliasList->Add(alias, path.c_str());
-    Globals::ExoResMan()->CreateDirectory(alias);
-    Globals::ExoResMan()->AddResourceDirectory(alias, priority, true);
+    const auto qualifiedAlias = alias + ":";
+
+    Globals::ExoBase()->m_pcExoAliasList->Add(qualifiedAlias, path.c_str());
+    Globals::ExoResMan()->CreateDirectory(qualifiedAlias);
+    Globals::ExoResMan()->AddResourceDirectory(qualifiedAlias, priority, true);
 }
 
 static void RemoveResourceDirectory(const CExoString& alias)
@@ -152,7 +164,6 @@ static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoStr
     scriptCompiler->SetIdentifierSpecification("nwscript");
     scriptCompiler->SetCompileConditionalOrMain(true);
     scriptCompiler->SetCompileConditionalFile(true);
-    scriptCompiler->SetAutomaticCleanUpAfterCompiles(true);
 
     scriptCompiler->SetOutputAlias(outputAlias);
 
@@ -165,8 +176,13 @@ static int Compile(const std::string& sourcePath, const std::string& outputPath,
     auto exitCode = 0;
 
     const auto sourceFiles = GetFiles(sourcePath, ".nss");
+
+    const auto fileCount = sourceFiles.size();
+    auto progress = 0;
+
     for (const auto& sourceFile : sourceFiles)
     {
+        ++progress;
         auto scriptName = String::Basename(sourceFile);
 
         auto sourceFilePath = sourcePath;
@@ -175,26 +191,20 @@ static int Compile(const std::string& sourcePath, const std::string& outputPath,
         auto outFilePath = outputPath;
         outFilePath.append("/").append(scriptName).append(".ncs");
 
-        LOG_INFO("Compiling: %s", sourceFilePath.c_str());
+        if (CompiledOutputIsNewer(sourceFilePath, outFilePath))
+        {
+            continue;
+        }
+
+        LOG_INFO("[%i/%i] Compiling: %s", progress, fileCount, sourceFilePath.c_str());
 
         std::ifstream sourceStream(sourceFilePath);
         std::string sourceContent((std::istreambuf_iterator<char>(sourceStream)), std::istreambuf_iterator<char>());
 
-        const auto compileResult = scriptCompiler->CompileScriptChunk(sourceContent.c_str(), false);
+        const auto compileResult = scriptCompiler->CompileFile(scriptName);
         if (compileResult == 0)
         {
-            auto writeFileResult = scriptCompiler->WriteFinalCodeToFile(scriptName);
-            LOG_INFO("Succeeded: %s", outFilePath);
-
-            if (writeFileResult != 0)
-            {
-                exitCode = writeFileResult;
-                LOG_ERROR("Write failed: %s", Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr());
-                if (!continueOnError)
-                {
-                    break;
-                }
-            }
+            LOG_INFO("[%i/%i] Succeeded: %s", progress, fileCount, outFilePath);
         }
         else
         {
