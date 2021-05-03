@@ -144,7 +144,7 @@ static void CreateResourceDirectory(const CExoString& alias, const std::string& 
 
     Globals::ExoBase()->m_pcExoAliasList->Add(qualifiedAlias, path.c_str());
     Globals::ExoResMan()->CreateDirectory(qualifiedAlias);
-    Globals::ExoResMan()->AddResourceDirectory(qualifiedAlias, priority, true);
+    Globals::ExoResMan()->AddResourceDirectory(qualifiedAlias, priority, false);
 }
 
 static void RemoveResourceDirectory(const CExoString& alias)
