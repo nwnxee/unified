@@ -914,7 +914,7 @@ void NWNX_Creature_SetBypassEffectImmunity(object oCreature, int nImmunityType, 
 
 /// @brief Gets a chance for normal Effect Immunities to be bypassed
 /// @param oCreature The target creature
-/// @param nImmunityType 'IMMUNITY_TYPE_*' to retrive the current chance for bypass: Positive gets outgoing effects (oCreature -> another creature). Negative (-IMMUNITY_TYPE_*) gets incoming effects (another creature -> oCreature).
+/// @param nImmunityType 'IMMUNITY_TYPE_*' to retrieve the current chance for bypass: Positive gets outgoing effects (oCreature -> another creature). Negative (-IMMUNITY_TYPE_*) gets incoming effects (another creature -> oCreature).
 /// @return the current critical hit multiplier modifier for the creature
 int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType);
 
@@ -922,6 +922,19 @@ int NWNX_Creature_GetBypassEffectImmunity(object oCreature, int nImmunityType);
 /// @param oCreature The target creature.
 /// @param oKiller The killer.
 void NWNX_Creature_SetLastKiller(object oCreature, object oKiller);
+
+/// @brief Instantly cast a spell at a target or location.
+/// @note oCreature must be in the same area as oTarget or locTarget.
+/// @note Does not care if oCreature can't cast spells or doesn't know the spell. Does not consume spell slots.
+/// @param oCreature The caster.
+/// @param oTarget The target, use OBJECT_INVALID to cast at a location.
+/// @param locTarget The location, only used when oTarget is OBJECT_INVALID.
+/// @param nSpellID The spell ID.
+/// @param nCasterLevel The caster level of the spell.
+/// @param fProjectileTime The time in seconds for the projectile to reach the target. 0.0f for no projectile.
+/// @param nProjectilePathType A PROJECTILE_PATH_TYPE_* constant.
+/// @param nProjectileSpellID An optional spell ID which to use the projectile vfx of. -1 to use nSpellID's projectile vfx.
+void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1);
 
 /// @}
 
@@ -2366,6 +2379,27 @@ void NWNX_Creature_SetLastKiller(object oCreature, object oKiller)
     string sFunc = "SetLastKiller";
 
     NWNX_PushArgumentObject(oKiller);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1)
+{
+    string sFunc = "DoItemCastSpell";
+
+    object oArea = GetAreaFromLocation(locTarget);
+    vector vPosition = GetPositionFromLocation(locTarget);
+
+    NWNX_PushArgumentInt(nProjectileSpellID);
+    NWNX_PushArgumentInt(nProjectilePathType);
+    NWNX_PushArgumentFloat(fProjectileTime);
+    NWNX_PushArgumentInt(nCasterLevel);
+    NWNX_PushArgumentInt(nSpellID);
+    NWNX_PushArgumentFloat(vPosition.z);
+    NWNX_PushArgumentFloat(vPosition.y);
+    NWNX_PushArgumentFloat(vPosition.x);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_PushArgumentObject(oTarget);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
