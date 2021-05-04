@@ -4,22 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.22-HEAD
-https://github.com/nwnxee/unified/compare/build8193.22...HEAD
+## 8193.23-HEAD
+https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 
 ### Added
 - N/A
 
 ##### New Plugins
-- Compiler: Adds command-line compilation of nss files using the in-built compiler.
+- N/A
 
 ##### New NWScript Functions
-- Creature: DoItemCastSpell()
-- Object: GetLastSpellCastFeat()
+- N/A
 
 ### Changed
-- ***ABI BREAKING:*** Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.
-- ***API BREAKING:*** Tileset: NWNX_Tileset_GetTilesetGroupTile() needs the tileset name and group index in addition to the tile index.
+- N/A
 
 ### Deprecated
 - N/A
@@ -29,6 +27,22 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.22
+https://github.com/nwnxee/unified/compare/build8193.22...build8193.23
+
+### Added
+
+##### New NWScript Functions
+- Creature: DoItemCastSpell()
+- Object: GetLastSpellCastFeat()
+
+##### New Plugins
+- Compiler: Adds command-line compilation of nss files using the in-built compiler.
+
+### Changed
+- ***ABI BREAKING:*** Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.
+- ***API BREAKING:*** Tileset: NWNX_Tileset_GetTilesetGroupTile() needs the tileset name and group index in addition to the tile index.
 
 ## 8193.21
 https://github.com/nwnxee/unified/compare/build8193.21...build8193.22

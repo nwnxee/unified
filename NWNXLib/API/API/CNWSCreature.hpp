@@ -722,7 +722,7 @@ struct CNWSCreature : CNWSObject
     BOOL GetCanSlayAlignment(CNWSObject * pTarget, CNWItemProperty * pProperty);
     int32_t CalculateMaxElementalDamage(CNWSObject * pTarget, BOOL bOffHand);
     uint32_t CalculateProjectileTimeToTarget(Vector vPosition, BOOL bThrownWeapon);
-    uint32_t WalkUpdateLocation();
+    uint32_t WalkUpdateLocation(uint16_t nActionGroupID);
     BOOL WalkUpdateLocationDistance(float fDistance, Vector * vNewPosition, Vector * vNewOrientation, CExoArrayList<OBJECT_ID> * aIntersectingSubAreas);
     BOOL WalkUpdateLocationTestDistance(Vector vStart, Vector vEnd);
 
