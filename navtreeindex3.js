@@ -76,7 +76,7 @@ var NAVTREEINDEX3 =
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[0,8,38],
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[4,0,3,6,0,0,34],
 "group__damage.html":[0,9],
-"group__damage.html#autotoc_md142":[6],
+"group__damage.html#autotoc_md147":[6],
 "group__damage.html#damage":[0,9,0],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[0,9,7],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[4,0,3,7,0,0,2],
@@ -249,5 +249,5 @@ var NAVTREEINDEX3 =
 "group__data__array__set.html#gaf2b1f5e344fad05f86af97341d6d48ce":[0,0,5,4],
 "group__data__array__set.html#gaf2b1f5e344fad05f86af97341d6d48ce":[4,0,0,3,28],
 "group__diagnostics.html":[0,10],
-"group__diagnostics.html#autotoc_md143":[7]
+"group__diagnostics.html#autotoc_md148":[7]
 };
