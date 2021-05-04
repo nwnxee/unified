@@ -11,7 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.22...HEAD
 - N/A
 
 ##### New Plugins
-- N/A
+- Compiler: Adds command-line compilation of nss files using the in-built compiler.
 
 ##### New NWScript Functions
 - Creature: DoItemCastSpell()

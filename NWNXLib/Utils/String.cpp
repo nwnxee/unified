@@ -1,6 +1,6 @@
 #include "nwnx.hpp"
 #include <sstream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <string.h>
 
 namespace NWNXLib::String
@@ -95,19 +95,19 @@ template<> std::optional<double> FromString(const std::string& str)
     return (!*end || std::isspace(*end)) ? std::optional<double>(res) : std::optional<double>();
 }
 
-std::string& LTrim(std::string& str) 
+std::string& LTrim(std::string& str)
 {
     str.erase(0, str.find_first_not_of(" \n\r\t"));
     return str;
 }
 
-std::string& RTrim(std::string& str) 
+std::string& RTrim(std::string& str)
 {
     str.erase(str.find_last_not_of(" \n\r\t") + 1);
     return str;
 }
 
-std::string& Trim(std::string& str) 
+std::string& Trim(std::string& str)
 {
     return LTrim(RTrim(str));
 }
@@ -120,9 +120,9 @@ std::string Join(const std::vector<std::string>& v, const char* delim)
     auto it = std::begin(v);
 
     out << *it;
-    while(++it != std::end(v)) 
+    while(++it != std::end(v))
     {
-        out << delim << *it; 
+        out << delim << *it;
     }
     return out.str();
 }
@@ -134,7 +134,7 @@ std::vector<std::string> Split(const std::string& sp, char delim, bool skipEmpty
     std::string item;
     while (getline(ss, item, delim))
     {
-        if (skipEmpty && item.empty()) 
+        if (skipEmpty && item.empty())
             continue;
 
         if (trimmed)
@@ -158,5 +158,9 @@ std::string Basename(const std::string& path)
     return name;
 }
 
+bool EndsWith(const std::string& str, const std::string& suffix)
+{
+    return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
 
 }
