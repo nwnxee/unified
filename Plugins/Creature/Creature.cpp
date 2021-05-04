@@ -651,7 +651,7 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
-                return pCreature->m_pStats->GetSpellGainWithBonus(i, level) + classInfo.m_nBonusSpellsList[level];
+                return (int32_t)(pCreature->m_pStats->GetSpellGainWithBonus(i, level) + classInfo.m_nBonusSpellsList[level]);
         }
     }
     return -1;
