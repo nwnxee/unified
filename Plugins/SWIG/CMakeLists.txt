@@ -1,26 +1,32 @@
 find_package(SWIG 4.0 COMPONENTS csharp)
 
-function(add_swig_plugin target)
-    set(interfaceFile ${target}.i)
-    set(interopFile ${target}Interop.cpp)
-
+function(add_swig_plugin target language interfaces)
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${target}/${interopFile}
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${target}/NWNXLib.i
         DEPENDS Core
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${target}/${interfaceFile}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generate.sh
-        COMMAND chmod a+x ../generate.sh && mkdir -p ./out && ../generate.sh -v -c++ -fcompact -o ${interopFile} -outdir ./out -I../../../NWNXLib/API ${ARGN} ${interfaceFile}
+        COMMAND chmod a+x ../generate.sh && mkdir -p ./out && ../generate.sh
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${target}
     )
 
-    add_library(${target} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/${target}/${interopFile} ${CMAKE_CURRENT_SOURCE_DIR}/${target}/${target}.cpp)
-    add_sanitizers(${target})
-    target_link_libraries(${target} Core "-Wl,--no-undefined")
-    set_target_properties(${target} PROPERTIES PREFIX "${PLUGIN_PREFIX}")
-    target_include_directories(${target} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${target}")
-    target_compile_definitions(${target} PRIVATE "-DPLUGIN_NAME=\"${PLUGIN_PREFIX}${target}\"")
+    set_property(SOURCE ${interfaces} PROPERTY CPLUSPLUS ON)
+    set_property(SOURCE ${interfaces} PROPERTY DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${target}/NWNXLib.i)
+    set_property(SOURCE ${interfaces} PROPERTY COMPILE_OPTIONS ${ARGN})
+
+    swig_add_library(${target} TYPE SHARED LANGUAGE ${language} SOURCES ${interfaces})
+    configure_plugin(${target})
+
+    set_target_properties(${target} PROPERTIES
+      SWIG_INCLUDE_DIRECTORIES ../../../NWNXLib/API
+      SWIG_USE_TARGET_INCLUDE_DIRECTORIES ON
+      POSITION_INDEPENDENT_CODE ON)
 endfunction()
 
 if(SWIG_FOUND)
-    add_swig_plugin(SWIG_DotNET -DSWIGWORDSIZE64 -csharp -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
+    cmake_policy(SET CMP0078 NEW)
+    INCLUDE(${SWIG_USE_FILE})
+
+    add_swig_plugin(SWIG_DotNET csharp
+        "${CMAKE_CURRENT_SOURCE_DIR}/SWIG_DotNET/API_NWNXLib.i;${CMAKE_CURRENT_SOURCE_DIR}/SWIG_DotNET/API_FunctionsLinux.i"
+        -DSWIGWORDSIZE64 -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
 endif(SWIG_FOUND)
