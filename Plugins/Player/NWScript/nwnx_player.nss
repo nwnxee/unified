@@ -390,6 +390,13 @@ void NWNX_Player_CloseStore(object oPlayer);
 /// @note Overrides will not persist through relogging.
 void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE);
 
+/// @brief Override player's attack animation.
+/// @param oPlayer The player object.
+/// @param nAnimation The NWNX animation id. This does not take ANIMATION_LOOPING_* or
+/// ANIMATION_FIREFORGET_* constants. Instead use NWNX_Consts_TranslateNWScriptAnimation() to get
+/// the NWNX equivalent. -1 to clear the override.
+void NWNX_Player_SetAttackAnimation(object oPlayer, int nAnimation);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -978,5 +985,15 @@ void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, i
     NWNX_PushArgumentString(sOverride);
     NWNX_PushArgumentInt(nStrRef);
     NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetAttackAnimation(object oPlayer, int nAnimation)
+{
+    string sFunc = "SetAttackAnimation";
+
+    NWNX_PushArgumentInt(nAnimation);
+    NWNX_PushArgumentObject(oPlayer);
+
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
