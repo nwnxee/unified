@@ -51,3 +51,16 @@ In this example make you would make sure to reset the `persistent_locs_loaded` b
         NWNX_SQL_PrepareQuery(sSQL);
         NWNX_SQL_ExecutePreparedQuery();
 ```
+
+#### SetAttackAnimation()
+This function is best used in the NWNX Attack event so that better control of animations can be offered for Melee vs Ranged attacks.
+
+Recommended to set the Animation for players via a saved Persistent Variable in conversation, and call that variable during NWNX Attack events to set the Animation desired.
+
+Also recommended to set a short DelayCommand reset to ensure visual hiccups when swapping between animations are avoided. Example below:
+```c
+void main()
+{
+    DelayCommand(0.1f, NWNX_Player_SetAttackAnimation(oAttacker, -1));
+}
+```
