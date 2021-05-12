@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 
 ### Added
-- N/A
+- Player: SetAttackAnimation() - This function will override both Melee & Ranked Attack Animation. Hook from NWNX Attack Event to check for Melee/Ranged Weapons. Obeys same requirements as NWNX_Player_SetRestAnimation().
 
 ##### New Plugins
 - N/A
