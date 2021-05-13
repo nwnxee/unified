@@ -247,8 +247,11 @@ Faction Events</h2>
 <td class="markdownTableBodyNone">FACTION_ID </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Not the STANDARD_FACTION_* constants. See nwnx_creature-&gt;GetFaction().  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">SUBJECT_FACTION_ID </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Not the STANDARD_FACTION_* constants. See nwnx_creature-&gt;GetFaction().  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PREVIOUS_REPUTATION </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NEW_REPUTATION </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Not yet clamped between 0-100. In the AFTER event, this will equal the EventResult set in the BEFORE event.  </td></tr>
 </table>
-<p>PREVIOUS_REPUTATION | int | NEW_REPUTATION | int | Not yet clamped between 0-100. In the AFTER event, this will equal the EventResult set in the BEFORE event.</p>
 <hr  />
  <h2><a class="anchor" id="autotoc_md180"></a>
 Validate Use Item Events</h2>
@@ -1542,8 +1545,35 @@ Input Cast Spell Events</h2>
 <th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_ID </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">MULTICLASS </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">DOMAIN_LEVEL </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">META_TYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">INSTANT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE / FALSE  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PROJECTILE_PATH </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPONTANEOUS </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE / FALSE  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">FAKE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE / FALSE  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">FEAT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">-1 when not cast from a feat  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CASTER_LEVEL </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">IS_AREA_TARGET </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE / FALSE  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POS_X </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_Y </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POS_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
 </table>
-<p>SPELL_ID | int | MULTICLASS | int | DOMAIN_LEVEL | int | META_TYPE | int | INSTANT | int | TRUE / FALSE PROJECTILE_PATH | int | SPONTANEOUS | int | TRUE / FALSE FAKE | int | TRUE / FALSE FEAT | int | -1 when not cast from a feat CASTER_LEVEL | int | IS_AREA_TARGET | int | TRUE / FALSE POS_X | float | POS_Y | float | POS_Z | float |</p>
 <dl class="section note"><dt>Note</dt><dd>This event runs the moment a creature starts casting</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md245"></a>
@@ -1607,8 +1637,11 @@ Object Unlock Events</h2>
 <td class="markdownTableBodyNone">DOOR </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">THIEVES_TOOL </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ACTIVE_PROPERTY_INDEX </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ACTION_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events  </td></tr>
 </table>
-<p>ACTIVE_PROPERTY_INDEX | int | ACTION_RESULT | int | TRUE/FALSE, only in _AFTER events</p>
 <hr  />
  <h2><a class="anchor" id="autotoc_md249"></a>
 UUID Collision Events</h2>
@@ -2385,7 +2418,7 @@ Player CharacterSheet Open/Close Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat May 8 2021 12:23:29 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu May 13 2021 08:22:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
