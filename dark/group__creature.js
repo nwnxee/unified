@@ -150,6 +150,8 @@ var group__creature =
     [ "NWNX_Creature_GetBypassEffectImmunity", "group__creature.html#ga3e559430fbdbd5bf1d8de42a9c1fbac0", null ],
     [ "NWNX_Creature_SetLastKiller", "group__creature.html#gaa064e2886118310f391f0d6c4901f33d", null ],
     [ "NWNX_Creature_DoItemCastSpell", "group__creature.html#gaf03a816c11492f7465ebbe977c278bbf", null ],
+    [ "NWNX_Creature_RunEquip", "group__creature.html#ga66a243ea31ee826876bcefb15a71023b", null ],
+    [ "NWNX_Creature_RunUnequip", "group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],

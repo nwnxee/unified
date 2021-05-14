@@ -119,8 +119,8 @@ var NAVTREEINDEX1 =
 "group__area.html#ga90e1c5c66112049ec181b4ae82bdf704":[0,5,49],
 "group__area.html#ga9932f7ae3886ed89ece8868879f9214f":[0,5,52],
 "group__area.html#ga9932f7ae3886ed89ece8868879f9214f":[4,0,3,2,0,0,50],
-"group__area.html#gaa220a97dc5ef590274f26e98f403ae55":[4,0,3,2,0,0,13],
 "group__area.html#gaa220a97dc5ef590274f26e98f403ae55":[0,5,16],
+"group__area.html#gaa220a97dc5ef590274f26e98f403ae55":[4,0,3,2,0,0,13],
 "group__area.html#gaa4d87ed6410d4481a583d5a3d0a10cfe":[0,5,9],
 "group__area.html#gaa4d87ed6410d4481a583d5a3d0a10cfe":[4,0,3,2,0,0,6],
 "group__area.html#gaa7e6831063235acdb013fdc5846d00a7":[0,5,3],
@@ -226,8 +226,8 @@ var NAVTREEINDEX1 =
 "group__creature.html#ga007d581a39d037dce04fdfa034427efd":[4,0,3,6,0,0,91],
 "group__creature.html#ga00bd7741a7c1f3bb65ef4dc92c3f6218":[0,8,36],
 "group__creature.html#ga00bd7741a7c1f3bb65ef4dc92c3f6218":[4,0,3,6,0,0,32],
-"group__creature.html#ga0330befe33005bcf51b745aacbf1b78e":[0,8,175],
-"group__creature.html#ga0330befe33005bcf51b745aacbf1b78e":[4,0,3,6,0,0,172],
+"group__creature.html#ga0330befe33005bcf51b745aacbf1b78e":[0,8,177],
+"group__creature.html#ga0330befe33005bcf51b745aacbf1b78e":[4,0,3,6,0,0,174],
 "group__creature.html#ga061b4fae7ee1f83e2a8cd9814ad3f2c1":[0,8,31],
 "group__creature.html#ga061b4fae7ee1f83e2a8cd9814ad3f2c1":[4,0,3,6,0,0,27],
 "group__creature.html#ga07ef1d837354f127b72d7d301555c857":[0,8,124],
@@ -246,8 +246,8 @@ var NAVTREEINDEX1 =
 "group__creature.html#ga122ada903bb353eb480690c4f2170f36":[4,0,3,6,0,0,123],
 "group__creature.html#ga1300b28822e4534d0210593c8e65042c":[0,8,135],
 "group__creature.html#ga1300b28822e4534d0210593c8e65042c":[4,0,3,6,0,0,131],
-"group__creature.html#ga148e81a269561290db62a997fecaa828":[0,8,176],
-"group__creature.html#ga148e81a269561290db62a997fecaa828":[4,0,3,6,0,0,173],
-"group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22":[0,8,142],
-"group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22":[4,0,3,6,0,0,139]
+"group__creature.html#ga148e81a269561290db62a997fecaa828":[0,8,178],
+"group__creature.html#ga148e81a269561290db62a997fecaa828":[4,0,3,6,0,0,175],
+"group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22":[0,8,144],
+"group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22":[4,0,3,6,0,0,141]
 };
