@@ -14,7 +14,8 @@ https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Creature: RunEquip()
+- Creature: RunUnequip()
 
 ### Changed
 - N/A

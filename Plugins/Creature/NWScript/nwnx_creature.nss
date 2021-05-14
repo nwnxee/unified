@@ -936,6 +936,19 @@ void NWNX_Creature_SetLastKiller(object oCreature, object oKiller);
 /// @param nProjectileSpellID An optional spell ID which to use the projectile vfx of. -1 to use nSpellID's projectile vfx.
 void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1);
 
+/// @brief Have oCreature instantly equip oItem to nInventorySlot.
+/// @param oCreature The creature.
+/// @param oItem The item, must be possessed by oCreature.
+/// @param nInventorySlot An INVENTORY_SLOT_* constant.
+/// @return TRUE on success, FALSE on failure.
+int NWNX_Creature_RunEquip(object oCreature, object oItem, int nInventorySlot);
+
+/// @brief Have oCreature instantly unequip oItem.
+/// @param oCreature The creature.
+/// @param oItem The item, must be possessed by oCreature.
+/// @return TRUE on success, FALSE on failure.
+int NWNX_Creature_RunUnequip(object oCreature, object oItem);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2402,4 +2415,27 @@ void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location lo
     NWNX_PushArgumentObject(oTarget);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_RunEquip(object oCreature, object oItem, int nInventorySlot)
+{
+    string sFunc = "RunEquip";
+
+    NWNX_PushArgumentInt(nInventorySlot);
+    NWNX_PushArgumentObject(oItem);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Creature_RunUnequip(object oCreature, object oItem)
+{
+    string sFunc = "RunUnequip";
+
+    NWNX_PushArgumentObject(oItem);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
 }
