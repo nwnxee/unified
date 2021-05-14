@@ -30,6 +30,10 @@ set(PLUGIN_PREFIX NWNX_)
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
     add_library(${target} MODULE ${ARGN})
+    configure_plugin(${target})
+endfunction()
+
+function(configure_plugin target)
     add_sanitizers(${target})
     target_link_libraries(${target} Core)
     set_target_properties(${target} PROPERTIES PREFIX "${PLUGIN_PREFIX}")
