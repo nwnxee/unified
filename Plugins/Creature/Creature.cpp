@@ -35,6 +35,8 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 
+#include <cmath>
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -3038,3 +3040,36 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack RunEquip(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto oidItem = args.extract<ObjectID>();
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+        auto inventorySlot = args.extract<int32_t>();
+          ASSERT_OR_THROW(inventorySlot >= 0);
+          ASSERT_OR_THROW(inventorySlot <= Constants::InventorySlot::MAX);
+
+        if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem)))
+        {
+            inventorySlot = (int32_t)std::pow(2, inventorySlot);
+            return pCreature->RunEquip(pItem->m_idSelf, inventorySlot);
+        }
+    }
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto oidItem = args.extract<ObjectID>();
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+
+        if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem)))
+        {
+           return pCreature->RunUnequip(pItem->m_idSelf, Constants::OBJECT_INVALID, -1, -1, false);
+        }
+    }
+    return false;
+}
