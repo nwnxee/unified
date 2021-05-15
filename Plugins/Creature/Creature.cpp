@@ -31,6 +31,7 @@
 #include "API/CNWSSpellScriptData.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSpell.hpp"
+#include "API/CVirtualMachine.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -3061,6 +3062,7 @@ NWNX_EXPORT ArgumentStack RunEquip(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
 {
+    int32_t retVal = false;
     if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto oidItem = args.extract<ObjectID>();
@@ -3068,8 +3070,15 @@ NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
 
         if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem)))
         {
-           return pCreature->RunUnequip(pItem->m_idSelf, Constants::OBJECT_INVALID, -1, -1, false);
+            // The module unequip event runs instantly so we have to temporarily change the event script id of the calling script
+            // otherwise GetCurrentlyRunningEvent() doesn't return the right id
+            int32_t previousScriptEventId = Globals::VirtualMachine()->m_pVirtualMachineScript[0].m_nScriptEventID;
+            Globals::VirtualMachine()->m_pVirtualMachineScript[0].m_nScriptEventID = 3016;
+
+            retVal = pCreature->RunUnequip(pItem->m_idSelf, Constants::OBJECT_INVALID, -1, -1, false);
+
+            Globals::VirtualMachine()->m_pVirtualMachineScript[0].m_nScriptEventID = previousScriptEventId;
         }
     }
-    return false;
+    return retVal;
 }
