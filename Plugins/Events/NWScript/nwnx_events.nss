@@ -174,6 +174,9 @@ _______________________________________
     ITEM                  | object | Convert to object with StringToObject()|
     SLOT                  | int    | |
 
+    @note This event does not run on login as the base game OnPlayerEquipItem event does. (Because this event hooks CNWSCreature::RunEquip which calls CNWSCreature::EquipItem. When the player character is first loaded, EquipItem is called directly.)
+    @note If the goal is to prevent items from being equiped under certain conditions, and since this event does not run on login, it could be helpful to additionally use NWNX_Creature_RunUnequip() in the OnClientEnter (or similar) event.
+
 _______________________________________
     ## Item Unequip Events
     - NWNX_ON_ITEM_UNEQUIP_BEFORE
