@@ -16,48 +16,9 @@
 %pragma(csharp) imclassclassmodifiers="public unsafe class"
 %typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
 
-#undef SWIG_CSBODY_PROXY
-%define SWIG_CSBODY_PROXY(PTRCTOR_VISIBILITY, CPTR_VISIBILITY, TYPE...)
-// Proxy classes (base classes, ie, not derived classes)
-%typemap(csbody) TYPE %{
-  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-  protected bool swigCMemOwn;
+// C# Wrapper Class Extensions
+%define SWIG_DOTNET_EXTENSIONS
 
-  PTRCTOR_VISIBILITY $csclassname(global::System.IntPtr cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
-  }
-
-  PTRCTOR_VISIBILITY $csclassname(void* cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, (global::System.IntPtr)cPtr);
-  }
-
-  CPTR_VISIBILITY static global::System.Runtime.InteropServices.HandleRef getCPtr($csclassname obj) {
-    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
-  }
-%}
-
-// Derived proxy classes
-%typemap(csbody_derived) TYPE %{
-  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-
-  PTRCTOR_VISIBILITY $csclassname(global::System.IntPtr cPtr, bool cMemoryOwn) : base($imclassname.$csclazznameSWIGUpcast(cPtr), cMemoryOwn) {
-    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
-  }
-
-  PTRCTOR_VISIBILITY $csclassname(void* cPtr, bool cMemoryOwn) : base($imclassname.$csclazznameSWIGUpcast((global::System.IntPtr)cPtr), cMemoryOwn) {
-    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, (global::System.IntPtr)cPtr);
-  }
-
-  CPTR_VISIBILITY static global::System.Runtime.InteropServices.HandleRef getCPtr($csclassname obj) {
-    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
-  }
-%}
-%enddef
-
-// Extensions
-%typemap(cscode) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE (CLASS::*) %{
   public global::System.IntPtr Pointer {
     get {
       return swigCPtr.Handle;
@@ -68,8 +29,12 @@
     return (void*)self.swigCPtr.Handle;
   }
 
-  public static implicit operator global::System.IntPtr($csclassname self) {
-    return self.swigCPtr.Handle;
+  public static unsafe $csclassname FromPointer(void* pointer, bool memoryOwn = false) {
+    return pointer != null ? new $csclassname((global::System.IntPtr)pointer, memoryOwn) : null;
+  }
+
+  public static $csclassname FromPointer(global::System.IntPtr pointer, bool memoryOwn = false) {
+    return pointer != global::System.IntPtr.Zero ? new $csclassname(pointer, memoryOwn) : null;
   }
 
   public bool Equals($csclassname other) {
@@ -99,55 +64,21 @@
   public static bool operator !=($csclassname left, $csclassname right) {
     return !Equals(left, right);
   }
-%}
+%enddef
 
-%typemap(cscode) CExoString %{
-  public global::System.IntPtr Pointer {
-    get {
-      return swigCPtr.Handle;
-    }
-  }
+// C# Wrapper Class Extensions - Default
+%typemap(cscode, noblock=1) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE (CLASS::*) {
+SWIG_DOTNET_EXTENSIONS
+}
 
-  public static implicit operator void*($csclassname self) {
-    return (void*)self.swigCPtr.Handle;
-  }
-
-  public static implicit operator global::System.IntPtr($csclassname self) {
-    return self.swigCPtr.Handle;
-  }
-
-  public bool Equals($csclassname other) {
-    if (ReferenceEquals(null, other)) {
-      return false;
-    }
-
-    if (ReferenceEquals(this, other)) {
-      return true;
-    }
-
-    return Pointer.Equals(other.Pointer);
-  }
-
-  public override bool Equals(object obj) {
-    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
-  }
-
-  public override int GetHashCode() {
-    return swigCPtr.GetHashCode();
-  }
-
-  public static bool operator ==($csclassname left, $csclassname right) {
-    return Equals(left, right);
-  }
-
-  public static bool operator !=($csclassname left, $csclassname right) {
-    return !Equals(left, right);
-  }
+// C# Wrapper Class Extensions - CExoString
+%typemap(cscode, noblock=1) CExoString {
+SWIG_DOTNET_EXTENSIONS
 
   public override string ToString() {
     return CStr();
   }
-%}
+}
 
 %define MarshalType(CTYPE, CSTYPE, CSARRAYTYPE)
 %typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
@@ -226,7 +157,9 @@
     }
 %}
 
-%typemap(cscode) NAME %{
+%typemap(cscode, noblock=1) NAME {
+SWIG_DOTNET_EXTENSIONS
+
   public CSTYPE this[int index] {
     get {
       return GetItem(index);
@@ -235,49 +168,7 @@
       SetItem(index, value);
     }
   }
-
-  public global::System.IntPtr Pointer {
-    get {
-      return swigCPtr.Handle;
-    }
-  }
-
-  public static implicit operator void*($csclassname self) {
-    return (void*)self.swigCPtr.Handle;
-  }
-
-  public static implicit operator global::System.IntPtr($csclassname self) {
-    return self.swigCPtr.Handle;
-  }
-
-  public bool Equals($csclassname other) {
-    if (ReferenceEquals(null, other)) {
-      return false;
-    }
-
-    if (ReferenceEquals(this, other)) {
-      return true;
-    }
-
-    return Pointer.Equals(other.Pointer);
-  }
-
-  public override bool Equals(object obj) {
-    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
-  }
-
-  public override int GetHashCode() {
-    return swigCPtr.Handle.GetHashCode();
-  }
-
-  public static bool operator ==($csclassname left, $csclassname right) {
-    return Equals(left, right);
-  }
-
-  public static bool operator !=($csclassname left, $csclassname right) {
-    return !Equals(left, right);
-  }
-%}
+}
 %enddef
 
 %define DefineArray(TYPE, CSTYPE, NAME)
@@ -339,9 +230,6 @@ static NAME* FromPointer(TYPE *ptr) {
 
 };
 %enddef
-
-// Expose Managed Constructor
-SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 
 // Marshal native types to managed types.
 MarshalType(void, void, global::System.IntPtr)
