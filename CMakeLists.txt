@@ -90,7 +90,7 @@ foreach(plugin ${plugins})
     add_subdirectory(${pluginPath})
 endforeach(plugin)
 
-# Allow specifying out of tree plugins by putting their paths in env. variable
+# Allow specifying out of tree plugins by putting their paths in an env. variable
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
     add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 endforeach(addplugin)
