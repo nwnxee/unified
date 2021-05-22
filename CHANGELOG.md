@@ -27,7 +27,7 @@ https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Core: {Get|Set}LocalCassowary() actually work and no longer throw asserts.
 
 ## 8193.22
 https://github.com/nwnxee/unified/compare/build8193.22...build8193.23

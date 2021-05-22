@@ -93,6 +93,18 @@ extern NWNXCore* g_core;
 
 int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
+    switch (nCommandId)
+    {
+        case VMCommand::GetLocalInt:
+        case VMCommand::GetLocalFloat:
+        case VMCommand::GetLocalString:
+        case VMCommand::GetLocalObject:
+        case VMCommand::GetLocalLocation:
+            break;
+        default:
+            return g_core->m_vmGetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+    }
+
     ASSERT(thisPtr); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
 
@@ -186,6 +198,18 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 }
 int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
+    switch (nCommandId)
+    {
+        case VMCommand::SetLocalInt:
+        case VMCommand::SetLocalFloat:
+        case VMCommand::SetLocalString:
+        case VMCommand::SetLocalObject:
+        case VMCommand::SetLocalLocation:
+            break;
+        default:
+            return g_core->m_vmSetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+    }
+
     ASSERT(thisPtr); ASSERT(nParameters == 3);
     auto *vm = Globals::VirtualMachine();
 

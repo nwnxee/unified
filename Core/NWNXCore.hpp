@@ -26,10 +26,11 @@ public:
 
     const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
 
-private:
-    NWNXLib::Hooks::Hook m_createServerHook;
     NWNXLib::Hooks::Hook m_vmSetVarHook;
     NWNXLib::Hooks::Hook m_vmGetVarHook;
+
+private:
+    NWNXLib::Hooks::Hook m_createServerHook;
     NWNXLib::Hooks::Hook m_vmTagEffectHook;
     NWNXLib::Hooks::Hook m_vmTagItemProperyHook;
     NWNXLib::Hooks::Hook m_vmPlaySoundHook;
