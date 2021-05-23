@@ -99,7 +99,6 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         case VMCommand::GetLocalFloat:
         case VMCommand::GetLocalString:
         case VMCommand::GetLocalObject:
-        case VMCommand::GetLocalLocation:
             break;
         default:
             return g_core->m_vmGetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
@@ -180,16 +179,6 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             success = vm->StackPushObject(oid);
             break;
         }
-        case VMCommand::GetLocalLocation:
-        {
-            // No NWNX option here
-            CScriptLocation loc;
-            if (vartable)
-                loc = vartable->GetLocation(varname);
-
-            success = vm->StackPushEngineStructure(VMStructure::Location, &loc);
-            break;
-        }
         default:
             ASSERT_FAIL();
     }
@@ -204,7 +193,6 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         case VMCommand::SetLocalFloat:
         case VMCommand::SetLocalString:
         case VMCommand::SetLocalObject:
-        case VMCommand::SetLocalLocation:
             break;
         default:
             return g_core->m_vmSetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
@@ -290,18 +278,6 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             {
                 vartable->SetObject(varname, value);
             }
-            break;
-        }
-        case VMCommand::SetLocalLocation:
-        {
-            // No NWNX option here
-            CScriptLocation *pLoc;
-            if (!vm->StackPopEngineStructure(VMStructure::Location, (void**)&pLoc))
-                return VMError::StackUnderflow;
-            if (vartable)
-                vartable->SetLocation(varname, *pLoc);
-
-            delete pLoc;
             break;
         }
         default:
