@@ -199,13 +199,13 @@ NWNX_EXPORT ArgumentStack GetCurrentNodeID(ArgumentStack&&)
     switch (s_statestack[s_ssp])
     {
         case DIALOG_STATE_START:
-            return s_pDialog->m_pStartingEntries[s_loopCount].m_nIndex;
+            return (int32_t)s_pDialog->m_pStartingEntries[s_loopCount].m_nIndex;
         case DIALOG_STATE_SEND_ENTRY:
-            return s_idxEntry;
+            return (int32_t)s_idxEntry;
         case DIALOG_STATE_HANDLE_REPLY:
-            return s_pDialog->m_pEntries[s_idxEntry].m_pReplies[s_idxReply].m_nIndex;
+            return (int32_t)s_pDialog->m_pEntries[s_idxEntry].m_pReplies[s_idxReply].m_nIndex;
         case DIALOG_STATE_SEND_REPLIES:
-            return s_pDialog->m_pEntries[s_pDialog->m_currentEntryIndex].m_pReplies[s_loopCount].m_nIndex;
+            return (int32_t)s_pDialog->m_pEntries[s_pDialog->m_currentEntryIndex].m_pReplies[s_loopCount].m_nIndex;
         default:
             return -1;
     }
