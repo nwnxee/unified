@@ -16,6 +16,12 @@
 %pragma(csharp) imclassclassmodifiers="public unsafe class"
 %typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
 
+namespace std {
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") char* "string"
+}
+
 // C# Wrapper Class Extensions
 %define SWIG_DOTNET_EXTENSIONS
 
@@ -80,6 +86,7 @@ SWIG_DOTNET_EXTENSIONS
   }
 }
 
+// Marshal Blittable types without wrapper class.
 %define MarshalType(CTYPE, CSTYPE, CSARRAYTYPE)
 %typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY] "global::System.IntPtr"
@@ -119,6 +126,7 @@ SWIG_DOTNET_EXTENSIONS
 %}
 %enddef
 
+// Marshal pointer to pointer as void* for easier dereferencing
 %define MarshalPtrPtr(CTYPE, CSTYPE)
 %typemap(ctype)  CTYPE*,CTYPE& "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
@@ -140,6 +148,7 @@ SWIG_DOTNET_EXTENSIONS
 %}
 %enddef
 
+// C# code for accessing native arrays
 %define MapArray(TYPE, CSTYPE, NAME)
 %typemap(cstype) TYPE[ANY] "NAME"
 %typemap(csin)   TYPE[ANY] "NAME.getCPtr($csinput)"
@@ -171,6 +180,7 @@ SWIG_DOTNET_EXTENSIONS
 }
 %enddef
 
+// Native array definition for a C-style array define.
 %define DefineArray(TYPE, CSTYPE, NAME)
 %{
 typedef TYPE NAME;
@@ -201,6 +211,7 @@ static NAME* FromPointer(TYPE *ptr) {
 };
 %enddef
 
+// Native array definition for an array defined as a pointer, with a separate length variable.
 %define DefineArrayPtr(TYPE, CSTYPE, NAME)
 %{
 typedef TYPE NAME;
