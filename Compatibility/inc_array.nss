@@ -154,9 +154,9 @@ string GetTableCreateString(string tag, object obj=OBJECT_INVALID) {
 }
 
 int TableExists(string tag, object obj=OBJECT_INVALID) {
-    string stmt = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = @tablename";
+    string stmt = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = @tablename;";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
-    SqlBindString(sqlQuery, "@tablename", GetTableName(tag, obj));
+    SqlBindString(sqlQuery, "@tablename", GetTableName(tag, obj, TRUE));
     return SqlStep(sqlQuery);
 }
 
@@ -466,7 +466,7 @@ void Array_Set_Str(string tag, int index, string element, object obj=OBJECT_INVA
     if (index >= 0 && index <= rows) {
         string stmt = "UPDATE "+GetTableName(tag, obj)+" SET value = @element WHERE ind = @ind";
         sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
-        SqlBindInt(sqlQuery, "@ind", rows);
+        SqlBindInt(sqlQuery, "@ind", index);
         SqlBindString(sqlQuery, "@element", element);
         SqlStep(sqlQuery);
     }
