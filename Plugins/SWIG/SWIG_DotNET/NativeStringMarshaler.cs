@@ -6,8 +6,14 @@ namespace NWN.Native.API
 {
   public sealed class NativeStringMarshaler : ICustomMarshaler
   {
-    private static readonly Encoding NativeEncoding = Encoding.GetEncoding("ISO-8859-1");
+    private static readonly Encoding NativeEncoding;
     private static NativeStringMarshaler instance;
+
+    static NativeStringMarshaler()
+    {
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+      NativeEncoding = Encoding.GetEncoding("windows-1252");
+    }
 
     public IntPtr MarshalManagedToNative(object managedObj)
     {
