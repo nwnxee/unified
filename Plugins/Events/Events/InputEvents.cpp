@@ -133,7 +133,7 @@ int32_t InputEvents::AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, ui
     int32_t retVal;
     if (oidObjectMovingTo != Constants::OBJECT_INVALID)
     {
-        retVal = s_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(
+        retVal = s_AddMoveToPointActionToFrontHook->CallOriginal<int32_t>(
                 pCreature, nGroupId, vNewWalkPosition, oidNewWalkArea, oidObjectMovingTo, bRunToPoint, fRange, fTimeout,
                 bClientMoving, nClientPathNumber, nMoveToPosition, nMoveMode, bStraightLine, bCheckedActionPoint);
     }
@@ -141,7 +141,7 @@ int32_t InputEvents::AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, ui
     {
         Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
         Events::SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE", pCreature->m_idSelf);
-        retVal = s_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(
+        retVal = s_AddMoveToPointActionToFrontHook->CallOriginal<int32_t>(
                 pCreature, nGroupId, vNewWalkPosition, oidNewWalkArea, oidObjectMovingTo, bRunToPoint, fRange, fTimeout,
                 bClientMoving, nClientPathNumber, nMoveToPosition, nMoveMode, bStraightLine, bCheckedActionPoint);
         Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
