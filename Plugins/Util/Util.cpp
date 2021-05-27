@@ -748,3 +748,11 @@ NWNX_EXPORT ArgumentStack GetTTY(ArgumentStack&&)
     return retval;
 }
 
+NWNX_EXPORT ArgumentStack SetCurrentlyRunningEvent(ArgumentStack&& args)
+{
+    const auto eventId = args.extract<int32_t>();
+
+    Globals::VirtualMachine()->m_pVirtualMachineScript[0].m_nScriptEventID = eventId;
+
+    return {};
+}

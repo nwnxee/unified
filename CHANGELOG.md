@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 ##### New NWScript Functions
 - Creature: RunEquip()
 - Creature: RunUnequip()
+- Util: SetCurrentlyRunningEvent()
 
 ### Changed
 - N/A

@@ -254,6 +254,10 @@ struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp();
 /// @return Return name of a terminal, "" if not a TTY
 string NWNX_Util_GetTTY();
 
+/// @brief Set the currently running script event.
+/// @param nEventID The ID of the event.
+void NWNX_Util_SetCurrentlyRunningEvent(int nEventID);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -633,3 +637,10 @@ string NWNX_Util_GetTTY()
     return NWNX_GetReturnValueString();
 }
 
+void NWNX_Util_SetCurrentlyRunningEvent(int nEventID)
+{
+    string sFunc = "SetCurrentlyRunningEvent";
+
+    NWNX_PushArgumentInt(nEventID);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
