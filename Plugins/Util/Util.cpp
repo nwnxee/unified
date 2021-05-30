@@ -111,7 +111,7 @@ NWNX_EXPORT ArgumentStack GetAsciiTableString(ArgumentStack&&)
     if (table[0] == 0)
     {
         table[0] = 1; // Can't pass NULL or it will terminate the string
-        for (size_t i = 1; i < 0xFF; i++)
+        for (size_t i = 1; i <= 0xFF; i++)
             table[i] = i;
     }
 
