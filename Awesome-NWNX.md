@@ -83,6 +83,7 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [NCS explained](http://www.nynaeve.net/Skywing/nwn2/Documentation/ncs.html) - NWScript VM basics and NCS format documentation
 - [nwnstatusbot](https://gitlab.com/hendrikgit/nwnstatusbot#nwnstatusbot) - Discord bot showing status of Neverwinter Nights EE servers by querying the Beamdog API
 - [nwninfobot](https://gitlab.com/hendrikgit/nwninfobot#nwninfobot) - Discord bot showing information about nwnxee functions and base game functions
+- [minimap](https://github.com/hendrikgit/nwn_minimap) - A generator of minimap images for areas, like they are shown in game
 
 ## Legacy stuff
 
