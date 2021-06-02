@@ -236,7 +236,7 @@ void SetItem(int index, TYPE* value) {
 }
 
 static NAME* FromPointer(TYPE *ptr) {
-  return (NAME *) ptr;
+  return static_cast<NAME*>(ptr);
 }
 
 };
@@ -496,6 +496,12 @@ MapArray(CNWSDialogEntry, CNWSDialogEntry, CNWSDialogEntryArray);
 MapArray(CNWSDialogReply, CNWSDialogReply, CNWSDialogReplyArray);
 MapArray(CNWSDialogLinkEntry, CNWSDialogLinkEntry, CNWSDialogLinkEntryArray);
 MapArray(CNWSDialogLinkReply, CNWSDialogLinkReply, CNWSDialogLinkReplyArray);
+MapArray(CNWRace, CNWRace, CNWRaceArray);
+MapArray(CNWFeat, CNWFeat, CNWFeatArray);
+MapArray(CResRef, CResRef, CResRefArray);
+MapArray(CNWClass, CNWClass, CNWClassArray);
+MapArray(CNWSkill, CNWSkill, CNWSkillArray);
+MapArray(CNWDomain, CNWDomain, CNWDomainArray);
 
 %include "NWNXLib.i"
 
@@ -528,6 +534,12 @@ DefineArrayPtr(CNWSDialogEntry, CNWSDialogEntry, CNWSDialogEntryArray);
 DefineArrayPtr(CNWSDialogReply, CNWSDialogReply, CNWSDialogReplyArray);
 DefineArrayPtr(CNWSDialogLinkEntry, CNWSDialogLinkEntry, CNWSDialogLinkEntryArray);
 DefineArrayPtr(CNWSDialogLinkReply, CNWSDialogLinkReply, CNWSDialogLinkReplyArray);
+DefineArrayPtr(CNWRace, CNWRace, CNWRaceArray);
+DefineArrayPtr(CNWFeat, CNWFeat, CNWFeatArray);
+DefineArrayPtr(CResRef, CResRef, CResRefArray);
+DefineArrayPtr(CNWClass, CNWClass, CNWClassArray);
+DefineArrayPtr(CNWSkill, CNWSkill, CNWSkillArray);
+DefineArrayPtr(CNWDomain, CNWDomain, CNWDomainArray);
 
 // Std templates
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
