@@ -196,6 +196,9 @@ NWNX_EXPORT ArgumentStack GetCurrentScriptType(ArgumentStack&&)
 
 NWNX_EXPORT ArgumentStack GetCurrentNodeID(ArgumentStack&&)
 {
+    if (s_statestack[s_ssp] == DIALOG_STATE_HANDLE_REPLY && s_idxReply == 0xFFFFFFFF)
+        return -1;
+
     switch (s_statestack[s_ssp])
     {
         case DIALOG_STATE_START:
