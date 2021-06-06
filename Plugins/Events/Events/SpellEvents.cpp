@@ -1,11 +1,8 @@
-#include "Events/SpellEvents.hpp"
+#include "Events.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSpellArray.hpp"
-#include "API/Functions.hpp"
-#include "API/Globals.hpp"
-#include "Events.hpp"
 
 namespace Events {
 
@@ -18,39 +15,46 @@ static Hooks::Hook s_ClearMemorizedSpellSlotHook;
 static Hooks::Hook s_BroadcastSpellCastHook;
 static Hooks::Hook s_OnEffectAppliedHook;
 
-SpellEvents::SpellEvents()
+static void SpellCastAndImpactHook(CNWSObject*, uint32_t, Vector, ObjectID, uint8_t, ObjectID, int32_t, int32_t, uint8_t, int32_t);
+static int32_t SetMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t, int32_t);
+static void ClearMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
+static void BroadcastSpellCastHook(CNWSCreature*, uint32_t, uint8_t, uint16_t);
+static int32_t OnEffectAppliedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+
+void SpellEvents() __attribute__((constructor));
+void SpellEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", []() {
         s_SpellCastAndImpactHook = Hooks::HookFunction(Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi,
                                                 (void*)&SpellCastAndImpactHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_SET_MEMORIZED_SPELL_SLOT_.*", []() {
+    InitOnFirstSubscribe("NWNX_SET_MEMORIZED_SPELL_SLOT_.*", []() {
         s_SetMemorizedSpellSlotHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats21SetMemorizedSpellSlotEhhjhhi,
                                                    (void*)&SetMemorizedSpellSlotHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_CLEAR_MEMORIZED_SPELL_.*", []() {
+    InitOnFirstSubscribe("NWNX_CLEAR_MEMORIZED_SPELL_.*", []() {
         s_ClearMemorizedSpellSlotHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh,
                                                      (void*)&ClearMemorizedSpellSlotHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_BROADCAST_CAST_SPELL_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_BROADCAST_CAST_SPELL_.*", []() {
         s_BroadcastSpellCastHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht,
                                                 (void*)&BroadcastSpellCastHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", []() {
         s_OnEffectAppliedHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
                                              (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
     });
 }
 
-void SpellEvents::SpellCastAndImpactHook(CNWSObject* thisPtr, uint32_t nSpellID, Vector vTargetPosition, ObjectID oidTarget,
+void SpellCastAndImpactHook(CNWSObject* thisPtr, uint32_t nSpellID, Vector vTargetPosition, ObjectID oidTarget,
                                          uint8_t nMultiClass, ObjectID oidItem, int32_t bSpellCountered, int32_t bCounteringSpell,
                                          uint8_t nProjectilePathType, int32_t bInstantSpell)
 {
-    if (!Events::IsIDInWhitelist("NWNX_ON_CAST_SPELL", nSpellID))
+    if (!IsIDInWhitelist("NWNX_ON_CAST_SPELL", nSpellID))
     {
         s_SpellCastAndImpactHook->CallOriginal<void>(thisPtr, nSpellID, vTargetPosition, oidTarget, nMultiClass, oidItem,
                                                      bSpellCountered, bCounteringSpell, nProjectilePathType, bInstantSpell);
@@ -58,20 +62,20 @@ void SpellEvents::SpellCastAndImpactHook(CNWSObject* thisPtr, uint32_t nSpellID,
     }
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("SPELL_ID", std::to_string(nSpellID));
+        PushEventData("SPELL_ID", std::to_string(nSpellID));
 
-        Events::PushEventData("TARGET_POSITION_X", std::to_string(vTargetPosition.x));
-        Events::PushEventData("TARGET_POSITION_Y", std::to_string(vTargetPosition.y));
-        Events::PushEventData("TARGET_POSITION_Z", std::to_string(vTargetPosition.z));
+        PushEventData("TARGET_POSITION_X", std::to_string(vTargetPosition.x));
+        PushEventData("TARGET_POSITION_Y", std::to_string(vTargetPosition.y));
+        PushEventData("TARGET_POSITION_Z", std::to_string(vTargetPosition.z));
 
-        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-        Events::PushEventData("MULTI_CLASS", std::to_string(nMultiClass));
-        Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(oidItem));
-        Events::PushEventData("SPELL_COUNTERED", std::to_string(bSpellCountered));
-        Events::PushEventData("COUNTERING_SPELL", std::to_string(bCounteringSpell));
-        Events::PushEventData("PROJECTILE_PATH_TYPE", std::to_string(nProjectilePathType));
-        Events::PushEventData("IS_INSTANT_SPELL", std::to_string(bInstantSpell));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+        PushEventData("MULTI_CLASS", std::to_string(nMultiClass));
+        PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(oidItem));
+        PushEventData("SPELL_COUNTERED", std::to_string(bSpellCountered));
+        PushEventData("COUNTERING_SPELL", std::to_string(bCounteringSpell));
+        PushEventData("PROJECTILE_PATH_TYPE", std::to_string(nProjectilePathType));
+        PushEventData("IS_INSTANT_SPELL", std::to_string(bInstantSpell));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_CAST_SPELL_BEFORE"))
@@ -87,46 +91,46 @@ void SpellEvents::SpellCastAndImpactHook(CNWSObject* thisPtr, uint32_t nSpellID,
     PushAndSignal("NWNX_ON_CAST_SPELL_AFTER");
 }
 
-int32_t SpellEvents::SetMemorizedSpellSlotHook(CNWSCreatureStats *thisPtr, uint8_t nMultiClass, uint8_t nSpellSlot,
+int32_t SetMemorizedSpellSlotHook(CNWSCreatureStats *thisPtr, uint8_t nMultiClass, uint8_t nSpellSlot,
                                                uint32_t nSpellID, uint8_t nDomainLevel, uint8_t nMetaType, BOOL bFromClient)
 {
     int32_t retVal;
     std::string sBeforeEventResult;
     std::string sAfterEventResult;
 
-    Events::PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
-    Events::PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
-    Events::PushEventData("SPELL_ID", std::to_string(nSpellID));
-    Events::PushEventData("SPELL_DOMAIN", std::to_string(nDomainLevel));
-    Events::PushEventData("SPELL_METAMAGIC", std::to_string(nMetaType));
-    Events::PushEventData("SPELL_FROMCLIENT", std::to_string(bFromClient));
+    PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
+    PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
+    PushEventData("SPELL_ID", std::to_string(nSpellID));
+    PushEventData("SPELL_DOMAIN", std::to_string(nDomainLevel));
+    PushEventData("SPELL_METAMAGIC", std::to_string(nMetaType));
+    PushEventData("SPELL_FROMCLIENT", std::to_string(bFromClient));
 
-    retVal = Events::SignalEvent("NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE", thisPtr->m_pBaseCreature->m_idSelf, &sBeforeEventResult)
+    retVal = SignalEvent("NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE", thisPtr->m_pBaseCreature->m_idSelf, &sBeforeEventResult)
              ? s_SetMemorizedSpellSlotHook->CallOriginal<int32_t>(thisPtr, nMultiClass, nSpellSlot, nSpellID, nDomainLevel, nMetaType, bFromClient) :
              sBeforeEventResult == "1";
 
-    Events::PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
-    Events::PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
-    Events::PushEventData("SPELL_ID", std::to_string(nSpellID));
-    Events::PushEventData("SPELL_DOMAIN", std::to_string(nDomainLevel));
-    Events::PushEventData("SPELL_METAMAGIC", std::to_string(nMetaType));
-    Events::PushEventData("SPELL_FROMCLIENT", std::to_string(bFromClient));
-    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
+    PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
+    PushEventData("SPELL_ID", std::to_string(nSpellID));
+    PushEventData("SPELL_DOMAIN", std::to_string(nDomainLevel));
+    PushEventData("SPELL_METAMAGIC", std::to_string(nMetaType));
+    PushEventData("SPELL_FROMCLIENT", std::to_string(bFromClient));
+    PushEventData("ACTION_RESULT", std::to_string(retVal));
 
-    Events::SignalEvent("NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER", thisPtr->m_pBaseCreature->m_idSelf, &sAfterEventResult);
+    SignalEvent("NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER", thisPtr->m_pBaseCreature->m_idSelf, &sAfterEventResult);
 
     retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
     return retVal;
 }
 
-void SpellEvents::ClearMemorizedSpellSlotHook(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, uint8_t nSpellLevel, uint8_t nSpellSlot)
+void ClearMemorizedSpellSlotHook(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, uint8_t nSpellLevel, uint8_t nSpellSlot)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
-        Events::PushEventData("SPELL_LEVEL", std::to_string(nSpellLevel));
-        Events::PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
-        return Events::SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
+        PushEventData("SPELL_CLASS", std::to_string(nMultiClass));
+        PushEventData("SPELL_LEVEL", std::to_string(nSpellLevel));
+        PushEventData("SPELL_SLOT", std::to_string(nSpellSlot));
+        return SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE"))
@@ -137,13 +141,13 @@ void SpellEvents::ClearMemorizedSpellSlotHook(CNWSCreatureStats* thisPtr, uint8_
     PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER");
 }
 
-void SpellEvents::BroadcastSpellCastHook(CNWSCreature *thisPtr, uint32_t nSpellID, uint8_t nMultiClass, uint16_t nFeat)
+void BroadcastSpellCastHook(CNWSCreature *thisPtr, uint32_t nSpellID, uint8_t nMultiClass, uint16_t nFeat)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("SPELL_ID", std::to_string(nSpellID));
-        Events::PushEventData("MULTI_CLASS", std::to_string(nMultiClass));
-        Events::PushEventData("FEAT", std::to_string(nFeat));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("SPELL_ID", std::to_string(nSpellID));
+        PushEventData("MULTI_CLASS", std::to_string(nMultiClass));
+        PushEventData("FEAT", std::to_string(nFeat));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_BROADCAST_CAST_SPELL_BEFORE"))
@@ -154,7 +158,7 @@ void SpellEvents::BroadcastSpellCastHook(CNWSCreature *thisPtr, uint32_t nSpellI
     PushAndSignal("NWNX_ON_BROADCAST_CAST_SPELL_AFTER");
 }
 
-int32_t SpellEvents::OnEffectAppliedHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect, int32_t bLoadingGame)
+int32_t OnEffectAppliedHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect, int32_t bLoadingGame)
 {
     // An easy way to capture a spell interrupting is when the visual effect is applied
     // Visual Effect 292 and 293 are for a spell interruption failure (head and hand)
@@ -163,13 +167,13 @@ int32_t SpellEvents::OnEffectAppliedHook(CNWSEffectListHandler *pEffectListHandl
         return s_OnEffectAppliedHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect, bLoadingGame);
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("SPELL_ID", std::to_string(pObject->m_nLastSpellId));
-        Events::PushEventData("SPELL_CLASS", std::to_string(pObject->m_nLastSpellCastMulticlass));
-        Events::PushEventData("SPELL_FEAT", std::to_string(pObject->m_nLastSpellCastFeat));
-        Events::PushEventData("SPELL_DOMAIN", std::to_string(pObject->m_nLastDomainLevel));
-        Events::PushEventData("SPELL_SPONTANEOUS", std::to_string(pObject->m_bLastSpellCastSpontaneous));
-        Events::PushEventData("SPELL_METAMAGIC", std::to_string(pObject->m_nLastSpellCastMetaType));
-        return Events::SignalEvent(ev, pObject->m_idSelf);
+        PushEventData("SPELL_ID", std::to_string(pObject->m_nLastSpellId));
+        PushEventData("SPELL_CLASS", std::to_string(pObject->m_nLastSpellCastMulticlass));
+        PushEventData("SPELL_FEAT", std::to_string(pObject->m_nLastSpellCastFeat));
+        PushEventData("SPELL_DOMAIN", std::to_string(pObject->m_nLastDomainLevel));
+        PushEventData("SPELL_SPONTANEOUS", std::to_string(pObject->m_bLastSpellCastSpontaneous));
+        PushEventData("SPELL_METAMAGIC", std::to_string(pObject->m_nLastSpellCastMetaType));
+        return SignalEvent(ev, pObject->m_idSelf);
     };
 
     PushAndSignal("NWNX_ON_SPELL_INTERRUPTED_BEFORE");

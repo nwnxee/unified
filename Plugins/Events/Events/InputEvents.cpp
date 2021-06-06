@@ -1,13 +1,9 @@
-#include "Events/InputEvents.hpp"
+#include "Events.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/Functions.hpp"
-#include "API/Constants.hpp"
-#include "Events.hpp"
-
 
 namespace Events {
 
@@ -21,38 +17,47 @@ static Hooks::Hook s_AddMoveToPointActionToFrontHook;
 static Hooks::Hook s_AddCastSpellActionsHook;
 static Hooks::Hook s_HandlePlayerToServerInputMessageHook;
 
-InputEvents::InputEvents()
+static int32_t HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage*, CNWSPlayer*);
+static int32_t AddAttackActionsHook(CNWSCreature*, ObjectID, int32_t, int32_t, int32_t);
+static int32_t AddMoveToPointActionToFrontHook(CNWSCreature*, uint16_t, Vector, ObjectID, ObjectID, int32_t, float,
+                                               float, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
+static int32_t AddCastSpellActionsHook(CNWSCreature*, uint32_t, int32_t, int32_t, int32_t, int32_t, Vector, ObjectID,
+                                       int32_t, int32_t, int32_t, uint8_t, int32_t, int32_t, int32_t, uint8_t);
+static int32_t HandlePlayerToServerInputMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+
+void InputEvents() __attribute__((constructor));
+void InputEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", []() {
         s_HandlePlayerToServerInputWalkToWaypointHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer,
                 (void*)&HandlePlayerToServerInputWalkToWaypointHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", []() {
         s_AddAttackActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii,
                                               (void*)&AddAttackActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", []() {
         s_AddMoveToPointActionToFrontHook = Hooks::HookFunction(
                 API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii,
                 (void*)&AddMoveToPointActionToFrontHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", []() {
         s_AddCastSpellActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih,
                                                  (void*)&AddCastSpellActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", []() {
         s_HandlePlayerToServerInputMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh,
                 (void*)&HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
     });
 }
 
-int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
+int32_t HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
 {
     int32_t retVal;
 
@@ -70,13 +75,13 @@ int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pM
     std::string runToPoint = std::to_string((bool)(Utils::PeekMessage<uint8_t>(pMessage, offset) & 0x10));
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("AREA", oidArea);
-        Events::PushEventData("POS_X", posX);
-        Events::PushEventData("POS_Y", posY);
-        Events::PushEventData("POS_Z", posZ);
-        Events::PushEventData("RUN_TO_POINT", runToPoint);
+        PushEventData("AREA", oidArea);
+        PushEventData("POS_X", posX);
+        PushEventData("POS_Y", posY);
+        PushEventData("POS_Z", posZ);
+        PushEventData("RUN_TO_POINT", runToPoint);
 
-        return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+        return SignalEvent(ev, pPlayer->m_oidNWSObject);
     };
 
     if (PushAndSignal("NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE"))
@@ -98,17 +103,17 @@ int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pM
     return retVal;
 }
 
-int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, ObjectID oidTarget,
+int32_t AddAttackActionsHook(CNWSCreature *pCreature, ObjectID oidTarget,
         int32_t bPassive, int32_t bClearAllActions, int32_t bAddToFront)
 {
     int32_t retVal;
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
-        Events::PushEventData("PASSIVE", std::to_string(bPassive));
-        Events::PushEventData("CLEAR_ALL_ACTIONS", std::to_string(bClearAllActions));
-        Events::PushEventData("ADD_TO_FRONT", std::to_string(bAddToFront));
+        PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
+        PushEventData("PASSIVE", std::to_string(bPassive));
+        PushEventData("CLEAR_ALL_ACTIONS", std::to_string(bClearAllActions));
+        PushEventData("ADD_TO_FRONT", std::to_string(bAddToFront));
 
-        return Events::SignalEvent(ev, pCreature->m_idSelf);
+        return SignalEvent(ev, pCreature->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE"))
@@ -125,7 +130,7 @@ int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, ObjectID oidT
     return retVal;
 }
 
-int32_t InputEvents::AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, uint16_t nGroupId, Vector vNewWalkPosition,
+int32_t AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, uint16_t nGroupId, Vector vNewWalkPosition,
         ObjectID oidNewWalkArea, ObjectID oidObjectMovingTo, int32_t bRunToPoint, float fRange, float fTimeout,
         int32_t bClientMoving, int32_t nClientPathNumber, int32_t nMoveToPosition, int32_t nMoveMode, int32_t bStraightLine,
         int32_t bCheckedActionPoint)
@@ -139,42 +144,42 @@ int32_t InputEvents::AddMoveToPointActionToFrontHook(CNWSCreature *pCreature, ui
     }
     else
     {
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
-        Events::SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE", pCreature->m_idSelf);
+        PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
+        SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE", pCreature->m_idSelf);
         retVal = s_AddMoveToPointActionToFrontHook->CallOriginal<int32_t>(
                 pCreature, nGroupId, vNewWalkPosition, oidNewWalkArea, oidObjectMovingTo, bRunToPoint, fRange, fTimeout,
                 bClientMoving, nClientPathNumber, nMoveToPosition, nMoveMode, bStraightLine, bCheckedActionPoint);
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
-        Events::SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER", pCreature->m_idSelf);
+        PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
+        SignalEvent("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER", pCreature->m_idSelf);
     }
 
     return retVal;
 }
 
-int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t nSpellId, int32_t nMultiClass, int32_t nDomainLevel,
+int32_t AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t nSpellId, int32_t nMultiClass, int32_t nDomainLevel,
         int32_t nMetaType, int32_t bSpontaneousCast, Vector vTargetLocation, ObjectID oidTarget, int32_t bAreaTarget, int32_t bAddToFront,
         int32_t bFake, uint8_t nProjectilePathType, int32_t bInstant, int32_t bAllowPolymorphedCast, int32_t nFeat, uint8_t nCasterLevel)
 {
     int32_t retVal;
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
-        Events::PushEventData("SPELL_ID", std::to_string(nSpellId));
-        Events::PushEventData("DOMAIN_LEVEL", std::to_string(nDomainLevel));
-        Events::PushEventData("META_TYPE", std::to_string(nMetaType));
-        Events::PushEventData("INSTANT", std::to_string(bInstant));
-        Events::PushEventData("PROJECTILE_PATH", std::to_string(nProjectilePathType));
-        Events::PushEventData("MULTICLASS", std::to_string(nMultiClass));
-        Events::PushEventData("SPONTANEOUS", std::to_string(bSpontaneousCast));
-        Events::PushEventData("FAKE", std::to_string(bFake));
-        Events::PushEventData("FEAT", std::to_string(nFeat));
-        Events::PushEventData("CASTER_LEVEL", std::to_string(nCasterLevel));
+        PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
+        PushEventData("SPELL_ID", std::to_string(nSpellId));
+        PushEventData("DOMAIN_LEVEL", std::to_string(nDomainLevel));
+        PushEventData("META_TYPE", std::to_string(nMetaType));
+        PushEventData("INSTANT", std::to_string(bInstant));
+        PushEventData("PROJECTILE_PATH", std::to_string(nProjectilePathType));
+        PushEventData("MULTICLASS", std::to_string(nMultiClass));
+        PushEventData("SPONTANEOUS", std::to_string(bSpontaneousCast));
+        PushEventData("FAKE", std::to_string(bFake));
+        PushEventData("FEAT", std::to_string(nFeat));
+        PushEventData("CASTER_LEVEL", std::to_string(nCasterLevel));
 
-        Events::PushEventData("IS_AREA_TARGET", std::to_string(bAreaTarget));
-        Events::PushEventData("POS_X", std::to_string(vTargetLocation.x));
-        Events::PushEventData("POS_Y", std::to_string(vTargetLocation.y));
-        Events::PushEventData("POS_Z", std::to_string(vTargetLocation.z));
+        PushEventData("IS_AREA_TARGET", std::to_string(bAreaTarget));
+        PushEventData("POS_X", std::to_string(vTargetLocation.x));
+        PushEventData("POS_Y", std::to_string(vTargetLocation.y));
+        PushEventData("POS_Z", std::to_string(vTargetLocation.z));
 
-        return Events::SignalEvent(ev, pCreature->m_idSelf);
+        return SignalEvent(ev, pCreature->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_INPUT_CAST_SPELL_BEFORE"))
@@ -193,7 +198,7 @@ int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t n
     return retVal;
 }
 
-int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     static std::unordered_map<ObjectID, bool> skipDriveActionEvent;
 
@@ -215,9 +220,9 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
             bool bClockwise = oldOrientation.y * newOrientation.x > oldOrientation.x * newOrientation.y;
 
             auto PushAndSignal = [&](const std::string& ev) -> bool {
-                Events::PushEventData("KEY", bClockwise ? "D" : "A");
+                PushEventData("KEY", bClockwise ? "D" : "A");
 
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
@@ -250,9 +255,9 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
             skipDriveActionEvent[pPlayer->m_oidNWSObject] = true;
 
             auto PushAndSignal = [&](const std::string& ev) -> bool {
-                Events::PushEventData("KEY", key);
+                PushEventData("KEY", key);
 
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
@@ -273,9 +278,9 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
             int32_t retVal;
 
             auto PushAndSignal = [&](const std::string& ev) -> bool {
-                Events::PushEventData("PAUSE_STATE", std::to_string(!Globals::AppManager()->m_pServerExoApp->GetPauseState(2/*DM Pause*/)));
+                PushEventData("PAUSE_STATE", std::to_string(!Globals::AppManager()->m_pServerExoApp->GetPauseState(2/*DM Pause*/)));
 
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             if (PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE"))
@@ -305,10 +310,10 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
             */
 
             auto PushAndSignal = [&](const std::string& ev) -> bool {
-                Events::PushEventData("ANIMATION", std::to_string(animation));
-                //Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
+                PushEventData("ANIMATION", std::to_string(animation));
+                //PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
 
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             if (PushAndSignal("NWNX_ON_INPUT_EMOTE_BEFORE"))

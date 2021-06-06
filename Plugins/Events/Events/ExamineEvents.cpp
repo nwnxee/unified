@@ -1,10 +1,8 @@
-#include "Events/ExamineEvents.hpp"
+#include "Events.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSPlayerCharSheetGUI.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWCreatureStatsUpdate.hpp"
-#include "API/Functions.hpp"
-#include "Events.hpp"
 
 namespace Events {
 
@@ -14,9 +12,15 @@ using namespace NWNXLib::API;
 static Hooks::Hook s_SendServerToPlayerExamineGui_TrapDataHook;
 static Hooks::Hook s_PermittedToDisplayCharacterSheetHook;
 
-ExamineEvents::ExamineEvents()
+static void HandleExamine(bool, ObjectID, ObjectID);
+static int32_t ExamineTrapHook(CNWSMessage*, CNWSPlayer*, ObjectID, CNWSCreature*, int32_t);
+static int32_t PermittedToDisplayCharacterSheetHook(CNWSPlayer*, ObjectID);
+static int32_t HandlePlayerToServerCharacterSheetMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+
+void ExamineEvents() __attribute__((constructor));
+void ExamineEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", []() {
 
         #define HOOK_EXAMINE(_address) \
             static Hooks::Hook CAT(pExamineHook, __LINE__) = Hooks::HookFunction(_address, \
@@ -40,38 +44,38 @@ ExamineEvents::ExamineEvents()
                 (void*)&ExamineTrapHook, Hooks::Order::Earliest);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_PERMITTED_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_PERMITTED_.*", []() {
         s_PermittedToDisplayCharacterSheetHook = Hooks::HookFunction(
                 API::Functions::_ZN10CNWSPlayer32PermittedToDisplayCharacterSheetEj,
                 (void*)&PermittedToDisplayCharacterSheetHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_(OPEN|CLOSE)_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_(OPEN|CLOSE)_.*", []() {
         static Hooks::Hook s_HandlePlayerToServerCharacterSheetMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage41HandlePlayerToServerCharacterSheetMessageEP10CNWSPlayerh,
                 (void*)&HandlePlayerToServerCharacterSheetMessageHook, Hooks::Order::Final);
     });
 }
 
-void ExamineEvents::HandleExamine(bool before, ObjectID examiner, ObjectID examinee)
+void HandleExamine(bool before, ObjectID examiner, ObjectID examinee)
 {
-    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
-    Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner);
+    PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
+    SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner);
 }
 
-int32_t ExamineEvents::ExamineTrapHook(CNWSMessage *pMessage, CNWSPlayer* pPlayer, ObjectID oidTrapID, CNWSCreature *pCreature, int32_t bSuccess)
+int32_t ExamineTrapHook(CNWSMessage *pMessage, CNWSPlayer* pPlayer, ObjectID oidTrapID, CNWSCreature *pCreature, int32_t bSuccess)
 {
-    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(oidTrapID));
-    Events::PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(bSuccess));
-    Events::SignalEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", pPlayer->m_oidNWSObject);
+    PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(oidTrapID));
+    PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(bSuccess));
+    SignalEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", pPlayer->m_oidNWSObject);
     auto retVal = s_SendServerToPlayerExamineGui_TrapDataHook->CallOriginal<int32_t>(pMessage, pPlayer, oidTrapID, pCreature, bSuccess);
-    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(oidTrapID));
-    Events::PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(bSuccess));
-    Events::SignalEvent("NWNX_ON_EXAMINE_OBJECT_AFTER", pPlayer->m_oidNWSObject);
+    PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(oidTrapID));
+    PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(bSuccess));
+    SignalEvent("NWNX_ON_EXAMINE_OBJECT_AFTER", pPlayer->m_oidNWSObject);
     return retVal;
 }
 
-int32_t ExamineEvents::PermittedToDisplayCharacterSheetHook(CNWSPlayer *pPlayer, ObjectID oidCreature)
+int32_t PermittedToDisplayCharacterSheetHook(CNWSPlayer *pPlayer, ObjectID oidCreature)
 {
     auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature));
 
@@ -81,8 +85,8 @@ int32_t ExamineEvents::PermittedToDisplayCharacterSheetHook(CNWSPlayer *pPlayer,
     int32_t retVal;
     std::string result;
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidCreature));
-        return Events::SignalEvent(ev, pPlayer->m_oidNWSObject, &result);
+        PushEventData("TARGET", Utils::ObjectIDToString(oidCreature));
+        return SignalEvent(ev, pPlayer->m_oidNWSObject, &result);
     };
 
     if (PushAndSignal("NWNX_ON_CHARACTER_SHEET_PERMITTED_BEFORE"))
@@ -99,7 +103,7 @@ int32_t ExamineEvents::PermittedToDisplayCharacterSheetHook(CNWSPlayer *pPlayer,
     return retVal;
 }
 
-int32_t ExamineEvents::HandlePlayerToServerCharacterSheetMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t HandlePlayerToServerCharacterSheetMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     char nActivePanel = pMessage->ReadCHAR();
     ObjectID oidCharSheetCreature = pMessage->ReadOBJECTIDServer();
@@ -110,8 +114,8 @@ int32_t ExamineEvents::HandlePlayerToServerCharacterSheetMessageHook(CNWSMessage
     if (nMinor == Constants::MessageGuiCharacterSheetMinor::Status)
     {
         auto PushAndSignal = [&](const std::string& ev) -> bool {
-            Events::PushEventData("TARGET", Utils::ObjectIDToString(oidCharSheetCreature));
-            return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            PushEventData("TARGET", Utils::ObjectIDToString(oidCharSheetCreature));
+            return SignalEvent(ev, pPlayer->m_oidNWSObject);
         };
 
         if (!pPlayer->PermittedToDisplayCharacterSheet(oidCharSheetCreature))

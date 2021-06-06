@@ -1,7 +1,5 @@
-#include "Events/QuickbarEvents.hpp"
-#include "API/CNWSPlayer.hpp"
 #include "Events.hpp"
-
+#include "API/CNWSPlayer.hpp"
 
 namespace Events {
 
@@ -11,24 +9,27 @@ using namespace NWNXLib::API::Constants;
 
 static NWNXLib::Hooks::Hook s_HandlePlayerToServerGuiQuickbar_SetButtonHook = nullptr;
 
-QuickbarEvents::QuickbarEvents()
+static int32_t HandlePlayerToServerGuiQuickbar_SetButtonHook(CNWSMessage*, CNWSPlayer*, uint8_t, uint8_t);
+
+void QuickbarEvents() __attribute__((constructor));
+void QuickbarEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", []() {
         s_HandlePlayerToServerGuiQuickbar_SetButtonHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh,
                 (void*)&HandlePlayerToServerGuiQuickbar_SetButtonHook, Hooks::Order::Early);
     });
 }
 
-int32_t QuickbarEvents::HandlePlayerToServerGuiQuickbar_SetButtonHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nButton, uint8_t nObjectType)
+int32_t HandlePlayerToServerGuiQuickbar_SetButtonHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nButton, uint8_t nObjectType)
 {
     int32_t retVal;
 
     auto PushAndSignal = [&](const std::string &ev) -> bool {
-        Events::PushEventData("BUTTON", std::to_string(nButton));
-        Events::PushEventData("TYPE", std::to_string(nObjectType));
+        PushEventData("BUTTON", std::to_string(nButton));
+        PushEventData("TYPE", std::to_string(nObjectType));
 
-        return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+        return SignalEvent(ev, pPlayer->m_oidNWSObject);
     };
 
     if (PushAndSignal("NWNX_ON_QUICKBAR_SET_BUTTON_BEFORE"))
