@@ -1,13 +1,9 @@
-#include "Events/ItemEvents.hpp"
+#include "Events.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
-#include "API/Functions.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CItemRepository.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
-#include "Events.hpp"
 #include <cmath>
 
 namespace Events {
@@ -31,80 +27,96 @@ static Hooks::Hook s_SplitItemHook;
 static Hooks::Hook s_CanUseItemHook;
 static Hooks::Hook s_AcquireItemHook;
 
-ItemEvents::ItemEvents()
+static int32_t CanUseItemHook(CNWSCreature*, CNWSItem*, int32_t);
+static int32_t UseItemHook(CNWSCreature*, ObjectID, uint8_t, uint8_t, ObjectID, Vector, ObjectID, int32_t);
+static void OpenInventoryHook(CNWSItem*, ObjectID);
+static void CloseInventoryHook(CNWSItem*, ObjectID, int32_t);
+static ObjectID FindItemWithBaseItemIdHook(CItemRepository*, uint32_t, int32_t);
+static int32_t LearnScrollHook(CNWSCreature*, ObjectID);
+static int32_t CanEquipItemHook(CNWSCreature*, CNWSItem*, uint32_t*, int32_t, int32_t, int32_t, CNWSPlayer*);
+static int32_t RunEquipHook(CNWSCreature*, ObjectID, uint32_t, ObjectID);
+static int32_t RunUnequipHook(CNWSCreature*, ObjectID, ObjectID, uint8_t, uint8_t, int32_t, ObjectID);
+static void ItemEventHandlerHook(CNWSItem*, uint32_t, ObjectID, void*, uint32_t, uint32_t);
+static int32_t UseLoreOnItemHook(CNWSCreature*, ObjectID);
+static void PayToIdentifyItemHook(CNWSCreature*, ObjectID, ObjectID);
+static void SplitItemHook(CNWSCreature*, CNWSItem*, int32_t);
+static int32_t AcquireItemHook(CNWSCreature*, CNWSItem**, ObjectID, ObjectID, uint8_t, uint8_t, int32_t, int32_t);
+
+void ItemEvents() __attribute__((constructor));
+void ItemEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", []() {
         s_CanUseItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi,
                                         (void*)&CanUseItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", []() {
         s_UseItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorji,
                                      (void*)&UseItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_OPEN_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_OPEN_.*", []() {
         s_OpenInventoryHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem13OpenInventoryEj,
                                            (void*)&OpenInventoryHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", []() {
         s_CloseInventoryHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem14CloseInventoryEji,
                                             (void*)&CloseInventoryHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", []() {
         s_FindItemWithBaseItemIdHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository22FindItemWithBaseItemIdEji,
                                                     (void*)&FindItemWithBaseItemIdHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SCROLL_LEARN_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_SCROLL_LEARN_.*", []() {
         s_LearnScrollHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11LearnScrollEj,
                                          (void*)&LearnScrollHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", []() {
         s_CanEquipItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer,
                                           (void*)&CanEquipItemHook, Hooks::Order::Early);
         });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", []() {
         s_RunEquipHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature8RunEquipEjjj,
                                       (void*)&RunEquipHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_UNEQUIP_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_UNEQUIP_.*", []() {
         s_RunUnequipHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RunUnequipEjjhhij,
                                         (void*)&RunUnequipHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", []() {
         s_ItemEventHandlerHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem12EventHandlerEjjPvjj,
                                               (void*)&ItemEventHandlerHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", []() {
         s_UseLoreOnItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature13UseLoreOnItemEj,
                                            (void*)&UseLoreOnItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", []() {
         s_PayToIdenfifyItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature17PayToIdentifyItemEjj,
                                                (void*)&PayToIdentifyItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", []() {
         s_SplitItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi,
                                        (void*)&SplitItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_ACQUIRE_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_ITEM_ACQUIRE_.*", []() {
         s_AcquireItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11AcquireItemEPP8CNWSItemjjhhii,
                                          (void*)&AcquireItemHook, Hooks::Order::Early);
     });
 }
 
-int32_t ItemEvents::CanUseItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, int32_t bIgnoreIdentifiedFlag)
+int32_t CanUseItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, int32_t bIgnoreIdentifiedFlag)
 {
     int32_t retVal;
     std::string sBeforeEventResult;
@@ -112,35 +124,35 @@ int32_t ItemEvents::CanUseItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, int32
 
     std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
 
-    Events::PushEventData("ITEM_OBJECT_ID", itemId);
-    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+    PushEventData("ITEM_OBJECT_ID", itemId);
+    retVal = SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
         ? s_CanUseItemHook->CallOriginal<int32_t>(thisPtr, pItem, bIgnoreIdentifiedFlag) : sBeforeEventResult == "1";
 
-    Events::PushEventData("ITEM_OBJECT_ID", itemId);
-    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
-    Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+    PushEventData("ITEM_OBJECT_ID", itemId);
+    PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
 
     retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
     return retVal;
 }
 
-int32_t ItemEvents::UseItemHook(CNWSCreature* thisPtr, ObjectID oidItem, uint8_t nActivePropertyIndex, uint8_t nSubPropertyIndex,
+int32_t UseItemHook(CNWSCreature* thisPtr, ObjectID oidItem, uint8_t nActivePropertyIndex, uint8_t nSubPropertyIndex,
                                 ObjectID oidTarget, Vector vTargetPosition, ObjectID oidArea, int32_t bUseCharges)
 {
     int32_t retVal;
     std::string result;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(oidItem));
-        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-        Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(nActivePropertyIndex));
-        Events::PushEventData("ITEM_SUB_PROPERTY_INDEX", std::to_string(nSubPropertyIndex));
-        Events::PushEventData("TARGET_POSITION_X", std::to_string(vTargetPosition.x));
-        Events::PushEventData("TARGET_POSITION_Y", std::to_string(vTargetPosition.y));
-        Events::PushEventData("TARGET_POSITION_Z", std::to_string(vTargetPosition.z));
-        Events::PushEventData("USE_CHARGES",       std::to_string(bUseCharges));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf, &result);
+        PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(oidItem));
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+        PushEventData("ITEM_PROPERTY_INDEX", std::to_string(nActivePropertyIndex));
+        PushEventData("ITEM_SUB_PROPERTY_INDEX", std::to_string(nSubPropertyIndex));
+        PushEventData("TARGET_POSITION_X", std::to_string(vTargetPosition.x));
+        PushEventData("TARGET_POSITION_Y", std::to_string(vTargetPosition.y));
+        PushEventData("TARGET_POSITION_Z", std::to_string(vTargetPosition.z));
+        PushEventData("USE_CHARGES",       std::to_string(bUseCharges));
+        return SignalEvent(ev, thisPtr->m_idSelf, &result);
     };
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
@@ -157,11 +169,11 @@ int32_t ItemEvents::UseItemHook(CNWSCreature* thisPtr, ObjectID oidItem, uint8_t
     return retVal;
 }
 
-void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, ObjectID oidOpener)
+void OpenInventoryHook(CNWSItem* thisPtr, ObjectID oidOpener)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("OWNER", Utils::ObjectIDToString(oidOpener));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("OWNER", Utils::ObjectIDToString(oidOpener));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_OPEN_BEFORE"))
@@ -172,11 +184,11 @@ void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, ObjectID oidOpener)
     PushAndSignal("NWNX_ON_ITEM_INVENTORY_OPEN_AFTER");
 }
 
-void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, ObjectID oidCloser, int32_t bUpdatePlayer)
+void CloseInventoryHook(CNWSItem* thisPtr, ObjectID oidCloser, int32_t bUpdatePlayer)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("OWNER", Utils::ObjectIDToString(oidCloser));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("OWNER", Utils::ObjectIDToString(oidCloser));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_CLOSE_BEFORE"))
@@ -187,7 +199,7 @@ void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, ObjectID oidCloser, int32
     PushAndSignal("NWNX_ON_ITEM_INVENTORY_CLOSE_AFTER");
 }
 
-ObjectID ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t nBaseItemId, int32_t nTh)
+ObjectID FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t nBaseItemId, int32_t nTh)
 {
     // This event hook is currently only used for Ammunition Reloading but could in the future be used for more
     if ((nBaseItemId != Constants::BaseItem::Arrow &&
@@ -239,10 +251,10 @@ ObjectID ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
 
     uint32_t retVal;
 
-    Events::PushEventData("BASE_ITEM_ID", std::to_string(nBaseItemId));
-    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+    PushEventData("BASE_ITEM_ID", std::to_string(nBaseItemId));
+    PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
 
-    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
+    if (SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
     {
         retVal = s_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, nBaseItemId, nTh);
     }
@@ -257,11 +269,11 @@ ObjectID ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         retVal = s_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, nBaseItemId, nTh);
     }
 
-    Events::PushEventData("BASE_ITEM_ID", std::to_string(nBaseItemId));
-    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
-    Events::PushEventData("ACTION_RESULT", Utils::ObjectIDToString(retVal));
+    PushEventData("BASE_ITEM_ID", std::to_string(nBaseItemId));
+    PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+    PushEventData("ACTION_RESULT", Utils::ObjectIDToString(retVal));
 
-    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
+    if (SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
     {
         if (!sAfterEventResult.empty())
         {
@@ -274,14 +286,14 @@ ObjectID ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     return retVal;
 }
 
-int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToLearn)
+int32_t LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToLearn)
 {
     int32_t retVal = false;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("RESULT", std::to_string(retVal));
-        Events::PushEventData("SCROLL", Utils::ObjectIDToString(oidScrollToLearn));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("RESULT", std::to_string(retVal));
+        PushEventData("SCROLL", Utils::ObjectIDToString(oidScrollToLearn));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_SCROLL_LEARN_BEFORE"))
@@ -298,7 +310,7 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToL
     return retVal;
 }
 
-int32_t ItemEvents::CanEquipItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, uint32_t *pEquipToSlot, int32_t bEquipping,
+int32_t CanEquipItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, uint32_t *pEquipToSlot, int32_t bEquipping,
                                      int32_t bLoading, int32_t bDisplayFeedback, CNWSPlayer* pFeedbackPlayer)
 {
     int32_t retVal;
@@ -308,32 +320,32 @@ int32_t ItemEvents::CanEquipItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, uin
     std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
     std::string invSlot = std::to_string((uint32_t) std::round(log2(*pEquipToSlot)));
 
-    Events::PushEventData("ITEM_OBJECT_ID", itemId);
-    Events::PushEventData("SLOT", invSlot);
+    PushEventData("ITEM_OBJECT_ID", itemId);
+    PushEventData("SLOT", invSlot);
 
-    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+    retVal = SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
         ? s_CanEquipItemHook->CallOriginal<int32_t>(thisPtr, pItem, pEquipToSlot, bEquipping, bLoading, bDisplayFeedback, pFeedbackPlayer) : sBeforeEventResult == "1";
 
-    Events::PushEventData("ITEM_OBJECT_ID", itemId);
-    Events::PushEventData("SLOT", invSlot);
-    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
-    Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+    PushEventData("ITEM_OBJECT_ID", itemId);
+    PushEventData("SLOT", invSlot);
+    PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
 
     retVal = sAfterEventResult.empty() ? retVal : std::stoi(sAfterEventResult);
 
     return retVal;
 }
 
-int32_t ItemEvents::RunEquipHook(CNWSCreature* thisPtr, ObjectID oidItemToEquip, uint32_t nInventorySlot, ObjectID oidFeedbackPlayer)
+int32_t RunEquipHook(CNWSCreature* thisPtr, ObjectID oidItemToEquip, uint32_t nInventorySlot, ObjectID oidFeedbackPlayer)
 {
     int32_t retVal;
     uint8_t slotId = 0;
     uint32_t slot = nInventorySlot;
     while (slot >>= 1) { slotId++; }
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItemToEquip));
-        Events::PushEventData("SLOT", std::to_string(slotId));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItemToEquip));
+        PushEventData("SLOT", std::to_string(slotId));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_EQUIP_BEFORE"))
@@ -348,14 +360,14 @@ int32_t ItemEvents::RunEquipHook(CNWSCreature* thisPtr, ObjectID oidItemToEquip,
     return retVal;
 }
 
-int32_t ItemEvents::RunUnequipHook(CNWSCreature* thisPtr, ObjectID oidItemToUnequip, ObjectID oidTargetRepository, uint8_t x,
+int32_t RunUnequipHook(CNWSCreature* thisPtr, ObjectID oidItemToUnequip, ObjectID oidTargetRepository, uint8_t x,
                                    uint8_t y, int32_t bMergeIntoRepository, ObjectID oidFeedbackPlayer )
 {
     int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItemToUnequip));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItemToUnequip));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_UNEQUIP_BEFORE"))
@@ -370,8 +382,7 @@ int32_t ItemEvents::RunUnequipHook(CNWSCreature* thisPtr, ObjectID oidItemToUneq
     return retVal;
 }
 
-// hooks into CNWSItem::EventHandler
-void ItemEvents::ItemEventHandlerHook(CNWSItem* thisPtr, uint32_t nEventId, ObjectID nCallerObjectId, void *pScript,
+void ItemEventHandlerHook(CNWSItem* thisPtr, uint32_t nEventId, ObjectID nCallerObjectId, void *pScript,
                                       uint32_t nCalendarDay, uint32_t nTimeOfDay)
 {
     auto CallOriginal = [&]() -> void {
@@ -379,8 +390,8 @@ void ItemEvents::ItemEventHandlerHook(CNWSItem* thisPtr, uint32_t nEventId, Obje
     };
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        //Events::PushEventData("EVENT_ID", std::to_string(nEventId));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        //PushEventData("EVENT_ID", std::to_string(nEventId));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     auto HandleHookableEvent = [&](const std::string& eventName) -> void {
@@ -405,13 +416,13 @@ void ItemEvents::ItemEventHandlerHook(CNWSItem* thisPtr, uint32_t nEventId, Obje
     }
 }
 
-int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, ObjectID oidItem)
+int32_t UseLoreOnItemHook(CNWSCreature *thisPtr, ObjectID oidItem)
 {
     int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_USE_LORE_BEFORE"))
@@ -426,12 +437,12 @@ int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, ObjectID oidItem)
     return retVal;
 }
 
-void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, ObjectID oidItem, ObjectID oidStore )
+void PayToIdentifyItemHook(CNWSCreature *thisPtr, ObjectID oidItem, ObjectID oidStore )
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
-        Events::PushEventData("STORE", Utils::ObjectIDToString(oidStore ));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
+        PushEventData("STORE", Utils::ObjectIDToString(oidStore ));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE"))
@@ -442,12 +453,12 @@ void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, ObjectID oidItem, 
     PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER");
 }
 
-void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToSplit, int32_t nNumberToSplitOff)
+void SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToSplit, int32_t nNumberToSplitOff)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(pItemToSplit->m_idSelf));
-        Events::PushEventData("NUMBER_SPLIT_OFF", std::to_string(nNumberToSplitOff));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(pItemToSplit->m_idSelf));
+        PushEventData("NUMBER_SPLIT_OFF", std::to_string(nNumberToSplitOff));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_SPLIT_BEFORE"))
@@ -458,7 +469,7 @@ void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToSplit, in
     PushAndSignal("NWNX_ON_ITEM_SPLIT_AFTER");
 }
 
-int32_t ItemEvents::AcquireItemHook(CNWSCreature* thisPtr, CNWSItem **ppItem, ObjectID oidPossessor,
+int32_t AcquireItemHook(CNWSCreature* thisPtr, CNWSItem **ppItem, ObjectID oidPossessor,
                                     ObjectID oidTargetRepository, uint8_t x, uint8_t y, int32_t bOriginatingFromScript, int32_t bDisplayFeedback)
 {
     int32_t retVal = false;
@@ -469,10 +480,10 @@ int32_t ItemEvents::AcquireItemHook(CNWSCreature* thisPtr, CNWSItem **ppItem, Ob
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         ObjectID oidItem = (*ppItem) != nullptr ? (*ppItem)->m_idSelf : Constants::OBJECT_INVALID;
 
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
-        Events::PushEventData("GIVER", Utils::ObjectIDToString(oidPossessor));
-        Events::PushEventData("RESULT", std::to_string(retVal));
-        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
+        PushEventData("GIVER", Utils::ObjectIDToString(oidPossessor));
+        PushEventData("RESULT", std::to_string(retVal));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_ACQUIRE_BEFORE"))

@@ -1,18 +1,16 @@
-#include "Events/ResourceEvents.hpp"
+#include "Events.hpp"
 #include "../../../Core/NWNXCore.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CExoResMan.hpp"
-#include "API/Functions.hpp"
-#include "API/Constants.hpp"
-#include "Events.hpp"
 
 #include <sys/inotify.h>
 #include <unistd.h>
 #include <poll.h>
 #include <climits>
 #include <fcntl.h>
+#include <thread>
 
 namespace Core {
     extern NWNXCore* g_core;
@@ -28,17 +26,17 @@ using namespace NWNXLib::API::Constants;
 constexpr int EVENT_SIZE    = sizeof(struct inotify_event);
 constexpr int EVENT_BUF_LEN = (128 * (EVENT_SIZE + NAME_MAX + 1));
 
-static volatile bool processEvents;
-static int selfPipeFds[2];
+static volatile bool s_processEvents;
+static int s_selfPipeFds[2];
+static std::unique_ptr<std::thread> s_pollThread;
 
-std::unique_ptr<std::thread> ResourceEvents::m_pollThread;
-
-ResourceEvents::ResourceEvents()
+void ResourceEvents() __attribute__((constructor));
+void ResourceEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_RESOURCE_.*", []()
+    InitOnFirstSubscribe("NWNX_ON_RESOURCE_.*", []()
     {
-        int ret = pipe2(selfPipeFds, O_NONBLOCK);
-        int pipeReadFd = selfPipeFds[0];
+        int ret = pipe2(s_selfPipeFds, O_NONBLOCK);
+        int pipeReadFd = s_selfPipeFds[0];
 
         if (ret == -1)
         {
@@ -68,7 +66,7 @@ ResourceEvents::ResourceEvents()
         // Manually add DEVELOPMENT
         AddAlias("DEVELOPMENT");
 
-        m_pollThread = std::make_unique<std::thread>([pipeReadFd, paths]()
+        s_pollThread = std::make_unique<std::thread>([pipeReadFd, paths]()
         {
             auto QueueLogMessage = [](const std::string &message, bool warn = true)
             {
@@ -106,13 +104,13 @@ ResourceEvents::ResourceEvents()
 
                 if (!aliases.empty())
                 {
-                    processEvents = true;
+                    s_processEvents = true;
                 }
             }
             else
                 QueueLogMessage("Failed to intialize inotify with error: " + std::string(std::strerror(errno)), false);
 
-            while (processEvents)
+            while (s_processEvents)
             {
                 int pollNum = poll(fds, 2, -1);
 
@@ -165,11 +163,11 @@ ResourceEvents::ResourceEvents()
                                     CResRef resRef;
                                     Globals::ExoResMan()->GetResRefFromFile(resRef, file);
 
-                                    Events::PushEventData("ALIAS", alias);
-                                    Events::PushEventData("RESREF", resRef.GetResRefStr());
-                                    Events::PushEventData("TYPE", std::to_string(resType));
+                                    PushEventData("ALIAS", alias);
+                                    PushEventData("RESREF", resRef.GetResRefStr());
+                                    PushEventData("TYPE", std::to_string(resType));
 
-                                    Events::SignalEvent("NWNX_ON_RESOURCE_" + event, Utils::GetModule()->m_idSelf);
+                                    SignalEvent("NWNX_ON_RESOURCE_" + event, Utils::GetModule()->m_idSelf);
                                 }
                             }
                         });
@@ -188,21 +186,25 @@ ResourceEvents::ResourceEvents()
             }
         });
     });
-}
 
-ResourceEvents::~ResourceEvents()
-{
-    processEvents = false;
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
+        [](const std::vector<std::string>& message)
+        {
+            if (message[0] == "ON_DESTROY_SERVER")
+            {
+                s_processEvents = false;
 
-    if (m_pollThread)
-    {
-        (void)write(selfPipeFds[1], "a", 1);
+                if (s_pollThread)
+                {
+                    (void)write(s_selfPipeFds[1], "a", 1);
 
-        m_pollThread->join();
+                    s_pollThread->join();
 
-        close(selfPipeFds[0]);
-        close(selfPipeFds[1]);
-    }
+                    close(s_selfPipeFds[0]);
+                    close(s_selfPipeFds[1]);
+                }
+            }
+        });
 }
 
 }

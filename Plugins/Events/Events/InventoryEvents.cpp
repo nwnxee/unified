@@ -1,4 +1,4 @@
-#include "Events/InventoryEvents.hpp"
+#include "Events.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSPlayer.hpp"
@@ -7,11 +7,6 @@
 #include "API/CItemRepository.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CNWSCreature.hpp"
-#include "API/Functions.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
-#include "Events.hpp"
-
 
 namespace Events {
 
@@ -25,37 +20,44 @@ static NWNXLib::Hooks::Hook s_RemoveItemHook;
 static NWNXLib::Hooks::Hook s_AddGoldHook;
 static NWNXLib::Hooks::Hook s_RemoveGoldHook;
 
-InventoryEvents::InventoryEvents()
+static int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+static int32_t AddItemHook(CItemRepository*, CNWSItem**, uint8_t, uint8_t, int32_t, int32_t);
+static int32_t RemoveItemHook(CItemRepository*, CNWSItem*);
+static void AddGoldHook(CNWSCreature*, int32_t, int32_t);
+static void RemoveGoldHook(CNWSCreature*, int32_t, int32_t);
+
+void InventoryEvents() __attribute__((constructor));
+void InventoryEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", []()
+    InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", []()
     {
         s_HandlePlayerToServerGuiInventoryMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh,
                 (void*)&HandlePlayerToServerGuiInventoryMessageHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", []() {
         s_AddItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii,
                                      (void*)&AddItemHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", []() {
         s_RemoveItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository10RemoveItemEP8CNWSItem,
                                         (void*)&RemoveItemHook, Hooks::Order::Earliest);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", []() {
         s_AddGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature7AddGoldEii,
                                      (void*)&AddGoldHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", []() {
         s_RemoveGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RemoveGoldEii,
                                         (void*)&RemoveGoldHook, Hooks::Order::Early);
     });
 }
 
-int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     int32_t retVal;
 
@@ -73,8 +75,8 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
             {
                 auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
-                    Events::PushEventData("TARGET_INVENTORY", Utils::ObjectIDToString(target));
-                    return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                    PushEventData("TARGET_INVENTORY", Utils::ObjectIDToString(target));
+                    return SignalEvent(ev, pPlayer->m_oidNWSObject);
                 };
 
                 if (PushAndSignal("NWNX_ON_INVENTORY_OPEN_BEFORE"))
@@ -116,10 +118,10 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
 
                 auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
-                    Events::PushEventData("CURRENT_PANEL", std::to_string(currentPanel));
-                    Events::PushEventData("SELECTED_PANEL", std::to_string(selectedPanel));
+                    PushEventData("CURRENT_PANEL", std::to_string(currentPanel));
+                    PushEventData("SELECTED_PANEL", std::to_string(selectedPanel));
 
-                    return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                    return SignalEvent(ev, pPlayer->m_oidNWSObject);
                 };
 
                 if (PushAndSignal("NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE"))
@@ -155,7 +157,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
     return retVal;
 }
 
-int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem, uint8_t x, uint8_t y, int32_t bAllowEncumbrance, int32_t bMergeItem)
+int32_t AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem, uint8_t x, uint8_t y, int32_t bAllowEncumbrance, int32_t bMergeItem)
 {
     int32_t retVal;
 
@@ -168,8 +170,8 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
     }
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(ppItem && *ppItem ? (**ppItem).m_idSelf : OBJECT_INVALID));
-        return Events::SignalEvent(ev, thisPtr->m_oidParent);
+        PushEventData("ITEM", Utils::ObjectIDToString(ppItem && *ppItem ? (**ppItem).m_idSelf : OBJECT_INVALID));
+        return SignalEvent(ev, thisPtr->m_oidParent);
     };
 
     if (PushAndSignal("NWNX_ON_INVENTORY_ADD_ITEM_BEFORE"))
@@ -186,7 +188,7 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
     return retVal;
 }
 
-int32_t InventoryEvents::RemoveItemHook(CItemRepository* thisPtr, CNWSItem* pItem)
+int32_t RemoveItemHook(CItemRepository* thisPtr, CNWSItem* pItem)
 {
     auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
 
@@ -196,20 +198,20 @@ int32_t InventoryEvents::RemoveItemHook(CItemRepository* thisPtr, CNWSItem* pIte
         return s_RemoveItemHook->CallOriginal<int32_t>(thisPtr, pItem);
     }
 
-    Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
-    Events::SignalEvent("NWNX_ON_INVENTORY_REMOVE_ITEM_BEFORE", thisPtr->m_oidParent);
+    PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
+    SignalEvent("NWNX_ON_INVENTORY_REMOVE_ITEM_BEFORE", thisPtr->m_oidParent);
     auto retVal = s_RemoveItemHook->CallOriginal<int32_t>(thisPtr, pItem);
-    Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
-    Events::SignalEvent("NWNX_ON_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
+    PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
+    SignalEvent("NWNX_ON_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
 
     return retVal;
 }
 
-void InventoryEvents::AddGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_t bDisplayFeedBack)
+void AddGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_t bDisplayFeedBack)
 {
     auto PushAndSignal = [&](const std::string &ev) -> bool {
-        Events::PushEventData("GOLD", std::to_string(nGold));
-        return Events::SignalEvent(ev, pCreature->m_idSelf);
+        PushEventData("GOLD", std::to_string(nGold));
+        return SignalEvent(ev, pCreature->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_INVENTORY_ADD_GOLD_BEFORE"))
@@ -220,11 +222,11 @@ void InventoryEvents::AddGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_
     PushAndSignal("NWNX_ON_INVENTORY_ADD_GOLD_AFTER");
 }
 
-void InventoryEvents::RemoveGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_t bDisplayFeedBack)
+void RemoveGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_t bDisplayFeedBack)
 {
     auto PushAndSignal = [&](const std::string &ev) -> bool {
-        Events::PushEventData("GOLD", std::to_string(nGold));
-        return Events::SignalEvent(ev, pCreature->m_idSelf);
+        PushEventData("GOLD", std::to_string(nGold));
+        return SignalEvent(ev, pCreature->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE"))

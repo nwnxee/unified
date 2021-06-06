@@ -1,10 +1,6 @@
-#include "Events/PartyEvents.hpp"
+#include "Events.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
-#include "API/Functions.hpp"
-#include "API/Constants.hpp"
-#include "Events.hpp"
-#include <cstring>
 
 namespace Events {
 
@@ -14,16 +10,19 @@ using namespace NWNXLib::Platform;
 
 static Hooks::Hook s_HandlePlayerToServerPartyHook;
 
-PartyEvents::PartyEvents()
+static int32_t HandlePartyMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+
+void PartyEvents() __attribute__((constructor));
+void PartyEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_PARTY_.*", []() {
         s_HandlePlayerToServerPartyHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh,
                 (void*)&HandlePartyMessageHook, Hooks::Order::Early);
     });
 }
 
-int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     int32_t retVal;
 
@@ -71,9 +70,9 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             break;
     }
 
-    Events::PushEventData(argname, sOidOther);
+    PushEventData(argname, sOidOther);
 
-    if (Events::SignalEvent(event + "_BEFORE", oidPlayer))
+    if (SignalEvent(event + "_BEFORE", oidPlayer))
     {
         retVal = s_HandlePlayerToServerPartyHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
     }
@@ -82,8 +81,8 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         retVal = false;
     }
 
-    Events::PushEventData(argname, sOidOther);
-    Events::SignalEvent(event + "_AFTER", oidPlayer);
+    PushEventData(argname, sOidOther);
+    SignalEvent(event + "_AFTER", oidPlayer);
 
     return retVal;
 }
