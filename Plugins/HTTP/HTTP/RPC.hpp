@@ -10,10 +10,8 @@ using namespace NWNXLib::Services;
 class RPC
 {
 public:
-    explicit RPC(ConfigProxy*, MessagingProxy*, TasksProxy*);
+    explicit RPC();
 private:
-    static TasksProxy* m_servTasks;
-    static MessagingProxy* m_servMessaging;
 
     static httplib::Server* WaitForWebServer(const std::atomic_bool&);
     void StartRPCServer();

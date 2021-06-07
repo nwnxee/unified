@@ -1,21 +1,15 @@
+#include <future>
 #include "HTTP/RPC.hpp"
-
-#include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
-#include "Services/Tasks/Tasks.hpp"
 
 using namespace NWNXLib;
 
 namespace HTTP
 {
 
-TasksProxy* RPC::m_servTasks;
-MessagingProxy* RPC::m_servMessaging;
-
-RPC::RPC(ConfigProxy* config, MessagingProxy* messaging, TasksProxy* tasks)
+RPC::RPC()
 {
-    m_authToken = config->Get<std::string>("RPC_AUTH_TOKEN", "");
-    m_rpcURL = config->Get<std::string>("RPC_URL", "/rpc");
+    m_authToken = Config::Get<std::string>("RPC_AUTH_TOKEN", "");
+    m_rpcURL = Config::Get<std::string>("RPC_URL", "/rpc");
     if (m_rpcURL.rfind('/', 0) == std::string::npos)
         m_rpcURL = "/" + m_rpcURL;
     if (m_authToken.empty() && m_rpcURL == "/rpc")
@@ -24,8 +18,6 @@ RPC::RPC(ConfigProxy* config, MessagingProxy* messaging, TasksProxy* tasks)
                       "set an authorization token (NWNX_HTTP_RPC_AUTH_TOKEN) or set a unique URL (NWNX_HTTP_RPC_URL) for your rpc path. The server will not be started.");
         return;
     }
-    m_servTasks = tasks;
-    m_servMessaging = messaging;
 
     StartRPCServer();
 }
@@ -84,25 +76,25 @@ void RPC::StartRPCServer()
                 for (const auto & param : req.params)
                     params[param.first] = param.second;
             }
-            m_servTasks->QueueOnMainThread([requestId,json_data,paramCount,params]()
+            Tasks::QueueOnMainThread([requestId,json_data,paramCount,params]()
             {
-                m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(requestId)});
+                MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(requestId)});
                 if (!json_data.empty())
-                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"JSON_DATA", json_data});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"JSON_DATA", json_data});
                 else
                 {
-                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"PARAM_COUNT", std::to_string(paramCount)});
+                    MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"PARAM_COUNT", std::to_string(paramCount)});
                     int i = 0;
                     for (const auto & param : params)
                     {
                         std::string sParamKey = "PARAM_KEY_" + std::to_string(i);
                         std::string sParamValue = "PARAM_VALUE_" + std::to_string(i);
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {sParamKey, param.first});
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {sParamValue, param.second});
+                        MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {sParamKey, param.first});
+                        MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {sParamValue, param.second});
                         i++;
                     }
                 }
-                m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_SERVER_POST", Utils::ObjectIDToString(((CGameObject*)Utils::GetModule())->m_idSelf)});
+                MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_SERVER_POST", "0"});
             });
 
             // Our event was sent to nwscript on the main thread, wait for a response here or timeout after m_responseTimeout seconds

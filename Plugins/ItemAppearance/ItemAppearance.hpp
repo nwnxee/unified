@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSItem.hpp"
 #include <list>
 #include <map>
 
 using namespace std;
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace ItemAppearance {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "External/httplib.h"
 
 namespace HTTP {

@@ -1,14 +1,12 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include <list>
 #include <map>
 
 using namespace std;
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Layonara {
 
@@ -22,9 +20,9 @@ private:
     static void RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag);
     static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
     static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
-    static void SetPositionHook(bool, CNWSObject*, Vector, int32_t);
+    static void SetPositionHook(CNWSObject*, Vector, int32_t);
     static void SendMessageToCombatLog(CNWSCreature* target, const std::string& msg);
-    NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
+    NWNXLib::Hooks::FunctionHook* m_GetItemInSlotHook;
 
     enum Gems
     {

@@ -42,11 +42,15 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Layonara {
 
+
+static Hooks::Hook s_getItemInSlotHook;
+static Hooks::Hook s_setPositionHook;
+
 Layonara::Layonara(Services::ProxyServiceList* services)
   : Plugin(services)
 {
-#define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, \
+#define REGISTER(func) \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
     REGISTER(SetEquippableSlots);
     REGISTER(SetHostileFeat);
@@ -64,11 +68,11 @@ Layonara::Layonara(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN13CNWSInventory13GetItemInSlotEj>(
-            &Layonara::GetItemInSlotHook);
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject11SetPositionE6Vectori, void,
-            CNWSObject*, Vector, int32_t>(&SetPositionHook);
-    m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN13CNWSInventory13GetItemInSlotEj);
+    s_getItemInSlotHook = Hooks::HookFunction(
+            Functions::_ZN13CNWSInventory13GetItemInSlotEj,(void*)&GetItemInSlotHook, Hooks::Order::Early);
+    s_setPositionHook = Hooks::HookFunction(
+            Functions::_ZN10CNWSObject11SetPositionE6Vectori,(void*)&SetPositionHook, Hooks::Order::Early);
+
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
     m_GemBonuses[Gems::MAL] = {SavingThrowType::Disease, SavingThrow::All, Skill::Lore, DamageType::Divine,
@@ -134,7 +138,7 @@ CNWSItem *Layonara::GetItemInSlotHook(CNWSInventory *pThis, uint32_t nSlot)
     // Bullet
     else if (nSlot == 0x23800)
         nSlot = 0x01000;
-    return g_plugin->m_GetItemInSlotHook->CallOriginal<CNWSItem*>(pThis, nSlot);
+    return s_getItemInSlotHook->CallOriginal<CNWSItem*>(pThis, nSlot);
 }
 
 void Layonara::RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag)
@@ -210,8 +214,8 @@ void Layonara::SetArrowsEffect(CNWSCreature *pCreature, bool bOff)
 ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto baseItemId =  Services::Events::ExtractArgument<int32_t>(args);
-    auto slots =  Services::Events::ExtractArgument<int32_t>(args);
+    auto baseItemId =  Events::ExtractArgument<int32_t>(args);
+    auto slots =  Events::ExtractArgument<int32_t>(args);
     Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItemId)->m_nEquipableSlots = slots;
     return stack;
 }
@@ -219,8 +223,8 @@ ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
 ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto featId =  Services::Events::ExtractArgument<int32_t>(args);
-    auto hostile =  Services::Events::ExtractArgument<int32_t>(args);
+    auto featId =  Events::ExtractArgument<int32_t>(args);
+    auto hostile =  Events::ExtractArgument<int32_t>(args);
     auto feat = Globals::Rules()->GetFeat(featId);
     feat->m_bHostileFeat = hostile;
     return stack;
@@ -229,8 +233,8 @@ ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto nBonus = Events::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -265,8 +269,8 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto nBonus = Events::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -299,8 +303,8 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto nBonus = Events::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -332,8 +336,8 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nActive = Services::Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto nActive = Events::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -377,8 +381,8 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto itemId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto itemId = Events::ExtractArgument<ObjectID>(args);
 
     auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
     if (!pCreature)
@@ -567,8 +571,8 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal;
-    const auto targetRuneId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto runeId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto targetRuneId = Events::ExtractArgument<ObjectID>(args);
+    const auto runeId = Events::ExtractArgument<ObjectID>(args);
 
     auto *pTgtGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(targetRuneId);
     auto *pTgtItem = pTgtGameObject->AsNWSItem();
@@ -621,7 +625,7 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
     else
         retVal = "";
 
-    Services::Events::InsertArgument(stack, retVal);
+    Events::InsertArgument(stack, retVal);
     return stack;
 }
 
@@ -629,7 +633,7 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal;
-    const auto runeId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto runeId = Events::ExtractArgument<ObjectID>(args);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(runeId);
     auto *pItem = pGameObject->AsNWSItem();
@@ -730,15 +734,15 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
 
     retVal = retVal + "\nThe rune's effects will last for " + std::to_string(fDuration/60) + " minutes.\n";
 
-    Services::Events::InsertArgument(stack, retVal);
+    Events::InsertArgument(stack, retVal);
     return stack;
 }
 
 ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nColor = Services::Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto nColor = Events::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -783,7 +787,7 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
 ArgumentStack Layonara::SetQuiverArrows(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -873,11 +877,8 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
     return stack;
 }
 
-void Layonara::SetPositionHook(bool before, CNWSObject* thisPtr, Vector vPos, int32_t)
+void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
 {
-    if (!before)
-        return;
-
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
     {
         auto pServer = Globals::AppManager()->m_pServerExoApp;
@@ -942,12 +943,13 @@ void Layonara::SetPositionHook(bool before, CNWSObject* thisPtr, Vector vPos, in
             g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
         }
     }
+    s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bBool);
 }
 
 ArgumentStack Layonara::ClearSurfaceMaterial(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {

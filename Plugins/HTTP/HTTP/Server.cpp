@@ -1,37 +1,29 @@
+#include <future>
 #include "HTTP/Server.hpp"
-
-#include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
-#include "Services/Tasks/Tasks.hpp"
 
 using namespace NWNXLib;
 
 namespace HTTP
 {
 
-TasksProxy* Server::m_servTasks;
-MessagingProxy* Server::m_servMessaging;
-
 std::unique_ptr<httplib::Server> Server::m_httpServer;
 std::unique_ptr<std::thread> Server::m_httpServerThread;
 std::chrono::milliseconds Server::m_responseTimeout;
 
-Server::Server(ConfigProxy* config, EventsProxy* events, MessagingProxy* messaging, TasksProxy* tasks)
+Server::Server()
 {
-    events->RegisterEvent("Server_SendResponse", &SendResponse);
+    Events::RegisterEvent(PLUGIN_NAME, "Server_SendResponse", &SendResponse);
 
-    m_servTasks = tasks;
-    m_servMessaging = messaging;
-    m_responseTimeout = std::chrono::milliseconds(config->Get<int>("SERVER_RESPONSE_TIMEOUT", 1000));
-    auto rootHTML = config->Get<std::string>("SERVER_ROOT_HTML", "<html><head><title>Welcome to nwnx http!</title></head><body><h1>Welcome to nwnx http!</h1></body></html>");
-    auto rootStatus = config->Get<int>("SERVER_ROOT_STATUS", 403);
-    auto httpPort = config->Get<int>("SERVER_PORT", 8686);
-    auto useSSL = config->Get<bool>("SERVER_USE_SSL", false);
-    auto eventURL = config->Get<std::string>("SERVER_EVENT_URL");
+    m_responseTimeout = std::chrono::milliseconds(Config::Get<int>("SERVER_RESPONSE_TIMEOUT", 1000));
+    auto rootHTML = Config::Get<std::string>("SERVER_ROOT_HTML", "<html><head><title>Welcome to nwnx http!</title></head><body><h1>Welcome to nwnx http!</h1></body></html>");
+    auto rootStatus = Config::Get<int>("SERVER_ROOT_STATUS", 403);
+    auto httpPort = Config::Get<int>("SERVER_PORT", 8686);
+    auto useSSL = Config::Get<bool>("SERVER_USE_SSL", false);
+    auto eventURL = Config::Get<std::string>("SERVER_EVENT_URL");
     if (useSSL)
     {
-        auto certFile = config->Get<std::string>("SERVER_SSL_CERT_FILE", "./cert.pem");
-        auto certKey = config->Get<std::string>("SERVER_SSL_KEY_FILE", "./key.pem");
+        auto certFile = Config::Get<std::string>("SERVER_SSL_CERT_FILE", "./cert.pem");
+        auto certKey = Config::Get<std::string>("SERVER_SSL_KEY_FILE", "./key.pem");
         m_httpServer = std::make_unique<httplib::SSLServer>(certFile.c_str(), certKey.c_str());
         if (!m_httpServer->is_valid())
         {
@@ -88,11 +80,11 @@ Server::Server(ConfigProxy* config, EventsProxy* events, MessagingProxy* messagi
                         m_cachedResponses.erase(path);
                     }
                 }
-                m_servTasks->QueueOnMainThread([requestThreadId,path]()
+                Tasks::QueueOnMainThread([requestThreadId,path]()
                 {
-                   m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(requestThreadId)});
-                   m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", path});
-                   m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_SERVER_GET", Utils::ObjectIDToString(0)});
+                   MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(requestThreadId)});
+                   MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", path});
+                   MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_SERVER_GET", Utils::ObjectIDToString(0)});
                 });
                 std::atomic_bool cancellation_token = false;
                 auto future = std::async(std::launch::async, Server::WaitForResponse, requestThreadId, std::ref(cancellation_token));
@@ -169,16 +161,16 @@ Events::ArgumentStack Server::SendResponse(Events::ArgumentStack&& args)
     if (!m_httpServerThread || !m_httpServer->is_running())
     {
         LOG_ERROR("Can't send HTTP server response, no server is running!");
-        return Services::Events::Arguments();
+        return Events::Arguments();
     }
-    auto requestId = Services::Events::ExtractArgument<int>(args);
-    auto response = Services::Events::ExtractArgument<std::string>(args);
-    auto contentType = Services::Events::ExtractArgument<int>(args);
-    auto cacheSeconds = Services::Events::ExtractArgument<int>(args);
+    auto requestId = Events::ExtractArgument<int>(args);
+    auto response = Events::ExtractArgument<std::string>(args);
+    auto contentType = Events::ExtractArgument<int>(args);
+    auto cacheSeconds = Events::ExtractArgument<int>(args);
     auto cacheUntil = std::chrono::system_clock::now() + std::chrono::seconds(cacheSeconds);
     m_responses[requestId] = Server::Response(response, static_cast<HTTP::ContentType>(contentType), cacheUntil);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }
