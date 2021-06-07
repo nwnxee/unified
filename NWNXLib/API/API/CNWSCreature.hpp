@@ -432,7 +432,7 @@ struct CNWSCreature : CNWSObject
     BOOL GetIsPossessedFamiliar();
     OBJECT_ID GetDominatedCreatureId();
     CNWSFaction * GetFaction();
-    OBJECT_ID GetNearestEnemy(float fRange, OBJECT_ID oidToExclude = 0x7f000000, BOOL bVisible = true, BOOL bNoCreaturesOnLine = false);
+    OBJECT_ID GetNearestEnemy(float fRange, OBJECT_ID oidToExclude = 0x7f000000, BOOL bVisible = true, BOOL bAttackClearLineToTarget = false);
     int32_t GetCreatureReputation(OBJECT_ID oidSource, int32_t nSourceFactionId, BOOL bUseOriginalFaction = false);
     int32_t GetStandardFactionReputation(int32_t nStandardFactionId);
     void SetStandardFactionReputation(int32_t nStandardFactionId, int32_t nNewReputation);
@@ -509,6 +509,9 @@ struct CNWSCreature : CNWSObject
     uint32_t AIActionRepositoryMove(CNWSObjectActionNode * pNode);
     uint32_t AIActionEquipItem(CNWSObjectActionNode * pNode);
     uint32_t AIActionUnequipItem(CNWSObjectActionNode * pNode);
+    BOOL CheckAttackClearLineToTarget(OBJECT_ID oidAttackTarget, Vector vTarget = {-10000000.0,-10000000.0,-10000000.0}, CNWSArea * pArea = nullptr);
+    CNWSCreature * GetNewCombatTarget(OBJECT_ID oidAttackTarget);
+    void ChangeAttackTarget(CNWSObjectActionNode * pNode, const OBJECT_ID oidAttackTarget);
     uint32_t AIActionAttackObject(CNWSObjectActionNode * pNode);
     uint32_t AIActionEncounterCreatureDestroySelf();
     uint32_t AIActionAnimalEmpathy(CNWSObjectActionNode * pNode);
@@ -719,7 +722,7 @@ struct CNWSCreature : CNWSObject
     BOOL GetCanSlayAlignment(CNWSObject * pTarget, CNWItemProperty * pProperty);
     int32_t CalculateMaxElementalDamage(CNWSObject * pTarget, BOOL bOffHand);
     uint32_t CalculateProjectileTimeToTarget(Vector vPosition, BOOL bThrownWeapon);
-    uint32_t WalkUpdateLocation();
+    uint32_t WalkUpdateLocation(uint16_t nActionGroupID);
     BOOL WalkUpdateLocationDistance(float fDistance, Vector * vNewPosition, Vector * vNewOrientation, CExoArrayList<OBJECT_ID> * aIntersectingSubAreas);
     BOOL WalkUpdateLocationTestDistance(Vector vStart, Vector vEnd);
 

@@ -1,8 +1,5 @@
-#include "DotNET.hpp"
+#include "nwnx.hpp"
 
-#include "API/ALL_CLASSES.hpp"
-#include "API/Globals.hpp"
-#include "API/Constants.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
@@ -10,17 +7,142 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
-#include "Services/Services.hpp"
-#include "Services/Events/Events.hpp"
 
-#include "Assert.hpp"
-#include "Encoding.hpp"
-#include "Log.hpp"
+#include <dlfcn.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 namespace DotNET {
+
+// Bootstrap functions
+using MainLoopHandlerType  = void (*)(uint64_t);
+using RunScriptHandlerType = int (*)(const char *, uint32_t);
+using ClosureHandlerType = void (*)(uint64_t, uint32_t);
+using SignalHandlerType = void (*)(const char*);
+
+struct AllHandlers
+{
+    MainLoopHandlerType  MainLoop;
+    RunScriptHandlerType RunScript;
+    ClosureHandlerType   Closure;
+    SignalHandlerType    SignalHandler;
+};
+static AllHandlers s_handlers;
+
+static uint32_t s_pushedCount = 0;
+
+static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
+
+static std::string s_nwnxActivePlugin;
+static std::string s_nwnxActiveFunction;
+
+static uintptr_t GetFunctionPointer(const char *name)
+{
+    void *core = dlopen("NWNX_Core.so", RTLD_LAZY);
+    if (!core)
+    {
+        LOG_ERROR("Failed to open core handle: %s", dlerror());
+        return 0;
+    }
+    auto ret = reinterpret_cast<uintptr_t>(dlsym(core, name));
+    if (ret == 0)
+        LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
+    dlclose(core);
+    return ret;
+}
+
+
+static void RegisterHandlers(AllHandlers *handlers, unsigned size)
+{
+    if (size > sizeof(*handlers))
+    {
+        LOG_ERROR("RegisterHandlers argument contains too many entries, aborting");
+        return;
+    }
+    if (size < sizeof(*handlers))
+    {
+        LOG_WARNING("RegisterHandlers argument missing some entries - Managed/Unmanaged mismatch, update managed code");
+    }
+
+    LOG_INFO("Registering managed code handlers.");
+    s_handlers = *handlers;
+
+    LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
+    static Hooks::Hook MainLoopHook;
+    MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+        (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+        {
+            static uint64_t frame = 0;
+            if (s_handlers.MainLoop)
+            {
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                s_handlers.MainLoop(frame);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+            }
+            ++frame;
+
+            return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+        },
+        Hooks::Order::VeryEarly);
+
+
+    LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
+    static Hooks::Hook RunScriptHook;
+    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId) -> int32_t
+        {
+            if (!script || *script == "")
+                return 1;
+
+            LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
+            int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
+            int32_t retval = s_handlers.RunScript(script->CStr(), objId);
+            int spAfter = Utils::PopScriptContext();
+            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+
+            // ~0 is returned if runscript request is not handled and needs to be forwarded
+            if (retval != ~0)
+            {
+                Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
+                Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                return 1;
+            }
+            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
+        },
+        Hooks::Order::Latest);
+
+    LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
+    static Hooks::Hook RunScriptSituationHook;
+    RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+        (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid) -> int32_t
+        {
+            uint64_t eventId;
+            if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
+            {
+                LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
+                int spBefore = Utils::PushScriptContext(objId, 0, !!valid);
+                s_handlers.Closure(eventId, objId);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                delete script;
+                return 1;
+            }
+            return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+        },
+        Hooks::Order::Latest);
+
+    LOG_DEBUG("Registered core signal handler: %p", s_handlers.SignalHandler);
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
+        [](const std::vector<std::string>& message)
+        {
+            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+            s_handlers.SignalHandler(message[0].c_str());
+            int spAfter = Utils::PopScriptContext();
+            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+        });
+}
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
@@ -38,17 +160,17 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
     return script;
 }
 
-void DotNET::CallBuiltIn(int32_t id)
+static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
     auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
     LOG_DEBUG("Calling BuiltIn %i.", id);
     ASSERT(vm->m_nRecursionLevel >= 0);
-    cmd->ExecuteCommand(id, PushedCount);
-    PushedCount = 0;
+    cmd->ExecuteCommand(id, s_pushedCount);
+    s_pushedCount = 0;
 }
 
-void DotNET::StackPushInteger(int32_t value)
+static void StackPushInteger(int32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing integer %i.", value);
@@ -56,7 +178,7 @@ void DotNET::StackPushInteger(int32_t value)
 
     if (vm->StackPushInteger(value))
     {
-        ++PushedCount;
+        ++s_pushedCount;
     }
     else
     {
@@ -65,7 +187,7 @@ void DotNET::StackPushInteger(int32_t value)
     }
 }
 
-void DotNET::StackPushFloat(float value)
+static void StackPushFloat(float value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing float %f.", value);
@@ -73,7 +195,7 @@ void DotNET::StackPushFloat(float value)
 
     if (vm->StackPushFloat(value))
     {
-        ++PushedCount;
+        ++s_pushedCount;
     }
     else
     {
@@ -82,17 +204,17 @@ void DotNET::StackPushFloat(float value)
     }
 }
 
-void DotNET::StackPushString(const char* value)
+static void StackPushString(const char* value)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
 
     LOG_DEBUG("Pushing string '%s'.", value);
-    CExoString str(Encoding::FromUTF8(value).c_str());
+    CExoString str(String::FromUTF8(value).c_str());
 
     if (vm->StackPushString(str))
     {
-        ++PushedCount;
+        ++s_pushedCount;
     }
     else
     {
@@ -101,7 +223,7 @@ void DotNET::StackPushString(const char* value)
     }
 }
 
-void DotNET::StackPushObject(uint32_t value)
+static void StackPushObject(uint32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing object 0x%x.", value);
@@ -109,7 +231,7 @@ void DotNET::StackPushObject(uint32_t value)
 
     if (vm->StackPushObject(value))
     {
-        ++PushedCount;
+        ++s_pushedCount;
     }
     else
     {
@@ -118,7 +240,7 @@ void DotNET::StackPushObject(uint32_t value)
     }
 }
 
-void DotNET::StackPushVector(Vector value)
+static void StackPushVector(Vector value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing vector { %f, %f, %f }.", value.x, value.y, value.z);
@@ -126,7 +248,7 @@ void DotNET::StackPushVector(Vector value)
 
     if (vm->StackPushVector(value))
     {
-        ++PushedCount;
+        ++s_pushedCount;
     }
     else
     {
@@ -135,7 +257,7 @@ void DotNET::StackPushVector(Vector value)
     }
 }
 
-void DotNET::StackPushGameDefinedStructure(int32_t structId, void* value)
+static void StackPushGameDefinedStructure(int32_t structId, void* value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing game defined structure %i at 0x%x.", structId, value);
@@ -148,10 +270,10 @@ void DotNET::StackPushGameDefinedStructure(int32_t structId, void* value)
             structId, value, vm->m_nRecursionLevel);
     }
 
-    PushedCount += ret;
+    s_pushedCount += ret;
 }
 
-int32_t DotNET::StackPopInteger()
+static int32_t StackPopInteger()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -167,7 +289,7 @@ int32_t DotNET::StackPopInteger()
     return value;
 }
 
-float DotNET::StackPopFloat()
+static float StackPopFloat()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -183,7 +305,7 @@ float DotNET::StackPopFloat()
     return value;
 }
 
-const char* DotNET::StackPopString()
+static const char* StackPopString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -198,10 +320,10 @@ const char* DotNET::StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     // TODO: Less copies
-    return strdup(Encoding::ToUTF8(value.CStr()).c_str());
+    return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
-uint32_t DotNET::StackPopObject()
+static uint32_t StackPopObject()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -217,7 +339,7 @@ uint32_t DotNET::StackPopObject()
     return value;
 }
 
-Vector DotNET::StackPopVector()
+static Vector StackPopVector()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -233,7 +355,7 @@ Vector DotNET::StackPopVector()
     return value;
 }
 
-void* DotNET::StackPopGameDefinedStructure(int32_t structId)
+static void* StackPopGameDefinedStructure(int32_t structId)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -250,7 +372,7 @@ void* DotNET::StackPopGameDefinedStructure(int32_t structId)
     return value;
 }
 
-void DotNET::FreeGameDefinedStructure(int32_t structId, void* ptr)
+static void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
@@ -260,7 +382,7 @@ void DotNET::FreeGameDefinedStructure(int32_t structId, void* ptr)
     }
 }
 
-int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
+static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -272,7 +394,7 @@ int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
+static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -287,7 +409,7 @@ int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t event
     return 0;
 }
 
-int32_t DotNET::ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
+static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
     if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
@@ -298,80 +420,137 @@ int32_t DotNET::ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-void DotNET::nwnxSetFunction(const char *plugin, const char *function)
+static void nwnxSetFunction(const char *plugin, const char *function)
 {
-    nwnxActivePlugin = plugin;
-    nwnxActiveFunction = function;
+    s_nwnxActivePlugin = plugin;
+    s_nwnxActiveFunction = function;
 }
-void DotNET::nwnxPushInt(int32_t n)
+static void nwnxPushInt(int32_t n)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, n);
+    Events::Push(n);
 }
-void DotNET::nwnxPushFloat(float f)
+static void nwnxPushFloat(float f)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, f);
+    Events::Push(f);
 }
-void DotNET::nwnxPushObject(uint32_t o)
+static void nwnxPushObject(uint32_t o)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, (ObjectID)o);
+    Events::Push((ObjectID)o);
 }
-void DotNET::nwnxPushString(const char *s)
+static void nwnxPushString(const char *s)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, Encoding::FromUTF8(s));
+    Events::Push(String::FromUTF8(s));
 }
-void DotNET::nwnxPushEffect(CGameEffect *e)
+static void nwnxPushEffect(CGameEffect *e)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, e);
+    Events::Push(e);
 }
-void DotNET::nwnxPushItemProperty(CGameEffect *ip)
+static void nwnxPushItemProperty(CGameEffect *ip)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, ip);
+    Events::Push(ip);
 }
-int32_t DotNET::nwnxPopInt()
+static int32_t nwnxPopInt()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<int32_t>(nwnxActivePlugin, nwnxActiveFunction).value_or(0);
+    return Events::Pop<int32_t>().value_or(0);
 }
-float DotNET::nwnxPopFloat()
+static float nwnxPopFloat()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<float>(nwnxActivePlugin, nwnxActiveFunction).value_or(0.0f);
+    return Events::Pop<float>().value_or(0.0f);
 }
-uint32_t DotNET::nwnxPopObject()
+static uint32_t nwnxPopObject()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<ObjectID>(nwnxActivePlugin, nwnxActiveFunction).value_or(Constants::OBJECT_INVALID);
+    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
-const char* DotNET::nwnxPopString()
+static const char* nwnxPopString()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    auto str = events->Pop<std::string>(nwnxActivePlugin, nwnxActiveFunction).value_or(std::string{""});
-    return strdup(Encoding::ToUTF8(str).c_str());
+    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    return strdup(String::ToUTF8(str).c_str());
 }
-CGameEffect* DotNET::nwnxPopEffect()
+static CGameEffect* nwnxPopEffect()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-CGameEffect* DotNET::nwnxPopItemProperty()
+static CGameEffect* nwnxPopItemProperty()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-void DotNET::nwnxCallFunction()
+static void nwnxCallFunction()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Call(nwnxActivePlugin, nwnxActiveFunction);
+    Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
-NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
+
+static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals()
 {
     return NWNXLib::API::Globals::ExportedGlobals;
 }
 
+static void* RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+{
+    auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
+    return funchook->GetOriginal();
 }
+
+static void ReturnHook(void* trampoline)
+{
+    for (auto it = s_managedHooks.begin(); it != s_managedHooks.end(); it++)
+    {
+        if (it->get()->GetOriginal() == trampoline)
+        {
+            s_managedHooks.erase(it);
+            return;
+        }
+    }
+}
+
+std::vector<void*> GetExports()
+{
+    //
+    // Fill the function table to hand over to managed code
+    // NOTE: Only add new entries to the end of this table, DO NOT RESHUFFLE.
+    //
+    std::vector<void*> exports;
+    exports.push_back((void*)&GetFunctionPointer);
+    exports.push_back((void*)&RegisterHandlers);
+    exports.push_back((void*)&CallBuiltIn);
+    exports.push_back((void*)&StackPushInteger);
+    exports.push_back((void*)&StackPushFloat);
+    exports.push_back((void*)&StackPushString);
+    exports.push_back((void*)&StackPushString); // reserved utf8
+    exports.push_back((void*)&StackPushObject);
+    exports.push_back((void*)&StackPushVector);
+    exports.push_back((void*)&StackPushGameDefinedStructure);
+    exports.push_back((void*)&StackPopInteger);
+    exports.push_back((void*)&StackPopFloat);
+    exports.push_back((void*)&StackPopString);
+    exports.push_back((void*)&StackPopString); // reserved utf8
+    exports.push_back((void*)&StackPopObject);
+    exports.push_back((void*)&StackPopVector);
+    exports.push_back((void*)&StackPopGameDefinedStructure);
+    exports.push_back((void*)&FreeGameDefinedStructure);
+    exports.push_back((void*)&ClosureAssignCommand);
+    exports.push_back((void*)&ClosureDelayCommand);
+    exports.push_back((void*)&ClosureActionDoCommand);
+    exports.push_back((void*)&nwnxSetFunction);
+    exports.push_back((void*)&nwnxPushInt);
+    exports.push_back((void*)&nwnxPushFloat);
+    exports.push_back((void*)&nwnxPushObject);
+    exports.push_back((void*)&nwnxPushString);
+    exports.push_back((void*)&nwnxPushString); // reserved utf8
+    exports.push_back((void*)&nwnxPushEffect);
+    exports.push_back((void*)&nwnxPushItemProperty);
+    exports.push_back((void*)&nwnxPopInt);
+    exports.push_back((void*)&nwnxPopFloat);
+    exports.push_back((void*)&nwnxPopObject);
+    exports.push_back((void*)&nwnxPopString);
+    exports.push_back((void*)&nwnxPopString); // reserved utf8
+    exports.push_back((void*)&nwnxPopEffect);
+    exports.push_back((void*)&nwnxPopItemProperty);
+    exports.push_back((void*)&nwnxCallFunction);
+    exports.push_back((void*)&GetNWNXExportedGlobals);
+    exports.push_back((void*)&RequestHook);
+    exports.push_back((void*)&ReturnHook);
+    return exports;
+}
+
+}
+

@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
+#include <unordered_map>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -30,6 +31,7 @@ struct CTlkTable
     BOOL m_bRemove;
     CExoString m_sTlkFilePath;
     CExoString m_sTlkFileAlternatePath;
+    std::unordered_map<STRREF, CExoString> m_overrides;
 
     CTlkTable();
     virtual ~CTlkTable();
@@ -38,6 +40,8 @@ struct CTlkTable
     void CloseFileAlternate();
     void SetCustomToken(int32_t nCustomTokenNumber, const CExoString & sValue);
     void ClearCustomTokens();
+    void ClearOverrides();
+    void SetOverride(STRREF strId, const CExoString & ovr);
     char * RemapFontName(char * pFontName);
     void ParseStr(CExoString & sText);
     CExoString GetSimpleString(STRREF strId);

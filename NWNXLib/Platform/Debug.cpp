@@ -1,5 +1,4 @@
-#include "Platform/Debug.hpp"
-#include "Platform/ASLR.hpp"
+#include "nwnx.hpp"
 #include <cstring>
 #include <cstdio>
 
@@ -7,7 +6,8 @@
 #include <signal.h>
 #include <map>
 
-namespace NWNXLib::Platform::Debug {
+namespace NWNXLib::Platform
+{
 
 bool IsDebuggerPresent()
 {
@@ -58,23 +58,23 @@ std::string GetStackTrace(uint8_t levels)
 }
 
 static std::map<uintptr_t, std::string> s_FunctionMap;
-using namespace NWNXLib::Platform::Debug;
-
 static void InitFunctionMap()
 {
     if (s_FunctionMap.size()) return;
 
+#undef NWNXLIB_FUNCTION
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 #define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
 #include "API/FunctionsLinux.hpp"
+#undef NWNXLIB_FUNCTION
 }
 
 std::string ResolveAddress(uintptr_t address)
 {
     InitFunctionMap();
 
-    if (address > ASLR::GetRelocatedAddress(0))
-        address -= ASLR::GetRelocatedAddress(0);
+    if (address > GetRelocatedAddress(0))
+        address -= GetRelocatedAddress(0);
 
     auto it = s_FunctionMap.upper_bound(address);
     if (it != s_FunctionMap.begin())

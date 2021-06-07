@@ -1,5 +1,7 @@
 add_plugin(Optimizations
-        "Optimizations.cpp"
-        "Optimizations/AsyncLogFlush.cpp"
-        "Optimizations/GameObjectLookup.cpp"
+        "AsyncLogFlush.cpp"
+        "GameObjectLookup.cpp"
+        "LuoLookup.cpp"
+        "PlayerLookup.cpp"
+        "ReconcileAutoMap.cpp"
 )

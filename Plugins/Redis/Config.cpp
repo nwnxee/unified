@@ -1,14 +1,12 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Config/Config.hpp"
 
 namespace Redis
 {
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 
 std::unique_ptr<cpp_redis::redis_client> Redis::PoolMakeFunc()
 {
@@ -30,13 +28,13 @@ void Redis::Reconfigure()
         std::lock_guard<std::mutex> lock(m_internal->m_config_mtx);
 
         // Redis server.
-        m_internal->m_config.m_host = GetServices()->m_config->Require<std::string>("HOST");
-        m_internal->m_config.m_port = GetServices()->m_config->Get<int>("PORT", 6379);
+        m_internal->m_config.m_host = *Config::Get<std::string>("HOST");
+        m_internal->m_config.m_port = Config::Get<int>("PORT", 6379);
 
         // Pubsub.
-        m_internal->m_config.m_pubsub_script = GetServices()->m_config->Get<std::string>("PUBSUB_SCRIPT", "on_pubsub");
-        m_internal->m_config.m_pubsub_channels = Utils::split(GetServices()->m_config->
-                Get<std::string>("PUBSUB_CHANNELS", ""), ',');
+        m_internal->m_config.m_pubsub_script = Config::Get<std::string>("PUBSUB_SCRIPT", "on_pubsub");
+        m_internal->m_config.m_pubsub_channels = String::Split(
+            Config::Get<std::string>("PUBSUB_CHANNELS", ""), ',');
 
         LOG_INFO("Reconfiguring for redis at %s:%d",
                                    m_internal->m_config.m_host,

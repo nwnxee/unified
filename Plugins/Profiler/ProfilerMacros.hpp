@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Profiler.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "Timing.hpp"
 
 #include <array>
@@ -16,8 +15,9 @@ struct ProfilingLandingScopeFlip
 };
 
 #define DECLARE_PROFILE_TARGET_INTERNAL(profiler, name, fn, ret, ...)           \
+static NWNXLib::Hooks::Hook g_##name##Hook = nullptr;                \
 template <typename ... Params>                                                  \
-static void ProfileLanding__##name(bool before, Params ... args)                \
+static ret ProfileLanding__##name(Params ... args)                             \
 {                                                                               \
     static size_t s_head = 0;                                                   \
                                                                                 \
@@ -30,18 +30,13 @@ static void ProfileLanding__##name(bool before, Params ... args)                
     using namespace NWNXLib::Services;                                          \
     static std::array<FastTimer, FastTimer::MAX_DEPTH> s_scope;                 \
                                                                                 \
-    if (before)                                                                 \
-    {                                                                           \
-        s_scope[s_head++].Start();                                              \
-    }                                                                           \
-    else                                                                        \
-    {                                                                           \
-        s_scope[--s_head].Stop(profiler, #name, fn(args ...));                  \
-    }                                                                           \
+    SCOPEGUARD(s_scope[--s_head].Stop(profiler, #name, fn(args ...)););         \
+    s_scope[s_head++].Start();                                                  \
+    return g_##name##Hook->CallOriginal<ret>(args ...);                         \
 }
 
 #define DECLARE_PROFILE_TARGET_FAST_INTERNAL(profiler, name, fn, ret, ...)  \
-static NWNXLib::Hooking::FunctionHook* g_##name##Hook = nullptr;            \
+static NWNXLib::Hooks::Hook g_##name##Hook = nullptr;            \
 template <typename ... Params>                                              \
 static ret ProfileLanding__##name(Params ... args)                          \
 {                                                                           \
@@ -50,7 +45,7 @@ static ret ProfileLanding__##name(Params ... args)                          \
 }
 
 #define DECLARE_PROFILE_TARGET_FAST_NO_RECURSIVE_INTERNAL(profiler, name, fn, ret, ...)  \
-static NWNXLib::Hooking::FunctionHook* g_##name##Hook = nullptr;                         \
+static NWNXLib::Hooks::Hook g_##name##Hook = nullptr;                         \
 template <typename ... Params>                                                           \
 static ret ProfileLanding__##name(Params ... args)                                       \
 {                                                                                        \
@@ -102,14 +97,16 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
     ret,                                                                          \
     __VA_ARGS__)
 
-#define DEFINE_PROFILER_TARGET(hooker, name, address, ret, ...)                                \
+#define DEFINE_PROFILER_TARGET(name, address, ret, ...)                                \
 {                                                                                              \
-    hooker->RequestSharedHook<address, ret, __VA_ARGS__>                                       \
-        (&ProfileLanding__##name<__VA_ARGS__>);                                                \
+    g_##name##Hook = Hooks::HookFunction(address,                                                     \
+        (void*)&ProfileLanding__##name<__VA_ARGS__>,                                           \
+        NWNXLib::Hooks::Order::Earliest);                                                    \
 }
 
-#define DEFINE_PROFILER_TARGET_FAST(hooker, name, address, ret, ...)                              \
+#define DEFINE_PROFILER_TARGET_FAST(name, address, ret, ...)                              \
 {                                                                                                 \
-    g_##name##Hook = hooker->RequestExclusiveHook<address, ret, __VA_ARGS__>                      \
-        (&ProfileLanding__##name<__VA_ARGS__>);                                                   \
+    g_##name##Hook = Hooks::HookFunction(address,                                                        \
+        (void*)&ProfileLanding__##name<__VA_ARGS__>,                                              \
+        NWNXLib::Hooks::Order::Earliest);                                                       \
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils.hpp"
+#include "nwnx.hpp"
 #include "API/API/CGameEffect.hpp"
 
 #include <deque>

@@ -60,11 +60,11 @@ void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 =
 {
     string sFunc = "SetRacialModifier";
 
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iParam3);
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iParam2);
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iParam1);
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iMod);
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
+    NWNX_PushArgumentInt(iParam3);
+    NWNX_PushArgumentInt(iParam2);
+    NWNX_PushArgumentInt(iParam1);
+    NWNX_PushArgumentInt(iMod);
+    NWNX_PushArgumentInt(iRace);
 
     NWNX_CallFunction(NWNX_Race, sFunc);
 }
@@ -73,18 +73,18 @@ int NWNX_Race_GetParentRace(int iRace)
 {
     string sFunc = "GetParentRace";
 
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
+    NWNX_PushArgumentInt(iRace);
 
     NWNX_CallFunction(NWNX_Race, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Race, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat)
 {
     string sFunc = "SetFavoredEnemyFeat";
 
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iFeat);
-    NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
+    NWNX_PushArgumentInt(iFeat);
+    NWNX_PushArgumentInt(iRace);
 
     NWNX_CallFunction(NWNX_Race, sFunc);
 }

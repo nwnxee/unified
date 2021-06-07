@@ -1,10 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include "API/Globals.hpp"
 #include "API/CExoString.hpp"
 #include "API/CAppManager.hpp"
@@ -18,7 +14,6 @@ namespace Redis
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 using namespace NWNXLib::API;
 
 void Redis::OnPubsub(const std::string& channel, const std::string& message)
@@ -36,7 +31,7 @@ void Redis::OnPubsub(const std::string& channel, const std::string& message)
 
     if (!scr.empty())
     {
-        GetServices()->m_tasks->QueueOnMainThread([this, scr, channel, message] {
+        Tasks::QueueOnMainThread([this, scr, channel, message] {
 
             m_internal->m_last_pubsub_channel = channel;
             m_internal->m_last_pubsub_message = message;

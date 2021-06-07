@@ -16,11 +16,23 @@ macro(nwnxlib_add)
     endif()
 endmacro()
 
-nwnxlib_add("Assert.cpp" "Log.cpp" "Serialize.cpp" "Utils.cpp" "Encoding.cpp")
+nwnxlib_add(
+    "Assert.cpp"
+    "Log.cpp"
+    "Serialize.cpp"
+    "Utils.cpp"
+    "Encoding.cpp"
+    "Plugin.cpp"
+    "Commands.cpp"
+    "Events.cpp"
+    "MessageBus.cpp"
+    "Hooks.cpp"
+    "Tasks.cpp"
+    "POS.cpp"
+)
 
 add_subdirectory(API)
 add_subdirectory(External)
-add_subdirectory(Hooking)
 add_subdirectory(Platform)
 add_subdirectory(Services)
 add_subdirectory(Utils)

@@ -10,6 +10,7 @@
 #include "CResRef.hpp"
 #include "RESID.hpp"
 
+#include <memory>
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResMan)
@@ -64,6 +65,7 @@ struct CExoResMan
     void DumpAllOfType(RESTYPE nType);
     void FreeResourceData(CRes * pRes);
     BOOL Exists(const CResRef & cResRef, RESTYPE nType, uint32_t * pTableType = nullptr);
+    std::shared_ptr<void*> Get(const CResRef & cResRef, RESTYPE nType);
     CExoLocString GetEncapsulatedFileDescription(const CExoString & sFileName);
     CRes * GetResObject(const CResRef & cResRef, RESTYPE nType);
     CExoStringList * GetResOfType(RESTYPE nType, BOOL bERFOnly = false);

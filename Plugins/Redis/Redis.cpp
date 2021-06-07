@@ -1,11 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Tasks/Tasks.hpp"
-
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 
@@ -23,12 +18,11 @@ namespace Redis
 {
 
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 
 Redis::Redis(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN20CVirtualMachineStack10ClearStackEv, void>(&CleanState);
+    m_ClearStackHook = Hooks::HookFunction(Functions::_ZN20CVirtualMachineStack10ClearStackEv, (void*)&CleanState, Hooks::Order::Early);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 

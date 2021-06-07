@@ -23,13 +23,17 @@ find_package(Sanitizers)
 
 execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
-set(TARGET_NWN_BUILD_REVISION 20)
+set(TARGET_NWN_BUILD_REVISION 23)
 set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
     add_library(${target} MODULE ${ARGN})
+    configure_plugin(${target})
+endfunction()
+
+function(configure_plugin target)
     add_sanitizers(${target})
     target_link_libraries(${target} Core)
     set_target_properties(${target} PROPERTIES PREFIX "${PLUGIN_PREFIX}")
@@ -86,7 +90,7 @@ foreach(plugin ${plugins})
     add_subdirectory(${pluginPath})
 endforeach(plugin)
 
-# Allow specifying out of tree plugins by putting their paths in env. variable
+# Allow specifying out of tree plugins by putting their paths in an env. variable
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
     add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 endforeach(addplugin)

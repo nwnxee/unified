@@ -14,7 +14,7 @@ public:
     MySQL();
     virtual ~MySQL() override;
 
-    virtual void Connect(NWNXLib::Services::ConfigProxy* config) override;
+    virtual void Connect() override;
     virtual bool IsConnected() override;
     virtual bool PrepareQuery(const Query& query) override;
     virtual std::optional<ResultSet> ExecuteQuery() override;

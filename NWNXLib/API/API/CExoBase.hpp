@@ -42,11 +42,11 @@ struct CExoBase
     BOOL GetDirectoryList(CExoArrayList<CExoString> * lstFilename, CExoString sAlias, RESTYPE nResType, BOOL bGetDirectories = false, BOOL bSort = false);
     BOOL GetDirectoryAndWorkshopList(CExoArrayList<CExoString> * lstFilename, CExoString sAlias, RESTYPE nResType, BOOL bGetDirectories = false, BOOL bSort = false);
     int32_t GetAugmentedDirectoryList(CExoArrayList<CFileInfo> * lstFileInfo, CExoString sAlias, RESTYPE nResType, BOOL bSort = false);
+    const CExoString & GetInstallDirectory();
     const CExoString & GetResourceExtension(RESTYPE nType);
     RESTYPE GetResTypeFromExtension(const CExoString & sExtension);
     void LoadAliases(int32_t idxIniFile);
     void ShutDown();
-    void SpawnExternalApplication(const CExoString & sAppName, const CExoString & sParams, BOOL bShutDownNWN);
     BOOL CheckForCD(uint32_t nLanguage = 0);
 
 

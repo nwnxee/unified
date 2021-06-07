@@ -1,13 +1,8 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Plugin.hpp"
+#include "nwnx.hpp"
 #include "API/Constants/Misc.hpp"
-#include "Services/Events/Events.hpp"
-
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
-
-namespace NWNXLib::Hooking { class FunctionHook; }
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Chat {
 
@@ -18,9 +13,9 @@ public:
     virtual ~Chat();
 
 private:
-    NWNXLib::Hooking::FunctionHook* m_hook;
+    NWNXLib::Hooks::Hook m_hook;
 
-    NWNXLib::API::Constants::ChatChannel::TYPE m_activeChannel;
+    uint8_t m_activeChannel;
     std::string m_activeMessage;
     ObjectID m_activeSenderObjectId;
     ObjectID m_activeTargetObjectId;
@@ -28,11 +23,10 @@ private:
     std::string m_chatScript;
     bool m_skipMessage;
     bool m_customHearingDistances;
-    std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
+    std::unordered_map<uint8_t, float> m_hearingDistances;
     uint32_t m_depth;
 
-    static void SendServerToPlayerChatMessage(CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, ObjectID sender,
-        CExoString message, ObjectID target, CExoString* tellName);
+    static int32_t SendServerToPlayerChatMessage(CNWSMessage*, uint8_t, ObjectID, CExoString, ObjectID, const CExoString&);
 
     ArgumentStack SendMessage               (ArgumentStack&& args);
     ArgumentStack RegisterChatScript        (ArgumentStack&& args);

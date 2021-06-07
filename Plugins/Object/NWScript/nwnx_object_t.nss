@@ -117,6 +117,11 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "SetHasInventory", GetHasInventory(oPlc) == !bHasInventory);
     DestroyObject(oPlc);
 
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetAILevel(oPlc, AI_LEVEL_VERY_HIGH);
+    NWNX_Tests_Report("NWNX_Object", "{Get/Set}AILevel", NWNX_Object_GetAILevel(oPlc) == AI_LEVEL_VERY_HIGH);
+    DestroyObject(oPlc);
+
     DestroyObject(o);
     DestroyObject(oDeserialized);
     WriteTimestampedLogEntry("NWNX_Object unit test end.");
