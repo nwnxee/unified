@@ -143,6 +143,8 @@ ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
+    Events::InsertArgument(stack, m_AttackData.nToHitModifier);
+    Events::InsertArgument(stack, m_AttackData.nToHitRoll);
     Events::InsertArgument(stack, m_AttackData.nAttackType);
     Events::InsertArgument(stack, m_AttackData.bKillingBlow);
     Events::InsertArgument(stack, m_AttackData.nSneakAttack);
@@ -211,6 +213,8 @@ void Damage::OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::strin
     attackData.nSneakAttack = combatAttackData->m_bSneakAttack + (combatAttackData->m_bDeathAttack << 1);
     attackData.bKillingBlow = combatAttackData->m_bKillingBlow;
     attackData.nAttackType = combatAttackData->m_nAttackType;
+    attackData.nToHitRoll = combatAttackData->m_nToHitRoll;
+    attackData.nToHitModifier = combatAttackData->m_nToHitMod;
     std::memcpy(attackData.vDamage, combatAttackData->m_nDamage, sizeof(attackData.vDamage));
     // run script, then copy back attack data
     Utils::ExecuteScript(script, pThis->m_idSelf);
