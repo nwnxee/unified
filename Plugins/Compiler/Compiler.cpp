@@ -10,8 +10,6 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-#include "API/CTlkTable.hpp"
-
 namespace Compiler
 {
 using namespace NWNXLib;
@@ -24,7 +22,6 @@ static void CleanOutput(const std::string& outputPath);
 static void CreateResourceDirectory(const CExoString& alias, const std::string& path, uint32_t priority);
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString&);
 static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler);
-static void RemoveResourceDirectory(const CExoString&);
 
 void Compiler() __attribute__((constructor));
 
@@ -84,9 +81,6 @@ void Compiler()
 
         const auto result = Compile(sourcePath, outputPath, CreateAndConfigureCompiler(outputAlias));
 
-        RemoveResourceDirectory(sourceAlias);
-        RemoveResourceDirectory(outputAlias);
-
         if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
         {
             exit(result);
@@ -145,12 +139,6 @@ static void CreateResourceDirectory(const CExoString& alias, const std::string& 
     Globals::ExoBase()->m_pcExoAliasList->Add(qualifiedAlias, path.c_str());
     Globals::ExoResMan()->CreateDirectory(qualifiedAlias);
     Globals::ExoResMan()->AddResourceDirectory(qualifiedAlias, priority, false);
-}
-
-static void RemoveResourceDirectory(const CExoString& alias)
-{
-    Globals::ExoResMan()->RemoveResourceDirectory(alias);
-    Globals::ExoBase()->m_pcExoAliasList->Delete(alias);
 }
 
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString& outputAlias)
