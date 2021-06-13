@@ -19,7 +19,7 @@ https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 - Util: SetCurrentlyRunningEvent()
 
 ### Changed
-- N/A
+- Damage: added ToHitRoll and ToHitModifier data to the AttackEvent structure.
 
 ### Deprecated
 - N/A

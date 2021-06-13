@@ -50,6 +50,8 @@ struct NWNX_Damage_AttackEventData
     int iSneakAttack; ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
     int iAttackType; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
     int bKillingBlow; ///< TRUE if the hit is a killing blow
+    int iToHitRoll; ///< The to hit roll of the attack
+    int iToHitModifier; ///< The to hit modifier of the attack
 };
 
 /// @struct NWNX_Damage_DamageData
@@ -206,6 +208,8 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iSneakAttack      = NWNX_GetReturnValueInt();
     data.bKillingBlow      = NWNX_GetReturnValueInt();
     data.iAttackType       = NWNX_GetReturnValueInt();
+    data.iToHitRoll        = NWNX_GetReturnValueInt();
+    data.iToHitModifier    = NWNX_GetReturnValueInt();
 
     return data;
 }

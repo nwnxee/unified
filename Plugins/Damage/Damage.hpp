@@ -20,6 +20,8 @@ struct AttackDataStr
     uint8_t  bRanged;
     int32_t  bKillingBlow;
     uint16_t nAttackType;
+    uint8_t nToHitRoll;
+    int32_t nToHitModifier;
 };
 
 namespace Damage {
