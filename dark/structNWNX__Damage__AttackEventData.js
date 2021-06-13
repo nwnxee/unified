@@ -19,5 +19,7 @@ var structNWNX__Damage__AttackEventData =
     [ "iWeaponAttackType", "structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873", null ],
     [ "iSneakAttack", "structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0", null ],
     [ "iAttackType", "structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f", null ],
-    [ "bKillingBlow", "structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d", null ]
+    [ "bKillingBlow", "structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d", null ],
+    [ "iToHitRoll", "structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235", null ],
+    [ "iToHitModifier", "structNWNX__Damage__AttackEventData.html#afc5f25c2e9d25dfe026a45eb479f0ece", null ]
 ];

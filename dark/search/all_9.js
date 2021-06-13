@@ -47,5 +47,7 @@ var searchData=
   ['item_238',['Item',['../group__item.html',1,'']]],
   ['itemproperty_239',['ItemProperty',['../group__itemproperty.html',1,'']]],
   ['itimestamp_240',['iTimestamp',['../structNWNX__WebHook__Message.html#acc31ee95b8eeebba9f5d970bcc796c90',1,'NWNX_WebHook_Message']]],
-  ['iweaponattacktype_241',['iWeaponAttackType',['../structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873',1,'NWNX_Damage_AttackEventData']]]
+  ['itohitmodifier_241',['iToHitModifier',['../structNWNX__Damage__AttackEventData.html#afc5f25c2e9d25dfe026a45eb479f0ece',1,'NWNX_Damage_AttackEventData']]],
+  ['itohitroll_242',['iToHitRoll',['../structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235',1,'NWNX_Damage_AttackEventData']]],
+  ['iweaponattacktype_243',['iWeaponAttackType',['../structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873',1,'NWNX_Damage_AttackEventData']]]
 ];
