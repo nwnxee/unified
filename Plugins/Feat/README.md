@@ -5,7 +5,8 @@ This plugin allows for the builder to define many traits for feats.
 
 ## Environmental Variables
 
-`NWNX_FEAT_SHOW_EFFECT_ICON` - Helpful when debugging, this shows the effect's icon (the red and green squares). Some builders may even wish this permanently.
+- `NWNX_FEAT_SHOW_EFFECT_ICON` - Helpful when debugging, this shows the effect's icon (the red and green squares). Some builders may even wish this permanently.
+- `NWNX_FEAT_CUSTOM_SPELL_ID` - A custom spell id given to all effects created by this plugin.
 
 ## Setup
 Adding new feats is beyond the scope of this documentation. The builder should know how to add new feats by adding a new entry in the `feat.2da` as well as adding the appropriate TLK reference identifiers for that new feat then adjusting the appropriate columns for that feat.

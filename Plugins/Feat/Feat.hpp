@@ -20,6 +20,7 @@ public:
 
 private:
     bool m_ShowEffectIcon;
+    uint32_t m_nCustomSpellID;
 
     ArgumentStack SetFeatModifier(ArgumentStack&& args);
 

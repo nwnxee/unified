@@ -56,6 +56,7 @@ Feat::Feat(Services::ProxyServiceList* services)
 #undef REGISTER
 
     m_ShowEffectIcon = Config::Get<bool>("SHOW_EFFECT_ICON", false);
+    m_nCustomSpellID = Config::Get<uint32_t>("CUSTOM_SPELL_ID", 0xFFFFFFFF);
 
     // We want the feat bonuses to not count toward limits
     s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
@@ -94,6 +95,7 @@ void Feat::DoEffect(CNWSCreature *pCreature,
     eff->m_nType              = nType;
     eff->m_nSubType           = Constants::EffectSubType::Supernatural | Constants::EffectDurationType::Innate;
     eff->m_bShowIcon          = g_plugin->m_ShowEffectIcon;
+    eff->m_nSpellId           = g_plugin->m_nCustomSpellID;
     eff->m_nParamInteger[0]   = param0;
     eff->m_nParamInteger[1]   = param1;
     eff->m_nParamInteger[2]   = param2;
