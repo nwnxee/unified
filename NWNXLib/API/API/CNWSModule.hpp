@@ -36,6 +36,9 @@ struct NWMODULEENTRYINFO;
 struct NWMODULEHEADER;
 struct NWPLAYERCHARACTERLISTITEM;
 
+namespace NWSync {
+struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
@@ -54,8 +57,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoLinkedList<CNWSPlayerTURD> m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
-    NWSyncAdvertisement m_nwsyncData;
-    BOOL m_bNWSyncPublishHaks;
+    NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
     CUUID m_cModUUID;
@@ -152,7 +154,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CNWSArea * GetAreaByTag(CExoString & sAreaTag);
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
-    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
+    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement * nwsyncModuleSourceAdvert = nullptr);
     uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
     uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();

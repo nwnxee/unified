@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nwnx.hpp"
+#include "API/CNWSModule.hpp"
 
 namespace MaxLevel {
 
@@ -17,7 +18,7 @@ private:
     std::unordered_map<uint16_t, std::unordered_map<uint8_t, std::unordered_map<uint8_t, uint8_t>>> m_nSpellKnownTableAdded;
     std::unordered_map<uint16_t, std::unordered_map<uint8_t, uint8_t>> m_nSpellLevelsPerLevelAdded;
 
-    static uint32_t LoadModuleStartHook(CNWSModule*, CExoString, int32_t, int32_t);
+    static uint32_t LoadModuleStartHook(CNWSModule*, CExoString, int32_t, int32_t, const NWSync::Advertisement*);
     static void LoadSpellGainTableHook(CNWClass*, CExoString);
     static void LoadSpellKnownTableHook(CNWClass*, CExoString);
     static uint8_t GetSpellGainHook(CNWClass*, uint8_t, uint8_t);

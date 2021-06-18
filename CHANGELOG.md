@@ -4,14 +4,35 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.23-HEAD
-https://github.com/nwnxee/unified/compare/build8193.23...HEAD
+## 8193.24-HEAD
+https://github.com/nwnxee/unified/compare/build8193.24...HEAD
 
 ### Added
-- Feat: added environment variable `NWNX_FEAT_CUSTOM_SPELL_ID` to give a custom spellid to all effects created by this plugin.
+- N/A
 
 ##### New Plugins
 - N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.24
+https://github.com/nwnxee/unified/compare/build8193.23...build8193.24
+
+### Added
+- Feat: added environment variable `NWNX_FEAT_CUSTOM_SPELL_ID` to give a custom spellid to all effects created by this plugin.
 
 ##### New NWScript Functions
 - Creature: RunEquip()
@@ -20,12 +41,6 @@ https://github.com/nwnxee/unified/compare/build8193.23...HEAD
 
 ### Changed
 - Damage: added ToHitRoll and ToHitModifier data to the AttackEvent structure.
-
-### Deprecated
-- N/A
-
-### Removed
-- N/A
 
 ### Fixed
 - Core: {Get|Set}LocalCassowary() actually work and no longer throw asserts.

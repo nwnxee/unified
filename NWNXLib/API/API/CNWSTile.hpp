@@ -30,7 +30,6 @@ struct CNWSTile : CNWTile
     BOOL m_bMainLightColorChange;
     BOOL m_bSourceLightColorChange;
     BOOL m_bFlaggedAsProblem;
-    BOOL m_bHasPlaceableWithWalkMesh;
 
     CNWSTile();
     ~CNWSTile();

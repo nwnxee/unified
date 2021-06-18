@@ -39,7 +39,7 @@ struct CExoBase
 
     CExoBase(CExoString sUserDirectory);
     ~CExoBase();
-    BOOL GetDirectoryList(CExoArrayList<CExoString> * lstFilename, CExoString sAlias, RESTYPE nResType, BOOL bGetDirectories = false, BOOL bSort = false);
+    BOOL GetDirectoryList(CExoArrayList<CExoString> * lstFilename, CExoString sAliasOrPath, RESTYPE nResType, BOOL bGetDirectories = false, BOOL bSort = false, BOOL bResolveAlias = true);
     BOOL GetDirectoryAndWorkshopList(CExoArrayList<CExoString> * lstFilename, CExoString sAlias, RESTYPE nResType, BOOL bGetDirectories = false, BOOL bSort = false);
     int32_t GetAugmentedDirectoryList(CExoArrayList<CFileInfo> * lstFileInfo, CExoString sAlias, RESTYPE nResType, BOOL bSort = false);
     const CExoString & GetInstallDirectory();
