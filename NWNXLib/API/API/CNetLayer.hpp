@@ -13,11 +13,6 @@ struct CBaseExoApp;
 struct CNetLayerInternal;
 struct CNetLayerPlayerInfo;
 struct CNetLayerSessionInfo;
-struct NWSyncAdvertisement;
-
-namespace NWSync {
-    struct Advertisement; // NWSyncAdvertisement
-}
 
 typedef int BOOL;
 
@@ -118,8 +113,6 @@ struct CNetLayer
     BOOL GetEnumerateSpecificOverRelay();
     void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken[6]);
     CExoString GetRouterPortMapDescription();
-    void SetNWSyncData(const NWSync::Advertisement & datra);
-    const NWSyncAdvertisement & GetNWSyncData() const;
     BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
 
 
