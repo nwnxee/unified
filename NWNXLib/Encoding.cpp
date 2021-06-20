@@ -175,6 +175,8 @@ std::string FromUTF8(const char *str, Locale locale)
                         {
                             if (codepoint == 1025)
                                 codepoint = 1016;
+                            if (codepoint == 1105)
+                                codepoint = 1032;
 
                             iso8859.push_back(static_cast<char>(codepoint - 848));
                         }
