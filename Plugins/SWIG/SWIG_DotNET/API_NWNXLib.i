@@ -19,7 +19,6 @@
 namespace std {
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") char* "string"
 }
 
 // C# Wrapper Class Extensions
@@ -81,8 +80,31 @@ SWIG_DOTNET_EXTENSIONS
 %typemap(cscode, noblock=1) CExoString {
 SWIG_DOTNET_EXTENSIONS
 
+  public CExoString(string source) : this(source.GetNullTerminatedString()) {
+  }
+
+  /// <summary>
+  /// Converts this CExoString to a C# string.
+  /// </summary>
+  /// <returns>The equivalent C# string for this CExoString.</returns>
   public override string ToString() {
-    return CStr();
+    return StringHelper.ReadNullTerminatedString(CStr());
+  }
+}
+
+// C# Wrapper Class Extensions - CResRef
+%typemap(cscode, noblock=1) CResRef {
+SWIG_DOTNET_EXTENSIONS
+
+  public CResRef(string source) : this(source.GetNullTerminatedString()) {
+  }
+
+  /// <summary>
+  /// Gets a C# string representing this ResRef (GetResRefStr())
+  /// </summary>
+  /// <returns>A C# string representing this ResRef.</returns>
+  public override string ToString() {
+    return StringHelper.ReadNullTerminatedString(GetResRefStr());
   }
 }
 
@@ -254,6 +276,8 @@ MarshalType(float, float, float)
 MarshalType(float*, float*, global::System.IntPtr) //float**
 MarshalType(float**, float**, global::System.IntPtr) //float***
 MarshalType(long, long, long)
+MarshalType(char, byte, byte)
+MarshalType(char*, byte*, global::System.IntPtr) // char**
 MarshalType(unsigned char, byte, byte)
 MarshalType(unsigned char*, byte*, global::System.IntPtr) //unsigned char**
 MarshalType(unsigned short int, ushort, ushort)
