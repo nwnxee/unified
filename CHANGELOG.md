@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## 8193.25-HEAD
-https://github.com/nwnxee/unified/compare/build8193.25...HEAD
+https://github.com/nwnxee/unified/compare/build8193.26...HEAD
 
 ### Added
 - N/A
@@ -27,6 +27,11 @@ https://github.com/nwnxee/unified/compare/build8193.25...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.26
+https://github.com/nwnxee/unified/compare/build8193.25...build8193.26
+
+- No user facing changes
 
 ## 8193.25
 https://github.com/nwnxee/unified/compare/build8193.24...build8193.25
