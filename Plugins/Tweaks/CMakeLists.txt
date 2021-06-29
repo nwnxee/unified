@@ -18,6 +18,7 @@ add_plugin(Tweaks
     "HidePlayersOnCharList.cpp"
     "ItemChargesCost.cpp"
     "LanguageOverride.cpp"
+    "MaterialNameNullIsAll.cpp"
     "ParryAllAttacks.cpp"
     "PlayerDyingHitPointLimit.cpp"
     "PreserveActionsOnDMPossess.cpp"
