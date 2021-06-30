@@ -38,6 +38,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` | true or false | TlkTable entries overridden by SetTlkOverride() will be sent before Character Generation. |
 | `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT` | true or false | When splitting an item, local variables will be copied. |
 | `NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION` | true or false | Prevents attack bonus effects from bypassing damage reductions. |
+| `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` | true or false | Makes SetMaterialShaderParamXxx() functions take `sMaterial=""` to mean all materials. |
   
 ## Environment variable values
 
