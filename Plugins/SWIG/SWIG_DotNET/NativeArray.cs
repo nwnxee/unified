@@ -4,18 +4,23 @@ using System.Collections.Generic;
 
 namespace NWN.Native.API
 {
-  public unsafe class NativeArray<T> : IEnumerable<T>, IEquatable<NativeArray<T>> where T : unmanaged
+  public unsafe class NativeArray<T> : IReadOnlyList<T>, IEquatable<NativeArray<T>> where T : unmanaged
   {
+    /// <summary>
+    /// Gets the pointer to this array.
+    /// </summary>
+    public T* Pointer { get; }
+
     /// <summary>
     /// Gets the length of this array.
     /// </summary>
     public int Length { get; }
 
-    private readonly T* arrayPtr;
+    int IReadOnlyCollection<T>.Count => Length;
 
-    public NativeArray(IntPtr arrayPtr, int length)
+    public NativeArray(IntPtr pointer, int length)
     {
-      this.arrayPtr = (T*)arrayPtr;
+      this.Pointer = (T*)pointer;
       this.Length = length;
     }
 
@@ -28,7 +33,7 @@ namespace NWN.Native.API
           throw new IndexOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the array.");
         }
 
-        return arrayPtr[index];
+        return Pointer[index];
       }
       set
       {
@@ -37,7 +42,7 @@ namespace NWN.Native.API
           throw new IndexOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the array.");
         }
 
-        arrayPtr[index] = value;
+        Pointer[index] = value;
       }
     }
 
@@ -66,7 +71,7 @@ namespace NWN.Native.API
         return true;
       }
 
-      return arrayPtr == other.arrayPtr;
+      return Pointer == other.Pointer;
     }
 
     public override bool Equals(object obj)
@@ -91,7 +96,7 @@ namespace NWN.Native.API
 
     public override int GetHashCode()
     {
-      return unchecked((int)(long)arrayPtr);
+      return unchecked((int)(long)Pointer);
     }
 
     public static bool operator ==(NativeArray<T> left, NativeArray<T> right)
@@ -106,7 +111,7 @@ namespace NWN.Native.API
 
     public static implicit operator IntPtr(NativeArray<T> nativeArray)
     {
-      return (IntPtr)nativeArray.arrayPtr;
+      return (IntPtr)nativeArray.Pointer;
     }
   }
 }

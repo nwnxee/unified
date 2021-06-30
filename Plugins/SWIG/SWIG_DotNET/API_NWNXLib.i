@@ -19,7 +19,6 @@
 namespace std {
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") char* "string"
 }
 
 // C# Wrapper Class Extensions
@@ -81,21 +80,48 @@ SWIG_DOTNET_EXTENSIONS
 %typemap(cscode, noblock=1) CExoString {
 SWIG_DOTNET_EXTENSIONS
 
+  public CExoString(string source) : this(source.GetNullTerminatedString()) {
+  }
+
+  /// <summary>
+  /// Converts this CExoString to a C# string.
+  /// </summary>
+  /// <returns>The equivalent C# string for this CExoString.</returns>
   public override string ToString() {
-    return CStr();
+    return StringHelper.ReadNullTerminatedString(CStr());
+  }
+}
+
+// C# Wrapper Class Extensions - CResRef
+%typemap(cscode, noblock=1) CResRef {
+SWIG_DOTNET_EXTENSIONS
+
+  public CResRef(string source) : this(source.GetNullTerminatedString()) {
+  }
+
+  /// <summary>
+  /// Gets a C# string representing this ResRef (GetResRefStr())
+  /// </summary>
+  /// <returns>A C# string representing this ResRef.</returns>
+  public override string ToString() {
+    return StringHelper.ReadNullTerminatedString(GetResRefStr());
   }
 }
 
 // Marshal Blittable types without wrapper class.
-%define MarshalType(CTYPE, CSTYPE, CSARRAYTYPE)
+%define MarshalPrimitive(CTYPE, CSTYPE, CSARRAYTYPE)
 %typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
+%typemap(ctype)  CTYPE "CTYPE"
 %typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY] "global::System.IntPtr"
+%typemap(imtype) CTYPE "CSTYPE"
 %typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
 %typemap(cstype) CTYPE[ANY] "NativeArray<CSARRAYTYPE>"
+%typemap(cstype) CTYPE "CSTYPE"
 %typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
 %typemap(csin)   CTYPE[ANY] "$csinput"
-%typemap(in)     CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
-%typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
+%typemap(csin)   CTYPE "$csinput"
+%typemap(in)     CTYPE,CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
+%typemap(out)    CTYPE,CTYPE*,CTYPE& %{ $result = $1; %}
 
 %typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& {
     global::System.IntPtr retVal = $imcall;$excode
@@ -124,10 +150,22 @@ SWIG_DOTNET_EXTENSIONS
       return retVal; // CSTYPE[$1_dim0]
     }
 %}
+
+%typemap(csout, excode=SWIGEXCODE) CTYPE {
+    CSTYPE retVal = $imcall;$excode
+    return retVal;
+  }
+
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE %{
+    get {
+      CSTYPE retVal = $imcall;$excode
+      return retVal;
+    }
+%}
 %enddef
 
-// Marshal pointer to pointer as void* for easier dereferencing
-%define MarshalPtrPtr(CTYPE, CSTYPE)
+// Marshal pointer types as void* for easier dereferencing
+%define MarshalPtr(CTYPE, CSTYPE)
 %typemap(ctype)  CTYPE*,CTYPE& "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
 %typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
@@ -242,75 +280,76 @@ static NAME* FromPointer(TYPE *ptr) {
 };
 %enddef
 
-// Marshal native types to managed types.
-MarshalType(void, void, global::System.IntPtr)
-MarshalType(void*, void*, global::System.IntPtr) // void**
-MarshalType(signed char, sbyte, sbyte)
-MarshalType(char*, char*, global::System.IntPtr) // char**
-MarshalType(short int, short, short)
-MarshalType(int, int, int)
-MarshalType(int*, int*, global::System.IntPtr) // int**
-MarshalType(float, float, float)
-MarshalType(float*, float*, global::System.IntPtr) //float**
-MarshalType(float**, float**, global::System.IntPtr) //float***
-MarshalType(long, long, long)
-MarshalType(unsigned char, byte, byte)
-MarshalType(unsigned char*, byte*, global::System.IntPtr) //unsigned char**
-MarshalType(unsigned short int, ushort, ushort)
-MarshalType(unsigned int, uint, uint)
-MarshalType(unsigned int*, uint*, global::System.IntPtr) //unsigned int**
-MarshalType(unsigned long, ulong, ulong)
+// Marshal primitive types to managed types.
+MarshalPrimitive(signed char, sbyte, sbyte)
+MarshalPrimitive(char, byte, byte)
+MarshalPrimitive(char*, byte*, global::System.IntPtr) // char**
+MarshalPrimitive(unsigned char, byte, byte)
+MarshalPrimitive(unsigned char*, byte*, global::System.IntPtr) //unsigned char**
+MarshalPrimitive(short int, short, short)
+MarshalPrimitive(int, int, int)
+MarshalPrimitive(int*, int*, global::System.IntPtr) // int**
+MarshalPrimitive(float, float, float)
+MarshalPrimitive(float*, float*, global::System.IntPtr) //float**
+MarshalPrimitive(float**, float**, global::System.IntPtr) //float***
+MarshalPrimitive(long, long, long)
+MarshalPrimitive(unsigned short int, ushort, ushort)
+MarshalPrimitive(unsigned int, uint, uint)
+MarshalPrimitive(unsigned int*, uint*, global::System.IntPtr) //unsigned int**
+MarshalPrimitive(unsigned long, ulong, ulong)
 
-// Marshal pointer to pointer types.
-MarshalPtrPtr(C2DA*, void*)
-MarshalPtrPtr(CAppManager*, void*)
-MarshalPtrPtr(CCombatInformationNode*, void*)
-MarshalPtrPtr(CEffectIconObject*, void*)
-MarshalPtrPtr(CExoBase*, void*)
-MarshalPtrPtr(CExoResMan*, void*)
-MarshalPtrPtr(CExoKeyTable*, void*)
-MarshalPtrPtr(CExoLinkedListNode*, void*)
-MarshalPtrPtr(CExoPackedFile*, void*)
-MarshalPtrPtr(CExoString*, void*)
-MarshalPtrPtr(CFeatUseListEntry*, void*)
-MarshalPtrPtr(CGameEffect*, void*)
-MarshalPtrPtr(CGameObject*, void*)
-MarshalPtrPtr(CGameObjectArrayNode*, void*)
-MarshalPtrPtr(CItemRepository*, global::System.IntPtr)
-MarshalPtrPtr(CKeyTableEntry*, void*)
-MarshalPtrPtr(CLastUpdateObject*, void*)
-MarshalPtrPtr(CLastUpdatePartyObject*, void*)
-MarshalPtrPtr(CLoopingVisualEffect*, void*)
-MarshalPtrPtr(CNWCCMessageData*, void*)
-MarshalPtrPtr(CNWItemProperty*, void*)
-MarshalPtrPtr(CNWLevelStats*, void*)
-MarshalPtrPtr(CNWPlaceableSurfaceMesh*, void*)
-MarshalPtrPtr(CNWRules*, void*)
-MarshalPtrPtr(CNWSAreaGridSuccessors*, void*)
-MarshalPtrPtr(CNWSExpression*, void*)
-MarshalPtrPtr(CNWSFaction*, void*)
-MarshalPtrPtr(CNWSItem*, void*)
-MarshalPtrPtr(CNWSObjectActionNode*, void*)
-MarshalPtrPtr(CNWSSpellScriptData*, void*)
-MarshalPtrPtr(CNWSStats_Spell*, void*)
-MarshalPtrPtr(CNWTileSet*, void*)
-MarshalPtrPtr(CNWVisibilityNode*, void*)
-MarshalPtrPtr(CObjectLookupTable*, void*)
-MarshalPtrPtr(CPathfindInfoIntraTileSuccessors*, void*)
-MarshalPtrPtr(CScriptCompiler*, void*)
-MarshalPtrPtr(CScriptLog*, void*)
-MarshalPtrPtr(CScriptParseTreeNode*, void*)
-MarshalPtrPtr(CSpell_Add*, void*)
-MarshalPtrPtr(CSpell_Delete*, void*)
-MarshalPtrPtr(CStoreCustomer*, void*)
-MarshalPtrPtr(CTlkFile*, void*)
-MarshalPtrPtr(CTlkTable*, void*)
-MarshalPtrPtr(CVirtualMachine*, void*)
-MarshalPtrPtr(CVirtualMachineScript*, void*)
-MarshalPtrPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
-MarshalPtrPtr(NWPlayerCharacterList_st*, void*)
-MarshalPtrPtr(SSubNetProfile*, void*)
-MarshalPtrPtr(Task::CExoTaskManager*, void*)
+// Marshal pointer types.
+MarshalPtr(void, void)
+MarshalPtr(void*, void*) // void**
+MarshalPtr(C2DA*, void*)
+MarshalPtr(CAppManager*, void*)
+MarshalPtr(CCombatInformationNode*, void*)
+MarshalPtr(CEffectIconObject*, void*)
+MarshalPtr(CExoBase*, void*)
+MarshalPtr(CExoResMan*, void*)
+MarshalPtr(CExoKeyTable*, void*)
+MarshalPtr(CExoLinkedListNode*, void*)
+MarshalPtr(CExoPackedFile*, void*)
+MarshalPtr(CExoString*, void*)
+MarshalPtr(CFeatUseListEntry*, void*)
+MarshalPtr(CGameEffect*, void*)
+MarshalPtr(CGameObject*, void*)
+MarshalPtr(CGameObjectArrayNode*, void*)
+MarshalPtr(CItemRepository*, global::System.IntPtr)
+MarshalPtr(CKeyTableEntry*, void*)
+MarshalPtr(CLastUpdateObject*, void*)
+MarshalPtr(CLastUpdatePartyObject*, void*)
+MarshalPtr(CLoopingVisualEffect*, void*)
+MarshalPtr(CNWCCMessageData*, void*)
+MarshalPtr(CNWItemProperty*, void*)
+MarshalPtr(CNWLevelStats*, void*)
+MarshalPtr(CNWPlaceableSurfaceMesh*, void*)
+MarshalPtr(CNWRules*, void*)
+MarshalPtr(CNWSAreaGridSuccessors*, void*)
+MarshalPtr(CNWSExpression*, void*)
+MarshalPtr(CNWSFaction*, void*)
+MarshalPtr(CNWSItem*, void*)
+MarshalPtr(CNWSObjectActionNode*, void*)
+MarshalPtr(CNWSSpellScriptData*, void*)
+MarshalPtr(CNWSStats_Spell*, void*)
+MarshalPtr(CNWTileSet*, void*)
+MarshalPtr(CNWVisibilityNode*, void*)
+MarshalPtr(CObjectLookupTable*, void*)
+MarshalPtr(CPathfindInfoIntraTileSuccessors*, void*)
+MarshalPtr(CScriptCompiler*, void*)
+MarshalPtr(CScriptLog*, void*)
+MarshalPtr(CScriptParseTreeNode*, void*)
+MarshalPtr(CSpell_Add*, void*)
+MarshalPtr(CSpell_Delete*, void*)
+MarshalPtr(CStoreCustomer*, void*)
+MarshalPtr(CTlkFile*, void*)
+MarshalPtr(CTlkTable*, void*)
+MarshalPtr(CVirtualMachine*, void*)
+MarshalPtr(CVirtualMachineScript*, void*)
+MarshalPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
+MarshalPtr(NWPlayerCharacterList_st*, void*)
+MarshalPtr(SSubNetProfile*, void*)
+MarshalPtr(Task::CExoTaskManager*, void*)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";

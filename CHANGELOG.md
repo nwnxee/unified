@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.24-HEAD
-https://github.com/nwnxee/unified/compare/build8193.24...HEAD
+## 8193.25-HEAD
+https://github.com/nwnxee/unified/compare/build8193.26...HEAD
 
 ### Added
-- N/A
+- Tweaks: added `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` to allow setting params on all applicable materials at once.
 
 ##### New Plugins
 - N/A
@@ -27,6 +27,16 @@ https://github.com/nwnxee/unified/compare/build8193.24...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.26
+https://github.com/nwnxee/unified/compare/build8193.25...build8193.26
+
+- No user facing changes
+
+## 8193.25
+https://github.com/nwnxee/unified/compare/build8193.24...build8193.25
+
+- No user facing changes
 
 ## 8193.24
 https://github.com/nwnxee/unified/compare/build8193.23...build8193.24
