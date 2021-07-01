@@ -2978,11 +2978,8 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         auto oidTarget = args.extract<ObjectID>();
         auto oidArea = args.extract<ObjectID>();
         auto x = args.extract<float>();
-          ASSERT_OR_THROW(x >= 0.0f);
         auto y = args.extract<float>();
-          ASSERT_OR_THROW(y >= 0.0f);
         auto z = args.extract<float>();
-          ASSERT_OR_THROW(z >= 0.0f);
         auto spellID = args.extract<int32_t>();
           ASSERT_OR_THROW(spellID >= 0);
         auto casterLevel = args.extract<int32_t>();
