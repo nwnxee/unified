@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.26...HEAD
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` to allow setting params on all applicable materials at once.
+- Tweaks: added `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG` to stop AreaOfEffect objects (auras, etc) from breaking GetNearestXXX() stuff.
 
 ##### New Plugins
 - N/A
