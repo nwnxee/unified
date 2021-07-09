@@ -54,39 +54,22 @@ Weapon::Weapon(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_GetWeaponFocusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooks::Order::Late);
-    m_GetEpicWeaponFocusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem, (void*)&Weapon::GetEpicWeaponFocus);
-    static auto s_GetWeaponFinesseHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooks::Order::Final);
+    m_GetWeaponFocusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooks::Order::Late);
+    m_GetEpicWeaponFocusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem, (void*)&Weapon::GetEpicWeaponFocus);
+    static auto s_GetWeaponFinesseHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooks::Order::Final);
 
-    m_GetWeaponImprovedCriticalHook = Hooks::HookFunction
-            (Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem, (void*)&Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
-    m_GetWeaponSpecializationHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetWeaponSpecialization, Hooks::Order::Late);
-    m_GetEpicWeaponSpecializationHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetEpicWeaponSpecialization, Hooks::Order::Late);
-    m_GetEpicWeaponOverwhelmingCriticalHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponOverwhelmingCritical, Hooks::Order::Late);
-    m_GetEpicWeaponDevastatingCriticalHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponDevastatingCritical, Hooks::Order::Late);
-    m_GetIsWeaponOfChoiceHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj, (void*)&Weapon::GetIsWeaponOfChoice, Hooks::Order::Late);
-    m_GetMeleeDamageBonusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih, (void*)&Weapon::GetMeleeDamageBonus, Hooks::Order::Late);
-    m_GetDamageBonusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei, (void*)&Weapon::GetDamageBonus, Hooks::Order::Late);
-    m_GetRangedDamageBonusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv, (void*)&Weapon::GetRangedDamageBonus, Hooks::Order::Late);
-    m_GetAttackModifierVersusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Weapon::GetAttackModifierVersus, Hooks::Order::Late);
-    m_GetMeleeAttackBonusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
-    m_GetRangedAttackBonusHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooks::Order::Late);
-    static auto s_GetUseMonkAttackTablesHook = Hooks::HookFunction(
-            Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi, (void*)&GetUseMonkAttackTables, Hooks::Order::Final);
+    m_GetWeaponImprovedCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem, (void*)&Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
+    m_GetWeaponSpecializationHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponSpecializationHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetEpicWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponOverwhelmingCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponOverwhelmingCritical, Hooks::Order::Late);
+    m_GetEpicWeaponDevastatingCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponDevastatingCritical, Hooks::Order::Late);
+    m_GetIsWeaponOfChoiceHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj, (void*)&Weapon::GetIsWeaponOfChoice, Hooks::Order::Late);
+    m_GetMeleeDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih, (void*)&Weapon::GetMeleeDamageBonus, Hooks::Order::Late);
+    m_GetDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei, (void*)&Weapon::GetDamageBonus, Hooks::Order::Late);
+    m_GetRangedDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv, (void*)&Weapon::GetRangedDamageBonus, Hooks::Order::Late);
+    m_GetAttackModifierVersusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Weapon::GetAttackModifierVersus, Hooks::Order::Late);
+    m_GetMeleeAttackBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
+    m_GetRangedAttackBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooks::Order::Late);
 
     m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
 
@@ -241,8 +224,6 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 
 ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 {
-    static bool bFirstTime = true;
-
     const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
@@ -250,18 +231,11 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
     CNWBaseItem *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem);
       ASSERT_OR_THROW(pBaseItem);
 
-    m_MonkWeaponSet.insert(w_bitem);
+    LOG_WARNING("NWNX_Weapon_SetWeaponIsMonkWeapon() is deprecated, please use baseitems.2da to set a weapon as monk weapon.");
+
+    pBaseItem->m_bIsMonkWeapon = true;
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Base Item Type %d [%s] set as monk weapon", w_bitem, baseItemName);
-
-    if (bFirstTime)
-    {
-        bFirstTime = false;
-        // Hooks for flurry of blows
-        m_ToggleModeHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature10ToggleModeEh, (void*)&ToggleMode, Hooks::Order::Late);
-        MessageBus::Broadcast("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});
-        LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
-    }
 
     return Events::Arguments();
 }
@@ -1153,65 +1127,6 @@ int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, int32_t bInclude
         nBonus += 1;
     }
     return nBonus;
-}
-
-int32_t Weapon::ToggleMode(CNWSCreature *pCreature, uint8_t nMode)
-{
-    Weapon& plugin = *g_plugin;
-    if (nMode == Constants::ToggleMode::FlurryOfBlows)
-    {
-        pCreature->SetCombatMode(Constants::CombatMode::FlurryOfBlows, pCreature->m_nCombatMode != Constants::CombatMode::FlurryOfBlows);
-        return 1;
-    }
-
-    return plugin.m_ToggleModeHook->CallOriginal<int32_t>(pCreature, nMode);
-}
-
-int32_t Weapon::GetUseMonkAttackTables(CNWSCreatureStats* pStats, int32_t bForceUnarmed)
-{
-    Weapon& plugin = *g_plugin;
-    CNWSItem* pWeapon;
-    int nMonk = plugin.GetLevelByClass(pStats, Constants::ClassType::Monk);
-
-    if (nMonk < 1 || !pStats->m_pBaseCreature->GetUseMonkAbilities())
-    {
-        return 0;
-    }
-
-    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
-
-    if (pWeapon == nullptr)
-    {
-        return 1;
-    }
-
-    if (bForceUnarmed)
-    {
-        return 0;
-    }
-
-    auto w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
-    if (w == plugin.m_MonkWeaponSet.end() && pWeapon->m_nBaseItem!=Constants::BaseItem::Kama)
-    {
-        return 0;
-    }
-
-    // Right hand weapon is correct, now check left hand
-    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
-    if (pWeapon == nullptr)
-    {
-        return 1;
-    }
-
-    w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
-    if (w == plugin.m_MonkWeaponSet.end() &&
-        pWeapon->m_nBaseItem != Constants::BaseItem::Kama &&
-        pWeapon->m_nBaseItem != Constants::BaseItem::Torch)
-    {
-        return 0;
-    }
-
-    return 1;
 }
 
 

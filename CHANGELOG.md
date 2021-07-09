@@ -20,9 +20,10 @@ https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 - N/A
 
 ### Deprecated
-- N/A
+- Weapon: SetWeaponIsMonkWeapon()
 
 ### Removed
+- CombatModes: plugin has been removed. The NWNX_ON_COMBAT_MODE_* events and NWNX_Weapon_SetWeaponIsMonkWeapon() Flurry of Blows functionality has been preserved.
 - Tweaks: removed `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG`, fixed in basegame.
 
 ### Fixed
