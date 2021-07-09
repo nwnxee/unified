@@ -1,7 +1,7 @@
 add_plugin(Tweaks
     "AddPrestigeclassCasterLevels.cpp"
     "AlwaysReturnFullDEXStat.cpp"
-    "BlockDMSpawnItem.cpp"
+    "BlockDMConsoleCommands.cpp"
     "ClearSpellEffectsOnTURDs.cpp"
     "CompareVarsForMerge.cpp"
     "DeadCreatureFiresOnAreaExit.cpp"
