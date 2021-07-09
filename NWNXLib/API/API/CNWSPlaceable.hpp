@@ -106,7 +106,7 @@ struct CNWSPlaceable : CNWSObject
     void AIUpdate();
     void DoDamage(int32_t nDamage);
     void EventHandler(uint32_t nEventId, OBJECT_ID nCallerObjectId, void * pScript, uint32_t nCalendarDay, uint32_t nTimeOfDay);
-    BOOL LoadPlaceable(CResGFF * pRes, CResStruct * cPlaceableStruct, CExoString * pTag = nullptr);
+    BOOL LoadPlaceable(CResGFF * pRes, CResStruct * cPlaceableStruct, BOOL bLoadOID, CExoString * pTag = nullptr);
     BOOL LoadFromTemplate(CResRef cResRef, CExoString * pTag = nullptr);
     BOOL LoadBodyBag(uint16_t nAppearance);
     BOOL SavePlaceable(CResGFF * pRes, CResStruct * pStruct, BOOL bSaveOIDs);

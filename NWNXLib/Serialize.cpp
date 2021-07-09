@@ -138,11 +138,11 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     else if (sFileType == "UTI ")
         DESERIALIZE(Item, 0);
     else if (sFileType == "UTP ")
-        DESERIALIZE(Placeable, nullptr);
+        DESERIALIZE(Placeable, false, nullptr);
     else if (sFileType == "UTW ")
         DESERIALIZE(Waypoint, nullptr);
     else if (sFileType == "UTM ")
-        DESERIALIZE(Store, nullptr);
+        DESERIALIZE(Store, false, nullptr);
     else if (sFileType == "UTD ")
         DESERIALIZE(Door);
     else if (sFileType == "UTT ")

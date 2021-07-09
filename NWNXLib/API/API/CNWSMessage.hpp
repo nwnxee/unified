@@ -37,6 +37,9 @@ struct CNWSPlayerLUOSortedObjectList;
 struct CNWSPlayerLastUpdateObject;
 struct CNWSStore;
 struct CNWSTrigger;
+namespace Hash {
+    struct SHA1;
+}
 
 
 typedef int BOOL;
@@ -122,7 +125,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerLoadBar_UpdateStallEvent(uint32_t nWorkCompleted, uint32_t nTotalWork = 0xffffffff);
     BOOL SendServerToPlayerLoadBar_EndStallEvent(uint32_t nStallEvent, uint32_t nError = 0);
     BOOL SendServerToPlayerModule_SaveGameStatus(uint8_t nStatus);
-    BOOL SendServerToPlayerModule_EndGame(uint32_t nPlayerId, const CExoString & sMovieName);
+    BOOL SendServerToPlayerModule_EndGame(CNWSPlayer * pPlayer, const CExoString & sMovieName, const Hash::SHA1 & nwsync);
     BOOL SendServerToPlayerModule_Loading(CNWSPlayer * pPlayer);
     BOOL SendServerToPlayerSaveLoad_Status(CNWSPlayer * pPlayer, uint8_t nStallEventType, uint32_t nStatus);
     BOOL SendServerToPlayerModule_StartStartNewModule();

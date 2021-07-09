@@ -140,6 +140,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandEffectEthereal(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectHeal(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectHitPointChangeWhenDying(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectImmunity(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectInvisibility(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectLinkEffects(int32_t nCommandId, int32_t nParameters);
@@ -151,6 +152,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandEffectPetrify(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectPoison(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectResurrection(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandEffectRunScript(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSanctuary(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSavingThrowDecrease(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSavingThrowIncrease(int32_t nCommandId, int32_t nParameters);
@@ -473,6 +475,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGiveGoldToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGiveXPToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetIsPossessedFamiliar(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandHideEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIncrementRemainingFeatUses(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandInsertString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIntToFloat(int32_t nCommandId, int32_t nParameters);

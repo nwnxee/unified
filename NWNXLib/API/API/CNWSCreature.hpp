@@ -304,7 +304,7 @@ struct CNWSCreature : CNWSObject
     void StartGuiTimingBar(uint32_t nTimeToRun, uint8_t nGuiTimingEventID);
     void StopGuiTimingBar();
     BOOL AddPickPocketActions(OBJECT_ID oidTarget);
-    void AddToArea(CNWSArea * pArea, float fX, float fY, float fZ, BOOL bForceAdd = false);
+    void AddToArea(CNWSArea * pArea, float fX, float fY, float fZ, BOOL bForceAdd = false, BOOL bExecuteAreaEntryScript = true);
     void AIUpdate();
     void SpawnInHeartbeatPerception(BOOL bAIUpdateLoop);
     virtual CNWSCreature * AsNWSCreature();
@@ -315,7 +315,7 @@ struct CNWSCreature : CNWSObject
     BOOL RemoveItem(CNWSItem * pItem, BOOL bMergeIntoRepository = true, BOOL bDisplayFeedback = true, BOOL bForceRemove = false, BOOL bSetPossessor = true);
     BOOL RemoveItemFromRepository(CNWSItem * pItem, BOOL bRemoveFromContainers = true);
     void RemoveFromArea(BOOL bReturning = false);
-    BOOL LoadCreature(CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame = false, BOOL bIsAssociate = false, BOOL bPreserveItemIds = true, BOOL bCopyObject = false);
+    BOOL LoadCreature(CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame = false, BOOL bIsAssociate = false, BOOL bPreserveObjectIDs = true, BOOL bCopyObject = false);
     BOOL SaveCreature(CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList = true, BOOL bUseDesiredAreaInfo = false, BOOL bExportingChar = false, BOOL bSaveOIDs = true);
     BOOL LoadFromTemplate(CResRef cResRef, CExoString * pTag = nullptr);
     void ReadScriptsFromGff(CResGFF * pRes, CResStruct * pGffStructWithCreatureStats);
@@ -443,7 +443,7 @@ struct CNWSCreature : CNWSObject
     void CleanOutPersonalReputationList();
     void LoadPersonalReputationList(CResGFF * pRes, CResStruct * pResStruct);
     void SavePersonalReputationList(CResGFF * pRes, CResStruct * pResStruct);
-    void LoadAssociateList(CResGFF * pRes, CResStruct * pResStruct);
+    void LoadAssociateList(CResGFF * pRes, CResStruct * pResStruct, BOOL bLoadOID);
     void SaveAssociateList(CResGFF * pRes, CResStruct * pResStruct, BOOL bSaveOIDs);
     void RealizeAssociateList();
     BOOL ReplyToInvitation(int32_t nInvitationReply, OBJECT_ID oidInvitedBy);
