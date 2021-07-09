@@ -51,7 +51,7 @@ struct CNWSStore : CNWSObject
     ~CNWSStore();
     virtual CNWSStore * AsNWSStore();
     BOOL LoadFromTemplate(CResRef cResRef, CExoString * pTag = nullptr);
-    BOOL LoadStore(CResGFF * pRes, CResStruct * cStoreStruct, CExoString * pTag = nullptr);
+    BOOL LoadStore(CResGFF * pRes, CResStruct * cStoreStruct, BOOL bLoadOID, CExoString * pTag = nullptr);
     BOOL SaveStore(CResGFF * pRes, CResStruct * pStruct, BOOL bSaveOIDs);
     void AddToArea(CNWSArea * pArea, float fX, float fY, float fZ, BOOL bRunScripts = true);
     void RemoveFromArea();

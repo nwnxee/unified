@@ -76,6 +76,8 @@ struct CNWBaseItem
     uint16_t m_nEpicWeaponOverwhelmingCriticalFeat;
     uint16_t m_nEpicWeaponDevastatingCriticalFeat;
     uint16_t m_nWeaponOfChoiceFeat;
+    BOOL m_bIsMonkWeapon;
+    uint8_t m_nWeaponFinesseMinimumCreatureSize;
 
     CNWBaseItem();
     ~CNWBaseItem();

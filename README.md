@@ -1,10 +1,10 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.26 - v83)
+# NWNX:EE (build 8193.29 - v84 - DEVELOPMENT)
 
-- Latest release: [build8193.26-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819326-HEAD)
+- Latest release: [build8193.29-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819329-HEAD)
 - Docker tag: `nwnxee/unified:latest`
-- nwserver-linux md5: `6a3c82c13e5825225a16fd5139fc0e7b`
+- nwserver-linux md5: `35680726f671bbd35d7818a49c76ed77`
 
 @mainpage
 @tableofcontents

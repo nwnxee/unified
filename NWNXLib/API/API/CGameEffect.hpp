@@ -68,7 +68,7 @@ struct CGameEffect
     CExoString GetCustomTag() const;
     void SetCustomTag(const CExoString & sTag);
     void SetLinked(CGameEffect * pLeft, CGameEffect * pRight);
-    void UpdateLinked();
+    void UpdateLinked(BOOL bUpdateIconVisibility = false);
     void SaveGameEffect(CResGFF * pRes, CResStruct * pStruct);
     void LoadGameEffect(CResGFF * pRes, CResStruct * pStruct);
 

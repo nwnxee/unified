@@ -4,12 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.26-HEAD
-https://github.com/nwnxee/unified/compare/build8193.26...HEAD
+## 8193.29-HEAD
+https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 
 ### Added
-- Tweaks: added `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` to allow setting params on all applicable materials at once.
-- Tweaks: added `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG` to stop AreaOfEffect objects (auras, etc) from breaking GetNearestXXX() stuff.
+- N/A
 
 ##### New Plugins
 - N/A
@@ -28,6 +27,13 @@ https://github.com/nwnxee/unified/compare/build8193.26...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.29
+https://github.com/nwnxee/unified/compare/build8193.26...build8193.29
+
+### Added
+- Tweaks: added `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` to allow setting params on all applicable materials at once.
+- Tweaks: added `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG` to stop AreaOfEffect objects (auras, etc) from breaking GetNearestXXX() stuff.
 
 ## 8193.26
 https://github.com/nwnxee/unified/compare/build8193.25...build8193.26
