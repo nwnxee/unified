@@ -23,7 +23,7 @@ https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 - N/A
 
 ### Removed
-- N/A
+- Tweaks: removed `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG`, fixed in basegame.
 
 ### Fixed
 - N/A
