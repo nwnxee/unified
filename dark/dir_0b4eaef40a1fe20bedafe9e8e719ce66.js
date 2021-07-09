@@ -4,7 +4,6 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Appearance", "dir_317c82f15d27336d1843526367a2bbf5.html", "dir_317c82f15d27336d1843526367a2bbf5" ],
     [ "Area", "dir_909125d548aaada0e2f5ad966733df4b.html", "dir_909125d548aaada0e2f5ad966733df4b" ],
     [ "Chat", "dir_e735e435158564b65b05ea806000d678.html", "dir_e735e435158564b65b05ea806000d678" ],
-    [ "CombatModes", "dir_d0673c4062b5817d559718989801bfc9.html", null ],
     [ "Compiler", "dir_6d740de086a678b4bd7d4ce4f7cb2eb2.html", null ],
     [ "Creature", "dir_efcc7e8cb6d48fa5ae53e4b1e4942f85.html", "dir_efcc7e8cb6d48fa5ae53e4b1e4942f85" ],
     [ "Damage", "dir_31d9e918c93dcca42dee91f234076bec.html", "dir_31d9e918c93dcca42dee91f234076bec" ],
