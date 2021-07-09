@@ -93,8 +93,8 @@ void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat);
 void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat);
 
 /// @brief Set base item as monk weapon.
-/// @note Requires activation of CombatModes plugin for Flurry of Blows.
 /// @param nBaseItem The base item id.
+/// @deprecated Use baseitems.2da. This will be removed in future NWNX releases.
 void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
 
 /// @brief Set plugin options.
@@ -198,6 +198,8 @@ void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem)
 
 void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem)
 {
+    WriteTimestampedLogEntry("NWNX_Weapon_SetWeaponIsMonkWeapon() is deprecated. Please use baseitems.2da instead.");
+
     string sFunc = "SetWeaponIsMonkWeapon";
 
     NWNX_PushArgumentInt(nBaseItem);

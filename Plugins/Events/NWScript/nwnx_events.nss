@@ -698,8 +698,6 @@ _______________________________________
     DIRTY_FIGHTING        | 10
     DEFENSIVE_STANCE      | 11
 
-    @note Requires @ref combatmodes "NWNX_CombatModes" plugin to work.
-
 _______________________________________
     ## Use Skill Events
     - NWNX_ON_USE_SKILL_BEFORE
