@@ -883,3 +883,19 @@ NWNX_EXPORT ArgumentStack GetLastSpellCastFeat(ArgumentStack&& args)
 
     return -1;
 }
+
+NWNX_EXPORT ArgumentStack SetLastTriggered(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        auto lastObject = args.extract<ObjectID>();
+
+        if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            pDoor->m_oidLastTriggered = lastObject;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->m_oidLastTriggered = lastObject;
+    }
+
+    return {};
+}
+

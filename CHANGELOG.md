@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Object: SetLastTriggered()
 
 ### Changed
 - N/A
