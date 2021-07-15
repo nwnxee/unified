@@ -368,6 +368,12 @@ void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nG
 /// @return The feat ID, or 65535 when not cast by a feat, or -1 on error.
 int NWNX_Object_GetLastSpellCastFeat(object oObject);
 
+/// @brief Sets the last object that triggered door or placeable trap.
+/// @note Should be retrieved with GetEnteringObject.
+/// @param oObject Door or placeable object
+/// @param oLast Object that last triggered trap.
+void NWNX_Object_SetLastTriggered(object oObject, object oLast);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -913,4 +919,14 @@ int NWNX_Object_GetLastSpellCastFeat(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Object_SetLastTriggered(object oObject, object oLast)
+{
+    string sFunc = "SetLastTriggered";
+
+    NWNX_PushArgumentObject(oLast);
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
