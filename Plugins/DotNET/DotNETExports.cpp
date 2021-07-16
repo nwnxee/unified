@@ -137,10 +137,18 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
     MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
-            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-            s_handlers.SignalHandler(message[0].c_str());
-            int spAfter = Utils::PopScriptContext();
-            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+            // We will crash the server if we try to create a script context after the server is destroyed.
+            if (message[0] == "ON_DESTROY_SERVER_AFTER")
+            {
+                s_handlers.SignalHandler(message[0].c_str());
+            }
+            else
+            {
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                s_handlers.SignalHandler(message[0].c_str());
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+            }
         });
 }
 

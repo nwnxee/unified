@@ -555,6 +555,9 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 
     g_core->m_destroyServerHook.reset();
     app->DestroyServer();
+
+    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER_AFTER" });
+
     g_core->Shutdown();
 
     RestoreCrashHandlers();
