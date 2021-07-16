@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 - Object: SetLastTriggered()
 
 ### Changed
-- N/A
+- ***API BREAKING*** Creature: SetClassByPosition by default replaces all occurrences of the old class in CNWLevelStats. This can be disabled with the argument 'bUpdateLevels'.
 
 ### Deprecated
 - Weapon: SetWeaponIsMonkWeapon()
