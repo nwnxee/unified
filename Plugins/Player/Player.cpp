@@ -1643,3 +1643,38 @@ NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack SetAttackAnimation(ArgumentStack&& args)
+{
+	static Hooks::Hook pAIActionAttackHook =
+		Hooks::HookFunction(Functions::_ZN12CNWSCreature20AIActionAttackObjectEP20CNWSObjectActionNode,
+			(void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode* pNode) -> uint32_t
+	{
+		auto retVal = pAIActionAttackHook->CallOriginal<uint32_t>(pCreature, pNode);
+
+		if (auto animation = pCreature->nwnxGet<int>("ATTACK_ANIMATION"))
+		{
+			if (retVal == 1/* In Progress*/)
+				pCreature->SetAnimation(*animation);
+		}
+
+		return retVal;
+	}, Hooks::Order::Late);
+
+	if (auto* pPlayer = Utils::PopPlayer(args))
+	{
+		auto animation = args.extract<int32_t>();
+
+		auto playerObj = Utils::GetGameObject(pPlayer->m_oidNWSObject);
+		if (animation < 0)
+		{
+			playerObj->nwnxRemove("ATTACK_ANIMATION");
+		}
+		else
+		{
+			playerObj->nwnxSet("ATTACK_ANIMATION", animation, true);
+		}
+	}
+
+	return {};
+}
