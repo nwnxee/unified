@@ -333,6 +333,6 @@ DefineArrayPtr(CNWDomain, CNWDomain, CNWDomainArray);
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
 %template(VectorCExoString) std::vector<CExoString>;
 %template(UnorderedMapCExoStringCNWSScriptVar) std::unordered_map<CExoString, CNWSScriptVar>;
-%template(UnorderedMapUInt32CExoString) std::unordered_map<uint32_t, CExoString>;
-%template(UnorderedMapUInt32STR_RES) std::unordered_map<uint32_t, STR_RES>;
+%template(UnorderedMapUInt32CExoString) std::unordered_map<unsigned int, CExoString>;
+%template(UnorderedMapUInt32STR_RES) std::unordered_map<unsigned int, STR_RES>;
 %template(UnorderedMapStringCachedRulesetEntry) std::unordered_map<std::string, CachedRulesetEntry>;
