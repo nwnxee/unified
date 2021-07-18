@@ -177,7 +177,7 @@ var searchData=
   ['nwnx_5fcreature_5fsetcasterlevelmodifier_2247',['NWNX_Creature_SetCasterLevelModifier',['../group__creature.html#ga007d581a39d037dce04fdfa034427efd',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetcasterleveloverride_2248',['NWNX_Creature_SetCasterLevelOverride',['../group__creature.html#gab4b96e16f98d1b88fe6a3484716537e1',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetchallengerating_2249',['NWNX_Creature_SetChallengeRating',['../group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fsetclassbyposition_2250',['NWNX_Creature_SetClassByPosition',['../group__creature.html#ga38d29252f531846224e89b861fa3765c',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fsetclassbyposition_2250',['NWNX_Creature_SetClassByPosition',['../group__creature.html#ga54903d46fd1cd4a9d30d4d870c36e01b',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetcorpsedecaytime_2251',['NWNX_Creature_SetCorpseDecayTime',['../group__creature.html#ga9416ebcf6ecac41884242e6f40096100',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetcreaturepersonalspace_2252',['NWNX_Creature_SetCreaturePersonalSpace',['../group__creature.html#ga5073b2d8c2f96c9b88f42340b71088e1',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetcriticalmultipliermodifier_2253',['NWNX_Creature_SetCriticalMultiplierModifier',['../group__creature.html#gab61678215d81d3af279dc045ebbb9e43',1,'nwnx_creature.nss']]],
