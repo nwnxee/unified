@@ -1048,18 +1048,19 @@ NWNX_EXPORT ArgumentStack SetClassByPosition(ArgumentStack&& args)
         const auto position = args.extract<int32_t>();
         const auto classID = args.extract<int32_t>();
         const auto bUpdateLevels = args.extract<int32_t>();
-        const auto classIDold = pCreature->m_pStats->GetClass(position);
           ASSERT_OR_THROW(position >= 0);
           ASSERT_OR_THROW(position <= 2);
           ASSERT_OR_THROW(classID >= Constants::ClassType::MIN);
           ASSERT_OR_THROW(classID <= Constants::ClassType::MAX);
 
+        // Save the old class id, then replace it with the new one
+        const auto classIDold = pCreature->m_pStats->GetClass(position);
         pCreature->m_pStats->SetClass(position, classID);
 
         if (bUpdateLevels)
         {
-            auto pLevelStats = pCreature->m_pStats->m_lstLevelStats;
-            for (auto *level : pLevelStats)
+            auto& levelStats = pCreature->m_pStats->m_lstLevelStats;
+            for (auto *level : levelStats)
             {
                 if (level->m_nClass == classIDold)
                 {
