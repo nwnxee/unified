@@ -215,8 +215,6 @@ template<class K, class T> class unordered_map {
     Iterator iterator = begin();
     Iterator endIterator = end();
 
-    global::System.Collections.Generic.ICollection<global::System.Collections.Generic.KeyValuePair<$typemap(cstype, K), $typemap(cstype, T)>> keyValuePairs = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<$typemap(cstype, K), $typemap(cstype, T)>>(startCount);
-
     while (!iterator.IsEqual(endIterator))
     {
       if (Count != startCount)
@@ -224,11 +222,9 @@ template<class K, class T> class unordered_map {
         throw new System.InvalidOperationException("Collection was modified; enumeration operation may not execute.");
       }
 
-      keyValuePairs.Add(new global::System.Collections.Generic.KeyValuePair<$typemap(cstype, K), $typemap(cstype, T)>(iterator.GetKey(), iterator.GetValue()));
+      yield return new global::System.Collections.Generic.KeyValuePair<$typemap(cstype, K), $typemap(cstype, T)>(iterator.GetKey(), iterator.GetValue());
       iterator = iterator.MoveNext();
     }
-
-    return keyValuePairs.GetEnumerator();
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator()
@@ -255,8 +251,7 @@ template<class K, class T> class unordered_map {
       %typemap(csclassmodifiers) iterator "private class"
       %extend {
         std::unordered_map< K, T >::iterator MoveNext() {
-          std::unordered_map< K, T >::iterator copy = (*$self);
-          return ++copy;
+          return std::next(*$self);
         }
 
         bool IsEqual(iterator other) const {
