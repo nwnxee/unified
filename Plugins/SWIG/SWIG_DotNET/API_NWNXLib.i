@@ -9,6 +9,7 @@
 %include "DotNETPrimitives.i"
 %include "DotNETArrays.i"
 %include "std_unordered_map.i"
+%include "CExoArrayList.i"
 
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
@@ -159,63 +160,9 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %ignore CResHelper<CResNDB,2064>;
 %ignore CResHelper<CResNCS,2010>;
 
-// Ignore template methods with missing type implementations.
-%ignore CExoArrayList::DerefContains;
-%ignore CExoArrayList::IndexOf;
-%ignore CExoArrayList::Contains;
-%ignore CExoArrayList::AddUnique;
-%ignore CExoArrayList::Remove;
-%ignore CExoArrayList::begin() const;
-%ignore CExoArrayList::end() const;
-
 // Template defines
-%include "API/CExoArrayList.hpp"
 %include "API/CExoLinkedList.hpp"
 %include "API/CResHelper.hpp"
-
-%template(CExoArrayListCCombatInformationNodePtr) CExoArrayList<CCombatInformationNode *>;
-%template(CExoArrayListCEffectIconObjectPtr) CExoArrayList<CEffectIconObject *>;
-%template(CExoArrayListCExoKeyTablePtr) CExoArrayList<CExoKeyTable *>;
-%template(CExoArrayListCExoString) CExoArrayList<CExoString>;
-%template(CExoArrayListCExoStringPtr) CExoArrayList<CExoString *>;
-%template(CExoArrayListCFeatUseListEntryPtr) CExoArrayList<CFeatUseListEntry *>;
-%template(CExoArrayListCFileInfo) CExoArrayList<CFileInfo>;
-%template(CExoArrayListCGameEffectPtr) CExoArrayList<CGameEffect *>;
-%template(CExoArrayListCGameObjectPtr) CExoArrayList<CGameObject *>;
-%template(CExoArrayListCLoopingVisualEffectPtr) CExoArrayList<CLoopingVisualEffect *>;
-%template(CExoArrayListCNetLayerPlayerCDKeyInfo) CExoArrayList<CNetLayerPlayerCDKeyInfo>;
-%template(CExoArrayListCNWCCMessageDataPtr) CExoArrayList<CNWCCMessageData *>;
-%template(CExoArrayListCNWItemProperty) CExoArrayList<CNWItemProperty>;
-%template(CExoArrayListCNWLevelStatsPtr) CExoArrayList<CNWLevelStats *>;
-%template(CExoArrayListCNWSExpressionPtr) CExoArrayList<CNWSExpression *>;
-%template(CExoArrayListCNWSFactionPtr) CExoArrayList<CNWSFaction *>;
-%template(CExoArrayListCNWSInvitationDetails) CExoArrayList<CNWSInvitationDetails>;
-%template(CExoArrayListCNWSPersonalReputation) CExoArrayList<CNWSPersonalReputation>;
-%template(CExoArrayListCNWSPlayerJournalQuestUpdates) CExoArrayList<CNWSPlayerJournalQuestUpdates>;
-%template(CExoArrayListCNWSPVPEntry) CExoArrayList<CNWSPVPEntry>;
-%template(CExoArrayListCNWSSpellScriptDataPtr) CExoArrayList<CNWSSpellScriptData *>;
-%template(CExoArrayListCNWSStatsSpellLikeAbility) CExoArrayList<CNWSStats_SpellLikeAbility>;
-%template(CExoArrayListCNWSStatsSpellPtr) CExoArrayList<CNWSStats_Spell *>;
-%template(CExoArrayListCNWSTagNode) CExoArrayList<CNWSTagNode>;
-%template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
-%template(CExoArrayListCResRef) CExoArrayList<CResRef>;
-%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
-%template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
-%template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
-%template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;
-%template(CExoArrayListCWorldJournalEntry) CExoArrayList<CWorldJournalEntry>;
-%template(CExoArrayListFloat) CExoArrayList<float>;
-%template(CExoArrayListInt32) CExoArrayList<int32_t>;
-%template(CExoArrayListMaterialShaderParam) CExoArrayList<MaterialShaderParam>;
-%template(CExoArrayListNWPlayerCharacterListPtr) CExoArrayList<NWPlayerCharacterList_st *>;
-%template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
-%template(CExoArrayListObjectId) CExoArrayList<OBJECT_ID>;
-%template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
-%template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
-%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
-%template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
-%template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
-%template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
 
 %template(CExoLinkedListC2DA) CExoLinkedList<C2DA>;
 %template(CExoLinkedListCERFKey) CExoLinkedList<CERFKey>;
@@ -292,6 +239,49 @@ MapArray(CNWSkill, CNWSkill, CNWSkillArray);
 MapArray(CNWDomain, CNWDomain, CNWDomainArray);
 
 %include "NWNXLib.i"
+
+%template(CExoArrayListCCombatInformationNodePtr) CExoArrayList<CCombatInformationNode *>;
+%template(CExoArrayListCEffectIconObjectPtr) CExoArrayList<CEffectIconObject *>;
+%template(CExoArrayListCExoKeyTablePtr) CExoArrayList<CExoKeyTable *>;
+%template(CExoArrayListCExoString) CExoArrayList<CExoString>;
+%template(CExoArrayListCExoStringPtr) CExoArrayList<CExoString *>;
+%template(CExoArrayListCFeatUseListEntryPtr) CExoArrayList<CFeatUseListEntry *>;
+%template(CExoArrayListCFileInfo) CExoArrayList<CFileInfo>;
+%template(CExoArrayListCGameEffectPtr) CExoArrayList<CGameEffect *>;
+%template(CExoArrayListCGameObjectPtr) CExoArrayList<CGameObject *>;
+%template(CExoArrayListCLoopingVisualEffectPtr) CExoArrayList<CLoopingVisualEffect *>;
+%template(CExoArrayListCNetLayerPlayerCDKeyInfo) CExoArrayList<CNetLayerPlayerCDKeyInfo>;
+%template(CExoArrayListCNWCCMessageDataPtr) CExoArrayList<CNWCCMessageData *>;
+%template(CExoArrayListCNWItemProperty) CExoArrayList<CNWItemProperty>;
+%template(CExoArrayListCNWLevelStatsPtr) CExoArrayList<CNWLevelStats *>;
+%template(CExoArrayListCNWSExpressionPtr) CExoArrayList<CNWSExpression *>;
+%template(CExoArrayListCNWSFactionPtr) CExoArrayList<CNWSFaction *>;
+%template(CExoArrayListCNWSInvitationDetails) CExoArrayList<CNWSInvitationDetails>;
+%template(CExoArrayListCNWSPersonalReputation) CExoArrayList<CNWSPersonalReputation>;
+%template(CExoArrayListCNWSPlayerJournalQuestUpdates) CExoArrayList<CNWSPlayerJournalQuestUpdates>;
+%template(CExoArrayListCNWSPVPEntry) CExoArrayList<CNWSPVPEntry>;
+%template(CExoArrayListCNWSSpellScriptDataPtr) CExoArrayList<CNWSSpellScriptData *>;
+%template(CExoArrayListCNWSStatsSpellLikeAbility) CExoArrayList<CNWSStats_SpellLikeAbility>;
+%template(CExoArrayListCNWSStatsSpellPtr) CExoArrayList<CNWSStats_Spell *>;
+%template(CExoArrayListCNWSTagNode) CExoArrayList<CNWSTagNode>;
+%template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
+%template(CExoArrayListCResRef) CExoArrayList<CResRef>;
+%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
+%template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
+%template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
+%template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;
+%template(CExoArrayListCWorldJournalEntry) CExoArrayList<CWorldJournalEntry>;
+%template(CExoArrayListFloat) CExoArrayList<float>;
+%template(CExoArrayListInt32) CExoArrayList<int32_t>;
+%template(CExoArrayListMaterialShaderParam) CExoArrayList<MaterialShaderParam>;
+%template(CExoArrayListNWPlayerCharacterListPtr) CExoArrayList<NWPlayerCharacterList_st *>;
+%template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
+%template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
+%template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
+%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
+%template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
+%template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
+%template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
 
 // Array wrappers for structures
 DefineArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
