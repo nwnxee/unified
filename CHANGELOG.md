@@ -4,14 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.29-HEAD
-https://github.com/nwnxee/unified/compare/build8193.29...HEAD
+## 8193.30-HEAD
+https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Added
 - N/A
 
 ##### New Plugins
 - N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.30
+https://github.com/nwnxee/unified/compare/build8193.29...build8193.30
+
+### Added
 
 ##### New NWScript Functions
 - Object: SetLastTriggered()
@@ -25,9 +45,6 @@ https://github.com/nwnxee/unified/compare/build8193.29...HEAD
 ### Removed
 - CombatModes: plugin has been removed. The NWNX_ON_COMBAT_MODE_* events and NWNX_Weapon_SetWeaponIsMonkWeapon() Flurry of Blows functionality has been preserved.
 - Tweaks: removed `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG`, fixed in basegame.
-
-### Fixed
-- N/A
 
 ## 8193.29
 https://github.com/nwnxee/unified/compare/build8193.26...build8193.29
