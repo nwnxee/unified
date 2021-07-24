@@ -87,27 +87,24 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
 
     // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
     // for now. We can change this later if we want or need to.
+    WriteToLogFile(message);
 
+    if (channel == Channel::SEV_FATAL)
+    {
+        ASSERT_FAIL();
+        std::abort();
+    }
+}
+
+void WriteToLogFile(const char* message)
+{
     static std::string logPath = API::Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/logs.0/nwnx.txt");
     static FILE* logFile = std::fopen(logPath.c_str(), "a+");
 
     if (logFile)
     {
         std::fprintf(logFile, "%s\n", message);
-        //if (s_Tasks)
-        //{
-        //    s_Tasks->QueueOnAsyncThread([&]() { std::fflush(logFile); });
-        //}
-        //else
-        {
-            std::fflush(logFile);
-        }
-    }
-
-    if (channel == Channel::SEV_FATAL)
-    {
-        ASSERT_FAIL();
-        std::abort();
+        std::fflush(logFile);
     }
 }
 

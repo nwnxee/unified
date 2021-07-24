@@ -69,6 +69,7 @@ bool GetForceColor();
 //void SetAsync(NWNXLib::Services::Tasks* tasks);
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message);
+void WriteToLogFile(const char* message);
 
 template <typename ... Args>
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args)

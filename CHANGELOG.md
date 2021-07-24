@@ -17,7 +17,8 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 - N/A
 
 ### Changed
-- N/A
+- Core: Assert backtraces now show up in `logs.0/nwnx.txt`.
+- Core: Assert backtraces are now printed to `stdout` instead of `stderr`.
 
 ### Deprecated
 - N/A
