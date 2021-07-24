@@ -53,6 +53,7 @@ std::string GetStackTrace(uint8_t levels)
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
+        free(resolvedFrames);
     }
     return std::string(buffer);
 }

@@ -95,7 +95,7 @@ static void ReportError(void *ptr)
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
         std::puts(buffer);
-        //LOG_NOTICE("%s", buffer);
+        real_free(resolvedFrames);
     } catch (std::out_of_range& e)
     {
         LOG_NOTICE("Pointer %p not found in active allocations list.", ptr);
