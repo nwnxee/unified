@@ -5,6 +5,9 @@
 %include <std_vector.i>
 %include <swiginterface.i>
 
+%include "DotNETExtensions.i"
+%include "DotNETPrimitives.i"
+%include "DotNETArrays.i"
 %include "std_unordered_map.i"
 
 #pragma SWIG nowarn=317
@@ -16,153 +19,11 @@
 %pragma(csharp) imclassclassmodifiers="public unsafe class"
 %typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
 
+// Use NativeStringMarshaler for marshalling of cp1252 strings.
 namespace std {
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
 }
-
-// C# Wrapper Class Extensions
-%define SWIG_DOTNET_EXTENSIONS
-
-  public global::System.IntPtr Pointer {
-    get {
-      return swigCPtr.Handle;
-    }
-  }
-
-  public static unsafe implicit operator void*($csclassname self) {
-    return (void*)self.swigCPtr.Handle;
-  }
-
-  public static unsafe $csclassname FromPointer(void* pointer, bool memoryOwn = false) {
-    return pointer != null ? new $csclassname((global::System.IntPtr)pointer, memoryOwn) : null;
-  }
-
-  public static $csclassname FromPointer(global::System.IntPtr pointer, bool memoryOwn = false) {
-    return pointer != global::System.IntPtr.Zero ? new $csclassname(pointer, memoryOwn) : null;
-  }
-
-  public bool Equals($csclassname other) {
-    if (ReferenceEquals(null, other)) {
-      return false;
-    }
-
-    if (ReferenceEquals(this, other)) {
-      return true;
-    }
-
-    return Pointer.Equals(other.Pointer);
-  }
-
-  public override bool Equals(object obj) {
-    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
-  }
-
-  public override int GetHashCode() {
-    return swigCPtr.Handle.GetHashCode();
-  }
-
-  public static bool operator ==($csclassname left, $csclassname right) {
-    return Equals(left, right);
-  }
-
-  public static bool operator !=($csclassname left, $csclassname right) {
-    return !Equals(left, right);
-  }
-%enddef
-
-// C# Wrapper Class Extensions - Default
-%typemap(cscode, noblock=1) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE (CLASS::*) {
-SWIG_DOTNET_EXTENSIONS
-}
-
-// C# Wrapper Class Extensions - CExoString
-%typemap(cscode, noblock=1) CExoString {
-SWIG_DOTNET_EXTENSIONS
-
-  public CExoString(string source) : this(source.GetNullTerminatedString()) {
-  }
-
-  /// <summary>
-  /// Converts this CExoString to a C# string.
-  /// </summary>
-  /// <returns>The equivalent C# string for this CExoString.</returns>
-  public override string ToString() {
-    return StringHelper.ReadNullTerminatedString(CStr());
-  }
-}
-
-// C# Wrapper Class Extensions - CResRef
-%typemap(cscode, noblock=1) CResRef {
-SWIG_DOTNET_EXTENSIONS
-
-  public CResRef(string source) : this(source.GetNullTerminatedString()) {
-  }
-
-  /// <summary>
-  /// Gets a C# string representing this ResRef (GetResRefStr())
-  /// </summary>
-  /// <returns>A C# string representing this ResRef.</returns>
-  public override string ToString() {
-    return StringHelper.ReadNullTerminatedString(GetResRefStr());
-  }
-}
-
-// Marshal Blittable types without wrapper class.
-%define MarshalPrimitive(CTYPE, CSTYPE, CSARRAYTYPE)
-%typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
-%typemap(ctype)  CTYPE "CTYPE"
-%typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY] "global::System.IntPtr"
-%typemap(imtype) CTYPE "CSTYPE"
-%typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
-%typemap(cstype) CTYPE[ANY] "NativeArray<CSARRAYTYPE>"
-%typemap(cstype) CTYPE "CSTYPE"
-%typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
-%typemap(csin)   CTYPE[ANY] "$csinput"
-%typemap(csin)   CTYPE "$csinput"
-%typemap(in)     CTYPE,CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
-%typemap(out)    CTYPE,CTYPE*,CTYPE& %{ $result = $1; %}
-
-%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& {
-    global::System.IntPtr retVal = $imcall;$excode
-    return (CSTYPE*)retVal;
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{
-    get {
-        global::System.IntPtr retVal = $imcall;$excode
-        return (CSTYPE*)retVal;
-    }
-%}
-
-%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] {
-    global::System.IntPtr arrayPtr = $imcall;$excode
-    NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
-
-    return retVal; // CSTYPE[$1_dim0]
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{
-    get {
-      global::System.IntPtr arrayPtr = $imcall;$excode
-      NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
-
-      return retVal; // CSTYPE[$1_dim0]
-    }
-%}
-
-%typemap(csout, excode=SWIGEXCODE) CTYPE {
-    CSTYPE retVal = $imcall;$excode
-    return retVal;
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE %{
-    get {
-      CSTYPE retVal = $imcall;$excode
-      return retVal;
-    }
-%}
-%enddef
 
 // Marshal pointer types as void* for easier dereferencing
 %define MarshalPtr(CTYPE, CSTYPE)
@@ -185,118 +46,6 @@ SWIG_DOTNET_EXTENSIONS
     }
 %}
 %enddef
-
-// C# code for accessing native arrays
-%define MapArray(TYPE, CSTYPE, NAME)
-%typemap(cstype) TYPE[ANY] "NAME"
-%typemap(csin)   TYPE[ANY] "NAME.getCPtr($csinput)"
-%typemap(csout, excode=SWIGEXCODE) TYPE[ANY] {
-    global::System.IntPtr cPtr = $imcall;$excode;
-    NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
-    return ret;
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) TYPE[ANY] %{
-    get {
-        global::System.IntPtr cPtr = $imcall;$excode;
-        NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
-        return ret;
-    }
-%}
-
-%typemap(cscode, noblock=1) NAME {
-SWIG_DOTNET_EXTENSIONS
-
-  public CSTYPE this[int index] {
-    get {
-      return GetItem(index);
-    }
-    set {
-      SetItem(index, value);
-    }
-  }
-}
-%enddef
-
-// Native array definition for a C-style array define.
-%define DefineArray(TYPE, CSTYPE, NAME)
-%{
-typedef TYPE NAME;
-%}
-typedef struct {} NAME;
-
-%extend NAME {
-NAME(int nElements) {
-  return new TYPE[nElements]();
-}
-
-~NAME() {
-  delete [] self;
-}
-
-TYPE GetItem(int index) {
-  return self[index];
-}
-
-void SetItem(int index, TYPE value) {
-  self[index] = value;
-}
-
-static NAME* FromPointer(TYPE *ptr) {
-  return (NAME *) ptr;
-}
-
-};
-%enddef
-
-// Native array definition for an array defined as a pointer, with a separate length variable.
-%define DefineArrayPtr(TYPE, CSTYPE, NAME)
-%{
-typedef TYPE NAME;
-%}
-typedef struct {} NAME;
-
-%extend NAME {
-NAME(int nElements) {
-  return new TYPE[nElements]();
-}
-
-~NAME() {
-  delete [] self;
-}
-
-TYPE* GetItem(int index) {
-  return &self[index];
-}
-
-void SetItem(int index, TYPE* value) {
-  self[index] = *value;
-}
-
-static NAME* FromPointer(TYPE *ptr) {
-  return static_cast<NAME*>(ptr);
-}
-
-};
-%enddef
-
-// Marshal primitive types to managed types.
-MarshalPrimitive(signed char, sbyte, sbyte)
-MarshalPrimitive(char, byte, byte)
-MarshalPrimitive(char*, byte*, global::System.IntPtr) // char**
-MarshalPrimitive(unsigned char, byte, byte)
-MarshalPrimitive(unsigned char*, byte*, global::System.IntPtr) //unsigned char**
-MarshalPrimitive(short int, short, short)
-MarshalPrimitive(int, int, int)
-MarshalPrimitive(int*, int*, global::System.IntPtr) // int**
-MarshalPrimitive(float, float, float)
-MarshalPrimitive(float*, float*, global::System.IntPtr) //float**
-MarshalPrimitive(float**, float**, global::System.IntPtr) //float***
-MarshalPrimitive(long, long, long)
-MarshalPrimitive(unsigned short int, ushort, ushort)
-MarshalPrimitive(unsigned int, uint, uint)
-MarshalPrimitive(unsigned int*, uint*, global::System.IntPtr) //unsigned int**
-MarshalPrimitive(unsigned long, ulong, ulong)
 
 // Marshal pointer types.
 MarshalPtr(void, void)
