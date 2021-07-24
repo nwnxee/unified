@@ -475,6 +475,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGiveGoldToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGiveXPToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetIsPossessedFamiliar(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGuiEventManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandHideEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIncrementRemainingFeatUses(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandInsertString(int32_t nCommandId, int32_t nParameters);
@@ -660,6 +661,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandTalent(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTalentAccess(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTargetingModeManagement(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandTileActionManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTileExplorationManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTimeConversions(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTestString(int32_t nCommandId, int32_t nParameters);

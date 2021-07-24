@@ -71,6 +71,7 @@ struct CNWArea
     virtual ~CNWArea();
     int32_t AddStaticObject(OBJECT_ID oidObject, const Vector & vOrientation, const Vector & vPosition, int32_t nVertices, Vector * pvVertices, int32_t nTriangles, int32_t * pnTriangles);
     void ReplaceStaticObject(int32_t nObjectPosition, OBJECT_ID oidObject, const Vector & vOrientation, const Vector & vPosition, int32_t nVertices, Vector * pvVertices, int32_t nTriangles, int32_t * pnTriangles);
+    void GetStaticObjectBoundingBox(int32_t nStaticObjectIndex, Vector & vMinimum, Vector & vMaximum);
     int32_t AddStaticBoundingBox(OBJECT_ID oidObject, const Vector & vMinimum, const Vector & vMaximum);
     int32_t RemoveStaticBoundingBox(OBJECT_ID oidObject);
     virtual BOOL NoCreaturesOnLine(float fSourceX, float fSourceY, float fTargetX, float fTargetY, CPathfindInformation * pPathfindInfo, BOOL bCheckSourceOccluded = true, BOOL bIgnoreAssociates = false, OBJECT_ID * poidBlockingCreature = nullptr, BOOL bEvaluateOverlappingTarget = false);

@@ -133,7 +133,6 @@ struct CPathfindInformation
     CNWGridSearchPath GetGridSearchPathInfo(int32_t nID);
     void SetGridSearchPathInfo(int32_t nID, CNWGridSearchPath nGridSearch);
     int32_t GetGridSearchActivePaths();
-    void SetGridSearchActivePaths(int32_t nCount);
     void ComputeGridStepTolerance();
 
 

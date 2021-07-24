@@ -141,6 +141,13 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CGameEffect * m_pLastRunScriptEffect;
     int32_t m_nLastRunScriptEffectScriptType;
     std::shared_ptr<void*> m_sqlite3;
+    OBJECT_ID m_oidLastGuiEventPlayer;
+    int32_t m_nLastGuiEventType;
+    int32_t m_nLastGuiEventInteger;
+    OBJECT_ID m_oidLastGuiEventObject;
+    OBJECT_ID m_oidLastPlayerToDoTileAction;
+    int32_t m_nLastPlayerTileActionId;
+    Vector m_vLastPlayerTileActionPosition;
 
     CNWSModule(CExoString sModuleFilename, CUUID cModUUID, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     ~CNWSModule();

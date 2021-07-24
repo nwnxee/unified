@@ -390,6 +390,8 @@ struct CNWSMessage : CNWMessage
     void ComputeLastUpdate_StoreUpdateSpellLikeAbility(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     BOOL HasValidString(CExoLocString & sLocString, uint8_t nGender = 0);
     BOOL SendServerToPlayerInventory_LearnScroll(uint32_t nPlayerID, OBJECT_ID nObjectID, uint8_t nMinor);
+    BOOL SendServerToPlayerGuiEvent_Disable(uint32_t nPlayerId, int32_t nGuiElement, BOOL bDisable);
+    BOOL HandlePlayerToServerGuiEvent(CNWSPlayer * pPlayer, uint8_t nMinor);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSMessage
