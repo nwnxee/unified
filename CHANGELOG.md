@@ -27,7 +27,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Core: Fixed a minor memory leak when asserts were triggered.
 
 ## 8193.30
 https://github.com/nwnxee/unified/compare/build8193.29...build8193.30
