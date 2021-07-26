@@ -101,6 +101,27 @@ NWNX_EXPORT ArgumentStack RemoveFeat(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack RemoveFeatByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto feat  = args.extract<int32_t>();
+          ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+            pLevelStats->m_lstFeats.Remove(static_cast<uint16_t>(feat));
+        }
+    }
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetKnowsFeat(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))

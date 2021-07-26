@@ -110,6 +110,14 @@ void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level);
 /// @param feat The feat id.
 void NWNX_Creature_RemoveFeat(object creature, int feat);
 
+/// @brief Removes the creature a feat assigned at a level
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @param level The level they gained the feat.
+/// @remark Removes the feat from the stat list at the provided level. Does not remove the feat from the creature, use
+/// NWNX_Creature_RemoveFeat for this.
+void NWNX_Creature_RemoveFeatByLevel(object creature, int feat, int level);
+
 /// @brief Determines if the creature knows a feat.
 /// @note This differs from native @nwn{GetHasFeat} which returns FALSE if the feat has no more uses per day.
 /// @param creature The creature object.
@@ -976,6 +984,17 @@ void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level)
 void NWNX_Creature_RemoveFeat(object creature, int feat)
 {
     string sFunc = "RemoveFeat";
+    NWNX_PushArgumentInt(feat);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RemoveFeatByLevel(object creature, int feat, int level)
+{
+    string sFunc = "RemoveFeatByLevel";
+
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentInt(feat);
     NWNX_PushArgumentObject(creature);
 
