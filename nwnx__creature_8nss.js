@@ -3,6 +3,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_AddFeat", "group__creature.html#gade3f03b0efb8d99a5797cf683dd3e9d0", null ],
     [ "NWNX_Creature_AddFeatByLevel", "group__creature.html#ga436b7ffee6a792a307f2d0a3489e4dd1", null ],
     [ "NWNX_Creature_RemoveFeat", "group__creature.html#ga6defa8e922e74d58cc4bc79b02f4cd9f", null ],
+    [ "NWNX_Creature_RemoveFeatByLevel", "group__creature.html#ga20b49f577fabaf49d5a7d4e18f2522db", null ],
     [ "NWNX_Creature_GetKnowsFeat", "group__creature.html#gace9cb72350769f27e4373301e70d89b1", null ],
     [ "NWNX_Creature_GetFeatCountByLevel", "group__creature.html#ga5aae58ed38b1cf6486826dd861a2345e", null ],
     [ "NWNX_Creature_GetFeatByLevel", "group__creature.html#ga4875b0673d87478c3edbb608fb77cee4", null ],
