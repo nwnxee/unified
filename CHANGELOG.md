@@ -8,14 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Added
-- Creature: RemoveFeatByLevel()
-- Creature: SetSkillRankByLevel()
+- N/A
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Creature: RemoveFeatByLevel()
+- Creature: SetSkillRankByLevel()
 
 ### Changed
 - Core: Assert backtraces now show up in `logs.0/nwnx.txt`.
@@ -29,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Fixed
 - Core: Fixed a minor memory leak when asserts were triggered.
+- Rename: Fixed SetPCNameOverride() subscribing to `NWNX_CREATURE_ORIGINALNAME_SIGNAL` whenever the function is called, causing bad performance. 
 
 ## 8193.30
 https://github.com/nwnxee/unified/compare/build8193.29...build8193.30

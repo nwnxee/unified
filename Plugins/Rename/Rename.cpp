@@ -130,6 +130,26 @@ Rename::Rename(Services::ProxyServiceList* services)
     s_SendServerToPlayerPopUpGUIPanelHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString,
             (void*)&SendServerToPlayerPopUpGUIPanelHook, Hooks::Order::Early);
+
+    MessageBus::Subscribe("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+      [](const std::vector<std::string>& message)
+      {
+          ObjectID objectID = std::strtoul(message[0].c_str(), nullptr, 16);
+          auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectID);
+          auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectID);
+          if (pCreature && pCreature->m_pStats && pPlayer)
+          {
+              auto *pPlayerInfo = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID);
+              if (pPlayerInfo)
+              {
+                  g_plugin->m_RenameOriginalNames[objectID] = std::make_tuple(
+                          pPlayerInfo->m_sPlayerName,
+                          pCreature->m_pStats->m_lsFirstName,
+                          pCreature->m_pStats->m_lsLastName);
+                  g_plugin->SendNameUpdate(pCreature, Constants::PLAYERID_ALL_CLIENTS);
+              }
+          }
+      });
 }
 
 Rename::~Rename()
@@ -566,25 +586,6 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
                 targetCreature->m_pStats->m_lsFirstName,
                 targetCreature->m_pStats->m_lsLastName);
 
-        MessageBus::Subscribe("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
-             [](const std::vector<std::string>& message)
-             {
-                 ObjectID objectID = std::strtoul(message[0].c_str(), nullptr, 16);
-                 auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectID);
-                 auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectID);
-                 if (pCreature && pCreature->m_pStats && pPlayer)
-                 {
-                     auto *pPlayerInfo = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID);
-                     if (pPlayerInfo)
-                     {
-                         g_plugin->m_RenameOriginalNames[objectID] = std::make_tuple(
-                                 pPlayerInfo->m_sPlayerName,
-                                 pCreature->m_pStats->m_lsFirstName,
-                                 pCreature->m_pStats->m_lsLastName);
-                         g_plugin->SendNameUpdate(pCreature, Constants::PLAYERID_ALL_CLIENTS);
-                     }
-                 }
-             });
         // If we've ran this before the PC has even been added to the other clients' player list then there's
         // nothing else we need to do, the hooks will take care of doing the renames. If we don't skip this
         // then the SendServerToPlayerPlayerList_All in the SendNameUpdate below runs before the server has even ran a
