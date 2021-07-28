@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Added
 - Creature: RemoveFeatByLevel()
+- Creature: SetSkillRankByLevel()
 
 ##### New Plugins
 - N/A
