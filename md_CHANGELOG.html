@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <h2><a class="anchor" id="autotoc_md10"></a>
 Added</h2>
 <ul>
-<li>Creature: RemoveFeatByLevel()</li>
+<li>N/A</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md11"></a>
 New Plugins</h4>
@@ -118,7 +118,7 @@ New Plugins</h4>
 <h4><a class="anchor" id="autotoc_md12"></a>
 New NWScript Functions</h4>
 <ul>
-<li>N/A</li>
+<li>Creature: RemoveFeatByLevel()</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Changed</h2>
@@ -140,6 +140,7 @@ Removed</h2>
 Fixed</h2>
 <ul>
 <li>Core: Fixed a minor memory leak when asserts were triggered.</li>
+<li>Rename: Fixed SetPCNameOverride() subscribing to <code>NWNX_CREATURE_ORIGINALNAME_SIGNAL</code> whenever the function is called, causing bad performance.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md17"></a>
 8193.30</h1>
@@ -1191,7 +1192,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Jul 27 2021 08:45:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Jul 28 2021 19:48:52 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
