@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ##### New NWScript Functions
 - Creature: RemoveFeatByLevel()
+- Creature: SetSkillRankByLevel()
 
 ### Changed
 - Core: Assert backtraces now show up in `logs.0/nwnx.txt`.

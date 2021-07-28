@@ -391,6 +391,13 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 /// @param rank The value to set as the skill rank.
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 
+/// @brief Set the ranks in a skill for creature assigned at a level
+/// @param creature The creature object.
+/// @param skill The skill id.
+/// @param level The level they gained skill ranks.
+/// @param rank The value to set as the skill rank.
+void NWNX_Creature_SetSkillRankByLevel(object creature, int skill, int rank, int level);
+
 /// @brief Set the class ID in a particular position for a creature.
 /// @param creature The creature object.
 /// @param position Should be 0, 1, or 2 depending on how many classes the creature
@@ -1476,6 +1483,18 @@ void NWNX_Creature_SetSoundset(object creature, int soundset)
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
 {
     string sFunc = "SetSkillRank";
+    NWNX_PushArgumentInt(rank);
+    NWNX_PushArgumentInt(skill);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetSkillRankByLevel(object creature, int skill, int rank, int level)
+{
+    string sFunc = "SetSkillRankByLevel";
+
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentInt(rank);
     NWNX_PushArgumentInt(skill);
     NWNX_PushArgumentObject(creature);
