@@ -61,6 +61,10 @@ void NWNX_SQL_PreparedObjectId(int position, object value);
 /// @param base64 Use base64-encoded string format if TRUE (default), otherwise use binary format.
 void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE);
 
+/// @brief Set the NULL value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+void NWNX_SQL_PreparedNULL(int position);
+
 /// @brief Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 ///
 /// The object will be deserialized and created in the game. New object ID is returned.
@@ -170,7 +174,6 @@ void NWNX_SQL_PreparedString(int position, string value)
     NWNX_PushArgumentString(value);
     NWNX_PushArgumentInt(position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
-
 }
 void NWNX_SQL_PreparedFloat(int position, float value)
 {
@@ -179,7 +182,6 @@ void NWNX_SQL_PreparedFloat(int position, float value)
     NWNX_PushArgumentFloat(value);
     NWNX_PushArgumentInt(position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
-
 }
 void NWNX_SQL_PreparedObjectId(int position, object value)
 {
@@ -188,7 +190,6 @@ void NWNX_SQL_PreparedObjectId(int position, object value)
     NWNX_PushArgumentObject(value);
     NWNX_PushArgumentInt(position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
-
 }
 void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE)
 {
@@ -199,6 +200,14 @@ void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE)
     NWNX_PushArgumentInt(position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
 }
+void NWNX_SQL_PreparedNULL(int position)
+{
+    string sFunc = "PreparedNULL";
+
+    NWNX_PushArgumentInt(position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+}
+
 
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0, int base64 = TRUE)
 {

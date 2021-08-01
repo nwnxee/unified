@@ -25,6 +25,7 @@ public:
     ArgumentStack PreparedFloat                 (ArgumentStack&& args);
     ArgumentStack PreparedObjectId              (ArgumentStack&& args);
     ArgumentStack PreparedObjectFull            (ArgumentStack&& args);
+    ArgumentStack PreparedNULL                  (ArgumentStack&& args);
     ArgumentStack ReadFullObjectInActiveRow     (ArgumentStack&& args);
     ArgumentStack GetAffectedRows               (ArgumentStack&& args);
     ArgumentStack GetDatabaseType               (ArgumentStack&& args);

@@ -92,17 +92,35 @@ std::optional<ResultSet> SQLite::ExecuteQuery()
 
     for (unsigned int i = 0; i < m_paramCount; i++)
     {
-        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i], i);
-        // Params in SQLite are 1 based
-        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, nullptr);
-
-        if (bindStatus != SQLITE_OK)
+        if (m_paramValues[i])
         {
-            m_lastError.assign(sqlite3_errmsg(m_dbConn));
+            LOG_DEBUG("Binding value '%s' to param '%u'", *m_paramValues[i], i);
+            // Params in SQLite are 1 based
+            int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i]->c_str(), -1, nullptr);
 
-            LOG_WARNING("Failed to bind params: %s", m_lastError);
+            if (bindStatus != SQLITE_OK)
+            {
+                m_lastError.assign(sqlite3_errmsg(m_dbConn));
 
-            return std::optional<ResultSet>(); // Failed query, bind error.
+                LOG_WARNING("Failed to bind params: %s", m_lastError);
+
+                return std::optional<ResultSet>(); // Failed query, bind error.
+            }
+        }
+        else
+        {
+            LOG_DEBUG("Binding value NULL to param '%u'", i);
+            // Params in SQLite are 1 based
+            int bindStatus = sqlite3_bind_null(m_stmt, i + 1);
+
+            if (bindStatus != SQLITE_OK)
+            {
+                m_lastError.assign(sqlite3_errmsg(m_dbConn));
+
+                LOG_WARNING("Failed to bind params: %s", m_lastError);
+
+                return std::optional<ResultSet>(); // Failed query, bind error.
+            }
         }
     }
 
@@ -187,6 +205,15 @@ void SQLite::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
     ASSERT_FAIL_MSG("Binary format not implemented for SQLite");
 }
 
+void SQLite::PrepareNULL(int32_t position)
+{
+    LOG_DEBUG("Assigning position %d to value NULL", position);
+
+    ASSERT_OR_THROW(position >= 0);
+
+    m_paramValues[position] = std::nullopt;
+}
+
 int SQLite::GetAffectedRows()
 {
     return m_affectedRows;
@@ -213,7 +240,7 @@ void SQLite::DestroyPreparedQuery()
     m_stmt = nullptr;
 
     // Force deallocation
-    std::vector<std::string>().swap(m_paramValues);
+    std::vector<std::optional<std::string>>().swap(m_paramValues);
     m_paramCount = 0;
 }
 
