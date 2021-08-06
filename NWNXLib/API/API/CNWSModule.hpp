@@ -71,7 +71,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
     CNWSScriptVarTable m_ScriptVars;
-    CExoString m_sScripts[19];
+    CExoString m_sScripts[21];
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
     CExoArrayList<CNWSTagNode> m_aTagLookupTable;
