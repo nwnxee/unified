@@ -391,7 +391,8 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 /// @param rank The value to set as the skill rank.
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 
-/// @brief Set the ranks in a skill for creature assigned at a level
+/// @brief Set the ranks in a skill for creature assigned at a level.
+/// @note It only affect the leveling array, to know what to do on level-down. To effectivly change the skill rank on the current level, NWNX_Creature_SetSkillRank is also needed.
 /// @param creature The creature object.
 /// @param skill The skill id.
 /// @param level The level they gained skill ranks.
