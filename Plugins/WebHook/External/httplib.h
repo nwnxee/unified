@@ -46,7 +46,7 @@ typedef SOCKET socket_t;
 #include <arpa/inet.h>
 #include <signal.h>
 #include <sys/socket.h>
-
+#include <poll.h>
 typedef int socket_t;
 #endif
 
@@ -441,20 +441,12 @@ inline int select_read(socket_t sock, size_t sec, size_t usec)
 
 inline bool wait_until_socket_is_ready(socket_t sock, size_t sec, size_t usec)
 {
-    fd_set fdsr;
-    FD_ZERO(&fdsr);
-    FD_SET(sock, &fdsr);
-
-    auto fdsw = fdsr;
-    auto fdse = fdsr;
-
-    timeval tv;
-    tv.tv_sec = sec;
-    tv.tv_usec = usec;
-
-    if (select(sock + 1, &fdsr, &fdsw, &fdse, &tv) < 0) {
+    pollfd pfd;
+    pfd.fd = sock;
+    pfd.events = POLLIN | POLLOUT;
+    if (poll(&pfd, 1, sec * 1000 + usec / 1000) < 0) {
         return false;
-    } else if (FD_ISSET(sock, &fdsr) || FD_ISSET(sock, &fdsw)) {
+    } else if (pfd.revents & (POLLIN | POLLOUT)) {
         int error = 0;
         socklen_t len = sizeof(error);
         if (getsockopt(sock, SOL_SOCKET, SO_ERROR, (char*)&error, &len) < 0 || error) {
