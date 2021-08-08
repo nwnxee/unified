@@ -25,6 +25,7 @@ struct ITarget
     virtual void PrepareFloat(int32_t position, float value) = 0;
     virtual void PrepareString(int32_t position, const std::string& value) = 0;
     virtual void PrepareBinary(int32_t position, const std::vector<uint8_t>& value) = 0;
+    virtual void PrepareNULL(int32_t position) = 0;
     virtual int  GetAffectedRows() = 0;
     virtual std::string GetLastError(bool bClear = false) = 0;
     virtual int32_t GetPreparedQueryParamCount() = 0;
