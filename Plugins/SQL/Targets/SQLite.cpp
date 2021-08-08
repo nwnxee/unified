@@ -92,35 +92,18 @@ std::optional<ResultSet> SQLite::ExecuteQuery()
 
     for (unsigned int i = 0; i < m_paramCount; i++)
     {
-        if (m_paramValues[i])
+        const char* param = m_paramValues[i].has_value() ? m_paramValues[i]->c_str() : nullptr;
+        LOG_DEBUG("Binding value '%s' to param '%u'", param, i);
+        // Params in SQLite are 1 based
+        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, param, -1, nullptr);
+
+        if (bindStatus != SQLITE_OK)
         {
-            LOG_DEBUG("Binding value '%s' to param '%u'", *m_paramValues[i], i);
-            // Params in SQLite are 1 based
-            int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i]->c_str(), -1, nullptr);
+            m_lastError.assign(sqlite3_errmsg(m_dbConn));
 
-            if (bindStatus != SQLITE_OK)
-            {
-                m_lastError.assign(sqlite3_errmsg(m_dbConn));
+            LOG_WARNING("Failed to bind params: %s", m_lastError);
 
-                LOG_WARNING("Failed to bind params: %s", m_lastError);
-
-                return std::optional<ResultSet>(); // Failed query, bind error.
-            }
-        }
-        else
-        {
-            LOG_DEBUG("Binding value NULL to param '%u'", i);
-            // Params in SQLite are 1 based
-            int bindStatus = sqlite3_bind_null(m_stmt, i + 1);
-
-            if (bindStatus != SQLITE_OK)
-            {
-                m_lastError.assign(sqlite3_errmsg(m_dbConn));
-
-                LOG_WARNING("Failed to bind params: %s", m_lastError);
-
-                return std::optional<ResultSet>(); // Failed query, bind error.
-            }
+            return std::optional<ResultSet>(); // Failed query, bind error.
         }
     }
 
