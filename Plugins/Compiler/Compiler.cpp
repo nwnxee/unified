@@ -83,7 +83,14 @@ void Compiler()
 
         if (Config::Get<bool>("EXIT_ON_COMPLETE", true))
         {
-            exit(result);
+          if (result == 0)
+          {
+            *Globals::ExitProgram() = true;
+          }
+          else
+          {
+            throw std::runtime_error("Compilation Failed.");
+          }
         }
     });
 }
