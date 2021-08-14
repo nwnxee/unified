@@ -30,7 +30,8 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Fixed
 - Core: Fixed a minor memory leak when asserts were triggered.
-- Rename: Fixed SetPCNameOverride() subscribing to `NWNX_CREATURE_ORIGINALNAME_SIGNAL` whenever the function is called, causing bad performance. 
+- Rename: Fixed SetPCNameOverride() subscribing to `NWNX_CREATURE_ORIGINALNAME_SIGNAL` whenever the function is called, causing bad performance.
+- Player: Fixed a nullptr deref crash in ApplyLoopingVisualEffectToObject()
 
 ## 8193.30
 https://github.com/nwnxee/unified/compare/build8193.29...build8193.30
