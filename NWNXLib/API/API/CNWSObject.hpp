@@ -34,7 +34,6 @@ struct CNWSAreaOfEffectObject;
 struct CNWSCreature;
 struct CNWSDialog;
 struct CNWSExpression;
-struct CNWSExpression;
 struct CNWSPlayer;
 struct CNWSpell;
 struct CResGFF;

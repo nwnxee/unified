@@ -2,6 +2,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNWSClient.hpp"
+#include "API/CNWSExpression.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSObject.hpp"
@@ -257,6 +258,45 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
         }
 
         retVal = true;
+    }
+    else if (speaker != target)
+    {
+        // We shouldn't forget to handle listening NPCs.
+        auto targetObj = Utils::AsNWSObject(Utils::GetGameObject(target));
+        if (targetObj && targetObj->m_bListening)
+        {
+            // Sets last speaker.
+            targetObj->m_oidLastSpeaker = speaker;
+
+            // Sets listening pattern.
+            targetObj->m_nMatchedPos = targetObj->TestListenExpression(message);
+            if (targetObj->m_nMatchedPos != -1)
+            {
+                for (int i = 0; i < targetObj->m_aListenExpressions.num; ++i)
+                {
+                    if (targetObj->m_aListenExpressions[i]->m_nExpressionId == targetObj->m_nMatchedPos)
+                    {
+                        targetObj->ClearMatchedExpressionStrings();
+                        for (int j = 1; j < targetObj->m_aListenExpressions[i]->m_aStored.num; ++j)
+                            targetObj->AddMatchedExpressionString(*targetObj->m_aListenExpressions[i]->m_aStored[j]);
+                    }
+                }
+            }
+
+            // Triggers OnConversation event.
+            switch (targetObj->m_nObjectType)
+            {
+                case Constants::ObjectType::Creature:
+                    retVal = targetObj->RunEventScript(Constants::CreatureEvent::OnConversation);
+                    break;
+                case Constants::ObjectType::Placeable:
+                    retVal = targetObj->RunEventScript(Constants::PlaceableEvent::OnConversation);
+                    break;
+                case Constants::ObjectType::Door:
+                    retVal = targetObj->RunEventScript(Constants::DoorEvent::OnConversation);
+                    break;
+            }
+        }
     }
 
     return Events::Arguments(retVal);
