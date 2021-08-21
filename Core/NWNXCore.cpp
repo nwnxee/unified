@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <sstream>
+#include <dlfcn.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -27,8 +28,6 @@ using namespace NWNXLib::API;
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
 {
-    std::fflush(stdout);
-
     const char *err;
     switch (sig)
     {
@@ -47,7 +46,6 @@ extern "C" void nwnx_signal_handler(int sig)
         NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
     std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
-
     std::fflush(stdout);
 
     if (Config::Get<bool>("BASE_GAME_CRASH_HANDLER", false))
@@ -60,6 +58,27 @@ extern "C" void nwnx_signal_handler(int sig)
         std::abort();
     }
 }
+
+// Don't allow the -quite flag to close stdout/stderr, we print important info there.
+extern "C" FILE *freopen64(const char *filename, const char *mode, FILE *stream)
+{
+    if ((stream == stdout || stream == stderr) && !strcmp(filename, "/dev/null"))
+    {
+        if (stream == stdout)
+        {
+            std::puts("NWNX overriding -quiet flag. Always keep an eye on stdout.\n"
+                      "Server will continue in non-interactive mode, but with full output.\n");
+        }
+        return stream;
+    }
+
+    using Type = FILE*(*)(const char*,const char*,FILE*);
+    static Type real;
+    if (!real)
+        real = (Type)dlsym(RTLD_NEXT, "freopen64");
+    return real(filename, mode, stream);
+}
+
 
 namespace {
 
