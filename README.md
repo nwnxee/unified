@@ -125,6 +125,10 @@ To build on Windows:
 
 All contribution are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for requirements and style guidelines.
 
+## Reporting bugs
+
+Use the [issue tracker](https://github.com/nwnxee/unified/issues/new) to report any bugs. Please always provide the relevant `stdout` output of your runs, ideally at debug log level (`NWNX_CORE_LOG_LEVEL=7`).
+
 ## Who makes NWNX:EE?
 
 The project is an open source project created and maintained by community members for free in their spare time.
