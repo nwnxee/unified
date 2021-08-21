@@ -65,8 +65,7 @@ void SetColorOutput(bool value);
 bool GetColorOutput();
 void SetForceColor(bool value);
 bool GetForceColor();
-
-//void SetAsync(NWNXLib::Services::Tasks* tasks);
+void SetLogFile(const std::string& logfile = "");
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message);
 void WriteToLogFile(const char* message);
