@@ -39,18 +39,26 @@ extern "C" void nwnx_signal_handler(int sig)
         default:       err = "Unknown error";            break;
     }
 
-    std::fprintf(stderr, " NWNX Signal Handler:\n"
+    std::fprintf(stdout, " NWNX Signal Handler:\n"
         "==============================================================\n"
         " NWNX %d.%d (%s) has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
         NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
-    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stderr);
+    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
 
-    std::fflush(stderr);
+    std::fflush(stdout);
 
-    nwn_crash_handler(sig);
+    if (Config::Get<bool>("BASE_GAME_CRASH_HANDLER", false))
+    {
+        nwn_crash_handler(sig);
+    }
+    else
+    {
+        std::signal(SIGABRT, NULL);
+        std::abort();
+    }
 }
 
 namespace {
@@ -212,17 +220,17 @@ void NWNXCore::InitialVersionCheck()
 
         if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
+            std::fprintf(stdout, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
                                       NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
-            std::fprintf(stderr, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
-            std::fflush(stderr);
+            std::fprintf(stdout, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
+            std::fflush(stdout);
             std::exit(1);
         }
     }
     else
     {
-        std::fprintf(stderr, "NWNX: Could not determine build version.\n");
-        std::fflush(stderr);
+        std::fprintf(stdout, "NWNX: Could not determine build version.\n");
+        std::fflush(stdout);
         std::abort();
     }
 }
@@ -504,8 +512,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     Log::SetPrintSource(Config::Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(Config::Get<bool>("LOG_COLOR", true));
     Log::SetForceColor(Config::Get<bool>("LOG_FORCE_COLOR", false));
-    //if (Config::Get<bool>("LOG_ASYNC", false))
-    //    Log::SetAsync(g_core->m_services->m_tasks.get());
+    Log::SetLogFile(Config::Get<std::string>("LOG_FILE_PATH", ""));
 
     if (auto locale = Config::Get<std::string>("LOCALE"))
     {

@@ -19,8 +19,12 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 - SQL: PreparedNULL()
 
 ### Changed
-- Core: Assert backtraces now show up in `logs.0/nwnx.txt`.
+- Core: **POLICY CHANGE:** Only `stdout` output will be accepted in bug reports.
+- Core: Assert backtraces now show up in the log file.
 - Core: Assert backtraces are now printed to `stdout` instead of `stderr`.
+- Core: Other error messages are now printed to `stdout` instead of `stderr`
+- Core: The default NWN carsh handler is no longer called by default. Set `NWNX_CORE_BASE_GAME_CRASH_HANDLER=y` to call it.
+- Core: `nwnx.txt` is no longer created by default. Set `NWNX_CORE_LOG_FILE_PATH="path/to/nwnx.txt"` to use it.
 
 ### Deprecated
 - N/A
