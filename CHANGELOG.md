@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Added
-- N/A
+- Events: Added NWNX_ON_ITEM_MERGE_BEFORE and NWNX_ON_ITEM_MERGE_AFTER.
 
 ##### New Plugins
 - N/A

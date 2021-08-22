@@ -236,6 +236,18 @@ _______________________________________
     NUMBER_SPLIT_OFF      | int    | |
 
 _______________________________________
+    ## Item Merge Events
+    - NWNX_ON_ITEM_MERGE_BEFORE
+    - NWNX_ON_ITEM_MERGE_AFTER
+
+    `OBJECT_SELF` = The player attempting to merge an item
+
+    Event Data Tag        | Type   | Notes                                                                             |
+    ----------------------|--------|-----------------------------------------------------------------------------------|
+    ITEM_TO_MERGE_INTO    | object | Convert to object with StringToObject()                                           |
+    ITEM_TO_MERGE         | object | Convert to object with StringToObject() (May be OBJECT_INVALID in the AFTER event)|
+
+_______________________________________
     ## Acquire Item Events
     - NWNX_ON_ITEM_ACQUIRE_BEFORE
     - NWNX_ON_ITEM_ACQUIRE_AFTER
