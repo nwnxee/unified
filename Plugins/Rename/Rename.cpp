@@ -505,6 +505,11 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
         if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS && targets.count(observerPlayerObject->m_oidNWSObject))
             continue;
 
+        // The client may crash if we send an object update for a creature that does not exist in its
+        // last update object list
+        if (!IsCreatureInLastUpdateObjectList(observerPlayerObject, targetCreature->m_idSelf))
+            continue;
+
         if (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM)
         {
             // Write a message notifying an object update.
@@ -520,7 +525,10 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
 
             if (message->GetWriteMessage(&data, &size) && size)
             {
-                message->SendServerToPlayerMessage(pid, 5, 1, data, size);
+                message->SendServerToPlayerMessage(pid,
+                                                   Constants::MessageMajor::GameObjectUpdate,
+                                                   Constants::MessageGameObjectUpdateMinor::ObjectList,
+                                                   data, size);
                 success = true;
             }
 
@@ -530,6 +538,26 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
         LOG_DEBUG("%s sending name update message for observer (PlayerID): '0x%08x', target (ObjectID): '0x%08x'.",
                   success ? "Succeeded" : "Failed", pid, targetCreature->m_idSelf);
     }
+}
+
+bool Rename::IsCreatureInLastUpdateObjectList(CNWSPlayer *player, ObjectID creatureId)
+{
+    auto *lastUpdateObj = player->GetLastUpdateObject(creatureId);
+    if (lastUpdateObj)
+        return true;
+
+    auto *partyObjectsList = player->m_pActivePartyObjectsLastUpdate->m_pcExoLinkedListInternal;
+    if (!partyObjectsList)
+        return false;
+
+    for (auto *head = partyObjectsList->pHead; head; head = head->pNext)
+    {
+        auto *partyMember = static_cast<CLastUpdatePartyObject *>(head->pObject);
+        if (partyMember && partyMember->m_nPlayerId == creatureId)
+            return true;
+    }
+
+    return false;
 }
 
 ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
