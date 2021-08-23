@@ -41,6 +41,7 @@ private:
     void GlobalNameChange(bool, PlayerID, PlayerID);
 
     std::string GenerateRandomPlayerName(size_t length, ObjectID targetOid);
+    bool IsCreatureInLastUpdateObjectList(CNWSPlayer *player, ObjectID creatureId);
 
     void SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlayerId);
 
