@@ -46,7 +46,7 @@ var NAVTREEINDEX =
 "group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100",
 "group__creature.html#gac098ee44bae961ce3e2cfb0189252533",
 "group__data__array__set.html#gad57e4e12c239b379e78ec609ff6b4ae8",
-"group__feat.html#autotoc_md327",
+"group__feat.html#autotoc_md328",
 "group__object.html#ga252000c1215ad2da9da97f9a0763429c",
 "group__player.html#ga7c31b1a2759034e5b4518c7c5b3cc704",
 "group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8",
