@@ -24,6 +24,7 @@ static Hooks::Hook s_ItemEventHandlerHook;
 static Hooks::Hook s_UseLoreOnItemHook;
 static Hooks::Hook s_PayToIdenfifyItemHook;
 static Hooks::Hook s_SplitItemHook;
+static Hooks::Hook s_MergeItemHook;
 static Hooks::Hook s_CanUseItemHook;
 static Hooks::Hook s_AcquireItemHook;
 
@@ -40,6 +41,7 @@ static void ItemEventHandlerHook(CNWSItem*, uint32_t, ObjectID, void*, uint32_t,
 static int32_t UseLoreOnItemHook(CNWSCreature*, ObjectID);
 static void PayToIdentifyItemHook(CNWSCreature*, ObjectID, ObjectID);
 static void SplitItemHook(CNWSCreature*, CNWSItem*, int32_t);
+static void MergeItemHook(CNWSCreature*, CNWSItem*, CNWSItem*);
 static int32_t AcquireItemHook(CNWSCreature*, CNWSItem**, ObjectID, ObjectID, uint8_t, uint8_t, int32_t, int32_t);
 
 void ItemEvents() __attribute__((constructor));
@@ -108,6 +110,11 @@ void ItemEvents()
     InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", []() {
         s_SplitItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi,
                                        (void*)&SplitItemHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_ITEM_MERGE_.*", []() {
+        s_MergeItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature9MergeItemEP8CNWSItemS1_,
+                                       (void*)&MergeItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_ACQUIRE_.*", []() {
@@ -467,6 +474,24 @@ void SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToSplit, int32_t nNumbe
     }
 
     PushAndSignal("NWNX_ON_ITEM_SPLIT_AFTER");
+}
+void MergeItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToMergeInto, CNWSItem *pItemToMerge)
+{
+    // Item-to-merge can be invalid pointer after CallOriginal.
+    const auto oidItemToMerge = pItemToMerge->m_idSelf;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("ITEM_TO_MERGE_INTO", Utils::ObjectIDToString(pItemToMergeInto->m_idSelf));
+        PushEventData("ITEM_TO_MERGE", Utils::ObjectIDToString(Utils::GetGameObject(oidItemToMerge) ? oidItemToMerge : OBJECT_INVALID));
+        return SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_MERGE_BEFORE"))
+    {
+        s_MergeItemHook->CallOriginal<void>(thisPtr, pItemToMergeInto, pItemToMerge);
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_MERGE_AFTER");
 }
 
 int32_t AcquireItemHook(CNWSCreature* thisPtr, CNWSItem **ppItem, ObjectID oidPossessor,
