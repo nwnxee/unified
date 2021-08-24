@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ### Added
 - Events: Added NWNX_ON_ITEM_MERGE_BEFORE and NWNX_ON_ITEM_MERGE_AFTER.
+- ELC: added `NWNX_ELC_ENFORCE_CASTER_PRIMARY_STAT_IS_11`, if enabled, ELC will check when a character's first level class is a spellcaster, if their primary casting stat is >= 11.
 
 ##### New Plugins
 - N/A
