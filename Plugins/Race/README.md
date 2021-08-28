@@ -125,18 +125,19 @@ NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_ABVSRACE, RACIAL_TYPE_DRAGON
 The `AC` entry is used to modify the base AC for a race.
 
 * Param1 = Modifier value (+/-)
+* Param2 = Armor Class type
 
 ##### Example 2da entry
 ```text
 2DA V2.0
 
      LABEL                    Type            Param1 Param2 Param3
-0    InateAC                  AC              1      ****   ****
+0    InateAC                  AC              1      0      ****
 ``` 
 
 ##### Example script on_module_load
 ```c
-NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_AC, 1);
+NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_AC, 1, AC_NATURAL_BONUS);
 ```
 ***
 ### ACVSRACE

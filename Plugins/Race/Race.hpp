@@ -55,7 +55,7 @@ private:
 
     unordered_map<uint16_t, int32_t>                                                  m_RaceAB;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_RaceABVsRace;
-    unordered_map<uint16_t, int32_t>                                                  m_RaceAC;
+    unordered_map<uint16_t, pair<int32_t, uint8_t>>                                   m_RaceAC;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_RaceACVsRace;
     unordered_map<uint16_t, uint8_t>                                                  m_RaceConcealment;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_RaceDmgImmunity;
