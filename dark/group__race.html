@@ -208,14 +208,15 @@ AC</h3>
 <p>The <code>AC</code> entry is used to modify the base AC for a race.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
+<li>Param2 = Armor Class type. Keep in mind that non-dodge AC types won't stack with other non-dodge AC from spell effects nor item properties.</li>
 </ul>
 <p><a class="anchor" id="autotoc_md375"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
-<div class="line">0    InateAC                  AC              1      ****   ****</div>
+<div class="line">0    InateAC                  AC              1      0      ****</div>
 </div><!-- fragment --><p><a class="anchor" id="autotoc_md376"></a></p><h5>Example script on_module_load</h5>
-<div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga2764ca25d58580933fe71c0643636eb4">NWNX_RACE_MODIFIER_AC</a>, 1);</div>
+<div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga2764ca25d58580933fe71c0643636eb4">NWNX_RACE_MODIFIER_AC</a>, 1, AC_DODGE_BONUS);</div>
 </div><!-- fragment --><hr  />
  <h3><a class="anchor" id="autotoc_md377"></a>
 ACVSRACE</h3>
@@ -1118,7 +1119,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Aug 24 2021 18:31:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Aug 29 2021 18:05:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
