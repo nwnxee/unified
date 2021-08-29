@@ -125,7 +125,7 @@ NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_ABVSRACE, RACIAL_TYPE_DRAGON
 The `AC` entry is used to modify the base AC for a race.
 
 * Param1 = Modifier value (+/-)
-* Param2 = Armor Class type
+* Param2 = Armor Class type. Keep in mind that non-dodge AC types won't stack with other non-dodge AC from spell effects nor item properties.
 
 ##### Example 2da entry
 ```text
