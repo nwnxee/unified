@@ -26,6 +26,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 - Core: Other error messages are now printed to `stdout` instead of `stderr`
 - Core: The default NWN carsh handler is no longer called by default. Set `NWNX_CORE_BASE_GAME_CRASH_HANDLER=y` to call it.
 - Core: `nwnx.txt` is no longer created by default. Set `NWNX_CORE_LOG_FILE_PATH="path/to/nwnx.txt"` to use it.
+- Race: The AC modifier now supports specifying the AC type.
 
 ### Deprecated
 - N/A

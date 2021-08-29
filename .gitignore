@@ -9,6 +9,7 @@ Documentation/
 .vs/
 out/
 CMakeSettings.json
+CMakePresets.json
 
 # SWIG
 Plugins/SWIG/SWIG_*/NWNXLib.i

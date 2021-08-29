@@ -226,12 +226,13 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
     }
 
     // AC
-    auto modAC = g_plugin->m_RaceAC[nRace];
+    auto modAC = g_plugin->m_RaceAC[nRace].first;
+    auto typeAC = g_plugin->m_RaceAC[nRace].second;
     if (modAC != 0)
     {
         g_plugin->DoEffect(pCreature,
                            modAC > 0 ? EffectTrueType::ACIncrease : EffectTrueType::ACDecrease,
-                           ACBonus::Dodge, abs(modAC), RacialType::Invalid, 0, 0, 4103);
+                           typeAC, abs(modAC), RacialType::Invalid, 0, 0, 4103);
     }
 
     // ACVSRACE
@@ -910,8 +911,13 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
         }
         case AC:
         {
-            g_plugin->m_RaceAC[raceId] = param1;
-            LOG_INFO("%s: Setting Natural AC modifier to %d.", raceName, param1);
+            if (param2 < ACBonus::MIN || param2 > ACBonus::MAX)
+            {
+                LOG_WARNING("%s: The specified AC Bonus type is invalid, falling back to Dodge.", raceName);
+                param2 = ACBonus::Dodge;
+            }
+            g_plugin->m_RaceAC[raceId] = std::make_pair(param1, param2);
+            LOG_INFO("%s: Setting %s AC modifier to %d.", raceName, ACBonus::ToString(param2), param1);
             break;
         }
         case ACVSRACE:
