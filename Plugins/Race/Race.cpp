@@ -913,7 +913,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
         {
             if (param2 < ACBonus::MIN || param2 > ACBonus::MAX)
             {
-                LOG_ERROR("%s: The specified AC Bonus type is invalid, falling back to Dodge.", raceName);
+                LOG_WARNING("%s: The specified AC Bonus type is invalid, falling back to Dodge.", raceName);
                 param2 = ACBonus::Dodge;
             }
             g_plugin->m_RaceAC[raceId] = std::make_pair(param1, param2);
