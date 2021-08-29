@@ -137,7 +137,7 @@ The `AC` entry is used to modify the base AC for a race.
 
 ##### Example script on_module_load
 ```c
-NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_AC, 1, AC_NATURAL_BONUS);
+NWNX_Race_SetRacialModifier(150, NWNX_RACE_MODIFIER_AC, 1, AC_DODGE_BONUS);
 ```
 ***
 ### ACVSRACE
