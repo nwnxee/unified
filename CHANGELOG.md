@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 
 ##### New NWScript Functions
 - Creature: RemoveFeatByLevel()
+- Creature: GetSkillRankByLevel()
 - Creature: SetSkillRankByLevel()
 - SQL: PreparedNULL()
 
