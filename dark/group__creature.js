@@ -61,6 +61,7 @@ var group__creature =
     [ "NWNX_Creature_GetSoundset", "group__creature.html#gaa167eb31727eea68d075f538033c2817", null ],
     [ "NWNX_Creature_SetSoundset", "group__creature.html#ga26b91ccf9c4d4ea5225acf66c6f2f773", null ],
     [ "NWNX_Creature_SetSkillRank", "group__creature.html#ga4a8f1767b03c99943c09fefd60333c70", null ],
+    [ "NWNX_Creature_GetSkillRankByLevel", "group__creature.html#ga82a1dea36f97de88c5adaedec5087588", null ],
     [ "NWNX_Creature_SetSkillRankByLevel", "group__creature.html#ga863e019031899379a9359157264fa1cc", null ],
     [ "NWNX_Creature_SetClassByPosition", "group__creature.html#ga54903d46fd1cd4a9d30d4d870c36e01b", null ],
     [ "NWNX_Creature_SetLevelByPosition", "group__creature.html#ga69f0f037d2b2ccc1185da9588fe5901c", null ],
