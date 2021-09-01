@@ -475,6 +475,7 @@ void SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToSplit, int32_t nNumbe
 
     PushAndSignal("NWNX_ON_ITEM_SPLIT_AFTER");
 }
+
 void MergeItemHook(CNWSCreature *thisPtr, CNWSItem *pItemToMergeInto, CNWSItem *pItemToMerge)
 {
     // Item-to-merge can be invalid pointer after CallOriginal.

@@ -1062,6 +1062,27 @@ NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetSkillRankByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto skill = args.extract<int32_t>();
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+            return pLevelStats->m_lstSkillRanks[skill];
+        }
+    }
+    return -1;
+}
+
 NWNX_EXPORT ArgumentStack SetSkillRankByLevel(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))

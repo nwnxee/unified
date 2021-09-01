@@ -391,6 +391,13 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 /// @param rank The value to set as the skill rank.
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 
+/// @brief Get the ranks in a skill for creature assigned at a level.
+/// @param creature The creature object.
+/// @param skill The skill id.
+/// @param level The level they gained skill ranks.
+/// @return The rank in a skill assigned at a level (-1 on error).
+int NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level);
+
 /// @brief Set the ranks in a skill for creature assigned at a level.
 /// @note It only affect the leveling array, to know what to do on level-down. To effectivly change the skill rank on the current level, NWNX_Creature_SetSkillRank is also needed.
 /// @param creature The creature object.
@@ -1485,6 +1492,17 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
 {
     string sFunc = "SetSkillRank";
     NWNX_PushArgumentInt(rank);
+    NWNX_PushArgumentInt(skill);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level)
+{
+    string sFunc = "GetSkillRankByLevel";
+
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentInt(skill);
     NWNX_PushArgumentObject(creature);
 
