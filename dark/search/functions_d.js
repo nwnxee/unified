@@ -144,7 +144,7 @@ var searchData=
   ['nwnx_5fcreature_5fgetremainingspellslots_2218',['NWNX_Creature_GetRemainingSpellSlots',['../group__creature.html#gacb4f736a792fe146e85ae56e147db0ad',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetshieldcheckpenalty_2219',['NWNX_Creature_GetShieldCheckPenalty',['../group__creature.html#ga6f6d31fc7c93583af61cc9c8f884d844',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetskillpointsremaining_2220',['NWNX_Creature_GetSkillPointsRemaining',['../group__creature.html#ga926e85f71e7f8373b312e7a41782d356',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fgetskillrankbylevel_2221',['NWNX_Creature_GetSkillRankByLevel',['../group__creature.html#ga82a1dea36f97de88c5adaedec5087588',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fgetskillrankbylevel_2221',['NWNX_Creature_GetSkillRankByLevel',['../group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetsoundset_2222',['NWNX_Creature_GetSoundset',['../group__creature.html#gaa167eb31727eea68d075f538033c2817',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetspecialability_2223',['NWNX_Creature_GetSpecialAbility',['../group__creature.html#ga31a194ae9aefba195739c266a67522b7',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetspecialabilitycount_2224',['NWNX_Creature_GetSpecialAbilityCount',['../group__creature.html#ga353d84f9c3c74b5ac1ed57daca4c8be2',1,'nwnx_creature.nss']]],
