@@ -1498,7 +1498,7 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level)
+int NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level)
 {
     string sFunc = "GetSkillRankByLevel";
 
@@ -1507,6 +1507,7 @@ void NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level)
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Creature_SetSkillRankByLevel(object creature, int skill, int rank, int level)
