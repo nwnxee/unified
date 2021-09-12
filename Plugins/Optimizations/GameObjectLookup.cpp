@@ -56,7 +56,15 @@ void GameObjectLookup()
     static Hooks::Hook s_gameObjectArrayCtorHook = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArrayC1Ei,
         (void*)+[](CGameObjectArray* pThis) -> void
         {
-            memset(pThis, 0, sizeof(*pThis));
+            pThis->m_pArray                = nullptr;
+            pThis->m_nNextObjectArrayID[0] = 0;
+            pThis->m_nNextObjectArrayID[1] = 0;
+            pThis->m_nNextCharArrayID[0]   = 0;
+            pThis->m_nNextCharArrayID[1]   = 0;
+            pThis->m_nLogGameObjectCache   = 0;
+            pThis->m_nGameObjectCache      = 0;
+            pThis->m_bClientMode           = false;
+            pThis->m_nArraySize            = 0;
         }, Hooks::Order::Final);
 
     static auto s_AddObjectAtPos    = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject, (void*)&AddObjectAtPos, Hooks::Order::Final);
