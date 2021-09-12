@@ -148,7 +148,7 @@ namespace DoorEvent
     }
 }
 
-namespace Event
+namespace AIMasterEvent
 {
     enum TYPE
     {
@@ -179,10 +179,11 @@ namespace Event
         AcquireItem               = 25,
         WhirlwindAttack           = 26,
         BootPC                    = 27,
+        DestroyArea               = 28,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 27;
-    static_assert(MAX == BootPC);
+    constexpr int32_t MAX   = 28;
+    static_assert(MAX == DestroyArea);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -215,6 +216,7 @@ namespace Event
             "AcquireItem",
             "WhirlwindAttack",
             "BootPC",
+            "DestroyArea",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];

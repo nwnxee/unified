@@ -3114,7 +3114,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         pSpellScriptData->m_nItemCastLevel = casterLevel;
 
         Globals::AppManager()->m_pServerExoApp->GetServerAIMaster()->AddEventDeltaTime(
-                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::Event::ItemOnHitSpellImpact, (void*)pSpellScriptData);
+                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::AIMasterEvent::ItemOnHitSpellImpact, (void*)pSpellScriptData);
     }
 
     return {};

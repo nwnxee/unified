@@ -78,7 +78,7 @@ static int32_t OnApplyDispelAllMagicHook(CNWSEffectListHandler*, CNWSObject* pOb
         if (nRoll + nDispelLevel > 10 + nEffectLevel)
         {
             auto* pAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
-            pAIMaster->AddEventDeltaTime(0, 0, pEffect->m_oidCreator, pObject->m_idSelf, Constants::Event::RemoveEffect, effect);
+            pAIMaster->AddEventDeltaTime(0, 0, pEffect->m_oidCreator, pObject->m_idSelf, Constants::AIMasterEvent::RemoveEffect, effect);
             if (effect->m_nSpellId != ~0u)
                 messageData.SetInteger(++nDispelledEffects, effect->m_nSpellId);
         }
@@ -154,7 +154,7 @@ static int32_t OnApplyDispelBestMagicHook(CNWSEffectListHandler*, CNWSObject* pO
             }
 
             auto* pAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
-            pAIMaster->AddEventDeltaTime(0, 0, pEffect->m_oidCreator, pObject->m_idSelf, Constants::Event::RemoveEffect, effect);
+            pAIMaster->AddEventDeltaTime(0, 0, pEffect->m_oidCreator, pObject->m_idSelf, Constants::AIMasterEvent::RemoveEffect, effect);
             return 1;
         }
         nFailedDispelIds.push_back(effect->m_nID);
