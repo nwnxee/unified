@@ -99,7 +99,7 @@ struct CExoResMan
     BOOL GetNewResRef(const CResRef & cResRef, RESTYPE nType, CResRef & cTarget);
     BOOL CreateDirectory(CExoString sDirectory);
     BOOL NukeDirectory(CExoString sDirectory, BOOL bDeleteAllFiles = false, BOOL bDeleteAllSubDirectories = false);
-    BOOL CleanDirectory(CExoString sDirectory, BOOL bDeleteSubDirectories = false, BOOL bCleanSubDirectories = false);
+    BOOL CleanDirectory(CExoString sDirectory, BOOL bDeleteSubDirectories = false, BOOL bCleanSubDirectories = false, RESTYPE restype = 0xFFFF);
     BOOL RemoveFile(const CExoString & sFile, RESTYPE nResType);
     BOOL GetFreeDiskSpace(const CExoString & sDirectory, uint64_t * pSpaceAvailable);
     BOOL ServiceCurrentAsyncRes();
@@ -112,7 +112,7 @@ struct CExoResMan
     void AddOverride(const CResRef & oldname, const CResRef & newname, RESTYPE restype);
     void RemoveOverride(const CResRef & name, RESTYPE restype);
     void ClearOverrides();
-    BOOL WipeDirectory(CExoString sDirectory, BOOL bDeleteAllFiles, BOOL bRemoveDirectory, BOOL bDeleteAllSubDirectoryFiles, BOOL bDeleteAllSubDirectories);
+    BOOL WipeDirectory(CExoString sDirectory, BOOL bDeleteAllFiles, BOOL bRemoveDirectory, BOOL bDeleteAllSubDirectoryFiles, BOOL bDeleteAllSubDirectories, RESTYPE restype = 0xFFFF);
     BOOL Free(CRes * pRes);
     BOOL FreeChunk();
     CExoKeyTable * GetTable(CRes * pRes);

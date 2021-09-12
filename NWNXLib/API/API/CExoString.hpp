@@ -52,6 +52,8 @@ struct CExoString
     int32_t Find(const CExoString & string, int32_t position = 0) const;
     int32_t Find(char ch, int32_t position = 0) const;
     int32_t FindNot(char ch, int32_t position = 0) const;
+    CExoString RemoveAll(const char * c) const;
+    CExoString RemoveAllExcept(const char * c) const;
     void Format(const char * format, ...);
     int32_t GetLength() const;
     void Insert(const CExoString & string, int32_t position);

@@ -27,6 +27,7 @@ NWN_API_PROLOGUE(CNWSModule)
 #endif
 
 struct CERFFile;
+struct CGameEffect;
 struct CNWSArea;
 struct CNWSPlayer;
 struct CPathfindInformation;
@@ -71,7 +72,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
     CNWSScriptVarTable m_ScriptVars;
-    CExoString m_sScripts[21];
+    CExoString m_sScripts[22];
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
     CExoArrayList<CNWSTagNode> m_aTagLookupTable;
@@ -140,7 +141,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     Vector m_vPlayerTargetPosition;
     CGameEffect * m_pLastRunScriptEffect;
     int32_t m_nLastRunScriptEffectScriptType;
-    std::shared_ptr<void*> m_sqlite3;
+    std::shared_ptr<NWSQLite::Database> m_sqlite3;
     OBJECT_ID m_oidLastGuiEventPlayer;
     int32_t m_nLastGuiEventType;
     int32_t m_nLastGuiEventInteger;
@@ -148,6 +149,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     OBJECT_ID m_oidLastPlayerToDoTileAction;
     int32_t m_nLastPlayerTileActionId;
     Vector m_vLastPlayerTileActionPosition;
+    Nui::JSON::Event m_cCurrentNuiEvent;
 
     CNWSModule(CExoString sModuleFilename, CUUID cModUUID, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     ~CNWSModule();
@@ -163,7 +165,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CNWSArea * GetAreaByTag(CExoString & sAreaTag);
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
-    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame, int32_t nSourceType, const NWSync::Advertisement & nwsyncModuleSourceAdvert);
     uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
     uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
@@ -176,7 +177,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveModuleFinish(CExoString & sFilePath, CExoString & sFileName);
     uint32_t GetPlayerIndexInPlayerList(CNWSPlayer * pPlayer);
     uint32_t GetPrimaryPlayerIndex();
-    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPlayerCharacterList_st *> & lstChars);
+    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPLAYERCHARACTERLISTITEM *> & lstChars);
     void SetIntraAreaGoal(CPathfindInformation * pcPathfindInformation);
     void UnloadModule();
     OBJECT_ID GetWaypoint(const CExoString & sTag);

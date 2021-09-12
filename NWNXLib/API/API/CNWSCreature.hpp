@@ -431,6 +431,7 @@ struct CNWSCreature : CNWSObject
     BOOL GetIsAbleToPossessFamiliar();
     BOOL GetIsPossessedFamiliar();
     OBJECT_ID GetDominatedCreatureId();
+    BOOL GetTakesCommandsFromPlayer(CNWSPlayer * pPlayer);
     CNWSFaction * GetFaction();
     OBJECT_ID GetNearestEnemy(float fRange, OBJECT_ID oidToExclude = 0x7f000000, BOOL bVisible = true, BOOL bAttackClearLineToTarget = false);
     int32_t GetCreatureReputation(OBJECT_ID oidSource, int32_t nSourceFactionId, BOOL bUseOriginalFaction = false);
