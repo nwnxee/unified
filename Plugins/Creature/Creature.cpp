@@ -1843,12 +1843,7 @@ NWNX_EXPORT ArgumentStack DeserializeQuickbar(ArgumentStack&& args)
         CResGFF resGff;
         CResStruct resStruct{};
 
-        // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
-        // so need a copy for them to play with since the vector can't relinquish its own.
-        // TODO: Can we get rid of this hack with 8193.31 now that there's an extra argument?
-        auto *data = new uint8_t[serialized.size()];
-        memcpy(data, serialized.data(), serialized.size());
-        if (resGff.GetDataFromPointer((void *) data, (int32_t) serialized.size(), true))
+        if (resGff.GetDataFromPointer((void *) serialized.data(), (int32_t) serialized.size(), false))
         {
             resGff.InitializeForWriting();
 
