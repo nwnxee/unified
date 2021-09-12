@@ -177,7 +177,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveModuleFinish(CExoString & sFilePath, CExoString & sFileName);
     uint32_t GetPlayerIndexInPlayerList(CNWSPlayer * pPlayer);
     uint32_t GetPrimaryPlayerIndex();
-    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPLAYERCHARACTERLISTITEM *> & lstChars);
+    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPlayerCharacterList_st *> & lstChars);
     void SetIntraAreaGoal(CPathfindInformation * pcPathfindInformation);
     void UnloadModule();
     OBJECT_ID GetWaypoint(const CExoString & sTag);

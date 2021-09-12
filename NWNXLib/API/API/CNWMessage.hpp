@@ -57,7 +57,7 @@ struct CNWMessage
     CResRef ReadCResRef(int32_t nCount = 16);
     CExoString ReadCExoString(int32_t nCount = 32);
     void * ReadVOIDPtr(int32_t nSize);
-    json ReadJSON();
+    //json ReadJSON();
     BOOL MessageReadOverflow(BOOL bWarn = true);
     BOOL MessageReadUnderflow(BOOL bWarn = true);
     BOOL MessageMoreDataToRead();
@@ -78,7 +78,7 @@ struct CNWMessage
     void WriteCResRef(CResRef cResRef, int32_t nCount = 16);
     void WriteCExoString(CExoString sString, int32_t nCount = 32);
     void WriteVOIDPtr(void * pVoidPtr, int32_t nSize);
-    void WriteJSON(const json & json);
+    //void WriteJSON(const json & json);
     uint32_t PeekAtWriteMessageSize();
     BOOL GetWriteMessage(uint8_t * * pMessage, uint32_t * dwSize);
     void ExtendWriteBuffer(uint32_t nSize);
