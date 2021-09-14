@@ -45,7 +45,8 @@ struct CResRef
     uint8_t GetLength() const;
 
     // Custom utility impl, missing from the API
-    CResRef(const CResRef& other) { *this = other; }
+    // TODO: Commented out for now because this breaks stuff for some reason
+    // CResRef(const CResRef& other) { *this = other; }
 
 #ifdef NWN_CLASS_EXTENSION_CResRef
     NWN_CLASS_EXTENSION_CResRef
