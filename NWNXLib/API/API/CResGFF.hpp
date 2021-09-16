@@ -64,7 +64,7 @@ struct CResGFF : CRes
     BOOL OnResourceServiced();
     BOOL OnResourceFreed();
     BOOL GetDataFromFile(char * pFileName);
-    BOOL GetDataFromPointer(void * pData, int32_t nDataSize);
+    BOOL GetDataFromPointer(void * pData, int32_t nDataSize, bool bTakeOwnership);
     void GetGFFFileInfo(CExoString * pFileType, CExoString * pVersion);
     uint32_t GetElementType(CResStruct * pStructure);
     uint32_t GetFieldCount(CResStruct * pStructure);

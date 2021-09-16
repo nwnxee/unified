@@ -97,13 +97,13 @@ static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
                 return s_ExecuteCommandAreaManagementHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
         }, Hooks::Order::Earliest);
 
-static Hooks::Hook s_ResManExistsHook = Hooks::HookFunction(
-        API::Functions::_ZN10CExoResMan6ExistsERK7CResReftPj,
-        (void*)+[](CExoResMan *pThis, CResRef *cResRef, RESTYPE nType, uint32_t *pTableType) -> int32_t
+static Hooks::Hook s_ResManGet = Hooks::HookFunction(
+        API::Functions::_ZN10CExoResMan3GetERK7CResReft,
+        (void*)+[](CExoResMan *pThis, CResRef* cResRef, RESTYPE nType) -> DataBlockRef
         {
             if (s_CreatingArea && nType == Constants::ResRefType::ARE)
                 s_OriginalSourceAreaResRef = cResRef->GetResRefStr();
-            return s_ResManExistsHook->CallOriginal<int32_t>(pThis, cResRef, nType, pTableType);
+            return s_ResManGet->CallOriginal<DataBlockRef>(pThis, cResRef, nType);
         }, Hooks::Order::Earliest);
 
 static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(

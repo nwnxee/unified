@@ -1843,11 +1843,7 @@ NWNX_EXPORT ArgumentStack DeserializeQuickbar(ArgumentStack&& args)
         CResGFF resGff;
         CResStruct resStruct{};
 
-        // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
-        // so need a copy for them to play with since the vector can't relinquish its own.
-        auto *data = new uint8_t[serialized.size()];
-        memcpy(data, serialized.data(), serialized.size());
-        if (resGff.GetDataFromPointer((void *) data, (int32_t) serialized.size()))
+        if (resGff.GetDataFromPointer((void *) serialized.data(), (int32_t) serialized.size(), false))
         {
             resGff.InitializeForWriting();
 
@@ -3113,7 +3109,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         pSpellScriptData->m_nItemCastLevel = casterLevel;
 
         Globals::AppManager()->m_pServerExoApp->GetServerAIMaster()->AddEventDeltaTime(
-                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::Event::ItemOnHitSpellImpact, (void*)pSpellScriptData);
+                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::AIMasterEvent::ItemOnHitSpellImpact, (void*)pSpellScriptData);
     }
 
     return {};

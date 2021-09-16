@@ -4,15 +4,36 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.30-HEAD
-https://github.com/nwnxee/unified/compare/build8193.30...HEAD
+## 8193.31-HEAD
+https://github.com/nwnxee/unified/compare/build8193.31...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.31
+https://github.com/nwnxee/unified/compare/build8193.30...build8193.31
 
 ### Added
 - Events: Added NWNX_ON_ITEM_MERGE_BEFORE and NWNX_ON_ITEM_MERGE_AFTER.
 - ELC: added `NWNX_ELC_ENFORCE_CASTER_PRIMARY_STAT_IS_11`, if enabled, ELC will check when a character's first level class is a spellcaster, if their primary casting stat is >= 11.
-
-##### New Plugins
-- N/A
 
 ##### New NWScript Functions
 - Creature: RemoveFeatByLevel()
@@ -25,15 +46,9 @@ https://github.com/nwnxee/unified/compare/build8193.30...HEAD
 - Core: Assert backtraces now show up in the log file.
 - Core: Assert backtraces are now printed to `stdout` instead of `stderr`.
 - Core: Other error messages are now printed to `stdout` instead of `stderr`
-- Core: The default NWN carsh handler is no longer called by default. Set `NWNX_CORE_BASE_GAME_CRASH_HANDLER=y` to call it.
+- Core: The default NWN crash handler is no longer called by default. Set `NWNX_CORE_BASE_GAME_CRASH_HANDLER=y` to call it.
 - Core: `nwnx.txt` is no longer created by default. Set `NWNX_CORE_LOG_FILE_PATH="path/to/nwnx.txt"` to use it.
 - Race: The AC modifier now supports specifying the AC type.
-
-### Deprecated
-- N/A
-
-### Removed
-- N/A
 
 ### Fixed
 - Core: Fixed a minor memory leak when asserts were triggered.

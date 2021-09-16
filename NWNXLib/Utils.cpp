@@ -341,7 +341,7 @@ void AddStealthEvent(int which, ObjectID oidSelf, ObjectID oidTarget)
     pScriptEvent->m_nType = ScriptEvent::OnPerception;
     pScriptEvent->SetInteger(0, which);
     pScriptEvent->SetObjectID(0, oidTarget);
-    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea)
@@ -350,7 +350,7 @@ void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea)
 
     auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectEnter;
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea)
@@ -359,7 +359,7 @@ void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea)
 
     auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectExit;
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddOnAcquireItemEvent(
@@ -376,7 +376,7 @@ void AddOnAcquireItemEvent(
     pScriptEvent->SetObjectID(1, oidItemAcquiredBy);
     pScriptEvent->SetObjectID(2, oidItemAcquiredFrom);
     pScriptEvent->SetInteger(0, stackSize);
-    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddOnLoseItemEvent(
@@ -388,14 +388,14 @@ void AddOnLoseItemEvent(
     auto *pScriptEvent = new CScriptEvent();
     pScriptEvent->m_nType = ScriptEvent::OnLoseItem;
     pScriptEvent->SetObjectID(0, oidItemLost);
-    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddDestroyObjectEvent(ObjectID oid)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, AIMasterEvent::DestroyObject, nullptr);
 }
 
 int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
