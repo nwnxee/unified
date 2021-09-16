@@ -83,7 +83,7 @@ var NAVTREEINDEX3 =
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[0,7,39],
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[4,0,3,5,0,0,35],
 "group__damage.html":[0,8],
-"group__damage.html#autotoc_md162":[6],
+"group__damage.html#autotoc_md167":[6],
 "group__damage.html#damage":[0,8,0],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[0,8,7],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[4,0,3,6,0,0,2],
