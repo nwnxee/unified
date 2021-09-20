@@ -379,6 +379,10 @@ NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
             retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bHideHitPointsGained;
             break;
 
+        case 27: // NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL
+            retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl;
+            break;
+
         default:
             LOG_NOTICE("Calling NWNX_Administration_GetPlayOption with invalid option: %d", option);
             break;
@@ -504,6 +508,10 @@ NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
 
         case 26: // NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED
             Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bHideHitPointsGained = !!value;
+            break;
+
+        case 27: // NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL
+            Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl = !!value;
             break;
 
         default:
