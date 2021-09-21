@@ -26,7 +26,7 @@ https://github.com/nwnxee/unified/compare/build8193.31...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Util: fixed a memory leak in GetFirstResRef()
 
 ## 8193.31
 https://github.com/nwnxee/unified/compare/build8193.30...build8193.31

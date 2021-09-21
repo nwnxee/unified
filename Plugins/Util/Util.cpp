@@ -269,6 +269,8 @@ NWNX_EXPORT ArgumentStack GetFirstResRef(ArgumentStack&& args)
                 s_listResRefs.emplace_back(pList->m_pStrings[i]->CStr());
             }
         }
+
+        delete pList;
     }
 
     if (s_resRefIndex < s_listResRefs.size())
