@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.31-HEAD
-https://github.com/nwnxee/unified/compare/build8193.31...HEAD
+## 8193.32-HEAD
+https://github.com/nwnxee/unified/compare/build8193.32...HEAD
 
 ### Added
-- Administration: added `NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL` to {Get|Set}PlayOption() to toggle player party control.
+- N/A
 
 ##### New Plugins
 - N/A
@@ -24,6 +24,15 @@ https://github.com/nwnxee/unified/compare/build8193.31...HEAD
 
 ### Removed
 - N/A
+
+### Fixed
+- N/a
+
+## 8193.32
+https://github.com/nwnxee/unified/compare/build8193.31...build8193.32
+
+### Added
+- Administration: added `NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL` to {Get|Set}PlayOption() to toggle player party control.
 
 ### Fixed
 - Util: fixed a memory leak in GetFirstResRef()
