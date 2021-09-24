@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.32...HEAD
 
 ### Added
-- N/A
+- Events: added event `NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE__*` which fires when a player changes a device property (window size/gui scale). 
 
 ##### New Plugins
 - N/A
