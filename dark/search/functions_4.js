@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['dbsize_2001',['DBSIZE',['../nwnx__redis__short_8nss.html#a98da7d5716f13127cb481d86d06fb42c',1,'nwnx_redis_short.nss']]],
-  ['debug_5fobject_2002',['DEBUG_OBJECT',['../nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4',1,'nwnx_redis_short.nss']]],
-  ['debug_5fsegfault_2003',['DEBUG_SEGFAULT',['../nwnx__redis__short_8nss.html#a75471cc30c7a700b5145f4824b77f053',1,'nwnx_redis_short.nss']]],
-  ['decr_2004',['DECR',['../nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b',1,'nwnx_redis_short.nss']]],
-  ['decrby_2005',['DECRBY',['../nwnx__redis__short_8nss.html#a9cf0c607c7debf92224adb2853161f18',1,'nwnx_redis_short.nss']]],
-  ['del_2006',['DEL',['../nwnx__redis__short_8nss.html#a8f16bec7bd796e3490a8abbd9feb0f0f',1,'nwnx_redis_short.nss']]],
-  ['discard_2007',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
-  ['dump_2008',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
+  ['dbsize_2002',['DBSIZE',['../nwnx__redis__short_8nss.html#a98da7d5716f13127cb481d86d06fb42c',1,'nwnx_redis_short.nss']]],
+  ['debug_5fobject_2003',['DEBUG_OBJECT',['../nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4',1,'nwnx_redis_short.nss']]],
+  ['debug_5fsegfault_2004',['DEBUG_SEGFAULT',['../nwnx__redis__short_8nss.html#a75471cc30c7a700b5145f4824b77f053',1,'nwnx_redis_short.nss']]],
+  ['decr_2005',['DECR',['../nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b',1,'nwnx_redis_short.nss']]],
+  ['decrby_2006',['DECRBY',['../nwnx__redis__short_8nss.html#a9cf0c607c7debf92224adb2853161f18',1,'nwnx_redis_short.nss']]],
+  ['del_2007',['DEL',['../nwnx__redis__short_8nss.html#a8f16bec7bd796e3490a8abbd9feb0f0f',1,'nwnx_redis_short.nss']]],
+  ['discard_2008',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
+  ['dump_2009',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
 ];
