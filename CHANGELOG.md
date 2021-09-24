@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.32...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Util: GetModuleMtime()
 
 ### Changed
 - N/A

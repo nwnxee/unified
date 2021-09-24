@@ -14,6 +14,7 @@
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoAliasList.hpp"
 #include "API/CExoFile.hpp"
 #include "API/CNWSDoor.hpp"
 #include "API/CResStruct.hpp"
@@ -27,6 +28,7 @@
 #include <cmath>
 #include <chrono>
 #include <unistd.h>
+#include <sys/stat.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -124,6 +126,26 @@ NWNX_EXPORT ArgumentStack Hash(ArgumentStack&& args)
     const auto str = args.extract<std::string>();
     return (int32_t)std::hash<std::string>{}(str);
 }
+}
+
+NWNX_EXPORT ArgumentStack GetModuleMtime(ArgumentStack&&)
+{
+    CNWSModule *pMod = Utils::GetModule();
+    if (pMod->m_bIsSaveGame)
+    {
+        LOG_DEBUG("NWNX_GetModuleMtime() module is a save game, returning 0");
+        return 0;
+    }
+    std::string modName = pMod->m_sModuleResourceName.SubString(12); // discard "CURRENTGAME:"
+    std::string modPath = Globals::ExoBase()->m_pcExoAliasList->ResolveFileName("MODULES:" + modName, Constants::ResRefType::MOD);
+    struct stat s;
+    if (stat(modPath.c_str(), &s) == 0)
+    {
+        LOG_DEBUG("NWNX_GetModuleMtime() mtime for: %s", modPath);
+        return (int32_t)s.st_mtim.tv_sec;
+    }
+    LOG_ERROR("NWNX_GetModuleMtime() could not get file stats for: %s", modPath);
+    return 0;
 }
 
 NWNX_EXPORT ArgumentStack GetCustomToken(ArgumentStack&& args)
