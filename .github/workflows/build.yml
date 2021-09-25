@@ -196,8 +196,8 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Build and push
-        id: docker_build
+      - name: Build and push Beamdog image
+        id: docker_build_beamdog
         uses: docker/build-push-action@v2
         with:
           context: ./
@@ -221,8 +221,92 @@ jobs:
             ghcr.io/${{ github.repository }}:build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
             ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Beamdog Image digest
+        run: echo ${{ steps.docker_build_beamdog.outputs.digest }}
+
+      - name: Build and push community buster image
+        id: docker_build_community_buster
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./gha.Dockerfile
+          push: true
+          build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base:latest-debian-buster
+          labels: |
+              org.opencontainers.image.title=NWNX:EE
+              org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
+              org.opencontainers.image.author=NWNX:EE Community
+              org.opencontainers.image.vendor=NWNX:EE Community
+              org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+              org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+              org.opencontainers.image.revision=${{ github.sha }}
+              org.opencontainers.image.documentation=https://nwnxee.github.io/unified
+          tags: |
+            ${{ github.repository }}:latest-debian-buster
+            ${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-debian-buster
+            ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-debian-buster
+            ghcr.io/${{ github.repository }}:latest-debian-buster
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-debian-buster
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-debian-buster
+
+      - name: Buster Image digest
+        run: echo ${{ steps.docker_build_community_buster.outputs.digest }}
+
+      - name: Build and push community bullseye image
+        id: docker_build_community_bullseye
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./gha.Dockerfile
+          push: true
+          build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base:latest-debian-bullseye
+          labels: |
+              org.opencontainers.image.title=NWNX:EE
+              org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
+              org.opencontainers.image.author=NWNX:EE Community
+              org.opencontainers.image.vendor=NWNX:EE Community
+              org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+              org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+              org.opencontainers.image.revision=${{ github.sha }}
+              org.opencontainers.image.documentation=https://nwnxee.github.io/unified
+          tags: |
+            ${{ github.repository }}:latest-debian-bullseye
+            ${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-debian-bullseye
+            ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-debian-bullseye
+            ghcr.io/${{ github.repository }}:latest-debian-bullseye
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-debian-bullseye
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-debian-bullseye
+
+      - name: Bullseye Image digest
+        run: echo ${{ steps.docker_build_community_bullseye.outputs.digest }}
+
+      - name: Build and push community focal image
+        id: docker_build_community_focal
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./gha.Dockerfile
+          push: true
+          build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base:latest-ubuntu-focal
+          labels: |
+              org.opencontainers.image.title=NWNX:EE
+              org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
+              org.opencontainers.image.author=NWNX:EE Community
+              org.opencontainers.image.vendor=NWNX:EE Community
+              org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+              org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+              org.opencontainers.image.revision=${{ github.sha }}
+              org.opencontainers.image.documentation=https://nwnxee.github.io/unified
+          tags: |
+            ${{ github.repository }}:latest-ubuntu-focal
+            ${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-ubuntu-focal
+            ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-ubuntu-focal
+            ghcr.io/${{ github.repository }}:latest-ubuntu-focal
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-ubuntu-focal
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}-ubuntu-focal
+
+      - name: Bullseye Image digest
+        run: echo ${{ steps.docker_build_community_focal.outputs.digest }}
 
   release:
     if: contains(github.ref, 'tags/build')
