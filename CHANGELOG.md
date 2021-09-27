@@ -26,7 +26,9 @@ https://github.com/nwnxee/unified/compare/build8193.32...HEAD
 - N/A
 
 ### Fixed
-- N/a
+- Chat: When using custom hearing distances, broadcast the actual message instead of the tellname.
+- Chat: When using custom hearing distances, check if a player actually has one set and don't just overwrite the distance with 0.0f if not set.
+- Chat: When using custom hearing distances, don't send messages to players that don't have a valid creature object causing a server crash.
 
 ## 8193.32
 https://github.com/nwnxee/unified/compare/build8193.31...build8193.32
