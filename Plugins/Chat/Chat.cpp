@@ -263,15 +263,24 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     {
         // We shouldn't forget to handle listening NPCs.
         auto targetObj = Utils::AsNWSObject(Utils::GetGameObject(target));
-        if (targetObj && targetObj->m_bListening)
+        if (targetObj && targetObj->m_bListening && targetObj->TestListenExpression(message) != -1)
         {
-            // Sets listening pattern.
-            targetObj->m_nMatchedPos = targetObj->TestListenExpression(message);
-            if (targetObj->m_nMatchedPos != -1)
+            // Creates asynchronous task to assure any SpeakStrings from OnConversation event are properly received by
+            // the chat script (with call depth being zero).
+            Tasks::QueueOnMainThread([speaker, target, message]
             {
+                // Reaquires targetObj to avoid race condition where speaker or target would be invalidated.
+                auto targetObj = Utils::AsNWSObject(Utils::GetGameObject(target));
+                if (!targetObj)
+                    return;
+
+                // Sets listening pattern.
+                targetObj->m_nMatchedPos = targetObj->TestListenExpression(message);
+
                 // Sets last speaker.
                 targetObj->m_oidLastSpeaker = speaker;
 
+                // Sets matched expressions for GetMatchedSubstrings()
                 for (int i = 0; i < targetObj->m_aListenExpressions.num; ++i)
                 {
                     if (targetObj->m_aListenExpressions[i]->m_nExpressionId == targetObj->m_nMatchedPos)
@@ -286,16 +295,16 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
                 switch (targetObj->m_nObjectType)
                 {
                     case Constants::ObjectType::Creature:
-                        retVal = targetObj->RunEventScript(Constants::CreatureEvent::OnConversation);
+                        targetObj->RunEventScript(Constants::CreatureEvent::OnConversation);
                         break;
                     case Constants::ObjectType::Placeable:
-                        retVal = targetObj->RunEventScript(Constants::PlaceableEvent::OnConversation);
+                        targetObj->RunEventScript(Constants::PlaceableEvent::OnConversation);
                         break;
                     case Constants::ObjectType::Door:
-                        retVal = targetObj->RunEventScript(Constants::DoorEvent::OnConversation);
+                        targetObj->RunEventScript(Constants::DoorEvent::OnConversation);
                         break;
                 }
-            }
+            });
         }
     }
 
