@@ -1,3 +1,4 @@
+@addtogroup compiler Compiler
 @page compiler Readme
 @ingroup compiler
 
