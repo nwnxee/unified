@@ -7,6 +7,7 @@ var modules =
     [ "Appearance", "group__appearance.html", "group__appearance" ],
     [ "Area", "group__area.html", "group__area" ],
     [ "Chat", "group__chat.html", "group__chat" ],
+    [ "Compiler", "group__compiler.html", "group__compiler" ],
     [ "Creature", "group__creature.html", "group__creature" ],
     [ "Damage", "group__damage.html", "group__damage" ],
     [ "Diagnostics", "group__diagnostics.html", "group__diagnostics" ],

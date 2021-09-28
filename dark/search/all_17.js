@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['xack_1802',['XACK',['../nwnx__redis__short_8nss.html#aa9c7cd64d33be569665a5ae2f572ca3a',1,'nwnx_redis_short.nss']]],
-  ['xadd_1803',['XADD',['../nwnx__redis__short_8nss.html#a4febd86266d8b2be7e73f660334ac808',1,'nwnx_redis_short.nss']]],
-  ['xclaim_1804',['XCLAIM',['../nwnx__redis__short_8nss.html#a1a338ff0373d858aafa3ef2e44fc9457',1,'nwnx_redis_short.nss']]],
-  ['xdel_1805',['XDEL',['../nwnx__redis__short_8nss.html#a3ab71a95d791b27a0583c33bcb72fe1e',1,'nwnx_redis_short.nss']]],
-  ['xgroup_1806',['XGROUP',['../nwnx__redis__short_8nss.html#ad5446d69dfb0e68d048d38dff29c9e4c',1,'nwnx_redis_short.nss']]],
-  ['xinfo_1807',['XINFO',['../nwnx__redis__short_8nss.html#ad122c1f6a05fdeb82f0b0cd751b40f30',1,'nwnx_redis_short.nss']]],
-  ['xlen_1808',['XLEN',['../nwnx__redis__short_8nss.html#a45ba42e3353f637c0d5a6408a61de807',1,'nwnx_redis_short.nss']]],
-  ['xpending_1809',['XPENDING',['../nwnx__redis__short_8nss.html#aeb0553ad0386b8d4563c66177784bb4f',1,'nwnx_redis_short.nss']]],
-  ['xrange_1810',['XRANGE',['../nwnx__redis__short_8nss.html#a762c4a57e3775a75ceaa2d5940da336b',1,'nwnx_redis_short.nss']]],
-  ['xread_1811',['XREAD',['../nwnx__redis__short_8nss.html#a940992c62e3c3f882372cf18a6c1c2ec',1,'nwnx_redis_short.nss']]],
-  ['xreadgroup_1812',['XREADGROUP',['../nwnx__redis__short_8nss.html#a60065aeba843d532447032c139de09c1',1,'nwnx_redis_short.nss']]],
-  ['xrevrange_1813',['XREVRANGE',['../nwnx__redis__short_8nss.html#a847442611eb418d678afd2695985614d',1,'nwnx_redis_short.nss']]],
-  ['xtrim_1814',['XTRIM',['../nwnx__redis__short_8nss.html#a2a23f06f0704d32ab56978fc1f299b30',1,'nwnx_redis_short.nss']]]
+  ['xack_1804',['XACK',['../nwnx__redis__short_8nss.html#aa9c7cd64d33be569665a5ae2f572ca3a',1,'nwnx_redis_short.nss']]],
+  ['xadd_1805',['XADD',['../nwnx__redis__short_8nss.html#a4febd86266d8b2be7e73f660334ac808',1,'nwnx_redis_short.nss']]],
+  ['xclaim_1806',['XCLAIM',['../nwnx__redis__short_8nss.html#a1a338ff0373d858aafa3ef2e44fc9457',1,'nwnx_redis_short.nss']]],
+  ['xdel_1807',['XDEL',['../nwnx__redis__short_8nss.html#a3ab71a95d791b27a0583c33bcb72fe1e',1,'nwnx_redis_short.nss']]],
+  ['xgroup_1808',['XGROUP',['../nwnx__redis__short_8nss.html#ad5446d69dfb0e68d048d38dff29c9e4c',1,'nwnx_redis_short.nss']]],
+  ['xinfo_1809',['XINFO',['../nwnx__redis__short_8nss.html#ad122c1f6a05fdeb82f0b0cd751b40f30',1,'nwnx_redis_short.nss']]],
+  ['xlen_1810',['XLEN',['../nwnx__redis__short_8nss.html#a45ba42e3353f637c0d5a6408a61de807',1,'nwnx_redis_short.nss']]],
+  ['xpending_1811',['XPENDING',['../nwnx__redis__short_8nss.html#aeb0553ad0386b8d4563c66177784bb4f',1,'nwnx_redis_short.nss']]],
+  ['xrange_1812',['XRANGE',['../nwnx__redis__short_8nss.html#a762c4a57e3775a75ceaa2d5940da336b',1,'nwnx_redis_short.nss']]],
+  ['xread_1813',['XREAD',['../nwnx__redis__short_8nss.html#a940992c62e3c3f882372cf18a6c1c2ec',1,'nwnx_redis_short.nss']]],
+  ['xreadgroup_1814',['XREADGROUP',['../nwnx__redis__short_8nss.html#a60065aeba843d532447032c139de09c1',1,'nwnx_redis_short.nss']]],
+  ['xrevrange_1815',['XREVRANGE',['../nwnx__redis__short_8nss.html#a847442611eb418d678afd2695985614d',1,'nwnx_redis_short.nss']]],
+  ['xtrim_1816',['XTRIM',['../nwnx__redis__short_8nss.html#a2a23f06f0704d32ab56978fc1f299b30',1,'nwnx_redis_short.nss']]]
 ];

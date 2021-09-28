@@ -10,6 +10,7 @@ var array__example_8nss =
     ] ],
     [ "Core Functions For Plugin Developers", "group__nwnx.html#autotoc_md157", null ],
     [ "Environment Variables", "group__chat.html#autotoc_md168", null ],
+    [ "Environment Variables", "group__compiler.html#autotoc_md169", null ],
     [ "Example", "group__damage.html#autotoc_md170", null ],
     [ "Environment Variables", "group__diagnostics.html#autotoc_md171", null ],
     [ "Memory Sanitizer", "group__diagnostics.html#autotoc_md172", null ],
