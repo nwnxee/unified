@@ -899,3 +899,8 @@ NWNX_EXPORT ArgumentStack SetLastTriggered(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetAoEObjectDurationRemaining(ArgumentStack&& args)
+{
+    auto *pAoEObject = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args));
+    return pAoEObject ? float(pAoEObject->m_nDuration) / 1000 : 0.0f;
+}
