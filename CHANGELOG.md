@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.32...HEAD
 
 ### Added
-- Events: added event `NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE__*` which fires when a player changes a device property (window size/gui scale). 
+- Events: added event `NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE__*` which fires when a player changes a device property (window size/gui scale).
+- Tweaks: added `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` which makes CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation(), possibly fixing some Familiar/AnimalCompanion summon issues.
 
 ##### New Plugins
 - N/A
