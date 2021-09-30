@@ -27,6 +27,7 @@ add_plugin(Tweaks
     "SendTlkOverrideBeforeChargen.cpp"
     "SneakAttackCritImmunity.cpp"
     "StringToIntBaseToAuto.cpp"
+    "SummonAssociateUseComputeSafeLocation.cpp"
     "TURDByCDKey.cpp"
     "UnhardcodeShields.cpp"
     "PreventAttackBonusBypassingReductions.cpp")
