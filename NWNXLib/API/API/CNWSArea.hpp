@@ -111,7 +111,7 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     BOOL AIUpdate();
     Vector ComputeAwayVector(Vector vCurrentPosition, Vector vPositionToMoveAwayFrom, float fMoveAwayRange, CPathfindInformation * pPathInfo);
     int32_t ComputeBestCorner(float fX1, float fY1, float fX2, float fY2, float fX3, float fY3, float fPersonalSpace, float fCreatureHeight, float * fNewX1, float * fNewY1, float * fNewX2, float * fNewY2);
-    BOOL TestSafeLocationPoint(Vector vTestPosition, CPathfindInformation * pPathfindInfo);
+    BOOL TestSafeLocationPoint(Vector vTestPosition, CPathfindInformation * pPathfindInfo, bool bDisregardCurrentTarget = false);
     BOOL ComputeSafeLocation(Vector vPosition, float fSearchRadius, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewvector);
     BOOL ComputeSafeLocationInDirection(Vector vPosition, Vector vDirection, float fSearchRadisusMin, float fSearchRadiusMax, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewVector);
     BOOL ComputeNonVisibleLocation(Vector vTargetPosition, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewPosition, float fTargetRadius);
