@@ -48,13 +48,13 @@ var NAVTREEINDEX =
 "group__data__array__set.html#ga62f608b6e38e6d704592a7f22b5822b2",
 "group__feat.html#autotoc_md327",
 "group__object.html#ga1ba56888bc77c2651dfa4ead712efc3c",
-"group__player.html#ga72d450c30a4717ec50e4e5733131ed1a",
-"group__rename.html#gaf3b4ba16315cc38473c5285eb913737e",
-"group__util.html#ga610bf05a8489288df5ce9ad2326bd54c",
-"nwnx__redis_8nss.html#a1000099858a098f68840b2237cc10e2e",
-"nwnx__redis__short_8nss.html#a2a23f06f0704d32ab56978fc1f299b30",
-"structNWNX__Damage__AttackEventData.html#a82dc8d56f564fca63e68fcc2ea8a6943",
-"structSQLite__MillisecondTimeStamp.html#a6438b40dad993553d39397575332ada2"
+"group__player.html#ga72bfb37a517d25bdd690d5744d2c4b80",
+"group__rename.html#gabff29d0a6c2bef827b41592e7368cefb",
+"group__util.html#ga5e4f594854644fa1d465d9a68fbc9497",
+"nwnx__redis_8nss.html#a0f90105e5d04b920c7cb3eaa17ae953e",
+"nwnx__redis__short_8nss.html#a292fab9611f9aba62b64a5a6eda71092",
+"structNWNX__Damage__AttackEventData.html#a77439bb6727bb0e78ad1c145170ac3d5",
+"structNWNX__WebHook__Message.html#afd8b5c47c7de32c4c3b29e4111340736"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
