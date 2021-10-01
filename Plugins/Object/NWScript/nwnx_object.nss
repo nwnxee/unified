@@ -374,6 +374,11 @@ int NWNX_Object_GetLastSpellCastFeat(object oObject);
 /// @param oLast Object that last triggered trap.
 void NWNX_Object_SetLastTriggered(object oObject, object oLast);
 
+/// @brief Gets the remaining duration of the AoE object.
+/// @param oAoE The AreaOfEffect object.
+/// @return The remaining duration, in seconds, or the zero on failure.
+float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -929,4 +934,14 @@ void NWNX_Object_SetLastTriggered(object oObject, object oLast)
     NWNX_PushArgumentObject(oObject);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE)
+{
+    string sFunc = "GetAoEObjectDurationRemaining";
+
+    NWNX_PushArgumentObject(oAoE);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueFloat();
 }
