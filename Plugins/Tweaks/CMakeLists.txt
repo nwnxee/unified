@@ -15,6 +15,7 @@ add_plugin(Tweaks
     "FixItemNullptrInCItemRepository.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideClassesOnCharList.cpp"
+    "HideHardcodedItemVFX.cpp"
     "HidePlayersOnCharList.cpp"
     "ItemChargesCost.cpp"
     "LanguageOverride.cpp"
