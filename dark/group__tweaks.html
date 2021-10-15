@@ -171,6 +171,8 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Makes SetMaterialShaderParamXxx() functions take <code>sMaterial=""</code> to mean all materials.  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation()  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</code> </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">See <a href="https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx">here</a>.  </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md485"></a>
 Environment variable values</h2>
@@ -226,13 +228,68 @@ NWNX_TWEAKS_LANGUAGE_OVERRIDE</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight">131 </td><td class="markdownTableBodyNone">Japanese  </td></tr>
 </table>
+<h3><a class="anchor" id="autotoc_md489"></a>
+NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</h3>
+<p>Add the numbers of the VFX you want to hide. For example to hide all Elemental Damage Bonus, Holy Avenger and OnHitVorpal visual effects you'd set the environment variable to 318 (2 + 4 + 8 + 16 + 32 + 256)</p>
+<p>Specific VFX values in order of priority:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadRight">Value </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">1 </td><td class="markdownTableBodyNone">Manual VFX (ItemPropertyVisualEffect)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">2 </td><td class="markdownTableBodyNone">(Elemental) DamageBonus  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">4 </td><td class="markdownTableBodyNone">(Elemental) DamageBonusVSAlignmentGroup  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">8 </td><td class="markdownTableBodyNone">(Elemental) DamageBonusVSRacialGroup  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">16 </td><td class="markdownTableBodyNone">(Elemental) DamageBonusVSSpecificAlignment  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">32 </td><td class="markdownTableBodyNone">HolyAvenger  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">64 </td><td class="markdownTableBodyNone">VampiricRegeneration  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">128 </td><td class="markdownTableBodyNone">OnHitLevelDrain  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">256 </td><td class="markdownTableBodyNone">OnHitVorpal  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">512 </td><td class="markdownTableBodyNone">OnHitWounding  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">1024 </td><td class="markdownTableBodyNone">(Good/Evil) DamageBonusVSAlignmentGroup  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">2048 </td><td class="markdownTableBodyNone">(Good/Evil) AttackBonusVSAlignmentGroup  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">4096 </td><td class="markdownTableBodyNone">(Good/Evil) EnhancementBonusVSAlignmentGroup  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">8192 </td><td class="markdownTableBodyNone">(Good/Evil) DamageBonusVSSpecificAlignment  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">16384 </td><td class="markdownTableBodyNone">(Good/Evil) AttackBonusVSSpecificAlignment  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">32768 </td><td class="markdownTableBodyNone">(Good/Evil) EnhancementBonusVSSpecificAlignment  </td></tr>
+</table>
+<p>Some values for convenience:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadRight">Value </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">30 </td><td class="markdownTableBodyNone">All Elemental Damage Bonus  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">896 </td><td class="markdownTableBodyNone">All OnHit Properties  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">7168 </td><td class="markdownTableBodyNone">All Good/Evil vs AlignmentGroup  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">57344 </td><td class="markdownTableBodyNone">All Good/Evil vs SpecificAlignment  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">65535 </td><td class="markdownTableBodyNone">Hide All VFX  </td></tr>
+</table>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Oct 1 2021 21:53:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Oct 15 2021 15:44:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
