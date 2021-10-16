@@ -3156,3 +3156,42 @@ NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
     }
     return retVal;
 }
+
+NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
+{
+    static Hooks::Hook s_BroadcastSafeProjectileHook =
+            Hooks::HookFunction(Functions::_ZN10CNWSObject23BroadcastSafeProjectileEjj6VectorS0_jhjhh,
+            (void*)+[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
+                       uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType) -> void
+            {
+                if (nProjectileType <= 5)
+                {
+                    if (auto *pOriginator = Utils::AsNWSObject(Utils::GetGameObject(oidOriginator)))
+                    {
+                        if (auto projectileVfxOverride = pOriginator->nwnxGet<int32_t>("ORPVFX"))
+                        {
+                            if (*projectileVfxOverride == 6)
+                                nProjectileType = Globals::Rules()->RollDice(1, 5);
+                            else
+                                nProjectileType = *projectileVfxOverride;
+                        }
+                    }
+                }
+
+                s_BroadcastSafeProjectileHook->CallOriginal<void>(pThis, oidOriginator, oidTarget, vOriginator, vTarget, nDelta, nProjectileType, nSpellID, nAttackResult, nProjectilePathType);
+            }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto projectileVfx = args.extract<int32_t>();
+          ASSERT_OR_THROW(projectileVfx <= 6);
+        const auto persist = !!args.extract<int32_t>();
+
+        if (projectileVfx < 0)
+            pCreature->nwnxRemove("ORPVFX");
+        else
+            pCreature->nwnxSet("ORPVFX", projectileVfx, persist);
+    }
+
+    return {};
+}
