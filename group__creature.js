@@ -155,6 +155,7 @@ var group__creature =
     [ "NWNX_Creature_DoItemCastSpell", "group__creature.html#gaf03a816c11492f7465ebbe977c278bbf", null ],
     [ "NWNX_Creature_RunEquip", "group__creature.html#ga66a243ea31ee826876bcefb15a71023b", null ],
     [ "NWNX_Creature_RunUnequip", "group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1", null ],
+    [ "NWNX_Creature_OverrideRangedProjectileVFX", "group__creature.html#ga6063cad6d05f1a72409a618d284e45cc", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
@@ -193,5 +194,12 @@ var group__creature =
     [ "NWNX_CREATURE_BONUS_TYPE_SAVING_THROW", "group__creature.html#ga148e81a269561290db62a997fecaa828", null ],
     [ "NWNX_CREATURE_BONUS_TYPE_ABILITY", "group__creature.html#gac7b9092ad788130791274b2b73c25388", null ],
     [ "NWNX_CREATURE_BONUS_TYPE_SKILL", "group__creature.html#ga6620ba952b09a01e86892f6dc1b2015a", null ],
-    [ "NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK", "group__creature.html#gaa1e7668abb0a7b20830dbadc2ee1dc01", null ]
+    [ "NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK", "group__creature.html#gaa1e7668abb0a7b20830dbadc2ee1dc01", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_NONE", "group__creature.html#gad947f1595859b13cbca0ff86cc5840b5", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_ACID", "group__creature.html#gac0b1ad57e9a0cd12ec2602bb050d09b1", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_COLD", "group__creature.html#ga38c17a62fc4a2df82b4d08481a0a4c2a", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_ELECTRICAL", "group__creature.html#ga9a77d6aceb1470cfc40427f3cedb608c", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_FIRE", "group__creature.html#gaef302436809eebedcba2b0a682b8e71a", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_SONIC", "group__creature.html#ga023cb65acd8f802b1157068187054f26", null ],
+    [ "NWNX_CREATURE_PROJECTILE_VFX_RANDOM", "group__creature.html#ga2059460faa68d5eff02713348851845f", null ]
 ];
