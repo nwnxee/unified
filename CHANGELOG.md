@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.33...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Creature: OverrideRangedProjectileVFX()
 - Object: GetAoEObjectDurationRemaining()
 
 ### Changed

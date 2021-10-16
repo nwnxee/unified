@@ -73,6 +73,20 @@ const int NWNX_CREATURE_BONUS_TYPE_SKILL         = 5;
 const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
 /// @}
 
+/// @name Ranged Projectile VFX
+/// @anchor ranged_projectile_vfx
+///
+/// Used with NWNX_Creature_OverrideRangedProjectileVFX() these are the projectile vfx types.
+/// @{
+const int NWNX_CREATURE_PROJECTILE_VFX_NONE         = 0; ///< No VFX
+const int NWNX_CREATURE_PROJECTILE_VFX_ACID         = 1;
+const int NWNX_CREATURE_PROJECTILE_VFX_COLD         = 2;
+const int NWNX_CREATURE_PROJECTILE_VFX_ELECTRICAL   = 3;
+const int NWNX_CREATURE_PROJECTILE_VFX_FIRE         = 4;
+const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
+const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
+/// @}
+
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility
@@ -973,6 +987,13 @@ int NWNX_Creature_RunEquip(object oCreature, object oItem, int nInventorySlot);
 /// @param oItem The item, must be possessed by oCreature.
 /// @return TRUE on success, FALSE on failure.
 int NWNX_Creature_RunUnequip(object oCreature, object oItem);
+
+/// @brief Override the elemental projectile visual effect of ranged/throwing weapons.
+/// @param oCreature The creature.
+/// @param nProjectileVFX A @ref ranged_projectile_vfx "NWNX_CREATURE_PROJECTILE_VFX_*" constant or -1 to remove the override.
+/// @param bPersist Whether the vfx should persist to the .bic file (for PCs).
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectileVFX, int bPersist = FALSE);
 
 /// @}
 
@@ -2499,4 +2520,14 @@ int NWNX_Creature_RunUnequip(object oCreature, object oItem)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectileVFX, int bPersist = FALSE)
+{
+    string sFunc = "OverrideRangedProjectileVFX";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nProjectileVFX);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
