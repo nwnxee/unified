@@ -295,6 +295,12 @@ int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
 /// @return The sound object.
 object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef);
 
+/// @brief Rotates an existing area, including all objects within (excluding PCs).
+/// @note Functions while clients are in the area, but not recommended as tiles/walkmesh only updates on area load, and this may reuslt in unexpected clientside results.
+/// @param oArea The area to be rotated
+/// @param nRotation How many 90 degrees clockwise to rotate (1-3).
+void NWNX_Area_RotateArea(object oArea, int nRotation);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -735,8 +741,18 @@ object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRe
     NWNX_PushArgumentFloat(vPosition.y);
     NWNX_PushArgumentFloat(vPosition.x);
     NWNX_PushArgumentObject(oArea);
-    
+
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Area_RotateArea(object oArea, int nRotation)
+{
+    string sFunc = "RotateArea";
+
+    NWNX_PushArgumentInt(nRotation);
+    NWNX_PushArgumentObject(oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
 }
