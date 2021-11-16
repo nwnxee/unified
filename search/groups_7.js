@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['maxlevel_3613',['MaxLevel',['../group__maxlevel.html',1,'']]],
-  ['metrics_20influxdb_3614',['Metrics InfluxDB',['../group__metrics__influxdb.html',1,'']]]
+  ['maxlevel_3615',['MaxLevel',['../group__maxlevel.html',1,'']]],
+  ['metrics_20influxdb_3616',['Metrics InfluxDB',['../group__metrics__influxdb.html',1,'']]]
 ];
