@@ -41,6 +41,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` | true or false | Makes SetMaterialShaderParamXxx() functions take `sMaterial=""` to mean all materials. |
 | `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` | true or false | CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation() |
 | `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` | int | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx). |
+| `NWNX_TWEAKS_FIX_RESMAN_MEMLEAK` | true or false | Fix a memory leak in Resman / CResGFF |
   
 ## Environment variable values
 
