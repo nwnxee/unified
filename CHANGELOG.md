@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.33...HEAD
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` to hide various hardcoded item vfx.
+- Tweaks: added `NWNX_TWEAKS_FIX_RESMAN_MEMLEAK` that fixes a memory leak in Resman / CResGFF.
 
 ##### New Plugins
 - N/A
