@@ -428,61 +428,61 @@ static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static void nwnxSetFunction(const char *plugin, const char *function)
+static void NWNXSetFunction(const char *plugin, const char *function)
 {
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
-static void nwnxPushInt(int32_t n)
+static void NWNXPushInt(int32_t n)
 {
     Events::Push(n);
 }
-static void nwnxPushFloat(float f)
+static void NWNXPushFloat(float f)
 {
     Events::Push(f);
 }
-static void nwnxPushObject(uint32_t o)
+static void NWNXPushObject(uint32_t o)
 {
     Events::Push((ObjectID)o);
 }
-static void nwnxPushString(const char *s)
+static void NWNXPushString(const char *s)
 {
     Events::Push(String::FromUTF8(s));
 }
-static void nwnxPushEffect(CGameEffect *e)
+static void NWNXPushEffect(CGameEffect *e)
 {
     Events::Push(e);
 }
-static void nwnxPushItemProperty(CGameEffect *ip)
+static void NWNXPushItemProperty(CGameEffect *ip)
 {
     Events::Push(ip);
 }
-static int32_t nwnxPopInt()
+static int32_t NWNXPopInt()
 {
     return Events::Pop<int32_t>().value_or(0);
 }
-static float nwnxPopFloat()
+static float NWNXPopFloat()
 {
     return Events::Pop<float>().value_or(0.0f);
 }
-static uint32_t nwnxPopObject()
+static uint32_t NWNXPopObject()
 {
     return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
-static const char* nwnxPopString()
+static const char* NWNXPopString()
 {
     auto str = Events::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
-static CGameEffect* nwnxPopEffect()
+static CGameEffect* NWNXPopEffect()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-static CGameEffect* nwnxPopItemProperty()
+static CGameEffect* NWNXPopItemProperty()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-static void nwnxCallFunction()
+static void NWNXCallFunction()
 {
     Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
@@ -538,22 +538,22 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&ClosureAssignCommand);
     exports.push_back((void*)&ClosureDelayCommand);
     exports.push_back((void*)&ClosureActionDoCommand);
-    exports.push_back((void*)&nwnxSetFunction);
-    exports.push_back((void*)&nwnxPushInt);
-    exports.push_back((void*)&nwnxPushFloat);
-    exports.push_back((void*)&nwnxPushObject);
-    exports.push_back((void*)&nwnxPushString);
-    exports.push_back((void*)&nwnxPushString); // reserved utf8
-    exports.push_back((void*)&nwnxPushEffect);
-    exports.push_back((void*)&nwnxPushItemProperty);
-    exports.push_back((void*)&nwnxPopInt);
-    exports.push_back((void*)&nwnxPopFloat);
-    exports.push_back((void*)&nwnxPopObject);
-    exports.push_back((void*)&nwnxPopString);
-    exports.push_back((void*)&nwnxPopString); // reserved utf8
-    exports.push_back((void*)&nwnxPopEffect);
-    exports.push_back((void*)&nwnxPopItemProperty);
-    exports.push_back((void*)&nwnxCallFunction);
+    exports.push_back((void*)&NWNXSetFunction);
+    exports.push_back((void*)&NWNXPushInt);
+    exports.push_back((void*)&NWNXPushFloat);
+    exports.push_back((void*)&NWNXPushObject);
+    exports.push_back((void*)&NWNXPushString);
+    exports.push_back((void*)&NWNXPushString); // reserved utf8
+    exports.push_back((void*)&NWNXPushEffect);
+    exports.push_back((void*)&NWNXPushItemProperty);
+    exports.push_back((void*)&NWNXPopInt);
+    exports.push_back((void*)&NWNXPopFloat);
+    exports.push_back((void*)&NWNXPopObject);
+    exports.push_back((void*)&NWNXPopString);
+    exports.push_back((void*)&NWNXPopString); // reserved utf8
+    exports.push_back((void*)&NWNXPopEffect);
+    exports.push_back((void*)&NWNXPopItemProperty);
+    exports.push_back((void*)&NWNXCallFunction);
     exports.push_back((void*)&GetNWNXExportedGlobals);
     exports.push_back((void*)&RequestHook);
     exports.push_back((void*)&ReturnHook);
@@ -561,4 +561,3 @@ std::vector<void*> GetExports()
 }
 
 }
-
