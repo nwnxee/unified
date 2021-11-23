@@ -1,7 +1,7 @@
+// https://docs.microsoft.com/en-us/dotnet/core/tutorials/netcore-hosting
 #include "nwnx.hpp"
 
 #include <algorithm>
-#include <cstring>
 #include <string>
 #include <vector>
 
@@ -9,7 +9,6 @@
 #include "sdk/hostfxr.h"
 #include <dirent.h>
 #include <dlfcn.h>
-#include <limits.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
