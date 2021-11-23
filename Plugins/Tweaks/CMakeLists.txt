@@ -11,6 +11,7 @@ add_plugin(Tweaks
     "DisplayNumAttacksOverrideInCharacterSheet.cpp"
     "FixArmorDexBonusUnderOne.cpp"
     "FixDispelEffectLevels.cpp"
+    "FixDMFactionBug.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixItemNullptrInCItemRepository.cpp"
     "FixResmanMemleak.cpp"
