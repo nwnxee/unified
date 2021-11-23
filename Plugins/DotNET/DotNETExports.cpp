@@ -510,6 +510,51 @@ static void ReturnHook(void* trampoline)
     }
 }
 
+static void StackPushRawString(CExoString* value)
+{
+  auto vm = Globals::VirtualMachine();
+  ASSERT(vm->m_nRecursionLevel >= 0);
+
+  LOG_DEBUG("Pushing raw string '%s'.", value->CStr());
+
+  if (vm->StackPushString(*value))
+  {
+    ++s_pushedCount;
+  }
+  else
+  {
+    LOG_WARNING("Failed to push string '%s' - recursion level %i.",
+                value->m_sString, vm->m_nRecursionLevel);
+  }
+}
+
+static char* StackPopRawString()
+{
+  auto vm = Globals::VirtualMachine();
+  ASSERT(vm->m_nRecursionLevel >= 0);
+
+  CExoString value;
+  if (!vm->StackPopString(&value))
+  {
+    LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
+    return "";
+  }
+
+  LOG_DEBUG("Popped string '%s'.", value.m_sString);
+  return value.CStr();
+}
+
+static void NWNXPushRawString(const char *s)
+{
+    Events::Push(std::string(s));
+}
+
+static const char* NWNXPopRawString()
+{
+  auto str = Events::Pop<std::string>().value_or(std::string{""});
+  return strdup(str.c_str());
+}
+
 std::vector<void*> GetExports()
 {
     //
@@ -557,6 +602,10 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&GetNWNXExportedGlobals);
     exports.push_back((void*)&RequestHook);
     exports.push_back((void*)&ReturnHook);
+    exports.push_back((void*)&StackPushRawString);
+    exports.push_back((void*)&StackPopRawString);
+    exports.push_back((void*)&NWNXPushRawString);
+    exports.push_back((void*)&NWNXPopRawString);
     return exports;
 }
 
