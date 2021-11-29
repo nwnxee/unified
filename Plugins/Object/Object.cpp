@@ -526,13 +526,22 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
+		auto alias = args.extract<std::string>();
+          ASSERT_OR_THROW(!alias.empty());
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Object_Export() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+		
         auto ExportObject = [&](RESTYPE resType) -> void
         {
             std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
 
             if (!serialized.empty())
             {
-                auto file = CExoFile(("NWNX:" + fileName).c_str(), resType, "wb");
+                auto file = CExoFile((alias + ":" + fileName).c_str(), resType, "wb");
 
                 if (file.FileOpened())
                 {
