@@ -21,7 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.33...HEAD
 - Object: GetAoEObjectDurationRemaining()
 
 ### Changed
-- N/A
+- Object: `NWNX_Object_Export` added argument sAlias, default 'NWNX'  
 
 ### Deprecated
 - N/A
