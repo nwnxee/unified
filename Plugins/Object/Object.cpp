@@ -526,8 +526,16 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
-        auto alias = args.extract<std::string>();
-          ASSERT_OR_THROW(!alias.empty());
+        std::string alias;
+        try
+        {
+            alias = args.extract<std::string>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Object_Export() called from NWScript without sAlias parameter. Please update nwnx_object.nss");
+            alias = "NWNX";
+        }
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
         {
