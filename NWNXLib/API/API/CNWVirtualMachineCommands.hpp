@@ -189,7 +189,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandFloatToInt(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandFloatToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandForceRest(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGet2DAString(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGet2DA(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAbilityScore(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAbilityModifier(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAC(int32_t nCommandId, int32_t nParameters);

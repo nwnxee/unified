@@ -14,7 +14,6 @@ add_plugin(Tweaks
     "FixDMFactionBug.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixItemNullptrInCItemRepository.cpp"
-    "FixResmanMemleak.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideClassesOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
