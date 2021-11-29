@@ -206,6 +206,7 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @brief Export an object to the UserDirectory/nwnx folder.
 /// @param sFileName The filename without extension, 16 or less characters.
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
+/// @param sAlias The alias of the resource directory to add the .git file to. Default: UserDirectory/nwnx
 void NWNX_Object_Export(object oObject, string sFileName, string sAlias = "NWNX");
 
 /// @brief Get oObject's integer variable sVarName.
