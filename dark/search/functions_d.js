@@ -373,7 +373,7 @@ var searchData=
   ['nwnx_5fobject_5fdeserialize_2461',['NWNX_Object_Deserialize',['../group__object.html#gad151049205ee996b9e779b848f7eac6e',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fdospellimmunity_2462',['NWNX_Object_DoSpellImmunity',['../group__object.html#ga78eef6c5393f4c24778bee5681514f01',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fdospelllevelabsorption_2463',['NWNX_Object_DoSpellLevelAbsorption',['../group__object.html#ga0543152520c56d3c3d3d724a38409f7d',1,'nwnx_object.nss']]],
-  ['nwnx_5fobject_5fexport_2464',['NWNX_Object_Export',['../group__object.html#ga248baa30ff85960bf6b559554125fff4',1,'nwnx_object.nss']]],
+  ['nwnx_5fobject_5fexport_2464',['NWNX_Object_Export',['../group__object.html#ga2642eb53f0c96976239265ae8aae0448',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetailevel_2465',['NWNX_Object_GetAILevel',['../group__object.html#ga73c0bae422bd3bc0f8dc1fbcfeeecdce',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetaoeobjectdurationremaining_2466',['NWNX_Object_GetAoEObjectDurationRemaining',['../group__object.html#ga2009bb51273e2aba083895b9293c1d6b',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fgetappearance_2467',['NWNX_Object_GetAppearance',['../group__object.html#gaf809aa376e569c45f734efa2567094b8',1,'nwnx_object.nss']]],

@@ -127,7 +127,8 @@ New NWScript Functions</h4>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Changed</h2>
 <ul>
-<li>N/A</li>
+<li>Object: <code>NWNX_Object_Export</code> added argument sAlias, default 'NWNX' <br  />
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Deprecated</h2>
@@ -942,7 +943,7 @@ Fixed</h2>
 Added</h2>
 <ul>
 <li>Core: Added the environment variable <code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code> to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked</li>
-<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga248baa30ff85960bf6b559554125fff4" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gabe413b0610a460dfc310fafc1149ba6d" title="Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
+<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga2642eb53f0c96976239265ae8aae0448" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gabe413b0610a460dfc310fafc1149ba6d" title="Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>, setting this to true will delete all contents in the <code>/nwnx</code> folder on startup of the server. Default: false</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code> which lets you change the resman priority of the <code>/nwnx</code> folder. Default: 70000000</li>
 <li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code>, <code>logformat</code><ul>
@@ -1262,7 +1263,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Nov 23 2021 10:39:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Nov 29 2021 09:06:06 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
