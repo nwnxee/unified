@@ -526,7 +526,7 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
-		auto alias = args.extract<std::string>();
+        auto alias = args.extract<std::string>();
           ASSERT_OR_THROW(!alias.empty());
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))

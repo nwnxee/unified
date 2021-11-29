@@ -645,8 +645,8 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
 void NWNX_Object_Export(object oObject, string sFileName, string sAlias = "NWNX")
 {
     string sFunc = "Export";
-	
-	NWNX_PushArgumentString(sAlias);
+
+    NWNX_PushArgumentString(sAlias);
     NWNX_PushArgumentString(sFileName);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
