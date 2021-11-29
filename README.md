@@ -1,10 +1,10 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.33 - v85)
+# NWNX:EE (build 8193.34 - v86 - DEVELOPMENT)
 
-- Latest release: [build8193.33-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819333-HEAD)
+- Latest release: [build8193.34-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334-HEAD)
 - Docker tag: `nwnxee/unified:latest`
-- nwserver-linux md5: `feb9cc5e38003342ae748535f39b085d`
+- nwserver-linux md5: `1d17b4cc7680fc4defbd36dcc5bd9e9b`
 
 @mainpage
 @tableofcontents
@@ -27,7 +27,7 @@ Check out the [Awesome NWNX page](Awesome-NWNX.md) for a list projects using NWN
 
 The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. That said, the Steam and Beamdog binaries are almost always identical to the one in the dedicated server package, see the top of this readme for a md5sum of the binary we support.
 
-We release at least one update for each new version of the dedicated server package, which can be found here: [Server download packages and docker support](https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1)
+We release at least one update for each new version of the dedicated server package, the latest version can be found here: [nwnee-dedicated-8193.34.zip](https://nwn.beamdog.net/downloads/nwnee-dedicated-8193.34.zip)
 
 ## What platforms are supported?
 
