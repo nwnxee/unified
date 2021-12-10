@@ -72,6 +72,17 @@ struct CGameEffect
     void SaveGameEffect(CResGFF * pRes, CResStruct * pStruct);
     void LoadGameEffect(CResGFF * pRes, CResStruct * pStruct);
 
+    // Some inline helper functions
+    inline uint16_t GetDurationType() { return m_nSubType & NWNXLib::API::Constants::EffectDurationType::MASK; }
+    inline void SetDurationType(uint16_t nDurationType) { m_nSubType = (m_nSubType & ~NWNXLib::API::Constants::EffectDurationType::MASK) | nDurationType; }
+    inline uint16_t GetSubType() { return m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK; }
+    inline void SetSubType(uint16_t nType) { m_nSubType = (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK) | nType;}
+    inline BOOL GetSubType_Magical() { return (m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK) == NWNXLib::API::Constants::EffectSubType::Magical; }
+    inline void SetSubType_Magical() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Magical | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK); }
+    inline BOOL GetSubType_Supernatural() { return (m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK) == NWNXLib::API::Constants::EffectSubType::Supernatural; }
+    inline void SetSubType_Supernatural() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Supernatural | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK);}
+    inline BOOL GetSubType_Extraordinary() { return (m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK) == NWNXLib::API::Constants::EffectSubType::Extraordinary; }
+    inline void SetSubType_Extraordinary() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Extraordinary | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK);}
 
 #ifdef NWN_CLASS_EXTENSION_CGameEffect
     NWN_CLASS_EXTENSION_CGameEffect
