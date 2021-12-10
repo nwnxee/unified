@@ -606,7 +606,7 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
                         if (pCreature->m_pStats->m_bIsPC ||
                             pCreature->m_pStats->GetIsDM() ||
                             (pCreature->m_nAssociateType > Constants::AssociateType::None &&
-                            pCreature->m_nAssociateType < Constants::AssociateType::Dominated))
+                            pCreature->m_nAssociateType < Constants::AssociateType::DominatedByPC))
                             continue;
 
                         // Temporarily set pCreature's areaID to OBJECT_INVALID
@@ -1068,7 +1068,7 @@ NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
                     if (pCreature->m_pStats->m_bIsPC ||
                         pCreature->m_pStats->GetIsDM() ||
                         (pCreature->m_nAssociateType > Constants::AssociateType::None &&
-                         pCreature->m_nAssociateType < Constants::AssociateType::Dominated))
+                         pCreature->m_nAssociateType < Constants::AssociateType::DominatedByPC))
                         continue;
 
                     pCreature->SetPosition(GetNewPosition(pCreature->m_vPosition));

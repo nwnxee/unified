@@ -34,7 +34,7 @@ void HandleEffectHook(const std::string& event, bool before, CNWSObject* pObject
     if (!pObject || !pEffect)
         return;
 
-    int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
+    int32_t effectDurationType = pEffect->GetDurationType();
 
     if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent)
         return;
@@ -55,7 +55,7 @@ void HandleEffectHook(const std::string& event, bool before, CNWSObject* pObject
     PushEventData("UNIQUE_ID", std::to_string(pEffect->m_nID));
     PushEventData("CREATOR", Utils::ObjectIDToString(pEffect->m_oidCreator));
     PushEventData("TYPE", std::to_string(pEffect->m_nType));
-    PushEventData("SUB_TYPE", std::to_string(pEffect->m_nSubType & EffectSubType::MASK));
+    PushEventData("SUB_TYPE", std::to_string(pEffect->GetSubType()));
     PushEventData("DURATION_TYPE", std::to_string(effectDurationType));
     PushEventData("DURATION", std::to_string(pEffect->m_fDuration));
     PushEventData("SPELL_ID", std::to_string(pEffect->m_nSpellId));
