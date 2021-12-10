@@ -97,14 +97,17 @@ namespace AIState
 {
     enum TYPE
     {
-        IsAlive           = 0x01,
-        CanUseLegs        = 0x02,
-        CanUseHands       = 0x04,
-        CanUseMouth       = 0x08,
-        CanUseEars        = 0x10,
-        CanUseEyes        = 0x20,
-        CanUseMind        = 0x40,
-        IsAbleToGoHostile = 0x80,
+        IsDead            = 0x0000,
+        IsAlive           = 0x0001,
+        CanUseLegs        = 0x0002,
+        CanUseHands       = 0x0004,
+        CanUseMouth       = 0x0008,
+        CanUseEars        = 0x0010,
+        CanUseEyes        = 0x0020,
+        CanUseMind        = 0x0040,
+        IsAbleToGoHostile = 0x0080,
+        Controllable      = 0x0100,
+        EverythingIsFine  = 0xFFFF,
     };
 }
 
