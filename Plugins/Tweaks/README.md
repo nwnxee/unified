@@ -42,6 +42,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` | true or false | CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation() |
 | `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` | int | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx). |
 | `NWNX_TWEAKS_FIX_DM_FACTION_BUG` | true or false | Fixes a DM faction bug when using a non-DMClient BIC file. |
+| `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
   
 ## Environment variable values
 
