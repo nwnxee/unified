@@ -2,6 +2,7 @@ add_plugin(Tweaks
     "AddPrestigeclassCasterLevels.cpp"
     "AlwaysReturnFullDEXStat.cpp"
     "BlockDMSpawnItem.cpp"
+    "CanUseItemCheckILRForHenchmen.cpp"
     "ClearSpellEffectsOnTURDs.cpp"
     "CompareVarsForMerge.cpp"
     "DeadCreatureFiresOnAreaExit.cpp"

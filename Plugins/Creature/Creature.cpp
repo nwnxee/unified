@@ -2386,7 +2386,7 @@ NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
           ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
         auto associateType = args.extract<int32_t>();
           ASSERT_OR_THROW(associateType > Constants::AssociateType::None);
-          ASSERT_OR_THROW(associateType <= Constants::AssociateType::Dominated);
+          ASSERT_OR_THROW(associateType <= Constants::AssociateType::DominatedByPC);
 
         if (auto *pAssociate = Utils::AsNWSCreature(Utils::GetGameObject(oidAssociate)))
         {
