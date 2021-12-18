@@ -11,6 +11,7 @@ var nwnx__effect_8nss =
     [ "NWNX_Effect_ReplaceEffectByIndex", "group__effect.html#gae8ddfbe898a7449551e3a6cf53c64f8c", null ],
     [ "NWNX_Effect_RemoveEffectById", "group__effect.html#ga81207d2dfad9c4733ce803bad36b534f", null ],
     [ "NWNX_Effect_Apply", "group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045", null ],
+    [ "NWNX_Effect_AccessorizeVisualEffect", "group__effect.html#gaf3bdb3b79ca470444368a552b9931825", null ],
     [ "__NWNX_Effect_ResolveUnpack", "nwnx__effect_8nss.html#acbfeb3be3729a96462b64ba13e7a7562", null ],
     [ "__NWNX_Effect_ResolvePack", "nwnx__effect_8nss.html#af14767a39e8daf9e79c644ae52069400", null ],
     [ "NWNX_Effect", "group__effect.html#ga92cd5f42fe610803f30f5383242cd6cc", null ]
