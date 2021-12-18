@@ -239,6 +239,8 @@ MapArray(CNWSkill, CNWSkill, CNWSkillArray);
 MapArray(CNWDomain, CNWDomain, CNWDomainArray);
 MapArray(CEncounterListEntry, CEncounterListEntry, CEncounterListEntryArray);
 MapArray(CEncounterSpawnPoint, CEncounterSpawnPoint, CEncounterSpawnPointArray);
+MapArray(CNWClass_Feat, CNWClass_Feat, CNWClass_FeatArray);
+MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 
 %include "NWNXLib.i"
 
@@ -322,6 +324,8 @@ DefineArrayPtr(CNWSkill, CNWSkill, CNWSkillArray);
 DefineArrayPtr(CNWDomain, CNWDomain, CNWDomainArray);
 DefineArrayPtr(CEncounterListEntry, CEncounterListEntry, CEncounterListEntryArray);
 DefineArrayPtr(CEncounterSpawnPoint, CEncounterSpawnPoint, CEncounterSpawnPointArray);
+DefineArrayPtr(CNWClass_Feat, CNWClass_Feat, CNWClass_FeatArray);
+DefineArrayPtr(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 
 // Std templates
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
