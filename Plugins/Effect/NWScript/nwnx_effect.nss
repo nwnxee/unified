@@ -122,6 +122,12 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 /// @param oObject The object to apply it to.
 void NWNX_Effect_Apply(effect eEffect, object oObject);
 
+/// @brief Accessorize an EffectVisualEffect(), making it undispellable and unable to be removed by resting or death.
+/// @note If linked with a non-visualeffect or a non-accessorized visualeffect it *will* get removed.
+/// @param eEffect An EffectVisualEffect(), does not work for other effect types.
+/// @return The accessorized effect or an unchanged effect if not an EffectVisualEffect().
+effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect);
+
 /// @}
 
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
@@ -347,7 +353,6 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
     NWNX_PushArgumentInt(nIndex);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
-
 }
 
 int NWNX_Effect_RemoveEffectById(object oObject,  string sID)
@@ -366,4 +371,12 @@ void NWNX_Effect_Apply(effect eEffect, object oObject)
     NWNX_PushArgumentObject(oObject);
     NWNX_PushArgumentEffect(eEffect);
     NWNX_CallFunction(NWNX_Effect, sFunc);
+}
+
+effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
+{
+    string sFunc = "AccessorizeVisualEffect";
+    NWNX_PushArgumentEffect(eEffect);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueEffect();
 }

@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Effect: AccessorizeVisualEffect()
 
 ### Changed
 - N/A  

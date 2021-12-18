@@ -9,6 +9,19 @@
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSPlayer.hpp"
+#include "API/CNWCCMessageData.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSEffectListHandler.hpp"
+#include "API/CScriptEvent.hpp"
+#include "API/CNWSPlayerCharSheetGUI.hpp"
+#include "API/CExoArrayList.hpp"
 
 #include <string>
 
@@ -330,4 +343,344 @@ NWNX_EXPORT ArgumentStack Apply(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack AccessorizeVisualEffect(ArgumentStack&& args)
+{
+    static Hooks::Hook s_RemoveBadEffects = Hooks::HookFunction(Functions::_ZN12CNWSCreature16RemoveBadEffectsEv,
+    (void*)+[](CNWSCreature *pCreature) -> void
+    {
+        CExoArrayList<CGameEffect*> *pAppliedEffects = &pCreature->m_appliedEffects;
+        int32_t nIndex = 0;
+
+        while (nIndex < pAppliedEffects->num)
+        {
+            auto *pEffect = (*pAppliedEffects)[nIndex];
+            int32_t nDurationType = pEffect->GetDurationType();
+
+            if ((nDurationType == Constants::EffectDurationType::Temporary ||
+                (nDurationType == Constants::EffectDurationType::Permanent && (pEffect->GetSubType_Extraordinary() || pEffect->GetSubType_Magical()))) &&
+                (pEffect->m_nType != Constants::EffectTrueType::VisualEffect || (pEffect->m_nType == Constants::EffectTrueType::VisualEffect && pEffect->GetInteger(7) != 1)))
+            {
+                pCreature->RemoveEffectById(pEffect->m_nID);
+                nIndex = 0;
+                continue;
+            }
+
+            nIndex++;
+        }
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook s_OnApplyDeathHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler12OnApplyDeathEP10CNWSObjectP11CGameEffecti,
+    (void*)+[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame)-> int32_t
+    {
+        auto *pServerAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+        ObjectID nCallerObjectId = pEffect->m_oidCreator;
+
+        if (pObject->m_bPlotObject)
+            return 1;// DELETE_EFFECT
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            if (pCreature->m_bIsImmortal)
+            {
+                if (pCreature->GetCurrentHitPoints() < 1)
+                    pCreature->m_nCurrentHitPoints = 1;
+
+                return 1;// DELETE_EFFECT
+            }
+        }
+
+        if (pObject->m_nObjectType != Constants::ObjectType::Creature)
+            pObject->ClearAllActions();
+
+        auto *pKiller = Utils::AsNWSCreature(Utils::GetGameObject(nCallerObjectId));
+
+        if (nCallerObjectId == pObject->m_idSelf)
+            nCallerObjectId = pObject->m_oidLastDamager;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            if (pCreature->m_nAIState != Constants::AIState::IsDead)
+            {
+                if (pEffect->GetSubType_Magical())
+                {
+                    if (pCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::Death, pKiller) && pEffect->m_nSpellId != 0xFFFFFFFF)
+                    {
+                        auto *pData = new CNWCCMessageData;
+                        pData->SetObjectID(0, pObject->m_idSelf);
+
+                        if (pKiller)
+                        {
+                            auto *pDataForKiller = new CNWCCMessageData;
+                            pData->CopyTo(pDataForKiller);
+
+                            pKiller->SendFeedbackMessage(127, pDataForKiller);
+                        }
+
+                        pCreature->SendFeedbackMessage(127, pData);
+
+                        return 1;// DELETE_EFFECT
+                    }
+                }
+
+                pCreature->ClearAllActions();
+                pServerAIMaster->AdjustTargetAndWitnessReputations(pCreature->m_idSelf, nCallerObjectId, 2/*ACTION_KILL*/);
+
+                int32_t nSpectacularDeath = pEffect->GetInteger(0);
+                int32_t nDisplayFeedback = pEffect->GetInteger(1);
+
+                if (pCreature->m_nState == 15/*Petrified*/)
+                    nSpectacularDeath = true;
+                if (!pCreature->m_bDestroyable || pCreature->m_bNoPermDeath)
+                    nSpectacularDeath = false;
+
+                if (pCreature->m_nAssociateType == Constants::AssociateType::DominatedByPC ||
+                    pCreature->m_nAssociateType == Constants::AssociateType::DominatedByNPC)
+                    pCreature->RemoveDomination();
+
+                pCreature->SetActivity(0x00000001/*ActiveStealth*/, false);
+                pCreature->RemoveCombatInvisibilityEffects();
+
+                pCreature->m_oidKiller = nCallerObjectId;
+                pCreature->RunEventScript(Constants::ScriptEvent::OnDeath);
+
+                pCreature->ApplyDeathExperience();
+
+                if (!pCreature->GetIsPossessedFamiliar())
+                {
+                    if (pCreature->m_nAssociateType == Constants::AssociateType::DMPossess ||
+                        pCreature->m_nAssociateType == Constants::AssociateType::DMImpersonate)
+                    {
+                        if (auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_idSelf))
+                        {
+                            if (pPlayer->GetIsDM())
+                            {
+                                pPlayer->PossessCreature(Constants::OBJECT_INVALID, Constants::AssociateType::None);
+                            }
+                        }
+                    }
+                    else if (pCreature->m_bPlayerCharacter)
+                    {
+                        pCreature->StopGuiTimingBar();
+                    }
+                }
+                else
+                {
+                    pCreature->StopGuiTimingBar();
+                    pCreature->ReceiveAssociateCommand(-13/*UnpossessFamiliar*/);
+                }
+
+                ObjectID oidFamiliar = pCreature->GetAssociateId(Constants::AssociateType::Familiar);
+                if (oidFamiliar != Constants::OBJECT_INVALID)
+                {
+                    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidFamiliar);
+
+                    if (pPlayer)
+                    {
+                        pCreature->UnpossessFamiliar();
+                    }
+                }
+
+                if (pCreature->m_oidMaster != Constants::OBJECT_INVALID)
+                {
+                    if (pCreature->m_nNumCharSheetViewers > 0)
+                    {
+                        if (auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_oidMaster))
+                        {
+                            if (pPlayer->m_pCharSheetGUI)
+                            {
+                                pPlayer->m_pCharSheetGUI->SetCreatureDisplayed(Constants::OBJECT_INVALID);
+                                Globals::AppManager()->m_pServerExoApp->GetNWSMessage()->SendServerToPlayerGUICharacterSheet_NotPermitted(
+                                        pPlayer->m_nPlayerID, pCreature->m_idSelf);
+                            }
+                        }
+                    }
+
+                    if (auto *pMaster = Utils::AsNWSCreature(Utils::GetGameObject(pCreature->m_oidMaster)))
+                    {
+                        pMaster->RemoveAssociate(pCreature->m_idSelf);
+                    }
+                }
+
+                if (pCreature->m_nAmbientAnimationState != 3/*AmbientAnimationStateDeadButt*/ &&
+                        pCreature->m_nAmbientAnimationState != 4/*AmbientAnimationStateDeadFront*/)
+                {
+                    if (pKiller)
+                    {
+                        Vector vDeltaPos = VectorMath::Normalize(VectorMath::Subtract(pKiller->m_vPosition, pCreature->m_vPosition));
+                        float fAngle = VectorMath::Dot(VectorMath::Normalize(pCreature->m_vOrientation), vDeltaPos);
+
+                        if (fAngle >= 0.707f)
+                        {
+                            pCreature->m_nAmbientAnimationState = 3;// AmbientAnimationStateDeadButt
+                            pCreature->SetAnimation(Constants::Animation::DeadButt);
+                        }
+                        else
+                        {
+                            pCreature->m_nAmbientAnimationState = 4;// AmbientAnimationStateDeadFront;
+                            pCreature->SetAnimation(Constants::Animation::DeadFront);
+                        }
+                    }
+                    else
+                    {
+                        pCreature->m_nAmbientAnimationState = 3;// AmbientAnimationStateDeadButt
+                        pCreature->SetAnimation(Constants::Animation::DeadButt);
+                    }
+                }
+
+                if (nDisplayFeedback)
+                {
+                    auto pMessageData = new CNWCCMessageData;
+                    pMessageData->SetObjectID(0, nCallerObjectId);
+                    pMessageData->SetObjectID(1, pCreature->m_idSelf);
+
+                    if (auto *pOpponent = Utils::AsNWSCreature(Utils::GetGameObject(nCallerObjectId)))
+                        pCreature->BroadcastDeathDataToParty(pMessageData, pOpponent);
+                    else
+                        pCreature->BroadcastDeathDataToParty(pMessageData);
+
+                    delete pMessageData;
+                    pMessageData = nullptr;
+                }
+
+                pCreature->m_bListening = false;
+                pCreature->m_nAIState = Constants::AIState::IsDead;
+
+                if (pCreature->GetCurrentHitPoints(true) > -11)
+                    pCreature->m_nCurrentHitPoints = -11;
+
+                pCreature->AutoCloseGUIPanels(false);
+                pCreature->SetCombatMode(Constants::CombatMode::None, true);
+                pCreature->UpdateActionQueue();
+
+                CExoArrayList<CGameEffect*> *pAppliedEffects = &pCreature->m_appliedEffects;
+                int32_t nIndex = 0;
+                while (nIndex < pAppliedEffects->num)
+                {
+                    auto *pAppliedEffect = (*pAppliedEffects)[nIndex];
+                    int32_t nDurationType = pAppliedEffect->GetDurationType();
+
+                    if (nDurationType != Constants::EffectDurationType::Innate &&
+                        nDurationType != Constants::EffectDurationType::Equipped)
+                    {
+                        if (pAppliedEffect->m_nType != Constants::EffectTrueType::VisualEffect ||
+                            (pAppliedEffect->m_nType == Constants::EffectTrueType::VisualEffect && pAppliedEffect->GetInteger(7) != 1))
+                        {
+                            pCreature->RemoveEffectById(pAppliedEffect->m_nID);
+                            nIndex = 0;
+                            continue;
+                        }
+                    }
+
+                    nIndex++;
+                }
+
+                if (!pCreature->m_bPlayerCharacter)
+                {
+                    if (!nSpectacularDeath || pCreature->m_bLootable)
+                    {
+                        if (!pCreature->m_bLootable)
+                        {
+                            pServerAIMaster->AddEventDeltaTime(
+                                    0, pCreature->m_nDecayTime, pEffect->m_oidCreator,
+                                    pObject->m_idSelf, Constants::AIMasterEvent::DestroyObject);
+                        }
+                        else
+                        {
+                            pCreature->SpawnBodyBag();
+                        }
+
+                        if (pCreature->m_oidEncounter != Constants::OBJECT_INVALID)
+                        {
+                            if (auto *pEncounter = Globals::AppManager()->m_pServerExoApp->GetEncounterByGameObjectID(pCreature->m_oidEncounter))
+                            {
+                                pEncounter->RemoveFromActiveCreatureCount(pCreature->m_pStats->m_fChallengeRating, 0/*EncounterCreatureDeath*/);
+                                pCreature->m_bAlreadyRemovedFromEncounter = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        auto *pGibEffect = new CGameEffect;
+                        pGibEffect->m_nType = Constants::EffectTrueType::VisualEffect;
+                        pGibEffect->SetDurationType(Constants::EffectDurationType::Instant);
+                        pGibEffect->SetInteger(0, 119/*VisualEffectGib*/);
+                        pCreature->ApplyEffect(pGibEffect, bLoadingGame);
+
+                        pServerAIMaster->AddEventDeltaTime(
+                                0, 3000, pEffect->m_oidCreator,
+                                pObject->m_idSelf, Constants::AIMasterEvent::DestroyObject);
+
+                        if (pCreature->m_oidEncounter != Constants::OBJECT_INVALID)
+                        {
+                            if (auto *pEncounter = Globals::AppManager()->m_pServerExoApp->GetEncounterByGameObjectID(pCreature->m_oidEncounter))
+                            {
+                                pEncounter->RemoveFromActiveCreatureCount(pCreature->m_pStats->m_fChallengeRating, 0/*EncounterCreatureDeath*/);
+                                pCreature->m_bAlreadyRemovedFromEncounter = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    auto *pScriptEvent = new CScriptEvent;
+                    pScriptEvent->m_nType = Constants::ScriptEvent::OnDeath;
+                    pServerAIMaster->AddEventDeltaTime(
+                            0, 0, pCreature->m_idSelf, Utils::GetModule()->m_idSelf,
+                            Constants::AIMasterEvent::SignalEvent, pScriptEvent);
+                }
+
+                pCreature->ProcessMasterDeathForAssociates();
+                pCreature->BroadcastVoiceChat(18/*VoiceChatDeath*/);
+            }
+        }
+        else if (pObject->m_nObjectType == Constants::ObjectType::Placeable || pObject->m_nObjectType == Constants::ObjectType::Door)
+        {
+            if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            {
+                pPlaceable->ClosePlaceableForAllPlayers();
+                pPlaceable->SetAnimation(Constants::Animation::Destroyed);
+            }
+            else if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            {
+                pDoor->SetOpenState(3/*OpenStateDestroyed*/);
+
+                if (auto *pLinkedDoor = Utils::AsNWSDoor(pDoor->m_pTransition.LookupTarget()))
+                {
+                    if (pLinkedDoor->m_nAnimation != Constants::Animation::Destroyed)
+                    {
+                        auto *pDeathEffect = new CGameEffect;
+                        pDeathEffect->m_nType = Constants::EffectTrueType::Death;
+                        pDeathEffect->SetInteger(0, false);
+                        pDeathEffect->SetInteger(1, true);
+                        pCreature->ApplyEffect(pDeathEffect, bLoadingGame);
+                    }
+                }
+            }
+
+            auto *pScriptEvent = new CScriptEvent;
+            pScriptEvent->m_nType = Constants::ScriptEvent::OnDeath;
+            pServerAIMaster->AddEventDeltaTime(
+                    0, 0, pEffect->m_oidCreator, pObject->m_idSelf,
+                    Constants::AIMasterEvent::SignalEvent, pScriptEvent);
+
+            pServerAIMaster->AddEventDeltaTime(
+                    0, 2000, pEffect->m_oidCreator, pObject->m_idSelf,
+                    Constants::AIMasterEvent::DestroyObject);
+        }
+
+        return 1;// DELETE_EFFECT
+    }, Hooks::Order::Final);
+
+    auto *pEffect = args.extract<CGameEffect*>();
+
+    if (pEffect->m_nType == Constants::EffectTrueType::VisualEffect)
+    {
+        pEffect->SetSubType_Extraordinary();
+        pEffect->SetInteger(7, true);
+    }
+
+    return pEffect;
 }
