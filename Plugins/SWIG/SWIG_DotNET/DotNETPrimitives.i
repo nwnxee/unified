@@ -1,13 +1,14 @@
 %define MarshalPrimitive(CTYPE, CSTYPE, CSARRAYTYPE)
 %typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
 %typemap(ctype)  CTYPE "CTYPE"
-%typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY] "global::System.IntPtr"
+%typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY],CTYPE[ANY][ANY] "global::System.IntPtr"
 %typemap(imtype) CTYPE "CSTYPE"
 %typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
 %typemap(cstype) CTYPE[ANY] "NativeArray<CSARRAYTYPE>"
+%typemap(cstype) CTYPE[ANY][ANY] "TwoDimNativeArray<CSARRAYTYPE>"
 %typemap(cstype) CTYPE "CSTYPE"
 %typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
-%typemap(csin)   CTYPE[ANY] "$csinput"
+%typemap(csin)   CTYPE[ANY],CTYPE[ANY][ANY] "$csinput"
 %typemap(csin)   CTYPE "$csinput"
 %typemap(in)     CTYPE,CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
 %typemap(out)    CTYPE,CTYPE*,CTYPE& %{ $result = $1; %}
@@ -37,6 +38,22 @@
       NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
 
       return retVal; // CSTYPE[$1_dim0]
+    }
+%}
+
+%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY][ANY] {
+    global::System.IntPtr arrayPtr = $imcall;$excode
+    TwoDimNativeArray<CSARRAYTYPE> retVal = new TwoDimNativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0, $1_dim1);
+
+    return retVal; // CSTYPE[$1_dim0][$1_dim1]
+  }
+
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY][ANY] %{
+    get {
+      global::System.IntPtr arrayPtr = $imcall;$excode
+      TwoDimNativeArray<CSARRAYTYPE> retVal = new TwoDimNativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0, $1_dim1);
+
+      return retVal; // CSTYPE[$1_dim0][$1_dim1]
     }
 %}
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace NWN.Native.API
 {
-  public unsafe class NativeArray<T> : IReadOnlyList<T>, IEquatable<NativeArray<T>> where T : unmanaged
+  public unsafe class TwoDimNativeArray<T> : IReadOnlyList<NativeArray<T>>, IEquatable<TwoDimNativeArray<T>> where T : unmanaged
   {
     /// <summary>
     /// Gets the pointer to this array.
@@ -16,21 +16,28 @@ namespace NWN.Native.API
     /// </summary>
     public int Length { get; }
 
-    int IReadOnlyCollection<T>.Count => Length;
+    /// <summary>
+    /// Gets the length of the second dimension of this array.
+    /// </summary>
+    public int LengthDim2 { get; }
 
-    public NativeArray(IntPtr pointer, int length)
+    int IReadOnlyCollection<NativeArray<T>>.Count => Length;
+
+    public TwoDimNativeArray(IntPtr pointer, int lengthDim1, int lengthDim2)
     {
       this.Pointer = (T*)pointer;
-      this.Length = length;
+      this.Length = lengthDim1;
+      this.LengthDim2 = lengthDim2;
     }
 
-    public NativeArray(T* pointer, int length)
+    public TwoDimNativeArray(T* pointer, int lengthDim1, int lengthDim2)
     {
       this.Pointer = pointer;
-      this.Length = length;
+      this.Length = lengthDim1;
+      this.LengthDim2 = lengthDim2;
     }
 
-    public T this[int index]
+    public NativeArray<T> this[int index]
     {
       get
       {
@@ -39,20 +46,11 @@ namespace NWN.Native.API
           throw new IndexOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the array.");
         }
 
-        return Pointer[index];
-      }
-      set
-      {
-        if (index < 0 || index >= Length)
-        {
-          throw new IndexOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the array.");
-        }
-
-        Pointer[index] = value;
+        return new NativeArray<T>(Pointer + index * sizeof(T) * LengthDim2, LengthDim2);
       }
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<NativeArray<T>> GetEnumerator()
     {
       for (int i = 0; i < Length; i++)
       {
@@ -65,7 +63,7 @@ namespace NWN.Native.API
       return GetEnumerator();
     }
 
-    public bool Equals(NativeArray<T> other)
+    public bool Equals(TwoDimNativeArray<T> other)
     {
       if (ReferenceEquals(null, other))
       {
@@ -105,17 +103,17 @@ namespace NWN.Native.API
       return unchecked((int)(long)Pointer);
     }
 
-    public static bool operator ==(NativeArray<T> left, NativeArray<T> right)
+    public static bool operator ==(TwoDimNativeArray<T> left, TwoDimNativeArray<T> right)
     {
       return Equals(left, right);
     }
 
-    public static bool operator !=(NativeArray<T> left, NativeArray<T> right)
+    public static bool operator !=(TwoDimNativeArray<T> left, TwoDimNativeArray<T> right)
     {
       return !Equals(left, right);
     }
 
-    public static implicit operator IntPtr(NativeArray<T> nativeArray)
+    public static implicit operator IntPtr(TwoDimNativeArray<T> nativeArray)
     {
       return (IntPtr)nativeArray.Pointer;
     }
