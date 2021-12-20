@@ -44,7 +44,7 @@ InfluxDBClient::InfluxDBClient(const std::string& host, uint16_t port)
 
     if (m_clientData.m_socket == -1)
     {
-        throw std::runtime_error("Could not create socket");
+        throw std::runtime_error("NWNX_Metrics_InfluxDB: Could not create socket");
     }
 
     m_clientData.m_server.sin_family = AF_INET;
@@ -63,7 +63,7 @@ InfluxDBClient::InfluxDBClient(const std::string& host, uint16_t port)
 
         if (ret)
         {
-            throw std::runtime_error("GetAddrInfo failed.");
+            throw std::runtime_error("NWNX_Metrics_InfluxDB: GetAddrInfo failed, please check the host/port config.");
         }
 
         sockaddr_in* host_addr = reinterpret_cast<sockaddr_in*>(result->ai_addr);
@@ -110,7 +110,7 @@ void InfluxDBClient::SendSocket(const std::string message)
 
     if (ret == -1)
     {
-        throw std::runtime_error("sendto failed");
+        throw std::runtime_error("NWNX_Metrics_InfluxDB: sendto failed");
     }
 }
 
