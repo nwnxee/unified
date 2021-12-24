@@ -22,7 +22,9 @@ struct JsonEngineStructure
         m_error = other.m_error;
         return *this;
     }
-    bool IsEmpty() const { return m_json.m_type == 0; }
+
+    bool IsEmpty() const { return m_json.is_null(); }
+    void Clear() { m_json = {}; m_error = ""; }
 };
 
 

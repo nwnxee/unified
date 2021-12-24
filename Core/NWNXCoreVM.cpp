@@ -99,6 +99,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         case VMCommand::GetLocalFloat:
         case VMCommand::GetLocalString:
         case VMCommand::GetLocalObject:
+        case VMCommand::GetLocalJson:
             break;
         default:
             return g_core->m_vmGetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
@@ -179,6 +180,20 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             success = vm->StackPushObject(oid);
             break;
         }
+        case VMCommand::GetLocalJson:
+        {
+            JsonEngineStructure j;
+            if (nwnx)
+            {
+                j = Events::Pop<JsonEngineStructure>().value_or(j);
+            }
+            else if (vartable)
+            {
+                j = vartable->GetJson(varname);
+            }
+            success = vm->StackPushEngineStructure(VMStructure::Json, &j);
+            break;
+        }
         default:
             ASSERT_FAIL();
     }
@@ -193,6 +208,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         case VMCommand::SetLocalFloat:
         case VMCommand::SetLocalString:
         case VMCommand::SetLocalObject:
+        case VMCommand::SetLocalJson:
             break;
         default:
             return g_core->m_vmSetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
@@ -278,6 +294,25 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             {
                 vartable->SetObject(varname, value);
             }
+            break;
+        }
+        case VMCommand::SetLocalJson:
+        {
+            JsonEngineStructure *json;
+            if (!vm->StackPopEngineStructure(VMStructure::Json, (void**)&json))
+                return VMError::StackUnderflow;
+
+            if (nwnx)
+            {
+                Events::Push(*json);
+            }
+            else if (vartable)
+            {
+                vartable->SetJson(varname, *json);
+            }
+
+            delete json;
+
             break;
         }
         default:
