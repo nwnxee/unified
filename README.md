@@ -27,7 +27,7 @@ Check out the [Awesome NWNX page](Awesome-NWNX.md) for a list projects using NWN
 
 The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. That said, the Steam and Beamdog binaries are almost always identical to the one in the dedicated server package, see the top of this readme for a md5sum of the binary we support.
 
-We release at least one update for each new version of the dedicated server package, the latest version can be found here: [nwnee-dedicated-8193.34.zip](https://nwn.beamdog.net/downloads/nwnee-dedicated-8193.34.zip)
+We release at least one update for each new version of the dedicated server package, which can be found here: [Server download packages and docker support](https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1)
 
 ## What platforms are supported?
 
@@ -35,7 +35,7 @@ Only Linux is natively supported. It is possible to run NWNX:EE on Windows using
 
 ## How do I use it?
 
-First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) tab at the top of the GitHub repository page.
+First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) header to the right of the GitHub repository page.
 
 ## Integrating NWNX:EE into your module
 
