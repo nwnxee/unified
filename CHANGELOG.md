@@ -10,6 +10,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 ### Added
 - Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
 - Optimizations: added `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG` to fix a bug where VFXs keep getting reapplied to placeables.
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
 
 ##### New Plugins
 - N/A
