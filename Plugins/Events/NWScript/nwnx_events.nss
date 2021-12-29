@@ -1442,6 +1442,21 @@ void NWNX_Events_SubscribeEvent(string evt, string script);
 /// @param script The script.
 void NWNX_Events_UnsubscribeEvent(string evt, string script);
 
+/// @brief Script chunks can subscribe to events.
+///
+/// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
+/// Others can be signalled via script code via NWNX_Events_SignalEvent().
+/// @param sEvent The event name.
+/// @param sScriptChunk The script chunk to execute when the event fires.
+/// @param bWrapIntoMain TRUE if the script chunk needs to be wrapped into a void main(){}.
+void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE);
+
+/// @brief Unsubscribe a script chunk from an event
+/// @param sEvent The event name.
+/// @param sScriptChunk The script chunk.
+/// @param bWrapIntoMain TRUE if the script chunk needs to be wrapped into a void main(){}. Must match the value used when subscribing.
+void NWNX_Events_UnsubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE);
+
 /// Pushes event data at the provided tag, which subscribers can access with GetEventData.
 /// This should be called BEFORE SignalEvent.
 void NWNX_Events_PushEventData(string tag, string data);
@@ -1524,15 +1539,15 @@ void NWNX_Events_SetEventResult(string data);
 /// Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
-/// Toggles DispatchListMode for sEvent+sScript
-/// If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list.
-void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable);
+/// Toggles DispatchListMode for sEvent+sScript(Chunk)
+/// If enabled, sEvent for sScript(Chunk) will only be signalled if the target object is on its dispatch list.
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScriptOrChunk, int bEnable);
 
-/// Add oObject to the dispatch list for sEvent+sScript.
-void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject);
+/// Add oObject to the dispatch list for sEvent+sScript(Chunk).
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, object oObject);
 
-/// Remove oObject from the dispatch list for sEvent+sScript.
-void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
+/// Remove oObject from the dispatch list for sEvent+sScript(Chunk).
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject);
 
 /// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
 /// on its whitelist.
@@ -1575,6 +1590,26 @@ void NWNX_Events_UnsubscribeEvent(string evt, string script)
 
     NWNX_PushArgumentString(script);
     NWNX_PushArgumentString(evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = FALSE)
+{
+    string sFunc = "SubscribeEventScriptChunk";
+
+    NWNX_PushArgumentInt(bWrapIntoMain);
+    NWNX_PushArgumentString(sScriptChunk);
+    NWNX_PushArgumentString(sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_UnsubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = FALSE)
+{
+    string sFunc = "UnsubscribeEventScriptChunk";
+
+    NWNX_PushArgumentInt(bWrapIntoMain);
+    NWNX_PushArgumentString(sScriptChunk);
+    NWNX_PushArgumentString(sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
@@ -1629,32 +1664,32 @@ string NWNX_Events_GetCurrentEvent()
     return NWNX_GetReturnValueString();
 }
 
-void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScriptOrChunk, int bEnable)
 {
     string sFunc = "ToggleDispatchListMode";
 
     NWNX_PushArgumentInt(bEnable);
-    NWNX_PushArgumentString(sScript);
+    NWNX_PushArgumentString(sScriptOrChunk);
     NWNX_PushArgumentString(sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
-void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, object oObject)
 {
     string sFunc = "AddObjectToDispatchList";
 
     NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentString(sScript);
+    NWNX_PushArgumentString(sScriptOrChunk);
     NWNX_PushArgumentString(sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
-void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject)
 {
     string sFunc = "RemoveObjectFromDispatchList";
 
     NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentString(sScript);
+    NWNX_PushArgumentString(sScriptOrChunk);
     NWNX_PushArgumentString(sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
