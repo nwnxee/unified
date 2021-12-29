@@ -3,6 +3,8 @@
 #include "Constants.hpp"
 #include <stdlib.h>
 #include <string>
+#include <memory>
+#include <vector>
 
 #include "External/json/json.hpp"
 
@@ -26,8 +28,73 @@ typedef uint32_t ObjectID;
 typedef uint32_t PlayerID;
 namespace NWSync { struct CNWSync { void *m_pInternal; char *m_tmp1; uint32_t m_tmp2; }; }
 
-struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_owning;};
-#define DataBlockRef std::shared_ptr<DataBlock>
+struct DataView;
+using DataViewRef = std::shared_ptr<DataView>;
+struct DataBlock;
+using DataBlockRef = std::shared_ptr<DataBlock>;
+
+struct DataView
+{
+    struct Shared
+    {
+        Shared(const void* data, size_t used, size_t allocated, bool owned) : m_data(const_cast<void*>(data)), m_used(used), m_allocated(allocated), m_owned(owned) {}
+        ~Shared()
+        {
+            if (m_owned)
+                free(m_data);
+        }
+
+        void* m_data;
+        size_t m_used;
+        size_t m_allocated;
+        bool m_owned;
+    };
+    using SharedRef = std::shared_ptr<Shared>;
+
+    SharedRef m_shared;
+    SharedRef m_parent;
+
+    explicit DataView(const void* data, size_t length) : m_shared(std::make_shared<Shared>(data, length, 0, false)) {}
+    const void* Data() const { return m_shared->m_data; };
+    size_t Used() const { return m_shared->m_used; }
+    size_t Allocated() const { return m_shared->m_allocated; }
+    DataViewRef View(size_t offset, size_t count) const;
+    DataBlockRef MakeCopy() const;
+    bool empty() const { return m_shared->m_used == 0; };
+};
+
+struct DataBlock : DataView
+{
+    explicit DataBlock(size_t preallocate = 0) : DataView(nullptr, 0)
+    {
+        m_shared->m_owned = true;
+        if (preallocate > 0)
+            AllocateAtLeast(preallocate);
+    }
+    explicit DataBlock(const void *data, size_t length) : DataView(nullptr, 0)
+    {
+        Append(data, length);
+        m_shared->m_owned = true;
+    }
+
+    explicit DataBlock(const std::vector<uint8_t>& data) : DataView(nullptr, 0)
+    {
+        Append(data.data(), data.size());
+        m_shared->m_owned = true;
+    }
+    explicit DataBlock(const std::string& data) : DataView(nullptr, 0)
+    {
+        Append(data.data(), data.size());
+        m_shared->m_owned = true;
+    }
+
+    void* Data() { return m_shared->m_data; }
+    void AllocateAtLeast(size_t length);
+    void MarkUsed(size_t length);
+    void Prepend(const void* payload, size_t length, size_t chunkSize = 0);
+    void Append(const void* payload, size_t length, size_t chunkSize = 0);
+    void Compact();
+};
 
 struct CUUID { uint64_t ab = 0, cd = 0; };
 using json = nlohmann::json;
