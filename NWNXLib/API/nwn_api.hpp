@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string>
 
+#include "External/json/json.hpp"
+
 #define NWNX_INTERNAL_EXPAND(s) #s
 #define NWNX_INTERNAL_STRINGIFY(s) NWNX_INTERNAL_EXPAND(s)
 
@@ -28,7 +30,7 @@ struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_ownin
 #define DataBlockRef std::shared_ptr<DataBlock>
 
 struct CUUID { uint64_t ab = 0, cd = 0; };
-struct json { uint8_t m_type = 0; void* m_value = nullptr; };
+using json = nlohmann::json;
 
 namespace Nui::JSON {
     using WindowToken = int32_t; // nwscript compat type
