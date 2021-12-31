@@ -114,6 +114,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf3739a883b618d64af4d0d19b85e5815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a> (string evt, string script)</td></tr>
 <tr class="memdesc:gaf3739a883b618d64af4d0d19b85e5815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribe a script from an event.  <a href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">More...</a><br /></td></tr>
 <tr class="separator:gaf3739a883b618d64af4d0d19b85e5815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga52e6fda08aec0f014978231f518c913c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga52e6fda08aec0f014978231f518c913c">NWNX_Events_SubscribeEventScriptChunk</a> (string sEvent, string sScriptChunk, int bWrapIntoMain=TRUE)</td></tr>
+<tr class="memdesc:ga52e6fda08aec0f014978231f518c913c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Script chunks can subscribe to events.  <a href="group__events.html#ga52e6fda08aec0f014978231f518c913c">More...</a><br /></td></tr>
+<tr class="separator:ga52e6fda08aec0f014978231f518c913c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeae8b9f84fac58078214357ef66d75eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaeae8b9f84fac58078214357ef66d75eb">NWNX_Events_UnsubscribeEventScriptChunk</a> (string sEvent, string sScriptChunk, int bWrapIntoMain=TRUE)</td></tr>
+<tr class="memdesc:gaeae8b9f84fac58078214357ef66d75eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribe a script chunk from an event.  <a href="group__events.html#gaeae8b9f84fac58078214357ef66d75eb">More...</a><br /></td></tr>
+<tr class="separator:gaeae8b9f84fac58078214357ef66d75eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4adf46d9794ba89a03e0a61c1cc65fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a> (string tag, string data)</td></tr>
 <tr class="separator:ga4adf46d9794ba89a03e0a61c1cc65fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4a9847f9f4b134c0618429671f78a53"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a> (string evt, object target)</td></tr>
@@ -126,14 +132,14 @@ Functions</h2></td></tr>
 <tr class="separator:gae28a9b2f668f2efae2335efc748dca14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3dd3ccd8df389359c21d5ca3f681718b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a> ()</td></tr>
 <tr class="separator:ga3dd3ccd8df389359c21d5ca3f681718b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4134c20a643dc5d808fc0f758c71cd02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a> (string sEvent, string sScript, int bEnable)</td></tr>
-<tr class="separator:ga4134c20a643dc5d808fc0f758c71cd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae5b967429f0381813d7f6667dd8dcbe6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
-<tr class="memdesc:gae5b967429f0381813d7f6667dd8dcbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add oObject to the dispatch list for sEvent+sScript.  <a href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">More...</a><br /></td></tr>
-<tr class="separator:gae5b967429f0381813d7f6667dd8dcbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
-<tr class="memdesc:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list for sEvent+sScript.  <a href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">More...</a><br /></td></tr>
-<tr class="separator:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga28ea15430c5afe99a0abffd81a181e5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga28ea15430c5afe99a0abffd81a181e5f">NWNX_Events_ToggleDispatchListMode</a> (string sEvent, string sScriptOrChunk, int bEnable)</td></tr>
+<tr class="separator:ga28ea15430c5afe99a0abffd81a181e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7984d703dabbde000f62a36cf36d0c4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga7984d703dabbde000f62a36cf36d0c4e">NWNX_Events_AddObjectToDispatchList</a> (string sEvent, string sScriptOrChunk, object oObject)</td></tr>
+<tr class="memdesc:ga7984d703dabbde000f62a36cf36d0c4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add oObject to the dispatch list for sEvent+sScript(Chunk).  <a href="group__events.html#ga7984d703dabbde000f62a36cf36d0c4e">More...</a><br /></td></tr>
+<tr class="separator:ga7984d703dabbde000f62a36cf36d0c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf993f0b749302ccd063c15266998c7e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf993f0b749302ccd063c15266998c7e2">NWNX_Events_RemoveObjectFromDispatchList</a> (string sEvent, string sScriptOrChunk, object oObject)</td></tr>
+<tr class="memdesc:gaf993f0b749302ccd063c15266998c7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list for sEvent+sScript(Chunk).  <a href="group__events.html#gaf993f0b749302ccd063c15266998c7e2">More...</a><br /></td></tr>
+<tr class="separator:gaf993f0b749302ccd063c15266998c7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga6aeb7191ec294fcae051e7522d2cd70e">NWNX_Events_ToggleIDWhitelist</a> (string sEvent, int bEnable)</td></tr>
 <tr class="memdesc:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are on its whitelist.  <a href="group__events.html#ga6aeb7191ec294fcae051e7522d2cd70e">More...</a><br /></td></tr>
 <tr class="separator:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,6 +149,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga542c1822a5fceee6074b1865601c67b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga542c1822a5fceee6074b1865601c67b7">NWNX_Events_RemoveIDFromWhitelist</a> (string sEvent, int nID)</td></tr>
 <tr class="memdesc:ga542c1822a5fceee6074b1865601c67b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove nID from the whitelist of sEvent.  <a href="group__events.html#ga542c1822a5fceee6074b1865601c67b7">More...</a><br /></td></tr>
 <tr class="separator:ga542c1822a5fceee6074b1865601c67b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d99f31a648a19d0413f9101c0b50560"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga8d99f31a648a19d0413f9101c0b50560">NWNX_Events_GetNumSubscribers</a> (string sEvent)</td></tr>
+<tr class="memdesc:ga8d99f31a648a19d0413f9101c0b50560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of subscribers to sEvent.  <a href="group__events.html#ga8d99f31a648a19d0413f9101c0b50560">More...</a><br /></td></tr>
+<tr class="separator:ga8d99f31a648a19d0413f9101c0b50560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -151,7 +160,7 @@ Functions</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Wed Dec 29 2021 11:50:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Dec 31 2021 17:15:13 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
