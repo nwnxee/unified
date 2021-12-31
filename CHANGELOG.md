@@ -17,6 +17,9 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ##### New NWScript Functions
 - Effect: AccessorizeVisualEffect()
+- Events: SubscribeEventScriptChunk()
+- Events: UnsubscribeEventScriptChunk()
+- Events: GetNumSubscribers()
 
 ### Changed
 - N/A  
