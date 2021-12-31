@@ -450,4 +450,16 @@ NWNX_EXPORT ArgumentStack RemoveIDFromWhitelist(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetNumSubscribers(ArgumentStack&& args)
+{
+    const auto event = args.extract<std::string>();
+      ASSERT_OR_THROW(!event.empty());
+
+    auto subscribers = s_eventMap.find(event);
+    if (subscribers != s_eventMap.end())
+        return (int32_t)subscribers->second.size();
+    else
+        return 0;
+}
+
 }

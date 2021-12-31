@@ -1573,6 +1573,11 @@ void NWNX_Events_AddIDToWhitelist(string sEvent, int nID);
 /// @param nID The ID.
 void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID);
 
+/// @brief Get the number of subscribers to sEvent.
+/// @param sEvent The event.
+/// @return The number of subscribers sEvent has or 0 on error.
+int NWNX_Events_GetNumSubscribers(string sEvent);
+
 /// @}
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
@@ -1719,4 +1724,13 @@ void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID)
     NWNX_PushArgumentInt(nID);
     NWNX_PushArgumentString(sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+int NWNX_Events_GetNumSubscribers(string sEvent)
+{
+    string sFunc = "GetNumSubscribers";
+
+    NWNX_PushArgumentString(sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueInt();
 }

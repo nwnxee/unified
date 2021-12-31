@@ -19,6 +19,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Effect: AccessorizeVisualEffect()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
+- Events: GetNumSubscribers()
 
 ### Changed
 - N/A  
