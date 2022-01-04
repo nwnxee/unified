@@ -127,6 +127,8 @@ namespace Platform
     void CalculateBaseAddress();
     uintptr_t GetRelocatedAddress(const uintptr_t address);
     uintptr_t GetRelocatedGlobalAddress(const uintptr_t address);
+
+    bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 
 namespace Commands

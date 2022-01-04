@@ -61,7 +61,7 @@ std::string GetStackTrace(uint8_t levels)
 static std::map<uintptr_t, std::string> s_FunctionMap;
 static void InitFunctionMap()
 {
-    if (s_FunctionMap.size()) return;
+    if (!s_FunctionMap.empty()) return;
 
 #undef NWNXLIB_FUNCTION
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
@@ -91,7 +91,7 @@ std::string ResolveAddress(uintptr_t address)
 uintptr_t GetFunctionAddress(const std::string& mangledname)
 {
     InitFunctionMap();
-    for (auto it: s_FunctionMap)
+    for (const auto& it: s_FunctionMap)
     {
         if (it.second == mangledname)
             return it.first;
@@ -99,5 +99,20 @@ uintptr_t GetFunctionAddress(const std::string& mangledname)
     return 0;
 }
 
+bool AmICalledBy(uintptr_t address, uintptr_t returnAddress)
+{
+    InitFunctionMap();
+
+    if (returnAddress > GetRelocatedAddress(0))
+        returnAddress -= GetRelocatedAddress(0);
+
+    auto it = s_FunctionMap.upper_bound(returnAddress);
+    if (it != s_FunctionMap.begin())
+    {
+        --it;
+        return it->first == address;
+    }
+    return false;
+}
 
 }
