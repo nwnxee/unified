@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
+- Tweaks: added `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` to fix the DM creature selection box not showing up when player party control is off.
 - Optimizations: added `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG` to fix a bug where VFXs keep getting reapplied to placeables.
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
 
