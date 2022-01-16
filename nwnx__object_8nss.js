@@ -62,6 +62,7 @@ var nwnx__object_8nss =
     [ "NWNX_OBJECT_LOCALVAR_TYPE_STRING", "group__object.html#gaa71beb1c2fc7685215d8f80ef9a1541f", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_OBJECT", "group__object.html#ga1fd70b82158630ba51168aaaa9964064", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_LOCATION", "group__object.html#ga8a8f56702f7212d7f2de699e50ed2232", null ],
+    [ "NWNX_OBJECT_LOCALVAR_TYPE_JSON", "group__object.html#ga72f7b91d398fe93e1d87f16ab5974ab8", null ],
     [ "NWNX_OBJECT_TYPE_INTERNAL_INVALID", "group__object.html#gaa063bd43940aa65e2e0a483a7d1e4916", null ],
     [ "NWNX_OBJECT_TYPE_INTERNAL_GUI", "group__object.html#ga9731842356e6a23f76a572456dff5551", null ],
     [ "NWNX_OBJECT_TYPE_INTERNAL_TILE", "group__object.html#gaf56cf9bf74db05bdd92f88247e13a8bd", null ],
