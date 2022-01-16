@@ -21,9 +21,10 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
 - Events: GetNumSubscribers()
+- Regex: Match()
 
 ### Changed
-- N/A  
+- N/A
 
 ### Deprecated
 - N/A
