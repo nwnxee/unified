@@ -15,6 +15,7 @@ const int NWNX_OBJECT_LOCALVAR_TYPE_FLOAT    = 2;
 const int NWNX_OBJECT_LOCALVAR_TYPE_STRING   = 3;
 const int NWNX_OBJECT_LOCALVAR_TYPE_OBJECT   = 4;
 const int NWNX_OBJECT_LOCALVAR_TYPE_LOCATION = 5;
+const int NWNX_OBJECT_LOCALVAR_TYPE_JSON     = 6;
 /// @}
 
 /// @anchor object_internal_types
@@ -61,8 +62,9 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @note As of build 8193.14, this function takes O(n) time, where n is the number
 ///       of locals on the object. Individual variable access with GetLocalXxx()
 ///       is now O(1) though.
-/// @note As of build 8193.14, this function may return variable type UNKNOWN
-///       if the value is the default (0/0.0/""/OBJECT_INVALID) for the type.
+/// @note As of build 8193.14, this function will not return a variable if the value is
+///       the default (0/0.0/""/OBJECT_INVALID/JsonNull()) for the type. They are considered not set.
+/// @note Will return type UNKNOWN for cassowary variables.
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 
