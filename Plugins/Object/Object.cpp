@@ -61,6 +61,7 @@ NWNX_EXPORT ArgumentStack GetLocalVariable(ArgumentStack&& args)
                     else if (it.second.HasString())   type = 3;
                     else if (it.second.HasObject())   type = 4;
                     else if (it.second.HasLocation()) type = 5;
+                    else if (it.second.HasJson())     type = 6;
                     else type = 0;
                     break;
                 }

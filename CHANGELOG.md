@@ -33,7 +33,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Object: GetLocalVariable() now recognizes variables of type json.
 
 ## 8193.34
 https://github.com/nwnxee/unified/compare/build8193.33...build8193.34
