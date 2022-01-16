@@ -118,6 +118,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf07c406fb73c689a11506a3b4dacdb4b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__regex.html#gaf07c406fb73c689a11506a3b4dacdb4b">NWNX_Regex_Replace</a> (string str, string regex, string replace=&quot;&quot;, int firstOnly=FALSE)</td></tr>
 <tr class="memdesc:gaf07c406fb73c689a11506a3b4dacdb4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces any matches of the regular expression with a string.  <a href="group__regex.html#gaf07c406fb73c689a11506a3b4dacdb4b">More...</a><br /></td></tr>
 <tr class="separator:gaf07c406fb73c689a11506a3b4dacdb4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c821bcf452e11a82082b18143cdd777"><td class="memItemLeft" align="right" valign="top">json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__regex.html#ga1c821bcf452e11a82082b18143cdd777">NWNX_Regex_Match</a> (string str, string regex)</td></tr>
+<tr class="memdesc:ga1c821bcf452e11a82082b18143cdd777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all matches in a string that match the regular expression.  <a href="group__regex.html#ga1c821bcf452e11a82082b18143cdd777">More...</a><br /></td></tr>
+<tr class="separator:ga1c821bcf452e11a82082b18143cdd777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga6240bcb6a66df4cf6958212941e2b855"></a>
@@ -154,7 +157,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if string matches the regular expression. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__regex_8nss_source.html#l00024">24</a> of file <a class="el" href="nwnx__regex_8nss_source.html">nwnx_regex.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__regex_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__regex_8nss_source.html">nwnx_regex.nss</a>.</p>
 
 </div>
 </div>
@@ -208,7 +211,47 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A new string with any replacements made. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__regex_8nss_source.html#l00033">33</a> of file <a class="el" href="nwnx__regex_8nss_source.html">nwnx_regex.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__regex_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__regex_8nss_source.html">nwnx_regex.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga1c821bcf452e11a82082b18143cdd777"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c821bcf452e11a82082b18143cdd777">&#9670;&nbsp;</a></span>NWNX_Regex_Match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">json NWNX_Regex_Match </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>regex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns all matches in a string that match the regular expression. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The string to search. </td></tr>
+    <tr><td class="paramname">regex</td><td>The regular expression to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A json array with json arrays of all (sub)matches. Returns JsonNull() on error. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__regex_8nss_source.html#l00050">50</a> of file <a class="el" href="nwnx__regex_8nss_source.html">nwnx_regex.nss</a>.</p>
 
 </div>
 </div>
@@ -218,7 +261,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Jan 11 2022 14:06:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Jan 16 2022 16:32:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

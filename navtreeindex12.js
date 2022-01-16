@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"nwnx__weapon_8nss_source.html":[4,0,3,44,0,0],
+"nwnx__webhook_8nss.html":[4,0,3,45,0,0],
 "nwnx__webhook_8nss_source.html":[4,0,3,45,0,0],
 "nwnx__webhook__rch_8nss.html":[4,0,3,45,0,1],
 "nwnx__webhook__rch_8nss.html#ad2b8a8163359a3d236d704a29d454103":[4,0,3,45,0,1,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "structNWNX__WebHook__Message.html#a420ada6dfc7e696938ab685b8af39a91":[0,47,3,36],
 "structNWNX__WebHook__Message.html#a500f02110e23a6c04ba37c4f550a9dc4":[0,47,3,40],
 "structNWNX__WebHook__Message.html#a559adb85d80133938e6512d12a69e18f":[0,47,3,1],
-"structNWNX__WebHook__Message.html#a57a6314cfacf3f4244058402965b1f20":[0,47,3,15],
-"structNWNX__WebHook__Message.html#a57f262917b0edfe78d32d1388bbc1dea":[0,47,3,29],
-"structNWNX__WebHook__Message.html#a5b54b5b3f4d996f1921fcd0bf6dd20a4":[0,47,3,8]
+"structNWNX__WebHook__Message.html#a57a6314cfacf3f4244058402965b1f20":[0,47,3,15]
 };
