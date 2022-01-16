@@ -17,7 +17,7 @@ namespace DotNET {
 
 // Bootstrap functions
 using MainLoopHandlerType  = void (*)(uint64_t);
-using RunScriptHandlerType = int (*)(const char *, uint32_t);
+using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
 
@@ -37,9 +37,9 @@ static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks
 static std::string s_nwnxActivePlugin;
 static std::string s_nwnxActiveFunction;
 
-static uintptr_t GetFunctionPointer(const char *name)
+static uintptr_t GetFunctionPointer(const char* name)
 {
-    void *core = dlopen("NWNX_Core.so", RTLD_LAZY);
+    void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
     {
         LOG_ERROR("Failed to open core handle: %s", dlerror());
@@ -52,7 +52,7 @@ static uintptr_t GetFunctionPointer(const char *name)
     return ret;
 }
 
-static void RegisterHandlers(AllHandlers *handlers, unsigned size)
+static void RegisterHandlers(AllHandlers* handlers, unsigned size)
 {
     if (size > sizeof(*handlers))
     {
@@ -70,7 +70,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
     LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
     static Hooks::Hook MainLoopHook;
     MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-        (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+        (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
         {
             static uint64_t frame = 0;
             if (s_handlers.MainLoop)
@@ -152,7 +152,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
-    auto script = new CVirtualMachineScript();
+    auto* script = new CVirtualMachineScript();
     script->m_pCode = nullptr;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
@@ -169,7 +169,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
-    auto cmd = dynamic_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+    auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
     LOG_DEBUG("Calling BuiltIn %i.", id);
     ASSERT(vm->m_nRecursionLevel >= 0);
     cmd->ExecuteCommand(id, s_pushedCount);
@@ -346,7 +346,7 @@ static const char* StackPopString()
     return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
-static char* StackPopRawString()
+static const char* StackPopRawString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -355,11 +355,13 @@ static char* StackPopRawString()
     if (!vm->StackPopString(&value))
     {
       LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
-      return "";
+      return nullptr;
     }
 
+    static std::string retVal = value.CStr();
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
-    return strdup(value.CStr());
+
+    return retVal.c_str();
 }
 
 static uint32_t StackPopObject()
@@ -415,7 +417,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
-        auto cmd = dynamic_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
         LOG_DEBUG("Freeing game structure at 0x%x", ptr);
         cmd->DestroyGameDefinedStructure(structId, ptr);
     }
@@ -425,7 +427,7 @@ static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
-        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        auto* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(0, 0, oid, oid, 1, CreateScriptForClosure(eventId));
         return 1;
     }
@@ -440,7 +442,7 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
         uint32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
         uint32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
 
-        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        auto* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(eventId));
         return 1;
     }
@@ -450,7 +452,7 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
 
 static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
-    if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
+    if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
         obj->AddDoCommandAction(CreateScriptForClosure(eventId));
         return 1;
@@ -459,7 +461,7 @@ static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static void NWNXSetFunction(const char *plugin, const char *function)
+static void NWNXSetFunction(const char* plugin, const char* function)
 {
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
@@ -480,22 +482,22 @@ static void NWNXPushObject(uint32_t o)
     Events::Push((ObjectID)o);
 }
 
-static void NWNXPushString(const char *s)
+static void NWNXPushString(const char* s)
 {
     Events::Push(String::FromUTF8(s));
 }
 
-static void NWNXPushRawString(const char *s)
+static void NWNXPushRawString(const char* s)
 {
-    Events::Push(std::string(s));
+    Events::Push<std::string>(s);
 }
 
-static void NWNXPushEffect(CGameEffect *e)
+static void NWNXPushEffect(CGameEffect* e)
 {
     Events::Push(e);
 }
 
-static void NWNXPushItemProperty(CGameEffect *ip)
+static void NWNXPushItemProperty(CGameEffect* ip)
 {
     Events::Push(ip);
 }
@@ -523,8 +525,16 @@ static const char* NWNXPopString()
 
 static const char* NWNXPopRawString()
 {
-    auto str = Events::Pop<std::string>().value_or(std::string{""});
-    return strdup(str.c_str());
+    auto value = Events::Pop<std::string>();
+    if (value.has_value())
+    {
+      static auto retVal = value.value();
+      return retVal.c_str();
+    }
+    else
+    {
+      return nullptr;
+    }
 }
 
 static CGameEffect* NWNXPopEffect()
