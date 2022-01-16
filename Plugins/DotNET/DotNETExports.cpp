@@ -30,7 +30,7 @@ struct AllHandlers
 };
 static AllHandlers s_handlers;
 
-static uint32_t s_pushedCount = 0;
+static int32_t s_pushedCount = 0;
 
 static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
 
@@ -51,7 +51,6 @@ static uintptr_t GetFunctionPointer(const char *name)
     dlclose(core);
     return ret;
 }
-
 
 static void RegisterHandlers(AllHandlers *handlers, unsigned size)
 {
@@ -86,7 +85,6 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
             return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
         },
         Hooks::Order::VeryEarly);
-
 
     LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
     static Hooks::Hook RunScriptHook;
@@ -154,8 +152,8 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
-    CVirtualMachineScript* script = new CVirtualMachineScript();
-    script->m_pCode = NULL;
+    auto script = new CVirtualMachineScript();
+    script->m_pCode = nullptr;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
     script->m_nStackSize = 0;
@@ -171,7 +169,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+    auto cmd = dynamic_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
     LOG_DEBUG("Calling BuiltIn %i.", id);
     ASSERT(vm->m_nRecursionLevel >= 0);
     cmd->ExecuteCommand(id, s_pushedCount);
@@ -226,8 +224,25 @@ static void StackPushString(const char* value)
     }
     else
     {
-        LOG_WARNING("Failed to push string '%s' - recursion level %i.",
-            str.m_sString, vm->m_nRecursionLevel);
+        LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
+    }
+}
+
+static void StackPushRawString(const char* value)
+{
+    auto vm = Globals::VirtualMachine();
+    ASSERT(vm->m_nRecursionLevel >= 0);
+
+    LOG_DEBUG("Pushing string '%s'.", value);
+    CExoString str(value);
+
+    if (vm->StackPushString(str))
+    {
+      ++s_pushedCount;
+    }
+    else
+    {
+      LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
     }
 }
 
@@ -331,6 +346,22 @@ static const char* StackPopString()
     return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
+static char* StackPopRawString()
+{
+    auto vm = Globals::VirtualMachine();
+    ASSERT(vm->m_nRecursionLevel >= 0);
+
+    CExoString value;
+    if (!vm->StackPopString(&value))
+    {
+      LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
+      return "";
+    }
+
+    LOG_DEBUG("Popped string '%s'.", value.m_sString);
+    return strdup(value.CStr());
+}
+
 static uint32_t StackPopObject()
 {
     auto vm = Globals::VirtualMachine();
@@ -384,7 +415,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+        auto cmd = dynamic_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
         LOG_DEBUG("Freeing game structure at 0x%x", ptr);
         cmd->DestroyGameDefinedStructure(structId, ptr);
     }
@@ -406,8 +437,8 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
 {
     if (Utils::GetGameObject(oid))
     {
-        int32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
-        int32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
+        uint32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
+        uint32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
 
         CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(eventId));
@@ -433,55 +464,79 @@ static void NWNXSetFunction(const char *plugin, const char *function)
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
+
 static void NWNXPushInt(int32_t n)
 {
     Events::Push(n);
 }
+
 static void NWNXPushFloat(float f)
 {
     Events::Push(f);
 }
+
 static void NWNXPushObject(uint32_t o)
 {
     Events::Push((ObjectID)o);
 }
+
 static void NWNXPushString(const char *s)
 {
     Events::Push(String::FromUTF8(s));
 }
+
+static void NWNXPushRawString(const char *s)
+{
+    Events::Push(std::string(s));
+}
+
 static void NWNXPushEffect(CGameEffect *e)
 {
     Events::Push(e);
 }
+
 static void NWNXPushItemProperty(CGameEffect *ip)
 {
     Events::Push(ip);
 }
+
 static int32_t NWNXPopInt()
 {
     return Events::Pop<int32_t>().value_or(0);
 }
+
 static float NWNXPopFloat()
 {
     return Events::Pop<float>().value_or(0.0f);
 }
+
 static uint32_t NWNXPopObject()
 {
     return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
+
 static const char* NWNXPopString()
 {
     auto str = Events::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
+
+static const char* NWNXPopRawString()
+{
+    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    return strdup(str.c_str());
+}
+
 static CGameEffect* NWNXPopEffect()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
+
 static CGameEffect* NWNXPopItemProperty()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
+
 static void NWNXCallFunction()
 {
     Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
@@ -508,51 +563,6 @@ static void ReturnHook(void* trampoline)
             return;
         }
     }
-}
-
-static void StackPushRawString(CExoString* value)
-{
-  auto vm = Globals::VirtualMachine();
-  ASSERT(vm->m_nRecursionLevel >= 0);
-
-  LOG_DEBUG("Pushing raw string '%s'.", value->CStr());
-
-  if (vm->StackPushString(*value))
-  {
-    ++s_pushedCount;
-  }
-  else
-  {
-    LOG_WARNING("Failed to push string '%s' - recursion level %i.",
-                value->m_sString, vm->m_nRecursionLevel);
-  }
-}
-
-static char* StackPopRawString()
-{
-  auto vm = Globals::VirtualMachine();
-  ASSERT(vm->m_nRecursionLevel >= 0);
-
-  CExoString value;
-  if (!vm->StackPopString(&value))
-  {
-    LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
-    return "";
-  }
-
-  LOG_DEBUG("Popped string '%s'.", value.m_sString);
-  return value.CStr();
-}
-
-static void NWNXPushRawString(const char *s)
-{
-    Events::Push(std::string(s));
-}
-
-static const char* NWNXPopRawString()
-{
-  auto str = Events::Pop<std::string>().value_or(std::string{""});
-  return strdup(str.c_str());
 }
 
 std::vector<void*> GetExports()
@@ -606,6 +616,7 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&StackPopRawString);
     exports.push_back((void*)&NWNXPushRawString);
     exports.push_back((void*)&NWNXPopRawString);
+
     return exports;
 }
 
