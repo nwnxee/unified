@@ -1598,7 +1598,7 @@ void NWNX_Events_UnsubscribeEvent(string evt, string script)
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
-void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = FALSE)
+void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE)
 {
     string sFunc = "SubscribeEventScriptChunk";
 
@@ -1608,7 +1608,7 @@ void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, i
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
-void NWNX_Events_UnsubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = FALSE)
+void NWNX_Events_UnsubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE)
 {
     string sFunc = "UnsubscribeEventScriptChunk";
 
