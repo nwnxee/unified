@@ -239,11 +239,11 @@ static void StackPushRawString(const char* value)
 
     if (vm->StackPushString(str))
     {
-      ++s_pushedCount;
+        ++s_pushedCount;
     }
     else
     {
-      LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
+        LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
     }
 }
 
@@ -352,17 +352,16 @@ static const char* StackPopRawString()
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
 
-    CExoString value;
+    static CExoString value;
     if (!vm->StackPopString(&value))
     {
-      LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
-      return nullptr;
+        LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
+        return nullptr;
     }
 
-    static std::string retVal = value.CStr();
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
-    return retVal.c_str();
+    return value.CStr();
 }
 
 static uint32_t StackPopObject()
@@ -529,12 +528,12 @@ static const char* NWNXPopRawString()
     auto value = Events::Pop<std::string>();
     if (value.has_value())
     {
-      static auto retVal = value.value();
-      return retVal.c_str();
+        static auto retVal = value.value();
+        return retVal.c_str();
     }
     else
     {
-      return nullptr;
+        return nullptr;
     }
 }
 
