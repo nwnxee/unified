@@ -6,6 +6,7 @@
 namespace Optimizations {
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
 
 static std::unordered_map<std::string, DataBlockRef> s_CachedScriptChunks;
 
@@ -77,6 +78,8 @@ void CacheScriptChunks()
             --pVirtualMachine->m_nRecursionLevel;
             return -635;
         }, Hooks::Order::Final);
+
+        Tasks::QueueOnMainThread([](){ Globals::VirtualMachine()->m_pJitCompiler->SetOptimizeBinaryCodeLength(true); });
     }
 }
 
