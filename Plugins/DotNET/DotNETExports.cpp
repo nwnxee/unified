@@ -17,7 +17,7 @@ namespace DotNET {
 
 // Bootstrap functions
 using MainLoopHandlerType  = void (*)(uint64_t);
-using RunScriptHandlerType = int (*)(const char *, uint32_t);
+using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
 
@@ -30,16 +30,16 @@ struct AllHandlers
 };
 static AllHandlers s_handlers;
 
-static uint32_t s_pushedCount = 0;
+static int32_t s_pushedCount = 0;
 
 static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
 
 static std::string s_nwnxActivePlugin;
 static std::string s_nwnxActiveFunction;
 
-static uintptr_t GetFunctionPointer(const char *name)
+static uintptr_t GetFunctionPointer(const char* name)
 {
-    void *core = dlopen("NWNX_Core.so", RTLD_LAZY);
+    void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
     {
         LOG_ERROR("Failed to open core handle: %s", dlerror());
@@ -52,8 +52,7 @@ static uintptr_t GetFunctionPointer(const char *name)
     return ret;
 }
 
-
-static void RegisterHandlers(AllHandlers *handlers, unsigned size)
+static void RegisterHandlers(AllHandlers* handlers, unsigned size)
 {
     if (size > sizeof(*handlers))
     {
@@ -71,7 +70,7 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
     LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
     static Hooks::Hook MainLoopHook;
     MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-        (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+        (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
         {
             static uint64_t frame = 0;
             if (s_handlers.MainLoop)
@@ -86,7 +85,6 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
             return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
         },
         Hooks::Order::VeryEarly);
-
 
     LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
     static Hooks::Hook RunScriptHook;
@@ -154,8 +152,8 @@ static void RegisterHandlers(AllHandlers *handlers, unsigned size)
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
-    CVirtualMachineScript* script = new CVirtualMachineScript();
-    script->m_pCode = NULL;
+    auto* script = new CVirtualMachineScript();
+    script->m_pCode = nullptr;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
     script->m_nStackSize = 0;
@@ -394,7 +392,7 @@ static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
-        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        auto* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(0, 0, oid, oid, 1, CreateScriptForClosure(eventId));
         return 1;
     }
@@ -406,10 +404,10 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
 {
     if (Utils::GetGameObject(oid))
     {
-        int32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
-        int32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
+        uint32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
+        uint32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
 
-        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        auto* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(eventId));
         return 1;
     }
@@ -419,7 +417,7 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
 
 static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
-    if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
+    if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
         obj->AddDoCommandAction(CreateScriptForClosure(eventId));
         return 1;
@@ -428,61 +426,74 @@ static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static void nwnxSetFunction(const char *plugin, const char *function)
+static void NWNXSetFunction(const char* plugin, const char* function)
 {
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
-static void nwnxPushInt(int32_t n)
+
+static void NWNXPushInt(int32_t n)
 {
     Events::Push(n);
 }
-static void nwnxPushFloat(float f)
+
+static void NWNXPushFloat(float f)
 {
     Events::Push(f);
 }
-static void nwnxPushObject(uint32_t o)
+
+static void NWNXPushObject(uint32_t o)
 {
     Events::Push((ObjectID)o);
 }
-static void nwnxPushString(const char *s)
+
+static void NWNXPushString(const char* s)
 {
     Events::Push(String::FromUTF8(s));
 }
-static void nwnxPushEffect(CGameEffect *e)
+
+static void NWNXPushEffect(CGameEffect* e)
 {
     Events::Push(e);
 }
-static void nwnxPushItemProperty(CGameEffect *ip)
+
+static void NWNXPushItemProperty(CGameEffect* ip)
 {
     Events::Push(ip);
 }
-static int32_t nwnxPopInt()
+
+static int32_t NWNXPopInt()
 {
     return Events::Pop<int32_t>().value_or(0);
 }
-static float nwnxPopFloat()
+
+static float NWNXPopFloat()
 {
     return Events::Pop<float>().value_or(0.0f);
 }
-static uint32_t nwnxPopObject()
+
+static uint32_t NWNXPopObject()
 {
     return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
-static const char* nwnxPopString()
+
+static const char* NWNXPopString()
 {
     auto str = Events::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
-static CGameEffect* nwnxPopEffect()
+
+static CGameEffect* NWNXPopEffect()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-static CGameEffect* nwnxPopItemProperty()
+
+static CGameEffect* NWNXPopItemProperty()
 {
     return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
-static void nwnxCallFunction()
+
+static void NWNXCallFunction()
 {
     Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
@@ -538,27 +549,27 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&ClosureAssignCommand);
     exports.push_back((void*)&ClosureDelayCommand);
     exports.push_back((void*)&ClosureActionDoCommand);
-    exports.push_back((void*)&nwnxSetFunction);
-    exports.push_back((void*)&nwnxPushInt);
-    exports.push_back((void*)&nwnxPushFloat);
-    exports.push_back((void*)&nwnxPushObject);
-    exports.push_back((void*)&nwnxPushString);
-    exports.push_back((void*)&nwnxPushString); // reserved utf8
-    exports.push_back((void*)&nwnxPushEffect);
-    exports.push_back((void*)&nwnxPushItemProperty);
-    exports.push_back((void*)&nwnxPopInt);
-    exports.push_back((void*)&nwnxPopFloat);
-    exports.push_back((void*)&nwnxPopObject);
-    exports.push_back((void*)&nwnxPopString);
-    exports.push_back((void*)&nwnxPopString); // reserved utf8
-    exports.push_back((void*)&nwnxPopEffect);
-    exports.push_back((void*)&nwnxPopItemProperty);
-    exports.push_back((void*)&nwnxCallFunction);
+    exports.push_back((void*)&NWNXSetFunction);
+    exports.push_back((void*)&NWNXPushInt);
+    exports.push_back((void*)&NWNXPushFloat);
+    exports.push_back((void*)&NWNXPushObject);
+    exports.push_back((void*)&NWNXPushString);
+    exports.push_back((void*)&NWNXPushString); // reserved utf8
+    exports.push_back((void*)&NWNXPushEffect);
+    exports.push_back((void*)&NWNXPushItemProperty);
+    exports.push_back((void*)&NWNXPopInt);
+    exports.push_back((void*)&NWNXPopFloat);
+    exports.push_back((void*)&NWNXPopObject);
+    exports.push_back((void*)&NWNXPopString);
+    exports.push_back((void*)&NWNXPopString); // reserved utf8
+    exports.push_back((void*)&NWNXPopEffect);
+    exports.push_back((void*)&NWNXPopItemProperty);
+    exports.push_back((void*)&NWNXCallFunction);
     exports.push_back((void*)&GetNWNXExportedGlobals);
     exports.push_back((void*)&RequestHook);
     exports.push_back((void*)&ReturnHook);
+
     return exports;
 }
 
 }
-
