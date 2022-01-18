@@ -228,24 +228,6 @@ static void StackPushString(const char* value)
     }
 }
 
-static void StackPushRawString(const char* value)
-{
-    auto vm = Globals::VirtualMachine();
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    LOG_DEBUG("Pushing string '%s'.", value);
-    CExoString str(value);
-
-    if (vm->StackPushString(str))
-    {
-      ++s_pushedCount;
-    }
-    else
-    {
-      LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
-    }
-}
-
 static void StackPushObject(uint32_t value)
 {
     auto vm = Globals::VirtualMachine();
@@ -344,24 +326,6 @@ static const char* StackPopString()
 
     // TODO: Less copies
     return strdup(String::ToUTF8(value.CStr()).c_str());
-}
-
-static const char* StackPopRawString()
-{
-    auto vm = Globals::VirtualMachine();
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    CExoString value;
-    if (!vm->StackPopString(&value))
-    {
-      LOG_WARNING("Failed to pop string - recursion level %i.", vm->m_nRecursionLevel);
-      return nullptr;
-    }
-
-    static std::string retVal = value.CStr();
-    LOG_DEBUG("Popped string '%s'.", value.m_sString);
-
-    return retVal.c_str();
 }
 
 static uint32_t StackPopObject()
@@ -487,11 +451,6 @@ static void NWNXPushString(const char* s)
     Events::Push(String::FromUTF8(s));
 }
 
-static void NWNXPushRawString(const char* s)
-{
-    Events::Push<std::string>(s);
-}
-
 static void NWNXPushEffect(CGameEffect* e)
 {
     Events::Push(e);
@@ -521,20 +480,6 @@ static const char* NWNXPopString()
 {
     auto str = Events::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
-}
-
-static const char* NWNXPopRawString()
-{
-    auto value = Events::Pop<std::string>();
-    if (value.has_value())
-    {
-      static auto retVal = value.value();
-      return retVal.c_str();
-    }
-    else
-    {
-      return nullptr;
-    }
 }
 
 static CGameEffect* NWNXPopEffect()
@@ -622,10 +567,6 @@ std::vector<void*> GetExports()
     exports.push_back((void*)&GetNWNXExportedGlobals);
     exports.push_back((void*)&RequestHook);
     exports.push_back((void*)&ReturnHook);
-    exports.push_back((void*)&StackPushRawString);
-    exports.push_back((void*)&StackPopRawString);
-    exports.push_back((void*)&NWNXPushRawString);
-    exports.push_back((void*)&NWNXPopRawString);
 
     return exports;
 }
