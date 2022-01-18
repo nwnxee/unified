@@ -224,7 +224,8 @@ static void StackPushString(const char* value)
     }
     else
     {
-        LOG_WARNING("Failed to push string '%s' - recursion level %i.", str.m_sString, vm->m_nRecursionLevel);
+        LOG_WARNING("Failed to push string '%s' - recursion level %i.",
+            str.m_sString, vm->m_nRecursionLevel);
     }
 }
 
