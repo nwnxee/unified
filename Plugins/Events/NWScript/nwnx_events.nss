@@ -1406,6 +1406,19 @@ _______________________________________
     OLD_VALUE             | int    | |
     NEW_VALUE             | int    | |
 _______________________________________
+    ## Input Drop Item Events
+    - NWNX_ON_INPUT_DROP_ITEM_BEFORE
+    - NWNX_ON_INPUT_DROP_ITEM_AFTER
+
+    `OBJECT_SELF` = The player dropping an item
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ITE<M                 | object | Convert to object with StringToObject() |
+    POS_X                 | float  | |
+    POS_Y                 | float  | |
+    POS_Z                 | float  | |
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1513,6 +1526,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - UnpossessFamiliar event
 /// - ClientLevelUpBegin event
 /// - CharacterSheetPermitted event
+/// - Input Drop Item
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

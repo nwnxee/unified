@@ -16,6 +16,7 @@ static Hooks::Hook s_AddAttackActionsHook;
 static Hooks::Hook s_AddMoveToPointActionToFrontHook;
 static Hooks::Hook s_AddCastSpellActionsHook;
 static Hooks::Hook s_HandlePlayerToServerInputMessageHook;
+static Hooks::Hook s_HandlePlayerToServerInventoryMessageHook;
 
 static int32_t HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage*, CNWSPlayer*);
 static int32_t AddAttackActionsHook(CNWSCreature*, ObjectID, int32_t, int32_t, int32_t);
@@ -24,6 +25,7 @@ static int32_t AddMoveToPointActionToFrontHook(CNWSCreature*, uint16_t, Vector, 
 static int32_t AddCastSpellActionsHook(CNWSCreature*, uint32_t, int32_t, int32_t, int32_t, int32_t, Vector, ObjectID,
                                        int32_t, int32_t, int32_t, uint8_t, int32_t, int32_t, int32_t, uint8_t);
 static int32_t HandlePlayerToServerInputMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+static int32_t HandlePlayerToServerInventoryMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
 
 void InputEvents() __attribute__((constructor));
 void InputEvents()
@@ -54,6 +56,12 @@ void InputEvents()
         s_HandlePlayerToServerInputMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh,
                 (void*)&HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_INPUT_DROP_ITEM_.*", []() {
+        s_HandlePlayerToServerInventoryMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage36HandlePlayerToServerInventoryMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerInventoryMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -332,6 +340,46 @@ int32_t HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *
 
         default:
             return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+    }
+}
+
+int32_t HandlePlayerToServerInventoryMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+{
+    switch (nMinor)
+    {
+        case Constants::MessageInventoryMinor::Drop:
+        {
+            int32_t retVal, offset = 0;
+            ObjectID oidItem = Utils::PeekMessage<ObjectID>(pMessage, offset) & 0x7FFFFFFF; offset += sizeof(ObjectID);
+            std::string sX = std::to_string(Utils::PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+            std::string sY = std::to_string(Utils::PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+            std::string sZ = std::to_string(Utils::PeekMessage<float>(pMessage, offset));
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
+                PushEventData("POS_X", sX);
+                PushEventData("POS_Y", sY);
+                PushEventData("POS_Z", sZ);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignal("NWNX_ON_INPUT_DROP_ITEM_BEFORE"))
+            {
+                retVal = s_HandlePlayerToServerInventoryMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+            else
+            {
+                pMessage->SendServerToPlayerInventory_DropCancel(pPlayer->m_nPlayerID, oidItem);
+                retVal = true;
+            }
+
+            PushAndSignal("NWNX_ON_INPUT_DROP_ITEM_AFTER");
+
+            return retVal;
+        }
+
+        default:
+            return s_HandlePlayerToServerInventoryMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
     }
 }
 
