@@ -301,6 +301,12 @@ object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRe
 /// @param nRotation How many 90 degrees clockwise to rotate (1-3).
 void NWNX_Area_RotateArea(object oArea, int nRotation);
 
+/// @brief Get the tile info of the tile at nIndex in the tile array.
+/// @param oArea The area.
+/// @param nIndex The index of the tile.
+/// @return A NWNX_Area_TileInfo struct with tile info.
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIndex);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -755,4 +761,23 @@ void NWNX_Area_RotateArea(object oArea, int nRotation)
     NWNX_PushArgumentObject(oArea);
 
     NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIndex)
+{
+    string sFunc = "GetTileInfoByTileIndex";
+
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    struct NWNX_Area_TileInfo str;
+
+    str.nGridY = NWNX_GetReturnValueInt();
+    str.nGridX = NWNX_GetReturnValueInt();
+    str.nOrientation = NWNX_GetReturnValueInt();
+    str.nHeight = NWNX_GetReturnValueInt();
+    str.nID = NWNX_GetReturnValueInt();
+
+    return str;
 }
