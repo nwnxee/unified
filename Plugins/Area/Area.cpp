@@ -1159,3 +1159,25 @@ NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
     }
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetTileInfoByTileIndex(ArgumentStack&& args)
+{
+    int32_t id = -1, height = -1, orientation = -1, x = -1, y = -1;
+
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto index = args.extract<int32_t>();
+          ASSERT_OR_THROW(index >= 0);
+        if (index < (pArea->m_nWidth * pArea->m_nHeight))
+        {
+            auto *pTile = &pArea->m_pTile[index];
+            id = pTile->m_nID;
+            height = pTile->m_nHeight;
+            orientation = pTile->m_nOrientation;
+            x = pTile->m_nGridX;
+            y = pTile->m_nGridY;
+        }
+    }
+
+    return {id, height, orientation, x, y};
+}

@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Area: GetTileInfoByTileIndex()
 - Effect: AccessorizeVisualEffect()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
