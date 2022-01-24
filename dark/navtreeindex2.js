@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"group__creature.html#ga1050f97a636758c1a4c74c058c688aa5":[4,0,3,5,0,0,98],
+"group__creature.html#ga122ada903bb353eb480690c4f2170f36":[0,8,130],
 "group__creature.html#ga122ada903bb353eb480690c4f2170f36":[4,0,3,5,0,0,126],
 "group__creature.html#ga1300b28822e4534d0210593c8e65042c":[0,8,138],
 "group__creature.html#ga1300b28822e4534d0210593c8e65042c":[4,0,3,5,0,0,134],
@@ -13,8 +15,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100":[4,0,3,5,0,0,69],
 "group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb":[0,8,84],
 "group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb":[4,0,3,5,0,0,80],
-"group__creature.html#ga1b5c0ec814404f0df67ae03333d708e2":[0,8,177],
 "group__creature.html#ga1b5c0ec814404f0df67ae03333d708e2":[4,0,3,5,0,0,174],
+"group__creature.html#ga1b5c0ec814404f0df67ae03333d708e2":[0,8,177],
 "group__creature.html#ga1ca18c6575ef041368e50f978441e7ca":[0,8,80],
 "group__creature.html#ga1ca18c6575ef041368e50f978441e7ca":[4,0,3,5,0,0,76],
 "group__creature.html#ga2059460faa68d5eff02713348851845f":[4,0,3,5,0,0,189],
@@ -166,8 +168,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga73a0718b8d21a8f04201b94c6ac35aef":[4,0,3,5,0,0,61],
 "group__creature.html#ga75ba02a6664ac24fc1673ae28e8c9810":[0,8,150],
 "group__creature.html#ga75ba02a6664ac24fc1673ae28e8c9810":[4,0,3,5,0,0,147],
-"group__creature.html#ga76b73875c3340d038261f684189fbdf6":[0,8,178],
 "group__creature.html#ga76b73875c3340d038261f684189fbdf6":[4,0,3,5,0,0,175],
+"group__creature.html#ga76b73875c3340d038261f684189fbdf6":[0,8,178],
 "group__creature.html#ga76d1f48c7213ed0602a494ac6b639ec8":[0,8,153],
 "group__creature.html#ga76d1f48c7213ed0602a494ac6b639ec8":[4,0,3,5,0,0,150],
 "group__creature.html#ga76e505b39335e8a42cca75b982d3556b":[0,8,34],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[0,8,117],
 "group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[4,0,3,5,0,0,113],
 "group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[0,8,52],
-"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[4,0,3,5,0,0,48],
-"group__creature.html#gab02585354561ce598009815630a8ea20":[0,8,106],
-"group__creature.html#gab02585354561ce598009815630a8ea20":[4,0,3,5,0,0,102]
+"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[4,0,3,5,0,0,48]
 };
