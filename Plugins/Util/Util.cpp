@@ -17,6 +17,7 @@
 #include "API/CExoAliasList.hpp"
 #include "API/CExoFile.hpp"
 #include "API/CNWSDoor.hpp"
+#include "API/CNWDoorSurfaceMesh.hpp"
 #include "API/CResStruct.hpp"
 #include "API/CResGFF.hpp"
 #include "API/CNWSArea.hpp"
@@ -615,8 +616,19 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
             pDoor->LoadDoor(&gff, &resStruct);
             pDoor->LoadVarTable(&gff, &resStruct);
             pDoor->SetPosition(position);
-            if (appearance >= 0)
+            if (appearance > 0)
+            {
                 pDoor->m_nAppearanceType = appearance;
+                int32_t bVisibleModel = true;
+                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
+                pDoor->m_bVisibleModel = bVisibleModel;
+                CExoString sWalkMeshTemplate;
+                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
+                delete pDoor->m_pWalkMesh;
+                pDoor->m_pWalkMesh = new CNWDoorSurfaceMesh;
+                pDoor->m_pWalkMesh->LoadWalkMesh(sWalkMeshTemplate);
+                pDoor->PostProcess();
+            }
             Utils::SetOrientation(pDoor, facing);
 
             if (!tag.empty())
