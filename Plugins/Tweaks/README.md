@@ -44,6 +44,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_FIX_DM_FACTION_BUG` | true or false | Fixes a DM faction bug when using a non-DMClient BIC file. |
 | `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
 | `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` | true or false | Fixes the DM creature selection box not showing up when player party control is off. |
+| `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
   
 ## Environment variable values
 
