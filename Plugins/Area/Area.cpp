@@ -22,6 +22,9 @@
 #include "API/CNWSAreaOfEffectObject.hpp"
 #include "API/CNWTileSet.hpp"
 #include "API/CEncounterSpawnPoint.hpp"
+#include "API/CNWTilePathNode.hpp"
+#include "API/CNWTileSetManager.hpp"
+#include "API/CNWTileSurfaceMesh.hpp"
 
 #include <cmath>
 #include <set>
@@ -30,6 +33,13 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static std::set<ObjectID> s_ExportExclusionList;
+
+static constexpr int32_t MAX_REGIONS_PER_TILE = 6;
+static constexpr float TILE_SIZE = 10.0f;
+static constexpr float EPSILON  = 0.0001f;
+static constexpr float MAX_TILE_EPSILON = TILE_SIZE - EPSILON;
+static constexpr float MIN_TILE_EPSILON = EPSILON;
+static std::vector<int32_t> s_pPathDepthTable;
 
 NWNX_EXPORT ArgumentStack GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
@@ -1180,4 +1190,132 @@ NWNX_EXPORT ArgumentStack GetTileInfoByTileIndex(ArgumentStack&& args)
     }
 
     return {id, height, orientation, x, y};
+}
+
+static bool InterTilePathDFS(CNWSArea *pArea, int32_t nDepth, uint8_t nStartX, uint8_t nStartY, uint8_t nStartRegion, uint8_t nEndX, uint8_t nEndY, uint8_t nEndRegion)
+{
+    auto GetTile = [pArea](int32_t nX, int32_t nY) -> CNWSTile*
+    {
+        if (!pArea->m_pTile || nX < 0 || nY < 0 || nX >= pArea->m_nWidth || nY >= pArea->m_nHeight)
+            return nullptr;
+        return &pArea->m_pTile[nY * pArea->m_nWidth + nX];
+    };
+
+    if (nStartX == nEndX && nStartY == nEndY && nStartRegion == nEndRegion)
+            return true;
+
+    int32_t nIndex = (nStartX + pArea->m_nWidth * nStartY) * MAX_REGIONS_PER_TILE + nStartRegion;
+    if (nIndex < 0 || nIndex >= (int32_t)s_pPathDepthTable.size() || s_pPathDepthTable[nIndex] >= nDepth)
+        return false;
+
+    s_pPathDepthTable[nIndex] = nDepth;
+
+    if (nDepth == 1)
+        return false;
+
+    if (auto *pTile = GetTile(nStartX, nStartY))
+    {
+        auto *pTileSurfaceMesh = pTile->m_pTileData->m_pSurfaceMesh;
+        auto *pTilePathNode = Globals::AppManager()->m_pNWTileSetManager->GetTilePathNode(
+                pTileSurfaceMesh->GetPathNode(), pTileSurfaceMesh->GetPathNodeOrientation());
+        float fExitX, fExitY, fNewEntranceX, fNewEntranceY;
+        uint8_t nNewX, nNewY, nNewRegion, nExitRegion;
+
+        for (int32_t nExit = 0; nExit < pTilePathNode->m_nTileExits; nExit++)
+        {
+            fExitX = pTilePathNode->m_pfTileExits[nExit * 2];
+            fExitY = pTilePathNode->m_pfTileExits[nExit * 2 + 1];
+            pTile->RotateCanonicalToReal(fExitX, fExitY, &fExitX, &fExitY);
+            nExitRegion = pTilePathNode->m_pnTileExitRegion[nExit];
+
+            if (nExitRegion == nStartRegion)
+            {
+                nNewX = nStartX;
+                fNewEntranceX = fExitX;
+                if (fExitX > MAX_TILE_EPSILON)
+                {
+                    nNewX++;
+                    fNewEntranceX = 0.0f;
+                }
+                else if (fExitX < MIN_TILE_EPSILON)
+                {
+                    nNewX--;
+                    fNewEntranceX = TILE_SIZE;
+                }
+
+                nNewY = nStartY;
+                fNewEntranceY = fExitY;
+                if (fExitY > MAX_TILE_EPSILON)
+                {
+                    nNewY++;
+                    fNewEntranceY = 0.0f;
+                }
+                else if (fExitY < MIN_TILE_EPSILON)
+                {
+                    nNewY--;
+                    fNewEntranceY = TILE_SIZE;
+                }
+
+                if (auto *pNextTile = GetTile(nNewX, nNewY))
+                {
+                    pNextTile->RotateRealToCanonical(fNewEntranceX, fNewEntranceY, &fNewEntranceX, &fNewEntranceY);
+                    nNewRegion = pNextTile->m_pTileData->m_pSurfaceMesh->GetRegionEntrance(fNewEntranceX, fNewEntranceY);
+
+                    if (InterTilePathDFS(pArea, nDepth - 1, nNewX, nNewY, nNewRegion, nEndX, nEndY, nEndRegion))
+                        return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack GetPathExists(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto startX = args.extract<float>();
+          ASSERT_OR_THROW(startX >= 0.0f);
+        const auto startY = args.extract<float>();
+          ASSERT_OR_THROW(startY >= 0.0f);
+        const auto endX = args.extract<float>();
+          ASSERT_OR_THROW(endX >= 0.0f);
+        const auto endY = args.extract<float>();
+          ASSERT_OR_THROW(endY >= 0.0f);
+        const auto maxDepth = args.extract<int32_t>();
+          ASSERT_OR_THROW(maxDepth > 0);
+
+        Vector vStart{startX, startY, 0.0f};
+        Vector vEnd{endX, endY, 0.0f};
+        CNWSTile *pStartTile = pArea->GetTile(vStart);
+        CNWSTile *pEndTile = pArea->GetTile(vEnd);
+
+        if (!pStartTile || !pEndTile)
+            return false;
+
+        int32_t nStartX, nStartY, nEndX, nEndY;
+        pStartTile->GetLocation(&nStartX, &nStartY);
+        pEndTile->GetLocation(&nEndX, &nEndY);
+
+        if (std::abs(nStartX - nEndX) + std::abs(nStartY - nEndY) > maxDepth)
+            return false;
+
+        float fStartX, fStartY, fEndX, fEndY;
+        pStartTile->RotateRealToCanonicalTile(vStart.x, vStart.y, &fStartX, &fStartY);
+        pEndTile->RotateRealToCanonicalTile(vEnd.x, vEnd.y, &fEndX, &fEndY);
+
+        uint8_t nStartRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pStartTile, fStartX, fStartY);
+        uint8_t nEndRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pEndTile, fEndX, fEndY);
+
+        if (nStartX == nEndX && nStartY == nEndY && nStartRegion == nEndRegion)
+            return true;
+
+        s_pPathDepthTable.resize(pArea->m_nWidth * pArea->m_nHeight * MAX_REGIONS_PER_TILE);
+        std::fill(s_pPathDepthTable.begin(), s_pPathDepthTable.end(), 0);
+
+        return InterTilePathDFS(pArea, maxDepth + 1, nStartX, nStartY, nStartRegion, nEndX, nEndY, nEndRegion);
+    }
+
+    return false;
 }
