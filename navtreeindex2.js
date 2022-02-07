@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"group__creature.html#ga0e15e53492fb6b92b72a56887688ada2":[4,0,3,5,0,0,110],
+"group__creature.html#ga1050f97a636758c1a4c74c058c688aa5":[0,8,102],
 "group__creature.html#ga1050f97a636758c1a4c74c058c688aa5":[4,0,3,5,0,0,98],
 "group__creature.html#ga122ada903bb353eb480690c4f2170f36":[0,8,130],
 "group__creature.html#ga122ada903bb353eb480690c4f2170f36":[4,0,3,5,0,0,126],
@@ -86,8 +88,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga4875b0673d87478c3edbb608fb77cee4":[4,0,3,5,0,0,6],
 "group__creature.html#ga4888c788f124ca985ba585677cdeaad8":[0,8,67],
 "group__creature.html#ga4888c788f124ca985ba585677cdeaad8":[4,0,3,5,0,0,63],
-"group__creature.html#ga48ec122c6baba05eb9563c7daefa61fb":[0,8,175],
 "group__creature.html#ga48ec122c6baba05eb9563c7daefa61fb":[4,0,3,5,0,0,172],
+"group__creature.html#ga48ec122c6baba05eb9563c7daefa61fb":[0,8,175],
 "group__creature.html#ga4a8f1767b03c99943c09fefd60333c70":[0,8,51],
 "group__creature.html#ga4a8f1767b03c99943c09fefd60333c70":[4,0,3,5,0,0,47],
 "group__creature.html#ga4aeb53c89ee532c17bd3574484a4593c":[0,8,22],
@@ -128,8 +130,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga5d15b832ee6f67e78eb84896deef2fff":[4,0,3,5,0,0,67],
 "group__creature.html#ga5e17aaaf45396b4bad1864882d4877b3":[0,8,59],
 "group__creature.html#ga5e17aaaf45396b4bad1864882d4877b3":[4,0,3,5,0,0,55],
-"group__creature.html#ga5f007271da99de9be96d783c3b8f70af":[0,8,176],
 "group__creature.html#ga5f007271da99de9be96d783c3b8f70af":[4,0,3,5,0,0,173],
+"group__creature.html#ga5f007271da99de9be96d783c3b8f70af":[0,8,176],
 "group__creature.html#ga5fb78298cbf94a8af041b520eadff794":[0,8,60],
 "group__creature.html#ga5fb78298cbf94a8af041b520eadff794":[4,0,3,5,0,0,56],
 "group__creature.html#ga60571fe897f0c8726d37d0b15c332934":[0,8,85],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b":[0,8,93],
 "group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b":[4,0,3,5,0,0,89],
 "group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[0,8,117],
-"group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[4,0,3,5,0,0,113],
-"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[0,8,52],
-"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[4,0,3,5,0,0,48]
+"group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[4,0,3,5,0,0,113]
 };

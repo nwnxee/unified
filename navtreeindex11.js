@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"nwnx__redis_8nss_source.html":[4,0,3,28,0,0],
+"nwnx__redis__lib_8nss.html":[4,0,3,28,0,1],
 "nwnx__redis__lib_8nss_source.html":[4,0,3,28,0,1],
 "nwnx__redis__ps_8nss.html":[4,0,3,28,0,2],
 "nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c":[4,0,3,28,0,2,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "nwnx__tests_8nss_source.html":[4,0,1,0,2],
 "nwnx__tileset_8nss.html":[4,0,3,39,0,0],
 "nwnx__tileset_8nss_source.html":[4,0,3,39,0,0],
-"nwnx__time_8nss.html":[4,0,0,4],
-"nwnx__time_8nss_source.html":[4,0,0,4],
-"nwnx__util_8nss.html":[4,0,3,42,0,0]
+"nwnx__time_8nss.html":[4,0,0,4]
 };
