@@ -307,6 +307,15 @@ void NWNX_Area_RotateArea(object oArea, int nRotation);
 /// @return A NWNX_Area_TileInfo struct with tile info.
 struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIndex);
 
+/// @brief Check if there is a path between two positions in an area.
+/// @note Does not care about doors or placeables, only checks tile path nodes.
+/// @param oArea The area.
+/// @param vStartPosition The start position.
+/// @param vEndPosition The end position.
+/// @param nMaxDepth The max depth of the DFS tree. A good value is AreaWidth * AreaHeight.
+/// @return TRUE if there is a path between vStartPosition and vEndPosition, FALSE if not or on error.
+int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -780,4 +789,19 @@ struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIn
     str.nID = NWNX_GetReturnValueInt();
 
     return str;
+}
+
+int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth)
+{
+    string sFunc = "GetPathExists";
+
+    NWNX_PushArgumentInt(nMaxDepth);
+    NWNX_PushArgumentFloat(vEndPosition.y);
+    NWNX_PushArgumentFloat(vEndPosition.x);
+    NWNX_PushArgumentFloat(vStartPosition.y);
+    NWNX_PushArgumentFloat(vStartPosition.x);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt();
 }
