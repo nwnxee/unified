@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
 - Tweaks: added `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` to fix the DM creature selection box not showing up when player party control is off.
 - Tweaks: added `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` to fix a rare issue where triggers/traps fire enter events without a creature inside.
+- Tweaks: added `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG` to fix a bug where multiclass xp penalties are calculated incorrectly.
 - Optimizations: added `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG` to fix a bug where VFXs keep getting reapplied to placeables.
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
 - Events: added skippable event `NWNX_ON_INPUT_DROP_ITEM_{BEFORE|AFTER}` which fires when a player attempts to drop an item.
