@@ -16,6 +16,7 @@ add_plugin(Tweaks
     "FixDMSelectionBox.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixItemNullptrInCItemRepository.cpp"
+    "FixMulticlassXPPenaltyBug.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideClassesOnCharList.cpp"
