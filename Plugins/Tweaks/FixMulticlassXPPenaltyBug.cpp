@@ -60,9 +60,10 @@ void FixMulticlassXPPenaltyBug()
                 uint8_t nMaxLevel = 0;
                 for (uint8_t nMultiClass = 0; nMultiClass < pThis->m_nNumMultiClasses; nMultiClass++)
                 {
-                    if (auto *pClass = GetCNWClass(nMultiClass))
+                    uint8_t nClass = pThis->GetClass(nMultiClass);
+                    if (auto *pClass = GetCNWClass(nClass))
                     {
-                        if (nFavoredClass != pThis->GetClass(nMultiClass) && pClass->m_bXPPenalty)
+                        if (nFavoredClass != nClass && pClass->m_bXPPenalty)
                             nMaxLevel = std::max(nMaxLevel, pThis->GetClassLevel(nMultiClass));
                     }
                 }
@@ -70,9 +71,10 @@ void FixMulticlassXPPenaltyBug()
                 double dXPPenalties = 0.0;
                 for (uint8_t nMultiClass = 0; nMultiClass < pThis->m_nNumMultiClasses; nMultiClass++)
                 {
-                    if (auto *pClass = GetCNWClass(nMultiClass))
+                    uint8_t nClass = pThis->GetClass(nMultiClass);
+                    if (auto *pClass = GetCNWClass(nClass))
                     {
-                        if (nFavoredClass != pThis->GetClass(nMultiClass) && pClass->m_bXPPenalty)
+                        if (nFavoredClass != nClass && pClass->m_bXPPenalty)
                         {
                             if ((nMaxLevel - pThis->GetClassLevel(nMultiClass)) >= 2)
                                 dXPPenalties += 1.0;
