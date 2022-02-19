@@ -553,6 +553,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
             g_core->InitialSetupPlugins();
             g_core->InitialSetupResourceDirectories();
             g_core->InitialSetupCommands();
+            MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_NWNX_LOADED" });
         }
         catch (const std::runtime_error& ex)
         {
