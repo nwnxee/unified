@@ -67,87 +67,103 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     LOG_INFO("Registering managed code handlers.");
     s_handlers = *handlers;
 
-    LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
     static Hooks::Hook MainLoopHook;
-    MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-        (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
-        {
-            static uint64_t frame = 0;
-            if (s_handlers.MainLoop)
+    if (s_handlers.MainLoop)
+    {
+        LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
+        MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+            (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
             {
-                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                s_handlers.MainLoop(frame);
-                int spAfter = Utils::PopScriptContext();
-                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-            }
-            ++frame;
+                static uint64_t frame = 0;
+                if (s_handlers.MainLoop)
+                {
+                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                    s_handlers.MainLoop(frame);
+                    int spAfter = Utils::PopScriptContext();
+                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                }
+                ++frame;
 
-            return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
-        },
-        Hooks::Order::VeryEarly);
+                return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+            },
+            Hooks::Order::VeryEarly);
+    }
 
-    LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
+
     static Hooks::Hook RunScriptHook;
-    RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
-        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId) -> int32_t
-        {
-            if (!script || *script == "")
-                return 1;
-
-            LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
-            int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
-            int32_t retval = s_handlers.RunScript(script->CStr(), objId);
-            int spAfter = Utils::PopScriptContext();
-            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-
-            // ~0 is returned if runscript request is not handled and needs to be forwarded
-            if (retval != ~0)
+    if (s_handlers.RunScript)
+    {
+        LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
+        RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+            (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
+                       int32_t eventId) -> int32_t
             {
-                Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
-                Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
-                return 1;
-            }
-            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
-        },
-        Hooks::Order::Latest);
+                if (!script || *script == "")
+                    return 1;
 
-    LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
+                LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
+                int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
+                int32_t retval = s_handlers.RunScript(script->CStr(), objId);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+
+                // ~0 is returned if runscript request is not handled and needs to be forwarded
+                if (retval != ~0)
+                {
+                    Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
+                    Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                    return 1;
+                }
+                return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
+            },
+            Hooks::Order::Latest);
+    }
+
+
     static Hooks::Hook RunScriptSituationHook;
-    RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
-        (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid) -> int32_t
-        {
-            uint64_t eventId;
-            if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
+    if (s_handlers.Closure)
+    {
+        LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
+        RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+            (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
+                       int32_t valid) -> int32_t
             {
-                LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
-                int spBefore = Utils::PushScriptContext(objId, 0, !!valid);
-                s_handlers.Closure(eventId, objId);
-                int spAfter = Utils::PopScriptContext();
-                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                delete script;
-                return 1;
-            }
-            return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-        },
-        Hooks::Order::Latest);
+                uint64_t eventId;
+                if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
+                {
+                    LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId,
+                        objId);
+                    int spBefore = Utils::PushScriptContext(objId, 0, !!valid);
+                    s_handlers.Closure(eventId, objId);
+                    int spAfter = Utils::PopScriptContext();
+                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                    delete script;
+                    return 1;
+                }
+                return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+            },
+            Hooks::Order::Latest);
+    }
 
-    LOG_DEBUG("Registered core signal handler: %p", s_handlers.SignalHandler);
-    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
-        [](const std::vector<std::string>& message)
-        {
-            // We will crash the server if we try to create a script context after the server is destroyed.
-            if (message[0] == "ON_DESTROY_SERVER_AFTER")
+    if (s_handlers.SignalHandler)
+    {
+        LOG_DEBUG("Registered core signal handler: %p", s_handlers.SignalHandler);
+        MessageBus::Subscribe("NWNX_CORE_SIGNAL",
+            [](const std::vector<std::string>& message)
             {
-                s_handlers.SignalHandler(message[0].c_str());
-            }
-            else
-            {
-                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                s_handlers.SignalHandler(message[0].c_str());
-                int spAfter = Utils::PopScriptContext();
-                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-            }
-        });
+                if (API::Globals::VirtualMachine())
+                {
+                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                    s_handlers.SignalHandler(message[0].c_str());
+                    int spAfter = Utils::PopScriptContext();
+                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                }
+                else
+                {
+                    s_handlers.SignalHandler(message[0].c_str());
+                }
+            });
+    }
 }
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
