@@ -4,6 +4,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CItemRepository.hpp"
+#include "API/CNWSPlayer.hpp"
 #include <cmath>
 
 namespace Events {
@@ -360,7 +361,25 @@ int32_t RunEquipHook(CNWSCreature* thisPtr, ObjectID oidItemToEquip, uint32_t nI
         retVal = s_RunEquipHook->CallOriginal<int32_t>(thisPtr, oidItemToEquip, nInventorySlot, oidFeedbackPlayer);
     }
     else
+    {
+        CNWSPlayer *pPlayer;
+        BOOL bRunActionForNonPlayer = false;
+        if (oidFeedbackPlayer == Constants::OBJECT_INVALID)
+            pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(thisPtr->m_idSelf);
+        else
+        {
+            pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidFeedbackPlayer);
+            bRunActionForNonPlayer = true;
+        }
+
+        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            if (pPlayer)
+                pMessage->SendServerToPlayerInventory_EquipCancel(pPlayer->m_nPlayerID, oidItemToEquip, nInventorySlot, bRunActionForNonPlayer);
+        }
+
         retVal = false;
+    }
 
     PushAndSignal("NWNX_ON_ITEM_EQUIP_AFTER");
 
@@ -379,10 +398,28 @@ int32_t RunUnequipHook(CNWSCreature* thisPtr, ObjectID oidItemToUnequip, ObjectI
 
     if (PushAndSignal("NWNX_ON_ITEM_UNEQUIP_BEFORE"))
     {
-        retVal = s_RunUnequipHook->CallOriginal<int32_t>(thisPtr, oidItemToUnequip, oidTargetRepository, x, y, bMergeIntoRepository , oidFeedbackPlayer);
+        retVal = s_RunUnequipHook->CallOriginal<int32_t>(thisPtr, oidItemToUnequip, oidTargetRepository, x, y, bMergeIntoRepository, oidFeedbackPlayer);
     }
     else
+    {
+        CNWSPlayer *pPlayer;
+        BOOL bRunActionForNonPlayer = false;
+        if (oidFeedbackPlayer == Constants::OBJECT_INVALID)
+            pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(thisPtr->m_idSelf);
+        else
+        {
+            pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidFeedbackPlayer);
+            bRunActionForNonPlayer = true;
+        }
+
+        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            if (pPlayer)
+                pMessage->SendServerToPlayerInventory_UnequipCancel(pPlayer->m_nPlayerID, oidItemToUnequip, bRunActionForNonPlayer);
+        }
+
         retVal = false;
+    }
 
     PushAndSignal("NWNX_ON_ITEM_UNEQUIP_AFTER");
 
