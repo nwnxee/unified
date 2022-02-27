@@ -40,6 +40,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 ### Fixed
 - Object: GetLocalVariable() now recognizes variables of type json.
 - Tweaks: Language override tweak now works for area names.
+- Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
 
 ## 8193.34
 https://github.com/nwnxee/unified/compare/build8193.33...build8193.34

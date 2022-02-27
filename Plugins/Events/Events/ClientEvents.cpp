@@ -137,7 +137,14 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     }
     else
     {
-        pNetLayer->DisconnectPlayer(pPlayer->m_nPlayerID, 5838, true, reason.c_str());
+        Tasks::QueueOnMainThread([pNetLayer, pPlayer, reason]()
+        {
+            if (pPlayer)
+            {
+                pNetLayer->DisconnectPlayer(pPlayer->m_nPlayerID, 5838, true, reason.c_str());
+            }
+        });
+
         retVal = false;
     }
     PushAndSignal("NWNX_ON_CLIENT_CONNECT_AFTER");
