@@ -1414,10 +1414,24 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ITE<M                 | object | Convert to object with StringToObject() |
+    ITEM                  | object | Convert to object with StringToObject() |
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
+_______________________________________
+    ## Decrement Spell Count Events
+    - NWNX_ON_DECREMENT_SPELL_COUNT_BEFORE
+    - NWNX_ON_DECREMENT_SPELL_COUNT_AFTER
+
+    `OBJECT_SELF` = The player losing a spell slot
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    SPELL_ID              | int    | |
+    CLASS                 | int    | Index of the spell casting class (0-2). Returns 254 for spell-like abilities |
+    DOMAIN                | int    | Spell level if non-default due to Domain |
+    METAMAGIC             | int    | |
+    CASTERLEVEL           | int    | Only returns for spell-like abilities |
 _______________________________________
 */
 /*
@@ -1527,6 +1541,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - ClientLevelUpBegin event
 /// - CharacterSheetPermitted event
 /// - Input Drop Item
+/// - Decrement Spell Count event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

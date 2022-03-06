@@ -14,12 +14,14 @@ static Hooks::Hook s_SetMemorizedSpellSlotHook;
 static Hooks::Hook s_ClearMemorizedSpellSlotHook;
 static Hooks::Hook s_BroadcastSpellCastHook;
 static Hooks::Hook s_OnEffectAppliedHook;
+static Hooks::Hook s_DecrementSpellReadyCountHook;
 
 static void SpellCastAndImpactHook(CNWSObject*, uint32_t, Vector, ObjectID, uint8_t, ObjectID, int32_t, int32_t, uint8_t, int32_t);
 static int32_t SetMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t, int32_t);
 static void ClearMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
 static void BroadcastSpellCastHook(CNWSCreature*, uint32_t, uint8_t, uint16_t);
 static int32_t OnEffectAppliedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+static int32_t DecrementSpellReadyCountHook(CNWSCreature*, uint32_t, uint8_t, uint8_t, uint8_t, uint8_t);
 
 void SpellEvents() __attribute__((constructor));
 void SpellEvents()
@@ -47,6 +49,11 @@ void SpellEvents()
     InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", []() {
         s_OnEffectAppliedHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
                                              (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_DECREMENT_SPELL_COUNT_.*", []() {
+        s_DecrementSpellReadyCountHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature24DecrementSpellReadyCountEjhhhh,
+                                             (void*)&DecrementSpellReadyCountHook, Hooks::Order::Early);
     });
 }
 
@@ -182,5 +189,32 @@ int32_t OnEffectAppliedHook(CNWSEffectListHandler *pEffectListHandler, CNWSObjec
 
     return retVal;
 }
+
+int32_t DecrementSpellReadyCountHook(CNWSCreature *thisPtr, uint32_t nSpellID, uint8_t nMultiClass, uint8_t nDomainLevel, uint8_t nMetaType, uint8_t nCasterLevel)
+{
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("SPELL_ID", std::to_string(nSpellID));
+        PushEventData("CLASS", std::to_string(nMultiClass));
+        PushEventData("DOMAIN", std::to_string(nDomainLevel));
+        PushEventData("METAMAGIC", std::to_string(nMetaType));
+        PushEventData("CASTERLEVEL", std::to_string(nCasterLevel));
+        return SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    int32_t retVal;
+    if (PushAndSignal("NWNX_ON_DECREMENT_SPELL_COUNT_BEFORE"))
+    {
+        retVal = s_DecrementSpellReadyCountHook->CallOriginal<int32_t>(thisPtr, nSpellID, nMultiClass, nDomainLevel, nMetaType, nCasterLevel);
+    }
+    else
+    {
+        retVal = true;
+    }
+
+    PushAndSignal("NWNX_ON_DECREMENT_SPELL_COUNT_AFTER");
+
+    return retVal;
+}
+
 
 }
