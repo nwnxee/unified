@@ -104,469 +104,450 @@ $(document).ready(function(){initNavTree('nwnx__feedback_8nss_source.html',''); 
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Feedback = <span class="stringliteral">&quot;NWNX_Feedback&quot;</span>; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="group__feedback.html#ga21220ae3bf760c377d8be60dfb141801">   20</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__feedback.html#ga21220ae3bf760c377d8be60dfb141801">NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</a>    = 1;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="group__feedback.html#ga21220ae3bf760c377d8be60dfb141801">   20</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__feedback.html#ga21220ae3bf760c377d8be60dfb141801">NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</a>    = 1;  <span class="comment">// Simple_Adjective: &lt;charname&gt; : &lt;adjective described by strref&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_ATTACK      = 5;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SPECIAL_ATTACK      = 6;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SAVING_THROW        = 7;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_CAST_SPELL          = 8;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_USE_SKILL           = 9;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SPELL_RESISTANCE    = 10;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_FEEDBACK            = 11; // NOTE: This hides ALL feedback messages, to hide individual messages use NWNX_Feedback_SetFeedbackMessageHidden()</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COUNTERSPELL        = 12;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_TOUCHATTACK         = 13;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_INITIATIVE          = 14;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_DISPEL_MAGIC        = 15;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_POLYMORPH           = 17;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_FEEDBACKSTRING      = 18;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_VIBRATE             = 19;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// 1  -&gt; Simple_Adjective: &lt;charname&gt; : &lt;adjective described by strref&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// 2  -&gt; Simple_Damage: &lt;charname&gt; damaged : &lt;amount&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// 3  -&gt; Complex_Damage: &lt;charname&gt; damages &lt;charname&gt; : &lt;amount&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// 4  -&gt; Complex_Death: &lt;charname&gt; killed &lt;charname&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// 5  -&gt; Complex_Attack: &lt;charname&gt; attacks &lt;charname&gt; : *hit* / *miss* / *parried* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified total&gt;)</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// 6  -&gt; Special_Attack: &lt;charname&gt; attempts &lt;special attack&gt; on &lt;charname&gt; : *success* / *failure* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified roll&gt;)</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// 7  -&gt; Saving_Throw: &lt;charname&gt; : &lt;saving throw type&gt; : *success* / *failure* : (&lt;saving throw roll&gt; + &lt;saving throw modifier&gt; = &lt;modified total&gt;)</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// 8  -&gt; Cast_Spell: &lt;charname&gt; casts &lt;spell name&gt; : Spellcraft check *failure* / *success*</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// 9  -&gt; Use_Skill: &lt;charname&gt; : &lt;skill name&gt; : *success* / *failure* : (&lt;skill roll&gt; + &lt;skill modifier&gt; = &lt;modified total&gt; vs &lt;DC&gt; )</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// 10 -&gt; Spell_Resistance: &lt;charname&gt; : Spell Resistance &lt;SR value&gt; : *success* / *failure*</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// 11 -&gt; Feedback: Reason skill/feat/ability failed.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// 12 -&gt; Counterspel: &lt;charname&gt; casts &lt;spell name&gt; : *spell countered by* : &lt;charname&gt; casting &lt;spell name&gt;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// 13 -&gt; TouchAttack: &lt;charname&gt; attempts &lt;melee/ranged touch attack&gt; on &lt;charname&gt; : *hit/miss/critical* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified roll&gt;)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// 14 -&gt; Initiative: &lt;charname&gt; : Initiative Roll : &lt;total&gt; : (&lt;roll&gt; + &lt;modifier&gt; = &lt;total&gt;)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// 15 -&gt; Dispel_Magic: Dispel Magic : &lt;charname&gt; : &lt;spell name&gt;, &lt;spell name&gt;, &lt;spell name&gt;...</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// 17 -&gt; Unused, probably</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// 18 -&gt; Same as 11, maybe. Might be unused too</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// 19 -&gt; Unused</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// 20 -&gt; Unused</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">   68</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">NWNX_FEEDBACK_SKILL_CANT_USE</a>                     = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_CANT_USE_TIMER               = 1;</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_ANIMALEMPATHY_VALID_TARGETS  = 2;</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_TAUNT_VALID_TARGETS          = 3;</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_TAUNT_TARGET_IMMUNE          = 223;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_ITEM        = 4;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_GOLD        = 5;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_ATTEMPTING_TO_STEAL = 46;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_ATTEMPT_DETECTED  = 150;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_ITEM_TARGET = 47;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_GOLD_TARGET = 48;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_TARGET_BROKE      = 57;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_HEAL_TARGET_NOT_DISPSND      = 55;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_HEAL_VALID_TARGETS           = 56;</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_STEALTH_IN_COMBAT            = 60;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TARGET_UNAWARE                     = 6;</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_STATUS         = 7;</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_PVP            = 187;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_CANT_REACH_TARGET           = 218;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NO_LOOT                     = 247;</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_TO_RUN       = 8;</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_WALK_SLOW    = 9;</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_CANT_PICKUP  = 10;</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STATS_LEVELUP                      = 11;</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">const int NWNX_FEEDBACK_INVENTORY_FULL                     = 12;</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONTAINER_FULL                     = 212;</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TRAP_TRIGGERED                     = 82;</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DAMAGE_HEALED                      = 151;</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERIENCE_GAINNED                 = 182;</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERIENCE_LOST                    = 183;</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">const int NWNX_FEEDBACK_JOURNALUPDATED                     = 184; // Doesn&#39;t actually work, use:</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">                                                                  // NWNX_Feedback_{Get/Set}JournalUpdatedMessageHidden()</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">const int NWNX_FEEDBACK_BARTER_CANCELLED                   = 185;</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DETECT_MODE_ACTIVATED              = 83;</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DETECT_MODE_DEACTIVATED            = 84;</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STEALTH_MODE_ACTIVATED             = 85;</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STEALTH_MODE_DEACTIVATED           = 86;</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARRY_MODE_ACTIVATED               = 87;</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARRY_MODE_DEACTIVATED             = 88;</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">const int NWNX_FEEDBACK_POWER_ATTACK_MODE_ACTIVATED        = 89;</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">const int NWNX_FEEDBACK_POWER_ATTACK_MODE_DEACTIVATED      = 90;</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_POWER_ATTACK_MODE_ACTIVATED = 91;</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_POWER_ATTACK_MODE_DEACTIVATED = 92;</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">const int NWNX_FEEDBACK_RAPID_SHOT_MODE_ACTIVATED          = 166;</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">const int NWNX_FEEDBACK_RAPID_SHOT_MODE_DEACTIVATED        = 167;</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLURRY_OF_BLOWS_MODE_ACTIVATED     = 168;</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLURRY_OF_BLOWS_MODE_DEACTIVATED   = 169;</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERTISE_MODE_ACTIVATED           = 227;</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERTISE_MODE_DEACTIVATED         = 228;</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_EXPERTISE_MODE_ACTIVATED  = 229;</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_EXPERTISE_MODE_DEACTIVATED = 230;</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_CAST_MODE_ACTIVATED      = 231;</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_CAST_MODE_DEACTIVATED    = 232;</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">const int NWNX_FEEDBACK_MODE_CANNOT_USE_WEAPONS            = 188;</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DIRTY_FIGHTING_MODE_ACTIVATED      = 237;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DIRTY_FIGHTING_MODE_DEACTIVATED    = 238;</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_ACTIVATED    = 252;</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_DEACTIVATED  = 253;</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_SKILL_SPELL_MODIFIERS        = 71;</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_UNIDENTIFIED                 = 76;</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_MONK_ABILITIES               = 77;</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_INSUFFICIENT_LEVEL           = 98;</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_PROFICIENCIES                = 119;</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_TOO_LARGE             = 120;</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_TOO_SMALL             = 260;</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ONE_HANDED_WEAPON            = 121;</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_TWO_HANDED_WEAPON            = 122;</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_SWAPPED_OUT           = 123;</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ONE_CHAIN_WEAPON             = 124;</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_NATURAL_AC_NO_STACK          = 189;</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ARMOUR_AC_NO_STACK           = 190;</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_SHIELD_AC_NO_STACK           = 191;</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_DEFLECTION_AC_NO_STACK       = 192;</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_NO_ARMOR_COMBAT              = 193;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_RANGER_ABILITIES             = 200;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ALIGNMENT                    = 207;</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_CLASS                        = 208;</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_RACE                         = 209;</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">const int NWNX_FEEDBACK_UNEQUIP_NO_ARMOR_COMBAT            = 194;</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_LOCKED                      = 13;</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_NOT_LOCKED                  = 14;</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_SPECIAL_KEY                 = 15;</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_USED_KEY                    = 16;</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_EXCITED_CANT_REST             = 17;</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_BEGINNING_REST                = 18;</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_FINISHED_REST                 = 19;</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_CANCEL_REST                   = 20;</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_IN_AREA           = 54;</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_BY_POSSESSED_FAMILIAR = 153;</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_ENEMIES           = 186;</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_CANT_UNDER_THIS_EFFECT        = 213;</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_LOST_TARGET                   = 21;</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CANT_CAST                     = 22;</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_LOST_TARGET  = 52;</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE          = 61;</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_ARCANE_SPELL_FAILURE = 118;</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_ENTANGLE_CONCENTRATION_FAILURE = 65;</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_ENTANGLE_CONCENTRATION_FAILURE = 147;</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_SPELL_INTERRUPTED             = 72;</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_EFFECT_SPELL_FAILURE          = 236;</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CANT_CAST_WHILE_POLYMORPHED   = 107;</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_USE_HANDS                     = 210;</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_USE_MOUTH                     = 211;</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_FAILURE = 233;</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_SUCCESS = 240;</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">const int NWNX_FEEDBACK_USEITEM_CANT_USE                   = 23;</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_TOOFAR                = 58;</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_BUSY                  = 59;</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_IN_COMBAT             = 152;</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHARACTER_INTRANSIT                = 74;</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHARACTER_OUTTRANSIT               = 75;</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">const int NWNX_FEEDBACK_USEITEM_NOT_EQUIPPED               = 244;</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DROPITEM_CANT_DROP                 = 245;</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DROPITEM_CANT_GIVE                 = 246;</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CLIENT_SERVER_SPELL_MISMATCH       = 259;</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_RUNNING_OUT_OF_AMMO         = 24;</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_OUT_OF_AMMO                 = 25;</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_HENCHMAN_OUT_OF_AMMO        = 241;</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_IMMUNITY             = 62;</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_IMMUNITY              = 68;</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_RESISTANCE           = 63;</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_RESISTANCE_REMAINING = 66;</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_REDUCTION            = 64;</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_REDUCTION_REMAINING  = 67;</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_LEVEL_ABSORPTION      = 69;</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_LEVEL_ABSORPTION_REMAINING = 70;</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_WEAPON_NOT_EFFECTIVE        = 117;</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_EPIC_DODGE_ATTACK_EVADED    = 234;</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_MASSIVE_DAMAGE              = 235;</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SAVED_VS_MASSIVE_DAMAGE     = 254;</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SAVED_VS_DEVASTATING_CRITICAL = 257;</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SAP_VALID_TARGETS             = 26;</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_KNOCKDOWN_VALID_TARGETS       = 27;</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_IMPKNOCKDOWN_VALID_TARGETS    = 28;</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_CALLED_SHOT_NO_LEGS           = 29;</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_CALLED_SHOT_NO_ARMS           = 30;</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SMITE_GOOD_TARGET_NOT_GOOD    = 239;</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SMITE_EVIL_TARGET_NOT_EVIL    = 53;</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_QUIVERING_PALM_HIGHER_LEVEL   = 73;</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_KEEN_SENSE_DETECT             = 195;</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USE_UNARMED                   = 198;</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USES                          = 199;</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USE_WEAPON_OF_CHOICE          = 243;</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_NEW_LEADER                   = 31;</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_MEMBER_KICKED                = 32;</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_KICKED_YOU                   = 33;</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_ALREADY_CONSIDERING          = 34;</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_ALREADY_INVOLVED             = 35;</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_SENT_INVITATION              = 36;</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_RECEIVED_INVITATION          = 37;</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_JOINED                       = 38;</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_IGNORED           = 39;</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_IGNORED_INVITATION       = 40;</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_REJECTED          = 41;</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_REJECTED_INVITATION      = 42;</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_EXPIRED           = 43;</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_LEFT_PARTY                   = 44;</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_LEFT                     = 45;</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_HENCHMAN_LIMIT               = 49;</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_CANNOT_LEAVE_THE_ONE_PARTY   = 196;</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_CANNOT_KICK_FROM_THE_ONE_PARTY = 197;</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON    = 202;</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PVP_REACTION_DISLIKESYOU           = 203;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;  // Simple_Damage: &lt;charname&gt; damaged : &lt;amount&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;  // Complex_Damage: &lt;charname&gt; damages &lt;charname&gt; : &lt;amount&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;  // Complex_Death: &lt;charname&gt; killed &lt;charname&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_ATTACK      = 5;  // Complex_Attack: &lt;charname&gt; attacks &lt;charname&gt; : *hit* / *miss* / *parried* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified total&gt;)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SPECIAL_ATTACK      = 6;  // Special_Attack: &lt;charname&gt; attempts &lt;special attack&gt; on &lt;charname&gt; : *success* / *failure* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified roll&gt;)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SAVING_THROW        = 7;  // Saving_Throw: &lt;charname&gt; : &lt;saving throw type&gt; : *success* / *failure* : (&lt;saving throw roll&gt; + &lt;saving throw modifier&gt; = &lt;modified total&gt;)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_CAST_SPELL          = 8;  // Cast_Spell: &lt;charname&gt; casts &lt;spell name&gt; : Spellcraft check *failure* / *success*</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_USE_SKILL           = 9;  // Use_Skill: &lt;charname&gt; : &lt;skill name&gt; : *success* / *failure* : (&lt;skill roll&gt; + &lt;skill modifier&gt; = &lt;modified total&gt; vs &lt;DC&gt; )</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_SPELL_RESISTANCE    = 10; // Spell_Resistance: &lt;charname&gt; : Spell Resistance &lt;SR value&gt; : *success* / *failure*</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_FEEDBACK            = 11; // Reason skill/feat/ability failed, SendMessageToPC() NOTE: This hides ALL feedback messages, to hide individual messages use NWNX_Feedback_SetFeedbackMessageHidden()</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_COUNTERSPELL        = 12; // Counterspel: &lt;charname&gt; casts &lt;spell name&gt; : *spell countered by* : &lt;charname&gt; casting &lt;spell name&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_TOUCHATTACK         = 13; // TouchAttack: &lt;charname&gt; attempts &lt;melee/ranged touch attack&gt; on &lt;charname&gt; : *hit/miss/critical* : (&lt;attack roll&gt; + &lt;attack mod&gt; = &lt;modified roll&gt;)</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_INITIATIVE          = 14; // Initiative: &lt;charname&gt; : Initiative Roll : &lt;total&gt; : (&lt;roll&gt; + &lt;modifier&gt; = &lt;total&gt;)</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_DISPEL_MAGIC        = 15; // Dispel_Magic: Dispel Magic : &lt;charname&gt; : &lt;spell name&gt;, &lt;spell name&gt;, &lt;spell name&gt;...</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_POLYMORPH           = 17; // Doesn&#39;t go through the function that the plugin hooks, so does nothing.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_FEEDBACKSTRING      = 18; // Custom feedback for objects requiring a key</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_VIBRATE             = 19; // Controller vibration</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20; // Unlock Campaign Achievement</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_POSTAURSTRING       = 22; // PostString messages</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBATLOG_ENTERTARGETINGMODE  = 23; // Enter Targeting Mode</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">   49</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">NWNX_FEEDBACK_SKILL_CANT_USE</a>                     = 0;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_CANT_USE_TIMER               = 1;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_ANIMALEMPATHY_VALID_TARGETS  = 2;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_TAUNT_VALID_TARGETS          = 3;</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_TAUNT_TARGET_IMMUNE          = 223;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_ITEM        = 4;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_GOLD        = 5;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_ATTEMPTING_TO_STEAL = 46;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_ATTEMPT_DETECTED  = 150;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_ITEM_TARGET = 47;</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_STOLE_GOLD_TARGET = 48;</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_PICKPOCKET_TARGET_BROKE      = 57;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_HEAL_TARGET_NOT_DISPSND      = 55;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_HEAL_VALID_TARGETS           = 56;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SKILL_STEALTH_IN_COMBAT            = 60;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TARGET_UNAWARE                     = 6;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_STATUS         = 7;</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_PVP            = 187;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_CANT_REACH_TARGET           = 218;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_NO_LOOT                     = 247;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_TO_RUN       = 8;</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_WALK_SLOW    = 9;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_CANT_PICKUP  = 10;</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STATS_LEVELUP                      = 11;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">const int NWNX_FEEDBACK_INVENTORY_FULL                     = 12;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONTAINER_FULL                     = 212;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TRAP_TRIGGERED                     = 82;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DAMAGE_HEALED                      = 151;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERIENCE_GAINNED                 = 182;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERIENCE_LOST                    = 183;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">const int NWNX_FEEDBACK_JOURNALUPDATED                     = 184; // Doesn&#39;t actually work, use:</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">                                                                  // NWNX_Feedback_{Get/Set}JournalUpdatedMessageHidden()</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">const int NWNX_FEEDBACK_BARTER_CANCELLED                   = 185;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DETECT_MODE_ACTIVATED              = 83;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DETECT_MODE_DEACTIVATED            = 84;</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STEALTH_MODE_ACTIVATED             = 85;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STEALTH_MODE_DEACTIVATED           = 86;</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARRY_MODE_ACTIVATED               = 87;</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARRY_MODE_DEACTIVATED             = 88;</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">const int NWNX_FEEDBACK_POWER_ATTACK_MODE_ACTIVATED        = 89;</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">const int NWNX_FEEDBACK_POWER_ATTACK_MODE_DEACTIVATED      = 90;</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_POWER_ATTACK_MODE_ACTIVATED = 91;</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_POWER_ATTACK_MODE_DEACTIVATED = 92;</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">const int NWNX_FEEDBACK_RAPID_SHOT_MODE_ACTIVATED          = 166;</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">const int NWNX_FEEDBACK_RAPID_SHOT_MODE_DEACTIVATED        = 167;</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLURRY_OF_BLOWS_MODE_ACTIVATED     = 168;</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLURRY_OF_BLOWS_MODE_DEACTIVATED   = 169;</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERTISE_MODE_ACTIVATED           = 227;</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EXPERTISE_MODE_DEACTIVATED         = 228;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_EXPERTISE_MODE_ACTIVATED  = 229;</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMPROVED_EXPERTISE_MODE_DEACTIVATED = 230;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_CAST_MODE_ACTIVATED      = 231;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_CAST_MODE_DEACTIVATED    = 232;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">const int NWNX_FEEDBACK_MODE_CANNOT_USE_WEAPONS            = 188;</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DIRTY_FIGHTING_MODE_ACTIVATED      = 237;</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DIRTY_FIGHTING_MODE_DEACTIVATED    = 238;</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_ACTIVATED    = 252;</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_DEACTIVATED  = 253;</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_SKILL_SPELL_MODIFIERS        = 71;</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_UNIDENTIFIED                 = 76;</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_MONK_ABILITIES               = 77;</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_INSUFFICIENT_LEVEL           = 98;</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_PROFICIENCIES                = 119;</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_TOO_LARGE             = 120;</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_TOO_SMALL             = 260;</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ONE_HANDED_WEAPON            = 121;</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_TWO_HANDED_WEAPON            = 122;</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_WEAPON_SWAPPED_OUT           = 123;</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ONE_CHAIN_WEAPON             = 124;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_NATURAL_AC_NO_STACK          = 189;</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ARMOUR_AC_NO_STACK           = 190;</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_SHIELD_AC_NO_STACK           = 191;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_DEFLECTION_AC_NO_STACK       = 192;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_NO_ARMOR_COMBAT              = 193;</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_RANGER_ABILITIES             = 200;</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_ALIGNMENT                    = 207;</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_CLASS                        = 208;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EQUIP_RACE                         = 209;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">const int NWNX_FEEDBACK_UNEQUIP_NO_ARMOR_COMBAT            = 194;</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_LOCKED                      = 13;</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_NOT_LOCKED                  = 14;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_SPECIAL_KEY                 = 15;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">const int NWNX_FEEDBACK_OBJECT_USED_KEY                    = 16;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_EXCITED_CANT_REST             = 17;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_BEGINNING_REST                = 18;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_FINISHED_REST                 = 19;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_CANCEL_REST                   = 20;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_IN_AREA           = 54;</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_BY_POSSESSED_FAMILIAR = 153;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_NOT_ALLOWED_ENEMIES           = 186;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_CANT_UNDER_THIS_EFFECT        = 213;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_LOST_TARGET                   = 21;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CANT_CAST                     = 22;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_LOST_TARGET  = 52;</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE          = 61;</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_ARCANE_SPELL_FAILURE = 118;</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_ENTANGLE_CONCENTRATION_FAILURE = 65;</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CNTRSPELL_TARGET_ENTANGLE_CONCENTRATION_FAILURE = 147;</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_SPELL_INTERRUPTED             = 72;</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_EFFECT_SPELL_FAILURE          = 236;</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_CANT_CAST_WHILE_POLYMORPHED   = 107;</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_USE_HANDS                     = 210;</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_USE_MOUTH                     = 211;</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_FAILURE = 233;</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_SUCCESS = 240;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">const int NWNX_FEEDBACK_USEITEM_CANT_USE                   = 23;</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_TOOFAR                = 58;</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_BUSY                  = 59;</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CONVERSATION_IN_COMBAT             = 152;</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHARACTER_INTRANSIT                = 74;</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHARACTER_OUTTRANSIT               = 75;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">const int NWNX_FEEDBACK_USEITEM_NOT_EQUIPPED               = 244;</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DROPITEM_CANT_DROP                 = 245;</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">const int NWNX_FEEDBACK_DROPITEM_CANT_GIVE                 = 246;</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CLIENT_SERVER_SPELL_MISMATCH       = 259;</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_RUNNING_OUT_OF_AMMO         = 24;</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_OUT_OF_AMMO                 = 25;</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_HENCHMAN_OUT_OF_AMMO        = 241;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_IMMUNITY             = 62;</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_IMMUNITY              = 68;</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_RESISTANCE           = 63;</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_RESISTANCE_REMAINING = 66;</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_REDUCTION            = 64;</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_DAMAGE_REDUCTION_REMAINING  = 67;</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_LEVEL_ABSORPTION      = 69;</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SPELL_LEVEL_ABSORPTION_REMAINING = 70;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_WEAPON_NOT_EFFECTIVE        = 117;</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_EPIC_DODGE_ATTACK_EVADED    = 234;</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_MASSIVE_DAMAGE              = 235;</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SAVED_VS_MASSIVE_DAMAGE     = 254;</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">const int NWNX_FEEDBACK_COMBAT_SAVED_VS_DEVASTATING_CRITICAL = 257;</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SAP_VALID_TARGETS             = 26;</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_KNOCKDOWN_VALID_TARGETS       = 27;</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_IMPKNOCKDOWN_VALID_TARGETS    = 28;</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_CALLED_SHOT_NO_LEGS           = 29;</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_CALLED_SHOT_NO_ARMS           = 30;</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SMITE_GOOD_TARGET_NOT_GOOD    = 239;</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_SMITE_EVIL_TARGET_NOT_EVIL    = 53;</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_QUIVERING_PALM_HIGHER_LEVEL   = 73;</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_KEEN_SENSE_DETECT             = 195;</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USE_UNARMED                   = 198;</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USES                          = 199;</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FEAT_USE_WEAPON_OF_CHOICE          = 243;</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_NEW_LEADER                   = 31;</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_MEMBER_KICKED                = 32;</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_KICKED_YOU                   = 33;</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_ALREADY_CONSIDERING          = 34;</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_ALREADY_INVOLVED             = 35;</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_SENT_INVITATION              = 36;</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_RECEIVED_INVITATION          = 37;</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_JOINED                       = 38;</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_IGNORED           = 39;</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_IGNORED_INVITATION       = 40;</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_REJECTED          = 41;</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_REJECTED_INVITATION      = 42;</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_INVITATION_EXPIRED           = 43;</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_LEFT_PARTY                   = 44;</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_LEFT                     = 45;</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_HENCHMAN_LIMIT               = 49;</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_CANNOT_LEAVE_THE_ONE_PARTY   = 196;</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_CANNOT_KICK_FROM_THE_ONE_PARTY = 197;</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON    = 202;</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PVP_REACTION_DISLIKESYOU           = 203;</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_RECEIVED                      = 50;</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_LOST                          = 51;</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_EJECTED                       = 96;</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_USE_UNIDENTIFIED              = 97;</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_GOLD_GAINED                   = 148;</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_GOLD_LOST                     = 149;</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_NOT_SCROLL            = 78;</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_CLASS      = 79;</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_LEVEL      = 80;</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_ABILITY    = 81;</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_OPPOSITION = 219;</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_POSSESS    = 220;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_KNOWN      = 221;</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_DIVINE     = 224;</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_SUCCESS               = 222;</span></div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_RECEIVED                      = 50;</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_LOST                          = 51;</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_EJECTED                       = 96;</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_USE_UNIDENTIFIED              = 97;</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_GOLD_GAINED                   = 148;</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ITEM_GOLD_LOST                     = 149;</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_NOT_SCROLL            = 78;</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_CLASS      = 79;</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_LEVEL      = 80;</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_ABILITY    = 81;</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_OPPOSITION = 219;</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_POSSESS    = 220;</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_KNOWN      = 221;</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_DIVINE     = 224;</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">const int NWNX_FEEDBACK_LEARN_SCROLL_SUCCESS               = 222;</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLOATY_TEXT_STRREF                 = 93;</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLOATY_TEXT_STRING                 = 94;</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_PLOT_ITEM              = 99;</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_CONTAINER              = 100;</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_ITEM                   = 101;</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">const int NWNX_FEEDBACK_NOT_ENOUGH_GOLD                    = 102;</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TRANSACTION_SUCCEEDED              = 103;</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PRICE_TOO_HIGH                     = 248;</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STORE_NOT_ENOUGH_GOLD              = 249;</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_STOLEN_ITEM            = 250;</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_RESTRICTED_ITEM        = 251;</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PORTAL_TIMEDOUT                    = 104;</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PORTAL_INVALID                     = 105;</span></div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLOATY_TEXT_STRREF                 = 93;</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">const int NWNX_FEEDBACK_FLOATY_TEXT_STRING                 = 94;</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_PLOT_ITEM              = 99;</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_CONTAINER              = 100;</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_ITEM                   = 101;</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">const int NWNX_FEEDBACK_NOT_ENOUGH_GOLD                    = 102;</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">const int NWNX_FEEDBACK_TRANSACTION_SUCCEEDED              = 103;</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PRICE_TOO_HIGH                     = 248;</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">const int NWNX_FEEDBACK_STORE_NOT_ENOUGH_GOLD              = 249;</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_STOLEN_ITEM            = 250;</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CANNOT_SELL_RESTRICTED_ITEM        = 251;</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PORTAL_TIMEDOUT                    = 104;</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PORTAL_INVALID                     = 105;</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHAT_TELL_PLAYER_NOT_FOUND         = 106;</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_SHIFT                    = 108;</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_PARTY_SHIFT              = 111;</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_CHANGE                   = 109;</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_BY_CLASS_LOST = 110;</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_BY_CLASS_GAIN = 115;</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_WARNING_LOSS  = 116;</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_WARNING_GAIN  = 112;</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_GAINED           = 113;</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_LOST             = 114;</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DISEASE                   = 125;</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CRITICAL_HIT              = 126;</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DEATH_MAGIC               = 127;</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_FEAR                      = 128;</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_KNOCKDOWN                 = 129;</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_PARALYSIS                 = 130;</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_NEGATIVE_LEVEL            = 131;</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_MIND_SPELLS               = 132;</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_POISON                    = 133;</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SNEAK_ATTACK              = 134;</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SLEEP                     = 135;</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DAZE                      = 136;</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CONFUSION                 = 137;</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_STUN                      = 138;</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_BLINDNESS                 = 139;</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DEAFNESS                  = 140;</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CURSE                     = 141;</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CHARM                     = 142;</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DOMINATE                  = 143;</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_ENTANGLE                  = 144;</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SILENCE                   = 145;</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SLOW                      = 146;</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_SUMMONED                 = 154;</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING              = 155;</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING_BECAUSE_REST = 156;</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING_BECAUSE_DIED = 157;</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_DOMINATED                = 158;</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_DOMINATION_ENDED         = 159;</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_RECOVER_TRAP = 170;</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_BARTER  = 171;</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_EQUIP   = 172;</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_REPOSITORY_MOVE = 173;</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_PICK_UP = 174;</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_DROP    = 175;</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_UNEQUIP = 176;</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_REST    = 177;</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_DIALOGUE = 178;</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_GIVE_ITEM = 179;</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_TAKE_ITEM = 180;</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_USE_CONTAINER = 181;</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SCRIPT_ERROR                       = 160;</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_LIST_OVERFLOW               = 161;</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EFFECT_LIST_OVERFLOW               = 162;</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">const int NWNX_FEEDBACK_AI_UPDATE_TIME_OVERFLOW            = 163;</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_LIST_WIPE_OVERFLOW          = 164;</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EFFECT_LIST_WIPE_OVERFLOW          = 165;</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC                 = 204;</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC_STRREF          = 242;</span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_ONLY_PARTY_LEADER_MAY_CLICK    = 201;</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PAUSED                             = 205;</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">const int NWNX_FEEDBACK_UNPAUSED                           = 206;</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_YOU_MAY_NOT_AT_THIS_TIME      = 214;</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_CHAR_EXPORT_REQUEST_SENT       = 215;</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_CHAR_EXPORTED_SUCCESSFULLY     = 216;</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_ERROR_CHAR_NOT_EXPORTED        = 217;</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_BG                          = 255;</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_EQ                          = 256;</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_CHASECAM                    = 258;</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SAVING                             = 225;</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SAVE_COMPLETE                      = 226;</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CHAT_TELL_PLAYER_NOT_FOUND         = 106;</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_SHIFT                    = 108;</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_PARTY_SHIFT              = 111;</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_CHANGE                   = 109;</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_BY_CLASS_LOST = 110;</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_BY_CLASS_GAIN = 115;</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_WARNING_LOSS  = 116;</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_WARNING_GAIN  = 112;</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_GAINED           = 113;</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_LOST             = 114;</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DISEASE                   = 125;</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CRITICAL_HIT              = 126;</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DEATH_MAGIC               = 127;</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_FEAR                      = 128;</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_KNOCKDOWN                 = 129;</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_PARALYSIS                 = 130;</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_NEGATIVE_LEVEL            = 131;</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_MIND_SPELLS               = 132;</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_POISON                    = 133;</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SNEAK_ATTACK              = 134;</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SLEEP                     = 135;</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DAZE                      = 136;</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CONFUSION                 = 137;</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_STUN                      = 138;</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_BLINDNESS                 = 139;</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DEAFNESS                  = 140;</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CURSE                     = 141;</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_CHARM                     = 142;</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_DOMINATE                  = 143;</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_ENTANGLE                  = 144;</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SILENCE                   = 145;</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">const int NWNX_FEEDBACK_IMMUNITY_SLOW                      = 146;</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_SUMMONED                 = 154;</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING              = 155;</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING_BECAUSE_REST = 156;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING_BECAUSE_DIED = 157;</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_DOMINATED                = 158;</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_DOMINATION_ENDED         = 159;</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_RECOVER_TRAP = 170;</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_BARTER  = 171;</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_EQUIP   = 172;</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_REPOSITORY_MOVE = 173;</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_PICK_UP = 174;</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_DROP    = 175;</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_UNEQUIP = 176;</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_REST    = 177;</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_DIALOGUE = 178;</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_GIVE_ITEM = 179;</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_TAKE_ITEM = 180;</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_USE_CONTAINER = 181;</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SCRIPT_ERROR                       = 160;</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_LIST_OVERFLOW               = 161;</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EFFECT_LIST_OVERFLOW               = 162;</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">const int NWNX_FEEDBACK_AI_UPDATE_TIME_OVERFLOW            = 163;</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">const int NWNX_FEEDBACK_ACTION_LIST_WIPE_OVERFLOW          = 164;</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">const int NWNX_FEEDBACK_EFFECT_LIST_WIPE_OVERFLOW          = 165;</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC                 = 204;</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC_STRREF          = 242;</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_ONLY_PARTY_LEADER_MAY_CLICK    = 201;</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">const int NWNX_FEEDBACK_PAUSED                             = 205;</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">const int NWNX_FEEDBACK_UNPAUSED                           = 206;</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">const int NWNX_FEEDBACK_REST_YOU_MAY_NOT_AT_THIS_TIME      = 214;</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_CHAR_EXPORT_REQUEST_SENT       = 215;</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_CHAR_EXPORTED_SUCCESSFULLY     = 216;</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">const int NWNX_FEEDBACK_GUI_ERROR_CHAR_NOT_EXPORTED        = 217;</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_BG                          = 255;</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_EQ                          = 256;</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">const int NWNX_FEEDBACK_CAMERA_CHASECAM                    = 258;</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SAVING                             = 225;</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">const int NWNX_FEEDBACK_SAVE_COMPLETE                      = 226;</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a>(<span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a>(<span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a>(<span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a>(<span class="keywordtype">int</span> bWhitelist);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a>(<span class="keywordtype">int</span> bWhitelist);</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; </div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a>(<span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a>(<span class="keywordtype">int</span> bWhitelist);</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a>(<span class="keywordtype">int</span> bWhitelist);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160; </div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; </div>
-<div class="line"><a name="l00426"></a><span class="lineno"><a class="line" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">  426</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;{</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160; </div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;}</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
-<div class="line"><a name="l00439"></a><span class="lineno"><a class="line" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">  439</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;{</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;}</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160; </div>
-<div class="line"><a name="l00451"></a><span class="lineno"><a class="line" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">  451</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;{</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160; </div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;}</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160; </div>
-<div class="line"><a name="l00464"></a><span class="lineno"><a class="line" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">  464</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;{</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160; </div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;}</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160; </div>
-<div class="line"><a name="l00476"></a><span class="lineno"><a class="line" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">  476</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a>(<span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;{</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordtype">int</span> nMessageType = 2;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(0);</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160; </div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;}</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno"><a class="line" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">  489</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a>(<span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;{</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;    <span class="keywordtype">int</span> nMessageType = 2;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160; </div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(0);</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;}</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160; </div>
-<div class="line"><a name="l00501"></a><span class="lineno"><a class="line" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">  501</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a>(<span class="keywordtype">int</span> bWhitelist)</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;{</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetFeedbackMode&quot;</span>;</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160; </div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(bWhitelist);</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;}</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160; </div>
-<div class="line"><a name="l00511"></a><span class="lineno"><a class="line" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">  511</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a>(<span class="keywordtype">int</span> bWhitelist)</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;{</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetFeedbackMode&quot;</span>;</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(bWhitelist);</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;}</div>
+<div class="line"><a name="l00407"></a><span class="lineno"><a class="line" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">  407</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;{</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;}</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
+<div class="line"><a name="l00420"></a><span class="lineno"><a class="line" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">  420</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;{</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;}</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160; </div>
+<div class="line"><a name="l00432"></a><span class="lineno"><a class="line" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">  432</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;{</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; </div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;}</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160; </div>
+<div class="line"><a name="l00445"></a><span class="lineno"><a class="line" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">  445</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a>(<span class="keywordtype">int</span> nMessage, <span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;{</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessage);</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;}</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160; </div>
+<div class="line"><a name="l00457"></a><span class="lineno"><a class="line" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">  457</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a>(<span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;{</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keywordtype">int</span> nMessageType = 2;</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160; </div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(0);</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a>();</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;}</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160; </div>
+<div class="line"><a name="l00470"></a><span class="lineno"><a class="line" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">  470</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a>(<span class="keywordtype">int</span> isHidden, <span class="keywordtype">object</span> oPC = OBJECT_INVALID)</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;{</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetMessageHidden&quot;</span>;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="keywordtype">int</span> nMessageType = 2;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160; </div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(isHidden);</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(0);</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oPC);</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;}</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160; </div>
+<div class="line"><a name="l00482"></a><span class="lineno"><a class="line" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">  482</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a>(<span class="keywordtype">int</span> bWhitelist)</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;{</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetFeedbackMode&quot;</span>;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordtype">int</span> nMessageType = 0;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(bWhitelist);</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;}</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160; </div>
+<div class="line"><a name="l00492"></a><span class="lineno"><a class="line" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">  492</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a>(<span class="keywordtype">int</span> bWhitelist)</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;{</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetFeedbackMode&quot;</span>;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keywordtype">int</span> nMessageType = 1;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160; </div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(bWhitelist);</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(nMessageType);</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Feedback, sFunc);</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__feedback_html_gab4f0518108b6ab44095d1d32f7a777ea"><div class="ttname"><a href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a></div><div class="ttdeci">void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)</div><div class="ttdoc">Set whether to use a blacklist or whitelist mode for feedback messages.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00501">nwnx_feedback.nss:501</a></div></div>
-<div class="ttc" id="agroup__feedback_html_ga46a034a921ef6011120762dfc1b55a06"><div class="ttname"><a href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if combat log message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00464">nwnx_feedback.nss:464</a></div></div>
-<div class="ttc" id="agroup__feedback_html_gad0f1933e1f2957b798a75fca3c5b98d2"><div class="ttname"><a href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if feedback message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00426">nwnx_feedback.nss:426</a></div></div>
+<div class="ttc" id="agroup__feedback_html_gab4f0518108b6ab44095d1d32f7a777ea"><div class="ttname"><a href="group__feedback.html#gab4f0518108b6ab44095d1d32f7a777ea">NWNX_Feedback_SetFeedbackMessageMode</a></div><div class="ttdeci">void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)</div><div class="ttdoc">Set whether to use a blacklist or whitelist mode for feedback messages.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00482">nwnx_feedback.nss:482</a></div></div>
+<div class="ttc" id="agroup__feedback_html_ga46a034a921ef6011120762dfc1b55a06"><div class="ttname"><a href="group__feedback.html#ga46a034a921ef6011120762dfc1b55a06">NWNX_Feedback_SetCombatLogMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if combat log message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00445">nwnx_feedback.nss:445</a></div></div>
+<div class="ttc" id="agroup__feedback_html_gad0f1933e1f2957b798a75fca3c5b98d2"><div class="ttname"><a href="group__feedback.html#gad0f1933e1f2957b798a75fca3c5b98d2">NWNX_Feedback_GetFeedbackMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if feedback message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00407">nwnx_feedback.nss:407</a></div></div>
 <div class="ttc" id="agroup__feedback_html_ga21220ae3bf760c377d8be60dfb141801"><div class="ttname"><a href="group__feedback.html#ga21220ae3bf760c377d8be60dfb141801">NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</a></div><div class="ttdeci">const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00020">nwnx_feedback.nss:20</a></div></div>
-<div class="ttc" id="agroup__feedback_html_ga54a0e9e14e11882ae4408b24fb3bdd5e"><div class="ttname"><a href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if journal update message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00489">nwnx_feedback.nss:489</a></div></div>
+<div class="ttc" id="agroup__feedback_html_ga54a0e9e14e11882ae4408b24fb3bdd5e"><div class="ttname"><a href="group__feedback.html#ga54a0e9e14e11882ae4408b24fb3bdd5e">NWNX_Feedback_SetJournalUpdatedMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if journal update message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00470">nwnx_feedback.nss:470</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga8bc42aa371f75376b969065f2b95aa19"><div class="ttname"><a href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a></div><div class="ttdeci">int NWNX_GetReturnValueInt()</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00086">nwnx.nss:86</a></div></div>
-<div class="ttc" id="agroup__feedback_html_ga68dcbf8f5a115248b35907225ceec53a"><div class="ttname"><a href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if feedback message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00439">nwnx_feedback.nss:439</a></div></div>
-<div class="ttc" id="agroup__feedback_html_ga291f1b8003190dce13ff3472ee847d27"><div class="ttname"><a href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">NWNX_FEEDBACK_SKILL_CANT_USE</a></div><div class="ttdeci">const int NWNX_FEEDBACK_SKILL_CANT_USE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00068">nwnx_feedback.nss:68</a></div></div>
+<div class="ttc" id="agroup__feedback_html_ga68dcbf8f5a115248b35907225ceec53a"><div class="ttname"><a href="group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a">NWNX_Feedback_SetFeedbackMessageHidden</a></div><div class="ttdeci">void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Sets if feedback message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00420">nwnx_feedback.nss:420</a></div></div>
+<div class="ttc" id="agroup__feedback_html_ga291f1b8003190dce13ff3472ee847d27"><div class="ttname"><a href="group__feedback.html#ga291f1b8003190dce13ff3472ee847d27">NWNX_FEEDBACK_SKILL_CANT_USE</a></div><div class="ttdeci">const int NWNX_FEEDBACK_SKILL_CANT_USE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00049">nwnx_feedback.nss:49</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00046">nwnx.nss:46</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga633ccd114d588939b34db8a85b3cbf63"><div class="ttname"><a href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a></div><div class="ttdeci">void NWNX_PushArgumentObject(object value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00061">nwnx.nss:61</a></div></div>
-<div class="ttc" id="agroup__feedback_html_gae874731db0eb23fa1db4e44629f9261b"><div class="ttname"><a href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if combat log message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00451">nwnx_feedback.nss:451</a></div></div>
+<div class="ttc" id="agroup__feedback_html_gae874731db0eb23fa1db4e44629f9261b"><div class="ttname"><a href="group__feedback.html#gae874731db0eb23fa1db4e44629f9261b">NWNX_Feedback_GetCombatLogMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if combat log message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00432">nwnx_feedback.nss:432</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga1d7bbbf30928800bacc327e93beff2e6"><div class="ttname"><a href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00051">nwnx.nss:51</a></div></div>
-<div class="ttc" id="agroup__feedback_html_ga1e5a9e78de5d4d9d50f527dc245060b5"><div class="ttname"><a href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a></div><div class="ttdeci">void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)</div><div class="ttdoc">Set whether to use a blacklist or whitelist mode for combat log messages.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00511">nwnx_feedback.nss:511</a></div></div>
-<div class="ttc" id="agroup__feedback_html_gad723108876dccf1552d517aaf8b3e06b"><div class="ttname"><a href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if the journal update message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00476">nwnx_feedback.nss:476</a></div></div>
+<div class="ttc" id="agroup__feedback_html_ga1e5a9e78de5d4d9d50f527dc245060b5"><div class="ttname"><a href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a></div><div class="ttdeci">void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)</div><div class="ttdoc">Set whether to use a blacklist or whitelist mode for combat log messages.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00492">nwnx_feedback.nss:492</a></div></div>
+<div class="ttc" id="agroup__feedback_html_gad723108876dccf1552d517aaf8b3e06b"><div class="ttname"><a href="group__feedback.html#gad723108876dccf1552d517aaf8b3e06b">NWNX_Feedback_GetJournalUpdatedMessageHidden</a></div><div class="ttdeci">int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC=OBJECT_INVALID)</div><div class="ttdoc">Gets if the journal update message is hidden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__feedback_8nss_source.html#l00457">nwnx_feedback.nss:457</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_cec99290c1cd131a34cbea0b5d3e3a8f.html">Feedback</a></li><li class="navelem"><a class="el" href="dir_27692ca3bc8aa0fe84b6637d6a27c20b.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__feedback_8nss.html">nwnx_feedback.nss</a></li>
 				<li class="footer">
-					Generated on Sun Mar 6 2022 12:50:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 13 2022 21:36:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
