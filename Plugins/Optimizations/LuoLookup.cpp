@@ -148,7 +148,8 @@ static void MessageDeleteLuo(CNWSMessage* msg, CLastUpdateObject* luo, CNWSPlaye
         bool bDelete = true;
         if (auto obj = Utils::AsNWSObject(Utils::GetGameObject(luo->m_nId)))
         {
-            if (obj->GetArea() == player->GetGameObject()->GetArea())
+            auto pgo = player->GetGameObject();
+            if (pgo && (obj->GetArea() == pgo->GetArea()))
                 bDelete = false;
         }
 
