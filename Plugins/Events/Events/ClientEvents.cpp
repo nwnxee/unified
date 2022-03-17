@@ -121,6 +121,9 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     std::string cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
     std::string isDM = std::to_string(pPlayerInfo->m_bGameMasterPrivileges);
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
+    std::string versionMajor = std::to_string(pPlayerInfo->m_nBuildVersion);
+    std::string versionMinor = std::to_string(pPlayerInfo->m_nPatchRevision);
+    std::string platformId = std::to_string(pPlayerInfo->m_nPlatformId);
 
     std::string reason;
     auto PushAndSignal = [&](const std::string& ev) -> bool {
@@ -128,6 +131,9 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
         PushEventData("CDKEY", cdKey);
         PushEventData("IS_DM", isDM);
         PushEventData("IP_ADDRESS", ipAddress);
+        PushEventData("VERSION_MAJOR", versionMajor);
+        PushEventData("VERSION_MINOR", versionMinor);
+        PushEventData("PLATFORM_ID", platformId);
         return SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
     };
 
