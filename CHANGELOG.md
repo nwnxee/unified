@@ -30,7 +30,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Regex: Match()
 
 ### Changed
-- N/A
+- Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
 
 ### Deprecated
 - N/A

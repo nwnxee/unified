@@ -528,6 +528,9 @@ _______________________________________
     CDKEY                 | string | Public cdkey of the connecting client
     IS_DM                 | int    | Whether the client is connect as DM (1/0)
     IP_ADDRESS            | string | The IP address of the connecting client
+    VERSION_MAJOR         | int    | The client's major version, eg 8193, or 0 if unavailable.
+    VERSION_MINOR         | int    | The client's minor version, eg 34, or 0 if unavailable.
+    PLATFORM_ID           | int    | The client's platform id, PLAYER_DEVICE_PLATFORM_*, or 0 if unavailable.
 
     @note Skipping the _BEFORE event will cause the client's connection to be denied.
     You can optionally pass a reason for this in the event result.
