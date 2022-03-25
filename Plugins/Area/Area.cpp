@@ -1319,3 +1319,26 @@ NWNX_EXPORT ArgumentStack GetPathExists(ArgumentStack&& args)
 
     return false;
 }
+
+NWNX_EXPORT ArgumentStack GetAreaFlags(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        return (int32_t)pArea->m_nFlags;
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAreaFlags(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto flags = args.extract<int32_t>();
+          ASSERT_OR_THROW(flags >= 0);
+
+        pArea->m_nFlags = flags;
+    }
+
+    return {};
+}

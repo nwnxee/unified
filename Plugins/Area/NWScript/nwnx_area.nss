@@ -296,7 +296,7 @@ int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
 object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef);
 
 /// @brief Rotates an existing area, including all objects within (excluding PCs).
-/// @note Functions while clients are in the area, but not recommended as tiles/walkmesh only updates on area load, and this may reuslt in unexpected clientside results.
+/// @note Functions while clients are in the area, but not recommended as tiles/walkmesh only updates on area load, and this may result in unexpected clientside results.
 /// @param oArea The area to be rotated
 /// @param nRotation How many 90 degrees clockwise to rotate (1-3).
 void NWNX_Area_RotateArea(object oArea, int nRotation);
@@ -315,6 +315,18 @@ struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIn
 /// @param nMaxDepth The max depth of the DFS tree. A good value is AreaWidth * AreaHeight.
 /// @return TRUE if there is a path between vStartPosition and vEndPosition, FALSE if not or on error.
 int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth);
+
+/// @brief Get oArea's flags, interior/underground etc.
+/// @param oArea The area.
+/// @return The raw flags bitmask or -1 on error.
+int NWNX_Area_GetAreaFlags(object oArea);
+
+/// @brief Set oArea's raw flags bitmask.
+/// @note You'll have to do any bitwise operations yourself.
+/// @note Requires clients to reload the area to get any updated flags.
+/// @param oArea The area.
+/// @param nFlags The flags.
+void NWNX_Area_SetAreaFlags(object oArea, int nFlags);
 
 /// @}
 
@@ -804,4 +816,23 @@ int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosi
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Area_GetAreaFlags(object oArea)
+{
+    string sFunc = "GetAreaFlags";
+
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Area_SetAreaFlags(object oArea, int nFlags)
+{
+    string sFunc = "SetAreaFlags";
+
+    NWNX_PushArgumentInt(nFlags);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
 }
