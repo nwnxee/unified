@@ -23,6 +23,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 ##### New NWScript Functions
 - Area: GetTileInfoByTileIndex()
 - Area: GetPathExists()
+- Area: {Get|Set}AreaFlags()
 - Effect: AccessorizeVisualEffect()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
