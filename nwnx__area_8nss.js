@@ -43,6 +43,8 @@ var nwnx__area_8nss =
     [ "NWNX_Area_RotateArea", "group__area.html#ga808866f8b5b50127d512cfc3a17e8936", null ],
     [ "NWNX_Area_GetTileInfoByTileIndex", "group__area.html#ga5739aed3026f9260ced7f771f31dfce4", null ],
     [ "NWNX_Area_GetPathExists", "group__area.html#ga61a1670a05d3fac3d985b4aaedeccd09", null ],
+    [ "NWNX_Area_GetAreaFlags", "group__area.html#gacd57d74416733001cf67a2cfaefb76ec", null ],
+    [ "NWNX_Area_SetAreaFlags", "group__area.html#ga08be0ec8d8f831e344e322cfd4b8c539", null ],
     [ "NWNX_Area", "group__area.html#ga0b1c1bee8f3cf52b50393d35321987f7", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
