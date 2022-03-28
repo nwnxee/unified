@@ -479,21 +479,71 @@ _______________________________________
     PASSWORD              | string | The password the DM provided, only valid for NWNX_ON_DM_PLAYERDM_LOGIN_*
 
 _______________________________________
+    ## DM Set Stat Events
+    - NWNX_ON_DM_SET_STAT_BEFORE
+    - NWNX_ON_DM_SET_STAT_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    STAT                  | int    | Returns NWNX_EVENTS_DM_SET_STAT_TYPE_*
+    VALUE                 | int    | 
+    TARGET                | object | Convert to object with StringToObject()
+    SET                   | int    | TRUE if setting stat, FALSE if modifying
+
+_______________________________________
+    ## DM Get Variable Events
+    - NWNX_ON_DM_GET_VARIABLE_BEFORE
+    - NWNX_ON_DM_GET_VARIABLE_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TYPE                  | int    | Returns NWNX_EVENTS_DM_SET_VARIABLE_TYPE_*
+    TARGET                | object | Convert to object with StringToObject()
+    KEY                   | string | Variable name
+
+    @note Vector variable types aren't supported.
+
+_______________________________________
+    ## DM Set Variable Events
+    - NWNX_ON_DM_SET_VARIABLE_BEFORE
+    - NWNX_ON_DM_SET_VARIABLE_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TYPE                  | int    | Returns NWNX_EVENTS_DM_SET_VARIABLE_TYPE_*
+    TARGET                | object | Convert to object with StringToObject()
+    KEY                   | string | Variable name
+    VALUE                 | string | Variable value
+
+    @note Vector variable types aren't supported.
+
+_______________________________________
+    ## DM Set Faction Events
+    - NWNX_ON_DM_SET_FACTION_BEFORE
+    - NWNX_ON_DM_SET_FACTION_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with StringToObject()
+    FACTION_ID            | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction(). 
+    FACTION_NAME          | string | 
+
+_______________________________________
     ## DM Other Events
     - NWNX_ON_DM_APPEAR_BEFORE
     - NWNX_ON_DM_APPEAR_AFTER
     - NWNX_ON_DM_DISAPPEAR_BEFORE
     - NWNX_ON_DM_DISAPPEAR_AFTER
-    - NWNX_ON_DM_SET_FACTION_BEFORE
-    - NWNX_ON_DM_SET_FACTION_AFTER
     - NWNX_ON_DM_TAKE_ITEM_BEFORE
     - NWNX_ON_DM_TAKE_ITEM_AFTER
-    - NWNX_ON_DM_SET_STAT_BEFORE
-    - NWNX_ON_DM_SET_STAT_AFTER
-    - NWNX_ON_DM_GET_VARIABLE_BEFORE
-    - NWNX_ON_DM_GET_VARIABLE_AFTER
-    - NWNX_ON_DM_SET_VARIABLE_BEFORE
-    - NWNX_ON_DM_SET_VARIABLE_AFTER
     - NWNX_ON_DM_SET_TIME_BEFORE
     - NWNX_ON_DM_SET_TIME_AFTER
     - NWNX_ON_DM_SET_DATE_BEFORE
@@ -1457,6 +1507,22 @@ const int NWNX_EVENTS_TIMING_BAR_REST          = 6;
 const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;
 const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
 const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
+*/
+
+/*
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_STRENGTH         = 5;
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_DEXTERITY        = 6;
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_CONSTITUTION     = 7;
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_INTELLIGENCE     = 8;
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_WISDOM           = 9;
+const int NWNX_EVENTS_DM_SET_STAT_TYPE_CHARISMA         = 10;
+*/
+
+/*
+const int NWNX_EVENTS_DM_SET_VARIABLE_TYPE_INT          = 0;
+const int NWNX_EVENTS_DM_SET_VARIABLE_TYPE_FLOAT        = 1;
+const int NWNX_EVENTS_DM_SET_VARIABLE_TYPE_STRING       = 2;
+const int NWNX_EVENTS_DM_SET_VARIABLE_TYPE_OBJECT       = 3;
 */
 
 /// @brief Scripts can subscribe to events.
