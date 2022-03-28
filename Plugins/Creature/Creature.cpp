@@ -1269,6 +1269,46 @@ NWNX_EXPORT ArgumentStack SetSkillPointsRemaining(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetSkillPointsRemainingByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            return pLevelStats->m_nSkillPointsRemaining;
+        }
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetSkillPointsRemainingByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        const auto value = args.extract<int32_t>();
+          ASSERT_OR_THROW(value >= 0);
+          ASSERT_OR_THROW(value <= 65535);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            pLevelStats->m_nSkillPointsRemaining = static_cast<uint8_t>(value);
+        }
+    }
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SetRacialType(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
