@@ -25,6 +25,7 @@
 #include "API/CExoFile.hpp"
 #include "API/CNWSUUID.hpp"
 #include "API/CLoopingVisualEffect.hpp"
+#include "API/CNWSpellArray.hpp"
 #include <cstring>
 
 using namespace NWNXLib;
@@ -820,7 +821,67 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
     if (auto *pObject = Utils::PopObject(args))
     {
         if(auto *pVersus = Utils::PopObject(args))
-            return pObject->DoSpellLevelAbsorption(pVersus);
+        {
+            const auto spellId     = args.extract<int32_t>();
+            const auto spellLevel  = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellLevel <= 10);
+            const auto spellSchool = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellSchool <= 8);
+            
+            auto pCaster = Utils::AsNWSCreature(pVersus);
+            if(!pCaster) 
+                return -1;
+
+            if(pObject->m_appliedEffects.num < 1)
+                return -1;
+
+            uint32_t prevSpellId = pVersus->m_nLastSpellId;
+            if(spellId >= 0)
+            {
+                pVersus->m_nLastSpellId = spellId;
+            }
+
+            auto *pSpellArray = Globals::Rules()->m_pSpellArray;
+            auto *pSpell = pSpellArray->GetSpell(pVersus->m_nLastSpellId);
+
+            uint8_t prevSpellSchool;
+            if(pSpell && spellSchool >= 0)
+            {
+                prevSpellSchool = pSpell->m_nSchool;
+                pSpell->m_nSchool = spellSchool;
+            }
+
+            uint8_t prevSpellLevel;
+            BOOL prevLastItemCastSpell; 
+            if(pSpell && spellLevel >= 0)
+            {
+                prevLastItemCastSpell = pCaster->m_bLastItemCastSpell;
+                prevSpellLevel = pSpell->m_nInnateLevel;
+                
+                pCaster->m_bLastItemCastSpell = 1; // DoSpellLevelAbsorption uses innate level in case of item spells
+                pSpell->m_nInnateLevel = spellLevel;
+            }
+
+            auto ret = pObject->DoSpellLevelAbsorption(pVersus);
+
+            if(pSpell && spellLevel >= 0)
+            {
+                pCaster->m_bLastItemCastSpell = prevLastItemCastSpell;
+                pSpell->m_nInnateLevel = prevSpellLevel;
+            }
+
+            if(pSpell && spellSchool >= 0)
+            {
+                pSpell->m_nSchool = prevSpellSchool;
+            }
+
+            if(spellId > 0)
+            {
+                pVersus->m_nLastSpellId = prevSpellId;
+            }
+
+            return ret;
+        }
     }
 
     return -1;

@@ -32,6 +32,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
+- ***ABI BREAKING*** Object: DoSpellLevelAbsorption() can now override the spellId, the level and the school of the casted spell
 
 ### Deprecated
 - N/A
