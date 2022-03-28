@@ -1812,6 +1812,24 @@ RunScriptChunk Debug Event</h2>
 <dl class="section note"><dt>Note</dt><dd>This event also runs for players that do not have permission to execute the command.</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md337"></a>
+Play Visual Effect Event</h2>
+<ul>
+<li>NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE</li>
+<li>NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">VISUAL_EFFECT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Index into visualeffects.2da  </td></tr>
+</table>
+<p>DURATION | float | TARGET_POSITION_X | float | Will be 0.0 when playing visual effects on an object TARGET_POSITION_Y | float | Will be 0.0 when playing visual effects on an object TARGET_POSITION_Z | float | Will be 0.0 when playing visual effects on an object</p>
+<dl class="section note"><dt>Note</dt><dd>This is the <code>dm_visualeffect</code> console command. <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> when playing visual effects at a position in an area.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md338"></a>
 Buy/Sell Store Events</h2>
 <ul>
 <li>NWNX_ON_STORE_REQUEST_BUY_BEFORE</li>
@@ -1833,7 +1851,7 @@ Buy/Sell Store Events</h2>
 <td class="markdownTableBodyNone">RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE whether the request was successful. Only in *_AFTER events.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md338"></a>
+ <h2><a class="anchor" id="autotoc_md339"></a>
 Server Send Area Events</h2>
 <ul>
 <li>NWNX_ON_SERVER_SEND_AREA_BEFORE</li>
@@ -1849,7 +1867,7 @@ Server Send Area Events</h2>
 <td class="markdownTableBodyNone">PLAYER_NEW_TO_MODULE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if it's the player's first time logging into the server since a restart  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md339"></a>
+ <h2><a class="anchor" id="autotoc_md340"></a>
 Journal Open/Close Events</h2>
 <ul>
 <li>NWNX_ON_JOURNAL_OPEN_BEFORE</li>
@@ -1860,7 +1878,7 @@ Journal Open/Close Events</h2>
 <p><code>OBJECT_SELF</code> = The player</p>
 <p>Event Data Tag | Type | Notes -------------------&mdash;|-----&mdash;|----&mdash;</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md340"></a>
+ <h2><a class="anchor" id="autotoc_md341"></a>
 Input Emote Event</h2>
 <ul>
 <li>NWNX_ON_INPUT_EMOTE_BEFORE</li>
@@ -1875,7 +1893,7 @@ Input Emote Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>Some emotes have a voiceline that will still play when the event is skipped. These voicelines can be skipped in the NWNX_ON_QUICKCHAT_* event.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md341"></a>
+ <h2><a class="anchor" id="autotoc_md342"></a>
 Combat Damage Resistance/Reduction Broken Event</h2>
 <ul>
 <li>NWNX_ON_COMBAT_DR_BROKEN_BEFORE</li>
@@ -1890,7 +1908,7 @@ Combat Damage Resistance/Reduction Broken Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event only fires when DR gets broken in combat.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md342"></a>
+ <h2><a class="anchor" id="autotoc_md343"></a>
 Creature Unpossess Familiar Event</h2>
 <ul>
 <li>NWNX_ON_UNPOSSESS_FAMILIAR_BEFORE</li>
@@ -1904,7 +1922,7 @@ Creature Unpossess Familiar Event</h2>
 <td class="markdownTableBodyNone">FAMILIAR </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The familiar. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md343"></a>
+ <h2><a class="anchor" id="autotoc_md344"></a>
 Client Levelup Begin Event</h2>
 <ul>
 <li>NWNX_ON_CLIENT_LEVEL_UP_BEGIN_BEFORE</li>
@@ -1913,7 +1931,7 @@ Client Levelup Begin Event</h2>
 <p><code>OBJECT_SELF</code> = The player clicking the levelup button</p>
 <p>Event Data Tag | Type | Notes -------------------&mdash;|-----&mdash;|----&mdash;</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md344"></a>
+ <h2><a class="anchor" id="autotoc_md345"></a>
 Creature Possess Familiar Event</h2>
 <ul>
 <li>NWNX_ON_POSSESS_FAMILIAR_BEFORE</li>
@@ -1927,7 +1945,7 @@ Creature Possess Familiar Event</h2>
 <td class="markdownTableBodyNone">FAMILIAR </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The familiar. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md345"></a>
+ <h2><a class="anchor" id="autotoc_md346"></a>
 Player CharacterSheet Permitted Event</h2>
 <ul>
 <li>NWNX_ON_CHARACTER_SHEET_PERMITTED_BEFORE</li>
@@ -1942,7 +1960,7 @@ Player CharacterSheet Permitted Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>When skipping this event, be sure to set the event result.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md346"></a>
+ <h2><a class="anchor" id="autotoc_md347"></a>
 Player CharacterSheet Open/Close Events</h2>
 <ul>
 <li>NWNX_ON_CHARACTER_SHEET_OPEN_BEFORE</li>
@@ -1958,7 +1976,7 @@ Player CharacterSheet Open/Close Events</h2>
 <td class="markdownTableBodyNone">TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md347"></a>
+ <h2><a class="anchor" id="autotoc_md348"></a>
 Player Device Property Events</h2>
 <ul>
 <li>NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE</li>
@@ -1976,7 +1994,7 @@ Player Device Property Events</h2>
 <td class="markdownTableBodyNone">NEW_VALUE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md348"></a>
+ <h2><a class="anchor" id="autotoc_md349"></a>
 Input Drop Item Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_DROP_ITEM_BEFORE</li>
@@ -1996,7 +2014,7 @@ Input Drop Item Events</h2>
 <td class="markdownTableBodyNone">POS_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md349"></a>
+ <h2><a class="anchor" id="autotoc_md350"></a>
 Decrement Spell Count Events</h2>
 <ul>
 <li>NWNX_ON_DECREMENT_SPELL_COUNT_BEFORE</li>
@@ -2026,7 +2044,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01615">1615</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01635">1635</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2065,7 +2083,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01624">1624</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01644">1644</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2111,7 +2129,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01633">1633</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01653">1653</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2157,7 +2175,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01643">1643</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01663">1663</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2188,7 +2206,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01653">1653</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01673">1673</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2219,7 +2237,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01662">1662</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01682">1682</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2240,7 +2258,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01672">1672</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01692">1692</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2298,10 +2316,11 @@ Decrement Spell Count Events</h2>
 <li>ClientLevelUpBegin event</li>
 <li>CharacterSheetPermitted event</li>
 <li>Input Drop Item</li>
-<li>Decrement Spell Count event </li>
+<li>Decrement Spell Count event</li>
+<li>Play Visual Effect event </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01681">1681</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01701">1701</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2337,7 +2356,7 @@ Decrement Spell Count Events</h2>
 <li>CharacterSheetPermitted event -&gt; "1" allow the player to view the character sheet or "0" to disallow </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01688">1688</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01708">1708</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2358,7 +2377,7 @@ Decrement Spell Count Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01696">1696</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01716">1716</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2395,7 +2414,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript(Chunk) If enabled, sEvent for sScript(Chunk) will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01704">1704</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01724">1724</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2433,7 +2452,7 @@ Decrement Spell Count Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01714">1714</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01734">1734</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2471,7 +2490,7 @@ Decrement Spell Count Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01724">1724</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01744">1744</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2515,7 +2534,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01734">1734</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01754">1754</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2555,7 +2574,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01743">1743</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01763">1763</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2595,7 +2614,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01752">1752</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01772">1772</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2624,7 +2643,7 @@ Decrement Spell Count Events</h2>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of subscribers sEvent has or 0 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01761">1761</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01781">1781</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2634,7 +2653,7 @@ Decrement Spell Count Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Mar 28 2022 09:24:57 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Mar 28 2022 20:06:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
