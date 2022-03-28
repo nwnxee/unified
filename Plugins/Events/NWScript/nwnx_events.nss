@@ -1276,6 +1276,25 @@ _______________________________________
     @note This event also runs for players that do not have permission to execute the command.
 
 _______________________________________
+    ## Play Visual Effect Event
+    - NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE
+    - NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() 
+    VISUAL_EFFECT         | int    | Index into visualeffects.2da 
+    DURATION              | float  | 
+    TARGET_POSITION_X     | float  | Will be 0.0 when playing visual effects on an object 
+    TARGET_POSITION_Y     | float  | Will be 0.0 when playing visual effects on an object 
+    TARGET_POSITION_Z     | float  | Will be 0.0 when playing visual effects on an object 
+
+    @note This is the `dm_visualeffect` console command.
+    `TARGET_OBJECT_ID` will be `OBJECT_INVALID` when playing visual effects at a position in an area.
+
+_______________________________________
     ## Buy/Sell Store Events
     - NWNX_ON_STORE_REQUEST_BUY_BEFORE
     - NWNX_ON_STORE_REQUEST_BUY_AFTER
@@ -1545,6 +1564,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - CharacterSheetPermitted event
 /// - Input Drop Item
 /// - Decrement Spell Count event
+/// - Play Visual Effect event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
