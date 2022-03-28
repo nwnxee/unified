@@ -87,7 +87,7 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
         case Constants::MessageCheatMinor::PlayVisualEffect:
         {
             std::string target = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
-            std::string visualEffect = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, 4));
+            std::string visualEffect = std::to_string(Utils::PeekMessage<uint16_t>(thisPtr, 4));
             std::string duration = std::to_string(Utils::PeekMessage<float>(thisPtr, 6));
             std::string x = std::to_string(Utils::PeekMessage<float>(thisPtr, 10));
             std::string y = std::to_string(Utils::PeekMessage<float>(thisPtr, 14));
