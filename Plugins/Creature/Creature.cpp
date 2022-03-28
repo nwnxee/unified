@@ -1303,7 +1303,7 @@ NWNX_EXPORT ArgumentStack SetSkillPointsRemainingByLevel(ArgumentStack&& args)
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
             ASSERT_OR_THROW(pLevelStats);
 
-            pLevelStats->m_nSkillPointsRemaining = static_cast<uint8_t>(value);
+            pLevelStats->m_nSkillPointsRemaining = static_cast<uint16_t>(value);
         }
     }
     return {};
