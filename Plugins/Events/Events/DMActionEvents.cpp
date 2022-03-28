@@ -574,13 +574,13 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
 
             int32_t offset = 0;
 
-            std::string stat = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, offset)); offset += sizeof(int32_t);
+            int32_t stat = Utils::PeekMessage<int32_t>(thisPtr, offset); offset += sizeof(int32_t);
             std::string value = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
             std::string target = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(thisPtr, offset) & 0x7FFFFFFF); offset += sizeof(ObjectID);
             std::string set = std::to_string((bool)(Utils::PeekMessage<int32_t>(thisPtr, offset) & 0x10));
 
             auto PushAndSignal = [&](const std::string& ev) -> bool {
-                PushEventData("STAT", stat);
+                PushEventData("STAT", std::to_string(stat - 5));
                 PushEventData("VALUE", value);
                 PushEventData("TARGET", target);
                 PushEventData("SET", set);

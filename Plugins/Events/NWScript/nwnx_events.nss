@@ -487,7 +487,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    STAT                  | int    | Returns NWNX_EVENTS_DM_SET_STAT_TYPE_*
+    STAT                  | int    | Returns ABILITY_* constant
     VALUE                 | int    | 
     TARGET                | object | Convert to object with StringToObject()
     SET                   | int    | TRUE if setting stat, FALSE if modifying
@@ -1507,15 +1507,6 @@ const int NWNX_EVENTS_TIMING_BAR_REST          = 6;
 const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;
 const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
 const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
-*/
-
-/*
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_STRENGTH         = 5;
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_DEXTERITY        = 6;
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_CONSTITUTION     = 7;
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_INTELLIGENCE     = 8;
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_WISDOM           = 9;
-const int NWNX_EVENTS_DM_SET_STAT_TYPE_CHARISMA         = 10;
 */
 
 /*
