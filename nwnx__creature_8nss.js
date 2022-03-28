@@ -62,6 +62,8 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetSize", "group__creature.html#ga410dc2166d8081c849fb6e88c0e9c0b1", null ],
     [ "NWNX_Creature_GetSkillPointsRemaining", "group__creature.html#ga926e85f71e7f8373b312e7a41782d356", null ],
     [ "NWNX_Creature_SetSkillPointsRemaining", "group__creature.html#ga73a0718b8d21a8f04201b94c6ac35aef", null ],
+    [ "NWNX_Creature_GetSkillPointsRemainingByLevel", "group__creature.html#ga59aaa15d92bcadc5200576058c000c87", null ],
+    [ "NWNX_Creature_SetSkillPointsRemainingByLevel", "group__creature.html#gaf9f6484fb5953e6de432cd16cb7e316a", null ],
     [ "NWNX_Creature_SetRacialType", "group__creature.html#ga318adbef08926e9c47d9d4840cef6e0f", null ],
     [ "NWNX_Creature_SetGold", "group__creature.html#ga4888c788f124ca985ba585677cdeaad8", null ],
     [ "NWNX_Creature_SetCorpseDecayTime", "group__creature.html#ga9416ebcf6ecac41884242e6f40096100", null ],
