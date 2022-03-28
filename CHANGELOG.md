@@ -24,6 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Area: GetTileInfoByTileIndex()
 - Area: GetPathExists()
 - Area: {Get|Set}AreaFlags()
+- Creature: {Get|Set}SkillPointsRemainingByLevel()
 - Effect: AccessorizeVisualEffect()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()

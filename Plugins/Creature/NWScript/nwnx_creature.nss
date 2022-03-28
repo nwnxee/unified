@@ -492,6 +492,18 @@ int NWNX_Creature_GetSkillPointsRemaining(object creature);
 /// @param skillpoints The value to set.
 void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
 
+/// @brief Gets the creature's remaining unspent skill points for level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @return The remaining unspent skill points for level.
+int NWNX_Creature_GetSkillPointsRemainingByLevel(object creature, int level);
+
+/// @brief Sets the creature's remaining unspent skill points for level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @param value The value to set for level.
+void NWNX_Creature_SetSkillPointsRemainingByLevel(object creature, int level, int value);
+
 /// @brief Sets the creature's racial type
 /// @param creature The creature object.
 /// @param racialtype The racial type to set.
@@ -1648,6 +1660,28 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
 {
     string sFunc = "SetSkillPointsRemaining";
     NWNX_PushArgumentInt(skillpoints);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetSkillPointsRemainingByLevel(object creature, int level)
+{
+    string sFunc = "GetSkillPointsRemainingByLevel";
+
+    NWNX_PushArgumentInt(level);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetSkillPointsRemainingByLevel(object creature, int level, int value)
+{
+    string sFunc = "SetSkillPointsRemainingByLevel";
+
+    NWNX_PushArgumentInt(value);
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
