@@ -822,11 +822,23 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
     {
         if(auto *pVersus = Utils::PopObject(args))
         {
-            const auto spellId     = args.extract<int32_t>();
-            const auto spellLevel  = args.extract<int32_t>();
-              ASSERT_OR_THROW(spellLevel <= 10);
-            const auto spellSchool = args.extract<int32_t>();
-              ASSERT_OR_THROW(spellSchool <= 8);
+            int32_t spellId, spellLevel, spellSchool;
+            try
+            {
+                spellId = args.extract<int32_t>();
+                spellLevel = args.extract<int32_t>();
+                spellSchool = args.extract<int32_t>();
+            }
+            catch(const std::runtime_error& e)
+            {
+                LOG_WARNING("NWNX_Object_DoSpellLevelAbsorption() called from NWScript without new parameters. Please update nwnx_object.nss");
+                spellId = -1;
+                spellLevel = -1;
+                spellSchool = -1;
+            }
+            
+            ASSERT_OR_THROW(spellLevel <= 10);
+            ASSERT_OR_THROW(spellSchool <= 8);
             
             auto pCaster = Utils::AsNWSCreature(pVersus);
             if(!pCaster) 
