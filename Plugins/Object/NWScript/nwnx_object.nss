@@ -320,8 +320,9 @@ int NWNX_Object_GetIsDestroyable(object oObject);
 /// @brief Checks for specific spell immunity. Should only be called in spellscripts
 /// @param oDefender The object defending against the spell.
 /// @param oCaster The object casting the spell.
+/// @param nSpellId The casted spell id. Default value is -1, which corrresponds to the normal game behaviour.
 /// @return -1 if defender has no immunity, 2 if the defender is immune
-int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster);
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster, int nSpellId=-1);
 
 /// @brief Checks for spell school/level immunities and mantles. Should only be called in spellscripts
 /// @param oDefender The object defending against the spell.
@@ -840,9 +841,10 @@ int NWNX_Object_GetIsDestroyable(object oObject)
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster)
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster, int nSpellId=-1)
 {
     string sFunc = "DoSpellImmunity";
+    NWNX_PushArgumentInt(nSpellId);
     NWNX_PushArgumentObject(oCaster);
     NWNX_PushArgumentObject(oDefender);
     NWNX_CallFunction(NWNX_Object, sFunc);

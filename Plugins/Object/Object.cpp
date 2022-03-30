@@ -810,7 +810,50 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
     if (auto *pObject = Utils::PopObject(args))
     {
         if(auto *pVersus = Utils::PopObject(args))
-            return pObject->DoSpellImmunity(pVersus);
+        {
+            int32_t spellId;
+            try
+            {
+                spellId = args.extract<int32_t>();
+            }
+            catch(const std::runtime_error& e)
+            {
+                LOG_WARNING("NWNX_Object_DoSpellImmunity() called from NWScript without new parameter. Please update nwnx_object.nss");
+                spellId = -1;
+            }
+
+            uint32_t prevSpellId;
+            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus); 
+            if(spellId>=0) 
+            {
+                if(pAoEObject)
+                {
+                    prevSpellId = pAoEObject->m_nSpellId;
+                    pAoEObject->m_nSpellId = spellId;
+                }
+                else
+                {
+                    prevSpellId = pVersus->m_nLastSpellId;
+                    pVersus->m_nLastSpellId = spellId;
+                } 
+            }
+
+            auto ret = pObject->DoSpellImmunity(pVersus);
+
+            if(spellId>=0) 
+            {
+                if(pAoEObject)
+                {
+                    pAoEObject->m_nSpellId = prevSpellId;
+                }
+                else
+                {
+                    pVersus->m_nLastSpellId = prevSpellId;
+                } 
+            }
+
+            return ret;
+        }
     }
 
     return -1;
