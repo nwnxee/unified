@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
 - Events: added skippable event `NWNX_ON_INPUT_DROP_ITEM_{BEFORE|AFTER}` which fires when a player attempts to drop an item.
 - Events: added skippable event `NWNX_ON_DECREMENT_SPELL_COUNT_{BEFORE|AFTER}` which fires when spell count (Memorized, non-memorized, or spell-like ability) decreases.
+- Events: added skippable event `NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_{BEFORE|AFTER}` which fires when the dm_visualeffect console command is used.
 
 ##### New Plugins
 - N/A
@@ -24,6 +25,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Area: GetTileInfoByTileIndex()
 - Area: GetPathExists()
 - Area: {Get|Set}AreaFlags()
+- Creature: {Get|Set}SkillPointsRemainingByLevel()
 - Effect: AccessorizeVisualEffect()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
@@ -34,6 +36,10 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
 - Object: DoSpellLevelAbsorption() can now override the spellId, the level and the school of the casted spell
 - Object: DoSpellImmunity() can now override the spellId
+- Events: added event data `STAT`/`VALUE`/`TARGET`/`SET` to `NWNX_ON_DM_SET_STAT_*`
+- Events: added event data `TYPE`/`TARGET`/`KEY` to `NWNX_ON_DM_GET_VARIABLE_*`
+- Events: added event data `TYPE`/`TARGET`/`KEY`/`VALUE` to `NWNX_ON_DM_SET_VARIABLE_*`
+- Events: added event data `TARGET`/`FACTION_ID`/`FACTION_NAME` to `NWNX_ON_DM_SET_FACTION_*`
 
 ### Deprecated
 - N/A

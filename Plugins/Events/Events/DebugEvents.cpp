@@ -84,6 +84,35 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
             break;
         }
 
+        case Constants::MessageCheatMinor::PlayVisualEffect:
+        {
+            std::string target = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string visualEffect = std::to_string(Utils::PeekMessage<uint16_t>(thisPtr, 4));
+            std::string duration = std::to_string(Utils::PeekMessage<float>(thisPtr, 6));
+            std::string x = std::to_string(Utils::PeekMessage<float>(thisPtr, 10));
+            std::string y = std::to_string(Utils::PeekMessage<float>(thisPtr, 14));
+            std::string z = std::to_string(Utils::PeekMessage<float>(thisPtr, 18));
+
+            auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
+                PushEventData("TARGET_OBJECT_ID", target);
+                PushEventData("VISUAL_EFFECT", visualEffect);
+                PushEventData("DURATION", duration);
+                PushEventData("TARGET_POSITION_X", x);
+                PushEventData("TARGET_POSITION_Y", y);
+                PushEventData("TARGET_POSITION_Z", z);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE"))
+                retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+            else
+                retVal = false;
+
+            PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_AFTER");
+
+            break;
+        }
+
         default:
             retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
     }
