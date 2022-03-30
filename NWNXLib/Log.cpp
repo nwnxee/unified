@@ -15,6 +15,8 @@ static bool s_PrintPlugin;
 static bool s_PrintSource;
 static bool s_ColorOutput;
 static bool s_ForceColor;
+static std::string s_LogFile;
+
 void SetPrintTimestamp(bool value)
 {
     s_PrintTimestamp = value;
@@ -65,6 +67,10 @@ bool GetForceColor()
 {
     return s_ForceColor;
 }
+void SetLogFile(const std::string& logfilepath)
+{
+    s_LogFile = logfilepath;
+}
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
 {
@@ -85,29 +91,36 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     }
     std::cout << message << rang::style::reset << rang::fg::reset  << std::endl;
 
-    // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
-    // for now. We can change this later if we want or need to.
-
-    static std::string logPath = API::Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/logs.0/nwnx.txt");
-    static FILE* logFile = std::fopen(logPath.c_str(), "a+");
-
-    if (logFile)
-    {
-        std::fprintf(logFile, "%s\n", message);
-        //if (s_Tasks)
-        //{
-        //    s_Tasks->QueueOnAsyncThread([&]() { std::fflush(logFile); });
-        //}
-        //else
-        {
-            std::fflush(logFile);
-        }
-    }
+    // Also write to a file if configured
+    WriteToLogFile(message);
 
     if (channel == Channel::SEV_FATAL)
     {
         ASSERT_FAIL();
         std::abort();
+    }
+}
+
+void WriteToLogFile(const char* message)
+{
+    static FILE* logFile;
+
+    if (!logFile && s_LogFile != "")
+    {
+        logFile = std::fopen(s_LogFile.c_str(), "a+");
+        if (logFile)
+        {
+            std::fprintf(logFile,
+        "=====================================================================\n"
+        "       NWNX secondary log file. This log file may be incomplete!     \n"
+        " Please attach stdout output instead of this file to any bug reports.\n"
+        "=====================================================================\n");
+        }
+    }
+    if (logFile)
+    {
+        std::fprintf(logFile, "%s\n", message);
+        std::fflush(logFile);
     }
 }
 

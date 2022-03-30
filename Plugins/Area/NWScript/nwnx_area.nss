@@ -295,6 +295,39 @@ int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
 /// @return The sound object.
 object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef);
 
+/// @brief Rotates an existing area, including all objects within (excluding PCs).
+/// @note Functions while clients are in the area, but not recommended as tiles/walkmesh only updates on area load, and this may result in unexpected clientside results.
+/// @param oArea The area to be rotated
+/// @param nRotation How many 90 degrees clockwise to rotate (1-3).
+void NWNX_Area_RotateArea(object oArea, int nRotation);
+
+/// @brief Get the tile info of the tile at nIndex in the tile array.
+/// @param oArea The area.
+/// @param nIndex The index of the tile.
+/// @return A NWNX_Area_TileInfo struct with tile info.
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIndex);
+
+/// @brief Check if there is a path between two positions in an area.
+/// @note Does not care about doors or placeables, only checks tile path nodes.
+/// @param oArea The area.
+/// @param vStartPosition The start position.
+/// @param vEndPosition The end position.
+/// @param nMaxDepth The max depth of the DFS tree. A good value is AreaWidth * AreaHeight.
+/// @return TRUE if there is a path between vStartPosition and vEndPosition, FALSE if not or on error.
+int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth);
+
+/// @brief Get oArea's flags, interior/underground etc.
+/// @param oArea The area.
+/// @return The raw flags bitmask or -1 on error.
+int NWNX_Area_GetAreaFlags(object oArea);
+
+/// @brief Set oArea's raw flags bitmask.
+/// @note You'll have to do any bitwise operations yourself.
+/// @note Requires clients to reload the area to get any updated flags.
+/// @param oArea The area.
+/// @param nFlags The flags.
+void NWNX_Area_SetAreaFlags(object oArea, int nFlags);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -735,8 +768,71 @@ object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRe
     NWNX_PushArgumentFloat(vPosition.y);
     NWNX_PushArgumentFloat(vPosition.x);
     NWNX_PushArgumentObject(oArea);
-    
+
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Area_RotateArea(object oArea, int nRotation)
+{
+    string sFunc = "RotateArea";
+
+    NWNX_PushArgumentInt(nRotation);
+    NWNX_PushArgumentObject(oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIndex)
+{
+    string sFunc = "GetTileInfoByTileIndex";
+
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    struct NWNX_Area_TileInfo str;
+
+    str.nGridY = NWNX_GetReturnValueInt();
+    str.nGridX = NWNX_GetReturnValueInt();
+    str.nOrientation = NWNX_GetReturnValueInt();
+    str.nHeight = NWNX_GetReturnValueInt();
+    str.nID = NWNX_GetReturnValueInt();
+
+    return str;
+}
+
+int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth)
+{
+    string sFunc = "GetPathExists";
+
+    NWNX_PushArgumentInt(nMaxDepth);
+    NWNX_PushArgumentFloat(vEndPosition.y);
+    NWNX_PushArgumentFloat(vEndPosition.x);
+    NWNX_PushArgumentFloat(vStartPosition.y);
+    NWNX_PushArgumentFloat(vStartPosition.x);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Area_GetAreaFlags(object oArea)
+{
+    string sFunc = "GetAreaFlags";
+
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Area_SetAreaFlags(object oArea, int nFlags)
+{
+    string sFunc = "SetAreaFlags";
+
+    NWNX_PushArgumentInt(nFlags);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
 }

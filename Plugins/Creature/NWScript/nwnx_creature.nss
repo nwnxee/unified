@@ -73,6 +73,20 @@ const int NWNX_CREATURE_BONUS_TYPE_SKILL         = 5;
 const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
 /// @}
 
+/// @name Ranged Projectile VFX
+/// @anchor ranged_projectile_vfx
+///
+/// Used with NWNX_Creature_OverrideRangedProjectileVFX() these are the projectile vfx types.
+/// @{
+const int NWNX_CREATURE_PROJECTILE_VFX_NONE         = 0; ///< No VFX
+const int NWNX_CREATURE_PROJECTILE_VFX_ACID         = 1;
+const int NWNX_CREATURE_PROJECTILE_VFX_COLD         = 2;
+const int NWNX_CREATURE_PROJECTILE_VFX_ELECTRICAL   = 3;
+const int NWNX_CREATURE_PROJECTILE_VFX_FIRE         = 4;
+const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
+const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
+/// @}
+
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility
@@ -109,6 +123,14 @@ void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level);
 /// @param creature The creature object.
 /// @param feat The feat id.
 void NWNX_Creature_RemoveFeat(object creature, int feat);
+
+/// @brief Removes the creature a feat assigned at a level
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @param level The level they gained the feat.
+/// @remark Removes the feat from the stat list at the provided level. Does not remove the feat from the creature, use
+/// NWNX_Creature_RemoveFeat for this.
+void NWNX_Creature_RemoveFeatByLevel(object creature, int feat, int level);
 
 /// @brief Determines if the creature knows a feat.
 /// @note This differs from native @nwn{GetHasFeat} which returns FALSE if the feat has no more uses per day.
@@ -383,12 +405,29 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 /// @param rank The value to set as the skill rank.
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 
+/// @brief Get the ranks in a skill for creature assigned at a level.
+/// @param creature The creature object.
+/// @param skill The skill id.
+/// @param level The level they gained skill ranks.
+/// @return The rank in a skill assigned at a level (-1 on error).
+int NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level);
+
+/// @brief Set the ranks in a skill for creature assigned at a level.
+/// @note It only affect the leveling array, to know what to do on level-down. To effectivly change the skill rank on the current level, NWNX_Creature_SetSkillRank is also needed.
+/// @param creature The creature object.
+/// @param skill The skill id.
+/// @param level The level they gained skill ranks.
+/// @param rank The value to set as the skill rank.
+void NWNX_Creature_SetSkillRankByLevel(object creature, int skill, int rank, int level);
+
 /// @brief Set the class ID in a particular position for a creature.
 /// @param creature The creature object.
 /// @param position Should be 0, 1, or 2 depending on how many classes the creature
 /// has and which is to be modified.
 /// @param classID A valid ID number in classes.2da and between 0 and 255.
-void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
+/// @param bUpdateLevels determines whether the method will replace all occurrences
+/// of the old class in CNWLevelStats with the new classID.
+void NWNX_Creature_SetClassByPosition(object creature, int position, int classID, int bUpdateLevels = TRUE);
 
 /// @brief Set the level at the given position for a creature.
 /// @note A creature should already have a class in that position.
@@ -452,6 +491,18 @@ int NWNX_Creature_GetSkillPointsRemaining(object creature);
 /// @param creature The creature object.
 /// @param skillpoints The value to set.
 void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
+/// @brief Gets the creature's remaining unspent skill points for level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @return The remaining unspent skill points for level.
+int NWNX_Creature_GetSkillPointsRemainingByLevel(object creature, int level);
+
+/// @brief Sets the creature's remaining unspent skill points for level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @param value The value to set for level.
+void NWNX_Creature_SetSkillPointsRemainingByLevel(object creature, int level, int value);
 
 /// @brief Sets the creature's racial type
 /// @param creature The creature object.
@@ -949,6 +1000,13 @@ int NWNX_Creature_RunEquip(object oCreature, object oItem, int nInventorySlot);
 /// @return TRUE on success, FALSE on failure.
 int NWNX_Creature_RunUnequip(object oCreature, object oItem);
 
+/// @brief Override the elemental projectile visual effect of ranged/throwing weapons.
+/// @param oCreature The creature.
+/// @param nProjectileVFX A @ref ranged_projectile_vfx "NWNX_CREATURE_PROJECTILE_VFX_*" constant or -1 to remove the override.
+/// @param bPersist Whether the vfx should persist to the .bic file (for PCs).
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectileVFX, int bPersist = FALSE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -974,6 +1032,17 @@ void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level)
 void NWNX_Creature_RemoveFeat(object creature, int feat)
 {
     string sFunc = "RemoveFeat";
+    NWNX_PushArgumentInt(feat);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RemoveFeatByLevel(object creature, int feat, int level)
+{
+    string sFunc = "RemoveFeatByLevel";
+
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentInt(feat);
     NWNX_PushArgumentObject(creature);
 
@@ -1462,9 +1531,34 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetClassByPosition(object creature, int position, int classID)
+int NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level)
+{
+    string sFunc = "GetSkillRankByLevel";
+
+    NWNX_PushArgumentInt(level);
+    NWNX_PushArgumentInt(skill);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetSkillRankByLevel(object creature, int skill, int rank, int level)
+{
+    string sFunc = "SetSkillRankByLevel";
+
+    NWNX_PushArgumentInt(level);
+    NWNX_PushArgumentInt(rank);
+    NWNX_PushArgumentInt(skill);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetClassByPosition(object creature, int position, int classID, int bUpdateLevels = TRUE)
 {
     string sFunc = "SetClassByPosition";
+    NWNX_PushArgumentInt(bUpdateLevels);
     NWNX_PushArgumentInt(classID);
     NWNX_PushArgumentInt(position);
     NWNX_PushArgumentObject(creature);
@@ -1566,6 +1660,28 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
 {
     string sFunc = "SetSkillPointsRemaining";
     NWNX_PushArgumentInt(skillpoints);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetSkillPointsRemainingByLevel(object creature, int level)
+{
+    string sFunc = "GetSkillPointsRemainingByLevel";
+
+    NWNX_PushArgumentInt(level);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetSkillPointsRemainingByLevel(object creature, int level, int value)
+{
+    string sFunc = "SetSkillPointsRemainingByLevel";
+
+    NWNX_PushArgumentInt(value);
+    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -2438,4 +2554,14 @@ int NWNX_Creature_RunUnequip(object oCreature, object oItem)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectileVFX, int bPersist = FALSE)
+{
+    string sFunc = "OverrideRangedProjectileVFX";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nProjectileVFX);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }

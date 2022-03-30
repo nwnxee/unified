@@ -13,6 +13,8 @@ void main()
     int hash = NWNX_Util_Hash(str);
     NWNX_Tests_Report("NWNX_Util", "Hash", hash != 0);
 
+    NWNX_Tests_Report("NWNX_Util", "GetModuleMtime", NWNX_Util_GetModuleMtime() > 0);
+
     string ascii = NWNX_Util_GetAsciiTableString();
     NWNX_Tests_Report("NWNX_Util", "GetAsciiTableString", GetSubString(ascii, 65, 1) == "A");
 

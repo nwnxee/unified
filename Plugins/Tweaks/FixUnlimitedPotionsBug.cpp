@@ -44,7 +44,7 @@ static int32_t AddEventDeltaTimeHook(CServerAIMaster *pServerAIMaster, uint32_t 
 {
    auto retVal = s_AddEventDeltaTimeHook->CallOriginal<int32_t>(pServerAIMaster, nDaysFromNow, nTimeFromNow, nCallerObjectId, nObjectId, nEventId, pScript);
 
-    if (s_bUsableItemRemoval && nEventId == Constants::Event::DestroyObject)
+    if (s_bUsableItemRemoval && nEventId == Constants::AIMasterEvent::DestroyObject)
     {
         if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(nObjectId)))
         {

@@ -5,7 +5,11 @@
 %include <std_vector.i>
 %include <swiginterface.i>
 
+%include "DotNETExtensions.i"
+%include "DotNETPrimitives.i"
+%include "DotNETArrays.i"
 %include "std_unordered_map.i"
+%include "CExoArrayList.i"
 
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
@@ -16,118 +20,14 @@
 %pragma(csharp) imclassclassmodifiers="public unsafe class"
 %typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
 
+// Use NativeStringMarshaler for marshalling of cp1252 strings.
 namespace std {
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
 %typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") char* "string"
 }
 
-// C# Wrapper Class Extensions
-%define SWIG_DOTNET_EXTENSIONS
-
-  public global::System.IntPtr Pointer {
-    get {
-      return swigCPtr.Handle;
-    }
-  }
-
-  public static unsafe implicit operator void*($csclassname self) {
-    return (void*)self.swigCPtr.Handle;
-  }
-
-  public static unsafe $csclassname FromPointer(void* pointer, bool memoryOwn = false) {
-    return pointer != null ? new $csclassname((global::System.IntPtr)pointer, memoryOwn) : null;
-  }
-
-  public static $csclassname FromPointer(global::System.IntPtr pointer, bool memoryOwn = false) {
-    return pointer != global::System.IntPtr.Zero ? new $csclassname(pointer, memoryOwn) : null;
-  }
-
-  public bool Equals($csclassname other) {
-    if (ReferenceEquals(null, other)) {
-      return false;
-    }
-
-    if (ReferenceEquals(this, other)) {
-      return true;
-    }
-
-    return Pointer.Equals(other.Pointer);
-  }
-
-  public override bool Equals(object obj) {
-    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
-  }
-
-  public override int GetHashCode() {
-    return swigCPtr.Handle.GetHashCode();
-  }
-
-  public static bool operator ==($csclassname left, $csclassname right) {
-    return Equals(left, right);
-  }
-
-  public static bool operator !=($csclassname left, $csclassname right) {
-    return !Equals(left, right);
-  }
-%enddef
-
-// C# Wrapper Class Extensions - Default
-%typemap(cscode, noblock=1) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE (CLASS::*) {
-SWIG_DOTNET_EXTENSIONS
-}
-
-// C# Wrapper Class Extensions - CExoString
-%typemap(cscode, noblock=1) CExoString {
-SWIG_DOTNET_EXTENSIONS
-
-  public override string ToString() {
-    return CStr();
-  }
-}
-
-// Marshal Blittable types without wrapper class.
-%define MarshalType(CTYPE, CSTYPE, CSARRAYTYPE)
-%typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
-%typemap(imtype) CTYPE*,CTYPE&,CTYPE[ANY] "global::System.IntPtr"
-%typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
-%typemap(cstype) CTYPE[ANY] "NativeArray<CSARRAYTYPE>"
-%typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
-%typemap(csin)   CTYPE[ANY] "$csinput"
-%typemap(in)     CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
-%typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
-
-%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& {
-    global::System.IntPtr retVal = $imcall;$excode
-    return (CSTYPE*)retVal;
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{
-    get {
-        global::System.IntPtr retVal = $imcall;$excode
-        return (CSTYPE*)retVal;
-    }
-%}
-
-%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] {
-    global::System.IntPtr arrayPtr = $imcall;$excode
-    NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
-
-    return retVal; // CSTYPE[$1_dim0]
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{
-    get {
-      global::System.IntPtr arrayPtr = $imcall;$excode
-      NativeArray<CSARRAYTYPE> retVal = new NativeArray<CSARRAYTYPE>(arrayPtr, $1_dim0);
-
-      return retVal; // CSTYPE[$1_dim0]
-    }
-%}
-%enddef
-
-// Marshal pointer to pointer as void* for easier dereferencing
-%define MarshalPtrPtr(CTYPE, CSTYPE)
+// Marshal pointer types as void* for easier dereferencing
+%define MarshalPtr(CTYPE, CSTYPE)
 %typemap(ctype)  CTYPE*,CTYPE& "CTYPE*"
 %typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
 %typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
@@ -148,169 +48,58 @@ SWIG_DOTNET_EXTENSIONS
 %}
 %enddef
 
-// C# code for accessing native arrays
-%define MapArray(TYPE, CSTYPE, NAME)
-%typemap(cstype) TYPE[ANY] "NAME"
-%typemap(csin)   TYPE[ANY] "NAME.getCPtr($csinput)"
-%typemap(csout, excode=SWIGEXCODE) TYPE[ANY] {
-    global::System.IntPtr cPtr = $imcall;$excode;
-    NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
-    return ret;
-  }
-
-%typemap(csvarout, excode=SWIGEXCODE2) TYPE[ANY] %{
-    get {
-        global::System.IntPtr cPtr = $imcall;$excode;
-        NAME ret = (cPtr == global::System.IntPtr.Zero) ? null : new NAME(cPtr, false);
-        return ret;
-    }
-%}
-
-%typemap(cscode, noblock=1) NAME {
-SWIG_DOTNET_EXTENSIONS
-
-  public CSTYPE this[int index] {
-    get {
-      return GetItem(index);
-    }
-    set {
-      SetItem(index, value);
-    }
-  }
-}
-%enddef
-
-// Native array definition for a C-style array define.
-%define DefineArray(TYPE, CSTYPE, NAME)
-%{
-typedef TYPE NAME;
-%}
-typedef struct {} NAME;
-
-%extend NAME {
-NAME(int nElements) {
-  return new TYPE[nElements]();
-}
-
-~NAME() {
-  delete [] self;
-}
-
-TYPE GetItem(int index) {
-  return self[index];
-}
-
-void SetItem(int index, TYPE value) {
-  self[index] = value;
-}
-
-static NAME* FromPointer(TYPE *ptr) {
-  return (NAME *) ptr;
-}
-
-};
-%enddef
-
-// Native array definition for an array defined as a pointer, with a separate length variable.
-%define DefineArrayPtr(TYPE, CSTYPE, NAME)
-%{
-typedef TYPE NAME;
-%}
-typedef struct {} NAME;
-
-%extend NAME {
-NAME(int nElements) {
-  return new TYPE[nElements]();
-}
-
-~NAME() {
-  delete [] self;
-}
-
-TYPE* GetItem(int index) {
-  return &self[index];
-}
-
-void SetItem(int index, TYPE* value) {
-  self[index] = *value;
-}
-
-static NAME* FromPointer(TYPE *ptr) {
-  return static_cast<NAME*>(ptr);
-}
-
-};
-%enddef
-
-// Marshal native types to managed types.
-MarshalType(void, void, global::System.IntPtr)
-MarshalType(void*, void*, global::System.IntPtr) // void**
-MarshalType(signed char, sbyte, sbyte)
-MarshalType(char*, char*, global::System.IntPtr) // char**
-MarshalType(short int, short, short)
-MarshalType(int, int, int)
-MarshalType(int*, int*, global::System.IntPtr) // int**
-MarshalType(float, float, float)
-MarshalType(float*, float*, global::System.IntPtr) //float**
-MarshalType(float**, float**, global::System.IntPtr) //float***
-MarshalType(long, long, long)
-MarshalType(unsigned char, byte, byte)
-MarshalType(unsigned char*, byte*, global::System.IntPtr) //unsigned char**
-MarshalType(unsigned short int, ushort, ushort)
-MarshalType(unsigned int, uint, uint)
-MarshalType(unsigned int*, uint*, global::System.IntPtr) //unsigned int**
-MarshalType(unsigned long, ulong, ulong)
-
-// Marshal pointer to pointer types.
-MarshalPtrPtr(C2DA*, void*)
-MarshalPtrPtr(CAppManager*, void*)
-MarshalPtrPtr(CCombatInformationNode*, void*)
-MarshalPtrPtr(CEffectIconObject*, void*)
-MarshalPtrPtr(CExoBase*, void*)
-MarshalPtrPtr(CExoResMan*, void*)
-MarshalPtrPtr(CExoKeyTable*, void*)
-MarshalPtrPtr(CExoLinkedListNode*, void*)
-MarshalPtrPtr(CExoPackedFile*, void*)
-MarshalPtrPtr(CExoString*, void*)
-MarshalPtrPtr(CFeatUseListEntry*, void*)
-MarshalPtrPtr(CGameEffect*, void*)
-MarshalPtrPtr(CGameObject*, void*)
-MarshalPtrPtr(CGameObjectArrayNode*, void*)
-MarshalPtrPtr(CItemRepository*, global::System.IntPtr)
-MarshalPtrPtr(CKeyTableEntry*, void*)
-MarshalPtrPtr(CLastUpdateObject*, void*)
-MarshalPtrPtr(CLastUpdatePartyObject*, void*)
-MarshalPtrPtr(CLoopingVisualEffect*, void*)
-MarshalPtrPtr(CNWCCMessageData*, void*)
-MarshalPtrPtr(CNWItemProperty*, void*)
-MarshalPtrPtr(CNWLevelStats*, void*)
-MarshalPtrPtr(CNWPlaceableSurfaceMesh*, void*)
-MarshalPtrPtr(CNWRules*, void*)
-MarshalPtrPtr(CNWSAreaGridSuccessors*, void*)
-MarshalPtrPtr(CNWSExpression*, void*)
-MarshalPtrPtr(CNWSFaction*, void*)
-MarshalPtrPtr(CNWSItem*, void*)
-MarshalPtrPtr(CNWSObjectActionNode*, void*)
-MarshalPtrPtr(CNWSSpellScriptData*, void*)
-MarshalPtrPtr(CNWSStats_Spell*, void*)
-MarshalPtrPtr(CNWTileSet*, void*)
-MarshalPtrPtr(CNWVisibilityNode*, void*)
-MarshalPtrPtr(CObjectLookupTable*, void*)
-MarshalPtrPtr(CPathfindInfoIntraTileSuccessors*, void*)
-MarshalPtrPtr(CScriptCompiler*, void*)
-MarshalPtrPtr(CScriptLog*, void*)
-MarshalPtrPtr(CScriptParseTreeNode*, void*)
-MarshalPtrPtr(CSpell_Add*, void*)
-MarshalPtrPtr(CSpell_Delete*, void*)
-MarshalPtrPtr(CStoreCustomer*, void*)
-MarshalPtrPtr(CTlkFile*, void*)
-MarshalPtrPtr(CTlkTable*, void*)
-MarshalPtrPtr(CVirtualMachine*, void*)
-MarshalPtrPtr(CVirtualMachineScript*, void*)
-MarshalPtrPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
-MarshalPtrPtr(NWPlayerCharacterList_st*, void*)
-MarshalPtrPtr(SSubNetProfile*, void*)
-MarshalPtrPtr(Task::CExoTaskManager*, void*)
+// Marshal pointer types.
+MarshalPtr(void, void)
+MarshalPtr(void*, void*) // void**
+MarshalPtr(C2DA*, void*)
+MarshalPtr(CAppManager*, void*)
+MarshalPtr(CCombatInformationNode*, void*)
+MarshalPtr(CEffectIconObject*, void*)
+MarshalPtr(CExoBase*, void*)
+MarshalPtr(CExoResMan*, void*)
+MarshalPtr(CExoKeyTable*, void*)
+MarshalPtr(CExoLinkedListNode*, void*)
+MarshalPtr(CExoPackedFile*, void*)
+MarshalPtr(CExoString*, void*)
+MarshalPtr(CFeatUseListEntry*, void*)
+MarshalPtr(CGameEffect*, void*)
+MarshalPtr(CGameObject*, void*)
+MarshalPtr(CGameObjectArrayNode*, void*)
+MarshalPtr(CItemRepository*, global::System.IntPtr)
+MarshalPtr(CKeyTableEntry*, void*)
+MarshalPtr(CLastUpdateObject*, void*)
+MarshalPtr(CLastUpdatePartyObject*, void*)
+MarshalPtr(CLoopingVisualEffect*, void*)
+MarshalPtr(CNWCCMessageData*, void*)
+MarshalPtr(CNWItemProperty*, void*)
+MarshalPtr(CNWLevelStats*, void*)
+MarshalPtr(CNWPlaceableSurfaceMesh*, void*)
+MarshalPtr(CNWRules*, void*)
+MarshalPtr(CNWSAreaGridSuccessors*, void*)
+MarshalPtr(CNWSExpression*, void*)
+MarshalPtr(CNWSFaction*, void*)
+MarshalPtr(CNWSItem*, void*)
+MarshalPtr(CNWSObjectActionNode*, void*)
+MarshalPtr(CNWSSpellScriptData*, void*)
+MarshalPtr(CNWSStats_Spell*, void*)
+MarshalPtr(CNWTileSet*, void*)
+MarshalPtr(CNWVisibilityNode*, void*)
+MarshalPtr(CObjectLookupTable*, void*)
+MarshalPtr(CPathfindInfoIntraTileSuccessors*, void*)
+MarshalPtr(CScriptCompiler*, void*)
+MarshalPtr(CScriptLog*, void*)
+MarshalPtr(CScriptParseTreeNode*, void*)
+MarshalPtr(CSpell_Add*, void*)
+MarshalPtr(CSpell_Delete*, void*)
+MarshalPtr(CStoreCustomer*, void*)
+MarshalPtr(CTlkFile*, void*)
+MarshalPtr(CTlkTable*, void*)
+MarshalPtr(CVirtualMachine*, void*)
+MarshalPtr(CVirtualMachineScript*, void*)
+MarshalPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
+MarshalPtr(NWPlayerCharacterList_st*, void*)
+MarshalPtr(SSubNetProfile*, void*)
+MarshalPtr(Task::CExoTaskManager*, void*)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
@@ -371,63 +160,9 @@ MarshalPtrPtr(Task::CExoTaskManager*, void*)
 %ignore CResHelper<CResNDB,2064>;
 %ignore CResHelper<CResNCS,2010>;
 
-// Ignore template methods with missing type implementations.
-%ignore CExoArrayList::DerefContains;
-%ignore CExoArrayList::IndexOf;
-%ignore CExoArrayList::Contains;
-%ignore CExoArrayList::AddUnique;
-%ignore CExoArrayList::Remove;
-%ignore CExoArrayList::begin() const;
-%ignore CExoArrayList::end() const;
-
 // Template defines
-%include "API/CExoArrayList.hpp"
 %include "API/CExoLinkedList.hpp"
 %include "API/CResHelper.hpp"
-
-%template(CExoArrayListCCombatInformationNodePtr) CExoArrayList<CCombatInformationNode *>;
-%template(CExoArrayListCEffectIconObjectPtr) CExoArrayList<CEffectIconObject *>;
-%template(CExoArrayListCExoKeyTablePtr) CExoArrayList<CExoKeyTable *>;
-%template(CExoArrayListCExoString) CExoArrayList<CExoString>;
-%template(CExoArrayListCExoStringPtr) CExoArrayList<CExoString *>;
-%template(CExoArrayListCFeatUseListEntryPtr) CExoArrayList<CFeatUseListEntry *>;
-%template(CExoArrayListCFileInfo) CExoArrayList<CFileInfo>;
-%template(CExoArrayListCGameEffectPtr) CExoArrayList<CGameEffect *>;
-%template(CExoArrayListCGameObjectPtr) CExoArrayList<CGameObject *>;
-%template(CExoArrayListCLoopingVisualEffectPtr) CExoArrayList<CLoopingVisualEffect *>;
-%template(CExoArrayListCNetLayerPlayerCDKeyInfo) CExoArrayList<CNetLayerPlayerCDKeyInfo>;
-%template(CExoArrayListCNWCCMessageDataPtr) CExoArrayList<CNWCCMessageData *>;
-%template(CExoArrayListCNWItemProperty) CExoArrayList<CNWItemProperty>;
-%template(CExoArrayListCNWLevelStatsPtr) CExoArrayList<CNWLevelStats *>;
-%template(CExoArrayListCNWSExpressionPtr) CExoArrayList<CNWSExpression *>;
-%template(CExoArrayListCNWSFactionPtr) CExoArrayList<CNWSFaction *>;
-%template(CExoArrayListCNWSInvitationDetails) CExoArrayList<CNWSInvitationDetails>;
-%template(CExoArrayListCNWSPersonalReputation) CExoArrayList<CNWSPersonalReputation>;
-%template(CExoArrayListCNWSPlayerJournalQuestUpdates) CExoArrayList<CNWSPlayerJournalQuestUpdates>;
-%template(CExoArrayListCNWSPVPEntry) CExoArrayList<CNWSPVPEntry>;
-%template(CExoArrayListCNWSSpellScriptDataPtr) CExoArrayList<CNWSSpellScriptData *>;
-%template(CExoArrayListCNWSStatsSpellLikeAbility) CExoArrayList<CNWSStats_SpellLikeAbility>;
-%template(CExoArrayListCNWSStatsSpellPtr) CExoArrayList<CNWSStats_Spell *>;
-%template(CExoArrayListCNWSTagNode) CExoArrayList<CNWSTagNode>;
-%template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
-%template(CExoArrayListCResRef) CExoArrayList<CResRef>;
-%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
-%template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
-%template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
-%template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;
-%template(CExoArrayListCWorldJournalEntry) CExoArrayList<CWorldJournalEntry>;
-%template(CExoArrayListFloat) CExoArrayList<float>;
-%template(CExoArrayListInt32) CExoArrayList<int32_t>;
-%template(CExoArrayListMaterialShaderParam) CExoArrayList<MaterialShaderParam>;
-%template(CExoArrayListNWPlayerCharacterListPtr) CExoArrayList<NWPlayerCharacterList_st *>;
-%template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
-%template(CExoArrayListObjectId) CExoArrayList<OBJECT_ID>;
-%template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
-%template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
-%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
-%template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
-%template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
-%template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
 
 %template(CExoLinkedListC2DA) CExoLinkedList<C2DA>;
 %template(CExoLinkedListCERFKey) CExoLinkedList<CERFKey>;
@@ -502,8 +237,55 @@ MapArray(CResRef, CResRef, CResRefArray);
 MapArray(CNWClass, CNWClass, CNWClassArray);
 MapArray(CNWSkill, CNWSkill, CNWSkillArray);
 MapArray(CNWDomain, CNWDomain, CNWDomainArray);
+MapArray(CEncounterListEntry, CEncounterListEntry, CEncounterListEntryArray);
+MapArray(CEncounterSpawnPoint, CEncounterSpawnPoint, CEncounterSpawnPointArray);
+MapArray(CNWClass_Feat, CNWClass_Feat, CNWClass_FeatArray);
+MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 
 %include "NWNXLib.i"
+
+%template(CExoArrayListCCombatInformationNodePtr) CExoArrayList<CCombatInformationNode *>;
+%template(CExoArrayListCEffectIconObjectPtr) CExoArrayList<CEffectIconObject *>;
+%template(CExoArrayListCExoKeyTablePtr) CExoArrayList<CExoKeyTable *>;
+%template(CExoArrayListCExoString) CExoArrayList<CExoString>;
+%template(CExoArrayListCExoStringPtr) CExoArrayList<CExoString *>;
+%template(CExoArrayListCFeatUseListEntryPtr) CExoArrayList<CFeatUseListEntry *>;
+%template(CExoArrayListCFileInfo) CExoArrayList<CFileInfo>;
+%template(CExoArrayListCGameEffectPtr) CExoArrayList<CGameEffect *>;
+%template(CExoArrayListCGameObjectPtr) CExoArrayList<CGameObject *>;
+%template(CExoArrayListCLoopingVisualEffectPtr) CExoArrayList<CLoopingVisualEffect *>;
+%template(CExoArrayListCNetLayerPlayerCDKeyInfo) CExoArrayList<CNetLayerPlayerCDKeyInfo>;
+%template(CExoArrayListCNWCCMessageDataPtr) CExoArrayList<CNWCCMessageData *>;
+%template(CExoArrayListCNWItemProperty) CExoArrayList<CNWItemProperty>;
+%template(CExoArrayListCNWLevelStatsPtr) CExoArrayList<CNWLevelStats *>;
+%template(CExoArrayListCNWSExpressionPtr) CExoArrayList<CNWSExpression *>;
+%template(CExoArrayListCNWSFactionPtr) CExoArrayList<CNWSFaction *>;
+%template(CExoArrayListCNWSInvitationDetails) CExoArrayList<CNWSInvitationDetails>;
+%template(CExoArrayListCNWSPersonalReputation) CExoArrayList<CNWSPersonalReputation>;
+%template(CExoArrayListCNWSPlayerJournalQuestUpdates) CExoArrayList<CNWSPlayerJournalQuestUpdates>;
+%template(CExoArrayListCNWSPVPEntry) CExoArrayList<CNWSPVPEntry>;
+%template(CExoArrayListCNWSSpellScriptDataPtr) CExoArrayList<CNWSSpellScriptData *>;
+%template(CExoArrayListCNWSStatsSpellLikeAbility) CExoArrayList<CNWSStats_SpellLikeAbility>;
+%template(CExoArrayListCNWSStatsSpellPtr) CExoArrayList<CNWSStats_Spell *>;
+%template(CExoArrayListCNWSTagNode) CExoArrayList<CNWSTagNode>;
+%template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
+%template(CExoArrayListCResRef) CExoArrayList<CResRef>;
+%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
+%template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
+%template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
+%template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;
+%template(CExoArrayListCWorldJournalEntry) CExoArrayList<CWorldJournalEntry>;
+%template(CExoArrayListFloat) CExoArrayList<float>;
+%template(CExoArrayListInt32) CExoArrayList<int32_t>;
+%template(CExoArrayListMaterialShaderParam) CExoArrayList<MaterialShaderParam>;
+%template(CExoArrayListNWPlayerCharacterListPtr) CExoArrayList<NWPlayerCharacterList_st *>;
+%template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
+%template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
+%template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
+%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
+%template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
+%template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
+%template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
 
 // Array wrappers for structures
 DefineArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
@@ -540,11 +322,15 @@ DefineArrayPtr(CResRef, CResRef, CResRefArray);
 DefineArrayPtr(CNWClass, CNWClass, CNWClassArray);
 DefineArrayPtr(CNWSkill, CNWSkill, CNWSkillArray);
 DefineArrayPtr(CNWDomain, CNWDomain, CNWDomainArray);
+DefineArrayPtr(CEncounterListEntry, CEncounterListEntry, CEncounterListEntryArray);
+DefineArrayPtr(CEncounterSpawnPoint, CEncounterSpawnPoint, CEncounterSpawnPointArray);
+DefineArrayPtr(CNWClass_Feat, CNWClass_Feat, CNWClass_FeatArray);
+DefineArrayPtr(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 
 // Std templates
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
 %template(VectorCExoString) std::vector<CExoString>;
 %template(UnorderedMapCExoStringCNWSScriptVar) std::unordered_map<CExoString, CNWSScriptVar>;
-%template(UnorderedMapUInt32CExoString) std::unordered_map<uint32_t, CExoString>;
-%template(UnorderedMapUInt32STR_RES) std::unordered_map<uint32_t, STR_RES>;
+%template(UnorderedMapUInt32CExoString) std::unordered_map<unsigned int, CExoString>;
+%template(UnorderedMapUInt32STR_RES) std::unordered_map<unsigned int, STR_RES>;
 %template(UnorderedMapStringCachedRulesetEntry) std::unordered_map<std::string, CachedRulesetEntry>;

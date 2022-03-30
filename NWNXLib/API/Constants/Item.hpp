@@ -699,4 +699,39 @@ namespace WeaponAttackType
     }
 }
 
+namespace ItemVFX
+{
+    enum TYPE
+    {
+        None = 0,
+        Acid = 1,
+        Cold = 2,
+        Electrical = 3,
+        Fire = 4,
+        Sonic = 5,
+        Holy = 6,
+        Evil = 7,
+    };
+    constexpr int32_t MIN = 0;
+    constexpr int32_t MAX = 7;
+    static_assert(MAX == Evil);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "None",
+            "Acid",
+            "Cold",
+            "Electrical",
+            "Fire",
+            "Sonic",
+            "Holy",
+            "Evil",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

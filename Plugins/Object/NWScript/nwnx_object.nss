@@ -15,6 +15,7 @@ const int NWNX_OBJECT_LOCALVAR_TYPE_FLOAT    = 2;
 const int NWNX_OBJECT_LOCALVAR_TYPE_STRING   = 3;
 const int NWNX_OBJECT_LOCALVAR_TYPE_OBJECT   = 4;
 const int NWNX_OBJECT_LOCALVAR_TYPE_LOCATION = 5;
+const int NWNX_OBJECT_LOCALVAR_TYPE_JSON     = 6;
 /// @}
 
 /// @anchor object_internal_types
@@ -61,8 +62,9 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @note As of build 8193.14, this function takes O(n) time, where n is the number
 ///       of locals on the object. Individual variable access with GetLocalXxx()
 ///       is now O(1) though.
-/// @note As of build 8193.14, this function may return variable type UNKNOWN
-///       if the value is the default (0/0.0/""/OBJECT_INVALID) for the type.
+/// @note As of build 8193.14, this function will not return a variable if the value is
+///       the default (0/0.0/""/OBJECT_INVALID/JsonNull()) for the type. They are considered not set.
+/// @note Will return type UNKNOWN for cassowary variables.
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 
@@ -206,7 +208,8 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @brief Export an object to the UserDirectory/nwnx folder.
 /// @param sFileName The filename without extension, 16 or less characters.
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
-void NWNX_Object_Export(object oObject, string sFileName);
+/// @param sAlias The alias of the resource directory to add the .git file to. Default: UserDirectory/nwnx
+void NWNX_Object_Export(object oObject, string sFileName, string sAlias = "NWNX");
 
 /// @brief Get oObject's integer variable sVarName.
 /// @param oObject The object to get the variable from.
@@ -367,6 +370,17 @@ void NWNX_Object_SetMapNote(object oObject, string sMapNote, int nID = 0, int nG
 /// @param oObject The object.
 /// @return The feat ID, or 65535 when not cast by a feat, or -1 on error.
 int NWNX_Object_GetLastSpellCastFeat(object oObject);
+
+/// @brief Sets the last object that triggered door or placeable trap.
+/// @note Should be retrieved with GetEnteringObject.
+/// @param oObject Door or placeable object
+/// @param oLast Object that last triggered trap.
+void NWNX_Object_SetLastTriggered(object oObject, object oLast);
+
+/// @brief Gets the remaining duration of the AoE object.
+/// @param oAoE The AreaOfEffect object.
+/// @return The remaining duration, in seconds, or the zero on failure.
+float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE);
 
 /// @}
 
@@ -630,10 +644,11 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_Export(object oObject, string sFileName)
+void NWNX_Object_Export(object oObject, string sFileName, string sAlias = "NWNX")
 {
     string sFunc = "Export";
 
+    NWNX_PushArgumentString(sAlias);
     NWNX_PushArgumentString(sFileName);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
@@ -913,4 +928,24 @@ int NWNX_Object_GetLastSpellCastFeat(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Object_SetLastTriggered(object oObject, object oLast)
+{
+    string sFunc = "SetLastTriggered";
+
+    NWNX_PushArgumentObject(oLast);
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE)
+{
+    string sFunc = "GetAoEObjectDurationRemaining";
+
+    NWNX_PushArgumentObject(oAoE);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueFloat();
 }

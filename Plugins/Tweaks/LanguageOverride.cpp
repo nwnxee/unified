@@ -28,6 +28,12 @@ void LanguageOverride()
         {
             return s_Lang;
         }, Hooks::Order::Final);
+
+    static Hooks::Hook s_GetModuleLanguage_hook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal17GetModuleLanguageEv,
+        (void*)+[](CServerExoAppInternal*) -> int32_t
+        {
+            return s_Lang;
+        }, Hooks::Order::Final);
 }
 
 }

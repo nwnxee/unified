@@ -191,6 +191,8 @@ struct CNWSEffectListHandler : CGameEffectApplierRemover
     int32_t OnRemoveSwarm(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplySpellFailure(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemoveSpellFailure(CNWSObject * pObject, CGameEffect * pEffect);
+    int32_t OnApplyRunScript(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
+    int32_t OnRemoveRunScript(CNWSObject * pObject, CGameEffect * pEffect);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEffectListHandler

@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <sstream>
+#include <dlfcn.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -27,8 +28,6 @@ using namespace NWNXLib::API;
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
 {
-    std::fflush(stdout);
-
     const char *err;
     switch (sig)
     {
@@ -39,19 +38,47 @@ extern "C" void nwnx_signal_handler(int sig)
         default:       err = "Unknown error";            break;
     }
 
-    std::fprintf(stderr, " NWNX Signal Handler:\n"
+    std::fprintf(stdout, " NWNX Signal Handler:\n"
         "==============================================================\n"
         " NWNX %d.%d (%s) has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
         NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
-    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stderr);
+    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
+    std::fflush(stdout);
 
-    std::fflush(stderr);
-
-    nwn_crash_handler(sig);
+    if (Config::Get<bool>("BASE_GAME_CRASH_HANDLER", false))
+    {
+        nwn_crash_handler(sig);
+    }
+    else
+    {
+        std::signal(SIGABRT, NULL);
+        std::abort();
+    }
 }
+
+// Don't allow the -quite flag to close stdout/stderr, we print important info there.
+extern "C" FILE *freopen64(const char *filename, const char *mode, FILE *stream)
+{
+    if ((stream == stdout || stream == stderr) && !strcmp(filename, "/dev/null"))
+    {
+        if (stream == stdout)
+        {
+            std::puts("NWNX overriding -quiet flag. Always keep an eye on stdout.\n"
+                      "Server will continue in non-interactive mode, but with full output.\n");
+        }
+        return stream;
+    }
+
+    using Type = FILE*(*)(const char*,const char*,FILE*);
+    static Type real;
+    if (!real)
+        real = (Type)dlsym(RTLD_NEXT, "freopen64");
+    return real(filename, mode, stream);
+}
+
 
 namespace {
 
@@ -212,17 +239,17 @@ void NWNXCore::InitialVersionCheck()
 
         if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
+            std::fprintf(stdout, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
                                       NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
-            std::fprintf(stderr, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
-            std::fflush(stderr);
+            std::fprintf(stdout, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
+            std::fflush(stdout);
             std::exit(1);
         }
     }
     else
     {
-        std::fprintf(stderr, "NWNX: Could not determine build version.\n");
-        std::fflush(stderr);
+        std::fprintf(stdout, "NWNX: Could not determine build version.\n");
+        std::fflush(stdout);
         std::abort();
     }
 }
@@ -504,8 +531,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     Log::SetPrintSource(Config::Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(Config::Get<bool>("LOG_COLOR", true));
     Log::SetForceColor(Config::Get<bool>("LOG_FORCE_COLOR", false));
-    //if (Config::Get<bool>("LOG_ASYNC", false))
-    //    Log::SetAsync(g_core->m_services->m_tasks.get());
+    Log::SetLogFile(Config::Get<std::string>("LOG_FILE_PATH", ""));
 
     if (auto locale = Config::Get<std::string>("LOCALE"))
     {
@@ -527,6 +553,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
             g_core->InitialSetupPlugins();
             g_core->InitialSetupResourceDirectories();
             g_core->InitialSetupCommands();
+            MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_NWNX_LOADED" });
         }
         catch (const std::runtime_error& ex)
         {
@@ -555,6 +582,9 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 
     g_core->m_destroyServerHook.reset();
     app->DestroyServer();
+
+    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER_AFTER" });
+
     g_core->Shutdown();
 
     RestoreCrashHandlers();

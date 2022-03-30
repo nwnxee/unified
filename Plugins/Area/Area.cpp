@@ -13,13 +13,33 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSSoundObject.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSWaypoint.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSStore.hpp"
+#include "API/CNWSAreaOfEffectObject.hpp"
+#include "API/CNWTileSet.hpp"
+#include "API/CEncounterSpawnPoint.hpp"
+#include "API/CNWTilePathNode.hpp"
+#include "API/CNWTileSetManager.hpp"
+#include "API/CNWTileSurfaceMesh.hpp"
 
+#include <cmath>
 #include <set>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static std::set<ObjectID> s_ExportExclusionList;
+
+static constexpr int32_t MAX_REGIONS_PER_TILE = 6;
+static constexpr float TILE_SIZE = 10.0f;
+static constexpr float EPSILON  = 0.0001f;
+static constexpr float MAX_TILE_EPSILON = TILE_SIZE - EPSILON;
+static constexpr float MIN_TILE_EPSILON = EPSILON;
+static std::vector<int32_t> s_pPathDepthTable;
 
 NWNX_EXPORT ArgumentStack GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
@@ -596,7 +616,7 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
                         if (pCreature->m_pStats->m_bIsPC ||
                             pCreature->m_pStats->GetIsDM() ||
                             (pCreature->m_nAssociateType > Constants::AssociateType::None &&
-                            pCreature->m_nAssociateType < Constants::AssociateType::Dominated))
+                            pCreature->m_nAssociateType < Constants::AssociateType::DominatedByPC))
                             continue;
 
                         // Temporarily set pCreature's areaID to OBJECT_INVALID
@@ -922,6 +942,403 @@ NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
             }
         }
     }
-    
+
     return Constants::OBJECT_INVALID;
+}
+
+NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        auto Rotation = args.extract<int>();
+          ASSERT_OR_THROW(Rotation >= 1);
+          ASSERT_OR_THROW(Rotation <= 3);
+
+        //Rotate Area Tiles
+        int32_t InitHeight = pArea->m_nHeight;
+        int32_t InitWidth = pArea->m_nWidth;
+        int32_t NumTiles = InitWidth * InitHeight;
+
+        if(Rotation == 1 || Rotation == 3)//turn on side
+        {
+            pArea->m_nHeight = InitWidth;
+            pArea->m_nWidth = InitHeight;
+        }
+
+        auto *pOriginalTiles = pArea->m_pTile;
+        auto *pNewTiles = new CNWSTile[NumTiles];
+
+        for (int TileIndex = 0; TileIndex < NumTiles; TileIndex++)
+        {
+            int OrigTileIndex = 0;
+            switch(Rotation) //Math to map new Tile Index to the original Tile Index, based on rotation
+            {
+                case 1: OrigTileIndex = (InitWidth - 1) + (InitWidth * (TileIndex % InitHeight)) - (TileIndex / InitHeight); break;
+                case 2: OrigTileIndex = InitHeight * InitWidth - TileIndex - 1; break;
+                case 3: OrigTileIndex = (InitWidth * (InitHeight - 1 - (TileIndex % InitHeight))) + (TileIndex / InitHeight); break;
+            }
+
+            auto *pOriginalTile = &pOriginalTiles[OrigTileIndex];
+            auto *pNewTile = &pNewTiles[TileIndex];
+
+            pNewTile->SetID(pOriginalTile->m_nID);
+            pNewTile->SetTileData(pArea->m_pTileSet->GetTileData(pOriginalTile->m_nID));
+            pNewTile->SetPosition(TileIndex % pArea->m_nWidth,
+                                  TileIndex / pArea->m_nWidth,
+                                  pOriginalTile->m_nHeight,
+                                  pArea->m_pTileSet->GetHeightTransition());
+            pNewTile->SetOrientation((pOriginalTile->m_nOrientation + 4 - Rotation) % 4);
+            pNewTile->SetMainLightColor(pOriginalTile->m_nMainLight1Color, pOriginalTile->m_nMainLight2Color);
+            pNewTile->SetSourceLightColor(pOriginalTile->m_nSourceLight1Color, pOriginalTile->m_nSourceLight2Color);
+            pNewTile->SetReplaceTexture(pOriginalTile->m_nReplaceTexture);
+            pNewTile->SetAnimLoop(pOriginalTile->m_nAnimLoop1, pOriginalTile->m_nAnimLoop2, pOriginalTile->m_nAnimLoop3);
+            pNewTile->m_bMainLightColorChange = pOriginalTile->m_bMainLightColorChange;
+            pNewTile->m_bSourceLightColorChange = pOriginalTile->m_bSourceLightColorChange;
+            pNewTile->m_bFlaggedAsProblem = pOriginalTile->m_bFlaggedAsProblem;
+            pNewTile->m_nTriggerSize = pOriginalTile->m_nTriggerSize;
+            pNewTile->m_nTriggers = pOriginalTile->m_nTriggers;
+            pNewTile->m_poidTriggers = new ObjectID[pOriginalTile->m_nTriggerSize];
+            for(int count = 0; count < pOriginalTile->m_nTriggers; count++)
+            {
+                pNewTile->m_poidTriggers[count] = pOriginalTile->m_poidTriggers[count];
+            }
+            pNewTile->m_aDoors = pOriginalTile->m_aDoors;
+        }
+
+        delete[] pArea->m_pTile;
+        pArea->m_pTile = pNewTiles;
+
+        auto GetNewPosition = [&](Vector vPosition) -> Vector
+        {
+            switch(Rotation)
+            {
+                case 1:
+                {
+                    auto tempPos = vPosition.y;
+                    vPosition.y = (InitWidth * 10.0) - vPosition.x;
+                    vPosition.x = tempPos;
+                    break;
+                }
+                case 2:
+                {
+                    vPosition.x = (InitWidth * 10.0) - vPosition.x;
+                    vPosition.y = (InitHeight * 10.0) - vPosition.y;
+                    break;
+                }
+                case 3:
+                {
+                    auto tempPos = vPosition.x;
+                    vPosition.x = (InitHeight * 10.0) - vPosition.y;
+                    vPosition.y = tempPos;
+                    break;
+                }
+            }
+            return vPosition;
+        };
+
+        auto GetNewOrientation = [&](Vector vOrientation) -> Vector
+        {
+            switch(Rotation)
+            {
+                case 1:
+                {
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) - (M_PI/2)));//less half-radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) - (M_PI/2)));
+                    break;
+                }
+                case 2:
+                {
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + M_PI));//add 1 radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + M_PI));
+                    break;
+                }
+                case 3:
+                {
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + (M_PI/2)));//Add half-radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + (M_PI/2)));
+                    break;
+                }
+            }
+            return vOrientation;
+        };
+
+        // We need to make a temp list because SetPosition() will move things around
+        std::vector<ObjectID> objectIds;
+        for (int32_t i = 0; i < pArea->m_aGameObjects.num; i++)
+        {
+            objectIds.emplace_back(pArea->m_aGameObjects[i]);
+        }
+
+        for (auto oid : objectIds)
+        {
+            if (auto *pGameObject = Utils::GetGameObject(oid))
+            {
+                if (auto *pCreature = Utils::AsNWSCreature(pGameObject))
+                {
+                    if (pCreature->m_pStats->m_bIsPC ||
+                        pCreature->m_pStats->GetIsDM() ||
+                        (pCreature->m_nAssociateType > Constants::AssociateType::None &&
+                         pCreature->m_nAssociateType < Constants::AssociateType::DominatedByPC))
+                        continue;
+
+                    pCreature->SetPosition(GetNewPosition(pCreature->m_vPosition));
+                    pCreature->SetOrientation(GetNewOrientation(pCreature->m_vOrientation));
+                }
+                else if (auto *pTrigger = Utils::AsNWSTrigger(pGameObject))
+                {
+                    for(int vertice = 0; vertice < pTrigger->m_nVertices; vertice++)
+                    {
+                        pTrigger->m_pvVertices[vertice] = GetNewPosition(pTrigger->m_pvVertices[vertice]);
+                    }
+                    pTrigger->SetPosition(GetNewPosition(pTrigger->m_vPosition));
+                    pTrigger->SetOrientation(GetNewOrientation(pTrigger->m_vOrientation));
+                }
+                else if (auto *pEncounter = Utils::AsNWSEncounter(pGameObject))
+                {
+                    for(int vertice = 0; vertice < pEncounter->m_nNumActivateVertices; vertice++)
+                    {
+                        pEncounter->m_pvActivateVertices[vertice] = GetNewPosition(pEncounter->m_pvActivateVertices[vertice]);
+                    }
+
+                    for (int spawnpoint = 0; spawnpoint < pEncounter->m_nNumSpawnPoints; spawnpoint++)
+                    {
+                        pEncounter->m_pSpawnPointList[spawnpoint].m_vPosition = GetNewPosition(pEncounter->m_pSpawnPointList[spawnpoint].m_vPosition);
+                        pEncounter->m_pSpawnPointList[spawnpoint].m_fOrientation = pEncounter->m_pSpawnPointList[spawnpoint].m_fOrientation + ((float)Rotation * 90.0f);
+                    }
+                    for (int vertice = 0; vertice < pEncounter->m_nNumActivateVertices; vertice++)
+                    {
+                        if (vertice == 0)
+                        {
+                            pEncounter->m_fMinActivateX = pEncounter->m_pvActivateVertices[vertice].x;
+                            pEncounter->m_fMaxActivateX = pEncounter->m_pvActivateVertices[vertice].x;
+                            pEncounter->m_fMinActivateY = pEncounter->m_pvActivateVertices[vertice].y;
+                            pEncounter->m_fMaxActivateY = pEncounter->m_pvActivateVertices[vertice].y;
+                        }
+                        else
+                        {
+                            if (pEncounter->m_pvActivateVertices[vertice].x < pEncounter->m_fMinActivateX)
+                                pEncounter->m_fMinActivateX = pEncounter->m_pvActivateVertices[vertice].x;
+                            if (pEncounter->m_pvActivateVertices[vertice].x > pEncounter->m_fMaxActivateX)
+                                pEncounter->m_fMaxActivateX = pEncounter->m_pvActivateVertices[vertice].x;
+                            if (pEncounter->m_pvActivateVertices[vertice].y < pEncounter->m_fMinActivateY)
+                                pEncounter->m_fMinActivateY = pEncounter->m_pvActivateVertices[vertice].y;
+                            if (pEncounter->m_pvActivateVertices[vertice].y > pEncounter->m_fMaxActivateY)
+                                pEncounter->m_fMaxActivateY = pEncounter->m_pvActivateVertices[vertice].y;
+                        }
+                    }
+                    pEncounter->SetPosition(GetNewPosition(pEncounter->m_vPosition));
+                    pEncounter->SetOrientation(GetNewOrientation(pEncounter->m_vOrientation));
+                }
+                else if (auto *pItem = Utils::AsNWSItem(pGameObject))
+                {
+                    pItem->SetPosition(GetNewPosition(pItem->m_vPosition));
+                    pItem->SetOrientation(GetNewOrientation(pItem->m_vOrientation));
+                }
+                else if (auto *pDoor = Utils::AsNWSDoor(pGameObject))
+                {
+                    pDoor->SetPosition(GetNewPosition(pDoor->m_vPosition));
+                    pDoor->SetOrientation(GetNewOrientation(pDoor->m_vOrientation));
+                }
+                else if (auto *pWaypoint = Utils::AsNWSWaypoint(pGameObject))
+                {
+                    pWaypoint->SetPosition(GetNewPosition(pWaypoint->m_vPosition));
+                    pWaypoint->SetOrientation(GetNewOrientation(pWaypoint->m_vOrientation));
+                }
+                else if (auto *pSound = Utils::AsNWSSoundObject(pGameObject))
+                {
+                    pSound->SetPosition(GetNewPosition(pSound->m_vPosition));
+                    pSound->SetOrientation(GetNewOrientation(pSound->m_vOrientation));
+                }
+                else if (auto *pPlaceable = Utils::AsNWSPlaceable(pGameObject))
+                {
+                    pPlaceable->SetPosition(GetNewPosition(pPlaceable->m_vPosition));
+                    pPlaceable->SetOrientation(GetNewOrientation(pPlaceable->m_vOrientation));
+                }
+                else if (auto *pStore = Utils::AsNWSStore(pGameObject))
+                {
+                    pStore->SetPosition(GetNewPosition(pStore->m_vPosition));
+                    pStore->SetOrientation(GetNewOrientation(pStore->m_vOrientation));
+                }
+                else if (auto *pAOE = Utils::AsNWSAreaOfEffectObject(pGameObject))
+                {
+                    pAOE->SetPosition(GetNewPosition(pAOE->m_vPosition));
+                    pAOE->SetOrientation(GetNewOrientation(pAOE->m_vOrientation));
+                }
+            }
+        }
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetTileInfoByTileIndex(ArgumentStack&& args)
+{
+    int32_t id = -1, height = -1, orientation = -1, x = -1, y = -1;
+
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto index = args.extract<int32_t>();
+          ASSERT_OR_THROW(index >= 0);
+        if (index < (pArea->m_nWidth * pArea->m_nHeight))
+        {
+            auto *pTile = &pArea->m_pTile[index];
+            id = pTile->m_nID;
+            height = pTile->m_nHeight;
+            orientation = pTile->m_nOrientation;
+            x = pTile->m_nGridX;
+            y = pTile->m_nGridY;
+        }
+    }
+
+    return {id, height, orientation, x, y};
+}
+
+static bool InterTilePathDFS(CNWSArea *pArea, int32_t nDepth, uint8_t nStartX, uint8_t nStartY, uint8_t nStartRegion, uint8_t nEndX, uint8_t nEndY, uint8_t nEndRegion)
+{
+    auto GetTile = [pArea](int32_t nX, int32_t nY) -> CNWSTile*
+    {
+        if (!pArea->m_pTile || nX < 0 || nY < 0 || nX >= pArea->m_nWidth || nY >= pArea->m_nHeight)
+            return nullptr;
+        return &pArea->m_pTile[nY * pArea->m_nWidth + nX];
+    };
+
+    if (nStartX == nEndX && nStartY == nEndY && nStartRegion == nEndRegion)
+            return true;
+
+    int32_t nIndex = (nStartX + pArea->m_nWidth * nStartY) * MAX_REGIONS_PER_TILE + nStartRegion;
+    if (nIndex < 0 || nIndex >= (int32_t)s_pPathDepthTable.size() || s_pPathDepthTable[nIndex] >= nDepth)
+        return false;
+
+    s_pPathDepthTable[nIndex] = nDepth;
+
+    if (nDepth == 1)
+        return false;
+
+    if (auto *pTile = GetTile(nStartX, nStartY))
+    {
+        auto *pTileSurfaceMesh = pTile->m_pTileData->m_pSurfaceMesh;
+        auto *pTilePathNode = Globals::AppManager()->m_pNWTileSetManager->GetTilePathNode(
+                pTileSurfaceMesh->GetPathNode(), pTileSurfaceMesh->GetPathNodeOrientation());
+        float fExitX, fExitY, fNewEntranceX, fNewEntranceY;
+        uint8_t nNewX, nNewY, nNewRegion, nExitRegion;
+
+        for (int32_t nExit = 0; nExit < pTilePathNode->m_nTileExits; nExit++)
+        {
+            fExitX = pTilePathNode->m_pfTileExits[nExit * 2];
+            fExitY = pTilePathNode->m_pfTileExits[nExit * 2 + 1];
+            pTile->RotateCanonicalToReal(fExitX, fExitY, &fExitX, &fExitY);
+            nExitRegion = pTilePathNode->m_pnTileExitRegion[nExit];
+
+            if (nExitRegion == nStartRegion)
+            {
+                nNewX = nStartX;
+                fNewEntranceX = fExitX;
+                if (fExitX > MAX_TILE_EPSILON)
+                {
+                    nNewX++;
+                    fNewEntranceX = 0.0f;
+                }
+                else if (fExitX < MIN_TILE_EPSILON)
+                {
+                    nNewX--;
+                    fNewEntranceX = TILE_SIZE;
+                }
+
+                nNewY = nStartY;
+                fNewEntranceY = fExitY;
+                if (fExitY > MAX_TILE_EPSILON)
+                {
+                    nNewY++;
+                    fNewEntranceY = 0.0f;
+                }
+                else if (fExitY < MIN_TILE_EPSILON)
+                {
+                    nNewY--;
+                    fNewEntranceY = TILE_SIZE;
+                }
+
+                if (auto *pNextTile = GetTile(nNewX, nNewY))
+                {
+                    pNextTile->RotateRealToCanonical(fNewEntranceX, fNewEntranceY, &fNewEntranceX, &fNewEntranceY);
+                    nNewRegion = pNextTile->m_pTileData->m_pSurfaceMesh->GetRegionEntrance(fNewEntranceX, fNewEntranceY);
+
+                    if (InterTilePathDFS(pArea, nDepth - 1, nNewX, nNewY, nNewRegion, nEndX, nEndY, nEndRegion))
+                        return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack GetPathExists(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto startX = args.extract<float>();
+          ASSERT_OR_THROW(startX >= 0.0f);
+        const auto startY = args.extract<float>();
+          ASSERT_OR_THROW(startY >= 0.0f);
+        const auto endX = args.extract<float>();
+          ASSERT_OR_THROW(endX >= 0.0f);
+        const auto endY = args.extract<float>();
+          ASSERT_OR_THROW(endY >= 0.0f);
+        const auto maxDepth = args.extract<int32_t>();
+          ASSERT_OR_THROW(maxDepth > 0);
+
+        Vector vStart{startX, startY, 0.0f};
+        Vector vEnd{endX, endY, 0.0f};
+        CNWSTile *pStartTile = pArea->GetTile(vStart);
+        CNWSTile *pEndTile = pArea->GetTile(vEnd);
+
+        if (!pStartTile || !pEndTile)
+            return false;
+
+        int32_t nStartX, nStartY, nEndX, nEndY;
+        pStartTile->GetLocation(&nStartX, &nStartY);
+        pEndTile->GetLocation(&nEndX, &nEndY);
+
+        if (std::abs(nStartX - nEndX) + std::abs(nStartY - nEndY) > maxDepth)
+            return false;
+
+        float fStartX, fStartY, fEndX, fEndY;
+        pStartTile->RotateRealToCanonicalTile(vStart.x, vStart.y, &fStartX, &fStartY);
+        pEndTile->RotateRealToCanonicalTile(vEnd.x, vEnd.y, &fEndX, &fEndY);
+
+        uint8_t nStartRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pStartTile, fStartX, fStartY);
+        uint8_t nEndRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pEndTile, fEndX, fEndY);
+
+        if (nStartX == nEndX && nStartY == nEndY && nStartRegion == nEndRegion)
+            return true;
+
+        s_pPathDepthTable.resize(pArea->m_nWidth * pArea->m_nHeight * MAX_REGIONS_PER_TILE);
+        std::fill(s_pPathDepthTable.begin(), s_pPathDepthTable.end(), 0);
+
+        return InterTilePathDFS(pArea, maxDepth + 1, nStartX, nStartY, nStartRegion, nEndX, nEndY, nEndRegion);
+    }
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack GetAreaFlags(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        return (int32_t)pArea->m_nFlags;
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAreaFlags(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        const auto flags = args.extract<int32_t>();
+          ASSERT_OR_THROW(flags >= 0);
+
+        pArea->m_nFlags = flags;
+    }
+
+    return {};
 }

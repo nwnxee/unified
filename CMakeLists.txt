@@ -23,7 +23,7 @@ find_package(Sanitizers)
 
 execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
-set(TARGET_NWN_BUILD_REVISION 23)
+set(TARGET_NWN_BUILD_REVISION 34)
 set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
 
@@ -92,5 +92,5 @@ endforeach(plugin)
 
 # Allow specifying out of tree plugins by putting their paths in an env. variable
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
-    add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
+    add_subdirectory(${addplugin} ${CMAKE_BINARY_DIR}/custom)
 endforeach(addplugin)

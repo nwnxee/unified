@@ -139,6 +139,7 @@ static std::string s_elcScript = Config::Get<std::string>("ELC_SCRIPT", "");
 static bool s_enableCustomELCCheck = Config::Get<bool>("CUSTOM_ELC_CHECK", false);
 static bool s_enforceDefaultEventScripts = Config::Get<bool>("ENFORCE_DEFAULT_EVENT_SCRIPTS", false);
 static bool s_enforceEmptyDialogResRef = Config::Get<bool>("ENFORCE_EMPTY_DIALOG_RESREF", false);
+static bool s_enforceCasterPrimaryStatIs11 = Config::Get<bool>("ENFORCE_CASTER_PRIMARY_STAT_IS_11", false);
 static uint32_t s_elcDepth = 0;
 static bool s_skipValidationFailure;
 static int32_t s_validationFailureType;
@@ -657,17 +658,20 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
                     }
                 }
 
-                // Check if our first level class is a spellcaster and if their primary casting stat is >= 11
-                if (nLevel == 1 && pClassLeveledUpIn->m_bIsSpellCasterClass)
+                if (s_enforceCasterPrimaryStatIs11)
                 {
-                    if (nAbilityAtLevel[pClassLeveledUpIn->m_nPrimaryAbility] < 11)
+                    // Check if our first level class is a spellcaster and if their primary casting stat is >= 11
+                    if (nLevel == 1 && pClassLeveledUpIn->m_bIsSpellCasterClass)
                     {
-                        if (auto strrefFailure = HandleValidationFailure(
-                                ValidationFailureType::Character,
-                                ValidationFailureSubType::ClassSpellcasterInvalidPrimaryStat,
-                                STRREF_CHARACTER_INVALID_ABILITY_SCORES))
+                        if (nAbilityAtLevel[pClassLeveledUpIn->m_nPrimaryAbility] < 11)
                         {
-                            return strrefFailure;
+                            if (auto strrefFailure = HandleValidationFailure(
+                                    ValidationFailureType::Character,
+                                    ValidationFailureSubType::ClassSpellcasterInvalidPrimaryStat,
+                                    STRREF_CHARACTER_INVALID_ABILITY_SCORES))
+                            {
+                                return strrefFailure;
+                            }
                         }
                     }
                 }

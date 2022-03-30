@@ -30,8 +30,9 @@ void FailInternal(const char* condition, const char* file, int line, const char*
     }
 
     std::strncat(buffer, Platform::GetStackTrace(20).c_str(), sizeof(buffer)-1);
-    std::fputs(buffer, stderr);
-    std::fflush(stderr);
+    std::fputs(buffer, stdout);
+    std::fflush(stdout);
+    NWNXLib::Log::WriteToLogFile(buffer);
 
     if (Platform::IsDebuggerPresent())
     {

@@ -8,6 +8,7 @@
 #include "CResRef.hpp"
 #include "ObjectVisualTransformData.hpp"
 #include "Vector.hpp"
+#include <vector>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -37,6 +38,9 @@ struct CNWSPlayerLUOSortedObjectList;
 struct CNWSPlayerLastUpdateObject;
 struct CNWSStore;
 struct CNWSTrigger;
+namespace Hash {
+    struct SHA1;
+}
 
 
 typedef int BOOL;
@@ -122,7 +126,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerLoadBar_UpdateStallEvent(uint32_t nWorkCompleted, uint32_t nTotalWork = 0xffffffff);
     BOOL SendServerToPlayerLoadBar_EndStallEvent(uint32_t nStallEvent, uint32_t nError = 0);
     BOOL SendServerToPlayerModule_SaveGameStatus(uint8_t nStatus);
-    BOOL SendServerToPlayerModule_EndGame(uint32_t nPlayerId, const CExoString & sMovieName);
+    BOOL SendServerToPlayerModule_EndGame(CNWSPlayer * pPlayer, const CExoString & sMovieName, const Hash::SHA1 & nwsync);
     BOOL SendServerToPlayerModule_Loading(CNWSPlayer * pPlayer);
     BOOL SendServerToPlayerSaveLoad_Status(CNWSPlayer * pPlayer, uint8_t nStallEventType, uint32_t nStatus);
     BOOL SendServerToPlayerModule_StartStartNewModule();
@@ -331,6 +335,14 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerPolymorph(CNWSPlayer * pPlayer, OBJECT_ID oidMorpher, BOOL bMorphing, BOOL bAllowCancel);
     BOOL HandlePlayerToServerCutscene(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerPlayerList(CNWSPlayer * pPlayer, uint8_t nMinor);
+    BOOL SendServerToPlayerGuiEvent_Disable(uint32_t nPlayerId, int32_t nGuiElement, BOOL bDisable);
+    BOOL HandlePlayerToServerDevice(CNWSPlayer * pPlayer, uint8_t nMinor);
+    //BOOL SendServerToPlayerNui_Create(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, Nui::JSON::WindowIdentifier sId, const json & jData);
+    BOOL SendServerToPlayerNui_CreateClient(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, Nui::JSON::WindowIdentifier sId, const CResRef & cResRef);
+    BOOL SendServerToPlayerNui_Destroy(CNWSPlayer * pPlayer, int32_t nToken);
+    BOOL SendServerToPlayerNui_Binds(CNWSPlayer * pPlayer, const std::vector<Nui::JSON::BindUpdate> & updates);
+    //BOOL SendServerToPlayerNui_SetLayout(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, const CExoString & elementId, const json & jData);
+    BOOL HandlePlayerToServerNuiEvent(CNWSPlayer * pPlayer, uint8_t nMinor);
     void AddDoorAppearanceToMessage(CNWSPlayer * pPlayer, CNWSDoor * pDoor);
     void AddPlaceableAppearanceToMessage(CNWSPlayer * pPlayer, CNWSPlaceable * pPlaceable);
     void AddAreaOfEffectObjectToMessage(CNWSAreaOfEffectObject * pSpellImpact);
@@ -387,6 +399,7 @@ struct CNWSMessage : CNWMessage
     void ComputeLastUpdate_StoreUpdateSpellLikeAbility(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     BOOL HasValidString(CExoLocString & sLocString, uint8_t nGender = 0);
     BOOL SendServerToPlayerInventory_LearnScroll(uint32_t nPlayerID, OBJECT_ID nObjectID, uint8_t nMinor);
+    BOOL HandlePlayerToServerGuiEvent(CNWSPlayer * pPlayer, uint8_t nMinor);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSMessage

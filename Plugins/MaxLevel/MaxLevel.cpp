@@ -65,7 +65,7 @@ MaxLevel::MaxLevel(Services::ProxyServiceList* services)
     {
         s_GetServerInfoFromIniFileHook  = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv,
                                                               (void*)&GetServerInfoFromIniFileHook, Hooks::Order::Early);
-        s_LoadModuleStartHook           = Hooks::HookFunction(Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii,
+        s_LoadModuleStartHook           = Hooks::HookFunction(Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringiiRKN6NWSync13AdvertisementE,
                                                               (void*)&LoadModuleStartHook, Hooks::Order::Early);
         s_CanLevelUpHook                = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
                                                               (void*)&CanLevelUpHook, Hooks::Order::Final);
@@ -97,9 +97,9 @@ void MaxLevel::GetServerInfoFromIniFileHook(CServerExoAppInternal* pServerExoApp
 }
 
 // After Rules aggregates all its information we add to our custom experience table map
-uint32_t MaxLevel::LoadModuleStartHook(CNWSModule *pModule, CExoString sModuleName, int32_t bIsSaveGame, int32_t nSourceType)
+uint32_t MaxLevel::LoadModuleStartHook(CNWSModule *pModule, CExoString sModuleName, int32_t bIsSaveGame, int32_t nSourceType, const NWSync::Advertisement* nwsyncModuleSourceAdvert)
 {
-    auto retVal = s_LoadModuleStartHook->CallOriginal<uint32_t>(pModule, sModuleName, bIsSaveGame, nSourceType);
+    auto retVal = s_LoadModuleStartHook->CallOriginal<uint32_t>(pModule, sModuleName, bIsSaveGame, nSourceType, nwsyncModuleSourceAdvert);
 
     auto *twoda = Globals::Rules()->m_p2DArrays->GetCached2DA("EXPTABLE", true);
     twoda->Load2DArray();

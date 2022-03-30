@@ -141,8 +141,15 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         const unsigned int sz = m_params.size();
         for (unsigned int i=0; i<sz; i++)
         {
-            paramValues[i] = new char[m_params[i].size()+1];
-            strcpy(paramValues[i], m_params[i].c_str());
+            if (m_params[i])
+            {
+                paramValues[i] = new char[m_params[i]->size()+1];
+                strcpy(paramValues[i], m_params[i]->c_str());
+            }
+            else
+            {
+                paramValues[i] = nullptr;
+            }
         }
     }
 
@@ -247,6 +254,12 @@ void PostgreSQL::PrepareBinary(int32_t position, const std::vector<uint8_t> &val
     m_lengths[position] = value.size();
     m_formats[position] = 1;
 }
+void PostgreSQL::PrepareNULL(int32_t position)
+{
+    LOG_DEBUG("Assigning position %d to value NULL", position);
+    m_params[position] = std::nullopt;
+    m_formats[position] = 0;
+}
 
 int PostgreSQL::GetAffectedRows()
 {
@@ -273,7 +286,7 @@ void PostgreSQL::DestroyPreparedQuery()
     // No way or need to deallocate the anonymous prepared statement in PgSQL.
 
     // Force deallocation
-    std::vector<std::string>().swap(m_params);
+    std::vector<std::optional<std::string>>().swap(m_params);
     m_paramCount = 0;
 }
 

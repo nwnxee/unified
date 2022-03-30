@@ -12,6 +12,11 @@ on:
       - 'CMakeLists.txt'
   schedule:
     - cron: '5 4 15 * *'
+
+concurrency: 
+  group: "build-base"
+  cancel-in-progress: false
+
 jobs:
   docker-base:
     runs-on: ubuntu-18.04

@@ -20,6 +20,8 @@ void NWNX_PushArgumentString(string value);
 void NWNX_PushArgumentEffect(effect value);
 /// @copydoc NWNX_PushArgumentInt()
 void NWNX_PushArgumentItemProperty(itemproperty value);
+/// @copydoc NWNX_PushArgumentInt()
+void NWNX_PushArgumentJson(json value);
 /// @brief Returns the specified type from the c++ side
 /// @return The value of specified type.
 int NWNX_GetReturnValueInt();
@@ -33,6 +35,8 @@ string NWNX_GetReturnValueString();
 effect NWNX_GetReturnValueEffect();
 /// @copydoc NWNX_GetReturnValueInt()
 itemproperty NWNX_GetReturnValueItemProperty();
+/// @copydoc NWNX_GetReturnValueInt()
+json NWNX_GetReturnValueJson();
 
 /// @private
 const string NWNX_PUSH          = "NWNXEE!ABIv2!X!Y!PUSH";
@@ -74,6 +78,11 @@ void NWNX_PushArgumentItemProperty(itemproperty value)
     TagItemProperty(value, NWNX_PUSH);
 }
 
+void NWNX_PushArgumentJson(json value)
+{
+    SetLocalJson(OBJECT_INVALID, NWNX_PUSH, value);
+}
+
 int NWNX_GetReturnValueInt()
 {
     return GetLocalInt(OBJECT_INVALID, NWNX_POP);
@@ -104,4 +113,9 @@ itemproperty NWNX_GetReturnValueItemProperty()
 {
     itemproperty ip;
     return TagItemProperty(ip, NWNX_POP);
+}
+
+json NWNX_GetReturnValueJson()
+{
+    return GetLocalJson(OBJECT_INVALID, NWNX_POP);
 }

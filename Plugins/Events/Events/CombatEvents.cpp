@@ -11,17 +11,19 @@ namespace Events {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::Services;
+using namespace NWNXLib::API::Constants;
 
 static Hooks::Hook s_StartCombatRoundHook;
 static Hooks::Hook s_ApplyDisarmHook;
 static Hooks::Hook s_SendServerToPlayerAmbientBattleMusicPlayHook;
 static Hooks::Hook s_SendFeedbackMessageHook;
+static Hooks::Hook s_SetCombatModeHook;
 
 static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
 static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
 static int32_t SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage*, PlayerID, BOOL);
 static void SendFeedbackMessageHook(CNWSCreature*, uint16_t, CNWCCMessageData*, CNWSPlayer*);
+static void SetCombatModeHook(CNWSCreature*, uint8_t, int32_t);
 
 void CombatEvents() __attribute__((constructor));
 void CombatEvents()
@@ -43,6 +45,11 @@ void CombatEvents()
         s_SendFeedbackMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
                 (void*)&SendFeedbackMessageHook, Hooks::Order::Earliest);
+    });
+    InitOnFirstSubscribe("NWNX_ON_COMBAT_MODE_.*", []() {
+        s_SetCombatModeHook = Hooks::HookFunction(
+                API::Functions::_ZN12CNWSCreature13SetCombatModeEhi,
+                (void*)&SetCombatModeHook, Hooks::Order::Early);
     });
 }
 
@@ -120,6 +127,42 @@ void SendFeedbackMessageHook(CNWSCreature *pCreature, uint16_t nFeedbackID, CNWC
     s_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pMessageData, pFeedbackPlayer);
     PushEventData("TYPE", std::to_string(nFeedbackID == 66 ? 1 : 0));
     SignalEvent("NWNX_ON_COMBAT_DR_BROKEN_AFTER", pCreature->m_idSelf);
+}
+
+void SetCombatModeHook(CNWSCreature* thisPtr, uint8_t nMode, int32_t bForceMode)
+{
+    if (!thisPtr->m_bPlayerCharacter)
+    {
+        s_SetCombatModeHook->CallOriginal<void>(thisPtr, nMode, bForceMode);
+        return;
+    }
+
+    const uint8_t nCurrentMode = thisPtr->m_nCombatMode;
+
+    if (nCurrentMode != nMode)
+    {
+        if (nCurrentMode != CombatMode::None)
+        {
+            PushEventData("COMBAT_MODE_ID", std::to_string(nCurrentMode));
+            if (SignalEvent("NWNX_ON_COMBAT_MODE_OFF", thisPtr->m_idSelf))
+            {
+                s_SetCombatModeHook->CallOriginal<void>(thisPtr, nMode, bForceMode);
+            }
+            return;
+        }
+
+        if (nMode != CombatMode::None)
+        {
+            PushEventData("COMBAT_MODE_ID", std::to_string(nMode));
+            if (SignalEvent("NWNX_ON_COMBAT_MODE_ON", thisPtr->m_idSelf))
+            {
+                s_SetCombatModeHook->CallOriginal<void>(thisPtr, nMode, bForceMode);
+            }
+            return;
+        }
+    }
+
+    s_SetCombatModeHook->CallOriginal<void>(thisPtr, nMode, bForceMode);
 }
 
 }

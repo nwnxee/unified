@@ -38,7 +38,15 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` | true or false | TlkTable entries overridden by SetTlkOverride() will be sent before Character Generation. |
 | `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT` | true or false | When splitting an item, local variables will be copied. |
 | `NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION` | true or false | Prevents attack bonus effects from bypassing damage reductions. |
-  
+| `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` | true or false | Makes SetMaterialShaderParamXxx() functions take `sMaterial=""` to mean all materials. |
+| `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` | true or false | CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation() |
+| `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` | int | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx). |
+| `NWNX_TWEAKS_FIX_DM_FACTION_BUG` | true or false | Fixes a DM faction bug when using a non-DMClient BIC file. |
+| `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
+| `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` | true or false | Fixes the DM creature selection box not showing up when player party control is off. |
+| `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
+| `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG` | true or false | Fixes a bug where multiclass xp penalties are calculated incorrectly. |
+
 ## Environment variable values
 
 ### NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST
@@ -73,3 +81,38 @@ Values between 1 and 3 are valid. Any of those values will adjust the item cost 
 | 129 | Chinese traditional |
 | 130 | Chinese simplified |
 | 131 | Japanese |
+
+### NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX
+
+Add the numbers of the VFX you want to hide. For example to hide all Elemental Damage Bonus, Holy Avenger and OnHitVorpal visual effects you'd set the environment variable to 318 (2 + 4 + 8 + 16 + 32 + 256) 
+
+Specific VFX values in order of priority:
+
+| Value | Description |
+|---:|----|
+| 1 | Manual VFX (ItemPropertyVisualEffect) |
+| 2 | (Elemental) DamageBonus |
+| 4 | (Elemental) DamageBonusVSAlignmentGroup |
+| 8 | (Elemental) DamageBonusVSRacialGroup |
+| 16 | (Elemental) DamageBonusVSSpecificAlignment |
+| 32 | HolyAvenger |
+| 64 | VampiricRegeneration |
+| 128 | OnHitLevelDrain |
+| 256 | OnHitVorpal |
+| 512 | OnHitWounding |
+| 1024 | (Good/Evil) DamageBonusVSAlignmentGroup |
+| 2048 | (Good/Evil) AttackBonusVSAlignmentGroup |
+| 4096 | (Good/Evil) EnhancementBonusVSAlignmentGroup |
+| 8192 | (Good/Evil) DamageBonusVSSpecificAlignment |
+| 16384 | (Good/Evil) AttackBonusVSSpecificAlignment |
+| 32768 | (Good/Evil) EnhancementBonusVSSpecificAlignment |
+
+Some values for convenience:
+
+| Value | Description |
+|---:|----|
+| 30 | All Elemental Damage Bonus |
+| 896 | All OnHit Properties |
+| 7168 | All Good/Evil vs AlignmentGroup |
+| 57344 | All Good/Evil vs SpecificAlignment |
+| 65535 | Hide All VFX |

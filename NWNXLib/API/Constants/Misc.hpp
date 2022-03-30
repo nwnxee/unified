@@ -260,11 +260,14 @@ namespace AssociateType
         AnimalCompanion = 2,
         Familiar = 3,
         Summoned = 4,
-        Dominated = 5,
+        DominatedByPC = 5,
+        DominatedByNPC = 6,
+        DMPossess = 7,
+        DMImpersonate = 8,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 5;
-    static_assert(MAX == Dominated);
+    constexpr int32_t MAX   = 8;
+    static_assert(MAX == DMImpersonate);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -275,7 +278,10 @@ namespace AssociateType
                 "AnimalCompanion",
                 "Familiar",
                 "Summoned",
-                "Dominated",
+                "DominatedByPC",
+                "DominatedByNPC",
+                "DMPossess",
+                "DMImpersonate",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];

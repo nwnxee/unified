@@ -130,6 +130,26 @@ Rename::Rename(Services::ProxyServiceList* services)
     s_SendServerToPlayerPopUpGUIPanelHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString,
             (void*)&SendServerToPlayerPopUpGUIPanelHook, Hooks::Order::Early);
+
+    MessageBus::Subscribe("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+      [](const std::vector<std::string>& message)
+      {
+          ObjectID objectID = std::strtoul(message[0].c_str(), nullptr, 16);
+          auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectID);
+          auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectID);
+          if (pCreature && pCreature->m_pStats && pPlayer)
+          {
+              auto *pPlayerInfo = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID);
+              if (pPlayerInfo)
+              {
+                  g_plugin->m_RenameOriginalNames[objectID] = std::make_tuple(
+                          pPlayerInfo->m_sPlayerName,
+                          pCreature->m_pStats->m_lsFirstName,
+                          pCreature->m_pStats->m_lsLastName);
+                  g_plugin->SendNameUpdate(pCreature, Constants::PLAYERID_ALL_CLIENTS);
+              }
+          }
+      });
 }
 
 Rename::~Rename()
@@ -485,6 +505,11 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
         if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS && targets.count(observerPlayerObject->m_oidNWSObject))
             continue;
 
+        // The client may crash if we send an object update for a creature that does not exist in its
+        // last update object list
+        if (!IsCreatureInLastUpdateObjectList(observerPlayerObject, targetCreature->m_idSelf))
+            continue;
+
         if (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM)
         {
             // Write a message notifying an object update.
@@ -500,7 +525,10 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
 
             if (message->GetWriteMessage(&data, &size) && size)
             {
-                message->SendServerToPlayerMessage(pid, 5, 1, data, size);
+                message->SendServerToPlayerMessage(pid,
+                                                   Constants::MessageMajor::GameObjectUpdate,
+                                                   Constants::MessageGameObjectUpdateMinor::ObjectList,
+                                                   data, size);
                 success = true;
             }
 
@@ -510,6 +538,26 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
         LOG_DEBUG("%s sending name update message for observer (PlayerID): '0x%08x', target (ObjectID): '0x%08x'.",
                   success ? "Succeeded" : "Failed", pid, targetCreature->m_idSelf);
     }
+}
+
+bool Rename::IsCreatureInLastUpdateObjectList(CNWSPlayer *player, ObjectID creatureId)
+{
+    auto *lastUpdateObj = player->GetLastUpdateObject(creatureId);
+    if (lastUpdateObj)
+        return true;
+
+    auto *partyObjectsList = player->m_pActivePartyObjectsLastUpdate->m_pcExoLinkedListInternal;
+    if (!partyObjectsList)
+        return false;
+
+    for (auto *head = partyObjectsList->pHead; head; head = head->pNext)
+    {
+        auto *partyMember = static_cast<CLastUpdatePartyObject *>(head->pObject);
+        if (partyMember && partyMember->m_nPlayerId == creatureId)
+            return true;
+    }
+
+    return false;
 }
 
 ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
@@ -566,25 +614,6 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
                 targetCreature->m_pStats->m_lsFirstName,
                 targetCreature->m_pStats->m_lsLastName);
 
-        MessageBus::Subscribe("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
-             [](const std::vector<std::string>& message)
-             {
-                 ObjectID objectID = std::strtoul(message[0].c_str(), nullptr, 16);
-                 auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectID);
-                 auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectID);
-                 if (pCreature && pCreature->m_pStats && pPlayer)
-                 {
-                     auto *pPlayerInfo = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID);
-                     if (pPlayerInfo)
-                     {
-                         g_plugin->m_RenameOriginalNames[objectID] = std::make_tuple(
-                                 pPlayerInfo->m_sPlayerName,
-                                 pCreature->m_pStats->m_lsFirstName,
-                                 pCreature->m_pStats->m_lsLastName);
-                         g_plugin->SendNameUpdate(pCreature, Constants::PLAYERID_ALL_CLIENTS);
-                     }
-                 }
-             });
         // If we've ran this before the PC has even been added to the other clients' player list then there's
         // nothing else we need to do, the hooks will take care of doing the renames. If we don't skip this
         // then the SendServerToPlayerPlayerList_All in the SendNameUpdate below runs before the server has even ran a

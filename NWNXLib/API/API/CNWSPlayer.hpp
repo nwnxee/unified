@@ -7,6 +7,10 @@
 #include "CLastUpdatePartyObject.hpp"
 #include "CNWSClient.hpp"
 #include "CResRef.hpp"
+#include <unordered_map>
+#include <vector>
+#include <map>
+#include <unordered_set>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -31,6 +35,23 @@ typedef uint32_t STRREF;
 
 struct CNWSPlayer : CNWSClient
 {
+    struct NuiState
+    {
+        struct WindowState
+        {
+            Nui::JSON::WindowToken m_token;
+            Nui::JSON::WindowIdentifier m_id;
+            std::vector<Nui::JSON::BindName> m_bind_list;
+            std::unordered_map<Nui::JSON::BindName, Nui::JSON::BindValue> m_binds;
+            std::unordered_set<Nui::JSON::BindName> m_watch;
+            json m_userdata;
+        };
+        Nui::JSON::WindowToken m_next_token = 0;
+        std::vector<Nui::JSON::WindowToken> m_window_list;
+        std::unordered_map<Nui::JSON::WindowToken, WindowState> m_windows;
+        std::map<Nui::JSON::WindowIdentifier, WindowState*> m_by_id;
+    };
+
     CExoLinkedList<CLastUpdateObject> * m_pActiveObjectsLastUpdate;
     CExoLinkedList<CLastUpdatePartyObject> * m_pActivePartyObjectsLastUpdate;
     int32_t m_nAreaTransitionBMP;
@@ -62,6 +83,8 @@ struct CNWSPlayer : CNWSClient
     uint32_t m_nIFOCharacterIndex;
     BOOL m_bCutsceneState;
     BOOL m_bTargetMode;
+    std::unordered_map<std::string, int32_t> m_device_properties;
+    NuiState m_cNuiState;
     OBJECT_ID m_oidDungeonMasterAvatar;
     uint8_t m_nPossessState;
     BOOL m_bWasSentITP;

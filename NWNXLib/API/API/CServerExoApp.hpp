@@ -36,6 +36,9 @@ struct CServerAIMaster;
 struct CServerExoAppInternal;
 struct CWorldTimer;
 
+namespace NWSync {
+struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
@@ -117,7 +120,7 @@ struct CServerExoApp : CBaseExoApp
     BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
     BOOL Initialize();
     BOOL UnloadModule();
-    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
+    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame, CNWSPlayer * pPlayer, int32_t sourceType, const NWSync::Advertisement & nwsyncModuleSourceAdvert);
     BOOL RunModule();
     CExoString GetPlayerListString();
     CExoString GetBannedListString();

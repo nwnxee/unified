@@ -127,6 +127,8 @@ namespace Platform
     void CalculateBaseAddress();
     uintptr_t GetRelocatedAddress(const uintptr_t address);
     uintptr_t GetRelocatedGlobalAddress(const uintptr_t address);
+
+    bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 
 namespace Commands
@@ -172,6 +174,18 @@ namespace String
 
     std::string Basename(const std::string& path);
     bool EndsWith(const std::string& str, const std::string& suffix);
+}
+
+namespace VectorMath
+{
+    float MagnitudeSquared(const Vector& v);
+    float Magnitude(const Vector& v);
+    float Dot(const Vector& a, const Vector& b);
+    Vector Add(const Vector& a, const Vector& b);
+    Vector Subtract(const Vector& a, const Vector& b);
+    Vector Multiply(const Vector& v, float s);
+    Vector Normalize(const Vector &v);
+    Vector Lineproject(const Vector &a, const Vector &b, const Vector &c);
 }
 
 namespace Utils

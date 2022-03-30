@@ -746,41 +746,43 @@ NWNX_EXPORT ArgumentStack ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = args.extract<int32_t>();
           ASSERT_OR_THROW(visualEffect <= 65535);
 
-        auto target = Utils::GetGameObject(oidTarget);
-        if (visualEffect < 0)
+        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
         {
-            if (auto loopingVisualEffectSet = target->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            if (visualEffect < 0)
             {
-                auto pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+                if (auto loopingVisualEffectSet = pTarget->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                {
+                    auto pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
 
-                target->nwnxRemove("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                    pTarget->nwnxRemove("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
 
-                delete pLoopingVisualEffectSet;
-            }
-        }
-        else
-        {
-            std::set<uint16_t> *pLoopingVisualEffectSet;
-
-            if (auto loopingVisualEffectSet = target->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-            {
-                pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+                    delete pLoopingVisualEffectSet;
+                }
             }
             else
             {
-                pLoopingVisualEffectSet = new std::set<uint16_t>();
+                std::set<uint16_t> *pLoopingVisualEffectSet;
 
-                target->nwnxSet("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
-                        pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
-            }
+                if (auto loopingVisualEffectSet = pTarget->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                {
+                    pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+                }
+                else
+                {
+                    pLoopingVisualEffectSet = new std::set<uint16_t>();
 
-            if (pLoopingVisualEffectSet->find(visualEffect) != pLoopingVisualEffectSet->end())
-            {
-                pLoopingVisualEffectSet->erase(visualEffect);
-            }
-            else
-            {
-                pLoopingVisualEffectSet->insert(visualEffect);
+                    pTarget->nwnxSet("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                                    pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
+                }
+
+                if (pLoopingVisualEffectSet->find(visualEffect) != pLoopingVisualEffectSet->end())
+                {
+                    pLoopingVisualEffectSet->erase(visualEffect);
+                }
+                else
+                {
+                    pLoopingVisualEffectSet->insert(visualEffect);
+                }
             }
         }
     }

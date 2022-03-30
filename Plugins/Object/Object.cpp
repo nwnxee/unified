@@ -61,6 +61,7 @@ NWNX_EXPORT ArgumentStack GetLocalVariable(ArgumentStack&& args)
                     else if (it.second.HasString())   type = 3;
                     else if (it.second.HasObject())   type = 4;
                     else if (it.second.HasLocation()) type = 5;
+                    else if (it.second.HasJson())     type = 6;
                     else type = 0;
                     break;
                 }
@@ -526,13 +527,30 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
+        std::string alias;
+        try
+        {
+            alias = args.extract<std::string>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Object_Export() called from NWScript without sAlias parameter. Please update nwnx_object.nss");
+            alias = "NWNX";
+        }
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Object_Export() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+		
         auto ExportObject = [&](RESTYPE resType) -> void
         {
             std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
 
             if (!serialized.empty())
             {
-                auto file = CExoFile(("NWNX:" + fileName).c_str(), resType, "wb");
+                auto file = CExoFile((alias + ":" + fileName).c_str(), resType, "wb");
 
                 if (file.FileOpened())
                 {
@@ -882,4 +900,25 @@ NWNX_EXPORT ArgumentStack GetLastSpellCastFeat(ArgumentStack&& args)
     }
 
     return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetLastTriggered(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        auto lastObject = args.extract<ObjectID>();
+
+        if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            pDoor->m_oidLastTriggered = lastObject;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->m_oidLastTriggered = lastObject;
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetAoEObjectDurationRemaining(ArgumentStack&& args)
+{
+    auto *pAoEObject = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args));
+    return pAoEObject ? float(pAoEObject->m_nDuration) / 1000 : 0.0f;
 }

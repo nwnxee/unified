@@ -37,6 +37,7 @@ static void DestroyPlayer0(CNWSPlayer* pThis);
 static void DestroyPlayer1(CNWSPlayer* pThis);
 static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage*, CNWSPlayer*, ObjectID);
 
+static bool s_FixPlaceableEffectReapplyBug;
 
 void LuoLookup() __attribute__((constructor));
 void LuoLookup()
@@ -65,6 +66,12 @@ void LuoLookup()
 
             for (int32_t i = 0; i <= Constants::ObjectType::MAX; i++)
                 s_UpdateDistances[i] = dist * dist;
+        }
+
+        if (Config::Get<bool>("FIX_PLACEABLE_VFX_REAPPLY_BUG", false))
+        {
+            LOG_INFO("Fixing a bug where VFXs on placeables keep getting reapplied");
+            s_FixPlaceableEffectReapplyBug = true;
         }
     }
 }
@@ -141,9 +148,14 @@ static void MessageDeleteLuo(CNWSMessage* msg, CLastUpdateObject* luo, CNWSPlaye
         bool bDelete = true;
         if (auto obj = Utils::AsNWSObject(Utils::GetGameObject(luo->m_nId)))
         {
-            if (obj->GetArea() == player->GetGameObject()->GetArea())
+            auto pgo = player->GetGameObject();
+            if (pgo && (obj->GetArea() == pgo->GetArea()))
                 bDelete = false;
         }
+
+        if (s_FixPlaceableEffectReapplyBug && luo->m_nObjectType == Constants::ObjectType::Placeable)
+            bDelete = true;
+
         msg->WriteBOOL(bDelete);
     }
 }

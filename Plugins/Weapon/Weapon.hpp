@@ -75,7 +75,6 @@ private:
     NWNXLib::Hooks::Hook m_GetMeleeAttackBonusHook;
     NWNXLib::Hooks::Hook m_GetRangedAttackBonusHook;
     NWNXLib::Hooks::Hook m_GetAttackModifierVersusHook;
-    NWNXLib::Hooks::Hook m_ToggleModeHook;
 
     static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem* pItem);
     static int32_t GetEpicWeaponFocus               (CNWSCreatureStats *pStats, CNWSItem *pItem);
@@ -92,8 +91,6 @@ private:
     static int32_t GetMeleeAttackBonus              (CNWSCreatureStats *pStats, int32_t bOffHand, int32_t bIncludeBase, int32_t bTouchAttack);
     static int32_t GetRangedAttackBonus             (CNWSCreatureStats *pStats, int32_t bIncludeBase, int32_t bTouchAttack);
     static int32_t GetAttackModifierVersus          (CNWSCreatureStats *pStats, CNWSCreature* pCreature);
-    static int32_t GetUseMonkAttackTables           (CNWSCreatureStats *pStats, int32_t bForceUnarmed);
-    static int32_t ToggleMode                       (CNWSCreature *pCreature, uint8_t nMode);
 
     std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponFocusMap;
     std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponFocusMap;
@@ -108,7 +105,6 @@ private:
     std::map<std::uint32_t, std::set<std::uint32_t>> m_GreaterWeaponFocusMap;
 
     std::set<std::uint32_t>  m_WeaponUnarmedSet;
-    std::set<std::uint32_t>  m_MonkWeaponSet;
 
     bool GetIsWeaponLight  (CNWSCreatureStats* pInfo, CNWSItem* pWeapon, bool bFinesse);
     bool GetIsUnarmedWeapon(CNWSItem* pWeapon);

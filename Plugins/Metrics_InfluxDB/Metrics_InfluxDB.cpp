@@ -20,8 +20,17 @@ Metrics_InfluxDB::Metrics_InfluxDB(Services::ProxyServiceList* services)
 {
     auto host = *Config::Get<std::string>("HOST");
     auto port = *Config::Get<int32_t>("PORT");
-    m_influxDbClient = std::make_unique<InfluxDBClient>(std::move(host), static_cast<uint16_t>(port));
-    GetServices()->m_metrics->Subscribe(&OnReceiveData);
+
+    if (host.empty() || port <= 0)
+    {
+        LOG_ERROR("Invalid hostname or port (host=%s, port=%i), Metrics_InfluxDB will not be loaded.", host, port);
+        LOG_ERROR("If you're not using the Metrics_InfluxDB plugin, you can disable this message with 'NWNX_METRICS_INFLUXDB_SKIP=y'");
+    }
+    else
+    {
+        m_influxDbClient = std::make_unique<InfluxDBClient>(std::move(host), static_cast<uint16_t>(port));
+        GetServices()->m_metrics->Subscribe(&OnReceiveData);
+    }
 }
 
 Metrics_InfluxDB::~Metrics_InfluxDB()

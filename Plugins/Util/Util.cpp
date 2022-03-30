@@ -14,8 +14,10 @@
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoAliasList.hpp"
 #include "API/CExoFile.hpp"
 #include "API/CNWSDoor.hpp"
+#include "API/CNWDoorSurfaceMesh.hpp"
 #include "API/CResStruct.hpp"
 #include "API/CResGFF.hpp"
 #include "API/CNWSArea.hpp"
@@ -27,6 +29,7 @@
 #include <cmath>
 #include <chrono>
 #include <unistd.h>
+#include <sys/stat.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -124,6 +127,26 @@ NWNX_EXPORT ArgumentStack Hash(ArgumentStack&& args)
     const auto str = args.extract<std::string>();
     return (int32_t)std::hash<std::string>{}(str);
 }
+}
+
+NWNX_EXPORT ArgumentStack GetModuleMtime(ArgumentStack&&)
+{
+    CNWSModule *pMod = Utils::GetModule();
+    if (pMod->m_bIsSaveGame)
+    {
+        LOG_DEBUG("NWNX_GetModuleMtime() module is a save game, returning 0");
+        return 0;
+    }
+    std::string modName = pMod->m_sModuleResourceName.SubString(12); // discard "CURRENTGAME:"
+    std::string modPath = Globals::ExoBase()->m_pcExoAliasList->ResolveFileName("MODULES:" + modName, Constants::ResRefType::MOD);
+    struct stat s;
+    if (stat(modPath.c_str(), &s) == 0)
+    {
+        LOG_DEBUG("NWNX_GetModuleMtime() mtime for: %s", modPath);
+        return (int32_t)s.st_mtim.tv_sec;
+    }
+    LOG_ERROR("NWNX_GetModuleMtime() could not get file stats for: %s", modPath);
+    return 0;
 }
 
 NWNX_EXPORT ArgumentStack GetCustomToken(ArgumentStack&& args)
@@ -269,6 +292,8 @@ NWNX_EXPORT ArgumentStack GetFirstResRef(ArgumentStack&& args)
                 s_listResRefs.emplace_back(pList->m_pStrings[i]->CStr());
             }
         }
+
+        delete pList;
     }
 
     if (s_resRefIndex < s_listResRefs.size())
@@ -591,8 +616,19 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
             pDoor->LoadDoor(&gff, &resStruct);
             pDoor->LoadVarTable(&gff, &resStruct);
             pDoor->SetPosition(position);
-            if (appearance >= 0)
+            if (appearance > 0)
+            {
                 pDoor->m_nAppearanceType = appearance;
+                int32_t bVisibleModel = true;
+                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
+                pDoor->m_bVisibleModel = bVisibleModel;
+                CExoString sWalkMeshTemplate;
+                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
+                delete pDoor->m_pWalkMesh;
+                pDoor->m_pWalkMesh = new CNWDoorSurfaceMesh;
+                pDoor->m_pWalkMesh->LoadWalkMesh(sWalkMeshTemplate);
+                pDoor->PostProcess();
+            }
             Utils::SetOrientation(pDoor, facing);
 
             if (!tag.empty())

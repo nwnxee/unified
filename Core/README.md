@@ -25,8 +25,9 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_LOG_SOURCE` | 0-1 | 1 | Set whether to show source code location in logs printed by NWNX.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
 | `NWNX_CORE_LOG_FORCE_COLOR` | 0-1| 0 | Sets whether to force color output.
-| `NWNX_CORE_LOG_ASYNC` | 0-1| 0 | Sets whether to flush the log to disk in an async thread.
+| `NWNX_CORE_LOG_FILE_NAME` | string | Unset | Sets the secondary (in addition to `stdout`) log file.
 | `NWNX_CORE_HARD_EXIT` | 0-1| 0 | If set, NWNX will hard kill the process after it unloads.
+| `NWNX_CORE_BASE_GAME_CRASH_HANDLER` | 0-1 | 0 | Sets whether to also call the base game handler in case of crash.
 
 ## Console Commands
 
@@ -101,18 +102,18 @@ This following function would wrap a call which passes three parameters, receive
         string funcName = "GiveMeBackTheSameValues";
 
         // Note the inverse argument push order.
-        // C++-side, arguments will be consumed from right to left.
-        NWNX_PushArgumentFloat(pluginName, funcName, z);
-        NWNX_PushArgumentFloat(pluginName, funcName, y);
-        NWNX_PushArgumentFloat(pluginName, funcName, x);
+        // C++-side, arguments will be consumed from left to right.
+        NWNX_PushArgumentFloat(z);
+        NWNX_PushArgumentFloat(y);
+        NWNX_PushArgumentFloat(x);
 
         // This calls the function, which will prepare the return values.
         NWNX_CallFunction(pluginName, funcName);
 
         // C++-side pushes the return values in reverse order so we can consume them naturally here.
-        float _x = NWNX_GetReturnValueFloat(pluginName, funcName);
-        float _y = NWNX_GetReturnValueFloat(pluginName, funcName);
-        float _z = NWNX_GetReturnValueFloat(pluginName, funcName);
+        float _x = NWNX_GetReturnValueFloat();
+        float _y = NWNX_GetReturnValueFloat();
+        float _z = NWNX_GetReturnValueFloat();
 
         return vector(_x, _y, _z);
     }

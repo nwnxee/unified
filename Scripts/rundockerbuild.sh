@@ -20,4 +20,4 @@ while getopts ":hcj:" o; do
 done
 shift $((OPTIND-1))
 
-docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v $(pwd):/nwnx/home nwnxee/builder ./Scripts/buildnwnx.sh ${CLEAN} ${JOBS}
+docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v "$(pwd):/nwnx/home" nwnxee/builder ./Scripts/buildnwnx.sh ${CLEAN} ${JOBS}

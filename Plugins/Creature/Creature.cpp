@@ -101,6 +101,27 @@ NWNX_EXPORT ArgumentStack RemoveFeat(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack RemoveFeatByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto feat  = args.extract<int32_t>();
+          ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+            pLevelStats->m_lstFeats.Remove(static_cast<uint16_t>(feat));
+        }
+    }
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetKnowsFeat(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -1041,18 +1062,78 @@ NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetSkillRankByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto skill = args.extract<int32_t>();
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+            return pLevelStats->m_lstSkillRanks[skill];
+        }
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetSkillRankByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto skill = args.extract<int32_t>();
+        const auto rank = args.extract<int32_t>();
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
+          ASSERT_OR_THROW(rank >= -127);
+          ASSERT_OR_THROW(rank <= 128);
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+            pLevelStats->m_lstSkillRanks[skill] = rank;
+        }
+    }
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SetClassByPosition(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
     {
         const auto position = args.extract<int32_t>();
         const auto classID = args.extract<int32_t>();
+        const auto bUpdateLevels = args.extract<int32_t>();
           ASSERT_OR_THROW(position >= 0);
           ASSERT_OR_THROW(position <= 2);
           ASSERT_OR_THROW(classID >= Constants::ClassType::MIN);
           ASSERT_OR_THROW(classID <= Constants::ClassType::MAX);
 
+        // Save the old class id, then replace it with the new one
+        const auto classIDold = pCreature->m_pStats->GetClass(position);
         pCreature->m_pStats->SetClass(position, classID);
+
+        if (bUpdateLevels)
+        {
+            auto& levelStats = pCreature->m_pStats->m_lstLevelStats;
+            for (auto *level : levelStats)
+            {
+                if (level->m_nClass == classIDold)
+                {
+                    level->m_nClass = static_cast<uint8_t>(classID);
+                }
+            }
+        }
     }
     return {};
 }
@@ -1184,6 +1265,46 @@ NWNX_EXPORT ArgumentStack SetSkillPointsRemaining(ArgumentStack&& args)
           ASSERT_OR_THROW(points <= 65535);
 
         pCreature->m_pStats->m_nSkillPointsRemaining = static_cast<uint16_t>(points);
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetSkillPointsRemainingByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            return pLevelStats->m_nSkillPointsRemaining;
+        }
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetSkillPointsRemainingByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        const auto value = args.extract<int32_t>();
+          ASSERT_OR_THROW(value >= 0);
+          ASSERT_OR_THROW(value <= 65535);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            pLevelStats->m_nSkillPointsRemaining = static_cast<uint16_t>(value);
+        }
     }
     return {};
 }
@@ -1762,11 +1883,7 @@ NWNX_EXPORT ArgumentStack DeserializeQuickbar(ArgumentStack&& args)
         CResGFF resGff;
         CResStruct resStruct{};
 
-        // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
-        // so need a copy for them to play with since the vector can't relinquish its own.
-        auto *data = new uint8_t[serialized.size()];
-        memcpy(data, serialized.data(), serialized.size());
-        if (resGff.GetDataFromPointer((void *) data, (int32_t) serialized.size()))
+        if (resGff.GetDataFromPointer((void *) serialized.data(), (int32_t) serialized.size(), false))
         {
             resGff.InitializeForWriting();
 
@@ -2309,7 +2426,7 @@ NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
           ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
         auto associateType = args.extract<int32_t>();
           ASSERT_OR_THROW(associateType > Constants::AssociateType::None);
-          ASSERT_OR_THROW(associateType <= Constants::AssociateType::Dominated);
+          ASSERT_OR_THROW(associateType <= Constants::AssociateType::DominatedByPC);
 
         if (auto *pAssociate = Utils::AsNWSCreature(Utils::GetGameObject(oidAssociate)))
         {
@@ -2978,11 +3095,8 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         auto oidTarget = args.extract<ObjectID>();
         auto oidArea = args.extract<ObjectID>();
         auto x = args.extract<float>();
-          ASSERT_OR_THROW(x >= 0.0f);
         auto y = args.extract<float>();
-          ASSERT_OR_THROW(y >= 0.0f);
         auto z = args.extract<float>();
-          ASSERT_OR_THROW(z >= 0.0f);
         auto spellID = args.extract<int32_t>();
           ASSERT_OR_THROW(spellID >= 0);
         auto casterLevel = args.extract<int32_t>();
@@ -3035,7 +3149,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         pSpellScriptData->m_nItemCastLevel = casterLevel;
 
         Globals::AppManager()->m_pServerExoApp->GetServerAIMaster()->AddEventDeltaTime(
-                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::Event::ItemOnHitSpellImpact, (void*)pSpellScriptData);
+                0, delayMs, pCaster->m_idSelf, pCaster->m_idSelf, Constants::AIMasterEvent::ItemOnHitSpellImpact, (void*)pSpellScriptData);
     }
 
     return {};
@@ -3081,4 +3195,43 @@ NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
         }
     }
     return retVal;
+}
+
+NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
+{
+    static Hooks::Hook s_BroadcastSafeProjectileHook =
+            Hooks::HookFunction(Functions::_ZN10CNWSObject23BroadcastSafeProjectileEjj6VectorS0_jhjhh,
+            (void*)+[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
+                       uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType) -> void
+            {
+                if (nProjectileType <= 5)
+                {
+                    if (auto *pOriginator = Utils::AsNWSObject(Utils::GetGameObject(oidOriginator)))
+                    {
+                        if (auto projectileVfxOverride = pOriginator->nwnxGet<int32_t>("ORPVFX"))
+                        {
+                            if (*projectileVfxOverride == 6)
+                                nProjectileType = Globals::Rules()->RollDice(1, 5);
+                            else
+                                nProjectileType = *projectileVfxOverride;
+                        }
+                    }
+                }
+
+                s_BroadcastSafeProjectileHook->CallOriginal<void>(pThis, oidOriginator, oidTarget, vOriginator, vTarget, nDelta, nProjectileType, nSpellID, nAttackResult, nProjectilePathType);
+            }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto projectileVfx = args.extract<int32_t>();
+          ASSERT_OR_THROW(projectileVfx <= 6);
+        const auto persist = !!args.extract<int32_t>();
+
+        if (projectileVfx < 0)
+            pCreature->nwnxRemove("ORPVFX");
+        else
+            pCreature->nwnxSet("ORPVFX", projectileVfx, persist);
+    }
+
+    return {};
 }

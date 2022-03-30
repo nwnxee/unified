@@ -196,7 +196,7 @@ void ResourceEvents()
 
                 if (s_pollThread)
                 {
-                    (void)write(s_selfPipeFds[1], "a", 1);
+                    (void)!write(s_selfPipeFds[1], "a", 1);
 
                     s_pollThread->join();
 

@@ -20,6 +20,7 @@ static Hooks::Hook s_SendServerToPlayerCharListHook;
 static Hooks::Hook s_CheckStickyPlayerNameReservedHook;
 static Hooks::Hook s_SendServerToPlayerModule_ExportReplyHook;
 static Hooks::Hook s_SendServerToPlayerArea_ClientAreaHook;
+static Hooks::Hook s_HandlePlayerToServerDeviceHook;
 
 static void RemovePCFromWorldHook(CServerExoAppInternal*, CNWSPlayer*);
 static int32_t SaveServerCharacterHook(CNWSPlayer*, int32_t);
@@ -27,6 +28,7 @@ static int32_t SendServerToPlayerCharListHook(CNWSMessage*, CNWSPlayer*);
 static int32_t CheckStickyPlayerNameReservedHook(CServerExoAppInternal*, CExoString, CExoString, CExoString, int32_t);
 static int32_t SendServerToPlayerModule_ExportReplyHook(CNWSMessage*, CNWSPlayer*);
 static int32_t SendServerToPlayerArea_ClientAreaHook(CNWSMessage*, CNWSPlayer*, CNWSArea*, float, float, float, const Vector*, BOOL);
+static int32_t HandlePlayerToServerDeviceHook(CNWSMessage*, CNWSPlayer*, uint8_t);
 
 void ClientEvents() __attribute__((constructor));
 void ClientEvents()
@@ -64,6 +66,13 @@ void ClientEvents()
         s_SendServerToPlayerArea_ClientAreaHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage33SendServerToPlayerArea_ClientAreaEP10CNWSPlayerP8CNWSAreafffRK6Vectori,
                 (void*)&SendServerToPlayerArea_ClientAreaHook, Hooks::Order::Earliest);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_.*", []()
+    {
+        s_HandlePlayerToServerDeviceHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage26HandlePlayerToServerDeviceEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerDeviceHook, Hooks::Order::Earliest);
     });
 }
 
@@ -112,6 +121,9 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     std::string cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
     std::string isDM = std::to_string(pPlayerInfo->m_bGameMasterPrivileges);
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
+    std::string versionMajor = std::to_string(pPlayerInfo->m_nBuildVersion);
+    std::string versionMinor = std::to_string(pPlayerInfo->m_nPatchRevision);
+    std::string platformId = std::to_string(pPlayerInfo->m_nPlatformId);
 
     std::string reason;
     auto PushAndSignal = [&](const std::string& ev) -> bool {
@@ -119,6 +131,9 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
         PushEventData("CDKEY", cdKey);
         PushEventData("IS_DM", isDM);
         PushEventData("IP_ADDRESS", ipAddress);
+        PushEventData("VERSION_MAJOR", versionMajor);
+        PushEventData("VERSION_MINOR", versionMinor);
+        PushEventData("PLATFORM_ID", platformId);
         return SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
     };
 
@@ -128,7 +143,14 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     }
     else
     {
-        pNetLayer->DisconnectPlayer(pPlayer->m_nPlayerID, 5838, true, reason.c_str());
+        Tasks::QueueOnMainThread([pNetLayer, pPlayer, reason]()
+        {
+            if (pPlayer)
+            {
+                pNetLayer->DisconnectPlayer(pPlayer->m_nPlayerID, 5838, true, reason.c_str());
+            }
+        });
+
         retVal = false;
     }
     PushAndSignal("NWNX_ON_CLIENT_CONNECT_AFTER");
@@ -192,6 +214,41 @@ int32_t SendServerToPlayerArea_ClientAreaHook(CNWSMessage *pMessage, CNWSPlayer 
     PushEventData("AREA", Utils::ObjectIDToString(pArea->m_idSelf));
     PushEventData("PLAYER_NEW_TO_MODULE", std::to_string(bPlayerIsNewToModule));
     SignalEvent("NWNX_ON_SERVER_SEND_AREA_AFTER", pPlayer->m_oidNWSObject);
+
+    return retVal;
+}
+
+int32_t HandlePlayerToServerDeviceHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+{
+    if (nMinor != Constants::MessageDeviceMinor::AdvertiseProperty)
+        return s_HandlePlayerToServerDeviceHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+    int32_t offset = 0;
+    const auto property = Utils::PeekMessage<std::string>(pMessage, offset);
+    offset += 4 + property.length();
+    const auto type = Utils::PeekMessage<int32_t>(pMessage, offset);
+    offset += 4;
+    const auto newValue = Utils::PeekMessage<int32_t>(pMessage, offset);
+
+    if (type != 1)// Only 1 type supported so far
+        return s_HandlePlayerToServerDeviceHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+    int32_t oldValue = pPlayer->m_device_properties[property];
+
+    if (oldValue == 0)// Initial set happens on connect so no valid player character yet
+        return s_HandlePlayerToServerDeviceHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+    PushEventData("PROPERTY", property);
+    PushEventData("OLD_VALUE", std::to_string(oldValue));
+    PushEventData("NEW_VALUE", std::to_string(newValue));
+    SignalEvent("NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE", pPlayer->m_oidNWSObject);
+
+    auto retVal = s_HandlePlayerToServerDeviceHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+    PushEventData("PROPERTY", property);
+    PushEventData("OLD_VALUE", std::to_string(oldValue));
+    PushEventData("NEW_VALUE", std::to_string(newValue));
+    SignalEvent("NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_AFTER", pPlayer->m_oidNWSObject);
 
     return retVal;
 }

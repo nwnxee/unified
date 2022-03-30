@@ -1,5 +1,7 @@
 #include "Events.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CScriptCompiler.hpp"
+#include "API/CTlkTable.hpp"
 #include <set>
 #include <regex>
 
@@ -18,7 +20,7 @@ struct EventParams
     std::string m_EventName; // The current event name
 };
 
-static std::unordered_map<std::string, std::vector<std::string>> s_eventMap; // Event name -> subscribers.
+static std::unordered_map<std::string, std::vector<std::pair<int32_t, std::string>>> s_eventMap; // {EventName} -> {{0=Script, 1=Chunk, 2=Chunk+WrapInMain}, ScriptName/Chunk}
 static std::stack<EventParams> s_eventData; // Data tag -> data for currently executing event.
 static uint8_t s_eventDepth;
 static std::unordered_map<std::string, std::function<void(void)>> s_initList;
@@ -81,14 +83,30 @@ bool SignalEvent(const std::string& eventName, const ObjectID target, std::strin
 
     s_eventData.top().m_EventName = eventName;
 
-    for (const auto& script : s_eventMap[eventName])
+    for (const auto& subscribers : s_eventMap[eventName])
     {
-        auto DispatchEvent = [&]() -> void {
-            LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName, script);
-            CExoString scriptExoStr = script.c_str();
+        auto DispatchEvent = [&]() -> void
+        {
+            LOG_DEBUG("Dispatching notification for event '%s' to script(chunk) '%s'.", eventName, subscribers.second);
 
             ++s_eventDepth;
-            API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
+
+            CExoString sScriptOrChunk = subscribers.second;
+
+            if (subscribers.first == 0)
+            {
+                Globals::VirtualMachine()->RunScript(&sScriptOrChunk, target, true);
+            }
+            else
+            {
+                int32_t ret = Globals::VirtualMachine()->RunScriptChunk(sScriptOrChunk, target, true, (subscribers.first - 1));
+
+                if (ret < 0)
+                {
+                    LOG_ERROR("Script chunk '%s' for event '%s' failed with error -> %s: %s", subscribers.second, eventName,
+                                Globals::TlkTable()->GetSimpleString(-ret).CStr(), Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+                }
+            }
 
             skipped |= s_eventData.top().m_Skipped;
 
@@ -100,7 +118,7 @@ bool SignalEvent(const std::string& eventName, const ObjectID target, std::strin
             --s_eventDepth;
         };
 
-        auto eventDispatchList = s_dispatchList.find(eventName + script);
+        auto eventDispatchList = s_dispatchList.find(eventName + subscribers.second);
         if (eventDispatchList != s_dispatchList.end())
         {
             if(eventDispatchList->second.find(target) != eventDispatchList->second.end())
@@ -182,19 +200,23 @@ void RunEventInit(const std::string& eventName)
 NWNX_EXPORT ArgumentStack SubscribeEvent(ArgumentStack&& args)
 {
     const auto event = args.extract<std::string>();
-    auto script = args.extract<std::string>();
+      ASSERT_OR_THROW(!event.empty());
+    const auto script = args.extract<std::string>();
+      ASSERT_OR_THROW(!script.empty());
 
     RunEventInit(event);
-    auto& eventVector = s_eventMap[event];
 
-    if (std::find(std::begin(eventVector), std::end(eventVector), script) != std::end(eventVector))
+    auto& eventVector = s_eventMap[event];
+    auto pair = std::make_pair(0, script);
+
+    if (std::find(std::begin(eventVector), std::end(eventVector), pair) != std::end(eventVector))
     {
         LOG_NOTICE("Script '%s' attempted to subscribe to event '%s' but is already subscribed!", script, event);
     }
     else
     {
         LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
-        eventVector.emplace_back(std::move(script));
+        eventVector.emplace_back(pair);
     }
 
     return {};
@@ -208,7 +230,8 @@ NWNX_EXPORT ArgumentStack UnsubscribeEvent(ArgumentStack&& args)
       ASSERT_OR_THROW(!script.empty());
 
     auto& eventVector = s_eventMap[event];
-    auto it = std::find(std::begin(eventVector), std::end(eventVector), script);
+    auto pair = std::make_pair(0, script);
+    auto it = std::find(std::begin(eventVector), std::end(eventVector), pair);
 
     if (it == std::end(eventVector))
     {
@@ -217,6 +240,57 @@ NWNX_EXPORT ArgumentStack UnsubscribeEvent(ArgumentStack&& args)
     else
     {
         LOG_INFO("Script '%s' unsubscribed from event '%s'.", script, event);
+        eventVector.erase(it);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SubscribeEventScriptChunk(ArgumentStack&& args)
+{
+    const auto event = args.extract<std::string>();
+      ASSERT_OR_THROW(!event.empty());
+    auto scriptChunk = args.extract<std::string>();
+      ASSERT_OR_THROW(!scriptChunk.empty());
+    const auto wrapIntoMain = args.extract<int32_t>() != 0;
+
+    RunEventInit(event);
+
+    auto& eventVector = s_eventMap[event];
+    auto pair = std::make_pair(wrapIntoMain + 1, scriptChunk);
+
+    if (std::find(std::begin(eventVector), std::end(eventVector), pair) != std::end(eventVector))
+    {
+        LOG_NOTICE("Script Chunk '%s' attempted to subscribe to event '%s' but is already subscribed!", scriptChunk, event);
+    }
+    else
+    {
+        LOG_INFO("Script Chunk '%s' subscribed to event '%s'.", scriptChunk, event);
+        eventVector.emplace_back(pair);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack UnsubscribeEventScriptChunk(ArgumentStack&& args)
+{
+    const auto event = args.extract<std::string>();
+      ASSERT_OR_THROW(!event.empty());
+    auto scriptChunk = args.extract<std::string>();
+      ASSERT_OR_THROW(!scriptChunk.empty());
+    const auto wrapIntoMain = args.extract<int32_t>() != 0;
+
+    auto& eventVector = s_eventMap[event];
+    auto pair = std::make_pair(wrapIntoMain + 1, scriptChunk);
+    auto it = std::find(std::begin(eventVector), std::end(eventVector), pair);
+
+    if (it == std::end(eventVector))
+    {
+        LOG_NOTICE("Script Chunk '%s' attempted to unsubscribe from event '%s' but is not subscribed!", scriptChunk, event);
+    }
+    else
+    {
+        LOG_INFO("Script Chunk '%s' unsubscribed from event '%s'.", scriptChunk, event);
         eventVector.erase(it);
     }
 
@@ -284,14 +358,14 @@ NWNX_EXPORT ArgumentStack ToggleDispatchListMode(ArgumentStack&& args)
 {
     const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = args.extract<std::string>();
-      ASSERT_OR_THROW(!scriptName.empty());
+    const auto scriptOrChunk = args.extract<std::string>();
+      ASSERT_OR_THROW(!scriptOrChunk.empty());
     const bool bEnable = args.extract<int32_t>() != 0;
 
     if (bEnable)
-        s_dispatchList[eventName+scriptName];
+        s_dispatchList[eventName+scriptOrChunk];
     else
-        s_dispatchList.erase(eventName+scriptName);
+        s_dispatchList.erase(eventName+scriptOrChunk);
 
     return {};
 }
@@ -300,12 +374,12 @@ NWNX_EXPORT ArgumentStack AddObjectToDispatchList(ArgumentStack&& args)
 {
     const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = args.extract<std::string>();
-      ASSERT_OR_THROW(!scriptName.empty());
+    const auto scriptOrChunk = args.extract<std::string>();
+      ASSERT_OR_THROW(!scriptOrChunk.empty());
     const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
-    auto eventDispatchList = s_dispatchList.find(eventName+scriptName);
+    auto eventDispatchList = s_dispatchList.find(eventName+scriptOrChunk);
     if (eventDispatchList != s_dispatchList.end())
     {
         eventDispatchList->second.insert(oidObject);
@@ -318,12 +392,12 @@ NWNX_EXPORT ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args)
 {
     const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = args.extract<std::string>();
-      ASSERT_OR_THROW(!scriptName.empty());
+    const auto scriptOrChunk = args.extract<std::string>();
+      ASSERT_OR_THROW(!scriptOrChunk.empty());
     const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
-    auto eventDispatchList = s_dispatchList.find(eventName+scriptName);
+    auto eventDispatchList = s_dispatchList.find(eventName+scriptOrChunk);
     if (eventDispatchList != s_dispatchList.end())
     {
         eventDispatchList->second.erase(oidObject);
@@ -374,6 +448,18 @@ NWNX_EXPORT ArgumentStack RemoveIDFromWhitelist(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetNumSubscribers(ArgumentStack&& args)
+{
+    const auto event = args.extract<std::string>();
+      ASSERT_OR_THROW(!event.empty());
+
+    auto subscribers = s_eventMap.find(event);
+    if (subscribers != s_eventMap.end())
+        return (int32_t)subscribers->second.size();
+    else
+        return 0;
 }
 
 }

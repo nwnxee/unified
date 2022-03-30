@@ -44,6 +44,7 @@ SQL::SQL(Services::ProxyServiceList* services)
     REGISTER(PreparedFloat);
     REGISTER(PreparedObjectId);
     REGISTER(PreparedObjectFull);
+    REGISTER(PreparedNULL);
     REGISTER(ReadFullObjectInActiveRow);
     REGISTER(GetAffectedRows);
     REGISTER(GetDatabaseType);
@@ -345,6 +346,20 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
             std::vector<uint8_t> serializedObjectVec = Utils::SerializeGameObject(pObject);
             m_target->PrepareBinary(position, serializedObjectVec);
         }
+    }
+    return {};
+}
+Events::ArgumentStack SQL::PreparedNULL(Events::ArgumentStack&& args)
+{
+    auto position = args.extract<int32_t>();
+
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        LOG_WARNING("Prepared argument (pos:%d, value:NULL) out of bounds", position);
+    }
+    else
+    {
+        m_target->PrepareNULL(position);
     }
     return {};
 }

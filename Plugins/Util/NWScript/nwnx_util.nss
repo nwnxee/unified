@@ -58,6 +58,10 @@ string NWNX_Util_GetAsciiTableString();
 /// @return The hashed string as an integer.
 int NWNX_Util_Hash(string str);
 
+/// @brief Gets the last modified timestamp (mtime) of the module file in seconds.
+/// @return The mtime of the module file.
+int NWNX_Util_GetModuleMtime();
+
 /// @brief Gets the value of customTokenNumber.
 /// @param customTokenNumber The token number to query.
 /// @return The string representation of the token value.
@@ -280,6 +284,12 @@ int NWNX_Util_Hash(string str)
     string sFunc = "Hash";
     NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Util_GetModuleMtime()
+{
+    NWNX_CallFunction(NWNX_Util, "GetModuleMtime");
     return NWNX_GetReturnValueInt();
 }
 

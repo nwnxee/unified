@@ -107,6 +107,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandDeleteCampaignVariable(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandDestroyCampaignDatabase(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandDestroyObject(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandPlayerDevice(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandDistanceConversions(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandDoDoorAction(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandDoSinglePlayerAutoSave(int32_t nCommandId, int32_t nParameters);
@@ -140,6 +141,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandEffectEthereal(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectHeal(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectHitPointChangeWhenDying(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectImmunity(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectInvisibility(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectLinkEffects(int32_t nCommandId, int32_t nParameters);
@@ -151,6 +153,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandEffectPetrify(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectPoison(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectResurrection(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandEffectRunScript(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSanctuary(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSavingThrowDecrease(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEffectSavingThrowIncrease(int32_t nCommandId, int32_t nParameters);
@@ -186,7 +189,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandFloatToInt(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandFloatToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandForceRest(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGet2DAString(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGet2DA(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAbilityScore(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAbilityModifier(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAC(int32_t nCommandId, int32_t nParameters);
@@ -215,6 +218,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetCalendarDay(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCampaignFloat(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCampaignInt(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetCampaignJson(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCampaignVector(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCampaignLocation(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetCampaignString(int32_t nCommandId, int32_t nParameters);
@@ -473,6 +477,8 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGiveGoldToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGiveXPToCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetIsPossessedFamiliar(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGuiEventManagement(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandHideEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIncrementRemainingFeatUses(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandInsertString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIntToFloat(int32_t nCommandId, int32_t nParameters);
@@ -487,6 +493,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandIsPC(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandItemActivated(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandItemPropertyEffect(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandJson(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandLevelUpHenchman(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandLineOfSight(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandLocation(int32_t nCommandId, int32_t nParameters);
@@ -500,6 +507,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandMoveToPoint(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMusicBackground(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMusicBattle(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandNuiManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectVisualTransform(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandOpenDoor(int32_t nCommandId, int32_t nParameters);
@@ -528,6 +536,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandRemoveJournalQuestEntry(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandReplaceObjectTexture(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandResistSpell(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandResMan(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandRestoreBaseAttackBonus(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandRestoreCameraFacing(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandRetrieveCampaignObject(int32_t nCommandId, int32_t nParameters);
@@ -547,6 +556,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandSetCameraMode(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCampaignFloat(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCampaignInt(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandSetCampaignJson(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCampaignVector(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCampaignLocation(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCampaignString(int32_t nCommandId, int32_t nParameters);
@@ -657,6 +667,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandTalent(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTalentAccess(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTargetingModeManagement(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandTileActionManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTileExplorationManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTimeConversions(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTestString(int32_t nCommandId, int32_t nParameters);

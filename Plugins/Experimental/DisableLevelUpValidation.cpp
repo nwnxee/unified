@@ -41,7 +41,7 @@ void DisableLevelUpValidation()
                     auto* pScriptEvent = new CScriptEvent;
                     pScriptEvent->m_nType = ScriptEvent::OnPlayerLevelUp;
                     Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerAIMaster->AddEventAbsoluteTime(
-                            0, 0, pCreatureStats->m_pBaseCreature->m_idSelf, pModule->m_idSelf, Event::SignalEvent, pScriptEvent);
+                            0, 0, pCreatureStats->m_pBaseCreature->m_idSelf, pModule->m_idSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 
                 }
             }

@@ -1,53 +1,10 @@
-#include "ServerLogRedirector.hpp"
-#include "API/CExoString.hpp"
-
-using namespace NWNXLib;
-
-static ServerLogRedirector::ServerLogRedirector* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new ServerLogRedirector::ServerLogRedirector(services);
-    return g_plugin;
-}
-
-namespace ServerLogRedirector {
+#include "nwnx.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::Services;
 
 static bool s_printString;
-static bool s_hideValidateGFFResourceMessage;
-static Hooks::Hook s_WriteToLogFileHook;
-static Hooks::Hook s_WriteToErrorFileHook;
-static Hooks::Hook s_ExecuteCommandPrintStringHook;
-
-ServerLogRedirector::ServerLogRedirector(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-    // Hook logging so it always emits to stdout/stderr.
-    s_WriteToLogFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
-                                                        (void*)&WriteToLogFileHook, Hooks::Order::VeryEarly);
-
-    s_WriteToErrorFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
-                                                          (void*)&WriteToErrorFileHook, Hooks::Order::VeryEarly);
-
-    s_ExecuteCommandPrintStringHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
-        (void*)+[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
-        {
-            s_printString = true;
-            auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);
-            s_printString = false;
-            return retVal;
-        }, Hooks::Order::VeryEarly);
-
-    s_hideValidateGFFResourceMessage = Config::Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
-}
-
-ServerLogRedirector::~ServerLogRedirector()
-{
-}
+static bool s_hideValidateGFFResourceMessage = Config::Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
 
 inline std::string TrimMessage(CExoString* message)
 {
@@ -64,31 +21,40 @@ inline std::string TrimMessage(CExoString* message)
     return String::Trim(s);
 }
 
-void ServerLogRedirector::WriteToLogFileHook(CExoDebugInternal *pExoDebugInternal, CExoString* message)
-{
-    std::string str = TrimMessage(message);
-
-    if (s_hideValidateGFFResourceMessage)
+static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
+    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
-        if(str.find("*** ValidateGFFResource sent by user.") == std::string::npos)
+        std::string str = TrimMessage(message);
+
+        if (s_hideValidateGFFResourceMessage)
+        {
+            if(str.find("*** ValidateGFFResource sent by user.") == std::string::npos)
+            {
+                LOG_INFO("(Server) %s", str);
+            }
+        }
+        else
         {
             LOG_INFO("(Server) %s", str);
         }
-    }
-    else
+
+        s_WriteToLogFileHook->CallOriginal<void>(pExoDebugInternal, message);
+    }, Hooks::Order::VeryEarly);
+
+static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
+    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
-        LOG_INFO("(Server) %s", str);
-    }
+        std::string str = TrimMessage(message);
+        LOG_INFO("(Error) %s", str);
 
-    s_WriteToLogFileHook->CallOriginal<void>(pExoDebugInternal, message);
-}
+        s_WriteToErrorFileHook->CallOriginal<void>(pExoDebugInternal, message);
+    }, Hooks::Order::VeryEarly);
 
-void ServerLogRedirector::WriteToErrorFileHook(CExoDebugInternal *pExoDebugInternal, CExoString* message)
-{
-    std::string str = TrimMessage(message);
-    LOG_INFO("(Error) %s", str);
-
-    s_WriteToErrorFileHook->CallOriginal<void>(pExoDebugInternal, message);
-}
-
-}
+static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
+    (void*)+[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
+    {
+        s_printString = true;
+        auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);
+        s_printString = false;
+        return retVal;
+    }, Hooks::Order::VeryEarly);

@@ -166,7 +166,7 @@ struct CNWSCreatureStats
     ~CNWSCreatureStats();
     void UpdateLastStatsObject(uint64_t nUpdatesRequired, CNWCreatureStatsUpdate * updateObject);
     CNWLevelStats * GetLevelStats(uint8_t nLevel);
-    STRREF ReadStatsFromGff(CResGFF * pRes, CResStruct * pGffStructWithCreatureStats, CNWSCreatureAppearanceInfo * pAppInfo, BOOL bIsSaveGame = true, BOOL bIsPlayerCharacter = false, BOOL bCopyObject = false);
+    STRREF ReadStatsFromGff(CResGFF * pRes, CResStruct * pGffStructWithCreatureStats, CNWSCreatureAppearanceInfo * pAppInfo, BOOL bIsSaveGame = true, BOOL bIsPlayerCharacter = false, BOOL bCopyObject = false, BOOL bLoadOID = true);
     void ReadSpellsFromGff(CResGFF * pRes, CResStruct * pGffStructWithCreatureStats, BOOL bDefaultUnsavedSpellsAsReadied = false);
     void SaveStats(CResGFF * pRes, CResStruct * pStruct);
     void SaveClassInfo(CResGFF * pRes, CResStruct * pStruct);

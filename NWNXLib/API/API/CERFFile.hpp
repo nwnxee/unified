@@ -51,7 +51,7 @@ struct CERFFile
     BOOL WriteStringTable();
     BOOL SetNumEntries(uint32_t nEntries);
     BOOL WriteResource(char * szResName, RESTYPE rtResType, CRes * pRes, BOOL bIsGFF = true);
-    BOOL WriteResource(const char * szResName, RESTYPE rtResType, DataBlockRef pData);
+    //BOOL WriteResource(const char * szResName, RESTYPE rtResType, DataViewRef pData);
     BOOL Finish();
 
 

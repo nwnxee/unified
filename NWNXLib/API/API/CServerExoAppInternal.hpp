@@ -2,11 +2,11 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
-#include "CExoArrayList.hpp"
 #include "CExoLinkedList.hpp"
 #include "CExoString.hpp"
 #include "CNWSClient.hpp"
 #include "CResRef.hpp"
+#include "NWSyncAdvertisement.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -41,6 +41,9 @@ struct CServerInfo;
 struct CWorldTimer;
 struct SSubNetProfile;
 
+namespace NWSync {
+struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
@@ -134,6 +137,7 @@ struct CServerExoAppInternal
     int32_t m_AbilityBonusLimitModule;
     int32_t m_AbilityPenaltyLimitModule;
     int32_t m_SkillBonusLimitModule;
+    NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
 
     CServerExoAppInternal();
     ~CServerExoAppInternal();
@@ -200,7 +204,7 @@ struct CServerExoAppInternal
     void MarkUpdateClientsForObject(OBJECT_ID oidObjectToUpdate);
     void UpdateClientGameObjectsForPlayer(CNWSPlayer * pPlayer, BOOL bForce, uint64_t nCurrentSystemTime = 0);
     BOOL UnloadModule();
-    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
+    BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame, CNWSPlayer * pPlayer, int32_t sourceType, const NWSync::Advertisement & nwsyncModuleSourceAdvert);
     BOOL GetModuleExists(const CExoString & sModuleResRef);
     BOOL RunModule();
     void VomitServerOptionsToLog();
