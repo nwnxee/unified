@@ -904,7 +904,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
                 auto eff = (CGameEffect*)thisPtr->m_appliedEffects.element[i];
                 if (eff->m_sCustomTag == "NWNX_Layonara_SurfMatMovement")
                 {
-                    pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Event::RemoveEffect, eff);
+                    pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Constants::AIMasterEvent::RemoveEffect, eff);
                 }
             }
 
@@ -938,7 +938,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
                 link->m_sCustomTag = "NWNX_Layonara_SurfMatMovement";
                 link->SetLinked(eff, iconEff);
                 link->UpdateLinked();
-                pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Event::ApplyEffect, link);
+                pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Constants::AIMasterEvent::ApplyEffect, link);
             }
             g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
         }
