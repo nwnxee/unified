@@ -320,14 +320,18 @@ int NWNX_Object_GetIsDestroyable(object oObject);
 /// @brief Checks for specific spell immunity. Should only be called in spellscripts
 /// @param oDefender The object defending against the spell.
 /// @param oCaster The object casting the spell.
+/// @param nSpellId The casted spell id. Default value is -1, which corrresponds to the normal game behaviour.
 /// @return -1 if defender has no immunity, 2 if the defender is immune
-int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster);
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster, int nSpellId=-1);
 
 /// @brief Checks for spell school/level immunities and mantles. Should only be called in spellscripts
 /// @param oDefender The object defending against the spell.
 /// @param oCaster The object casting the spell.
+/// @param nSpellId The casted spell id. Default value is -1, which corrresponds to the normal game behaviour.
+/// @param nSpellLevel The level of the casted spell. Default value is -1, which corrresponds to the normal game behaviour.
+/// @param nSpellSchool The school of the casted spell (SPELL_SCHOOL_* constant). Default value is -1, which corrresponds to the normal game behaviour.
 /// @return -1 defender no immunity. 2 if immune. 3 if immune, but the immunity has a limit (example: mantles)
-int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster);
+int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster, int nSpellId=-1, int nSpellLevel=-1, int nSpellSchool=-1);
 
 /// @brief Sets if a placeable has an inventory.
 /// @param obj The placeable.
@@ -837,9 +841,10 @@ int NWNX_Object_GetIsDestroyable(object oObject)
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster)
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster, int nSpellId=-1)
 {
     string sFunc = "DoSpellImmunity";
+    NWNX_PushArgumentInt(nSpellId);
     NWNX_PushArgumentObject(oCaster);
     NWNX_PushArgumentObject(oDefender);
     NWNX_CallFunction(NWNX_Object, sFunc);
@@ -847,9 +852,12 @@ int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster)
     return  NWNX_GetReturnValueInt();
 }
 
-int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster)
+int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster, int nSpellId=-1, int nSpellLevel=-1, int nSpellSchool=-1)
 {
     string sFunc = "DoSpellLevelAbsorption";
+    NWNX_PushArgumentInt(nSpellSchool);
+    NWNX_PushArgumentInt(nSpellLevel);
+    NWNX_PushArgumentInt(nSpellId);
     NWNX_PushArgumentObject(oCaster);
     NWNX_PushArgumentObject(oDefender);
     NWNX_CallFunction(NWNX_Object, sFunc);

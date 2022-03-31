@@ -34,6 +34,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
+- Object: DoSpellLevelAbsorption() can now override the spellId, the level and the school of the casted spell
+- Object: DoSpellImmunity() can now override the spellId
 - Events: added event data `STAT`/`VALUE`/`TARGET`/`SET` to `NWNX_ON_DM_SET_STAT_*`
 - Events: added event data `TYPE`/`TARGET`/`KEY` to `NWNX_ON_DM_GET_VARIABLE_*`
 - Events: added event data `TYPE`/`TARGET`/`KEY`/`VALUE` to `NWNX_ON_DM_SET_VARIABLE_*`
