@@ -877,7 +877,7 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
     return stack;
 }
 
-void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
+void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bDoingCharacterCopy)
 {
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
     {
@@ -887,11 +887,15 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
         if ((pMaster != nullptr && !pMaster->m_bPlayerCharacter) || pCreature->m_pStats->GetIsDM() || pCreature->m_nAssociateType == 7 || pCreature->m_nAssociateType == 8 ||
             !pCreature->m_bPlayerCharacter)
         {
+            s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bDoingCharacterCopy);
             return;
         }
         auto pArea = pServer->GetAreaByGameObjectID(thisPtr->m_oidArea);
         if (pArea == nullptr || pArea->m_refTileSet == "ttu01")
+        {
+            s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bDoingCharacterCopy);
             return;
+        }
         auto iMat = pArea->GetSurfaceMaterial(vPos);
         if (!g_plugin->m_objectCurrentMaterial.count(thisPtr->m_idSelf) ||
              g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] != iMat)
@@ -943,7 +947,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bBool)
             g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
         }
     }
-    s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bBool);
+    s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bDoingCharacterCopy);
 }
 
 ArgumentStack Layonara::ClearSurfaceMaterial(ArgumentStack&& args)
