@@ -34,6 +34,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
+- Object: DoSpellLevelAbsorption() can now override the spellId, the level and the school of the casted spell
+- Object: DoSpellImmunity() can now override the spellId
 - Events: added event data `STAT`/`VALUE`/`TARGET`/`SET` to `NWNX_ON_DM_SET_STAT_*`
 - Events: added event data `TYPE`/`TARGET`/`KEY` to `NWNX_ON_DM_GET_VARIABLE_*`
 - Events: added event data `TYPE`/`TARGET`/`KEY`/`VALUE` to `NWNX_ON_DM_SET_VARIABLE_*`
@@ -46,6 +48,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - N/A
 
 ### Fixed
+- Feat: Fixed an issue with feat usages being reset upon character relog
 - Object: GetLocalVariable() now recognizes variables of type json.
 - Tweaks: Language override tweak now works for area names.
 - Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
