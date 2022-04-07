@@ -644,6 +644,9 @@ int32_t Race::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerR
 
     auto nRace = pCreature->m_pStats->m_nRace;
 
+    // Need to store the feat usages and set them after we remove/add the feat back to bypass Char Validation
+    std::unordered_map<uint16_t, uint8_t> featUses;
+
     for (auto &featDetails : g_plugin->m_RaceFeat[nRace])
     {
         auto featId = featDetails.first;
@@ -664,6 +667,7 @@ int32_t Race::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerR
         {
             pLevelStats->AddFeat(feat);
         }
+        featUses.emplace(featId, pCreature->m_pStats->GetFeatRemainingUses(featId));
         pCreature->m_pStats->RemoveFeat(featId);
     }
 
@@ -678,6 +682,7 @@ int32_t Race::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerR
         auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel-1];
         pLevelStats->AddFeat(featId);
         pCreature->m_pStats->AddFeat(featId);
+        pCreature->m_pStats->SetFeatRemainingUses(featId, featUses[featId]);
     }
 
     return retVal;
