@@ -31,6 +31,7 @@
 #include "API/CNWSSpellScriptData.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSpell.hpp"
+#include "API/CNWSPlayer.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -46,6 +47,7 @@ static bool s_bCasterLevelHooksInitialized = false;
 static bool s_bCriticalMultiplierHooksInitialized = false;
 static bool s_bCriticalRangeHooksInitialized = false;
 static bool s_bResolveAttackRollHookInitialized = false;
+static bool s_bResolveInitiativeRollHookInitialized = false;
 static Hooks::Hook s_GetClassLevelHook = nullptr;
 
 static std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> s_RollModifier;
@@ -3234,4 +3236,80 @@ NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
     }
 
     return {};
+}
+static void InitInitiativeRollHook()
+{
+    static Hooks::Hook pResolveInitiative_hook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveInitiativeEv,
+    (void *) +[](CNWSCreature *pCreature) -> void
+    {
+        auto initMod = pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
+        if (!initMod)
+            return pResolveInitiative_hook->CallOriginal<void>(pCreature);
+
+        if (pCreature->m_bInitiativeExpired == 1)
+        {
+            auto pStats = pCreature->m_pStats;
+            auto diceRoll = Globals::Rules()->RollDice(1, 20);
+            auto mod = pStats->GetDEXMod(0);
+            if (pStats->HasFeat(Constants::Feat::EpicSuperiorInitiative))
+                mod += Globals::Rules()->GetRulesetIntEntry("EPIC_SUPERIOR_INITIATIVE_BONUS", 8);
+            else if (pStats->HasFeat(Constants::Feat::ImprovedInitiative))
+                mod += Globals::Rules()->GetRulesetIntEntry("IMPROVED_INITIATIVE_BONUS", 4);
+            if (pStats->HasFeat(Constants::Feat::Blooded))
+                mod += Globals::Rules()->GetRulesetIntEntry("BLOODED_INITIATIVE_BONUS", 2);
+            if (pStats->HasFeat(Constants::Feat::Thug))
+                mod += Globals::Rules()->GetRulesetIntEntry("THUG_INITIATIVE_BONUS", 2);
+
+            // Add creature bonus
+            mod += initMod;
+
+            pCreature->m_nInitiativeRoll = diceRoll + mod;
+            auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(
+                    pCreature->m_idSelf);
+            if (pPlayer)
+            {
+                auto *pData = new CNWCCMessageData;
+                pData->SetInteger(0, diceRoll);
+                pData->SetInteger(1, mod);
+                pData->SetObjectID(0, pCreature->m_idSelf);
+                auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+                if (pMessage)
+                {
+                    pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID,
+                                                          Constants::MessageClientSideMsgMinor::Initiative,
+                                                          pData, nullptr);
+                }
+            }
+            pCreature->m_bInitiativeExpired = 0;
+        }
+    }, Hooks::Order::Latest);
+
+    s_bResolveInitiativeRollHookInitialized = true;
+}
+
+NWNX_EXPORT ArgumentStack SetInitiativeModifier(ArgumentStack&& args)
+{
+    if (!s_bResolveInitiativeRollHookInitialized)
+        InitInitiativeRollHook();
+
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        const auto initiativeMod = args.extract<int32_t>();
+        const bool persist = !!args.extract<int32_t>();
+
+        if (initiativeMod)
+            pCreature->nwnxSet("INITIATIVE_MOD", initiativeMod, persist);
+        else
+            pCreature->nwnxRemove("INITIATIVE_MOD");
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetInitiativeModifier(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
+    }
+    return 0;
 }
