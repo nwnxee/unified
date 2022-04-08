@@ -44,6 +44,8 @@ struct CResRef
     BOOL IsValid() const;
     uint8_t GetLength() const;
 
+    // Custom utility impl, missing from the API
+    CResRef(const CResRef& other) = default;
 
 #ifdef NWN_CLASS_EXTENSION_CResRef
     NWN_CLASS_EXTENSION_CResRef

@@ -18,6 +18,8 @@ struct BIFFFILE_HEADER
     uint32_t nNumVariableResources;
     uint32_t nNumFixedResources;
     uint32_t nTableOffset;
+    char cOid[24];
+    uint8_t pReserved[8];
 
 
 

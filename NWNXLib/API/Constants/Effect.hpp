@@ -100,10 +100,11 @@ namespace EffectTrueType
         CutsceneGhost                 = 93,
         CutsceneImmobile              = 94,
         DefensiveStance               = 95,
+        RunScript                     = 96,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 95;
-    static_assert(MAX == DefensiveStance);
+    constexpr int32_t MAX   = 96;
+    static_assert(MAX == RunScript);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -202,6 +203,7 @@ namespace EffectTrueType
             "Cutscene Ghost",
             "Cutscene Immobile",
             "Defensive Stance",
+            "Run Script",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
@@ -264,6 +266,38 @@ namespace EffectSubType
             case Extraordinary: return "Extraordinary";
         }
         return "(invalid)";
+    }
+}
+
+namespace EffectBonusType
+{
+    enum TYPE
+    {
+        Attack = 1,
+        Damage = 2,
+        SavingThrow = 3,
+        Ability = 4,
+        Skill = 5,
+        TouchAttack = 6,
+    };
+    constexpr int32_t MIN = 1;
+    constexpr int32_t MAX = 6;
+    static_assert(MAX == TouchAttack);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "(invalid)",
+            "Attack",
+            "Damage",
+            "SavingThrow",
+            "Ability",
+            "Skill",
+            "TouchAttack",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
     }
 }
 

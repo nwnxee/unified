@@ -4,39 +4,296 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.20-HEAD
-https://github.com/nwnxee/unified/compare/build8193.20...HEAD
+## 8193.34-HEAD
+https://github.com/nwnxee/unified/compare/build8193.34...HEAD
+
+### Added
+- Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
+- Tweaks: added `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` to fix the DM creature selection box not showing up when player party control is off.
+- Tweaks: added `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` to fix a rare issue where triggers/traps fire enter events without a creature inside.
+- Tweaks: added `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG` to fix a bug where multiclass xp penalties are calculated incorrectly.
+- Optimizations: added `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG` to fix a bug where VFXs keep getting reapplied to placeables.
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
+- Events: added skippable event `NWNX_ON_INPUT_DROP_ITEM_{BEFORE|AFTER}` which fires when a player attempts to drop an item.
+- Events: added skippable event `NWNX_ON_DECREMENT_SPELL_COUNT_{BEFORE|AFTER}` which fires when spell count (Memorized, non-memorized, or spell-like ability) decreases.
+- Events: added skippable event `NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_{BEFORE|AFTER}` which fires when the dm_visualeffect console command is used.
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- Area: GetTileInfoByTileIndex()
+- Area: GetPathExists()
+- Area: {Get|Set}AreaFlags()
+- Creature: {Get|Set}SkillPointsRemainingByLevel()
+- Effect: AccessorizeVisualEffect()
+- Events: SubscribeEventScriptChunk()
+- Events: UnsubscribeEventScriptChunk()
+- Events: GetNumSubscribers()
+- Regex: Match()
+
+### Changed
+- Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
+- Object: DoSpellLevelAbsorption() can now override the spellId, the level and the school of the casted spell
+- Object: DoSpellImmunity() can now override the spellId
+- Events: added event data `STAT`/`VALUE`/`TARGET`/`SET` to `NWNX_ON_DM_SET_STAT_*`
+- Events: added event data `TYPE`/`TARGET`/`KEY` to `NWNX_ON_DM_GET_VARIABLE_*`
+- Events: added event data `TYPE`/`TARGET`/`KEY`/`VALUE` to `NWNX_ON_DM_SET_VARIABLE_*`
+- Events: added event data `TARGET`/`FACTION_ID`/`FACTION_NAME` to `NWNX_ON_DM_SET_FACTION_*`
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- Feat: Fixed an issue with feat usages being reset upon character relog
+- Object: GetLocalVariable() now recognizes variables of type json.
+- Tweaks: Language override tweak now works for area names.
+- Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
+
+## 8193.34
+https://github.com/nwnxee/unified/compare/build8193.33...build8193.34
+
+### Added
+- Tweaks: added `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` to hide various hardcoded item vfx.
+- Tweaks: added `NWNX_TWEAKS_FIX_RESMAN_MEMLEAK` that fixes a memory leak in Resman / CResGFF.
+- Tweaks: added `NWNX_TWEAKS_FIX_DM_FACTION_BUG` that fixes a DM faction bug when using a non-DMClient BIC file.
+
+##### New NWScript Functions
+- Area: RotateArea()
+- Creature: OverrideRangedProjectileVFX()
+- Object: GetAoEObjectDurationRemaining()
+
+### Changed
+- Object: `NWNX_Object_Export` added argument sAlias, default 'NWNX'
+
+### Removed
+- Tweaks: `NWNX_TWEAKS_FIX_RESMAN_MEMLEAK`, fixed in basegame.
+
+## 8193.33
+https://github.com/nwnxee/unified/compare/build8193.32...build8193.33
+
+### Added
+- Events: added event `NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE__*` which fires when a player changes a device property (window size/gui scale).
+- Tweaks: added `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` which makes CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation(), possibly fixing some Familiar/AnimalCompanion summon issues.
+
+##### New NWScript Functions
+- Util: GetModuleMtime()
+
+### Fixed
+- Chat: When using custom hearing distances, broadcast the actual message instead of the tellname.
+- Chat: When using custom hearing distances, check if a player actually has one set and don't just overwrite the distance with 0.0f if not set.
+- Chat: When using custom hearing distances, don't send messages to players that don't have a valid creature object causing a server crash.
+
+## 8193.32
+https://github.com/nwnxee/unified/compare/build8193.31...build8193.32
+
+### Added
+- Administration: added `NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL` to {Get|Set}PlayOption() to toggle player party control.
+
+### Fixed
+- Util: fixed a memory leak in GetFirstResRef()
+
+## 8193.31
+https://github.com/nwnxee/unified/compare/build8193.30...build8193.31
+
+### Added
+- Events: Added NWNX_ON_ITEM_MERGE_BEFORE and NWNX_ON_ITEM_MERGE_AFTER.
+- ELC: added `NWNX_ELC_ENFORCE_CASTER_PRIMARY_STAT_IS_11`, if enabled, ELC will check when a character's first level class is a spellcaster, if their primary casting stat is >= 11.
+
+##### New NWScript Functions
+- Creature: RemoveFeatByLevel()
+- Creature: GetSkillRankByLevel()
+- Creature: SetSkillRankByLevel()
+- SQL: PreparedNULL()
+
+### Changed
+- Core: **POLICY CHANGE:** Only `stdout` output will be accepted in bug reports.
+- Core: Assert backtraces now show up in the log file.
+- Core: Assert backtraces are now printed to `stdout` instead of `stderr`.
+- Core: Other error messages are now printed to `stdout` instead of `stderr`
+- Core: The default NWN crash handler is no longer called by default. Set `NWNX_CORE_BASE_GAME_CRASH_HANDLER=y` to call it.
+- Core: `nwnx.txt` is no longer created by default. Set `NWNX_CORE_LOG_FILE_PATH="path/to/nwnx.txt"` to use it.
+- Race: The AC modifier now supports specifying the AC type.
+
+### Fixed
+- Core: Fixed a minor memory leak when asserts were triggered.
+- Rename: Fixed SetPCNameOverride() subscribing to `NWNX_CREATURE_ORIGINALNAME_SIGNAL` whenever the function is called, causing bad performance.
+- Player: Fixed a nullptr deref crash in ApplyLoopingVisualEffectToObject()
+
+## 8193.30
+https://github.com/nwnxee/unified/compare/build8193.29...build8193.30
+
+### Added
+
+##### New NWScript Functions
+- Object: SetLastTriggered()
+
+### Changed
+- ***ABI BREAKING*** Creature: SetClassByPosition by default replaces all occurrences of the old class in CNWLevelStats. This can be disabled with the argument 'bUpdateLevels'.
+
+### Deprecated
+- Weapon: SetWeaponIsMonkWeapon()
+
+### Removed
+- CombatModes: plugin has been removed. The NWNX_ON_COMBAT_MODE_* events and NWNX_Weapon_SetWeaponIsMonkWeapon() Flurry of Blows functionality has been preserved.
+- Tweaks: removed `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG`, fixed in basegame.
+
+## 8193.29
+https://github.com/nwnxee/unified/compare/build8193.26...build8193.29
+
+### Added
+- Tweaks: added `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` to allow setting params on all applicable materials at once.
+- Tweaks: added `NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG` to stop AreaOfEffect objects (auras, etc) from breaking GetNearestXXX() stuff.
+
+## 8193.26
+https://github.com/nwnxee/unified/compare/build8193.25...build8193.26
+
+- No user facing changes
+
+## 8193.25
+https://github.com/nwnxee/unified/compare/build8193.24...build8193.25
+
+- No user facing changes
+
+## 8193.24
+https://github.com/nwnxee/unified/compare/build8193.23...build8193.24
+
+### Added
+- Feat: added environment variable `NWNX_FEAT_CUSTOM_SPELL_ID` to give a custom spellid to all effects created by this plugin.
+
+##### New NWScript Functions
+- Creature: RunEquip()
+- Creature: RunUnequip()
+- Util: SetCurrentlyRunningEvent()
+
+### Changed
+- Damage: added ToHitRoll and ToHitModifier data to the AttackEvent structure.
+
+### Fixed
+- Core: {Get|Set}LocalCassowary() actually work and no longer throw asserts.
+- Dialog: fixed a crash when calling GetCurrentNodeID() in an OnConversationAborted script.
+- Events: InputEvents: NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_* now uses the right hook.
+
+## 8193.22
+https://github.com/nwnxee/unified/compare/build8193.22...build8193.23
+
+### Added
+
+##### New NWScript Functions
+- Creature: DoItemCastSpell()
+- Object: GetLastSpellCastFeat()
+
+##### New Plugins
+- Compiler: Adds command-line compilation of nss files using the in-built compiler.
+
+### Changed
+- ***ABI BREAKING:*** Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.
+- ***API BREAKING:*** Tileset: NWNX_Tileset_GetTilesetGroupTile() needs the tileset name and group index in addition to the tile index.
+
+## 8193.21
+https://github.com/nwnxee/unified/compare/build8193.21...build8193.22
+
+### Added
+- Events: added skippable event `NWNX_ON_CLIENT_LEVEL_UP_BEGIN_*` which fires when a player clicks the levelup button.
+- Events: added skippable event `NWNX_ON_POSSESS_FAMILIAR_*` which fires when a player attempts to possess their familiar.
+- Events: added skippable event `NWNX_ON_CHARACTER_SHEET_PERMITTED_*` which fires when a player attempts to view a charactersheet.
+- Events: added events `NWNX_ON_CHARACTER_SHEET_{OPEN|CLOSE}_*` which fire when a player opens or closes a charactersheeet.
+- Tweaks: added `NWNX_TWEAKS_SEND_TLK_OVERRIDE_BEFORE_CHARGEN` to send TlkTable overrides before Character Generation.
+- Tweaks: added `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT` to retain local variables when an item is split.
+- Tweaks: added `NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION` to make attack bonuses not bypass reductions (soak).
+
+##### New Plugins
+- NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
+
+##### New NWScript Functions
+- Creature: Get{Armor|Shield}CheckPenalty()
+- Creature: {Get/Set}BypassEffectImmunity()
+- Creature: SetLastKiller()
+- Effect: GetTrueEffectCount()
+- Effect: GetTrueEffect()
+- Effect: RemoveEffectById()
+- Effect: ReplaceEffectByIndex()
+- Effect: Apply()
+- Player: SetTlkOverride()
+- Util: GetTTY()
+
+### Changed
+- The argument stack is now cleared after every NWNX function call.
+- Effect: (Un)PackEffect functions now can retrieve the id and Item Property Source. _**ABI breaking:** You will need to update nwnx_effect.nss if you are using these functions_.
+- Events: `NWNX_ON_UNPOSSESS_FAMILIAR_*` is now skippable.
+- ItemProperty: UnpackIP now can retrieve the item property's id. _**ABI breaking:** You will need to update nwnx_itemprop.nss if you are using these functions_.
+- ***API BREAKING*** Damage: The NWNX_Damage_AttackEventData fields have changed their names: `iAttackType -> iWeaponAttackType`, `iAttackType_REAL -> iAttackType`.
+- ***API BREAKING*** Object: The `NWNX_Object_Export` function has had its arguments reordered.
+- ***ABI BREAKING:*** `nwnx.nss` has changed, please update all your `nwnx_*.nss` scripts including `nwnx.nss` and recompile. Existing compiled scripts will still work.
+
+### Removed
+- Data and Time plugins have been removed. Compatibility scripts are provided [here](Compatibility/)
+- ***API BREAKING*** Events: removed deprecated `NWNX_ON_{ENTER|EXIT}_STEALTH_*` events. Use `NWNX_ON_STEALTH_{ENTER|EXIT}_*`
+- Tweaks: removed deprecated `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` environment variable. Use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
+
+### Fixed
+- Race: Effects vs Child Races are now functional. Battle Training Vs. * feats now apply their bonus against child races as well.
+
+## 8193.20
+https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 
 ### Added
 - Events: added `NWNX_ON_INPUT_EMOTE_*` events to InputEvents, this event fires when a player uses a radial menu emote.
+- Events: added `NWNX_ON_COMBAT_DR_BROKEN_*` events to CombatEvents, this event fires when a creature's limited Damage{Resistance|Reduction} gets broken.
+- Events: added `NWNX_ON_UNPOSSESS_FAMILIAR_*` events to AssociateEvents, this event fires when a player unpossesses a familiar.
 - Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
 - Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
+- Tweaks: added `NWNX_TWEAKS_TURD_BY_CDKEY` to associate TURDs by CDKey/CharacterName instead of PlayerName/CharacterName. Note: pass the CDKey instead of PlayerName when calling NWNX_Administration_DeleteTURD().
+- DotNET: Added native function hook support.
+- Optimizations: Added `LuoLookup` optimization that speeds up per-player object updates.
+- Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
 
 ##### New Plugins
 - HTTP: Server and client functionality.
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions
+- Admin: {Get/Set}MinLevel()
+- Admin: {Get/Set}MaxLevel()
+- Area: GetAmbientSound{Day/Night}()
+- Area: GetAmbientSound{Day/Night}Volume
+- Area: CreateSoundObject()
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
+- Creature: {Get/Set}PersonalSpace()
+- Creature: {Get/Set}CreaturePersonalSpace()
+- Creature: {Get/Set}Height()
+- Creature: {Get/Set}HitDistance()
+- Creature: {Get/Set}PreferredAttackDistance()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
+- Encounter: {Get/Set}CanReset()
+- Object: {Get|Set}AILevel()
+- Object: {Get|Set}MapNote()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
+- Util: GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
+- Weapon: SetMaxRangedAttackDistanceOverride()
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
+- Damage: added `iAttackType_REAL` and `bKillingBlow` to the `AttackEventData` struct. Updated struct documentation.
+- Race: SetFavoredEnemyFeat() now supports multiple feats per race.
+- Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
+- Optimizations: `GameObjectLookup` no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).
 
 ### Deprecated
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
-
-### Removed
-- N/A
+- Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
 ### Fixed
-- N/A
+- Feedback: Fixed a memory leak when suppressing messages.
+- Utils: Fixed a memory corruption in `GetAsciiTableString()`
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.16...build8193.20

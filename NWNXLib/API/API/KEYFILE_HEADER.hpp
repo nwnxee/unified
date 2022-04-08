@@ -19,6 +19,10 @@ struct KEYFILE_HEADER
     uint32_t nKeys;
     uint32_t nOffsetToFileTable;
     uint32_t nOffsetToKeyTable;
+    uint32_t nBuildYear;
+    uint32_t nBuildDay;
+    char cOid[24];
+    uint8_t pReserved[8];
 
 
 

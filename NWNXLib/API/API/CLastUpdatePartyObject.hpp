@@ -42,6 +42,7 @@ struct CLastUpdatePartyObject
     uint16_t m_nAssociateType;
     OBJECT_ID m_oidMaster;
     BOOL m_bSummonedAnimalCompanion;
+    BOOL m_bTakesCommands;
     BOOL m_bPoisoned;
     BOOL m_bDiseased;
 

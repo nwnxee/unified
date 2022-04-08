@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 
 namespace Profiler {
 
 class NetMessages
 {
 public:
-    NetMessages(NWNXLib::Services::HooksProxy* hooker, NWNXLib::Services::MetricsProxy* metrics);
+    NetMessages(NWNXLib::Services::MetricsProxy* metrics);
 
 private:
-    static void ComputeGameObjectUpdateForCategory(bool, CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*, CGameObjectArray*, CNWSPlayerLUOSortedObjectList*, int32_t);
-    static void SendServerToPlayerMessageHook(bool, CNWSMessage*, PlayerID, uint8_t, uint8_t, uint8_t*, uint32_t);
-    static void HandlePlayerToServerMessageHook(bool, CNWSMessage*, PlayerID, uint8_t*, uint32_t);
+    static int32_t ComputeGameObjectUpdateForCategoryHook(CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*,
+                                                          CGameObjectArray*, CNWSPlayerLUOSortedObjectList*, int32_t);
+    static int32_t SendServerToPlayerMessageHook(CNWSMessage*, PlayerID, uint8_t, uint8_t, uint8_t*, uint32_t);
+    static int32_t HandlePlayerToServerMessageHook(CNWSMessage*, PlayerID, uint8_t*, uint32_t);
 };
 
 }

@@ -1,7 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "Vector.hpp"
+#include "LerpFloat.hpp"
+#include "LerpVector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -10,19 +11,17 @@ NWN_API_PROLOGUE(CAurObjectVisualTransformData)
 
 
 
-
-
 struct CAurObjectVisualTransformData
 {
-    Vector m_scale;
-    Vector m_rotate;
-    Vector m_translate;
-    float m_animationSpeed;
+    LerpVector m_scale;
+    LerpVector m_rotate;
+    LerpVector m_translate;
+    LerpFloat m_animationSpeed;
 
     CAurObjectVisualTransformData() :
-        m_scale(Vector{1.0, 1.0, 1.0}),
-        m_rotate(Vector{0.0, 0.0, 0.0}),
-        m_translate(Vector{0.0, 0.0, 0.0}),
+        m_scale(LerpVector{1.0, 1.0, 1.0}),
+        m_rotate(LerpVector{0.0, 0.0, 0.0}),
+        m_translate(LerpVector{0.0, 0.0, 0.0}),
         m_animationSpeed(1.0) {}
 
 #ifdef NWN_CLASS_EXTENSION_CAurObjectVisualTransformData

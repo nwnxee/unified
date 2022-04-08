@@ -1,7 +1,5 @@
-#include "Events/TimingBarEvents.hpp"
-#include "API/CNWSPlayer.hpp"
-#include "API/Functions.hpp"
 #include "Events.hpp"
+#include "API/CNWSPlayer.hpp"
 
 namespace Events {
 
@@ -9,45 +7,54 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-TimingBarEvents::TimingBarEvents(HooksProxy* hooker)
+static Hooks::Hook s_SendServerToPlayerGuiTimingEventHook;
+static Hooks::Hook s_HandlePlayerToServerInputCancelGuiTimingEventHook;
+
+static int32_t SendServerToPlayerGuiTimingEventHook(CNWSMessage*, CNWSPlayer*, int32_t, uint8_t, uint32_t);
+static int32_t HandlePlayerToServerInputCancelGuiTimingEventHook(CNWSMessage*, CNWSPlayer*);
+
+void TimingBarEvents() __attribute__((constructor));
+void TimingBarEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj, int32_t,
-                CNWSMessage*, CNWSPlayer*, int32_t, uint8_t, uint32_t>(&SendServerToPlayerGuiTimingEventHook);
-        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer, int32_t,
-                CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
+    InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", []() {
+        s_SendServerToPlayerGuiTimingEventHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj,
+                                                              (void*)&SendServerToPlayerGuiTimingEventHook, Hooks::Order::Earliest);
+        s_HandlePlayerToServerInputCancelGuiTimingEventHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
+                (void*)&HandlePlayerToServerInputCancelGuiTimingEventHook, Hooks::Order::Earliest);
     });
 }
 
-void TimingBarEvents::SendServerToPlayerGuiTimingEventHook(
-        bool before,
-        CNWSMessage*,
-        CNWSPlayer* player,
-        int32_t starting,
-        uint8_t eventId,
-        uint32_t duration)
+int32_t SendServerToPlayerGuiTimingEventHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, int32_t bStarting,
+                                                           uint8_t nGuiTimingEventID, uint32_t nDuration)
 {
-    if (starting)
+    int32_t retVal;
+    if (bStarting)
     {
-        Events::PushEventData("EVENT_ID", std::to_string(eventId));
-        Events::PushEventData("DURATION", std::to_string(duration));
-        Events::SignalEvent(before ? "NWNX_ON_TIMING_BAR_START_BEFORE" : "NWNX_ON_TIMING_BAR_START_AFTER",
-                            player->m_oidNWSObject);
+        PushEventData("EVENT_ID", std::to_string(nGuiTimingEventID));
+        PushEventData("DURATION", std::to_string(nDuration));
+        SignalEvent("NWNX_ON_TIMING_BAR_START_BEFORE", pPlayer->m_oidNWSObject);
+        retVal = s_SendServerToPlayerGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer, bStarting, nGuiTimingEventID, nDuration);
+        PushEventData("EVENT_ID", std::to_string(nGuiTimingEventID));
+        PushEventData("DURATION", std::to_string(nDuration));
+        SignalEvent("NWNX_ON_TIMING_BAR_START_AFTER", pPlayer->m_oidNWSObject);
     }
     else
     {
-        Events::SignalEvent(before ? "NWNX_ON_TIMING_BAR_STOP_BEFORE" : "NWNX_ON_TIMING_BAR_STOP_AFTER",
-                            player->m_oidNWSObject);
+        SignalEvent("NWNX_ON_TIMING_BAR_STOP_BEFORE", pPlayer->m_oidNWSObject);
+        retVal = s_SendServerToPlayerGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer, bStarting, nGuiTimingEventID, nDuration);
+        SignalEvent("NWNX_ON_TIMING_BAR_STOP_AFTER", pPlayer->m_oidNWSObject);
     }
+
+    return retVal;
 }
 
-void TimingBarEvents::HandlePlayerToServerInputCancelGuiTimingEventHook(
-        bool before,
-        CNWSMessage*,
-        CNWSPlayer* player)
+int32_t HandlePlayerToServerInputCancelGuiTimingEventHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
 {
-    Events::SignalEvent(before ? "NWNX_ON_TIMING_BAR_CANCEL_BEFORE" : "NWNX_ON_TIMING_BAR_CANCEL_AFTER",
-                        player->m_oidNWSObject);
+    SignalEvent("NWNX_ON_TIMING_BAR_CANCEL_BEFORE", pPlayer->m_oidNWSObject);
+    auto retVal = s_HandlePlayerToServerInputCancelGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer);
+    SignalEvent("NWNX_ON_TIMING_BAR_CANCEL_AFTER",pPlayer->m_oidNWSObject);
+    return retVal;
 }
 
 }

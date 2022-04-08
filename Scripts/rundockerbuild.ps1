@@ -19,4 +19,4 @@ if ($JOBS -ne "") {
     $MAKEJOBS = "-j " + $JOBS
 }
 
-docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v ${PWD}:/nwnx/home nwnxee/builder /nwnx/home/Scripts/buildnwnx.sh $CLEAN $JOBS
+docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v ${PWD}:/nwnx/home nwnxee/builder /nwnx/home/Scripts/buildnwnx.sh $CLEAN $MAKEJOBS

@@ -1,12 +1,10 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.20 - v82)
+# NWNX:EE (build 8193.34 - v86)
 
-### NOTE: If you host native, use the [8193.20.1 Server Package](https://nwnx.io/nwnee-dedicated-8193.20.1.zip)
-
-- Latest release: [build8193.20-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819320-HEAD)
+- Latest release: [build8193.34-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334-HEAD)
 - Docker tag: `nwnxee/unified:latest`
-- nwserver-linux md5: `e84e8aa8f107a05a76ce32a65a4c4590`
+- nwserver-linux md5: `1d17b4cc7680fc4defbd36dcc5bd9e9b`
 
 @mainpage
 @tableofcontents
@@ -37,7 +35,7 @@ Only Linux is natively supported. It is possible to run NWNX:EE on Windows using
 
 ## How do I use it?
 
-First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) tab at the top of the GitHub repository page.
+First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) header to the right of the GitHub repository page.
 
 ## Integrating NWNX:EE into your module
 
@@ -126,6 +124,10 @@ To build on Windows:
 ## Contributing code
 
 All contribution are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for requirements and style guidelines.
+
+## Reporting bugs
+
+Use the [issue tracker](https://github.com/nwnxee/unified/issues/new) to report any bugs. Please always provide the relevant `stdout` output of your runs, ideally at debug log level (`NWNX_CORE_LOG_LEVEL=7`).
 
 ## Who makes NWNX:EE?
 

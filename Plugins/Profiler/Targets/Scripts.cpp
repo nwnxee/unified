@@ -10,8 +10,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "ProfilerMacros.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Hooks/Hooks.hpp"
 
 namespace Profiler {
 
@@ -23,7 +21,7 @@ static bool g_typeTimings;
 
 DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
     (
-        [](CVirtualMachine*, CExoString* script, uint32_t oid, bool) -> Services::MetricData::Tags
+        [](CVirtualMachine*, CExoString* script, uint32_t oid, bool, int32_t) -> Services::MetricData::Tags
         {
             using namespace NWNXLib::API;
             using namespace NWNXLib::API::Constants;
@@ -81,19 +79,18 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
             return tags;
         }
     ),
-    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t)
+    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t, int32_t)
 
 Scripts::Scripts(const bool areaTimings, const bool typeTimings,
-    NWNXLib::Services::HooksProxy* hooker,
     NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
     g_areaTimings = areaTimings;
     g_typeTimings = typeTimings;
 
-    DEFINE_PROFILER_TARGET_FAST(hooker,
-        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-        int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t);
+    DEFINE_PROFILER_TARGET_FAST(
+        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+        int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t, int32_t);
 }
 
 }

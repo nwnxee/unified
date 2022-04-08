@@ -14,7 +14,7 @@ public:
     MySQL();
     virtual ~MySQL() override;
 
-    virtual void Connect(NWNXLib::Services::ConfigProxy* config) override;
+    virtual void Connect() override;
     virtual bool IsConnected() override;
     virtual bool PrepareQuery(const Query& query) override;
     virtual std::optional<ResultSet> ExecuteQuery() override;
@@ -22,6 +22,7 @@ public:
     virtual void PrepareFloat(int32_t position, float value) override;
     virtual void PrepareString(int32_t position, const std::string& value) override;
     virtual void PrepareBinary(int32_t position, const std::vector<uint8_t>& value) override;
+    virtual void PrepareNULL(int32_t position) override;
     virtual int  GetAffectedRows() override;
     virtual std::string GetLastError(bool bClear = false) override;
     virtual int32_t GetPreparedQueryParamCount() override;

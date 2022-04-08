@@ -13,6 +13,8 @@ void main()
     int hash = NWNX_Util_Hash(str);
     NWNX_Tests_Report("NWNX_Util", "Hash", hash != 0);
 
+    NWNX_Tests_Report("NWNX_Util", "GetModuleMtime", NWNX_Util_GetModuleMtime() > 0);
+
     string ascii = NWNX_Util_GetAsciiTableString();
     NWNX_Tests_Report("NWNX_Util", "GetAsciiTableString", GetSubString(ascii, 65, 1) == "A");
 
@@ -56,6 +58,19 @@ void main()
     NWNX_Tests_Report("NWNX_Util", "GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
 
     NWNX_Tests_Report("NWNX_Util", "GetLastCreatedObject", GetIsObjectValid(NWNX_Util_GetLastCreatedObject(4/*OBJECT_TYPE_AREA*/, 1)));
+
+    struct NWNX_Util_HighResTimestamp t1 = NWNX_Util_GetHighResTimeStamp();
+    // waste some time..
+    DestroyObject(CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation()));
+    DestroyObject(CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation()));
+    DestroyObject(CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation()));
+    DestroyObject(CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation()));
+    struct NWNX_Util_HighResTimestamp t2 = NWNX_Util_GetHighResTimeStamp();
+    WriteTimestampedLogEntry("t1.seconds: " + IntToString(t1.seconds) + "; " +
+                             "t1.microseconds: " + IntToString(t1.microseconds) + "; " +
+                             "t2.seconds: " + IntToString(t2.seconds) + "; " +
+                             "t2.microseconds: " + IntToString(t2.microseconds) + "; ");
+    NWNX_Tests_Report("NWNX_Util", "GetHighResTimeStamp", t1.microseconds != t2.microseconds);
 
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

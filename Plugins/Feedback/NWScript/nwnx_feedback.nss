@@ -17,48 +17,29 @@ const string NWNX_Feedback = "NWNX_Feedback"; ///< @private
 /// @name Combat Log Message Types
 /// @anchor combat_log_msgs
 /// @{
-const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE    = 1;
+const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE    = 1;  // Simple_Adjective: <charname> : <adjective described by strref>
 /*
-const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;
-const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;
-const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;
-const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_ATTACK      = 5;
-const int NWNX_FEEDBACK_COMBATLOG_SPECIAL_ATTACK      = 6;
-const int NWNX_FEEDBACK_COMBATLOG_SAVING_THROW        = 7;
-const int NWNX_FEEDBACK_COMBATLOG_CAST_SPELL          = 8;
-const int NWNX_FEEDBACK_COMBATLOG_USE_SKILL           = 9;
-const int NWNX_FEEDBACK_COMBATLOG_SPELL_RESISTANCE    = 10;
-const int NWNX_FEEDBACK_COMBATLOG_FEEDBACK            = 11; // NOTE: This hides ALL feedback messages, to hide individual messages use NWNX_Feedback_SetFeedbackMessageHidden()
-const int NWNX_FEEDBACK_COMBATLOG_COUNTERSPELL        = 12;
-const int NWNX_FEEDBACK_COMBATLOG_TOUCHATTACK         = 13;
-const int NWNX_FEEDBACK_COMBATLOG_INITIATIVE          = 14;
-const int NWNX_FEEDBACK_COMBATLOG_DISPEL_MAGIC        = 15;
-const int NWNX_FEEDBACK_COMBATLOG_POLYMORPH           = 17;
-const int NWNX_FEEDBACK_COMBATLOG_FEEDBACKSTRING      = 18;
-const int NWNX_FEEDBACK_COMBATLOG_VIBRATE             = 19;
-const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20;
-
-// 1  -> Simple_Adjective: <charname> : <adjective described by strref>
-// 2  -> Simple_Damage: <charname> damaged : <amount>
-// 3  -> Complex_Damage: <charname> damages <charname> : <amount>
-// 4  -> Complex_Death: <charname> killed <charname>
-// 5  -> Complex_Attack: <charname> attacks <charname> : *hit* / *miss* / *parried* : (<attack roll> + <attack mod> = <modified total>)
-// 6  -> Special_Attack: <charname> attempts <special attack> on <charname> : *success* / *failure* : (<attack roll> + <attack mod> = <modified roll>)
-// 7  -> Saving_Throw: <charname> : <saving throw type> : *success* / *failure* : (<saving throw roll> + <saving throw modifier> = <modified total>)
-// 8  -> Cast_Spell: <charname> casts <spell name> : Spellcraft check *failure* / *success*
-// 9  -> Use_Skill: <charname> : <skill name> : *success* / *failure* : (<skill roll> + <skill modifier> = <modified total> vs <DC> )
-// 10 -> Spell_Resistance: <charname> : Spell Resistance <SR value> : *success* / *failure*
-// 11 -> Feedback: Reason skill/feat/ability failed.
-// 12 -> Counterspel: <charname> casts <spell name> : *spell countered by* : <charname> casting <spell name>
-// 13 -> TouchAttack: <charname> attempts <melee/ranged touch attack> on <charname> : *hit/miss/critical* : (<attack roll> + <attack mod> = <modified roll>)
-// 14 -> Initiative: <charname> : Initiative Roll : <total> : (<roll> + <modifier> = <total>)
-// 15 -> Dispel_Magic: Dispel Magic : <charname> : <spell name>, <spell name>, <spell name>...
-// 17 -> Unused, probably
-// 18 -> Same as 11, maybe. Might be unused too
-// 19 -> Unused
-// 20 -> Unused
+const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;  // Simple_Damage: <charname> damaged : <amount>
+const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;  // Complex_Damage: <charname> damages <charname> : <amount>
+const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;  // Complex_Death: <charname> killed <charname>
+const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_ATTACK      = 5;  // Complex_Attack: <charname> attacks <charname> : *hit* / *miss* / *parried* : (<attack roll> + <attack mod> = <modified total>)
+const int NWNX_FEEDBACK_COMBATLOG_SPECIAL_ATTACK      = 6;  // Special_Attack: <charname> attempts <special attack> on <charname> : *success* / *failure* : (<attack roll> + <attack mod> = <modified roll>)
+const int NWNX_FEEDBACK_COMBATLOG_SAVING_THROW        = 7;  // Saving_Throw: <charname> : <saving throw type> : *success* / *failure* : (<saving throw roll> + <saving throw modifier> = <modified total>)
+const int NWNX_FEEDBACK_COMBATLOG_CAST_SPELL          = 8;  // Cast_Spell: <charname> casts <spell name> : Spellcraft check *failure* / *success*
+const int NWNX_FEEDBACK_COMBATLOG_USE_SKILL           = 9;  // Use_Skill: <charname> : <skill name> : *success* / *failure* : (<skill roll> + <skill modifier> = <modified total> vs <DC> )
+const int NWNX_FEEDBACK_COMBATLOG_SPELL_RESISTANCE    = 10; // Spell_Resistance: <charname> : Spell Resistance <SR value> : *success* / *failure*
+const int NWNX_FEEDBACK_COMBATLOG_FEEDBACK            = 11; // Reason skill/feat/ability failed, SendMessageToPC() NOTE: This hides ALL feedback messages, to hide individual messages use NWNX_Feedback_SetFeedbackMessageHidden()
+const int NWNX_FEEDBACK_COMBATLOG_COUNTERSPELL        = 12; // Counterspel: <charname> casts <spell name> : *spell countered by* : <charname> casting <spell name>
+const int NWNX_FEEDBACK_COMBATLOG_TOUCHATTACK         = 13; // TouchAttack: <charname> attempts <melee/ranged touch attack> on <charname> : *hit/miss/critical* : (<attack roll> + <attack mod> = <modified roll>)
+const int NWNX_FEEDBACK_COMBATLOG_INITIATIVE          = 14; // Initiative: <charname> : Initiative Roll : <total> : (<roll> + <modifier> = <total>)
+const int NWNX_FEEDBACK_COMBATLOG_DISPEL_MAGIC        = 15; // Dispel_Magic: Dispel Magic : <charname> : <spell name>, <spell name>, <spell name>...
+const int NWNX_FEEDBACK_COMBATLOG_POLYMORPH           = 17; // Doesn't go through the function that the plugin hooks, so does nothing.
+const int NWNX_FEEDBACK_COMBATLOG_FEEDBACKSTRING      = 18; // Custom feedback for objects requiring a key
+const int NWNX_FEEDBACK_COMBATLOG_VIBRATE             = 19; // Controller vibration
+const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20; // Unlock Campaign Achievement
+const int NWNX_FEEDBACK_COMBATLOG_POSTAURSTRING       = 22; // PostString messages
+const int NWNX_FEEDBACK_COMBATLOG_ENTERTARGETINGMODE  = 23; // Enter Targeting Mode
 */
-
 /// @}
 
 /// @name Feedback Message Types
@@ -428,12 +409,12 @@ int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INV
     string sFunc = "GetMessageHidden";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
@@ -441,10 +422,10 @@ void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object o
     string sFunc = "SetMessageHidden";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -453,12 +434,12 @@ int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_IN
     string sFunc = "GetMessageHidden";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
@@ -466,10 +447,10 @@ void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object 
     string sFunc = "SetMessageHidden";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(nMessage);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -478,12 +459,12 @@ int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
     string sFunc = "GetMessageHidden";
     int nMessageType = 2;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(0);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJECT_INVALID)
@@ -491,10 +472,10 @@ void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJ
     string sFunc = "SetMessageHidden";
     int nMessageType = 2;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_PushArgumentInt(isHidden);
+    NWNX_PushArgumentInt(0);
+    NWNX_PushArgumentInt(nMessageType);
+    NWNX_PushArgumentObject(oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -503,8 +484,8 @@ void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
     string sFunc = "SetFeedbackMode";
     int nMessageType = 0;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentInt(bWhitelist);
+    NWNX_PushArgumentInt(nMessageType);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
@@ -513,7 +494,7 @@ void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
     string sFunc = "SetFeedbackMode";
     int nMessageType = 1;
 
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentInt(bWhitelist);
+    NWNX_PushArgumentInt(nMessageType);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }

@@ -10,6 +10,7 @@ NWN_API_PROLOGUE(CNWBaseItemArray)
 struct CNWBaseItem;
 
 
+typedef int BOOL;
 
 
 struct CNWBaseItemArray
@@ -29,6 +30,8 @@ struct CNWBaseItemArray
     uint16_t GetDefaultEpicWeaponOverwhelmingCriticalFeat(uint32_t baseItemId);
     uint16_t GetDefaultEpicWeaponDevastatingCriticalFeat(uint32_t baseItemId);
     uint16_t GetDefaultWeaponOfChoiceFeat(uint32_t baseItemId);
+    BOOL GetIsDefaultMonkWeapon(uint32_t baseItemId);
+    uint8_t GetDefaultWeaponFinesseMinimumCreatureSize(uint32_t baseItemId);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWBaseItemArray

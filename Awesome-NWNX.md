@@ -29,11 +29,18 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 
 - [EventSystem](https://github.com/Daztek/EventSystem) -  A modular Event System for Neverwinter Nights: Enhanced Edition using NWNX:EE.
 - [NWN Core Framework](https://github.com/squattingmonk/nwn-core-framework) - An extendable event management system for Neverwinter Nights
-- \[C#\] [NWN.NET](https://github.com/nwn-dotnet/NWN.NET) -  A library for accessing NWN and NWNX APIs in a managed way
-- \[C#\] [NWN.Core](https://github.com/nwn-dotnet/NWN.Core) - Core function wrappers and interop functions for NWNX DotNet
-- \[C#\] [NWN .NET Barebone Template](https://github.com/nwn-dotnet/nwn-dotnet-barebone-template) - A minimal (one file) implementation of NWNXEE DotNet using the NWN.Core library.
 - [MemeticAI](https://github.com/squattingmonk/memeticai) - Flexible collection of scripts for building responsive, modular NPC
 - [NWScript Utility Scripts](https://github.com/Finaldeath/nwscript_utility_scripts) - Community collection of various useful nwscript snippets
+
+### DotNET Frameworks
+
+*NWN DotNET community has a github org at https://github.com/nwn-dotnet*
+
+- \[C#\] [NWN.Core](https://github.com/nwn-dotnet/NWN.Core) - Core function wrappers and interop functions for NWNX DotNet
+- \[C#\] [NWN.Managed](https://github.com/nwn-dotnet/NWN.Managed) - A library for accessing NWN and NWNX APIs in a managed way
+- \[C#\] [NWN.Native](https://github.com/nwn-dotnet/NWN.Native) - Low-level NWNXLib bindings for managed -> native interop.
+- \[C#\] [NWN.Samples](https://github.com/nwn-dotnet/NWN.Samples) - Service and Sample implementations for NWNX DotNET. 
+- \[C#\] [NWN .NET Barebone Template](https://github.com/nwn-dotnet/nwn-dotnet-barebone-template) - A minimal (one file) implementation of NWNXEE DotNet using the NWN.Core library.
 
 ## Persistent Worlds
 
@@ -76,6 +83,7 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [NCS explained](http://www.nynaeve.net/Skywing/nwn2/Documentation/ncs.html) - NWScript VM basics and NCS format documentation
 - [nwnstatusbot](https://gitlab.com/hendrikgit/nwnstatusbot#nwnstatusbot) - Discord bot showing status of Neverwinter Nights EE servers by querying the Beamdog API
 - [nwninfobot](https://gitlab.com/hendrikgit/nwninfobot#nwninfobot) - Discord bot showing information about nwnxee functions and base game functions
+- [minimap](https://github.com/hendrikgit/nwn_minimap) - A generator of minimap images for areas, like they are shown in game
 
 ## Legacy stuff
 

@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/Events/Events.hpp"
-
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+#include "nwnx.hpp"
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 struct DamageDataStr
 {
@@ -18,9 +15,13 @@ struct AttackDataStr
     int16_t  vDamage[13];
     uint8_t  nAttackNumber;
     uint8_t  nAttackResult;
-    uint8_t  nAttackType;
+    uint8_t  nWeaponAttackType;
     uint8_t  nSneakAttack;
     uint8_t  bRanged;
+    int32_t  bKillingBlow;
+    uint16_t nAttackType;
+    uint8_t nToHitRoll;
+    int32_t nToHitModifier;
 };
 
 namespace Damage {
@@ -39,10 +40,14 @@ private:
     ArgumentStack SetAttackEventData(ArgumentStack&& args);
     ArgumentStack DealDamage(ArgumentStack&& args);
 
-    NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
+    NWNXLib::Hooks::Hook m_OnApplyDamageHook;
+    NWNXLib::Hooks::Hook m_SignalMeleeDamageHook;
+    NWNXLib::Hooks::Hook m_SignalRangedDamageHook;
 
-    static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame);
-    static void OnSignalDamage(bool, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks);
+    static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame);
+    static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
+    static void SignalMeleeDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
+    static void SignalRangedDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
     static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber);
 
     static std::string GetEventScript(CNWSObject *pObject, const std::string &event);

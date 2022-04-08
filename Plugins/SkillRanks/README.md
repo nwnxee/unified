@@ -18,13 +18,13 @@ struct NWNX_SkillRanks_SkillFeat skillFeat;
 skillFeat.iSkill = 27; // The row number for the new Travel skill
 skillFeat.iFeat = 1801; // The row number for the Skill Focus Travel feat
 skillFeat.iModifier = 3;
-// Defining feats with the focusFeat setting helps with mass changing modifiers
-skillFeat.focusFeat = 1;
+// Defining feats with the iFocusFeat setting helps with mass changing modifiers
+skillFeat.iFocusFeat = 1;
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 
 skillFeat.iFeat = 1802; // The row number for the Epic Skill Focus Travel feat
 skillFeat.iModifier = 10;
-skillFeat.focusFeat = 2; // 2 for Epic Focus
+skillFeat.iFocusFeat = 2; // 2 for Epic Focus
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 ``` 
 

@@ -1,1 +1,0 @@
-nwnxlib_add("FunctionHook.cpp")

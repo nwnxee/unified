@@ -35,6 +35,13 @@ struct NWNX_Util_WorldTime
     int nTimeOfDay; ///< The time of day
 };
 
+/// @brief A high resolution timestamp
+struct NWNX_Util_HighResTimestamp
+{
+    int seconds; ///< Seconds since epoch
+    int microseconds; ///< Microseconds
+};
+
 /// @brief Gets the name of the currently executing script.
 /// @note If depth is > 0, it will return the name of the script that called this one via ExecuteScript().
 /// @param depth to seek the executing script.
@@ -50,6 +57,10 @@ string NWNX_Util_GetAsciiTableString();
 /// @param str The string to hash.
 /// @return The hashed string as an integer.
 int NWNX_Util_Hash(string str);
+
+/// @brief Gets the last modified timestamp (mtime) of the module file in seconds.
+/// @return The mtime of the module file.
+int NWNX_Util_GetModuleMtime();
 
 /// @brief Gets the value of customTokenNumber.
 /// @param customTokenNumber The token number to query.
@@ -241,91 +252,107 @@ void NWNX_Util_SetDawnHour(int nDawnHour);
 /// @param nDuskHour The new dusk hour
 void NWNX_Util_SetDuskHour(int nDuskHour);
 
+/// @return Returns the number of microseconds since midnight on January 1, 1970.
+struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp();
+
+/// @return Return name of a terminal, "" if not a TTY
+string NWNX_Util_GetTTY();
+
+/// @brief Set the currently running script event.
+/// @param nEventID The ID of the event.
+void NWNX_Util_SetCurrentlyRunningEvent(int nEventID);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
 {
     string sFunc = "GetCurrentScriptName";
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, depth);
+    NWNX_PushArgumentInt(depth);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Util_GetAsciiTableString()
 {
     string sFunc = "GetAsciiTableString";
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_Hash(string str)
 {
     string sFunc = "Hash";
-    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Util_GetModuleMtime()
+{
+    NWNX_CallFunction(NWNX_Util, "GetModuleMtime");
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Util_GetCustomToken(int customTokenNumber)
 {
     string sFunc = "GetCustomToken";
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, customTokenNumber);
+    NWNX_PushArgumentInt(customTokenNumber);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 itemproperty NWNX_Util_EffectToItemProperty(effect e)
 {
     string sFunc = "EffectTypeCast";
-    NWNX_PushArgumentEffect(NWNX_Util, sFunc, e);
+    NWNX_PushArgumentEffect(e);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueItemProperty(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueItemProperty();
 }
 
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
 {
     string sFunc = "EffectTypeCast";
-    NWNX_PushArgumentItemProperty(NWNX_Util, sFunc, ip);
+    NWNX_PushArgumentItemProperty(ip);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueEffect(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueEffect();
 }
 
 string NWNX_Util_StripColors(string str)
 {
     string sFunc = "StripColors";
-    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE)
 {
     string sFunc = "IsValidResRef";
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, type);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, resref);
+    NWNX_PushArgumentInt(type);
+    NWNX_PushArgumentString(resref);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Util_GetEnvironmentVariable(string sVarname)
 {
     string sFunc = "GetEnvironmentVariable";
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sVarname);
+    NWNX_PushArgumentString(sVarname);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_GetMinutesPerHour()
 {
     string sFunc = "GetMinutesPerHour";
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Util_SetMinutesPerHour(int minutes)
 {
     string sFunc = "SetMinutesPerHour";
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, minutes);
+    NWNX_PushArgumentInt(minutes);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -333,30 +360,30 @@ string NWNX_Util_EncodeStringForURL(string sURL)
 {
     string sFunc = "EncodeStringForURL";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sURL);
+    NWNX_PushArgumentString(sURL);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_Get2DARowCount(string str)
 {
     string sFunc = "Get2DARowCount";
-    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModuleResourcesOnly = TRUE)
 {
     string sFunc = "GetFirstResRef";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, bModuleResourcesOnly);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sRegexFilter);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
+    NWNX_PushArgumentInt(bModuleResourcesOnly);
+    NWNX_PushArgumentString(sRegexFilter);
+    NWNX_PushArgumentInt(nType);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Util_GetNextResRef()
@@ -365,7 +392,7 @@ string NWNX_Util_GetNextResRef()
 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_GetServerTicksPerSecond()
@@ -374,73 +401,73 @@ int NWNX_Util_GetServerTicksPerSecond()
 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
 {
     string sFunc = "GetLastCreatedObject";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nNthLast);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nObjectType);
+    NWNX_PushArgumentInt(nNthLast);
+    NWNX_PushArgumentInt(nObjectType);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueObject();
 }
 
 string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE, string sAlias = "NWNX")
 {
     string sFunc = "AddScript";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, bWrapIntoMain);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptData);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_PushArgumentString(sAlias);
+    NWNX_PushArgumentInt(bWrapIntoMain);
+    NWNX_PushArgumentString(sScriptData);
+    NWNX_PushArgumentString(sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
 {
     string sFunc = "GetNSSContents";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nMaxLength);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptName);
+    NWNX_PushArgumentInt(nMaxLength);
+    NWNX_PushArgumentString(sScriptName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_AddNSSFile(string sFileName, string sContents, string sAlias = "NWNX")
 {
     string sFunc = "AddNSSFile";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sContents);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_PushArgumentString(sAlias);
+    NWNX_PushArgumentString(sContents);
+    NWNX_PushArgumentString(sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType, string sAlias = "NWNX")
 {
     string sFunc = "RemoveNWNXResourceFile";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_PushArgumentString(sAlias);
+    NWNX_PushArgumentInt(nType);
+    NWNX_PushArgumentString(sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
 {
     string sFunc = "SetInstructionLimit";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
+    NWNX_PushArgumentInt(nInstructionLimit);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -450,14 +477,14 @@ int NWNX_Util_GetInstructionLimit()
 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Util_SetInstructionsExecuted(int nInstructions)
 {
     string sFunc = "SetInstructionsExecuted";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructions);
+    NWNX_PushArgumentInt(nInstructions);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -467,41 +494,41 @@ int NWNX_Util_GetInstructionsExecuted()
 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
 {
     string sFunc = "RegisterServerConsoleCommand";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptChunk);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_PushArgumentString(sScriptChunk);
+    NWNX_PushArgumentString(sCommand);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
 {
     string sFunc = "UnregisterServerConsoleCommand";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_PushArgumentString(sCommand);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
 int NWNX_Util_PluginExists(string sPlugin)
 {
     string sFunc = "PluginExists";
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sPlugin);
+    NWNX_PushArgumentString(sPlugin);
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Util_GetUserDirectory()
 {
     string sFunc = "GetUserDirectory";
     NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_GetScriptReturnValue()
@@ -510,7 +537,7 @@ int NWNX_Util_GetScriptReturnValue()
 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1)
@@ -519,24 +546,24 @@ object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag
 
     vector vPosition = GetPositionFromLocation(locLocation);
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nAppearanceType);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sNewTag);
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, GetFacingFromLocation(locLocation));
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.z);
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.y);
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.x);
-    NWNX_PushArgumentObject(NWNX_Util, sFunc, GetAreaFromLocation(locLocation));
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sResRef);
+    NWNX_PushArgumentInt(nAppearanceType);
+    NWNX_PushArgumentString(sNewTag);
+    NWNX_PushArgumentFloat(GetFacingFromLocation(locLocation));
+    NWNX_PushArgumentFloat(vPosition.z);
+    NWNX_PushArgumentFloat(vPosition.y);
+    NWNX_PushArgumentFloat(vPosition.x);
+    NWNX_PushArgumentObject(GetAreaFromLocation(locLocation));
+    NWNX_PushArgumentString(sResRef);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueObject();
 }
 
 void NWNX_Util_SetItemActivator(object oObject)
 {
     string sFunc = "SetItemActivator";
 
-    NWNX_PushArgumentObject(NWNX_Util, sFunc, oObject);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -544,12 +571,12 @@ struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f)
 {
     string sFunc = "GetWorldTime";
 
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, fAdjustment);
+    NWNX_PushArgumentFloat(fAdjustment);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     struct NWNX_Util_WorldTime strWorldTime;
-    strWorldTime.nTimeOfDay = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
-    strWorldTime.nCalendarDay = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    strWorldTime.nTimeOfDay = NWNX_GetReturnValueInt();
+    strWorldTime.nCalendarDay = NWNX_GetReturnValueInt();
 
     return strWorldTime;
 }
@@ -558,9 +585,9 @@ void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewNam
 {
     string sFunc = "SetResourceOverride";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sNewName);
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sOldName);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nResType);
+    NWNX_PushArgumentString(sNewName);
+    NWNX_PushArgumentString(sOldName);
+    NWNX_PushArgumentInt(nResType);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -568,28 +595,28 @@ string NWNX_Util_GetResourceOverride(int nResType, string sName)
 {
     string sFunc = "GetResourceOverride";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sName);
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nResType);
+    NWNX_PushArgumentString(sName);
+    NWNX_PushArgumentInt(nResType);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 int NWNX_Util_GetScriptParamIsSet(string sParamName)
 {
     string sFunc = "GetScriptParamIsSet";
 
-    NWNX_PushArgumentString(NWNX_Util, sFunc, sParamName);
+    NWNX_PushArgumentString(sParamName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Util_SetDawnHour(int nDawnHour)
 {
     string sFunc = "SetDawnHour";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDawnHour);
+    NWNX_PushArgumentInt(nDawnHour);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
@@ -597,6 +624,33 @@ void NWNX_Util_SetDuskHour(int nDuskHour)
 {
     string sFunc = "SetDuskHour";
 
-    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDuskHour);
+    NWNX_PushArgumentInt(nDuskHour);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp()
+{
+    struct NWNX_Util_HighResTimestamp t;
+    string sFunc = "GetHighResTimeStamp";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    t.microseconds = NWNX_GetReturnValueInt();
+    t.seconds = NWNX_GetReturnValueInt();
+    return t;
+}
+
+string NWNX_Util_GetTTY()
+{
+    string sFunc = "GetTTY";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
+}
+
+void NWNX_Util_SetCurrentlyRunningEvent(int nEventID)
+{
+    string sFunc = "SetCurrentlyRunningEvent";
+
+    NWNX_PushArgumentInt(nEventID);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }

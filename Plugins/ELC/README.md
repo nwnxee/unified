@@ -15,6 +15,7 @@ This is a pretty advanced plugin and may at times require you to dive into the s
 | `NWNX_ELC_CUSTOM_ELC_CHECK` | true/false | false | Enables the custom ELC check, an ELC script must be set for it to run.
 | `NWNX_ELC_ENFORCE_DEFAULT_EVENT_SCRIPTS` | true/false | false | If enabled, resets a character's event scripts to `default`. Requires ELC to be enabled.
 | `NWNX_ELC_ENFORCE_EMPTY_DIALOG_RESREF` | true/false | false | If enabled, resets a character's dialog resref to empty. Requires ELC to be enabled.
+| `NWNX_ELC_ENFORCE_CASTER_PRIMARY_STAT_IS_11` | true/false | false | If enabled, check when a character's first level class is a spellcaster, if their primary casting stat is >= 11.
 
 ## Events
 This plugin adds the following events which can be subscribed to with NWNX_Events.

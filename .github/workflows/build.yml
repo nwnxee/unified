@@ -22,6 +22,10 @@ env:
   CC: gcc-7 -m64
   CXX: g++-7 -m64
 
+concurrency: 
+  group: "build"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-18.04

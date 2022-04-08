@@ -6,27 +6,10 @@
 #include <sstream>
 #include <ctime>
 
-namespace NWNXLib::Services { class Tasks; }
-
 namespace NWNXLib::Log {
 
-#define LOG_DEBUG(format, ...) \
-    ::NWNXLib::Log::Trace(::NWNXLib::Log::Channel::SEV_DEBUG, PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-
-#define LOG_INFO(format, ...) \
-    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_INFO), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-
-#define LOG_NOTICE(format, ...) \
-    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_NOTICE), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-
-#define LOG_WARNING(format, ...) \
-    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_WARNING), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-
-#define LOG_ERROR(format, ...) \
-    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_ERROR), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-
-#define LOG_FATAL(format, ...) \
-    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_FATAL), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_IMPL(sev, format, ...) \
+    ::NWNXLib::Log::Trace(::NWNXLib::Log::Channel::sev, PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
 struct Channel
 {
@@ -82,10 +65,10 @@ void SetColorOutput(bool value);
 bool GetColorOutput();
 void SetForceColor(bool value);
 bool GetForceColor();
-
-void SetAsync(NWNXLib::Services::Tasks* tasks);
+void SetLogFile(const std::string& logfile = "");
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message);
+void WriteToLogFile(const char* message);
 
 template <typename ... Args>
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args)

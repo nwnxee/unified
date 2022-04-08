@@ -19,24 +19,39 @@ int NWNX_Regex_Search(string str, string regex);
 /// @return A new string with any replacements made.
 string NWNX_Regex_Replace(string str, string regex, string replace = "", int firstOnly = FALSE);
 
+/// @brief Returns all matches in a string that match the regular expression.
+/// @param str The string to search.
+/// @param regex The regular expression to use.
+/// @return A json array with json arrays of all (sub)matches. Returns JsonNull() on error.
+json NWNX_Regex_Match(string str, string regex);
+
 /// @}
 
 int NWNX_Regex_Search(string str, string regex)
 {
     string sFunc = "Search";
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, regex);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, str);
+    NWNX_PushArgumentString(regex);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Regex, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Regex, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0)
 {
     string sFunc = "Replace";
-    NWNX_PushArgumentInt(NWNX_Regex, sFunc, firstOnly);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, replace);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, regex);
-    NWNX_PushArgumentString(NWNX_Regex, sFunc, str);
+    NWNX_PushArgumentInt(firstOnly);
+    NWNX_PushArgumentString(replace);
+    NWNX_PushArgumentString(regex);
+    NWNX_PushArgumentString(str);
     NWNX_CallFunction(NWNX_Regex, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Regex, sFunc);
+    return NWNX_GetReturnValueString();
+}
+
+json NWNX_Regex_Match(string str, string regex)
+{
+    string sFunc = "Match";
+    NWNX_PushArgumentString(regex);
+    NWNX_PushArgumentString(str);
+    NWNX_CallFunction(NWNX_Regex, sFunc);
+    return NWNX_GetReturnValueJson();
 }

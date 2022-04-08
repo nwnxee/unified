@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Services/Hooks/Hooks.hpp"
+#include "nwnx.hpp"
 #include "Services/Metrics/MetricData.hpp"
 
 #include <array>
@@ -22,9 +21,7 @@ public:
 public: // Calibration
     static void PrepareForCalibration(const std::chrono::nanoseconds val = std::chrono::nanoseconds(std::numeric_limits<int64_t>::max()));
 
-    static void Calibrate(const size_t runs,
-        NWNXLib::Services::HooksProxy* hooks,
-        NWNXLib::Services::MetricsProxy* metrics);
+    static void Calibrate(const size_t runs, NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static uint8_t s_head;
@@ -38,7 +35,7 @@ private:
 
 private: // Calibration
     static NWNXLib::Services::MetricsProxy* g_metricsForCalibration;
-    static void ProfilerCalibrateHookFuncWithScope(bool, CExoBase*, uint32_t);
+    static int32_t ProfilerCalibrateHookFuncWithScope(CExoBase*, uint32_t);
 };
 
 class FastTimerScope

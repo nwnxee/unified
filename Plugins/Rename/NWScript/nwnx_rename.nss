@@ -48,12 +48,12 @@ void NWNX_Rename_SetPCNameOverride(object oTarget, string sNewName, string sPref
 {
     string sFunc = "SetPCNameOverride";
 
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oObserver);
-    NWNX_PushArgumentInt(NWNX_Rename, sFunc, iPlayerNameState);
-    NWNX_PushArgumentString(NWNX_Rename, sFunc, sSuffix);
-    NWNX_PushArgumentString(NWNX_Rename, sFunc, sPrefix);
-    NWNX_PushArgumentString(NWNX_Rename, sFunc, sNewName);
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oTarget);
+    NWNX_PushArgumentObject(oObserver);
+    NWNX_PushArgumentInt(iPlayerNameState);
+    NWNX_PushArgumentString(sSuffix);
+    NWNX_PushArgumentString(sPrefix);
+    NWNX_PushArgumentString(sNewName);
+    NWNX_PushArgumentObject(oTarget);
 
     NWNX_CallFunction(NWNX_Rename, sFunc);
 }
@@ -61,20 +61,20 @@ string NWNX_Rename_GetPCNameOverride(object oTarget, object oObserver = OBJECT_I
 {
     string sFunc = "GetPCNameOverride";
 
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oObserver);
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oTarget);
+    NWNX_PushArgumentObject(oObserver);
+    NWNX_PushArgumentObject(oTarget);
 
     NWNX_CallFunction(NWNX_Rename, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Rename, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 void NWNX_Rename_ClearPCNameOverride(object oTarget, object oObserver = OBJECT_INVALID, int clearAll = FALSE)
 {
     string sFunc = "ClearPCNameOverride";
 
-    NWNX_PushArgumentInt(NWNX_Rename, sFunc, clearAll);
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oObserver);
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oTarget);
+    NWNX_PushArgumentInt(clearAll);
+    NWNX_PushArgumentObject(oObserver);
+    NWNX_PushArgumentObject(oTarget);
 
     NWNX_CallFunction(NWNX_Rename, sFunc);
 }

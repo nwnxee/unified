@@ -72,7 +72,7 @@ int BITCOUNT(
  * Perform arbitrary bitfield integer operations on strings
  *
  * Time complexity: O(1) for each subcommand specified
- * Annotated return value: 
+ * Annotated return value:
  */
 int BITFIELD(
 	string key,
@@ -206,7 +206,7 @@ int BZPOPMAX(
  * Returns the client ID for the current connection
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 int CLIENT_ID();
 
@@ -294,7 +294,7 @@ int CLIENT_SETNAME(
  * Time complexity: O(log N) where N is the number of client connections
 
  * - Valid values for unblock_type: "TIMEOUT", "ERROR"
- * Annotated return value: 
+ * Annotated return value:
  */
 int CLIENT_UNBLOCK(
 	string client_id,
@@ -516,7 +516,7 @@ int CLUSTER_SETSLOT(
  * List replica nodes of the specified master node
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 int CLUSTER_SLAVES(
 	string node_id
@@ -528,7 +528,7 @@ int CLUSTER_SLAVES(
  * List replica nodes of the specified master node
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 int CLUSTER_REPLICAS(
 	string node_id
@@ -731,7 +731,7 @@ int ECHO(
  * Execute a Lua script server side
  *
  * Time complexity: Depends on the script that is executed.
- * Annotated return value: 
+ * Annotated return value:
  */
 int EVAL(
 	string script,
@@ -747,7 +747,7 @@ int EVAL(
  * Execute a Lua script server side
  *
  * Time complexity: Depends on the script that is executed.
- * Annotated return value: 
+ * Annotated return value:
  */
 int EVALSHA(
 	string sha1,
@@ -956,7 +956,7 @@ int GEORADIUS(
  * - Valid values for withhash: "WITHHASH"
 
  * - Valid values for order: "ASC", "DESC"
- * Annotated return value: 
+ * Annotated return value:
  */
 int GEORADIUSBYMEMBER(
 	string key,
@@ -1552,7 +1552,7 @@ int MIGRATE(
  * MONITOR
  *
  * Listen for all requests received by the server in real time
- * Annotated return value: 
+ * Annotated return value:
  */
 int MONITOR();
 
@@ -1610,7 +1610,7 @@ int MULTI();
  * Inspect the internals of Redis objects
  *
  * Time complexity: O(1) for all the currently implemented subcommands.
- * Annotated return value: 
+ * Annotated return value:
  */
 int OBJECT(
 	string subcommand,
@@ -1715,7 +1715,7 @@ int PING(
  * Set the value and expiration in milliseconds of a key
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 int PSETEX(
 	string key,
@@ -2213,7 +2213,7 @@ int REPLICAOF(
  * SLOWLOG
  *
  * Manages the Redis slow queries log
- * Annotated return value: 
+ * Annotated return value:
  */
 int SLOWLOG(
 	string subcommand,
@@ -2377,7 +2377,7 @@ int SWAPDB(
  * SYNC
  *
  * Internal command used for replication
- * Annotated return value: 
+ * Annotated return value:
  */
 int SYNC();
 
@@ -2884,7 +2884,7 @@ int ZUNIONSTORE(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection.
- * Annotated return value: 
+ * Annotated return value:
  */
 int SCAN(
 	// Redis type: integer
@@ -2904,7 +2904,7 @@ int SCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 int SSCAN(
 	string key,
@@ -2924,7 +2924,7 @@ int SSCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 int HSCAN(
 	string key,
@@ -2944,7 +2944,7 @@ int HSCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 int ZSCAN(
 	string key,
@@ -2966,7 +2966,7 @@ int ZSCAN(
  * items in the stream.
 
  * - Valid values for help: "HELP"
- * Annotated return value: 
+ * Annotated return value:
  */
 int XINFO(
 	// Redis type: key
@@ -3114,7 +3114,7 @@ int XREAD(
  * Time complexity: O(1) for all the subcommands, with the exception of the DESTROY subcommand
  * which takes an additional O(M) time in order to delete the M entries inside
  * the consumer group pending entries list (PEL).
- * Annotated return value: 
+ * Annotated return value:
  */
 int XGROUP(
 	// Redis type: key
@@ -3148,7 +3148,7 @@ int XGROUP(
  * - Valid values for noack: "NOACK"
 
  * - Valid values for streams: "STREAMS"
- * Annotated return value: 
+ * Annotated return value:
  */
 int XREADGROUP(
 	string group_group,
@@ -3230,32 +3230,32 @@ int APPEND(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "APPEND");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("APPEND");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int AUTH(
 	string password
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "AUTH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", password);
+  NWNX_PushArgumentString("AUTH");
+  NWNX_PushArgumentString(password);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BGREWRITEAOF() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BGREWRITEAOF");
+  NWNX_PushArgumentString("BGREWRITEAOF");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BGSAVE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BGSAVE");
+  NWNX_PushArgumentString("BGSAVE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BITCOUNT(
@@ -3265,12 +3265,12 @@ int BITCOUNT(
 	// Redis type: integer
 	int end = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BITCOUNT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (start != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  if (end != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(end));
+  NWNX_PushArgumentString("BITCOUNT");
+  NWNX_PushArgumentString(key);
+  if (start != 0) NWNX_PushArgumentString(IntToString(start));
+  if (end != 0) NWNX_PushArgumentString(IntToString(end));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BITFIELD(
@@ -3292,18 +3292,18 @@ int BITFIELD(
 	// Redis type: integer
 	int incrby_increment = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BITFIELD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (get_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", get_type);
-  if (get_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(get_offset));
-  if (set_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", set_type);
-  if (set_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(set_offset));
-  if (set_value != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(set_value));
-  if (incrby_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", incrby_type);
-  if (incrby_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(incrby_offset));
-  if (incrby_increment != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(incrby_increment));
+  NWNX_PushArgumentString("BITFIELD");
+  NWNX_PushArgumentString(key);
+  if (get_type != "") NWNX_PushArgumentString(get_type);
+  if (get_offset != 0) NWNX_PushArgumentString(IntToString(get_offset));
+  if (set_type != "") NWNX_PushArgumentString(set_type);
+  if (set_offset != 0) NWNX_PushArgumentString(IntToString(set_offset));
+  if (set_value != 0) NWNX_PushArgumentString(IntToString(set_value));
+  if (incrby_type != "") NWNX_PushArgumentString(incrby_type);
+  if (incrby_offset != 0) NWNX_PushArgumentString(IntToString(incrby_offset));
+  if (incrby_increment != 0) NWNX_PushArgumentString(IntToString(incrby_increment));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BITOP(
@@ -3312,12 +3312,12 @@ int BITOP(
 	string destkey,
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BITOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", operation);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destkey);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("BITOP");
+  NWNX_PushArgumentString(operation);
+  NWNX_PushArgumentString(destkey);
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BITPOS(
@@ -3329,13 +3329,13 @@ int BITPOS(
 	// Redis type: integer
 	int end = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BITPOS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(bit));
-  if (start != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  if (end != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(end));
+  NWNX_PushArgumentString("BITPOS");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(bit));
+  if (start != 0) NWNX_PushArgumentString(IntToString(start));
+  if (end != 0) NWNX_PushArgumentString(IntToString(end));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BLPOP(
@@ -3343,11 +3343,11 @@ int BLPOP(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BLPOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("BLPOP");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BRPOP(
@@ -3355,11 +3355,11 @@ int BRPOP(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BRPOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("BRPOP");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BRPOPLPUSH(
@@ -3370,12 +3370,12 @@ int BRPOPLPUSH(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BRPOPLPUSH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", source);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("BRPOPLPUSH");
+  NWNX_PushArgumentString(source);
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BZPOPMIN(
@@ -3383,11 +3383,11 @@ int BZPOPMIN(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BZPOPMIN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("BZPOPMIN");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int BZPOPMAX(
@@ -3395,17 +3395,17 @@ int BZPOPMAX(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "BZPOPMAX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("BZPOPMAX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_ID() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_ID");
+  NWNX_PushArgumentString("CLIENT_ID");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_KILL(
@@ -3415,54 +3415,54 @@ int CLIENT_KILL(
 	string addr_ip_port = "",
 	string skipme_yes_no = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_KILL");
-  if (ip_port != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", ip_port);
-  if (id_client_id != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(id_client_id));
-  if (addr_ip_port != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", addr_ip_port);
-  if (skipme_yes_no != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", skipme_yes_no);
+  NWNX_PushArgumentString("CLIENT_KILL");
+  if (ip_port != "") NWNX_PushArgumentString(ip_port);
+  if (id_client_id != 0) NWNX_PushArgumentString(IntToString(id_client_id));
+  if (addr_ip_port != "") NWNX_PushArgumentString(addr_ip_port);
+  if (skipme_yes_no != "") NWNX_PushArgumentString(skipme_yes_no);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_LIST() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_LIST");
+  NWNX_PushArgumentString("CLIENT_LIST");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_GETNAME() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_GETNAME");
+  NWNX_PushArgumentString("CLIENT_GETNAME");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_PAUSE(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_PAUSE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("CLIENT_PAUSE");
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_REPLY(
 	// Redis type: enum
 	string reply_mode
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_REPLY");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", reply_mode);
+  NWNX_PushArgumentString("CLIENT_REPLY");
+  NWNX_PushArgumentString(reply_mode);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_SETNAME(
 	string connection_name
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_SETNAME");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", connection_name);
+  NWNX_PushArgumentString("CLIENT_SETNAME");
+  NWNX_PushArgumentString(connection_name);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLIENT_UNBLOCK(
@@ -3470,69 +3470,69 @@ int CLIENT_UNBLOCK(
 	// Redis type: enum
 	string unblock_type = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLIENT_UNBLOCK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", client_id);
-  if (unblock_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", unblock_type);
+  NWNX_PushArgumentString("CLIENT_UNBLOCK");
+  NWNX_PushArgumentString(client_id);
+  if (unblock_type != "") NWNX_PushArgumentString(unblock_type);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_ADDSLOTS(
 	// Redis type: integer
 	int slot
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_ADDSLOTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(slot));
+  NWNX_PushArgumentString("CLUSTER_ADDSLOTS");
+  NWNX_PushArgumentString(IntToString(slot));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_COUNT_FAILURE_REPORTS(
 	string node_id
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_COUNT_FAILURE_REPORTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_COUNT_FAILURE_REPORTS");
+  NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_COUNTKEYSINSLOT(
 	// Redis type: integer
 	int slot
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_COUNTKEYSINSLOT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(slot));
+  NWNX_PushArgumentString("CLUSTER_COUNTKEYSINSLOT");
+  NWNX_PushArgumentString(IntToString(slot));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_DELSLOTS(
 	// Redis type: integer
 	int slot
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_DELSLOTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(slot));
+  NWNX_PushArgumentString("CLUSTER_DELSLOTS");
+  NWNX_PushArgumentString(IntToString(slot));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_FAILOVER(
 	// Redis type: enum
 	string options = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_FAILOVER");
-  if (options != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", options);
+  NWNX_PushArgumentString("CLUSTER_FAILOVER");
+  if (options != "") NWNX_PushArgumentString(options);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_FORGET(
 	string node_id
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_FORGET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_FORGET");
+  NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_GETKEYSINSLOT(
@@ -3541,26 +3541,26 @@ int CLUSTER_GETKEYSINSLOT(
 	// Redis type: integer
 	int count
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_GETKEYSINSLOT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(slot));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("CLUSTER_GETKEYSINSLOT");
+  NWNX_PushArgumentString(IntToString(slot));
+  NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_INFO() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_INFO");
+  NWNX_PushArgumentString("CLUSTER_INFO");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_KEYSLOT(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_KEYSLOT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("CLUSTER_KEYSLOT");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_MEET(
@@ -3568,52 +3568,52 @@ int CLUSTER_MEET(
 	// Redis type: integer
 	int port
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_MEET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ip);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(port));
+  NWNX_PushArgumentString("CLUSTER_MEET");
+  NWNX_PushArgumentString(ip);
+  NWNX_PushArgumentString(IntToString(port));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_NODES() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_NODES");
+  NWNX_PushArgumentString("CLUSTER_NODES");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_REPLICATE(
 	string node_id
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_REPLICATE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_REPLICATE");
+  NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_RESET(
 	// Redis type: enum
 	string reset_type = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_RESET");
-  if (reset_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", reset_type);
+  NWNX_PushArgumentString("CLUSTER_RESET");
+  if (reset_type != "") NWNX_PushArgumentString(reset_type);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_SAVECONFIG() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_SAVECONFIG");
+  NWNX_PushArgumentString("CLUSTER_SAVECONFIG");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_SET_CONFIG_EPOCH(
 	// Redis type: integer
 	int config_epoch
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_SET_CONFIG_EPOCH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(config_epoch));
+  NWNX_PushArgumentString("CLUSTER_SET_CONFIG_EPOCH");
+  NWNX_PushArgumentString(IntToString(config_epoch));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_SETSLOT(
@@ -3623,125 +3623,125 @@ int CLUSTER_SETSLOT(
 	string subcommand,
 	string node_id = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_SETSLOT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(slot));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", subcommand);
-  if (node_id != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_SETSLOT");
+  NWNX_PushArgumentString(IntToString(slot));
+  NWNX_PushArgumentString(subcommand);
+  if (node_id != "") NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_SLAVES(
 	string node_id
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_SLAVES");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_SLAVES");
+  NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_REPLICAS(
 	string node_id
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_REPLICAS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", node_id);
+  NWNX_PushArgumentString("CLUSTER_REPLICAS");
+  NWNX_PushArgumentString(node_id);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CLUSTER_SLOTS() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CLUSTER_SLOTS");
+  NWNX_PushArgumentString("CLUSTER_SLOTS");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int COMMAND() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "COMMAND");
+  NWNX_PushArgumentString("COMMAND");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int COMMAND_COUNT() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "COMMAND_COUNT");
+  NWNX_PushArgumentString("COMMAND_COUNT");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int COMMAND_GETKEYS() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "COMMAND_GETKEYS");
+  NWNX_PushArgumentString("COMMAND_GETKEYS");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int COMMAND_INFO(
 	string command_name
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "COMMAND_INFO");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", command_name);
+  NWNX_PushArgumentString("COMMAND_INFO");
+  NWNX_PushArgumentString(command_name);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CONFIG_GET(
 	string parameter
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CONFIG_GET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", parameter);
+  NWNX_PushArgumentString("CONFIG_GET");
+  NWNX_PushArgumentString(parameter);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CONFIG_REWRITE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CONFIG_REWRITE");
+  NWNX_PushArgumentString("CONFIG_REWRITE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CONFIG_SET(
 	string parameter,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CONFIG_SET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", parameter);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("CONFIG_SET");
+  NWNX_PushArgumentString(parameter);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int CONFIG_RESETSTAT() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "CONFIG_RESETSTAT");
+  NWNX_PushArgumentString("CONFIG_RESETSTAT");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DBSIZE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DBSIZE");
+  NWNX_PushArgumentString("DBSIZE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DEBUG_OBJECT(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DEBUG_OBJECT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("DEBUG_OBJECT");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DEBUG_SEGFAULT() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DEBUG_SEGFAULT");
+  NWNX_PushArgumentString("DEBUG_SEGFAULT");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DECR(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DECR");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("DECR");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DECRBY(
@@ -3749,44 +3749,44 @@ int DECRBY(
 	// Redis type: integer
 	int decrement
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DECRBY");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(decrement));
+  NWNX_PushArgumentString("DECRBY");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(decrement));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DEL(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DEL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("DEL");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DISCARD() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DISCARD");
+  NWNX_PushArgumentString("DISCARD");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int DUMP(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "DUMP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("DUMP");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ECHO(
 	string message
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ECHO");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", message);
+  NWNX_PushArgumentString("ECHO");
+  NWNX_PushArgumentString(message);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EVAL(
@@ -3796,13 +3796,13 @@ int EVAL(
 	string key,
 	string arg
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EVAL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", script);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(numkeys));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", arg);
+  NWNX_PushArgumentString("EVAL");
+  NWNX_PushArgumentString(script);
+  NWNX_PushArgumentString(IntToString(numkeys));
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(arg);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EVALSHA(
@@ -3812,28 +3812,28 @@ int EVALSHA(
 	string key,
 	string arg
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EVALSHA");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", sha1);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(numkeys));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", arg);
+  NWNX_PushArgumentString("EVALSHA");
+  NWNX_PushArgumentString(sha1);
+  NWNX_PushArgumentString(IntToString(numkeys));
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(arg);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EXEC() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EXEC");
+  NWNX_PushArgumentString("EXEC");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EXISTS(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EXISTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("EXISTS");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EXPIRE(
@@ -3841,11 +3841,11 @@ int EXPIRE(
 	// Redis type: integer
 	int seconds
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EXPIRE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(seconds));
+  NWNX_PushArgumentString("EXPIRE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(seconds));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int EXPIREAT(
@@ -3853,31 +3853,31 @@ int EXPIREAT(
 	// Redis type: posix time
 	string timestamp
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "EXPIREAT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", timestamp);
+  NWNX_PushArgumentString("EXPIREAT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(timestamp);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int FLUSHALL(
 	// Redis type: enum
 	string async = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "FLUSHALL");
-  if (async != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", async);
+  NWNX_PushArgumentString("FLUSHALL");
+  if (async != "") NWNX_PushArgumentString(async);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int FLUSHDB(
 	// Redis type: enum
 	string async = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "FLUSHDB");
-  if (async != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", async);
+  NWNX_PushArgumentString("FLUSHDB");
+  if (async != "") NWNX_PushArgumentString(async);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEOADD(
@@ -3888,35 +3888,35 @@ int GEOADD(
 	float latitude,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEOADD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(longitude, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(latitude, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("GEOADD");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(longitude, 0));
+  NWNX_PushArgumentString(FloatToString(latitude, 0));
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEOHASH(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEOHASH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("GEOHASH");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEOPOS(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEOPOS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("GEOPOS");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEODIST(
@@ -3925,13 +3925,13 @@ int GEODIST(
 	string member2,
 	string unit = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEODIST");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member1);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member2);
-  if (unit != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", unit);
+  NWNX_PushArgumentString("GEODIST");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member1);
+  NWNX_PushArgumentString(member2);
+  if (unit != "") NWNX_PushArgumentString(unit);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEORADIUS(
@@ -3959,21 +3959,21 @@ int GEORADIUS(
 	// Redis type: key
 	string storedist_key = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEORADIUS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(longitude, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(latitude, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(radius, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", unit);
-  if (withcoord != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withcoord);
-  if (withdist != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withdist);
-  if (withhash != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withhash);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
-  if (order != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", order);
-  if (store_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", store_key);
-  if (storedist_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", storedist_key);
+  NWNX_PushArgumentString("GEORADIUS");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(longitude, 0));
+  NWNX_PushArgumentString(FloatToString(latitude, 0));
+  NWNX_PushArgumentString(FloatToString(radius, 0));
+  NWNX_PushArgumentString(unit);
+  if (withcoord != "") NWNX_PushArgumentString(withcoord);
+  if (withdist != "") NWNX_PushArgumentString(withdist);
+  if (withhash != "") NWNX_PushArgumentString(withhash);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
+  if (order != "") NWNX_PushArgumentString(order);
+  if (store_key != "") NWNX_PushArgumentString(store_key);
+  if (storedist_key != "") NWNX_PushArgumentString(storedist_key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GEORADIUSBYMEMBER(
@@ -3998,29 +3998,29 @@ int GEORADIUSBYMEMBER(
 	// Redis type: key
 	string storedist_key = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GEORADIUSBYMEMBER");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(radius, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", unit);
-  if (withcoord != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withcoord);
-  if (withdist != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withdist);
-  if (withhash != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withhash);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
-  if (order != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", order);
-  if (store_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", store_key);
-  if (storedist_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", storedist_key);
+  NWNX_PushArgumentString("GEORADIUSBYMEMBER");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
+  NWNX_PushArgumentString(FloatToString(radius, 0));
+  NWNX_PushArgumentString(unit);
+  if (withcoord != "") NWNX_PushArgumentString(withcoord);
+  if (withdist != "") NWNX_PushArgumentString(withdist);
+  if (withhash != "") NWNX_PushArgumentString(withhash);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
+  if (order != "") NWNX_PushArgumentString(order);
+  if (store_key != "") NWNX_PushArgumentString(store_key);
+  if (storedist_key != "") NWNX_PushArgumentString(storedist_key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GET(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("GET");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GETBIT(
@@ -4028,11 +4028,11 @@ int GETBIT(
 	// Redis type: integer
 	int offset
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GETBIT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(offset));
+  NWNX_PushArgumentString("GETBIT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(offset));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GETRANGE(
@@ -4042,65 +4042,65 @@ int GETRANGE(
 	// Redis type: integer
 	int end
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GETRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(end));
+  NWNX_PushArgumentString("GETRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(end));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int GETSET(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "GETSET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("GETSET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HDEL(
 	string key,
 	string field
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HDEL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
+  NWNX_PushArgumentString("HDEL");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HEXISTS(
 	string key,
 	string field
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HEXISTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
+  NWNX_PushArgumentString("HEXISTS");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HGET(
 	string key,
 	string field
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HGET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
+  NWNX_PushArgumentString("HGET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HGETALL(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HGETALL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("HGETALL");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HINCRBY(
@@ -4109,12 +4109,12 @@ int HINCRBY(
 	// Redis type: integer
 	int increment
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HINCRBY");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(increment));
+  NWNX_PushArgumentString("HINCRBY");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(IntToString(increment));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HINCRBYFLOAT(
@@ -4123,41 +4123,41 @@ int HINCRBYFLOAT(
 	// Redis type: double
 	float increment
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HINCRBYFLOAT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(increment, 0));
+  NWNX_PushArgumentString("HINCRBYFLOAT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(FloatToString(increment, 0));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HKEYS(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HKEYS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("HKEYS");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HLEN(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HLEN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("HLEN");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HMGET(
 	string key,
 	string field
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HMGET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
+  NWNX_PushArgumentString("HMGET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HMSET(
@@ -4165,12 +4165,12 @@ int HMSET(
 	string field,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HMSET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("HMSET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HSET(
@@ -4178,12 +4178,12 @@ int HSET(
 	string field,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HSET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("HSET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HSETNX(
@@ -4191,41 +4191,41 @@ int HSETNX(
 	string field,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HSETNX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("HSETNX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HSTRLEN(
 	string key,
 	string field
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HSTRLEN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
+  NWNX_PushArgumentString("HSTRLEN");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(field);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HVALS(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HVALS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("HVALS");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int INCR(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "INCR");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("INCR");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int INCRBY(
@@ -4233,11 +4233,11 @@ int INCRBY(
 	// Redis type: integer
 	int increment
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "INCRBY");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(increment));
+  NWNX_PushArgumentString("INCRBY");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(increment));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int INCRBYFLOAT(
@@ -4245,35 +4245,35 @@ int INCRBYFLOAT(
 	// Redis type: double
 	float increment
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "INCRBYFLOAT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(increment, 0));
+  NWNX_PushArgumentString("INCRBYFLOAT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(increment, 0));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int INFO(
 	string section = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "INFO");
-  if (section != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", section);
+  NWNX_PushArgumentString("INFO");
+  if (section != "") NWNX_PushArgumentString(section);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int KEYS(
 	string pattern
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "KEYS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", pattern);
+  NWNX_PushArgumentString("KEYS");
+  NWNX_PushArgumentString(pattern);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LASTSAVE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LASTSAVE");
+  NWNX_PushArgumentString("LASTSAVE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LINDEX(
@@ -4281,11 +4281,11 @@ int LINDEX(
 	// Redis type: integer
 	int index
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LINDEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(index));
+  NWNX_PushArgumentString("LINDEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(index));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LINSERT(
@@ -4295,53 +4295,53 @@ int LINSERT(
 	string pivot,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LINSERT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", where);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", pivot);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("LINSERT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(where);
+  NWNX_PushArgumentString(pivot);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LLEN(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LLEN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("LLEN");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LPOP(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LPOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("LPOP");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LPUSH(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LPUSH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("LPUSH");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LPUSHX(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LPUSHX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("LPUSHX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LRANGE(
@@ -4351,12 +4351,12 @@ int LRANGE(
 	// Redis type: integer
 	int stop
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(stop));
+  NWNX_PushArgumentString("LRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(stop));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LREM(
@@ -4365,12 +4365,12 @@ int LREM(
 	int count,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LREM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("LREM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(count));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LSET(
@@ -4379,12 +4379,12 @@ int LSET(
 	int index,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LSET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(index));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("LSET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(index));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int LTRIM(
@@ -4394,42 +4394,42 @@ int LTRIM(
 	// Redis type: integer
 	int stop
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "LTRIM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(stop));
+  NWNX_PushArgumentString("LTRIM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(stop));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_DOCTOR() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_DOCTOR");
+  NWNX_PushArgumentString("MEMORY_DOCTOR");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_HELP() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_HELP");
+  NWNX_PushArgumentString("MEMORY_HELP");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_MALLOC_STATS() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_MALLOC_STATS");
+  NWNX_PushArgumentString("MEMORY_MALLOC_STATS");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_PURGE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_PURGE");
+  NWNX_PushArgumentString("MEMORY_PURGE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_STATS() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_STATS");
+  NWNX_PushArgumentString("MEMORY_STATS");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MEMORY_USAGE(
@@ -4437,20 +4437,20 @@ int MEMORY_USAGE(
 	// Redis type: integer
 	int samples_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MEMORY_USAGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (samples_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(samples_count));
+  NWNX_PushArgumentString("MEMORY_USAGE");
+  NWNX_PushArgumentString(key);
+  if (samples_count != 0) NWNX_PushArgumentString(IntToString(samples_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MGET(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MGET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("MGET");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MIGRATE(
@@ -4470,24 +4470,24 @@ int MIGRATE(
 	// Redis type: key
 	string keys_key = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MIGRATE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", host);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", port);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(destination_db));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
-  if (copy != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", copy);
-  if (replace != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", replace);
-  if (auth_password != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", auth_password);
-  if (keys_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", keys_key);
+  NWNX_PushArgumentString("MIGRATE");
+  NWNX_PushArgumentString(host);
+  NWNX_PushArgumentString(port);
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(destination_db));
+  NWNX_PushArgumentString(IntToString(timeout));
+  if (copy != "") NWNX_PushArgumentString(copy);
+  if (replace != "") NWNX_PushArgumentString(replace);
+  if (auth_password != "") NWNX_PushArgumentString(auth_password);
+  if (keys_key != "") NWNX_PushArgumentString(keys_key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MONITOR() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MONITOR");
+  NWNX_PushArgumentString("MONITOR");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MOVE(
@@ -4495,59 +4495,59 @@ int MOVE(
 	// Redis type: integer
 	int db
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MOVE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(db));
+  NWNX_PushArgumentString("MOVE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(db));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MSET(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MSET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("MSET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MSETNX(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MSETNX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("MSETNX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int MULTI() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "MULTI");
+  NWNX_PushArgumentString("MULTI");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int OBJECT(
 	string subcommand,
 	string arguments = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "OBJECT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", subcommand);
-  if (arguments != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", arguments);
+  NWNX_PushArgumentString("OBJECT");
+  NWNX_PushArgumentString(subcommand);
+  if (arguments != "") NWNX_PushArgumentString(arguments);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PERSIST(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PERSIST");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("PERSIST");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PEXPIRE(
@@ -4555,11 +4555,11 @@ int PEXPIRE(
 	// Redis type: integer
 	int milliseconds
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PEXPIRE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(milliseconds));
+  NWNX_PushArgumentString("PEXPIRE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(milliseconds));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PEXPIREAT(
@@ -4567,31 +4567,31 @@ int PEXPIREAT(
 	// Redis type: posix time
 	string milliseconds_timestamp
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PEXPIREAT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", milliseconds_timestamp);
+  NWNX_PushArgumentString("PEXPIREAT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(milliseconds_timestamp);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PFADD(
 	string key,
 	string element
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PFADD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", element);
+  NWNX_PushArgumentString("PFADD");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(element);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PFCOUNT(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PFCOUNT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("PFCOUNT");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PFMERGE(
@@ -4600,20 +4600,20 @@ int PFMERGE(
 	// Redis type: key
 	string sourcekey
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PFMERGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destkey);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", sourcekey);
+  NWNX_PushArgumentString("PFMERGE");
+  NWNX_PushArgumentString(destkey);
+  NWNX_PushArgumentString(sourcekey);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PING(
 	string message = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PING");
-  if (message != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", message);
+  NWNX_PushArgumentString("PING");
+  if (message != "") NWNX_PushArgumentString(message);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PSETEX(
@@ -4622,67 +4622,67 @@ int PSETEX(
 	int milliseconds,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PSETEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(milliseconds));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("PSETEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(milliseconds));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PUBSUB(
 	string subcommand,
 	string argument = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PUBSUB");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", subcommand);
-  if (argument != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", argument);
+  NWNX_PushArgumentString("PUBSUB");
+  NWNX_PushArgumentString(subcommand);
+  if (argument != "") NWNX_PushArgumentString(argument);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PTTL(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PTTL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("PTTL");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int PUBLISH(
 	string channel,
 	string message
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "PUBLISH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", channel);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", message);
+  NWNX_PushArgumentString("PUBLISH");
+  NWNX_PushArgumentString(channel);
+  NWNX_PushArgumentString(message);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int QUIT() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "QUIT");
+  NWNX_PushArgumentString("QUIT");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RANDOMKEY() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RANDOMKEY");
+  NWNX_PushArgumentString("RANDOMKEY");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int READONLY() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "READONLY");
+  NWNX_PushArgumentString("READONLY");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int READWRITE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "READWRITE");
+  NWNX_PushArgumentString("READWRITE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RENAME(
@@ -4690,11 +4690,11 @@ int RENAME(
 	// Redis type: key
 	string newkey
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RENAME");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", newkey);
+  NWNX_PushArgumentString("RENAME");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(newkey);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RENAMENX(
@@ -4702,11 +4702,11 @@ int RENAMENX(
 	// Redis type: key
 	string newkey
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RENAMENX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", newkey);
+  NWNX_PushArgumentString("RENAMENX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(newkey);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RESTORE(
@@ -4723,31 +4723,31 @@ int RESTORE(
 	// Redis type: integer
 	int freq_frequency = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RESTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(ttl));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", serialized_value);
-  if (replace != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", replace);
-  if (absttl != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", absttl);
-  if (idletime_seconds != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(idletime_seconds));
-  if (freq_frequency != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(freq_frequency));
+  NWNX_PushArgumentString("RESTORE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(ttl));
+  NWNX_PushArgumentString(serialized_value);
+  if (replace != "") NWNX_PushArgumentString(replace);
+  if (absttl != "") NWNX_PushArgumentString(absttl);
+  if (idletime_seconds != 0) NWNX_PushArgumentString(IntToString(idletime_seconds));
+  if (freq_frequency != 0) NWNX_PushArgumentString(IntToString(freq_frequency));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ROLE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ROLE");
+  NWNX_PushArgumentString("ROLE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RPOP(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RPOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("RPOP");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RPOPLPUSH(
@@ -4756,108 +4756,108 @@ int RPOPLPUSH(
 	// Redis type: key
 	string destination
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RPOPLPUSH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", source);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
+  NWNX_PushArgumentString("RPOPLPUSH");
+  NWNX_PushArgumentString(source);
+  NWNX_PushArgumentString(destination);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RPUSH(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RPUSH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("RPUSH");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int RPUSHX(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "RPUSHX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("RPUSHX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SADD(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SADD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("SADD");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SAVE() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SAVE");
+  NWNX_PushArgumentString("SAVE");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCARD(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCARD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SCARD");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCRIPT_DEBUG(
 	// Redis type: enum
 	string mode
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCRIPT_DEBUG");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", mode);
+  NWNX_PushArgumentString("SCRIPT_DEBUG");
+  NWNX_PushArgumentString(mode);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCRIPT_EXISTS(
 	string sha1
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCRIPT_EXISTS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", sha1);
+  NWNX_PushArgumentString("SCRIPT_EXISTS");
+  NWNX_PushArgumentString(sha1);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCRIPT_FLUSH() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCRIPT_FLUSH");
+  NWNX_PushArgumentString("SCRIPT_FLUSH");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCRIPT_KILL() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCRIPT_KILL");
+  NWNX_PushArgumentString("SCRIPT_KILL");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCRIPT_LOAD(
 	string script
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCRIPT_LOAD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", script);
+  NWNX_PushArgumentString("SCRIPT_LOAD");
+  NWNX_PushArgumentString(script);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SDIFF(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SDIFF");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SDIFF");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SDIFFSTORE(
@@ -4865,21 +4865,21 @@ int SDIFFSTORE(
 	string destination,
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SDIFFSTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SDIFFSTORE");
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SELECT(
 	// Redis type: integer
 	int index
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SELECT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(index));
+  NWNX_PushArgumentString("SELECT");
+  NWNX_PushArgumentString(IntToString(index));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SET(
@@ -4888,12 +4888,12 @@ int SET(
 	// Redis type: enum
 	string condition = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SET");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
-  if (condition != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", condition);
+  NWNX_PushArgumentString("SET");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
+  if (condition != "") NWNX_PushArgumentString(condition);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SETBIT(
@@ -4902,12 +4902,12 @@ int SETBIT(
 	int offset,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SETBIT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(offset));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("SETBIT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(offset));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SETEX(
@@ -4916,23 +4916,23 @@ int SETEX(
 	int seconds,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SETEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(seconds));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("SETEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(seconds));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SETNX(
 	string key,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SETNX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("SETNX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SETRANGE(
@@ -4941,31 +4941,31 @@ int SETRANGE(
 	int offset,
 	string value
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SETRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(offset));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", value);
+  NWNX_PushArgumentString("SETRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(offset));
+  NWNX_PushArgumentString(value);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SHUTDOWN(
 	// Redis type: enum
 	string save_mode = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SHUTDOWN");
-  if (save_mode != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", save_mode);
+  NWNX_PushArgumentString("SHUTDOWN");
+  if (save_mode != "") NWNX_PushArgumentString(save_mode);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SINTER(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SINTER");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SINTER");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SINTERSTORE(
@@ -4973,64 +4973,64 @@ int SINTERSTORE(
 	string destination,
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SINTERSTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SINTERSTORE");
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SISMEMBER(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SISMEMBER");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("SISMEMBER");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SLAVEOF(
 	string host,
 	string port
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SLAVEOF");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", host);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", port);
+  NWNX_PushArgumentString("SLAVEOF");
+  NWNX_PushArgumentString(host);
+  NWNX_PushArgumentString(port);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int REPLICAOF(
 	string host,
 	string port
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "REPLICAOF");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", host);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", port);
+  NWNX_PushArgumentString("REPLICAOF");
+  NWNX_PushArgumentString(host);
+  NWNX_PushArgumentString(port);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SLOWLOG(
 	string subcommand,
 	string argument = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SLOWLOG");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", subcommand);
-  if (argument != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", argument);
+  NWNX_PushArgumentString("SLOWLOG");
+  NWNX_PushArgumentString(subcommand);
+  if (argument != "") NWNX_PushArgumentString(argument);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SMEMBERS(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SMEMBERS");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SMEMBERS");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SMOVE(
@@ -5040,12 +5040,12 @@ int SMOVE(
 	string destination,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SMOVE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", source);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("SMOVE");
+  NWNX_PushArgumentString(source);
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SORT(
@@ -5064,17 +5064,17 @@ int SORT(
 	// Redis type: key
 	string store_destination = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SORT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (by_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", by_pattern);
-  if (limit_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_offset));
-  if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_count));
-  if (get_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", get_pattern);
-  if (order != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", order);
-  if (sorting != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", sorting);
-  if (store_destination != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", store_destination);
+  NWNX_PushArgumentString("SORT");
+  NWNX_PushArgumentString(key);
+  if (by_pattern != "") NWNX_PushArgumentString(by_pattern);
+  if (limit_offset != 0) NWNX_PushArgumentString(IntToString(limit_offset));
+  if (limit_count != 0) NWNX_PushArgumentString(IntToString(limit_count));
+  if (get_pattern != "") NWNX_PushArgumentString(get_pattern);
+  if (order != "") NWNX_PushArgumentString(order);
+  if (sorting != "") NWNX_PushArgumentString(sorting);
+  if (store_destination != "") NWNX_PushArgumentString(store_destination);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SPOP(
@@ -5082,11 +5082,11 @@ int SPOP(
 	// Redis type: integer
 	int count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SPOP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("SPOP");
+  NWNX_PushArgumentString(key);
+  if (count != 0) NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SRANDMEMBER(
@@ -5094,40 +5094,40 @@ int SRANDMEMBER(
 	// Redis type: integer
 	int count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SRANDMEMBER");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("SRANDMEMBER");
+  NWNX_PushArgumentString(key);
+  if (count != 0) NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SREM(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SREM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("SREM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int STRLEN(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "STRLEN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("STRLEN");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SUNION(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SUNION");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SUNION");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SUNIONSTORE(
@@ -5135,11 +5135,11 @@ int SUNIONSTORE(
 	string destination,
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SUNIONSTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("SUNIONSTORE");
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SWAPDB(
@@ -5148,65 +5148,65 @@ int SWAPDB(
 	// Redis type: integer
 	int index_1
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SWAPDB");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(index));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(index_1));
+  NWNX_PushArgumentString("SWAPDB");
+  NWNX_PushArgumentString(IntToString(index));
+  NWNX_PushArgumentString(IntToString(index_1));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SYNC() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SYNC");
+  NWNX_PushArgumentString("SYNC");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int TIME() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "TIME");
+  NWNX_PushArgumentString("TIME");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int TOUCH(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "TOUCH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("TOUCH");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int TTL(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "TTL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("TTL");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int TYPE(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "TYPE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("TYPE");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int UNLINK(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "UNLINK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("UNLINK");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int UNWATCH() {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "UNWATCH");
+  NWNX_PushArgumentString("UNWATCH");
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int WAIT(
@@ -5215,20 +5215,20 @@ int WAIT(
 	// Redis type: integer
 	int timeout
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "WAIT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(numreplicas));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(timeout));
+  NWNX_PushArgumentString("WAIT");
+  NWNX_PushArgumentString(IntToString(numreplicas));
+  NWNX_PushArgumentString(IntToString(timeout));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int WATCH(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "WATCH");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("WATCH");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZADD(
@@ -5243,24 +5243,24 @@ int ZADD(
 	float score = 0.0,
 	string member = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZADD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (condition != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", condition);
-  if (change != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", change);
-  if (increment != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", increment);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(score, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZADD");
+  NWNX_PushArgumentString(key);
+  if (condition != "") NWNX_PushArgumentString(condition);
+  if (change != "") NWNX_PushArgumentString(change);
+  if (increment != "") NWNX_PushArgumentString(increment);
+  NWNX_PushArgumentString(FloatToString(score, 0));
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZCARD(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZCARD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("ZCARD");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZCOUNT(
@@ -5270,12 +5270,12 @@ int ZCOUNT(
 	// Redis type: double
 	float max
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZCOUNT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(min, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(max, 0));
+  NWNX_PushArgumentString("ZCOUNT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(min, 0));
+  NWNX_PushArgumentString(FloatToString(max, 0));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZINCRBY(
@@ -5284,12 +5284,12 @@ int ZINCRBY(
 	int increment,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZINCRBY");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(increment));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZINCRBY");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(increment));
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZINTERSTORE(
@@ -5303,14 +5303,14 @@ int ZINTERSTORE(
 	// Redis type: enum
 	string aggregate_aggregate = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZINTERSTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(numkeys));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (weights_weight != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(weights_weight));
-  if (aggregate_aggregate != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", aggregate_aggregate);
+  NWNX_PushArgumentString("ZINTERSTORE");
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(IntToString(numkeys));
+  NWNX_PushArgumentString(key);
+  if (weights_weight != 0) NWNX_PushArgumentString(IntToString(weights_weight));
+  if (aggregate_aggregate != "") NWNX_PushArgumentString(aggregate_aggregate);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZLEXCOUNT(
@@ -5318,12 +5318,12 @@ int ZLEXCOUNT(
 	string min,
 	string max
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZLEXCOUNT");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", min);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", max);
+  NWNX_PushArgumentString("ZLEXCOUNT");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(min);
+  NWNX_PushArgumentString(max);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZPOPMAX(
@@ -5331,11 +5331,11 @@ int ZPOPMAX(
 	// Redis type: integer
 	int count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZPOPMAX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("ZPOPMAX");
+  NWNX_PushArgumentString(key);
+  if (count != 0) NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZPOPMIN(
@@ -5343,11 +5343,11 @@ int ZPOPMIN(
 	// Redis type: integer
 	int count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZPOPMIN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("ZPOPMIN");
+  NWNX_PushArgumentString(key);
+  if (count != 0) NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZRANGE(
@@ -5359,13 +5359,13 @@ int ZRANGE(
 	// Redis type: enum
 	string withscores = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(stop));
-  if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withscores);
+  NWNX_PushArgumentString("ZRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(stop));
+  if (withscores != "") NWNX_PushArgumentString(withscores);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZRANGEBYLEX(
@@ -5377,14 +5377,14 @@ int ZRANGEBYLEX(
 	// Redis type: integer
 	int limit_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZRANGEBYLEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", min);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", max);
-  if (limit_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_offset));
-  if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_count));
+  NWNX_PushArgumentString("ZRANGEBYLEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(min);
+  NWNX_PushArgumentString(max);
+  if (limit_offset != 0) NWNX_PushArgumentString(IntToString(limit_offset));
+  if (limit_count != 0) NWNX_PushArgumentString(IntToString(limit_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREVRANGEBYLEX(
@@ -5396,14 +5396,14 @@ int ZREVRANGEBYLEX(
 	// Redis type: integer
 	int limit_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREVRANGEBYLEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", max);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", min);
-  if (limit_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_offset));
-  if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_count));
+  NWNX_PushArgumentString("ZREVRANGEBYLEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(max);
+  NWNX_PushArgumentString(min);
+  if (limit_offset != 0) NWNX_PushArgumentString(IntToString(limit_offset));
+  if (limit_count != 0) NWNX_PushArgumentString(IntToString(limit_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZRANGEBYSCORE(
@@ -5419,37 +5419,37 @@ int ZRANGEBYSCORE(
 	// Redis type: integer
 	int limit_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZRANGEBYSCORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(min, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(max, 0));
-  if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withscores);
-  if (limit_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_offset));
-  if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_count));
+  NWNX_PushArgumentString("ZRANGEBYSCORE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(min, 0));
+  NWNX_PushArgumentString(FloatToString(max, 0));
+  if (withscores != "") NWNX_PushArgumentString(withscores);
+  if (limit_offset != 0) NWNX_PushArgumentString(IntToString(limit_offset));
+  if (limit_count != 0) NWNX_PushArgumentString(IntToString(limit_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZRANK(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZRANK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZRANK");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREM(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZREM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREMRANGEBYLEX(
@@ -5457,12 +5457,12 @@ int ZREMRANGEBYLEX(
 	string min,
 	string max
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREMRANGEBYLEX");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", min);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", max);
+  NWNX_PushArgumentString("ZREMRANGEBYLEX");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(min);
+  NWNX_PushArgumentString(max);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREMRANGEBYRANK(
@@ -5472,12 +5472,12 @@ int ZREMRANGEBYRANK(
 	// Redis type: integer
 	int stop
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREMRANGEBYRANK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(stop));
+  NWNX_PushArgumentString("ZREMRANGEBYRANK");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(stop));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREMRANGEBYSCORE(
@@ -5487,12 +5487,12 @@ int ZREMRANGEBYSCORE(
 	// Redis type: double
 	float max
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREMRANGEBYSCORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(min, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(max, 0));
+  NWNX_PushArgumentString("ZREMRANGEBYSCORE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(min, 0));
+  NWNX_PushArgumentString(FloatToString(max, 0));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREVRANGE(
@@ -5504,13 +5504,13 @@ int ZREVRANGE(
 	// Redis type: enum
 	string withscores = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREVRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(start));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(stop));
-  if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withscores);
+  NWNX_PushArgumentString("ZREVRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(start));
+  NWNX_PushArgumentString(IntToString(stop));
+  if (withscores != "") NWNX_PushArgumentString(withscores);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREVRANGEBYSCORE(
@@ -5526,37 +5526,37 @@ int ZREVRANGEBYSCORE(
 	// Redis type: integer
 	int limit_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREVRANGEBYSCORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(max, 0));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", FloatToString(min, 0));
-  if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", withscores);
-  if (limit_offset != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_offset));
-  if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(limit_count));
+  NWNX_PushArgumentString("ZREVRANGEBYSCORE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(FloatToString(max, 0));
+  NWNX_PushArgumentString(FloatToString(min, 0));
+  if (withscores != "") NWNX_PushArgumentString(withscores);
+  if (limit_offset != 0) NWNX_PushArgumentString(IntToString(limit_offset));
+  if (limit_count != 0) NWNX_PushArgumentString(IntToString(limit_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZREVRANK(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZREVRANK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZREVRANK");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZSCORE(
 	string key,
 	string member
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZSCORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", member);
+  NWNX_PushArgumentString("ZSCORE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(member);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZUNIONSTORE(
@@ -5570,14 +5570,14 @@ int ZUNIONSTORE(
 	// Redis type: enum
 	string aggregate_aggregate = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZUNIONSTORE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", destination);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(numkeys));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  if (weights_weight != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(weights_weight));
-  if (aggregate_aggregate != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", aggregate_aggregate);
+  NWNX_PushArgumentString("ZUNIONSTORE");
+  NWNX_PushArgumentString(destination);
+  NWNX_PushArgumentString(IntToString(numkeys));
+  NWNX_PushArgumentString(key);
+  if (weights_weight != 0) NWNX_PushArgumentString(IntToString(weights_weight));
+  if (aggregate_aggregate != "") NWNX_PushArgumentString(aggregate_aggregate);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SCAN(
@@ -5589,13 +5589,13 @@ int SCAN(
 	int count_count = 0,
 	string type_type = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SCAN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(cursor));
-  if (match_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", match_pattern);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
-  if (type_type != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", type_type);
+  NWNX_PushArgumentString("SCAN");
+  NWNX_PushArgumentString(IntToString(cursor));
+  if (match_pattern != "") NWNX_PushArgumentString(match_pattern);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
+  if (type_type != "") NWNX_PushArgumentString(type_type);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int SSCAN(
@@ -5607,13 +5607,13 @@ int SSCAN(
 	// Redis type: integer
 	int count_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "SSCAN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(cursor));
-  if (match_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", match_pattern);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
+  NWNX_PushArgumentString("SSCAN");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(cursor));
+  if (match_pattern != "") NWNX_PushArgumentString(match_pattern);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int HSCAN(
@@ -5625,13 +5625,13 @@ int HSCAN(
 	// Redis type: integer
 	int count_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "HSCAN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(cursor));
-  if (match_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", match_pattern);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
+  NWNX_PushArgumentString("HSCAN");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(cursor));
+  if (match_pattern != "") NWNX_PushArgumentString(match_pattern);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int ZSCAN(
@@ -5643,13 +5643,13 @@ int ZSCAN(
 	// Redis type: integer
 	int count_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "ZSCAN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(cursor));
-  if (match_pattern != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", match_pattern);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
+  NWNX_PushArgumentString("ZSCAN");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(IntToString(cursor));
+  if (match_pattern != "") NWNX_PushArgumentString(match_pattern);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XINFO(
@@ -5663,14 +5663,14 @@ int XINFO(
 	// Redis type: enum
 	string help = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XINFO");
-  if (consumers_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", consumers_key);
-  if (consumers_groupname != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", consumers_groupname);
-  if (groups_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", groups_key);
-  if (stream_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", stream_key);
-  if (help != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", help);
+  NWNX_PushArgumentString("XINFO");
+  if (consumers_key != "") NWNX_PushArgumentString(consumers_key);
+  if (consumers_groupname != "") NWNX_PushArgumentString(consumers_groupname);
+  if (groups_key != "") NWNX_PushArgumentString(groups_key);
+  if (stream_key != "") NWNX_PushArgumentString(stream_key);
+  if (help != "") NWNX_PushArgumentString(help);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XADD(
@@ -5680,13 +5680,13 @@ int XADD(
 	string field,
 	string str
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XADD");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", field);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", str);
+  NWNX_PushArgumentString("XADD");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(ID);
+  NWNX_PushArgumentString(field);
+  NWNX_PushArgumentString(str);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XTRIM(
@@ -5698,24 +5698,24 @@ int XTRIM(
 	// Redis type: integer
 	int count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XTRIM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", strategy);
-  if (approx != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", approx);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
+  NWNX_PushArgumentString("XTRIM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(strategy);
+  if (approx != "") NWNX_PushArgumentString(approx);
+  NWNX_PushArgumentString(IntToString(count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XDEL(
 	string key,
 	string ID
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XDEL");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
+  NWNX_PushArgumentString("XDEL");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(ID);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XRANGE(
@@ -5725,13 +5725,13 @@ int XRANGE(
 	// Redis type: integer
 	int count_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", start);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", end);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
+  NWNX_PushArgumentString("XRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(start);
+  NWNX_PushArgumentString(end);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XREVRANGE(
@@ -5741,22 +5741,22 @@ int XREVRANGE(
 	// Redis type: integer
 	int count_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XREVRANGE");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", end);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", start);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
+  NWNX_PushArgumentString("XREVRANGE");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(end);
+  NWNX_PushArgumentString(start);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XLEN(
 	string key
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XLEN");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
+  NWNX_PushArgumentString("XLEN");
+  NWNX_PushArgumentString(key);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XREAD(
@@ -5769,14 +5769,14 @@ int XREAD(
 	string key = "",
 	string ID = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XREAD");
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
-  if (block_milliseconds != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(block_milliseconds));
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", streams);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
+  NWNX_PushArgumentString("XREAD");
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
+  if (block_milliseconds != 0) NWNX_PushArgumentString(IntToString(block_milliseconds));
+  NWNX_PushArgumentString(streams);
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(ID);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XGROUP(
@@ -5796,20 +5796,20 @@ int XGROUP(
 	string delconsumer_groupname = "",
 	string delconsumer_consumername = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XGROUP");
-  if (create_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", create_key);
-  if (create_groupname != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", create_groupname);
-  if (create_id_or__ != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", create_id_or__);
-  if (setid_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", setid_key);
-  if (setid_groupname != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", setid_groupname);
-  if (setid_id_or__ != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", setid_id_or__);
-  if (destroy_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", destroy_key);
-  if (destroy_groupname != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", destroy_groupname);
-  if (delconsumer_key != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", delconsumer_key);
-  if (delconsumer_groupname != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", delconsumer_groupname);
-  if (delconsumer_consumername != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", delconsumer_consumername);
+  NWNX_PushArgumentString("XGROUP");
+  if (create_key != "") NWNX_PushArgumentString(create_key);
+  if (create_groupname != "") NWNX_PushArgumentString(create_groupname);
+  if (create_id_or__ != "") NWNX_PushArgumentString(create_id_or__);
+  if (setid_key != "") NWNX_PushArgumentString(setid_key);
+  if (setid_groupname != "") NWNX_PushArgumentString(setid_groupname);
+  if (setid_id_or__ != "") NWNX_PushArgumentString(setid_id_or__);
+  if (destroy_key != "") NWNX_PushArgumentString(destroy_key);
+  if (destroy_groupname != "") NWNX_PushArgumentString(destroy_groupname);
+  if (delconsumer_key != "") NWNX_PushArgumentString(delconsumer_key);
+  if (delconsumer_groupname != "") NWNX_PushArgumentString(delconsumer_groupname);
+  if (delconsumer_consumername != "") NWNX_PushArgumentString(delconsumer_consumername);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XREADGROUP(
@@ -5826,17 +5826,17 @@ int XREADGROUP(
 	string key = "",
 	string ID = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XREADGROUP");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", group_group);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", group_consumer);
-  if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count_count));
-  if (block_milliseconds != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(block_milliseconds));
-  if (noack != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", noack);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", streams);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
+  NWNX_PushArgumentString("XREADGROUP");
+  NWNX_PushArgumentString(group_group);
+  NWNX_PushArgumentString(group_consumer);
+  if (count_count != 0) NWNX_PushArgumentString(IntToString(count_count));
+  if (block_milliseconds != 0) NWNX_PushArgumentString(IntToString(block_milliseconds));
+  if (noack != "") NWNX_PushArgumentString(noack);
+  NWNX_PushArgumentString(streams);
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(ID);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XACK(
@@ -5844,12 +5844,12 @@ int XACK(
 	string group,
 	string ID
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XACK");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", group);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
+  NWNX_PushArgumentString("XACK");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(group);
+  NWNX_PushArgumentString(ID);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XCLAIM(
@@ -5865,17 +5865,17 @@ int XCLAIM(
 	// Redis type: integer
 	int retrycount_count = 0
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XCLAIM");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", group);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", consumer);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", min_idle_time);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", ID);
-  if (idle_ms != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(idle_ms));
-  if (time_ms_unix_time != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(time_ms_unix_time));
-  if (retrycount_count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(retrycount_count));
+  NWNX_PushArgumentString("XCLAIM");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(group);
+  NWNX_PushArgumentString(consumer);
+  NWNX_PushArgumentString(min_idle_time);
+  NWNX_PushArgumentString(ID);
+  if (idle_ms != 0) NWNX_PushArgumentString(IntToString(idle_ms));
+  if (time_ms_unix_time != 0) NWNX_PushArgumentString(IntToString(time_ms_unix_time));
+  if (retrycount_count != 0) NWNX_PushArgumentString(IntToString(retrycount_count));
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
 
 int XPENDING(
@@ -5887,14 +5887,13 @@ int XPENDING(
 	int count = 0,
 	string consumer = ""
 ) {
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", "XPENDING");
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", key);
-  NWNX_PushArgumentString("NWNX_Redis", "Deferred", group);
-  if (start != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", start);
-  if (end != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", end);
-  if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "Deferred", IntToString(count));
-  if (consumer != "") NWNX_PushArgumentString("NWNX_Redis", "Deferred", consumer);
+  NWNX_PushArgumentString("XPENDING");
+  NWNX_PushArgumentString(key);
+  NWNX_PushArgumentString(group);
+  if (start != "") NWNX_PushArgumentString(start);
+  if (end != "") NWNX_PushArgumentString(end);
+  if (count != 0) NWNX_PushArgumentString(IntToString(count));
+  if (consumer != "") NWNX_PushArgumentString(consumer);
   NWNX_CallFunction("NWNX_Redis", "Deferred");
-  return NWNX_GetReturnValueInt("NWNX_Redis", "Deferred");
+  return NWNX_GetReturnValueInt();
 }
-

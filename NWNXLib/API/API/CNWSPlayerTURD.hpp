@@ -2,11 +2,9 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
-#include "CExoLinkedList.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWSObject.hpp"
-#include "CNWSObjectActionNode.hpp"
 #include "CNWSPersonalReputation.hpp"
 
 

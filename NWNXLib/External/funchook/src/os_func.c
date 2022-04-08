@@ -32,6 +32,7 @@
 #include "printf_base.h"
 #include "os_func.h"
 
+#if 0 // nwnx-modification: Don't clobber system's memcpy implementations
 /* same with memcmp in libc not to use the function in libc */
 #ifndef _MSC_VER
 #undef memcmp
@@ -62,6 +63,7 @@ void *memcpy(void *dest, const void *src, size_t n)
     return dest;
 }
 #endif
+#endif // nwnx-modification-end
 
 char *funchook_strlcpy(char *dest, const char *src, size_t n)
 {

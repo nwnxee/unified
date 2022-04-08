@@ -1,6 +1,7 @@
-#include "Object.hpp"
+#include "nwnx.hpp"
 
 #include "API/CAppManager.hpp"
+#include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSScriptVar.hpp"
@@ -16,142 +17,37 @@
 #include "API/CNWSAreaOfEffectObject.hpp"
 #include "API/CNWSDoor.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
 #include "API/CExoFile.hpp"
 #include "API/CNWSUUID.hpp"
-#include "API/Constants.hpp"
-#include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Serialize.hpp"
-#include "Utils.hpp"
-
+#include "API/CNWSpellArray.hpp"
 #include <cstring>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Object::Object* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
+NWNX_EXPORT ArgumentStack GetLocalVariableCount(ArgumentStack&& args)
 {
-    g_plugin = new Object::Object(services);
-    return g_plugin;
-}
-
-
-namespace Object {
-
-Object::Object(Services::ProxyServiceList* services)
-    : Plugin(services)
-{
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
-
-    REGISTER(GetLocalVariableCount);
-    REGISTER(GetLocalVariable);
-    REGISTER(SetPosition);
-    REGISTER(GetCurrentHitPoints);
-    REGISTER(SetCurrentHitPoints);
-    REGISTER(SetMaxHitPoints);
-    REGISTER(Serialize);
-    REGISTER(Deserialize);
-    REGISTER(GetDialogResref);
-    REGISTER(SetDialogResref);
-    REGISTER(SetAppearance);
-    REGISTER(GetAppearance);
-    REGISTER(GetHasVisualEffect);
-    REGISTER(CheckFit);
-    REGISTER(GetDamageImmunity);
-    REGISTER(AddToArea);
-    REGISTER(GetPlaceableIsStatic);
-    REGISTER(SetPlaceableIsStatic);
-    REGISTER(GetAutoRemoveKey);
-    REGISTER(SetAutoRemoveKey);
-    REGISTER(GetTriggerGeometry);
-    REGISTER(SetTriggerGeometry);
-    REGISTER(RemoveIconEffect);
-    REGISTER(AddIconEffect);
-    REGISTER(Export);
-    REGISTER(GetInt);
-    REGISTER(SetInt);
-    REGISTER(DeleteInt);
-    REGISTER(GetString);
-    REGISTER(SetString);
-    REGISTER(DeleteString);
-    REGISTER(GetFloat);
-    REGISTER(SetFloat);
-    REGISTER(DeleteFloat);
-    REGISTER(DeleteVarRegex);
-    REGISTER(GetPositionIsInTrigger);
-    REGISTER(GetInternalObjectType);
-    REGISTER(AcquireItem);
-    REGISTER(SetFacing);
-    REGISTER(ClearSpellEffectsOnOthers);
-    REGISTER(PeekUUID);
-    REGISTER(GetDoorHasVisibleModel);
-    REGISTER(GetIsDestroyable);
-    REGISTER(DoSpellImmunity);
-    REGISTER(DoSpellLevelAbsorption);
-    REGISTER(SetHasInventory);
-    REGISTER(GetCurrentAnimation);
-
-#undef REGISTER
-}
-
-Object::~Object()
-{
-}
-
-CNWSObject *Object::object(ArgumentStack& args)
-{
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (objectId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
-        return nullptr;
-    }
-
-    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return Utils::AsNWSObject(pGameObject);
-}
-
-ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
-{
-    int retval = -1;
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (objectId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
-    }
-    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    if (auto *pGameObject = Utils::PopGameObject(args))
     {
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
-        retval = pVarTable->m_vars.size();
+        return (int)pVarTable->m_vars.size();
     }
-    return Services::Events::Arguments(retval);
+    return -1;
 }
 
-ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetLocalVariable(ArgumentStack&& args)
 {
     std::string key = "";
     int type = -1;
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (objectId == Constants::OBJECT_INVALID)
+    if (auto *pGameObject = Utils::PopGameObject(args))
     {
-        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
-    }
-    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
-    {
-        const uint32_t index = Services::Events::ExtractArgument<int32_t>(args);
+        const uint32_t index = args.extract<int32_t>();
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
         if (index < pVarTable->m_vars.size())
         {
@@ -166,6 +62,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
                     else if (it.second.HasString())   type = 3;
                     else if (it.second.HasObject())   type = 4;
                     else if (it.second.HasLocation()) type = 5;
+                    else if (it.second.HasJson())     type = 6;
                     else type = 0;
                     break;
                 }
@@ -173,18 +70,18 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
             }
         }
     }
-    return Services::Events::Arguments(type, key);
+    return {type, key};
 }
 
-ArgumentStack Object::SetPosition(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetPosition(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
         Vector pos{};
-        pos.z = Services::Events::ExtractArgument<float>(args);
-        pos.y = Services::Events::ExtractArgument<float>(args);
-        pos.x = Services::Events::ExtractArgument<float>(args);
-        auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
+        pos.z = args.extract<float>();
+        pos.y = args.extract<float>();
+        pos.x = args.extract<float>();
+        auto bUpdateSubareas = !!args.extract<int32_t>();
 
         pObject->SetPosition(pos, false);
 
@@ -196,87 +93,78 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
             }
         }
     }
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetCurrentHitPoints(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetCurrentHitPoints(ArgumentStack&& args)
 {
-    int32_t retval = 0;
-    if (auto *pObject = object(args))
-    {
-        retval = pObject->m_nCurrentHitPoints;
-    }
-    return Services::Events::Arguments(retval);
+    if (auto *pObject = Utils::PopObject(args))
+        return pObject->m_nCurrentHitPoints;
+
+    return 0;
 }
 
-ArgumentStack Object::SetCurrentHitPoints(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetCurrentHitPoints(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
-    {
-        const auto hp = Services::Events::ExtractArgument<int32_t>(args);
-        pObject->m_nCurrentHitPoints = hp;
-    }
-    return Services::Events::Arguments();
+    if (auto *pObject = Utils::PopObject(args))
+        pObject->m_nCurrentHitPoints = args.extract<int32_t>();
+
+    return {};
 }
 
-ArgumentStack Object::SetMaxHitPoints(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetMaxHitPoints(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
-    {
-        const auto hp = Services::Events::ExtractArgument<int32_t>(args);
-        pObject->m_nBaseHitPoints = hp;
-    }
-    return Services::Events::Arguments();
+    if (auto *pObject = Utils::PopObject(args))
+        pObject->m_nBaseHitPoints = args.extract<int32_t>();
+
+    return {};
 }
 
-ArgumentStack Object::Serialize(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Serialize(ArgumentStack&& args)
 {
-    std::string retval = "";
-    if (CGameObject *pObject = static_cast<CGameObject*>(object(args)))
-    {
-        retval = SerializeGameObjectB64(pObject);
-    }
-    return Services::Events::Arguments(retval);
+    if (auto *pObject = Utils::PopGameObject(args))
+        return Utils::SerializeGameObjectB64(pObject);
+
+    return "";
 }
 
 // NOTE: Deserialize does not receive an object argument.
-ArgumentStack Object::Deserialize(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Deserialize(ArgumentStack&& args)
 {
     ObjectID retval = Constants::OBJECT_INVALID;
 
-    const auto serialized = Services::Events::ExtractArgument<std::string>(args);
+    const auto serialized = args.extract<std::string>();
 
-    if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    if (CGameObject *pObject = Utils::DeserializeGameObjectB64(serialized))
     {
         retval = static_cast<ObjectID>(pObject->m_idSelf);
-        ASSERT(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+        ASSERT(Utils::GetGameObject(retval));
     }
 
-    return Services::Events::Arguments(retval);
+    return retval;
 }
 
-ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetDialogResref(ArgumentStack&& args)
 {
-    std::string retval = "";
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
         if (auto *pCreature = Utils::AsNWSCreature(pObject))
-            retval = pCreature->GetDialogResref().GetResRefStr();
+            return pCreature->GetDialogResref().GetResRefStr();
         else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
-            retval = pPlaceable->GetDialogResref().GetResRefStr();
+            return pPlaceable->GetDialogResref().GetResRefStr();
         else if (auto *pDoor = Utils::AsNWSDoor(pObject))
-            retval = pDoor->GetDialogResref().GetResRefStr();
+            return pDoor->GetDialogResref().GetResRefStr();
         else
-            retval = pObject->GetDialogResref().GetResRefStr();
+            return pObject->GetDialogResref().GetResRefStr();
     }
-    return Services::Events::Arguments(retval);
+    return "";
 }
 
-ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetDialogResref(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto dialog = Services::Events::ExtractArgument<std::string>(args);
+        const auto dialog = args.extract<std::string>();
         CResRef resref = CResRef(dialog.c_str());
 
         if (auto *pCreature = Utils::AsNWSCreature(pObject))
@@ -287,59 +175,52 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
             pDoor->m_cDialog = resref;
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetAppearance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetAppearance(ArgumentStack&& args)
 {
-    int32_t retval = 0;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
-    {
-        retval = pPlaceable->m_nAppearance;
-    }
+    if (auto *pPlaceable = Utils::PopPlaceable(args))
+        return pPlaceable->m_nAppearance;
 
-    return Services::Events::Arguments(retval);
+    return 0;
 }
 
-ArgumentStack Object::SetAppearance(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetAppearance(ArgumentStack&& args)
 {
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = Utils::PopPlaceable(args))
     {
-        const auto app = Services::Events::ExtractArgument<int32_t>(args);
+        const auto app = args.extract<int32_t>();
           ASSERT_OR_THROW(app <= 65535);
 
-        pPlaceable->m_nAppearance=app;
+        pPlaceable->m_nAppearance = app;
     }
-    return Services::Events::Arguments();
+
+    return {};
 }
 
-ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetHasVisualEffect(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto nVfx = Services::Events::ExtractArgument<int32_t>(args);
+        const auto nVfx = args.extract<int32_t>();
 
         auto& vfx = pObject->m_lstLoopingVisualEffects;
         for (int k = 0; k < vfx.num; k++)
         {
             if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
             {
-                retVal = 1;
-                break;
+                return true;
             }
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return false;
 }
 
-ArgumentStack Object::CheckFit(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack CheckFit(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
         CItemRepository *pRepo;
 
@@ -351,17 +232,15 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
             pRepo = pItem->m_pItemRepository;
         else
         {
-            return Services::Events::Arguments(retVal);
+            return -1;
         }
-        const auto baseitem = Services::Events::ExtractArgument<int32_t>(args);
+        const auto baseitem = args.extract<int32_t>();
 
         if (pRepo == nullptr || Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem) == nullptr)
         {
             LOG_ERROR("Base Item or Object Repository not found.");
-            return Services::Events::Arguments(retVal);
+            return -1;
         }
-
-        retVal = 0;
 
         static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
         tmp->m_nBaseItem = baseitem;
@@ -375,70 +254,59 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
             {
                 if (pRepo->CheckFit(tmp, x, y))
                 {
-                    retVal = 1;
-                    break;
+                    return 1;
                 }
             }
-            if (retVal)
-                break;
         }
+        return 0;
     }
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetDamageImmunity(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const int32_t damageFlags = Services::Events::ExtractArgument<int32_t>(args);
+        const int32_t damageFlags = args.extract<int32_t>();
         ASSERT_OR_THROW(damageFlags >= 0);
-        retVal = pObject->GetDamageImmunityByFlags(damageFlags);
+        return pObject->GetDamageImmunityByFlags(damageFlags);
     }
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Object::AddToArea(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddToArea(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
+        const auto oidArea = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-        const auto posX = Services::Events::ExtractArgument<float>(args);
-        const auto posY = Services::Events::ExtractArgument<float>(args);
-        const auto posZ = Services::Events::ExtractArgument<float>(args);
+        const auto posX = args.extract<float>();
+        const auto posY = args.extract<float>();
+        const auto posZ = args.extract<float>();
 
-        CNWSArea *pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(oidArea);
-
-        if (pArea)
+        if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
         {
             if (!Utils::AddToArea(pObject, pArea, posX, posY, posZ))
                 LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, posX, posY, posZ);
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetPlaceableIsStatic(ArgumentStack&& args)
 {
-    int32_t retval = -1;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
-    {
-        retval = pPlaceable->m_bStaticObject;
-    }
+    if (auto *pPlaceable = Utils::PopPlaceable(args))
+        return pPlaceable->m_bStaticObject;
 
-    return Services::Events::Arguments(retval);
+    return -1;
 }
 
-ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetPlaceableIsStatic(ArgumentStack&& args)
 {
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = Utils::PopPlaceable(args))
     {
-        const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(isStatic >= 0);
-        ASSERT_OR_THROW(isStatic <= 1);
+        const auto isStatic = !!args.extract<int32_t>();
 
         // Not sure if this is even needed
         pPlaceable->m_bNeverMakeIntoStaticObject = false;
@@ -451,64 +319,56 @@ ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
             pPlaceable->m_bUseable = false;
         }
     }
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetAutoRemoveKey(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
-                retVal = Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
-                break;
-
+                return Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
             case Constants::ObjectType::Placeable:
-                retVal = Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
-                break;
-
+                return Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
             default:
                 LOG_WARNING("NWNX_Object_GetAutoRemoveKey() called on non door/placeable object.");
                 break;
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetAutoRemoveKey(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto bRemoveKey = !!Services::Events::ExtractArgument<int32_t>(args);
+        const auto bRemoveKey = !!args.extract<int32_t>();
 
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
                 Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey = bRemoveKey;
                 break;
-
             case Constants::ObjectType::Placeable:
                 Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey = bRemoveKey;
                 break;
-
             default:
                 LOG_WARNING("NWNX_Object_SetAutoRemoveKey() called on non door/placeable object.");
                 break;
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetTriggerGeometry(ArgumentStack&& args)
 {
     std::string retVal;
 
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
         if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
@@ -527,14 +387,14 @@ ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
-ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetTriggerGeometry(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
+        const auto sGeometry = args.extract<std::string>();
 
         if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
@@ -592,14 +452,14 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RemoveIconEffect(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
+        const auto nIcon = args.extract<int32_t>();
 
         for (int i = 0; i < pObject->m_appliedEffects.num; i++)
         {
@@ -613,16 +473,16 @@ ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddIconEffect(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
+        const auto nIcon = args.extract<int32_t>();
         ASSERT_OR_THROW(nIcon > 0);
-        const auto fDuration = Services::Events::ExtractArgument<float>(args);
+        const auto fDuration = args.extract<float>();
 
         for (int i = 0; i < pObject->m_appliedEffects.num; i++)
         {
@@ -658,26 +518,40 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         pObject->ApplyEffect(effIcon, false, true);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::Export(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
 {
-    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!fileName.empty());
-      ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-
-    if (auto *pGameObject = Utils::GetGameObject(oidObject))
+    if (auto *pGameObject = Utils::PopObject(args))
     {
+        const auto fileName = args.extract<std::string>();
+          ASSERT_OR_THROW(!fileName.empty());
+          ASSERT_OR_THROW(fileName.size() <= 16);
+        std::string alias;
+        try
+        {
+            alias = args.extract<std::string>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Object_Export() called from NWScript without sAlias parameter. Please update nwnx_object.nss");
+            alias = "NWNX";
+        }
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Object_Export() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+		
         auto ExportObject = [&](RESTYPE resType) -> void
         {
-            std::vector<uint8_t> serialized = SerializeGameObject(pGameObject, true);
+            std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
 
             if (!serialized.empty())
             {
-                auto file = CExoFile(("NWNX:" + fileName).c_str(), resType, "wb");
+                auto file = CExoFile((alias + ":" + fileName).c_str(), resType, "wb");
 
                 if (file.FileOpened())
                 {
@@ -702,305 +576,465 @@ ArgumentStack Object::Export(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetInt(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetInt(ArgumentStack&& args)
 {
-    int32_t retVal = 0;
-
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObject, "PERINT!" + varName))
-        retVal = *value;
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Object::SetInt(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-    const auto value = Services::Events::ExtractArgument<int32_t>(args);
-    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, persist);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::DeleteInt(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERINT!" + varName);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::GetString(ArgumentStack&& args)
-{
-    std::string retVal;
-
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObject, "PERSTR!" + varName))
-        retVal = *value;
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Object::SetString(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-    const auto value = Services::Events::ExtractArgument<std::string>(args);
-    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, persist);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::DeleteString(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERSTR!" + varName);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::GetFloat(ArgumentStack&& args)
-{
-    float retVal = 0.0f;
-
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<float>(oidObject, "PERFLT!" + varName))
-        retVal = *value;
-
-    return Services::Events::Arguments(retVal);
-}
-
-ArgumentStack Object::SetFloat(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-    const auto value = Services::Events::ExtractArgument<float>(args);
-    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, persist);
-
-    return Services::Events::Arguments();
-}
-
-
-ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto varName = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!varName.empty());
-
-    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERFLT!" + varName);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
-{
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
-      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
-    const auto regex = Services::Events::ExtractArgument<std::string>(args);
-      ASSERT_OR_THROW(!regex.empty());
-
-    g_plugin->GetServices()->m_perObjectStorage->RemoveRegex(oidObject, "((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
-
-    return Services::Events::Arguments();
-}
-
-ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
-{
-    int32_t retVal = false;
-
-    if (auto *pTrigger = Utils::AsNWSTrigger(object(args)))
+    if (auto *pObject = Utils::PopGameObject(args))
     {
-        const auto fX = Services::Events::ExtractArgument<float>(args);
-        const auto fY = Services::Events::ExtractArgument<float>(args);
-        const auto fZ = Services::Events::ExtractArgument<float>(args);
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        return pObject->nwnxGet<int32_t>("PERINT!" + varName).value_or(0);
+    }
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetInt(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+        const auto value = args.extract<int32_t>();
+        const bool persist = args.extract<int32_t>() != 0;
+
+        pObject->nwnxSet("PERINT!" + varName, value, persist);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack DeleteInt(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        pObject->nwnxRemove("PERINT!" + varName);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetString(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        return pObject->nwnxGet<std::string>("PERSTR!" + varName).value_or("");
+    }
+    return "";
+}
+
+NWNX_EXPORT ArgumentStack SetString(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+        const auto value = args.extract<std::string>();
+        const bool persist = args.extract<int32_t>() != 0;
+
+        pObject->nwnxSet("PERSTR!" + varName, value, persist);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack DeleteString(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        pObject->nwnxRemove("PERSTR!" + varName);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetFloat(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        return pObject->nwnxGet<float>("PERFLT!" + varName).value_or(0.0f);
+    }
+
+    return 0.0f;
+}
+
+NWNX_EXPORT ArgumentStack SetFloat(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+        const auto value = args.extract<float>();
+        const bool persist = args.extract<int32_t>() != 0;
+
+        pObject->nwnxSet("PERFLT!" + varName, value, persist);
+    }
+
+    return {};
+}
+
+
+NWNX_EXPORT ArgumentStack DeleteFloat(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto varName = args.extract<std::string>();
+          ASSERT_OR_THROW(!varName.empty());
+
+        pObject->nwnxRemove("PERFLT!" + varName);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack DeleteVarRegex(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto regex = args.extract<std::string>();
+          ASSERT_OR_THROW(!regex.empty());
+
+        pObject->nwnxRemoveRegex("((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetPositionIsInTrigger(ArgumentStack&& args)
+{
+    if (auto *pTrigger = Utils::PopTrigger(args))
+    {
+        const auto fX = args.extract<float>();
+        const auto fY = args.extract<float>();
+        const auto fZ = args.extract<float>();
 
         Vector vPosition = {fX, fY, fZ};
-        retVal = pTrigger->InTrigger(vPosition);
+        return pTrigger->InTrigger(vPosition);
     }
 
-    return Services::Events::Arguments(retVal);
+    return false;
 }
 
-ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetInternalObjectType(ArgumentStack&& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+    if (auto *pObject = Utils::PopGameObject(args))
+        return pObject->m_nObjectType;
 
-    if (auto* go = Utils::GetGameObject(objectId))
-    {
-        return Services::Events::Arguments(go->m_nObjectType);
-    }
-
-    return Services::Events::Arguments(-1);
+    return -1;
 }
 
-ArgumentStack Object::AcquireItem(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AcquireItem(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto oidItem = Services::Events::ExtractArgument<ObjectID>(args);
+        const auto oidItem = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
 
-        if (auto *pItem = API::Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(oidItem))
-        {
-            retVal = Utils::AcquireItem(pItem, pObject);
-        }
+        if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem)))
+            return Utils::AcquireItem(pItem, pObject);
     }
 
-    return Services::Events::Arguments(retVal);
+    return false;
 }
 
-ArgumentStack Object::SetFacing(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetFacing(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        const auto degrees = Services::Events::ExtractArgument<float>(args);
-
+        const auto degrees = args.extract<float>();
         Utils::SetOrientation(pObject, degrees);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack ClearSpellEffectsOnOthers(ArgumentStack&& args)
 {
-    if (auto *pObject = object(args))
-    {
+    if (auto *pObject = Utils::PopObject(args))
         pObject->ClearSpellEffectsOnOthers();
-    }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::PeekUUID(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack PeekUUID(ArgumentStack&& args)
 {
-    std::string retVal;
-    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
-      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
-
-    if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    if (auto *pGameObject = Utils::PopGameObject(args))
     {
         static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
-                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+                Platform::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
 
         if (CanCarryUUID(pGameObject->m_nObjectType))
         {
             if (auto *pArea = Utils::AsNWSArea(pGameObject))
-                retVal = pArea->m_pUUID.m_uuid.CStr();
+                return pArea->m_pUUID.m_uuid.CStr();
             else if (auto *pObject = Utils::AsNWSObject(pGameObject))
-                retVal = pObject->m_pUUID.m_uuid.CStr();
+                return pObject->m_pUUID.m_uuid.CStr();
         }
     }
 
-    return Services::Events::Arguments(retVal);
+    return "";
 }
 
-ArgumentStack Object::GetDoorHasVisibleModel(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetDoorHasVisibleModel(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-    if (auto *pDoor = Utils::AsNWSDoor(object(args)))
+    if (auto *pDoor = Utils::PopDoor(args))
+        return pDoor->m_bVisibleModel;
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack GetIsDestroyable(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+        return pObject->m_bDestroyable;
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
     {
-        retVal = pDoor->m_bVisibleModel;
+        if(auto *pVersus = Utils::PopObject(args))
+        {
+            int32_t spellId;
+            try
+            {
+                spellId = args.extract<int32_t>();
+            }
+            catch(const std::runtime_error& e)
+            {
+                LOG_WARNING("NWNX_Object_DoSpellImmunity() called from NWScript without new parameter. Please update nwnx_object.nss");
+                spellId = -1;
+            }
+
+            uint32_t prevSpellId;
+            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus); 
+            if(spellId>=0) 
+            {
+                if(pAoEObject)
+                {
+                    prevSpellId = pAoEObject->m_nSpellId;
+                    pAoEObject->m_nSpellId = spellId;
+                }
+                else
+                {
+                    prevSpellId = pVersus->m_nLastSpellId;
+                    pVersus->m_nLastSpellId = spellId;
+                } 
+            }
+
+            auto ret = pObject->DoSpellImmunity(pVersus);
+
+            if(spellId>=0) 
+            {
+                if(pAoEObject)
+                {
+                    pAoEObject->m_nSpellId = prevSpellId;
+                }
+                else
+                {
+                    pVersus->m_nLastSpellId = prevSpellId;
+                } 
+            }
+
+            return ret;
+        }
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Object::GetIsDestroyable(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
 {
-    int32_t retVal = false;
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        retVal = pObject->m_bDestroyable;
+        if(auto *pVersus = Utils::PopObject(args))
+        {
+            int32_t spellId, spellLevel, spellSchool;
+            try
+            {
+                spellId = args.extract<int32_t>();
+                spellLevel = args.extract<int32_t>();
+                spellSchool = args.extract<int32_t>();
+            }
+            catch(const std::runtime_error& e)
+            {
+                LOG_WARNING("NWNX_Object_DoSpellLevelAbsorption() called from NWScript without new parameters. Please update nwnx_object.nss");
+                spellId = -1;
+                spellLevel = -1;
+                spellSchool = -1;
+            }
+            
+            ASSERT_OR_THROW(spellLevel <= 10);
+            ASSERT_OR_THROW(spellSchool <= 8);
+            
+            auto pCaster = Utils::AsNWSCreature(pVersus);
+            if(!pCaster) 
+                return -1;
+
+            if(pObject->m_appliedEffects.num < 1)
+                return -1;
+
+            uint32_t prevSpellId = pVersus->m_nLastSpellId;
+            if(spellId >= 0)
+            {
+                pVersus->m_nLastSpellId = spellId;
+            }
+
+            auto *pSpellArray = Globals::Rules()->m_pSpellArray;
+            auto *pSpell = pSpellArray->GetSpell(pVersus->m_nLastSpellId);
+
+            uint8_t prevSpellSchool;
+            if(pSpell && spellSchool >= 0)
+            {
+                prevSpellSchool = pSpell->m_nSchool;
+                pSpell->m_nSchool = spellSchool;
+            }
+
+            uint8_t prevSpellLevel;
+            BOOL prevLastItemCastSpell; 
+            if(pSpell && spellLevel >= 0)
+            {
+                prevLastItemCastSpell = pCaster->m_bLastItemCastSpell;
+                prevSpellLevel = pSpell->m_nInnateLevel;
+                
+                pCaster->m_bLastItemCastSpell = 1; // DoSpellLevelAbsorption uses innate level in case of item spells
+                pSpell->m_nInnateLevel = spellLevel;
+            }
+
+            auto ret = pObject->DoSpellLevelAbsorption(pVersus);
+
+            if(pSpell && spellLevel >= 0)
+            {
+                pCaster->m_bLastItemCastSpell = prevLastItemCastSpell;
+                pSpell->m_nInnateLevel = prevSpellLevel;
+            }
+
+            if(pSpell && spellSchool >= 0)
+            {
+                pSpell->m_nSchool = prevSpellSchool;
+            }
+
+            if(spellId > 0)
+            {
+                pVersus->m_nLastSpellId = prevSpellId;
+            }
+
+            return ret;
+        }
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
-ArgumentStack Object::DoSpellImmunity(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetHasInventory(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-    if (auto *pObject = object(args))
+    if (auto *pPlaceable = Utils::PopPlaceable(args))
+        pPlaceable->m_bHasInventory = !!args.extract<int32_t>();
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetCurrentAnimation(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+        return pObject->m_nAnimation;
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack GetAILevel(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+        return pObject->m_nAILevel;
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAILevel(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
     {
-        if(auto *pVersus = object(args))
-            retVal = pObject->DoSpellImmunity(pVersus);
+        const auto nLevel = args.extract<int32_t>();
+        ASSERT_OR_THROW(nLevel >= -1);
+        ASSERT_OR_THROW(nLevel <= 4);
+        auto *ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        ai->SetAILevel(pObject, nLevel);
     }
 
-    return Services::Events::Arguments(retVal);
+    return {};
 }
 
-ArgumentStack Object::DoSpellLevelAbsorption(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetMapNote(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-    if (auto *pObject = object(args))
+    if (auto *pWaypoint = Utils::PopWaypoint(args))
     {
-        if(auto *pVersus = object(args))
-            retVal = pObject->DoSpellLevelAbsorption(pVersus);
+        auto nGender = args.extract<int32_t>();
+        auto nID = args.extract<int32_t>();
+
+        return Utils::ExtractLocString(pWaypoint->m_szMapNote, nID, nGender);
     }
 
-    return Services::Events::Arguments(retVal);
+    return "";
 }
 
-ArgumentStack Object::SetHasInventory(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetMapNote(ArgumentStack&& args)
 {
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pWaypoint = Utils::PopWaypoint(args))
     {
-        const auto hasInventory = !!Services::Events::ExtractArgument<int32_t>(args);
+        auto sMapNote = args.extract<std::string>();
+        auto nGender = args.extract<int32_t>();
+        auto nID = args.extract<int32_t>();
 
-        pPlaceable->m_bHasInventory = hasInventory;
+        pWaypoint->m_bMapNote = true;
+        pWaypoint->m_szMapNote = Utils::CreateLocString(sMapNote, nID, nGender);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
-ArgumentStack Object::GetCurrentAnimation(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetLastSpellCastFeat(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    if (auto *pObject = object(args))
+    if (auto *pObject = Utils::PopObject(args))
     {
-        retVal = pObject->m_nAnimation;
+        return pObject->m_nLastSpellCastFeat;
     }
 
-    return Services::Events::Arguments(retVal);
+    return -1;
 }
 
+NWNX_EXPORT ArgumentStack SetLastTriggered(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        auto lastObject = args.extract<ObjectID>();
+
+        if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            pDoor->m_oidLastTriggered = lastObject;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->m_oidLastTriggered = lastObject;
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetAoEObjectDurationRemaining(ArgumentStack&& args)
+{
+    auto *pAoEObject = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args));
+    return pAoEObject ? float(pAoEObject->m_nDuration) / 1000 : 0.0f;
 }

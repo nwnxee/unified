@@ -12,5 +12,4 @@ namespace NWNXLib::API::Functions {
 #else
     #include "API/FunctionsLinux.hpp"
 #endif
-
 }

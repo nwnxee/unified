@@ -1,7 +1,4 @@
-#include "Serialize.hpp"
-#include "Encoding.hpp"
-
-#include "Assert.hpp"
+#include "nwnx.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
@@ -15,11 +12,7 @@
 #include "API/CResGFF.hpp"
 #include "API/CResStruct.hpp"
 
-#include <string.h>
-
-
-
-namespace NWNXLib {
+namespace NWNXLib::Utils {
 
 std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlags)
 {
@@ -101,11 +94,7 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     if (serialized.size() < 14*4) // GFF header size
         return nullptr;
 
-    // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
-    // so need a copy for them to play with since the vector can't relinquish its own.
-    uint8_t *data = new uint8_t[serialized.size()];
-    memcpy(data, serialized.data(), serialized.size());
-    if (!resGff.GetDataFromPointer((void*)data, (int32_t)serialized.size()))
+    if (!resGff.GetDataFromPointer((void*)serialized.data(), (int32_t)serialized.size(), false))
         return nullptr;
 
     resGff.InitializeForWriting();
@@ -145,11 +134,11 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     else if (sFileType == "UTI ")
         DESERIALIZE(Item, 0);
     else if (sFileType == "UTP ")
-        DESERIALIZE(Placeable, nullptr);
+        DESERIALIZE(Placeable, false, nullptr);
     else if (sFileType == "UTW ")
         DESERIALIZE(Waypoint, nullptr);
     else if (sFileType == "UTM ")
-        DESERIALIZE(Store, nullptr);
+        DESERIALIZE(Store, false, nullptr);
     else if (sFileType == "UTD ")
         DESERIALIZE(Door);
     else if (sFileType == "UTT ")
@@ -166,12 +155,12 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 
 std::string SerializeGameObjectB64(CGameObject *pObject, bool bStripPCFlags)
 {
-    return Encoding::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
+    return String::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
 }
 
 CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
-    return DeserializeGameObject(Encoding::FromBase64(serializedB64));
+    return DeserializeGameObject(String::FromBase64(serializedB64));
 }
 
 } // NWNXLib

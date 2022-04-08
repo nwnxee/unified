@@ -62,6 +62,18 @@ void main()
 
         NWNX_Area_SetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1, FALSE);
         NWNX_Tests_Report("NWNX_Area", "{Set/Get}TileAnimationLoop", NWNX_Area_GetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1) == FALSE);
+
+        AmbientSoundChangeDay(oArea, 42);
+        NWNX_Tests_Report("NWNX_Area", "GetAmbientSoundDay", NWNX_Area_GetAmbientSoundDay(oArea) == 42);
+
+        AmbientSoundChangeNight(oArea, 43);
+        NWNX_Tests_Report("NWNX_Area", "GetAmbientSoundNight", NWNX_Area_GetAmbientSoundNight(oArea) == 43);
+
+        AmbientSoundSetDayVolume(oArea, 88);
+        NWNX_Tests_Report("NWNX_Area", "GetAmbientSoundDayVolume", NWNX_Area_GetAmbientSoundDayVolume(oArea) == 88);
+
+        AmbientSoundSetNightVolume(oArea, 77);
+        NWNX_Tests_Report("NWNX_Area", "GetAmbientSoundNightVolume", NWNX_Area_GetAmbientSoundNightVolume(oArea) == 77);
     }
     else
     {

@@ -1,8 +1,5 @@
 #include "Metrics_InfluxDB.hpp"
 #include "InfluxDBClient.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.hpp"
 
 using namespace NWNXLib;
 
@@ -21,10 +18,19 @@ using namespace NWNXLib::Services;
 Metrics_InfluxDB::Metrics_InfluxDB(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    auto host = GetServices()->m_config->Require<std::string>("HOST");
-    auto port = GetServices()->m_config->Require<int32_t>("PORT");
-    m_influxDbClient = std::make_unique<InfluxDBClient>(std::move(host), static_cast<uint16_t>(port));
-    GetServices()->m_metrics->Subscribe(&OnReceiveData);
+    auto host = *Config::Get<std::string>("HOST");
+    auto port = *Config::Get<int32_t>("PORT");
+
+    if (host.empty() || port <= 0)
+    {
+        LOG_ERROR("Invalid hostname or port (host=%s, port=%i), Metrics_InfluxDB will not be loaded.", host, port);
+        LOG_ERROR("If you're not using the Metrics_InfluxDB plugin, you can disable this message with 'NWNX_METRICS_INFLUXDB_SKIP=y'");
+    }
+    else
+    {
+        m_influxDbClient = std::make_unique<InfluxDBClient>(std::move(host), static_cast<uint16_t>(port));
+        GetServices()->m_metrics->Subscribe(&OnReceiveData);
+    }
 }
 
 Metrics_InfluxDB::~Metrics_InfluxDB()
@@ -33,7 +39,7 @@ Metrics_InfluxDB::~Metrics_InfluxDB()
 
 void Metrics_InfluxDB::OnReceiveData(const std::vector<MetricData>& data)
 {
-    g_plugin->GetServices()->m_tasks->QueueOnAsyncThread(
+    Tasks::QueueOnAsyncThread(
         [dataCopy = std::vector<MetricData>(data)]() mutable
         {
             g_plugin->PushData(std::move(dataCopy));

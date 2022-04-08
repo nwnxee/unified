@@ -9,6 +9,7 @@ const string NWNX_ItemProperty = "NWNX_ItemProperty"; ///< @private
 /// @brief An unpacked itemproperty.
 struct NWNX_IPUnpacked
 {
+    string sID; ///< @todo Describe
     int nProperty; ///< @todo Describe
     int nSubType; ///< @todo Describe
     int nCostTable; ///< @todo Describe
@@ -45,66 +46,68 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
 {
     string sFunc = "UnpackIP";
 
-    NWNX_PushArgumentItemProperty(NWNX_ItemProperty, sFunc, ip);
+    NWNX_PushArgumentItemProperty(ip);
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
 
     struct NWNX_IPUnpacked n;
 
-    n.nProperty       = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nSubType        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nCostTable      = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nCostTableValue = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nParam1         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nParam1Value    = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nUsesPerDay     = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nChanceToAppear = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.bUsable         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nSpellId        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.oCreator        = NWNX_GetReturnValueObject(NWNX_ItemProperty, sFunc);
-    n.sTag            = NWNX_GetReturnValueString(NWNX_ItemProperty, sFunc);
+    n.sID             = NWNX_GetReturnValueString();
+    n.nProperty       = NWNX_GetReturnValueInt();
+    n.nSubType        = NWNX_GetReturnValueInt();
+    n.nCostTable      = NWNX_GetReturnValueInt();
+    n.nCostTableValue = NWNX_GetReturnValueInt();
+    n.nParam1         = NWNX_GetReturnValueInt();
+    n.nParam1Value    = NWNX_GetReturnValueInt();
+    n.nUsesPerDay     = NWNX_GetReturnValueInt();
+    n.nChanceToAppear = NWNX_GetReturnValueInt();
+    n.bUsable         = NWNX_GetReturnValueInt();
+    n.nSpellId        = NWNX_GetReturnValueInt();
+    n.oCreator        = NWNX_GetReturnValueObject();
+    n.sTag            = NWNX_GetReturnValueString();
 
     return n;
 }
+
 itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
 {
     string sFunc = "PackIP";
 
-    NWNX_PushArgumentString(NWNX_ItemProperty, sFunc, n.sTag);
-    NWNX_PushArgumentObject(NWNX_ItemProperty, sFunc, n.oCreator);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nSpellId);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.bUsable);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nChanceToAppear);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nUsesPerDay);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nParam1Value);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nParam1);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nCostTableValue);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nCostTable);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nSubType);
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nProperty);
+    NWNX_PushArgumentString(n.sTag);
+    NWNX_PushArgumentObject(n.oCreator);
+    NWNX_PushArgumentInt(n.nSpellId);
+    NWNX_PushArgumentInt(n.bUsable);
+    NWNX_PushArgumentInt(n.nChanceToAppear);
+    NWNX_PushArgumentInt(n.nUsesPerDay);
+    NWNX_PushArgumentInt(n.nParam1Value);
+    NWNX_PushArgumentInt(n.nParam1);
+    NWNX_PushArgumentInt(n.nCostTableValue);
+    NWNX_PushArgumentInt(n.nCostTable);
+    NWNX_PushArgumentInt(n.nSubType);
+    NWNX_PushArgumentInt(n.nProperty);
 
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
-    return NWNX_GetReturnValueItemProperty(NWNX_ItemProperty, sFunc);
+    return NWNX_GetReturnValueItemProperty();
 }
 
 struct NWNX_IPUnpacked NWNX_ItemProperty_GetActiveProperty(object oItem, int nIndex)
 {
     string sFunc = "GetActiveProperty";
-    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, nIndex);
-    NWNX_PushArgumentObject(NWNX_ItemProperty, sFunc, oItem);
+    NWNX_PushArgumentInt(nIndex);
+    NWNX_PushArgumentObject(oItem);
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
 
     struct NWNX_IPUnpacked n;
 
-    n.nProperty       = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nSubType        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nCostTable      = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nCostTableValue = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nParam1         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nParam1Value    = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nUsesPerDay     = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.nChanceToAppear = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.bUsable         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
-    n.sTag            = NWNX_GetReturnValueString(NWNX_ItemProperty, sFunc);
+    n.nProperty       = NWNX_GetReturnValueInt();
+    n.nSubType        = NWNX_GetReturnValueInt();
+    n.nCostTable      = NWNX_GetReturnValueInt();
+    n.nCostTableValue = NWNX_GetReturnValueInt();
+    n.nParam1         = NWNX_GetReturnValueInt();
+    n.nParam1Value    = NWNX_GetReturnValueInt();
+    n.nUsesPerDay     = NWNX_GetReturnValueInt();
+    n.nChanceToAppear = NWNX_GetReturnValueInt();
+    n.bUsable         = NWNX_GetReturnValueInt();
+    n.sTag            = NWNX_GetReturnValueString();
 
     return n;
 }

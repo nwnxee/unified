@@ -1,12 +1,12 @@
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
 
+#include "nwnx.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <regex>
 
 #include "PostgreSQL.hpp"
-#include "Services/Config/Config.hpp"
-
+using namespace NWNXLib;
 namespace SQL {
 
 PostgreSQL::PostgreSQL()
@@ -19,22 +19,22 @@ PostgreSQL::~PostgreSQL()
     PQfinish(m_conn);
 }
 
-void PostgreSQL::Connect(NWNXLib::Services::ConfigProxy* config)
+void PostgreSQL::Connect()
 {
-    const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
-    const std::string user = "user=" + config->Require<std::string>("USERNAME");
-    const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
+    const std::string host = "host=" + Config::Get<std::string>("HOST", "localhost");
+    const std::string user = "user=" + *Config::Get<std::string>("USERNAME");
+    const std::string pass = "password=" + *Config::Get<std::string>("PASSWORD");
 
     // Database technically is optional.  If not given, it will connect to the default
     // database of the given USERNAME.
-    const auto DB = config->Get<std::string>("DATABASE");
+    const auto DB = Config::Get<std::string>("DATABASE");
     if (DB)
     {
         LOG_DEBUG("DB set to %s", (*DB));
     }
     const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
 
-    const std::string port = "port=" + config->Get<std::string>("PORT", "5432");
+    const std::string port = "port=" + Config::Get<std::string>("PORT", "5432");
 
     // Build the m_connection string - this is used later in the PQping (PQping doesn't need the password).
     m_connectString = host + " " + port + " " + db + " " + user ;
@@ -141,8 +141,15 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         const unsigned int sz = m_params.size();
         for (unsigned int i=0; i<sz; i++)
         {
-            paramValues[i] = new char[m_params[i].size()+1];
-            strcpy(paramValues[i], m_params[i].c_str());
+            if (m_params[i])
+            {
+                paramValues[i] = new char[m_params[i]->size()+1];
+                strcpy(paramValues[i], m_params[i]->c_str());
+            }
+            else
+            {
+                paramValues[i] = nullptr;
+            }
         }
     }
 
@@ -247,6 +254,12 @@ void PostgreSQL::PrepareBinary(int32_t position, const std::vector<uint8_t> &val
     m_lengths[position] = value.size();
     m_formats[position] = 1;
 }
+void PostgreSQL::PrepareNULL(int32_t position)
+{
+    LOG_DEBUG("Assigning position %d to value NULL", position);
+    m_params[position] = std::nullopt;
+    m_formats[position] = 0;
+}
 
 int PostgreSQL::GetAffectedRows()
 {
@@ -273,7 +286,7 @@ void PostgreSQL::DestroyPreparedQuery()
     // No way or need to deallocate the anonymous prepared statement in PgSQL.
 
     // Force deallocation
-    std::vector<std::string>().swap(m_params);
+    std::vector<std::optional<std::string>>().swap(m_params);
     m_paramCount = 0;
 }
 

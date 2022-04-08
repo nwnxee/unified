@@ -81,6 +81,7 @@ struct CLastUpdateObject
     uint16_t m_nAssociateType;
     BOOL m_bSummonedAnimalCompanion;
     BOOL m_bSummonedFamiliar;
+    BOOL m_bTakesCommands;
     BOOL m_bObjectSeen;
     BOOL m_bObjectHeard;
     BOOL m_bObjectInvisible;

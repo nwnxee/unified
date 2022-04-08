@@ -1,11 +1,5 @@
-#include "Events/DebugEvents.hpp"
-#include "API/CNWSMessage.hpp"
-#include "API/CNWSPlayer.hpp"
-#include "API/Functions.hpp"
-#include "API/Constants.hpp"
 #include "Events.hpp"
-#include "Utils.hpp"
-
+#include "API/CNWSPlayer.hpp"
 
 namespace Events {
 
@@ -13,18 +7,21 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerCheatMessageHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerCheatMessageHook;
 
-DebugEvents::DebugEvents(Services::HooksProxy* hooker)
+static int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
+
+void DebugEvents() __attribute__((constructor));
+void DebugEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", [hooker]() {
-        s_HandlePlayerToServerCheatMessageHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh>
-                (&HandlePlayerToServerCheatMessageHook);
+    InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", []() {
+        s_HandlePlayerToServerCheatMessageHook = Hooks::HookFunction(
+                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerCheatMessageHook, Hooks::Order::Early);
     });
 }
 
-int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     int32_t retVal;
 
@@ -42,9 +39,9 @@ int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, 
                 oidTarget = pPlayer->m_oidNWSObject;
 
             auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
-                Events::PushEventData("SCRIPT_NAME", scriptName);
-                Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget & 0x7FFFFFFF));
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                PushEventData("SCRIPT_NAME", scriptName);
+                PushEventData("TARGET", Utils::ObjectIDToString(oidTarget & 0x7FFFFFFF));
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             if (PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_BEFORE"))
@@ -71,10 +68,10 @@ int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, 
             auto bWrapIntoMain = (bool)(Utils::PeekMessage<uint8_t>(thisPtr, offset) & 0x10);
 
             auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
-                Events::PushEventData("SCRIPT_CHUNK", scriptChunk);
-                Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget  & 0x7FFFFFFF));
-                Events::PushEventData("WRAP_INTO_MAIN", std::to_string(bWrapIntoMain));
-                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+                PushEventData("SCRIPT_CHUNK", scriptChunk);
+                PushEventData("TARGET", Utils::ObjectIDToString(oidTarget  & 0x7FFFFFFF));
+                PushEventData("WRAP_INTO_MAIN", std::to_string(bWrapIntoMain));
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
             };
 
             if (PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_BEFORE"))
@@ -83,6 +80,35 @@ int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, 
                 retVal = false;
 
             PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_AFTER");
+
+            break;
+        }
+
+        case Constants::MessageCheatMinor::PlayVisualEffect:
+        {
+            std::string target = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string visualEffect = std::to_string(Utils::PeekMessage<uint16_t>(thisPtr, 4));
+            std::string duration = std::to_string(Utils::PeekMessage<float>(thisPtr, 6));
+            std::string x = std::to_string(Utils::PeekMessage<float>(thisPtr, 10));
+            std::string y = std::to_string(Utils::PeekMessage<float>(thisPtr, 14));
+            std::string z = std::to_string(Utils::PeekMessage<float>(thisPtr, 18));
+
+            auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
+                PushEventData("TARGET_OBJECT_ID", target);
+                PushEventData("VISUAL_EFFECT", visualEffect);
+                PushEventData("DURATION", duration);
+                PushEventData("TARGET_POSITION_X", x);
+                PushEventData("TARGET_POSITION_Y", y);
+                PushEventData("TARGET_POSITION_Z", z);
+                return SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE"))
+                retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+            else
+                retVal = false;
+
+            PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_AFTER");
 
             break;
         }

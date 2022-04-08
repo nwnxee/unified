@@ -1,5 +1,4 @@
-#include "Platform/Debug.hpp"
-#include "Platform/ASLR.hpp"
+#include "nwnx.hpp"
 #include <cstring>
 #include <cstdio>
 
@@ -7,7 +6,8 @@
 #include <signal.h>
 #include <map>
 
-namespace NWNXLib::Platform::Debug {
+namespace NWNXLib::Platform
+{
 
 bool IsDebuggerPresent()
 {
@@ -53,28 +53,29 @@ std::string GetStackTrace(uint8_t levels)
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
+        free(resolvedFrames);
     }
     return std::string(buffer);
 }
 
 static std::map<uintptr_t, std::string> s_FunctionMap;
-using namespace NWNXLib::Platform::Debug;
-
 static void InitFunctionMap()
 {
-    if (s_FunctionMap.size()) return;
+    if (!s_FunctionMap.empty()) return;
 
+#undef NWNXLIB_FUNCTION
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 #define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
 #include "API/FunctionsLinux.hpp"
+#undef NWNXLIB_FUNCTION
 }
 
 std::string ResolveAddress(uintptr_t address)
 {
     InitFunctionMap();
 
-    if (address > ASLR::GetRelocatedAddress(0))
-        address -= ASLR::GetRelocatedAddress(0);
+    if (address > GetRelocatedAddress(0))
+        address -= GetRelocatedAddress(0);
 
     auto it = s_FunctionMap.upper_bound(address);
     if (it != s_FunctionMap.begin())
@@ -90,7 +91,7 @@ std::string ResolveAddress(uintptr_t address)
 uintptr_t GetFunctionAddress(const std::string& mangledname)
 {
     InitFunctionMap();
-    for (auto it: s_FunctionMap)
+    for (const auto& it: s_FunctionMap)
     {
         if (it.second == mangledname)
             return it.first;
@@ -98,5 +99,20 @@ uintptr_t GetFunctionAddress(const std::string& mangledname)
     return 0;
 }
 
+bool AmICalledBy(uintptr_t address, uintptr_t returnAddress)
+{
+    InitFunctionMap();
+
+    if (returnAddress > GetRelocatedAddress(0))
+        returnAddress -= GetRelocatedAddress(0);
+
+    auto it = s_FunctionMap.upper_bound(returnAddress);
+    if (it != s_FunctionMap.begin())
+    {
+        --it;
+        return it->first == address;
+    }
+    return false;
+}
 
 }

@@ -1,7 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/MetricData.hpp"
 
 #include <thread>
@@ -61,7 +60,7 @@ void Redis::LogQuery(const std::vector<std::string>& v, const cpp_redis::reply& 
         std::move(fields),
         std::move(tags));
 
-    auto qstr = Utils::join(v);
+    auto qstr = String::Join(v);
     auto rstr = RedisReplyAsString(r);
 
     if (r.is_error())

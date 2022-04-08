@@ -1,7 +1,4 @@
-#include "Platform/ASLR.hpp"
-#include "API/Globals.hpp"
-#include "API/CExoString.hpp"
-#include "Assert.hpp"
+#include "nwnx.hpp"
 
 #include <dlfcn.h>
 #include <unistd.h>
@@ -27,14 +24,13 @@ static void ProtectAddress(uintptr_t address, uint32_t length, int flags)
     mprotect(reinterpret_cast<void*>(currentPage), lengthWithPadding, flags);
 }
 
-uintptr_t ASLR::s_baseAddress;
+static uintptr_t s_baseAddress;
 
-void ASLR::CalculateBaseAddress()
+void CalculateBaseAddress()
 {
     void *handle = dlopen(nullptr, RTLD_LAZY);
     ASSERT(handle);
-    // TODO: Export free-standing functions so we don't have to update manually.
-    const uintptr_t whatWeThinkItIs = 0x00000000000e8e70; NWNX_EXPECT_VERSION(8193, 20);
+    const uintptr_t whatWeThinkItIs  = API::Functions::NWNXEntryPoint;
     const uintptr_t whatItActuallyIs = (uintptr_t)dlsym(handle, "NWNXEntryPoint");
     s_baseAddress = whatItActuallyIs - whatWeThinkItIs;
 
@@ -64,7 +60,7 @@ void ASLR::CalculateBaseAddress()
     dlclose(handle);
 }
 
-uintptr_t ASLR::GetRelocatedAddress(const uintptr_t address)
+uintptr_t GetRelocatedAddress(const uintptr_t address)
 {
     return s_baseAddress + address;
 }

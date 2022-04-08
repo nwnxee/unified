@@ -42,6 +42,8 @@ struct CExoFile
     BOOL SeekBeginning();
     BOOL SeekEnd();
     BOOL IsMMapped() const;
+    BOOL GetIsEOS();
+    void * GetFileHandle();
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoFile

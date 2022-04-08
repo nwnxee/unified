@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "nwnx.hpp"
 #include "Targets/ITarget.hpp"
 
 #include <memory>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace SQL {
 
@@ -26,6 +25,7 @@ public:
     ArgumentStack PreparedFloat                 (ArgumentStack&& args);
     ArgumentStack PreparedObjectId              (ArgumentStack&& args);
     ArgumentStack PreparedObjectFull            (ArgumentStack&& args);
+    ArgumentStack PreparedNULL                  (ArgumentStack&& args);
     ArgumentStack ReadFullObjectInActiveRow     (ArgumentStack&& args);
     ArgumentStack GetAffectedRows               (ArgumentStack&& args);
     ArgumentStack GetDatabaseType               (ArgumentStack&& args);

@@ -3,6 +3,8 @@
 
 #include "CExoString.hpp"
 #include "CScriptLocation.hpp"
+#include "CassowarySolverEngineStructure.hpp"
+#include "JsonEngineStructure.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -21,6 +23,8 @@ struct CNWSScriptVar
     OBJECT_ID m_objectId;
     CExoString m_string;
     CScriptLocation m_location;
+    CassowarySolverEngineStructure m_cswy;
+    JsonEngineStructure m_json;
 
     CNWSScriptVar();
     CNWSScriptVar(const CNWSScriptVar &);
@@ -32,6 +36,7 @@ struct CNWSScriptVar
     bool HasObject() const { return m_objectId != NWNXLib::API::Constants::OBJECT_INVALID; }
     bool HasString() const { return !m_string.IsEmpty(); }
     bool HasLocation() const { return m_location.m_oArea != NWNXLib::API::Constants::OBJECT_INVALID; }
+    bool HasJson() const { return !m_json.IsEmpty(); }
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSScriptVar

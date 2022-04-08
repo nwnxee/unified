@@ -83,7 +83,7 @@ int NWNX_Dialog_GetCurrentNodeType()
     string sFunc = "GetCurrentNodeType";
 
     NWNX_CallFunction(NWNX_Dialog, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Dialog_GetCurrentScriptType()
@@ -91,7 +91,7 @@ int NWNX_Dialog_GetCurrentScriptType()
     string sFunc = "GetCurrentScriptType";
 
     NWNX_CallFunction(NWNX_Dialog, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Dialog_GetCurrentNodeID()
@@ -99,7 +99,7 @@ int NWNX_Dialog_GetCurrentNodeID()
     string sFunc = "GetCurrentNodeID";
 
     NWNX_CallFunction(NWNX_Dialog, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 int NWNX_Dialog_GetCurrentNodeIndex()
@@ -107,26 +107,26 @@ int NWNX_Dialog_GetCurrentNodeIndex()
     string sFunc = "GetCurrentNodeIndex";
 
     NWNX_CallFunction(NWNX_Dialog, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)
 {
     string sFunc = "GetCurrentNodeText";
 
-    NWNX_PushArgumentInt(NWNX_Dialog, sFunc, gender);
-    NWNX_PushArgumentInt(NWNX_Dialog, sFunc, language);
+    NWNX_PushArgumentInt(gender);
+    NWNX_PushArgumentInt(language);
     NWNX_CallFunction(NWNX_Dialog, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Dialog, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)
 {
     string sFunc = "SetCurrentNodeText";
 
-    NWNX_PushArgumentInt(NWNX_Dialog, sFunc, gender);
-    NWNX_PushArgumentInt(NWNX_Dialog, sFunc, language);
-    NWNX_PushArgumentString(NWNX_Dialog, sFunc, text);
+    NWNX_PushArgumentInt(gender);
+    NWNX_PushArgumentInt(language);
+    NWNX_PushArgumentString(text);
     NWNX_CallFunction(NWNX_Dialog, sFunc);
 }
 
@@ -134,6 +134,6 @@ void NWNX_Dialog_End(object oObject)
 {
     string sFunc = "End";
 
-    NWNX_PushArgumentObject(NWNX_Dialog, sFunc, oObject);
+    NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Dialog, sFunc);
 }

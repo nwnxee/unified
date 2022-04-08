@@ -1,4 +1,4 @@
-#include "Utils.hpp"
+#include "nwnx.hpp"
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
@@ -37,7 +37,9 @@ namespace Core {
 
 namespace NWNXLib::Utils {
 
-using namespace API::Constants;
+using namespace NWNXLib;
+using namespace NWNXLib::API;
+using namespace NWNXLib::API::Constants;
 
 std::string ObjectIDToString(const ObjectID id)
 {
@@ -339,7 +341,7 @@ void AddStealthEvent(int which, ObjectID oidSelf, ObjectID oidTarget)
     pScriptEvent->m_nType = ScriptEvent::OnPerception;
     pScriptEvent->SetInteger(0, which);
     pScriptEvent->SetObjectID(0, oidTarget);
-    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea)
@@ -348,7 +350,7 @@ void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea)
 
     auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectEnter;
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea)
@@ -357,7 +359,7 @@ void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea)
 
     auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectExit;
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddOnAcquireItemEvent(
@@ -374,7 +376,7 @@ void AddOnAcquireItemEvent(
     pScriptEvent->SetObjectID(1, oidItemAcquiredBy);
     pScriptEvent->SetObjectID(2, oidItemAcquiredFrom);
     pScriptEvent->SetInteger(0, stackSize);
-    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddOnLoseItemEvent(
@@ -386,17 +388,17 @@ void AddOnLoseItemEvent(
     auto *pScriptEvent = new CScriptEvent();
     pScriptEvent->m_nType = ScriptEvent::OnLoseItem;
     pScriptEvent->SetObjectID(0, oidItemLost);
-    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, AIMasterEvent::SignalEvent, pScriptEvent);
 }
 
 void AddDestroyObjectEvent(ObjectID oid)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, AIMasterEvent::DestroyObject, nullptr);
 }
 
-int PushScriptContext(ObjectID oid, bool valid)
+int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 {
     auto vm = API::Globals::VirtualMachine();
     auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
@@ -411,6 +413,7 @@ int PushScriptContext(ObjectID oid, bool valid)
 
     vm->m_oidObjectRunScript[vm->m_nRecursionLevel]    = oid;
     vm->m_bValidObjectRunScript[vm->m_nRecursionLevel] = valid;
+    vm->m_pVirtualMachineScript[vm->m_nRecursionLevel].m_nScriptEventID = scriptEventId;
     cmd->m_oidObjectRunScript    = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
     cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
 
@@ -449,5 +452,79 @@ bool IsValidCustomResourceDirectoryAlias(const std::string& alias)
     const auto& crda = Core::g_core->GetCustomResourceDirectoryAliases();
     return std::find(crda.begin(), crda.end(), alias) != crda.end();
 }
+
+CGameObject* PopGameObject(ArgumentStack& args, bool throwOnFail)
+{
+    const auto objectId = args.extract<ObjectID>();
+
+    if (objectId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("Function called on OBJECT_INVALID");
+        if (throwOnFail)
+            throw std::runtime_error("Function called on OBJECT_INVALID");
+
+        return nullptr;
+    }
+
+    return Utils::GetGameObject(objectId);
+}
+CNWSObject* PopObject(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSObject(PopGameObject(args, throwOnFail));
+}
+CNWSCreature* PopCreature(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSCreature(PopGameObject(args, throwOnFail));
+}
+CNWSArea* PopArea(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSArea(PopGameObject(args, throwOnFail));
+}
+CNWSItem* PopItem(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSItem(PopGameObject(args, throwOnFail));
+}
+CNWSEncounter* PopEncounter(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSEncounter(PopGameObject(args, throwOnFail));
+}
+CNWSPlaceable* PopPlaceable(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSPlaceable(PopGameObject(args, throwOnFail));
+}
+CNWSWaypoint* PopWaypoint(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSWaypoint(PopGameObject(args, throwOnFail));
+}
+CNWSTrigger* PopTrigger(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSTrigger(PopGameObject(args, throwOnFail));
+}
+CNWSDoor* PopDoor(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSDoor(PopGameObject(args, throwOnFail));
+}
+CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
+{
+    const auto playerId = args.extract<ObjectID>();
+
+    if (playerId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("Function called on OBJECT_INVALID");
+        if (throwOnFail)
+            throw std::runtime_error("Function called on OBJECT_INVALID");
+        return nullptr;
+    }
+
+    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
+    if (!pPlayer)
+    {
+        LOG_NOTICE("Function called on non-player object %x", playerId);
+        if (throwOnFail)
+            throw std::runtime_error("Function called on non-player object");
+    }
+    return pPlayer;
+}
+
 
 }

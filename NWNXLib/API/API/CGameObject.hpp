@@ -1,6 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
+// Used by nwnx extensions
+#include <optional>
+#include <functional>
+#include <string>
+
 #include "CCallbackHandlerBase.hpp"
 
 

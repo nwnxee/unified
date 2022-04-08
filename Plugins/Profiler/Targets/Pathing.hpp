@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Common.hpp"
+#include "nwnx.hpp"
 
 namespace Profiler {
 
 class Pathing
 {
 public:
-    Pathing(NWNXLib::Services::HooksProxy* hooker,
-        NWNXLib::Services::MetricsProxy* metrics);
+    Pathing(NWNXLib::Services::MetricsProxy* metrics);
 };
 
 }

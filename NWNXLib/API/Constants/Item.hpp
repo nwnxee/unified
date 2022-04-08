@@ -663,4 +663,75 @@ namespace ItemProperty
     }
 }
 
+namespace WeaponAttackType
+{
+    enum TYPE
+    {
+        MainhandWeapon = 1,
+        OffhandWeapon = 2,
+        CreatureLeftWeapon = 3,
+        CreatureRightWeapon = 4,
+        CreatureBiteWeapon = 5,
+        AdditionalWeapon = 6,
+        Unarmed = 7,
+        AdditionalUnarmed = 8,
+    };
+    constexpr int32_t MIN = 1;
+    constexpr int32_t MAX = 8;
+    static_assert(MAX == AdditionalUnarmed);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "(invalid)",
+            "MainhandWeapon",
+            "OffhandWeapon",
+            "CreatureLeftWeapon",
+            "CreatureRightWeapon",
+            "CreatureBiteWeapon",
+            "AdditionalWeapon",
+            "Unarmed",
+            "AdditionalUnarmed",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
+namespace ItemVFX
+{
+    enum TYPE
+    {
+        None = 0,
+        Acid = 1,
+        Cold = 2,
+        Electrical = 3,
+        Fire = 4,
+        Sonic = 5,
+        Holy = 6,
+        Evil = 7,
+    };
+    constexpr int32_t MIN = 0;
+    constexpr int32_t MAX = 7;
+    static_assert(MAX == Evil);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "None",
+            "Acid",
+            "Cold",
+            "Electrical",
+            "Fire",
+            "Sonic",
+            "Holy",
+            "Evil",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

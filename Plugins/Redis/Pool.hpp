@@ -5,8 +5,6 @@
 #include <thread>
 #include <mutex>
 
-#include "ScopeGuard.hpp"
-
 // This is a generic pool you can use to manage opaque objects.
 // It can be used, for example, to do database connection management, but is
 // in no way limited to that.
@@ -75,13 +73,11 @@ public:
     Ret Borrow(std::function<Ret(T&)> borrower)
     {
         Contained inst = Take();
-
-        auto sg = scope_guard([&]() {
+        SCOPEGUARD(
             if (inst)
                 Give(std::move(inst));
-            // else: borrower ate pointer somehow.
-        });
-
+            // else: borrower ate pointer somehow
+        );
         return borrower(*inst.get());
     }
 

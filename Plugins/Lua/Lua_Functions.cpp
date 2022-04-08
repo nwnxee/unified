@@ -1,5 +1,5 @@
+#include "nwnx.hpp"
 #include "Lua_Functions.hpp"
-#include "Assert.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
@@ -12,9 +12,6 @@
 #include "API/CServerAIMaster.hpp"
 #include "API/CWorldTimer.hpp"
 #include "API/CNWSObject.hpp"
-#include "Log.hpp"
-#include "Serialize.hpp"
-#include "Utils.hpp"
 #include <sys/time.h>
 #include <cmath>
 
@@ -427,7 +424,7 @@ extern "C" {
     {
         uint32_t value = (uint32_t)luaL_checkinteger(L, 1);
         CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
-        std::string serialized = SerializeGameObjectB64(pObject);
+        std::string serialized = Utils::SerializeGameObjectB64(pObject);
         lua_pushstring(L, serialized.c_str());
         return 1;
     }
@@ -440,7 +437,7 @@ extern "C" {
 
         std::string serialized(s);
         uint32_t retval = API::Constants::OBJECT_INVALID;
-        if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
+        if (CGameObject *pObject = Utils::DeserializeGameObjectB64(serialized))
         {
             retval = static_cast<uint32_t>(pObject->m_idSelf);
             ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));

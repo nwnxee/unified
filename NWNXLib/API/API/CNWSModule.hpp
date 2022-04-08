@@ -27,6 +27,7 @@ NWN_API_PROLOGUE(CNWSModule)
 #endif
 
 struct CERFFile;
+struct CGameEffect;
 struct CNWSArea;
 struct CNWSPlayer;
 struct CPathfindInformation;
@@ -36,6 +37,9 @@ struct NWMODULEENTRYINFO;
 struct NWMODULEHEADER;
 struct NWPLAYERCHARACTERLISTITEM;
 
+namespace NWSync {
+struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
@@ -54,10 +58,10 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoLinkedList<CNWSPlayerTURD> m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
-    NWSyncAdvertisement m_nwsyncData;
-    BOOL m_bNWSyncPublishHaks;
+    NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
+    CUUID m_cModUUID;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
     CExoString m_sDDResourceName;
@@ -68,7 +72,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
     CNWSScriptVarTable m_ScriptVars;
-    CExoString m_sScripts[19];
+    CExoString m_sScripts[22];
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
     CExoArrayList<CNWSTagNode> m_aTagLookupTable;
@@ -135,9 +139,19 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     OBJECT_ID m_oidLastPlayerToSelectTarget;
     OBJECT_ID m_oidPlayerTargetObject;
     Vector m_vPlayerTargetPosition;
-    std::shared_ptr<void*> m_sqlite3;
+    CGameEffect * m_pLastRunScriptEffect;
+    int32_t m_nLastRunScriptEffectScriptType;
+    std::shared_ptr<NWSQLite::Database> m_sqlite3;
+    OBJECT_ID m_oidLastGuiEventPlayer;
+    int32_t m_nLastGuiEventType;
+    int32_t m_nLastGuiEventInteger;
+    OBJECT_ID m_oidLastGuiEventObject;
+    OBJECT_ID m_oidLastPlayerToDoTileAction;
+    int32_t m_nLastPlayerTileActionId;
+    Vector m_vLastPlayerTileActionPosition;
+    Nui::JSON::Event m_cCurrentNuiEvent;
 
-    CNWSModule(CExoString sModuleFilename, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
+    CNWSModule(CExoString sModuleFilename, CUUID cModUUID, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     ~CNWSModule();
     virtual CNWSModule * AsNWSModule();
     void DoUpdate();
@@ -151,7 +165,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CNWSArea * GetAreaByTag(CExoString & sAreaTag);
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
-    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
     uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
@@ -192,6 +205,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     void CleanUpLimboList();
     uint8_t IsOfficialCampaign(void );
     void DestroyModuleSqliteDatabase();
+    BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
