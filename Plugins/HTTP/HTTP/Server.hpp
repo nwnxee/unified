@@ -1,7 +1,8 @@
 #pragma once
 
 #include "HTTP.hpp"
-#include "Services/Events/Events.hpp"
+
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace HTTP {
 
@@ -29,7 +30,7 @@ class Server
         }
     };
 public:
-    explicit Server(ConfigProxy*, EventsProxy*, MessagingProxy*, TasksProxy*);
+    explicit Server();
     virtual ~Server();
     static Response WaitForResponse(uint32_t, const std::atomic_bool&);
     static void DeleteResponse(uint32_t);
@@ -39,10 +40,8 @@ public:
     static std::chrono::milliseconds m_responseTimeout;
 
 private:
-    static TasksProxy* m_servTasks;
-    static MessagingProxy* m_servMessaging;
 
-    static Events::ArgumentStack SendResponse(Events::ArgumentStack&&);
+    static ArgumentStack SendResponse(ArgumentStack&&);
 
     static inline std::unordered_map<uint32_t, Response> m_responses;
     static inline std::unordered_map<std::string, Response> m_cachedResponses;

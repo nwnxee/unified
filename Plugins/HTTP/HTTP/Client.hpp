@@ -1,7 +1,8 @@
 #pragma once
 
 #include "HTTP.hpp"
-#include "Services/Events/Events.hpp"
+
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace HTTP
 {
@@ -36,13 +37,11 @@ class Client
         }
     };
 public:
-    explicit Client(ConfigProxy*, EventsProxy*, MessagingProxy*, TasksProxy*);
+    explicit Client();
 private:
-    static TasksProxy* m_servTasks;
-    static MessagingProxy* m_servMessaging;
 
-    static Events::ArgumentStack GetRequest(Events::ArgumentStack&&);
-    static Events::ArgumentStack SendRequest(Events::ArgumentStack&&);
+    static ArgumentStack GetRequest(ArgumentStack&&);
+    static ArgumentStack SendRequest(ArgumentStack&&);
 
     static void PerformRequest(const Client::Request&);
     static std::unique_ptr<httplib::Result> GetResult(const Client::Request&);
