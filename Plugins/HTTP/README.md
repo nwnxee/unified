@@ -88,9 +88,7 @@ Here's an example of an RPC event handler.
 1. In your `on_module_load.nss` script subscribe to the `NWNX_ON_HTTP_SERVER_POST` event, for example:
    `NWNX_Events_SubscribeEvent("NWNX_ON_HTTP_SERVER_POST", "event_http_post");`
 2. In your `event_http_post.nss` script you would have something like below. Please note that extracting data
-   from json is not the intention of this tutorial and the example below is quite sophisticated. 
-   You may wish to use the PARAM_COUNT and looping through PARAM_KEY/VALUE pairs instead but this example is given as a reference
-   point for understanding how to use sqlite to get json data.
+   from json is not the intention of this tutorial. You may wish to use the PARAM_COUNT and looping through PARAM_KEY/VALUE pairs instead.
 
 ```c
 #include "nwnx_events"
@@ -102,43 +100,38 @@ void main()
     if (NWNX_Events_GetCurrentEvent() == "NWNX_ON_HTTP_SERVER_POST")
     {
         int nRequestId = StringToInt(NWNX_Events_GetEventData("REQUEST_ID"));
-        string sJSONData = NWNX_Events_GetEventData("JSON_DATA");
-        object oModule = GetModule();
-        
-        // Find the json for the functions
-        string stmt = "SELECT json_extract(@json_data, @key)";
-        sqlquery sqlQuery = SqlPrepareQueryObject(oModule, stmt);
-        SqlBindString(sqlQuery, "@json_data", sJSON_Data);
-        SqlBindString(sqlQuery, "@key", "$.function");
-        string sFunction = "";
-        if ( SqlStep(sqlQuery) )
-            sFunction = SqlGetString(sqlQuery, 0);
-        
-        // Find all functions
-        stmt = "SELECT key, value FROM json_tree(@json_data) WHERE parent = (SELECT id FROM json_tree(@json_data) WHERE key = 'function')";
-        sqlQuery = SqlPrepareQueryObject(oModule, stmt);
-        SqlBindString(sqlQuery, "@json_data", sJSON_Data);
+        json jJSONData = JsonParse(NWNX_Events_GetEventData("JSON_DATA"));
+        json jFunctionsObject = JsonObjectGet(jJSONData, "functions");
+        json jFuncArray = JsonObjectKeys(jFunctionsObject);
+        int i = 0;
+        json jFunc = JsonArrayGet(jFuncArray, i);
         string sResponse = "";
-        while (SqlStep(sqlQuery))
+        while (JsonGetType(jFunc) != JSON_TYPE_NULL)
         {
-            string sFunction = SqlGetString(sqlQuery, 0);
-            string sData = SqlGetString(sqlQuery, 1);
-            if (sFunction == "SendMessageToPC")
+            if (JsonGetString(jFunc) == "SendMessageToPC")
             {
-                // Find the key value pairs for this function
-                string subStmt = "SELECT * FROM json_tree(@sub_data) WHERE atom IS NOT NULL";
-                sqlquery subSqlQuery = SqlPrepareQueryObject(oModule, subStmt);
-                SqlBindString(subSqlQuery, "@sub_data", sData);
-                while (SqlStep(subSqlQuery))
+                json jSMTPC = JsonObjectGet(jFunctionsObject, "SendMessageToPC");
+                if (JsonGetType(jSMTPC) != JSON_TYPE_NULL)
                 {
-                    string sName = SqlGetString(subSqlQuery, 0);
-                    object oPC = GetPCWithCommunityName(sName);
-                    string sMessage = SqlGetString(subSqlQuery, 1);
-                    SendMessageToPC(oPC, sMessage);
-                    sResponse = sResponse + " " + GetName(oPC);
+                    json jPlayers = JsonObjectGet(jSMTPC, "players");
+                    int n = 0;
+                    json jPlayer = JsonArrayGet(jPlayers, n);
+                    while (JsonGetType(jPlayer) != JSON_TYPE_NULL)
+                    {
+                        string sPCName = JsonGetString(JsonArrayGet(JsonObjectKeys(jPlayer), 0));
+                        string sMessage = JsonGetString(JsonObjectGet(jPlayer, sPCName));
+                        object oPC = GetPCWithCommunityName(sPCName);
+                        if (oPC != OBJECT_INVALID)
+                        {
+                            SendMessageToPC(oPC, sMessage);
+                            sResponse = sResponse + " " + sPCName;
+                        }
+                        jPlayer = JsonArrayGet(jPlayers, ++n);
+                    }
                 }
             }
-        }        
+            jFunc = JsonArrayGet(jFuncArray, ++i);
+        }
         NWNX_HTTP_Server_SendResponse(nRequestId, "Message sent to player(s): " + sResponse);
     }
 ```
@@ -146,11 +139,9 @@ void main()
 ```shell
 curl -i http://localhost:8686/b547bd34f896325c4f8f28ec34f895105c38b427fdaf2 -H 'Content-Type: application/json' --data-binary @- << EOF
 {
-    "function": {
+    "functions": {
         "SendMessageToPC": {
-            "players": [
-                { "orth": "Log off." }
-            ]
+            "players": [{ "orth": "Log off." }, { "Daz": "HI" }]
         }
     }
 }
@@ -172,36 +163,41 @@ request can then be queried via `NWNX_HTTP_Client_GetRequest()`. The `STATUS` ev
 server HTTP status return code, (usually 200 on success) and the `RESPONSE` is the body of text
 the server returned.
 
-Additionally the event data includes Rate Limit information that some servers provide. These are `RATELIMIT_LIMIT` which is how
+Additionally, the event data includes Rate Limit information that some servers provide. These are `RATELIMIT_LIMIT` which is how
 many requests you can send in a given time period, `RATELIMIT_REMAINING` is how many requests you have left in that
 time period and `RATELIMIT_RESET` is an epoch timestamp when the request limit is reset again. There is also `RETRY_AFTER` which
 some servers provide which is how long in seconds before you can send another request.
 
-### JSON Helper
-The plugin includes a helper library to construct JSON objects for client requests, `nwnx_http_json.nss`.
-
 ### Example Client Requests
 Here is an example of posting an issue to a github repository.
 ```c
-   int githubJSON = NWNX_HTTP_JSON_NewObject();
-   NWNX_HTTP_JSON_ObjectAddString(githubJSON, "title", "Testing HTTP Client");
-   NWNX_HTTP_JSON_ObjectAddString(githubJSON, "body", "Text message. You can use Markdown here. *Italic* **bold** __underline__ ~~strikeout~~ [hyperlink](https://google.com) `code`");
-   NWNX_HTTP_JSON_ObjectAddString(githubJSON, "assignee", NWNX_Util_GetEnvironmentVariable("GITHUB_USERNAME"));
-   int labelsArray = NWNX_HTTP_JSON_NewArray();
-   NWNX_HTTP_JSON_ArrayInsertString(labelsArray, "bug");
-   NWNX_HTTP_JSON_ArrayInsertString(labelsArray, "help wanted");
-   NWNX_HTTP_JSON_ObjectAddArray(githubJSON, "labels", labelsArray);
-   string sJSON = NWNX_HTTP_JSON_GetJSONString(githubJSON);
-   
+   string sMessage = "This would be the content of your player's bug report captured via chat or such.";
+   object oReporter = GetFirstPC(); // The bug reporter's PC object would be here
+   string sAuthorName = GetName(oReporter, TRUE) + " ("+ GetPCPlayerName(oReporter)+")";
+   object oArea = GetArea(oReporter);
+   string sTileModel = NWNX_Area_GetTileModelResRef(oArea, GetPosition(oReporter).x, GetPosition(oReporter).y);
+   json githubJSON = JsonObject();
+   githubJSON = JsonObjectSet(githubJSON, "title", JsonString(GetModuleName() + " NWN Bug Report via "+sAuthorName));
+   githubJSON = JsonObjectSet(githubJSON, "body", JsonString(sMessage+"<br>Area Name: **"+ GetName(oArea) +
+   "**<br>Area Tag: **"+ GetTag(oArea) +
+   "**<br>Location: **" + NWNXLocationToString(GetLocation(oReporter)) +
+   "**<br>Tile Model: **" + sTileModel + "**"));
+   githubJSON = JsonObjectSet(githubJSON, "assignee", JsonString(NWNX_Util_GetEnvironmentVariable("GITHUB_USERNAME")));
+   json jLabels = JsonArray();
+   jLabels = JsonArrayInsert(jLabels, JsonString("bug"));
+   jLabels = JsonArrayInsert(jLabels, JsonString("help wanted"));
+   githubJSON = JsonObjectSet(githubJSON, "labels", jLabels);
+
    struct NWNX_HTTP_Client_Request stGithubPost;
    stGithubPost.nRequestMethod = NWNX_HTTP_REQUEST_METHOD_POST;
    stGithubPost.sHost = "api.github.com";
    stGithubPost.sPath = NWNX_Util_GetEnvironmentVariable("GITHUB_REPO_PATH") + "/issues";
-   stGithubPost.sData = sJSON;
+   stGithubPost.sData = JsonDump(githubJSON);
    stGithubPost.nAuthType = NWNX_HTTP_AUTH_TYPE_BASIC;
    stGithubPost.sAuthUserOrToken = NWNX_Util_GetEnvironmentVariable("GITHUB_USERNAME");
    stGithubPost.sAuthPassword = NWNX_Util_GetEnvironmentVariable("GITHUB_NWN_PAT");
    stGithubPost.sHeaders = "Accept: application/vnd.github.v3+json";
+   stGithubPost.nContentType = NWNX_HTTP_CONTENT_TYPE_JSON;
    NWNX_HTTP_Client_SendRequest(stGithubPost);
 ```
 
