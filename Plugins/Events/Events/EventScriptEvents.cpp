@@ -16,9 +16,9 @@ static NWNXLib::Hooks::Hook s_runModuleEventScript;
 // BOOL CNWSObject::RunEventScript(int32_t nScript, CExoString* psOverrideScriptName)
 static NWNXLib::Hooks::Hook s_runObjectEventScript;
 
-static void AreaRunEventScript(CNWSArea*, int32_t, CExoString*);
-static void ModuleRunEventScript(CNWSModule*, int32_t, CExoString*);
-static void ObjectRunEventScript(CNWSObject*, int32_t, CExoString*);
+static BOOL AreaRunEventScript(CNWSArea*, int32_t, CExoString*);
+static BOOL ModuleRunEventScript(CNWSModule*, int32_t, CExoString*);
+static BOOL ObjectRunEventScript(CNWSObject*, int32_t, CExoString*);
 
 void HookEvents() __attribute__((constructor));
 void HookEvents()
@@ -37,16 +37,15 @@ void HookEvents()
     });
 }
 
-static void DoEH(uint32_t tySelf, ObjectID idSelf, 
+static BOOL DoEH(uint32_t tySelf, ObjectID idSelf, 
     int32_t nScriptIdx, CExoString* psScript,
-    std::function<void()> fnEv)
+    std::function<BOOL()> fnEv)
 {
     const int32_t nType = tySelf * 1000 + nScriptIdx;
     
     if (!IsIDInWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", nType))
     {
-        fnEv();
-        return;
+        return fnEv();
     }
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
@@ -57,40 +56,42 @@ static void DoEH(uint32_t tySelf, ObjectID idSelf,
 
     if (!PushAndSignal("NWNX_ON_RUN_EVENT_SCRIPT_BEFORE"))
     {
-        return;
+        return 0;
     }
 
-    fnEv();
+    BOOL ret = fnEv();
 
     PushAndSignal("NWNX_ON_RUN_EVENT_SCRIPT_AFTER");
+
+    return ret;
 }
 
-void AreaRunEventScript(CNWSArea* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
+BOOL AreaRunEventScript(CNWSArea* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
 {
     ASSERT(nScript >= 0 && nScript < (int32_t)(sizeof(CNWSArea::m_sScripts) / sizeof(CExoString)));
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : &(thisPtr->m_sScripts[nScript]);
 
-    DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() {
-        s_runAreaEventScript->CallOriginal<void>(thisPtr, nScript, psOverrideScriptName);    
+    return DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() -> BOOL {
+        return s_runAreaEventScript->CallOriginal<BOOL>(thisPtr, nScript, psOverrideScriptName);    
     });
 }
 
-void ModuleRunEventScript(CNWSModule* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
+BOOL ModuleRunEventScript(CNWSModule* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
 {
     ASSERT(nScript >= 0 && nScript < (int32_t)(sizeof(CNWSModule::m_sScripts) / sizeof(CExoString)));
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : &(thisPtr->m_sScripts[nScript]);
 
-    DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() {
-        s_runModuleEventScript->CallOriginal<void>(thisPtr, nScript, psOverrideScriptName);
+    return DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() -> BOOL {
+        return s_runModuleEventScript->CallOriginal<BOOL>(thisPtr, nScript, psOverrideScriptName);
     });
 }
 
-void ObjectRunEventScript(CNWSObject* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
+BOOL ObjectRunEventScript(CNWSObject* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
 {
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : thisPtr->GetScriptName(nScript);
 
-    DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() {
-        s_runObjectEventScript->CallOriginal<void>(thisPtr, nScript, psOverrideScriptName);
+    return DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() -> BOOL {
+        return s_runObjectEventScript->CallOriginal<BOOL>(thisPtr, nScript, psOverrideScriptName);
     });
 }
 
