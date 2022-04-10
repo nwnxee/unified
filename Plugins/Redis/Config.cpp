@@ -17,6 +17,15 @@ std::unique_ptr<cpp_redis::redis_client> Redis::PoolMakeFunc()
 
     auto p = std::make_unique<cpp_redis::redis_client>();
     (*p).connect(m_internal->m_config.m_host, static_cast<size_t>(m_internal->m_config.m_port));
+
+    // Pool ctor currently authenticates synchronously.
+    // Invalid passwords aren't handled at all - you'll have to watch the server logs for that.
+    if (!m_internal->m_config.m_password.empty())
+    {
+        (*p).auth(m_internal->m_config.m_password);
+        (*p).commit();    
+    }
+    
     return p;
 }
 
@@ -30,6 +39,7 @@ void Redis::Reconfigure()
         // Redis server.
         m_internal->m_config.m_host = *Config::Get<std::string>("HOST");
         m_internal->m_config.m_port = Config::Get<int>("PORT", 6379);
+        m_internal->m_config.m_password = Config::Get<std::string>("AUTH_PASSWORD", "");
 
         // Pubsub.
         m_internal->m_config.m_pubsub_script = Config::Get<std::string>("PUBSUB_SCRIPT", "on_pubsub");
@@ -52,6 +62,12 @@ void Redis::Reconfigure()
         }
         m_internal->m_connection_pubsub.connect(
             m_internal->m_config.m_host, static_cast<size_t>(m_internal->m_config.m_port));
+
+        if (!m_internal->m_config.m_password.empty())
+        {
+            m_internal->m_connection_pubsub.auth(m_internal->m_config.m_password);
+            m_internal->m_connection_pubsub.commit();
+        }
 
         auto bound = std::bind(&Redis::OnPubsub, this, _1, _2);
         for (auto& ch : m_internal->m_config.m_pubsub_channels)
