@@ -1515,6 +1515,14 @@ _______________________________________
     ----------------------|--------|-------
     EVENT_TYPE            | int    | EVENT_SCRIPT_* in nwscript.nss |
     EVENT_SCRIPT          | int    | Script name running (can be empty) |
+    
+    @note This event should definitely be used with the Event ID Whitelist, which is turned on by default
+    for this event. Until you add your EVENT_SCRIPT_ to the whitelist this event will not function:
+    ```c
+    NWNX_Events_SubscribeEvent("NWNX_ON_RUN_EVENT_SCRIPT_BEFORE", "creature_hb_ovr");
+    NWNX_Events_AddIDToWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", EVENT_SCRIPT_MODULE_ON_HEARTBEAT);
+    ```
+    @warning Toggling the Whitelist to be off for this event will degrade performance.
 _______________________________________
 */
 /*
