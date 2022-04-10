@@ -1633,7 +1633,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Input Drop Item
 /// - Decrement Spell Count event
 /// - Play Visual Effect event
-/// - EventScript event (BEFORE only)
+/// - EventScript event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
@@ -1676,6 +1676,7 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
 /// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
 /// - NWNX_ON_CAST_SPELL -> SpellID
 /// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
+/// - NWNX_ON_RUN_EVENT_SCRIPT -> EVENT_SCRIPT_* (default enabled)
 ///
 /// @note This enables the whitelist for ALL scripts subscribed to sEvent.
 /// @param sEvent The event name without _BEFORE / _AFTER.

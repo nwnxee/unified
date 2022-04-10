@@ -20,13 +20,12 @@ static void AreaRunEventScript(CNWSArea*, int32_t, CExoString*);
 static void ModuleRunEventScript(CNWSModule*, int32_t, CExoString*);
 static void ObjectRunEventScript(CNWSObject*, int32_t, CExoString*);
 
-#define CNWSAREA_SCRIPTARRAY_MAX_SCRIPTS            4
-#define CNWSMODULE_SCRIPTARRAY_MAX_SCRIPTS         22
-
 void HookEvents() __attribute__((constructor));
 void HookEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_RUN_EVENT_SCRIPT_(BEFORE|AFTER)", []() {
+        ForceEnableWhitelist("NWNX_ON_RUN_EVENT_SCRIPT");
+
         s_runAreaEventScript = NWNXLib::Hooks::HookFunction(Functions::_ZN8CNWSArea14RunEventScriptEiP10CExoString,
                                              (void*)&AreaRunEventScript, NWNXLib::Hooks::Order::Earliest);
 
@@ -43,6 +42,12 @@ static void DoEH(uint32_t tySelf, ObjectID idSelf,
     std::function<void()> fnEv)
 {
     const int32_t nType = tySelf * 1000 + nScriptIdx;
+    
+    if (!IsIDInWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", nType))
+    {
+        fnEv();
+        return;
+    }
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("EVENT_TYPE", std::to_string(nType));
@@ -62,7 +67,7 @@ static void DoEH(uint32_t tySelf, ObjectID idSelf,
 
 void AreaRunEventScript(CNWSArea* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
 {
-    ASSERT(nScript >= 0 && nScript < CNWSAREA_SCRIPTARRAY_MAX_SCRIPTS);
+    ASSERT(nScript >= 0 && nScript < (int32_t)(sizeof(CNWSArea::m_sScripts) / sizeof(CExoString)));
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : &(thisPtr->m_sScripts[nScript]);
 
     DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() {
@@ -72,7 +77,7 @@ void AreaRunEventScript(CNWSArea* thisPtr, int32_t nScript, CExoString* psOverri
 
 void ModuleRunEventScript(CNWSModule* thisPtr, int32_t nScript, CExoString* psOverrideScriptName)
 {
-    ASSERT(nScript >= 0 && nScript < CNWSMODULE_SCRIPTARRAY_MAX_SCRIPTS);
+    ASSERT(nScript >= 0 && nScript < (int32_t)(sizeof(CNWSModule::m_sScripts) / sizeof(CExoString)));
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : &(thisPtr->m_sScripts[nScript]);
 
     DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() {
