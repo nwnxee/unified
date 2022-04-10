@@ -3268,16 +3268,16 @@ static void InitInitiativeRollHook()
                     pCreature->m_idSelf);
             if (pPlayer)
             {
-                auto *pData = new CNWCCMessageData;
-                pData->SetInteger(0, diceRoll);
-                pData->SetInteger(1, mod);
-                pData->SetObjectID(0, pCreature->m_idSelf);
+                CNWCCMessageData messageData;
+                messageData.SetObjectID(0, pCreature->m_idSelf);
+                messageData.SetInteger(0, diceRoll);
+                messageData.SetInteger(1, mod);
                 auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
                 if (pMessage)
                 {
                     pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID,
                                                           Constants::MessageClientSideMsgMinor::Initiative,
-                                                          pData, nullptr);
+                                                          &messageData, nullptr);
                 }
             }
             pCreature->m_bInitiativeExpired = 0;
