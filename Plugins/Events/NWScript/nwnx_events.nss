@@ -1505,6 +1505,17 @@ _______________________________________
     METAMAGIC             | int    | |
     CASTERLEVEL           | int    | Only returns for spell-like abilities |
 _______________________________________
+    ## EventScript Events
+    - NWNX_ON_RUN_EVENT_SCRIPT_BEFORE
+    - NWNX_ON_RUN_EVENT_SCRIPT_AFTER
+
+    `OBJECT_SELF` = The object the event script is running on
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    EVENT_TYPE            | int    | EVENT_SCRIPT_* in nwscript.nss |
+    EVENT_SCRIPT          | int    | Script name running (can be empty) |
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1622,6 +1633,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Input Drop Item
 /// - Decrement Spell Count event
 /// - Play Visual Effect event
+/// - EventScript event (BEFORE only)
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
