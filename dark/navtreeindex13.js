@@ -1,5 +1,11 @@
 var NAVTREEINDEX13 =
 {
+"structNWNX__Util__HighResTimestamp.html#adb932a093a3a74a4a067f0b6c79030c0":[0,44,3,1],
+"structNWNX__Util__HighResTimestamp.html#af3737b091078810d1d68beee390a48e0":[0,44,3,0],
+"structNWNX__Util__WorldTime.html":[0,44,2],
+"structNWNX__Util__WorldTime.html#a40e833c28b4d71306dd171afe50dc3a9":[0,44,2,1],
+"structNWNX__Util__WorldTime.html#afc097db3b754424f759865e53f56de39":[0,44,2,0],
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,46,2],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23":[0,46,2,1],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,46,2,0],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,46,2,2],

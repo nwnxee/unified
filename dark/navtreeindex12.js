@@ -1,5 +1,11 @@
 var NAVTREEINDEX12 =
 {
+"nwnx__reveal_8nss_source.html":[4,0,3,31,0,0],
+"nwnx__ruby_8nss.html":[4,0,3,32,0,0],
+"nwnx__ruby_8nss_source.html":[4,0,3,32,0,0],
+"nwnx__skillranks_8nss.html":[4,0,3,34,0,0],
+"nwnx__skillranks_8nss_source.html":[4,0,3,34,0,0],
+"nwnx__spellcheck_8nss.html":[4,0,3,35,0,0],
 "nwnx__spellcheck_8nss_source.html":[4,0,3,35,0,0],
 "nwnx__sql_8nss.html":[4,0,3,36,0,0],
 "nwnx__sql_8nss_source.html":[4,0,3,36,0,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX12 =
 "structNWNX__Time__HighResTimestamp.html":[0,1,3],
 "structNWNX__Time__HighResTimestamp.html#a43aea683c1a6671d6699f11079f904fe":[0,1,3,1],
 "structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e":[0,1,3,0],
-"structNWNX__Util__HighResTimestamp.html":[0,44,3],
-"structNWNX__Util__HighResTimestamp.html#adb932a093a3a74a4a067f0b6c79030c0":[0,44,3,1],
-"structNWNX__Util__HighResTimestamp.html#af3737b091078810d1d68beee390a48e0":[0,44,3,0],
-"structNWNX__Util__WorldTime.html":[0,44,2],
-"structNWNX__Util__WorldTime.html#a40e833c28b4d71306dd171afe50dc3a9":[0,44,2,1],
-"structNWNX__Util__WorldTime.html#afc097db3b754424f759865e53f56de39":[0,44,2,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,46,2]
+"structNWNX__Util__HighResTimestamp.html":[0,44,3]
 };
