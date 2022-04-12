@@ -2100,6 +2100,24 @@ Decrement Spell Count Events</h2>
 <td class="markdownTableBodyNone">CASTERLEVEL </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Only returns for spell-like abilities  </td></tr>
 </table>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md355"></a>
+EventScript Events</h2>
+<ul>
+<li>NWNX_ON_RUN_EVENT_SCRIPT_BEFORE</li>
+<li>NWNX_ON_RUN_EVENT_SCRIPT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The object the event script is running on</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">EVENT_TYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">EVENT_SCRIPT_* in nwscript.nss  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">EVENT_SCRIPT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Script name running (can be empty)  </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>This event should definitely be used with the Event ID Whitelist, which is turned on by default for this event. Until you add your EVENT_SCRIPT_ to the whitelist this event will not function: ```c NWNX_Events_SubscribeEvent("NWNX_ON_RUN_EVENT_SCRIPT_BEFORE", "creature_hb_ovr"); NWNX_Events_AddIDToWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", EVENT_SCRIPT_MODULE_ON_HEARTBEAT); ``` </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Toggling the Whitelist to be off for this event will degrade performance.</dd></dl>
+<hr  />
 <p> Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants). Others can be signalled via script code via <a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">evt</td><td>The event name. </td></tr>
@@ -2108,7 +2126,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01692">1692</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01713">1713</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2147,7 +2165,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01701">1701</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01722">1722</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2193,7 +2211,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01710">1710</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01731">1731</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2239,7 +2257,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01720">1720</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01741">1741</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2270,7 +2288,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01730">1730</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01751">1751</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2301,7 +2319,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01739">1739</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01760">1760</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2322,7 +2340,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01749">1749</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01770">1770</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2381,10 +2399,11 @@ Decrement Spell Count Events</h2>
 <li>CharacterSheetPermitted event</li>
 <li>Input Drop Item</li>
 <li>Decrement Spell Count event</li>
-<li>Play Visual Effect event </li>
+<li>Play Visual Effect event</li>
+<li>EventScript event </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01758">1758</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01779">1779</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2420,7 +2439,7 @@ Decrement Spell Count Events</h2>
 <li>CharacterSheetPermitted event -&gt; "1" allow the player to view the character sheet or "0" to disallow </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01765">1765</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01786">1786</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2441,7 +2460,7 @@ Decrement Spell Count Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01773">1773</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01794">1794</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2478,7 +2497,7 @@ Decrement Spell Count Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript(Chunk) If enabled, sEvent for sScript(Chunk) will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01781">1781</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01802">1802</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2516,7 +2535,7 @@ Decrement Spell Count Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01791">1791</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01812">1812</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2554,7 +2573,7 @@ Decrement Spell Count Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01801">1801</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01822">1822</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2588,6 +2607,7 @@ Decrement Spell Count Events</h2>
 <p>ONLY WORKS WITH THE FOLLOWING EVENTS -&gt; ID TYPES:</p><ul>
 <li>NWNX_ON_CAST_SPELL -&gt; SpellID</li>
 <li>NWNX_ON_HAS_FEAT -&gt; FeatID (default enabled)</li>
+<li>NWNX_ON_RUN_EVENT_SCRIPT -&gt; EVENT_SCRIPT_* (default enabled)</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>This enables the whitelist for ALL scripts subscribed to sEvent. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2598,7 +2618,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01811">1811</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01832">1832</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2638,7 +2658,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01820">1820</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01841">1841</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2678,7 +2698,7 @@ Decrement Spell Count Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01829">1829</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01850">1850</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2707,7 +2727,7 @@ Decrement Spell Count Events</h2>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of subscribers sEvent has or 0 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01838">1838</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01859">1859</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2717,7 +2737,7 @@ Decrement Spell Count Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Apr 11 2022 01:57:49 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Apr 12 2022 07:18:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
