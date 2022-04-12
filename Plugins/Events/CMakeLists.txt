@@ -8,6 +8,7 @@ add_plugin(Events
     "Events/DebugEvents.cpp"
     "Events/DMActionEvents.cpp"
     "Events/EffectEvents.cpp"
+    "Events/EventScriptEvents.cpp"
     "Events/ExamineEvents.cpp"
     "Events/FactionEvents.cpp"
     "Events/FeatEvents.cpp"
