@@ -569,8 +569,6 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
     g_CoreShuttingDown = true;
 
-    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER" });
-
     if (auto shutdownScript = Config::Get<std::string>("SHUTDOWN_SCRIPT"))
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
@@ -579,6 +577,8 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
             Utils::ExecuteScript(*shutdownScript, 0);
         }
     }
+
+    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER" });
 
     g_core->m_destroyServerHook.reset();
     app->DestroyServer();
