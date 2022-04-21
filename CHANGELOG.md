@@ -54,6 +54,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Object: GetLocalVariable() now recognizes variables of type json.
 - Tweaks: Language override tweak now works for area names.
 - Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
+- Tweaks: Fixed an issue where lobby PC list viewers would see new characters logged in when those names should be suppressed
+- Tweaks: Classes are not hidden from DMs when using `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`
 
 ## 8193.34
 https://github.com/nwnxee/unified/compare/build8193.33...build8193.34
