@@ -465,7 +465,7 @@ int32_t Feat::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
         }
         else if (nEffectBonusType == 4)
         {
-            auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
+            auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nAbilityScore];
             pServerExoApp->SetAbilityBonusLimit(pServerExoApp->GetAbilityBonusLimit() + modAbilityBonus);
         }
     }
