@@ -1505,6 +1505,25 @@ _______________________________________
     METAMAGIC             | int    | |
     CASTERLEVEL           | int    | Only returns for spell-like abilities |
 _______________________________________
+    ## EventScript Events
+    - NWNX_ON_RUN_EVENT_SCRIPT_BEFORE
+    - NWNX_ON_RUN_EVENT_SCRIPT_AFTER
+
+    `OBJECT_SELF` = The object the event script is running on
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    EVENT_TYPE            | int    | EVENT_SCRIPT_* in nwscript.nss |
+    EVENT_SCRIPT          | int    | Script name running (can be empty) |
+    
+    @note This event should definitely be used with the Event ID Whitelist, which is turned on by default
+    for this event. Until you add your EVENT_SCRIPT_ to the whitelist this event will not function:
+    ```c
+    NWNX_Events_SubscribeEvent("NWNX_ON_RUN_EVENT_SCRIPT_BEFORE", "creature_hb_ovr");
+    NWNX_Events_AddIDToWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", EVENT_SCRIPT_MODULE_ON_HEARTBEAT);
+    ```
+    @warning Toggling the Whitelist to be off for this event will degrade performance.
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1622,6 +1641,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Input Drop Item
 /// - Decrement Spell Count event
 /// - Play Visual Effect event
+/// - EventScript event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
@@ -1664,6 +1684,7 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
 /// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
 /// - NWNX_ON_CAST_SPELL -> SpellID
 /// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
+/// - NWNX_ON_RUN_EVENT_SCRIPT -> EVENT_SCRIPT_* (default enabled)
 ///
 /// @note This enables the whitelist for ALL scripts subscribed to sEvent.
 /// @param sEvent The event name without _BEFORE / _AFTER.

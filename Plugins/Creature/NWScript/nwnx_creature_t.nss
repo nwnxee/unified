@@ -275,5 +275,9 @@ void main()
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, VersusRacialTypeEffect(EffectACIncrease(5, AC_DEFLECTION_BONUS), RACIAL_TYPE_HUMAN), oCreature, 10.0);
     NWNX_Tests_Report("NWNX_Creature", "Touch AC increased after deflection buff GetArmorClassVersus", nOldTouchAC <  NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2, TRUE));
 
+    int nInitiativeMod = NWNX_Creature_GetInitiativeModifier(oCreature);
+    NWNX_Creature_SetInitiativeModifier(oCreature, nInitiativeMod + 10);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etInitiativeModifer", NWNX_Creature_GetInitiativeModifier(oCreature) == nInitiativeMod+10);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

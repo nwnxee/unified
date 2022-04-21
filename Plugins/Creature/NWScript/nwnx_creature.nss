@@ -1007,6 +1007,19 @@ int NWNX_Creature_RunUnequip(object oCreature, object oItem);
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectileVFX, int bPersist = FALSE);
 
+/// @brief Sets a custom Initiative modifier
+/// @param oCreature The affected creature
+/// @param nMod The amount to adjust their initiative (+/-).
+/// @param bPersist Whether the modifier should persist to .bic file (for PCs)
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+/// @warning This modifier takes precedence over an NWNX_Race Initiative modifier; they're not additive
+void NWNX_Creature_SetInitiativeModifer(object oCreature, int nMod, int bPersist = FALSE);
+
+/// @brief Gets the custom Initiative modifier.
+/// @param oCreature The target creature
+/// @return the current custom initiative modifier for the creature
+int NWNX_Creature_GetInitiativeModifer(object oCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2564,4 +2577,23 @@ void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectile
     NWNX_PushArgumentInt(nProjectileVFX);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetInitiativeModifier(object oCreature, int nMod, int bPersist = FALSE)
+{
+    string sFunc = "SetInitiativeModifier";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nMod);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetInitiativeModifier(object oCreature)
+{
+    string sFunc = "GetInitiativeModifier";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
 }
