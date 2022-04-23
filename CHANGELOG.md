@@ -29,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Creature: {Get|Set}SkillPointsRemainingByLevel()
 - Creature: {Get|Set}InitiativeModifier()
 - Effect: AccessorizeVisualEffect()
+- Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()
 - Events: UnsubscribeEventScriptChunk()
 - Events: GetNumSubscribers()
