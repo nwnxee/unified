@@ -8,6 +8,7 @@ var group__encounter =
       [ "unique", "structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601", null ],
       [ "alreadyUsed", "structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9", null ]
     ] ],
+    [ "NWNX_Encounter_Destroy", "group__encounter.html#ga64920d120cd56c821897a496eeb9a1d4", null ],
     [ "NWNX_Encounter_GetNumberOfCreaturesInEncounterList", "group__encounter.html#ga57d47ecbb856f487ee70f7fce6c4b3f4", null ],
     [ "NWNX_Encounter_GetEncounterCreatureByIndex", "group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e", null ],
     [ "NWNX_Encounter_SetEncounterCreatureByIndex", "group__encounter.html#gac6953a870158522005e6638d872a6f6a", null ],
