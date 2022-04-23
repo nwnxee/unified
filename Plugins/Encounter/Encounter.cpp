@@ -12,6 +12,17 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+NWNX_EXPORT ArgumentStack Destroy(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        pEncounter->RemoveFromArea();
+        delete pEncounter;
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
 {
     if (auto *pEncounter = Utils::PopEncounter(args))
