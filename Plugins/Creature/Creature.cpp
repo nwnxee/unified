@@ -3313,3 +3313,11 @@ NWNX_EXPORT ArgumentStack GetInitiativeModifier(ArgumentStack&& args)
     }
     return 0;
 }
+
+NWNX_EXPORT ArgumentStack GetBodyBag(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+        return pCreature->m_oidBodyBag;
+
+    return Constants::OBJECT_INVALID;
+}
