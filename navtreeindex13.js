@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"structNWNX__Time__HighResTimestamp.html":[0,1,3],
+"structNWNX__Time__HighResTimestamp.html#a43aea683c1a6671d6699f11079f904fe":[0,1,3,1],
 "structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e":[0,1,3,0],
 "structNWNX__Util__HighResTimestamp.html":[0,44,3],
 "structNWNX__Util__HighResTimestamp.html#adb932a093a3a74a4a067f0b6c79030c0":[0,44,3,1],

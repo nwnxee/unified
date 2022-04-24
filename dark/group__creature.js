@@ -160,6 +160,7 @@ var group__creature =
     [ "NWNX_Creature_OverrideRangedProjectileVFX", "group__creature.html#ga6063cad6d05f1a72409a618d284e45cc", null ],
     [ "NWNX_Creature_SetInitiativeModifer", "group__creature.html#ga4e9a1a2392011863009365e46143f89e", null ],
     [ "NWNX_Creature_GetInitiativeModifer", "group__creature.html#ga2006eb6823fec8ed017bafa1fda3fd6b", null ],
+    [ "NWNX_Creature_GetBodyBag", "group__creature.html#ga8d62f582b4919c6daaf669781158b3f6", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
