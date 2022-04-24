@@ -1020,6 +1020,11 @@ void NWNX_Creature_SetInitiativeModifer(object oCreature, int nMod, int bPersist
 /// @return the current custom initiative modifier for the creature
 int NWNX_Creature_GetInitiativeModifer(object oCreature);
 
+/// @brief Gets the Body Bag of a creature
+/// @param oCreature The target creature
+/// @return The creatures assigned Body Bag
+int NWNX_Creature_GetBodyBag(object oCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2596,4 +2601,13 @@ int NWNX_Creature_GetInitiativeModifier(object oCreature)
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+object NWNX_Creature_GetBodyBag(object oCreature)
+{
+    string sFunc = "GetBodyBag";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueObject();
 }

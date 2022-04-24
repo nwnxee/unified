@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Area: {Get|Set}AreaFlags()
 - Creature: {Get|Set}SkillPointsRemainingByLevel()
 - Creature: {Get|Set}InitiativeModifier()
+- Creature: GetBodyBag()
 - Effect: AccessorizeVisualEffect()
 - Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()
