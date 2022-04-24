@@ -1023,7 +1023,7 @@ int NWNX_Creature_GetInitiativeModifer(object oCreature);
 /// @brief Gets the Body Bag of a creature
 /// @param oCreature The target creature
 /// @return The creatures assigned Body Bag
-int NWNX_Creature_GetBodyBag(object oCreature);
+object NWNX_Creature_GetBodyBag(object oCreature);
 
 /// @}
 
