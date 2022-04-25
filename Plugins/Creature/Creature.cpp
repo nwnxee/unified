@@ -904,6 +904,16 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactor(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetMovementRateFactorCap(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if(auto pCap = pCreature->nwnxGet<float>("MOVEMENT_RATE_FACTOR_CAP"))
+            return *pCap;
+    }
+    return 0.0f;
+}
+
 NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetMovementRateFactor_hook =

@@ -361,6 +361,12 @@ float NWNX_Creature_GetMovementRateFactor(object creature);
 /// @param rate The rate to set.
 void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
 
+/// @brief Returns the creature's maximum movement rate cap.
+/// @remark Default movement rate cap is 1.5.
+/// @param creature The creature object.
+/// @return The maximum movement rate cap.
+float NWNX_Creature_GetMovementRateFactorCap(object creature);
+
 /// @brief Sets the creature's maximum movement rate cap.
 /// @note Default movement rate cap is 1.5.
 /// @param creature The creature object.
@@ -1487,6 +1493,15 @@ void NWNX_Creature_SetMovementRateFactor(object creature, float factor)
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMovementRateFactorCap(object creature)
+{
+    string sFunc = "GetMovementRateFactorCap";
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueFloat();
 }
 
 void NWNX_Creature_SetMovementRateFactorCap(object creature, float cap)
