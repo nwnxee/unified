@@ -129,6 +129,17 @@ NWNX_EXPORT ArgumentStack StopGuiTimingBar(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetAlwaysWalk(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        if (auto walk = pPlayer->nwnxGet<int>("ALWAYS_WALK");
+            return *walk;
+    }
+
+    return false;
+}
+
 NWNX_EXPORT ArgumentStack SetAlwaysWalk(ArgumentStack&& args)
 {
     static NWNXLib::Hooks::Hook pOnRemoveLimitMovementSpeed_hook =

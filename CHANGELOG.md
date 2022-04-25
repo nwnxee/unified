@@ -36,6 +36,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: UnsubscribeEventScriptChunk()
 - Events: GetNumSubscribers()
 - Regex: Match()
+- Player: GetAlwaysWalk()
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`

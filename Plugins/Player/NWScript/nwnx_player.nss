@@ -108,6 +108,11 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 /// @param script The script to run when stopped.
 void NWNX_Player_StopGuiTimingBar(object player, string script = "");
 
+/// @brief Determines if player is forced to walk when given movement commands.
+/// @param player The player object.
+/// @return TRUE if player is forced to always walk.
+void NWNX_Player_GetAlwaysWalk(object player);
+
 /// @brief Sets whether the player should always walk when given movement commands.
 /// @param player The player object.
 /// @param bWalk TRUE to set the player to always walk.
@@ -457,6 +462,16 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 void NWNX_Player_StopGuiTimingBar(object player, string script = "")
 {
     NWNX_Player_INTERNAL_StopGuiTimingBar(player, script, -1);
+}
+
+int NWNX_Player_GetAlwaysWalk(object player)
+{
+    string sFunc = "GetAlwaysWalk";
+
+    NWNX_PushArgumentObject(player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE)
