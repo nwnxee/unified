@@ -133,7 +133,7 @@ NWNX_EXPORT ArgumentStack GetAlwaysWalk(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        if (auto walk = pPlayer->nwnxGet<int>("ALWAYS_WALK");
+        if (auto walk = pPlayer->nwnxGet<int>("ALWAYS_WALK"));
             return *walk;
     }
 
