@@ -81,7 +81,7 @@ void PlayerHitpointsAsPercentage()
                 if (auto creature = Utils::AsNWSCreature(pThis))
                 {
                     const int16_t max = s_CNWSCreature_GetMaxHitPoints_Hook->CallOriginal<int16_t>(creature, 1);
-                    return std::clamp<int16_t>(cur / std::max<int16_t>(max, 1) * 100, 0, 100);
+                    return std::clamp<int16_t>(100 * cur / std::max<int16_t>(max, 1), 0, 100);
                 }
             }
             
