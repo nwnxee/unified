@@ -23,7 +23,7 @@ std::unique_ptr<cpp_redis::redis_client> Redis::PoolMakeFunc()
     if (!m_internal->m_config.m_password.empty())
     {
         (*p).auth(m_internal->m_config.m_password);
-        (*p).commit();    
+        (*p).sync_commit();    
     }
     
     return p;
