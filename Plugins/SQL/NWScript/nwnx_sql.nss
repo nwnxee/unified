@@ -16,6 +16,12 @@ int NWNX_SQL_PrepareQuery(string query);
 /// @return The ID of this query if successful, else FALSE.
 int NWNX_SQL_ExecutePreparedQuery();
 
+/// @brief Executes a prepared query on a background thread. 
+/// 
+/// @param script The script to call when the query finishes.
+/// @return The ID of this query if successful, else FALSE.
+int NWNX_SQL_ExecutePreparedQueryAsync(string scriptWhenComplete);
+
 /// @brief Directly execute an SQL query.
 /// @note Clears previously prepared query states.
 /// @return The ID of this query if successful, else FALSE.
@@ -117,6 +123,15 @@ int NWNX_SQL_ExecutePreparedQuery()
 {
     string sFunc = "ExecutePreparedQuery";
 
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_SQL_ExecutePreparedQueryAsync(string scriptWhenComplete)
+{
+    string sFunc = "ExecutePreparedQueryAsync";
+
+    NWNX_PushArgumentString(scriptWhenComplete);
     NWNX_CallFunction(NWNX_SQL, sFunc);
     return NWNX_GetReturnValueInt();
 }

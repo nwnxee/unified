@@ -8,7 +8,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
-#include <chrono>
 #include <thread>
 #include <cstring>
 
@@ -27,7 +26,10 @@ using namespace NWNXLib::Services;
 namespace SQL {
 
 SQL::SQL(Services::ProxyServiceList* services)
-    : Plugin(services), m_nextQueryId(0), m_queryMetrics(false)
+    : Plugin(services),
+      m_pool(std::bind(&SQL::MakeInstance, this)),
+      m_nextQueryId(0),
+      m_queryMetrics(false)
 {
 
 #define REGISTER(func) \
@@ -36,6 +38,7 @@ SQL::SQL(Services::ProxyServiceList* services)
 
     REGISTER(PrepareQuery);
     REGISTER(ExecutePreparedQuery);
+    REGISTER(ExecutePreparedQueryAsync);
     REGISTER(ReadyToReadNextRow);
     REGISTER(ReadNextRow);
     REGISTER(ReadDataInActiveRow);
@@ -62,30 +65,43 @@ SQL::SQL(Services::ProxyServiceList* services)
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
     }
 
-    auto type = Config::Get<std::string>("TYPE", "MYSQL");
-    std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
+    m_type = Config::Get<std::string>("TYPE", "MYSQL");
+    std::transform(std::begin(m_type), std::end(m_type), std::begin(m_type), ::toupper);
 
-    LOG_INFO("Connecting to type %s", type);
-    if (type == "MYSQL")
+    m_utf8 = Config::Get<bool>("USE_UTF8", false);
+
+    // Prepare the initial instance.
+    m_context = std::make_shared<QueryContext>(this);
+    m_context->Reconnect(19);
+}
+
+SQL::~SQL()
+{
+}
+
+std::unique_ptr<ITarget> SQL::MakeInstance()
+{
+    LOG_INFO("Connecting to type %s", m_type);
+    if (m_type == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
-        m_target = std::make_unique<MySQL>();
+        return std::make_unique<MySQL>();
 #else
         throw std::runtime_error("Targeting MySQL, but no MySQL support built in.");
 #endif
     }
-    else if (type == "POSTGRESQL")
+    else if (m_type == "POSTGRESQL")
     {
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
-        m_target = std::make_unique<PostgreSQL>();
+        return std::make_unique<PostgreSQL>();
 #else
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
     }
-    else if (type == "SQLITE")
+    else if (m_type == "SQLITE")
     {
 #if defined(NWNX_SQL_SQLITE_SUPPORT)
-        m_target = std::make_unique<SQLite>();
+        return std::make_unique<SQLite>();
 #else
         throw std::runtime_error("Targeting SQLite3, but no SQLite3 support built in.");
 #endif
@@ -94,17 +110,9 @@ SQL::SQL(Services::ProxyServiceList* services)
     {
         throw std::runtime_error("Invalid database type selected.");
     }
-
-    m_utf8 = Config::Get<bool>("USE_UTF8", false);
-
-    Reconnect(19);
 }
 
-SQL::~SQL()
-{
-}
-
-bool SQL::Reconnect(int32_t attempts)
+bool SQL::QueryContext::Reconnect(int32_t attempts)
 {
     LOG_WARNING("Database connection lost. Reconnecting..");
 
@@ -135,32 +143,28 @@ bool SQL::Reconnect(int32_t attempts)
 
 Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
 {
-    m_activeQuery = args.extract<std::string>();
+    m_context->m_activeQuery = args.extract<std::string>();
 
     if (m_utf8)
     {
-        m_activeQuery = String::ToUTF8(m_activeQuery);
+        m_context->m_activeQuery = String::ToUTF8(m_context->m_activeQuery);
     }
 
-    m_activeResults = ResultSet();
+    m_context->m_activeResults = ResultSet();
 
-    if (!m_target->IsConnected() && !Reconnect(3))
-    {
-        LOG_ERROR("Database connection lost. Aborting.");
-        return false;
-    }
-
-    m_queryPrepared = m_target->PrepareQuery(m_activeQuery);
-    return m_queryPrepared;
+    m_context->m_queryPrepared = m_context->m_target->PrepareQuery(m_context->m_activeQuery);
+    return m_context->m_queryPrepared;
 }
 
-Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
+bool SQL::QueryContext::ExecuteQuery()
 {
     if (!m_queryPrepared)
     {
         LOG_WARNING("Trying to execute prepared query without successful PrepareQuery() call");
-        return 0;
+        return false;
     }
+
+    m_queryId = ++m_parent->m_nextQueryId;
 
     // NOTE: There is a time-of-check-to-time-of-use race condition here.
     // The target may be there at the check, but will go away afterwards.
@@ -172,7 +176,7 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
         if (!Reconnect())
         {
             LOG_ERROR("Database connection lost. Aborting.");
-            return 0;
+            return false;
         }
         else
         {
@@ -181,34 +185,16 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
             if (!m_target->PrepareQuery(m_activeQuery))
             {
                 LOG_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError());
-                return 0;
+                return false;
             }
-
         }
     }
 
-    const int32_t queryId = ++m_nextQueryId;
+    const auto timeBefore = std::chrono::high_resolution_clock::now();
+    auto query = m_target->ExecuteQuery();
+    const auto timeAfter = std::chrono::high_resolution_clock::now();
 
-    std::optional<ResultSet> query;
-
-    if (m_queryMetrics)
-    {
-        const auto timeBefore = std::chrono::high_resolution_clock::now();
-        query = m_target->ExecuteQuery();
-        const auto timeAfter = std::chrono::high_resolution_clock::now();
-
-        using namespace std::chrono;
-        nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
-
-        GetServices()->m_metrics->Push(
-            "SQLQueries",
-            { { "ns", std::to_string(dur.count()) } },
-            { { "ID", std::to_string(queryId) } });
-    }
-    else
-    {
-        query = m_target->ExecuteQuery();
-    }
+    m_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(timeAfter - timeBefore);
 
     const bool querySucceeded = query.has_value();
 
@@ -222,38 +208,104 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
         {
             // this was not a result set type query
             LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
-                queryId, m_activeQuery, m_target->GetAffectedRows());
+                m_queryId, m_activeQuery, m_target->GetAffectedRows());
         }
         else
         {
             LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
-                queryId, m_activeQuery, m_activeResults.size());
+                m_queryId, m_activeQuery, m_activeResults.size());
         }
     }
     else
     {
-        LOG_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", queryId, m_activeQuery);
+        LOG_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", m_queryId, m_activeQuery);
         std::string lastError = m_target->GetLastError();
-        LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError);
+        LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", m_queryId, lastError);
     }
 
-    return querySucceeded ? queryId : 0;
+    return querySucceeded;
+}
+
+
+Events::ArgumentStack SQL::ExecutePreparedQueryAsync(Events::ArgumentStack&& args)
+{
+    const auto scriptWhenComplete = args.extract<std::string>();
+
+    // Grab the context that was prepared by the user and set up a new/clean one.
+    std::shared_ptr<QueryContext> stolen;
+    std::swap(stolen, m_context);
+    m_context = std::make_shared<QueryContext>(this);
+
+    stolen->m_scriptWhenComplete = scriptWhenComplete;
+
+    const uint32_t queryId = stolen->m_queryId;
+
+    NWNXLib::Tasks::QueueOnAsyncThread([this, ctx=stolen]() mutable {
+        // If the query succeeded, shove it back onto the main thread. Otherwise, log error and discard.
+        if (ctx->ExecuteQuery())
+        {
+            NWNXLib::Tasks::QueueOnMainThread([this, ctx]() mutable {
+                // Push query metrics here, since it's not threadsafe.
+                if (m_queryMetrics)
+                {
+                    GetServices()->m_metrics->Push(
+                        "SQLQueries",
+                        { { "ns", std::to_string(ctx->m_duration.count()) } },
+                        { { "ID", std::to_string(ctx->m_queryId) } });
+                }
+
+                if (!ctx->m_scriptWhenComplete.empty())
+                {
+                    // Swap in our context as the main context, so that the executing script speaks to the correct instance.
+                    swap(this->m_context, ctx);
+
+                    NWNXLib::Utils::ExecuteScript(ctx->m_scriptWhenComplete, NWNXLib::API::Constants::OBJECT_INVALID);
+                
+                    // This will discard ctx at the end of this lambda.
+                    swap(this->m_context, ctx);
+                }
+            });
+        }
+    }); 
+
+    // Async queries always go up immediately and return true; we return the query id of the summoned query.
+    return queryId;
+}
+
+Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
+{
+    if (m_context->ExecuteQuery())
+    {
+        if (m_queryMetrics)
+        {
+            GetServices()->m_metrics->Push(
+                "SQLQueries",
+                { { "ns", std::to_string(m_context->m_duration.count()) } },
+                { { "ID", std::to_string(m_context->m_queryId) } });
+        }
+
+        return m_context->m_queryId;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 Events::ArgumentStack SQL::ReadyToReadNextRow(Events::ArgumentStack&&)
 {
-    return m_activeResults.empty() ? 0 : 1;
+    return m_context->m_activeResults.empty() ? 0 : 1;
 }
 
 Events::ArgumentStack SQL::ReadNextRow(Events::ArgumentStack&&)
 {
-    if (m_activeResults.empty())
+    if (m_context->m_activeResults.empty())
     {
         throw std::runtime_error("No more rows to read.");
     }
 
-    m_activeRow = std::move(m_activeResults.front());
-    m_activeResults.pop();
+    m_context->m_activeRow = std::move(m_context->m_activeResults.front());
+    m_context->m_activeResults.pop();
     return {};
 }
 
@@ -261,24 +313,24 @@ Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
 {
     const size_t column = args.extract<int32_t>();
 
-    if (column >= m_activeRow.size())
+    if (column >= m_context->m_activeRow.size())
     {
         throw std::runtime_error("Trying to access column outside of range.");
     }
 
-    return Events::Arguments(m_utf8 ? String::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
+    return Events::Arguments(m_utf8 ? String::FromUTF8(m_context->m_activeRow[column]) : m_context->m_activeRow[column]);
 }
 Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<int32_t>();
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:0x%08x) out of bounds", position, value);
     }
     else
     {
-        m_target->PrepareInt(position, value);
+        m_context->m_target->PrepareInt(position, value);
     }
     return {};
 }
@@ -286,13 +338,13 @@ Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<std::string>();
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value);
     }
     else
     {
-        m_target->PrepareString(position, m_utf8 ? String::ToUTF8(value) : value);
+        m_context->m_target->PrepareString(position, m_utf8 ? String::ToUTF8(value) : value);
     }
     return {};
 }
@@ -300,13 +352,13 @@ Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<float>();
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:'%f') out of bounds", position, value);
     }
     else
     {
-        m_target->PrepareFloat(position, value);
+        m_context->m_target->PrepareFloat(position, value);
     }
     return {};
 }
@@ -316,13 +368,13 @@ Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
     auto value = args.extract<ObjectID>();
     int32_t valInt;
     std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, valInt);
     }
     else
     {
-        m_target->PrepareInt(position, valInt);
+        m_context->m_target->PrepareInt(position, valInt);
     }
     return {};
 }
@@ -332,7 +384,7 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
     auto value = args.extract<ObjectID>();
     bool base64 = !!args.extract<int32_t>();
 
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, static_cast<int32_t>(value));
     }
@@ -341,10 +393,10 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
         CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
         if (base64) {
             std::string serializedObject = Utils::SerializeGameObjectB64(pObject);
-            m_target->PrepareString(position, serializedObject);
+            m_context->m_target->PrepareString(position, serializedObject);
         } else {
             std::vector<uint8_t> serializedObjectVec = Utils::SerializeGameObject(pObject);
-            m_target->PrepareBinary(position, serializedObjectVec);
+            m_context->m_target->PrepareBinary(position, serializedObjectVec);
         }
     }
     return {};
@@ -353,13 +405,13 @@ Events::ArgumentStack SQL::PreparedNULL(Events::ArgumentStack&& args)
 {
     auto position = args.extract<int32_t>();
 
-    if (position >= m_target->GetPreparedQueryParamCount())
+    if (position >= m_context->m_target->GetPreparedQueryParamCount())
     {
         LOG_WARNING("Prepared argument (pos:%d, value:NULL) out of bounds", position);
     }
     else
     {
-        m_target->PrepareNULL(position);
+        m_context->m_target->PrepareNULL(position);
     }
     return {};
 }
@@ -373,12 +425,12 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
     const auto z = args.extract<float>();
     const bool base64 = !!args.extract<int32_t>();
 
-    if (column >= m_activeRow.size())
+    if (column >= m_context->m_activeRow.size())
     {
         throw std::runtime_error("Trying to access column outside of range.");
     }
 
-    std::string serialized = m_activeRow[column];
+    std::string serialized = m_context->m_activeRow[column];
     ObjectID retval = API::Constants::OBJECT_INVALID;
     CGameObject *pObject = base64 ? Utils::DeserializeGameObjectB64(serialized) : Utils::DeserializeGameObject(std::vector<uint8_t>(serialized.begin(), serialized.end()));
     if (pObject)
@@ -407,7 +459,7 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
 
 Events::ArgumentStack SQL::GetAffectedRows(Events::ArgumentStack&&)
 {
-    return m_target->GetAffectedRows();
+    return m_context->m_target->GetAffectedRows();
 }
 
 Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
@@ -417,19 +469,19 @@ Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
 
 Events::ArgumentStack SQL::DestroyPreparedQuery(Events::ArgumentStack&&)
 {
-    m_target->DestroyPreparedQuery();
-    m_queryPrepared = false;
+    m_context->m_target->DestroyPreparedQuery();
+    m_context->m_queryPrepared = false;
     return {};
 }
 
 Events::ArgumentStack SQL::GetLastError(Events::ArgumentStack&&)
 {
-    return m_target->GetLastError(true);
+    return m_context->m_target->GetLastError(true);
 }
 
 Events::ArgumentStack SQL::GetPreparedQueryParamCount(Events::ArgumentStack&&)
 {
-    return m_queryPrepared ? m_target->GetPreparedQueryParamCount() : -1;
+    return m_context->m_queryPrepared ? m_context->m_target->GetPreparedQueryParamCount() : -1;
 }
 
 }
