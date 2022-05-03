@@ -16,3 +16,5 @@ Documentation/
 .vs/
 out/
 CMakeSettings.json
+.cache/
+Build/
