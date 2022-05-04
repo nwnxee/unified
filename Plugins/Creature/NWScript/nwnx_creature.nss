@@ -1019,12 +1019,12 @@ void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectile
 /// @param bPersist Whether the modifier should persist to .bic file (for PCs)
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 /// @warning This modifier takes precedence over an NWNX_Race Initiative modifier; they're not additive
-void NWNX_Creature_SetInitiativeModifer(object oCreature, int nMod, int bPersist = FALSE);
+void NWNX_Creature_SetInitiativeModifier(object oCreature, int nMod, int bPersist = FALSE);
 
 /// @brief Gets the custom Initiative modifier.
 /// @param oCreature The target creature
 /// @return the current custom initiative modifier for the creature
-int NWNX_Creature_GetInitiativeModifer(object oCreature);
+int NWNX_Creature_GetInitiativeModifier(object oCreature);
 
 /// @brief Gets the Body Bag of a creature
 /// @param oCreature The target creature
