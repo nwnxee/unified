@@ -1,7 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"nwnx__redis__short_8nss_source.html":[4,0,3,28,0,3],
-"nwnx__regex_8nss.html":[4,0,3,29,0,0],
 "nwnx__regex_8nss_source.html":[4,0,3,29,0,0],
 "nwnx__rename_8nss.html":[4,0,3,30,0,0],
 "nwnx__rename_8nss_source.html":[4,0,3,30,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX12 =
 "structNWNX__Tileset__TilesetData.html#aecb8866be243c65e433fa7e7098f776f":[0,41,2,9],
 "structNWNX__Tileset__TilesetGroupData.html":[0,41,3],
 "structNWNX__Tileset__TilesetGroupData.html#a046c239ee967d9c5a8007997d873400d":[0,41,3,3],
-"structNWNX__Tileset__TilesetGroupData.html#a0a2b1f76c67d6bec23b9019682784067":[0,41,3,2]
+"structNWNX__Tileset__TilesetGroupData.html#a0a2b1f76c67d6bec23b9019682784067":[0,41,3,2],
+"structNWNX__Tileset__TilesetGroupData.html#aa98d1a6957d1951424734a0e74b19521":[0,41,3,1],
+"structNWNX__Tileset__TilesetGroupData.html#afd49c3546a569a6da3e42379edc26f01":[0,41,3,0]
 };
