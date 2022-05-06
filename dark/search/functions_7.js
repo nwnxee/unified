@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['geoadd_2052',['GEOADD',['../nwnx__redis__short_8nss.html#a3744b71d4fa9b9363fdc997909a864a2',1,'nwnx_redis_short.nss']]],
-  ['geodist_2053',['GEODIST',['../nwnx__redis__short_8nss.html#a40db82e7d1ef791e660aad47632735e9',1,'nwnx_redis_short.nss']]],
-  ['geohash_2054',['GEOHASH',['../nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f',1,'nwnx_redis_short.nss']]],
-  ['geopos_2055',['GEOPOS',['../nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85',1,'nwnx_redis_short.nss']]],
-  ['georadius_2056',['GEORADIUS',['../nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f',1,'nwnx_redis_short.nss']]],
-  ['georadiusbymember_2057',['GEORADIUSBYMEMBER',['../nwnx__redis__short_8nss.html#ae76e50982756c8c36c308c154a44c6cc',1,'nwnx_redis_short.nss']]],
-  ['get_2058',['GET',['../nwnx__redis__short_8nss.html#a3ef0bab4ce4f18dff779e435a21a0145',1,'nwnx_redis_short.nss']]],
-  ['getbit_2059',['GETBIT',['../nwnx__redis__short_8nss.html#a71f5308ce35c90b21c13642778d1936a',1,'nwnx_redis_short.nss']]],
-  ['getrange_2060',['GETRANGE',['../nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d',1,'nwnx_redis_short.nss']]],
-  ['getrowcount_2061',['GetRowCount',['../inc__array_8nss.html#a395c070df08788ac1995ae046b1ae4e1',1,'inc_array.nss']]],
-  ['getset_2062',['GETSET',['../nwnx__redis__short_8nss.html#a22ff63475aafe0b74924663c682d4d17',1,'nwnx_redis_short.nss']]],
-  ['gettablecreatestring_2063',['GetTableCreateString',['../inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87',1,'inc_array.nss']]],
-  ['gettablename_2064',['GetTableName',['../inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676',1,'inc_array.nss']]]
+  ['geoadd_2053',['GEOADD',['../nwnx__redis__short_8nss.html#a3744b71d4fa9b9363fdc997909a864a2',1,'nwnx_redis_short.nss']]],
+  ['geodist_2054',['GEODIST',['../nwnx__redis__short_8nss.html#a40db82e7d1ef791e660aad47632735e9',1,'nwnx_redis_short.nss']]],
+  ['geohash_2055',['GEOHASH',['../nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f',1,'nwnx_redis_short.nss']]],
+  ['geopos_2056',['GEOPOS',['../nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85',1,'nwnx_redis_short.nss']]],
+  ['georadius_2057',['GEORADIUS',['../nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f',1,'nwnx_redis_short.nss']]],
+  ['georadiusbymember_2058',['GEORADIUSBYMEMBER',['../nwnx__redis__short_8nss.html#ae76e50982756c8c36c308c154a44c6cc',1,'nwnx_redis_short.nss']]],
+  ['get_2059',['GET',['../nwnx__redis__short_8nss.html#a3ef0bab4ce4f18dff779e435a21a0145',1,'nwnx_redis_short.nss']]],
+  ['getbit_2060',['GETBIT',['../nwnx__redis__short_8nss.html#a71f5308ce35c90b21c13642778d1936a',1,'nwnx_redis_short.nss']]],
+  ['getrange_2061',['GETRANGE',['../nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d',1,'nwnx_redis_short.nss']]],
+  ['getrowcount_2062',['GetRowCount',['../inc__array_8nss.html#a395c070df08788ac1995ae046b1ae4e1',1,'inc_array.nss']]],
+  ['getset_2063',['GETSET',['../nwnx__redis__short_8nss.html#a22ff63475aafe0b74924663c682d4d17',1,'nwnx_redis_short.nss']]],
+  ['gettablecreatestring_2064',['GetTableCreateString',['../inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87',1,'inc_array.nss']]],
+  ['gettablename_2065',['GetTableName',['../inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676',1,'inc_array.nss']]]
 ];

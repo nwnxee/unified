@@ -61,6 +61,7 @@ var group__object =
     [ "NWNX_Object_GetLastSpellCastFeat", "group__object.html#ga7e6bd03c53974433edb5581fa92dd2b5", null ],
     [ "NWNX_Object_SetLastTriggered", "group__object.html#gac11d2ff17fd0fc98d184fdef3a464040", null ],
     [ "NWNX_Object_GetAoEObjectDurationRemaining", "group__object.html#ga2009bb51273e2aba083895b9293c1d6b", null ],
+    [ "NWNX_Object_SetConversationPrivate", "group__object.html#ga1a1f5efc6ea499ee3d2fd59e93f0d67a", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
