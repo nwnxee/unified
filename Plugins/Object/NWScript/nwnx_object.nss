@@ -386,6 +386,12 @@ void NWNX_Object_SetLastTriggered(object oObject, object oLast);
 /// @return The remaining duration, in seconds, or the zero on failure.
 float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE);
 
+/// @brief Sets conversations started by oObject to be private or not.
+/// @note ActionStartConversation()'s bPrivateConversation parameter will overwrite this flag.
+/// @param oObject The object.
+/// @param bPrivate TRUE/FALSE.
+void NWNX_Object_SetConversationPrivate(object oObject, int bPrivate);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -956,4 +962,14 @@ float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueFloat();
+}
+
+void NWNX_Object_SetConversationPrivate(object oObject, int bPrivate)
+{
+    string sFunc = "SetConversationPrivate";
+
+    NWNX_PushArgumentInt(bPrivate);
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
