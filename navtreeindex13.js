@@ -1,5 +1,14 @@
 var NAVTREEINDEX13 =
 {
+"structNWNX__Tileset__TilesetData.html#a722c8d12ebbce7138f2e24ed8e5e72f3":[0,41,2,2],
+"structNWNX__Tileset__TilesetData.html#a9d39e54bd46722c0e4b293605dbb6db3":[0,41,2,8],
+"structNWNX__Tileset__TilesetData.html#ab190d02f421837b6e1ffa9b3e3f302ff":[0,41,2,10],
+"structNWNX__Tileset__TilesetData.html#ac164a541634d072f4d22b3c1ec9c578a":[0,41,2,0],
+"structNWNX__Tileset__TilesetData.html#ac66c0a4836ce34987948f9af09df6709":[0,41,2,1],
+"structNWNX__Tileset__TilesetData.html#aecb8866be243c65e433fa7e7098f776f":[0,41,2,9],
+"structNWNX__Tileset__TilesetGroupData.html":[0,41,3],
+"structNWNX__Tileset__TilesetGroupData.html#a046c239ee967d9c5a8007997d873400d":[0,41,3,3],
+"structNWNX__Tileset__TilesetGroupData.html#a0a2b1f76c67d6bec23b9019682784067":[0,41,3,2],
 "structNWNX__Tileset__TilesetGroupData.html#aa98d1a6957d1951424734a0e74b19521":[0,41,3,1],
 "structNWNX__Tileset__TilesetGroupData.html#afd49c3546a569a6da3e42379edc26f01":[0,41,3,0],
 "structNWNX__Time__HighResTimestamp.html":[0,1,3],

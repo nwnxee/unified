@@ -9,6 +9,12 @@ var group__area =
       [ "nGridX", "structNWNX__Area__TileInfo.html#a8f251dcba2c20218ca755ad14ac30bf6", null ],
       [ "nGridY", "structNWNX__Area__TileInfo.html#a9401d512230306a66f9896d24847f2f2", null ]
     ] ],
+    [ "NWNX_Area_AreaWind", "structNWNX__Area__AreaWind.html", [
+      [ "vDirection", "structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef", null ],
+      [ "fMagnitude", "structNWNX__Area__AreaWind.html#aae39cd5f7fec88ca3b99388667d5c906", null ],
+      [ "fYaw", "structNWNX__Area__AreaWind.html#a95e64a6c93e72aaf96cd4cdd4706fc23", null ],
+      [ "fPitch", "structNWNX__Area__AreaWind.html#a744389d2f740e111f565e55d52f65a80", null ]
+    ] ],
     [ "NWNX_Area_GetNumberOfPlayersInArea", "group__area.html#gaa7e6831063235acdb013fdc5846d00a7", null ],
     [ "NWNX_Area_GetLastEntered", "group__area.html#ga90447d876b274d5bbab292416ee3a462", null ],
     [ "NWNX_Area_GetLastLeft", "group__area.html#ga60a89999247bd166627369396cb17dd6", null ],
@@ -54,6 +60,7 @@ var group__area =
     [ "NWNX_Area_GetPathExists", "group__area.html#ga61a1670a05d3fac3d985b4aaedeccd09", null ],
     [ "NWNX_Area_GetAreaFlags", "group__area.html#gacd57d74416733001cf67a2cfaefb76ec", null ],
     [ "NWNX_Area_SetAreaFlags", "group__area.html#ga08be0ec8d8f831e344e322cfd4b8c539", null ],
+    [ "NWNX_Area_GetAreaWind", "group__area.html#ga6ae6444a64495ab1a567a93538aabd92", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
     [ "NWNX_AREA_PVP_SETTING_FULL_PVP", "group__area.html#ga8a6f21649b08da34ecc397f7fd621176", null ],

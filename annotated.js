@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "NWNX_Area_AreaWind", "structNWNX__Area__AreaWind.html", "structNWNX__Area__AreaWind" ],
     [ "NWNX_Area_TileInfo", "structNWNX__Area__TileInfo.html", "structNWNX__Area__TileInfo" ],
     [ "NWNX_Creature_MemorisedSpell", "structNWNX__Creature__MemorisedSpell.html", "structNWNX__Creature__MemorisedSpell" ],
     [ "NWNX_Creature_SpecialAbility", "structNWNX__Creature__SpecialAbility.html", "structNWNX__Creature__SpecialAbility" ],
