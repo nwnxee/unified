@@ -1342,3 +1342,21 @@ NWNX_EXPORT ArgumentStack SetAreaFlags(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetAreaWind(ArgumentStack&& args)
+{
+    if (auto *pArea = Utils::PopArea(args))
+    {
+        return
+        {
+            pArea->m_vWindDirection.z,
+            pArea->m_vWindDirection.y,
+            pArea->m_vWindDirection.x,
+            pArea->m_fWindMagnitude,
+            pArea->m_fWindYaw,
+            pArea->m_fWindPitch
+        };
+    }
+
+    return {};
+}

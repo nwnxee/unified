@@ -50,6 +50,15 @@ struct NWNX_Area_TileInfo
     int nGridY; ///< The tile's grid y position
 };
 
+/// @brief Area wind info struct
+struct NWNX_Area_AreaWind
+{
+    vector vDirection; ///< Wind's direction
+    float fMagnitude; ///< Wind's magnitude
+    float fYaw; ///< Wind's yaw
+    float fPitch; ///< Wind's pitch
+};
+
 /// @brief Gets the number of players in area.
 /// @param area The area object.
 /// @return The player count for the area.
@@ -327,6 +336,11 @@ int NWNX_Area_GetAreaFlags(object oArea);
 /// @param oArea The area.
 /// @param nFlags The flags.
 void NWNX_Area_SetAreaFlags(object oArea, int nFlags);
+
+/// @brief Get oArea's detailed win data.
+/// @note vDirection returns [0.0, 0.0, 0.0] if not set previously with SetAreaWind nwscript function.
+/// @param oArea The area.
+struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea);
 
 /// @}
 
@@ -835,4 +849,22 @@ void NWNX_Area_SetAreaFlags(object oArea, int nFlags)
     NWNX_PushArgumentInt(nFlags);
     NWNX_PushArgumentObject(oArea);
     NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea)
+{
+    string sFunc = "GetAreaWind";
+    struct NWNX_Area_AreaWind data;
+
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    data.fPitch = NWNX_GetReturnValueFloat();
+    data.fYaw = NWNX_GetReturnValueFloat();
+    data.fMagnitude = NWNX_GetReturnValueFloat();
+    data.vDirection.x = NWNX_GetReturnValueFloat();
+    data.vDirection.y = NWNX_GetReturnValueFloat();
+    data.vDirection.z = NWNX_GetReturnValueFloat();
+
+    return data;
 }

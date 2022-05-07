@@ -390,6 +390,14 @@ void NWNX_Player_CloseStore(object oPlayer);
 /// @note Overrides will not persist through relogging.
 void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE);
 
+/// @brief Update wind for oPlayer only.
+/// @param oPlayer The player.
+/// @param vDirection The Wind's direction.
+/// @param fMagnitude The Wind's magnitude.
+/// @param fYaw The Wind's yaw.
+/// @param fPitch The Wind's pitch.
+void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude, float fYaw, float fPitch);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -977,6 +985,20 @@ void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, i
     NWNX_PushArgumentInt(bRestoreGlobal);
     NWNX_PushArgumentString(sOverride);
     NWNX_PushArgumentInt(nStrRef);
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude, float fYaw, float fPitch)
+{
+    string sFunc = "UpdateWind";
+
+    NWNX_PushArgumentFloat(fPitch);
+    NWNX_PushArgumentFloat(fYaw);
+    NWNX_PushArgumentFloat(fMagnitude);
+    NWNX_PushArgumentFloat(vDirection.x);
+    NWNX_PushArgumentFloat(vDirection.y);
+    NWNX_PushArgumentFloat(vDirection.z);
     NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
