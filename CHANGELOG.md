@@ -26,6 +26,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Area: GetTileInfoByTileIndex()
 - Area: GetPathExists()
 - Area: {Get|Set}AreaFlags()
+- Area: GetAreaWind()
 - Creature: {Get|Set}SkillPointsRemainingByLevel()
 - Creature: {Get|Set}InitiativeModifier()
 - Creature: GetBodyBag()
@@ -36,6 +37,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: UnsubscribeEventScriptChunk()
 - Events: GetNumSubscribers()
 - Object: SetConversationPrivate()
+- Player: UpdateWind();
 - Regex: Match()
 
 ### Changed
