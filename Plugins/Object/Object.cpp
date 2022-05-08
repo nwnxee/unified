@@ -1038,3 +1038,14 @@ NWNX_EXPORT ArgumentStack GetAoEObjectDurationRemaining(ArgumentStack&& args)
     auto *pAoEObject = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args));
     return pAoEObject ? float(pAoEObject->m_nDuration) / 1000 : 0.0f;
 }
+
+NWNX_EXPORT ArgumentStack SetConversationPrivate(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        pObject->m_bPrivateConversation = !!args.extract<int32_t>();
+    }
+
+    return {};
+}
+

@@ -5,10 +5,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
-if (NOT CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    message( FATAL_ERROR "NWNX:EE can only be built with the CMAKE_BUILD_TYPE=RelWithDebInfo configuration." )
-endif()
-
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)

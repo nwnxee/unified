@@ -1645,3 +1645,24 @@ NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        Vector vDirection;
+        vDirection.z = args.extract<float>();
+        vDirection.y = args.extract<float>();
+        vDirection.x = args.extract<float>();
+        float fMagnitude = args.extract<float>();
+        float fYaw = args.extract<float>();
+        float fPitch = args.extract<float>();
+
+        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            pMessage->SendServerToPlayerArea_UpdateWind(pPlayer, vDirection, fMagnitude, fYaw, fPitch);
+        }
+    }
+
+    return {};
+}

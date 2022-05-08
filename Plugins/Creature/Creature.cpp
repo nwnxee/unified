@@ -904,6 +904,16 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactor(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetMovementRateFactorCap(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if(auto pCap = pCreature->nwnxGet<float>("MOVEMENT_RATE_FACTOR_CAP"))
+            return *pCap;
+    }
+    return 0.0f;
+}
+
 NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetMovementRateFactor_hook =
@@ -3312,4 +3322,12 @@ NWNX_EXPORT ArgumentStack GetInitiativeModifier(ArgumentStack&& args)
         return pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
     }
     return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetBodyBag(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+        return pCreature->m_oidBodyBag;
+
+    return Constants::OBJECT_INVALID;
 }

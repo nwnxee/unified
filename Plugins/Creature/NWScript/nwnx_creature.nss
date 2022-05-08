@@ -361,6 +361,12 @@ float NWNX_Creature_GetMovementRateFactor(object creature);
 /// @param rate The rate to set.
 void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
 
+/// @brief Returns the creature's maximum movement rate cap.
+/// @remark Default movement rate cap is 1.5.
+/// @param creature The creature object.
+/// @return The maximum movement rate cap.
+float NWNX_Creature_GetMovementRateFactorCap(object creature);
+
 /// @brief Sets the creature's maximum movement rate cap.
 /// @note Default movement rate cap is 1.5.
 /// @param creature The creature object.
@@ -1013,12 +1019,17 @@ void NWNX_Creature_OverrideRangedProjectileVFX(object oCreature, int nProjectile
 /// @param bPersist Whether the modifier should persist to .bic file (for PCs)
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 /// @warning This modifier takes precedence over an NWNX_Race Initiative modifier; they're not additive
-void NWNX_Creature_SetInitiativeModifer(object oCreature, int nMod, int bPersist = FALSE);
+void NWNX_Creature_SetInitiativeModifier(object oCreature, int nMod, int bPersist = FALSE);
 
 /// @brief Gets the custom Initiative modifier.
 /// @param oCreature The target creature
 /// @return the current custom initiative modifier for the creature
-int NWNX_Creature_GetInitiativeModifer(object oCreature);
+int NWNX_Creature_GetInitiativeModifier(object oCreature);
+
+/// @brief Gets the Body Bag of a creature
+/// @param oCreature The target creature
+/// @return The creatures assigned Body Bag
+object NWNX_Creature_GetBodyBag(object oCreature);
 
 /// @}
 
@@ -1482,6 +1493,15 @@ void NWNX_Creature_SetMovementRateFactor(object creature, float factor)
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMovementRateFactorCap(object creature)
+{
+    string sFunc = "GetMovementRateFactorCap";
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueFloat();
 }
 
 void NWNX_Creature_SetMovementRateFactorCap(object creature, float cap)
@@ -2596,4 +2616,13 @@ int NWNX_Creature_GetInitiativeModifier(object oCreature)
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+object NWNX_Creature_GetBodyBag(object oCreature)
+{
+    string sFunc = "GetBodyBag";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueObject();
 }
