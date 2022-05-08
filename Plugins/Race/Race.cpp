@@ -669,7 +669,8 @@ int32_t Race::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerR
         {
             pLevelStats->AddFeat(feat);
         }
-        featUses.emplace(featId, pCreature->m_pStats->GetFeatRemainingUses(featId));
+        if (Globals::Rules()->GetFeat(featId)->m_nUsesPerDay)
+            featUses.emplace(featId, pCreature->m_pStats->GetFeatRemainingUses(featId));
         pCreature->m_pStats->RemoveFeat(featId);
     }
 
@@ -684,7 +685,8 @@ int32_t Race::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerR
         auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel-1];
         pLevelStats->AddFeat(featId);
         pCreature->m_pStats->AddFeat(featId);
-        pCreature->m_pStats->SetFeatRemainingUses(featId, featUses[featId]);
+        if (Globals::Rules()->GetFeat(featId)->m_nUsesPerDay)
+            pCreature->m_pStats->SetFeatRemainingUses(featId, featUses[featId]);
     }
 
     return retVal;
