@@ -595,7 +595,7 @@ void Feat::RemoveFeatHook(CNWSCreatureStats *pCreatureStats, uint16_t nFeat)
 int32_t Feat::OnRemoveBonusFeatHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect)
 {
     if (auto *pCreature = Utils::AsNWSCreature(pObject))
-        AddFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
+        RemoveFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
 
     return s_OnRemoveBonusFeatHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
 }

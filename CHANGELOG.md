@@ -58,6 +58,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 ### Fixed
 - Feat: Fixed an issue with feat usages being reset upon character relog
 - Feat: Fixed an issue with an Ability Score feat counting towards the server capped limit when they should not
+- Feat: Fixed an issue with bonus feats not properly being removed
 - Object: GetLocalVariable() now recognizes variables of type json.
 - Tweaks: Language override tweak now works for area names.
 - Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
