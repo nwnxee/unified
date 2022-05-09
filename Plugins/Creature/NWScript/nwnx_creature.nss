@@ -1031,6 +1031,21 @@ int NWNX_Creature_GetInitiativeModifier(object oCreature);
 /// @return The creatures assigned Body Bag
 object NWNX_Creature_GetBodyBag(object oCreature);
 
+/// @brief Add a cast spell action to oCreature's action queue.
+/// @param oCreature The creature casting the spell.
+/// @param oTarget The target, to cast at a location use the area as target.
+/// @param vTargetLocation The target location.
+/// @param nSpellID The spell ID.
+/// @param nMultiClass The character class position to cast the spell as. 0 = First Class, 1 = Second Class, 3 = Third Class. To cast a cheat spell use 255 and to cast a special ability use 254.
+/// @param nMetaMagic A METAMAGIC_* constant, except METAMAGIC_ANY.
+/// @param nDomainLevel The domain level if casting a domain spell.
+/// @param nProjectilePathType A PROJECTILE_PATH_TYPE_* constant.
+/// @param bInstant TRUE to instantly cast the spell.
+/// @param bClearActions TRUE to clear all actions.
+/// @param bAddToFront TRUE to add the cast spell action to the front of the action queue.
+/// @return TRUE if the action was successfully added to oCreature's action queue.
+int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector vTargetLocation, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE, int nDomainLevel = 0, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstant = FALSE, int bClearActions = FALSE, int bAddToFront = FALSE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2625,4 +2640,26 @@ object NWNX_Creature_GetBodyBag(object oCreature)
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueObject();
+}
+
+int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector vTargetLocation, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE, int nDomainLevel = 0, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstant = FALSE, int bClearActions = FALSE, int bAddToFront = FALSE)
+{
+    string sFunc = "AddCastSpellActions";
+
+    NWNX_PushArgumentInt(bAddToFront);
+    NWNX_PushArgumentInt(bClearActions);
+    NWNX_PushArgumentInt(bInstant);
+    NWNX_PushArgumentInt(nProjectilePathType);
+    NWNX_PushArgumentInt(nDomainLevel);
+    NWNX_PushArgumentInt(nMetaMagic);
+    NWNX_PushArgumentInt(nMultiClass);
+    NWNX_PushArgumentInt(nSpellID);
+    NWNX_PushArgumentFloat(vTargetLocation.z);
+    NWNX_PushArgumentFloat(vTargetLocation.y);
+    NWNX_PushArgumentFloat(vTargetLocation.x);
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
 }
