@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"nwnx__redis__short_8nss.html#af628aa6c7cd81d264a9e22be1ab2d0c9":[4,0,3,28,0,3,196],
+"nwnx__redis__short_8nss.html#af89de605c6eecc1614b0b0d699a88092":[4,0,3,28,0,3,140],
 "nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b":[4,0,3,28,0,3,51],
 "nwnx__redis__short_8nss.html#afb22eed5de78e64a6dbd4b6cf983ab35":[4,0,3,28,0,3,189],
 "nwnx__redis__short_8nss.html#afb3937256478125b9a0a5afcbacedd73":[4,0,3,28,0,3,60],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "structNWNX__Tileset__TilesetData.html#a010d411b92f707702a3a40cebcb37f67":[0,41,2,4],
 "structNWNX__Tileset__TilesetData.html#a09fa4cfdc5ae13b61f5d1099b03e7b3d":[0,41,2,3],
 "structNWNX__Tileset__TilesetData.html#a21acdd4c8bf99eb5df29977b805fd8c0":[0,41,2,5],
-"structNWNX__Tileset__TilesetData.html#a28a1cc6ee6bb8ae51286c357f429a548":[0,41,2,11],
-"structNWNX__Tileset__TilesetData.html#a31228a8531da39309b35df8157ed134d":[0,41,2,6],
-"structNWNX__Tileset__TilesetData.html#a64738f1c4face0905ca5deea1ecff5f5":[0,41,2,7]
+"structNWNX__Tileset__TilesetData.html#a28a1cc6ee6bb8ae51286c357f429a548":[0,41,2,11]
 };

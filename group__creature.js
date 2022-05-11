@@ -162,6 +162,7 @@ var group__creature =
     [ "NWNX_Creature_SetInitiativeModifier", "group__creature.html#gaf8c04b182e822a87854e28e7f4236c9a", null ],
     [ "NWNX_Creature_GetInitiativeModifier", "group__creature.html#ga73d8c142f521b4fd3797b0c927c2ec5f", null ],
     [ "NWNX_Creature_GetBodyBag", "group__creature.html#ga8d62f582b4919c6daaf669781158b3f6", null ],
+    [ "NWNX_Creature_AddCastSpellActions", "group__creature.html#ga54ca40536c53d503fdd8638b15096496", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
