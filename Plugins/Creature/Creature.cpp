@@ -3331,3 +3331,62 @@ NWNX_EXPORT ArgumentStack GetBodyBag(ArgumentStack&& args)
 
     return Constants::OBJECT_INVALID;
 }
+
+NWNX_EXPORT ArgumentStack AddCastSpellActions(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<ObjectID>();
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        const auto fX = args.extract<float>();
+        const auto fY = args.extract<float>();
+        const auto fZ = args.extract<float>();
+        Vector targetLocation{fX, fY, fZ};
+
+        const auto spellId = args.extract<int32_t>();
+          ASSERT_OR_THROW(spellId >= 0);
+        const auto multiClass = args.extract<int32_t>();
+          ASSERT_OR_THROW(multiClass >= 0);
+        const auto metaType = args.extract<int32_t>();
+          ASSERT_OR_THROW(metaType >= 0);
+          ASSERT_OR_THROW(metaType <= 32);
+        const auto domainLevel = args.extract<int32_t>();
+          ASSERT_OR_THROW(domainLevel >= 0);
+        auto projectilePathType = args.extract<int32_t>();
+          ASSERT_OR_THROW(projectilePathType >= 0);
+          ASSERT_OR_THROW(projectilePathType <= 4);
+        const auto instant = !!args.extract<int32_t>();
+        const auto clearActions = !!args.extract<int32_t>();
+        const auto addToFront = !!args.extract<int32_t>();
+
+        if (projectilePathType == 4)
+            projectilePathType = 5;
+
+        bool areaTarget = false;
+        if (Utils::AsNWSArea(Utils::GetGameObject(oidTarget)))
+        {
+            areaTarget = true;
+            oidTarget = Constants::OBJECT_INVALID;
+        }
+
+        if (clearActions)
+            pCreature->ActionManager(0x00000001);
+
+        uint8_t casterLevel = 0xFF;
+        if (multiClass == 254)
+            casterLevel = pCreature->m_pStats->GetSpellLikeAbilityCasterLevel(spellId);
+        if (multiClass == 254 && casterLevel == 0xFF)
+            return false;
+
+        int32_t retVal = pCreature->AddCastSpellActions(spellId, multiClass, domainLevel, metaType, false,
+                                              targetLocation, oidTarget, areaTarget, addToFront, false,
+                                              projectilePathType, instant, false, -1, casterLevel);
+
+        if (retVal && addToFront && instant && !clearActions)
+            pCreature->m_bLastSpellCast = false;
+
+        return retVal;
+    }
+
+    return false;
+}
