@@ -1676,7 +1676,11 @@ NWNX_EXPORT ArgumentStack UpdateSkyBox(ArgumentStack&& args)
             if  (auto* pArea = pPlayerCreature->GetArea())
             {
                 const auto skyBox = args.extract<int32_t>();
+<<<<<<< HEAD
                 const auto oidArea = pArea->m_idSelf;
+=======
+                const auto oidArea = pArea->m_idSelf; 
+>>>>>>> ad160026038d5f241cd43bfe8a3528cd5afb7881
                 if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
                 {
                     pMessage->CreateWriteMessage(sizeof(skyBox) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
@@ -1691,8 +1695,13 @@ NWNX_EXPORT ArgumentStack UpdateSkyBox(ArgumentStack&& args)
                                                             Constants::MessageAreaMinor::UpdateSkyBox,
                                                             buffer, size);
                     }
+<<<<<<< HEAD
                 }
             }
+=======
+                }                
+            }            
+>>>>>>> ad160026038d5f241cd43bfe8a3528cd5afb7881
         }
     }
     return {};     
@@ -1728,7 +1737,11 @@ NWNX_EXPORT ArgumentStack UpdateFogColor(ArgumentStack&& args)
                                                             buffer, size);
                     }
                 }
+<<<<<<< HEAD
             }
+=======
+            }           
+>>>>>>> ad160026038d5f241cd43bfe8a3528cd5afb7881
         }
     }
     return {};
@@ -1764,8 +1777,13 @@ NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
                                                             Constants::MessageAreaMinor::UpdateFogAmount,
                                                             buffer, size);
                     }
+<<<<<<< HEAD
                 }
             }
+=======
+                }            
+            }        
+>>>>>>> ad160026038d5f241cd43bfe8a3528cd5afb7881
         }
     }
     return {};
