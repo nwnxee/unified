@@ -1026,7 +1026,7 @@ void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox)
     string sFunc = "UpdateSkyBox";
 
     NWNX_PushArgumentInt(nSkyBox);
-    NWNX_PushArgumentObject(oPlayer);
+    NWNX_PushArgumentObject(oPlayer);    
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
