@@ -1030,7 +1030,6 @@ void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-
 void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogColor)
 {
     string sFunc = "UpdateFogColor";

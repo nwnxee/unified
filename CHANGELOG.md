@@ -39,6 +39,9 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: GetNumSubscribers()
 - Object: SetConversationPrivate()
 - Player: UpdateWind();
+- Player: UpdateSkyBox();
+- Player: UpdateFogColor();
+- Player: UpdateFogAmount();
 - Regex: Match()
 
 ### Changed
