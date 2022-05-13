@@ -1025,19 +1025,11 @@ void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox)
 {
     string sFunc = "UpdateSkyBox";
 
-    NWNX_PushArgumentInt(nSkyBox);
-<<<<<<< .merge_file_a34864
+    NWNX_PushArgumentInt(nSkyBox);<<<<<<< .merge_file_a34864
     NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-=======
-    NWNX_PushArgumentObject(oPlayer);    
-    NWNX_CallFunction(NWNX_Player, sFunc);
-}
-
-
->>>>>>> .merge_file_a36044
 void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogColor)
 {
     string sFunc = "UpdateFogColor";
