@@ -1666,3 +1666,107 @@ NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack UpdateSkyBox(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
+        {
+            if  (auto* pArea = pPlayerCreature->GetArea())
+            {
+                const auto skyBox = args.extract<int32_t>();
+                const auto oidArea = pArea->m_idSelf; 
+                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                {
+                    pMessage->CreateWriteMessage(sizeof(skyBox) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
+                    pMessage->WriteINT(skyBox);
+                    pMessage->WriteOBJECTIDServer(oidArea);
+                    uint8_t *buffer;
+                    uint32_t size;
+                    if (pMessage->GetWriteMessage(&buffer, &size))
+                    {
+                        pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                                                            Constants::MessageMajor::Area,
+                                                            Constants::MessageAreaMinor::UpdateSkyBox,
+                                                            buffer, size);
+                    }
+                }    
+            }
+        }
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack UpdateFogColor(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {    
+        if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
+        {
+            if  (auto* pArea = pPlayerCreature->GetArea())
+            {
+                const auto sunFogColor = args.extract<int32_t>();
+                const auto sunBGR = (uint32_t)(((sunFogColor & 0x000000FF) << 16) | (sunFogColor & 0x0000FF00) | ((sunFogColor & 0x00FF0000) >> 16));
+                const auto moonFogColor = args.extract<int32_t>();
+                const auto moonBGR = (uint32_t)(((moonFogColor & 0x000000FF) << 16) | (moonFogColor & 0x0000FF00) | ((moonFogColor & 0x00FF0000) >> 16));
+                //both sunFogColor and moonFogColor need to be converted from RGB to BGR colors, because they'll be written as DWORD.
+                const auto oidArea = pArea->m_idSelf;
+                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                {
+                    pMessage->CreateWriteMessage(sizeof(sunBGR) + sizeof(moonBGR) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
+                    pMessage->WriteDWORD(sunBGR);
+                    pMessage->WriteDWORD(moonBGR);
+                    pMessage->WriteOBJECTIDServer(oidArea);
+                    uint8_t *buffer;
+                    uint32_t size;
+                    if (pMessage->GetWriteMessage(&buffer, &size))
+                    {
+                        pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                                                            Constants::MessageMajor::Area,
+                                                            Constants::MessageAreaMinor::UpdateFogColor,
+                                                            buffer, size);
+                    }
+                }
+            }
+        }
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
+        {    
+            if  (auto* pArea = pPlayerCreature->GetArea())
+            {
+                const auto sunFogAmount = args.extract<int32_t>();
+                ASSERT_OR_THROW(sunFogAmount >= 0);
+                ASSERT_OR_THROW(sunFogAmount <= 255);
+                const auto moonFogAmount = args.extract<int32_t>();
+                ASSERT_OR_THROW(moonFogAmount >= 0);
+                ASSERT_OR_THROW(moonFogAmount <= 255);
+                const auto oidArea = pArea->m_idSelf;
+                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                {
+                    pMessage->CreateWriteMessage(sizeof(sunFogAmount) + sizeof(moonFogAmount) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
+                    pMessage->WriteBYTE(sunFogAmount);
+                    pMessage->WriteBYTE(moonFogAmount);
+                    pMessage->WriteOBJECTIDServer(oidArea);
+                    uint8_t *buffer;
+                    uint32_t size;
+                    if (pMessage->GetWriteMessage(&buffer, &size))
+                    {
+                        pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                                                            Constants::MessageMajor::Area,
+                                                            Constants::MessageAreaMinor::UpdateFogAmount,
+                                                            buffer, size);
+                    }
+                }
+            }
+        }
+    }
+    return {};
+}
