@@ -1,5 +1,11 @@
 var NAVTREEINDEX12 =
 {
+"nwnx__redis__short_8nss.html#af115823d095e003d6c42e931106698f4":[4,0,3,28,0,3,166],
+"nwnx__redis__short_8nss.html#af12666ce4befe1fa83fc09de1e84f1f3":[4,0,3,28,0,3,185],
+"nwnx__redis__short_8nss.html#af15545f2b874e9ee02b6d3cc37434fa8":[4,0,3,28,0,3,30],
+"nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4":[4,0,3,28,0,3,49],
+"nwnx__redis__short_8nss.html#af450c0c8bdbfdd4b3b1e75b1d1240eb7":[4,0,3,28,0,3,174],
+"nwnx__redis__short_8nss.html#af497f2f31bf361e09929e1e6399c4b72":[4,0,3,28,0,3,127],
 "nwnx__redis__short_8nss.html#af628aa6c7cd81d264a9e22be1ab2d0c9":[4,0,3,28,0,3,196],
 "nwnx__redis__short_8nss.html#af89de605c6eecc1614b0b0d699a88092":[4,0,3,28,0,3,140],
 "nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b":[4,0,3,28,0,3,51],
@@ -243,11 +249,5 @@ var NAVTREEINDEX12 =
 "structNWNX__Tileset__TileEdgesAndCorners.html#a565fa43dc398344172a3168be6184bbd":[0,41,4,2],
 "structNWNX__Tileset__TileEdgesAndCorners.html#aa985b5db2627da932f350d7d5a0138c3":[0,41,4,4],
 "structNWNX__Tileset__TileEdgesAndCorners.html#ae49ce3f6be1e4a5afbb34fe31d48c354":[0,41,4,7],
-"structNWNX__Tileset__TileEdgesAndCorners.html#aeca0c8be1795dafc4f6cfc34acbc60a6":[0,41,4,1],
-"structNWNX__Tileset__TileEdgesAndCorners.html#afdf284cd807a36ca64ade8a549f43b92":[0,41,4,6],
-"structNWNX__Tileset__TilesetData.html":[0,41,2],
-"structNWNX__Tileset__TilesetData.html#a010d411b92f707702a3a40cebcb37f67":[0,41,2,4],
-"structNWNX__Tileset__TilesetData.html#a09fa4cfdc5ae13b61f5d1099b03e7b3d":[0,41,2,3],
-"structNWNX__Tileset__TilesetData.html#a21acdd4c8bf99eb5df29977b805fd8c0":[0,41,2,5],
-"structNWNX__Tileset__TilesetData.html#a28a1cc6ee6bb8ae51286c357f429a548":[0,41,2,11]
+"structNWNX__Tileset__TileEdgesAndCorners.html#aeca0c8be1795dafc4f6cfc34acbc60a6":[0,41,4,1]
 };
