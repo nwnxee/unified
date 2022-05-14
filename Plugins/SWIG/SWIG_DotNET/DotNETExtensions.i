@@ -83,3 +83,10 @@ SWIG_DOTNET_EXTENSIONS
     return StringHelper.ReadNullTerminatedString(GetResRefStr());
   }
 }
+
+// Destructor method
+%define SWIG_DOTNET_DESTRUCTORS(TypeName)
+%extend TypeName {
+    void _Destructor() { $self->~TypeName(); }
+}
+%enddef
