@@ -5,6 +5,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSBarter.hpp"
+#include "API/CNWSItem.hpp"
 
 namespace Events {
 
@@ -15,6 +16,7 @@ using namespace NWNXLib::Services;
 static Hooks::Hook s_HandlePlayerToServerBarter_StartBarterHook;
 static Hooks::Hook s_SetListAcceptedHook;
 static Hooks::Hook s_SendServerToPlayerBarterCloseBarterHook;
+static Hooks::Hook s_AddItemHook;
 static ObjectID s_initiatorOid;
 static ObjectID s_targetOid;
 
@@ -22,6 +24,7 @@ static int32_t HandlePlayerToServerBarter_StartBarterHook(CNWSMessage*, CNWSPlay
 static void EndedBarter(bool, CNWSBarter*, int32_t);
 static int32_t SetListAcceptedHook(CNWSBarter*, int32_t);
 static int32_t SendServerToPlayerBarterCloseBarterHook(CNWSMessage*, ObjectID, ObjectID, int32_t);
+static int32_t AddItemHook(CNWSBarter*, OBJECT_ID, uint8_t&, uint8_t&);
 
 void BarterEvents() __attribute__((constructor));
 void BarterEvents()
@@ -37,6 +40,11 @@ void BarterEvents()
         s_SendServerToPlayerBarterCloseBarterHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage35SendServerToPlayerBarterCloseBarterEjji,
                 (void*)&SendServerToPlayerBarterCloseBarterHook, Hooks::Order::Earliest);
+    });
+    InitOnFirstSubscribe("NWNX_ON_BARTER_ADD_ITEM_.*", []() {
+        s_AddItemHook = Hooks::HookFunction(
+                Functions::_ZN10CNWSBarter7AddItemEjRhS0_,
+                (void*)&AddItemHook, Hooks::Order::Early);
     });
 }
 
@@ -185,6 +193,34 @@ void EndedBarter(bool before, CNWSBarter *pBarter, int32_t bAccepted)
         PushEventData("BARTER_TARGET", Utils::ObjectIDToString(targetBarter->m_pOwner->m_idSelf));
         SignalEvent(before ? "NWNX_ON_BARTER_END_BEFORE" : "NWNX_ON_BARTER_END_AFTER", initiatorBarter->m_pOwner->m_idSelf);
     }
+}
+
+static int32_t AddItemHook(CNWSBarter *pThis, OBJECT_ID oidItem, uint8_t & xPos, uint8_t & yPos)
+{
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
+    if (!pThis || !pThis->m_pOwner || !pItem)
+        return s_AddItemHook->CallOriginal<int32_t>(pThis, oidItem, &xPos, &yPos);
+
+    int32_t retVal;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("ITEM", Utils::ObjectIDToString(oidItem));
+        PushEventData("BARTER_TARGET", Utils::ObjectIDToString(pThis->m_oidBarrator));
+        return SignalEvent(ev, pThis->m_pOwner->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_BARTER_ADD_ITEM_BEFORE"))
+    {
+        retVal = s_AddItemHook->CallOriginal<int32_t>(pThis, oidItem, &xPos, &yPos);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignal("NWNX_ON_BARTER_ADD_ITEM_AFTER");
+
+    return retVal;
 }
 
 }

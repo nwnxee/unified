@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added skippable event `NWNX_ON_DECREMENT_SPELL_COUNT_{BEFORE|AFTER}` which fires when spell count (Memorized, non-memorized, or spell-like ability) decreases.
 - Events: added skippable event `NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_{BEFORE|AFTER}` which fires when the dm_visualeffect console command is used.
 - Events: added skippable event `NWNX_ON_RUN_EVENT_SCRIPT_{BEFORE|AFTER}` which fires on all object event scripts.
+- Events: added skippable event `NWNX_ON_BARTER_ADD_ITEM_{BEFORE|AFTER}` which fires when an item is added to the barter window.
 
 ##### New Plugins
 - N/A

@@ -926,6 +926,17 @@ _______________________________________
     BARTER_TARGET_ITEM_*          | object | Convert to object with StringToObject(), only in _BEFORE events
 
 _______________________________________
+    ## Barter AddItem Events
+    - NWNX_ON_BARTER_ADD_ITEM_BEFORE
+    - NWNX_ON_BARTER_ADD_ITEM_AFTER
+
+    `OBJECT_SELF` = The player trying to add an item to the barter window
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ITEM                  | object | The item being added
+    BARTER_TARGET         | object | The other player involved in the barter
+_______________________________________
     ## Trap Events
     - NWNX_ON_TRAP_DISARM_BEFORE
     - NWNX_ON_TRAP_DISARM_AFTER
@@ -1619,7 +1630,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Client Export Character event
 /// - Spell events
 /// - QuickChat events
-/// - Barter event (START only)
+/// - Barter event (START/ADD_ITEM only)
 /// - Trap events
 /// - Sticky Player Name event
 /// - Server Character Save Events
