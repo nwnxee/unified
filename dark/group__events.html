@@ -1380,6 +1380,22 @@ Barter End Events</h2>
 </table>
 <hr  />
  <h2><a class="anchor" id="autotoc_md314"></a>
+Barter AddItem Events</h2>
+<ul>
+<li>NWNX_ON_BARTER_ADD_ITEM_BEFORE</li>
+<li>NWNX_ON_BARTER_ADD_ITEM_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player trying to add an item to the barter window</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The item being added  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">BARTER_TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The other player involved in the barter  </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md315"></a>
 Trap Events</h2>
 <ul>
 <li>NWNX_ON_TRAP_DISARM_BEFORE</li>
@@ -1407,7 +1423,7 @@ Trap Events</h2>
 <td class="markdownTableBodyNone">ACTION_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events (not ENTER)  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md315"></a>
+ <h2><a class="anchor" id="autotoc_md316"></a>
 Timing Bar Events</h2>
 <ul>
 <li>NWNX_ON_TIMING_BAR_START_BEFORE</li>
@@ -1427,7 +1443,7 @@ Timing Bar Events</h2>
 <td class="markdownTableBodyNone">DURATION </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Length of time (in milliseconds) the bar is set to last, only in <em>START</em> events  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md316"></a>
+ <h2><a class="anchor" id="autotoc_md317"></a>
 Webhook Events</h2>
 <ul>
 <li>NWNX_ON_WEBHOOK_SUCCESS</li>
@@ -1458,7 +1474,7 @@ Webhook Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="group__webhook.html">NWNX_WebHook</a> plugin to work.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md317"></a>
+ <h2><a class="anchor" id="autotoc_md318"></a>
 Servervault Events</h2>
 <ul>
 <li>NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE</li>
@@ -1479,7 +1495,7 @@ Servervault Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md318"></a>
+ <h2><a class="anchor" id="autotoc_md319"></a>
 Server Character Save Events</h2>
 <ul>
 <li>NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE</li>
@@ -1488,7 +1504,7 @@ Server Character Save Events</h2>
 <p><code>OBJECT_SELF</code> = The player character being saved.</p>
 <dl class="section note"><dt>Note</dt><dd>This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() &amp; ExportAllCharacters() is called.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md319"></a>
+ <h2><a class="anchor" id="autotoc_md320"></a>
 Export Character Events</h2>
 <ul>
 <li>NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE</li>
@@ -1497,7 +1513,7 @@ Export Character Events</h2>
 <p><code>OBJECT_SELF</code> = The player</p>
 <p>Note: This event runs when the player clicks the "Save Character" button in the options menu to export their character to their localvault.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md320"></a>
+ <h2><a class="anchor" id="autotoc_md321"></a>
 Levelling Events</h2>
 <ul>
 <li>NWNX_ON_LEVEL_UP_BEFORE</li>
@@ -1509,7 +1525,7 @@ Levelling Events</h2>
 </ul>
 <p><code>OBJECT_SELF</code> = The creature levelling up or down, automatic is for henchmen levelling</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md321"></a>
+ <h2><a class="anchor" id="autotoc_md322"></a>
 Container Change Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_ITEM_BEFORE</li>
@@ -1526,7 +1542,7 @@ Container Change Events</h2>
 <td class="markdownTableBodyNone">ITEM </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md322"></a>
+ <h2><a class="anchor" id="autotoc_md323"></a>
 Gold Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_GOLD_BEFORE</li>
@@ -1543,7 +1559,7 @@ Gold Events</h2>
 </table>
 <dl class="section warning"><dt>Warning</dt><dd>While these events are skippable, you should be very careful about doing so. It's very easy to create situations where players can dupe their gold or worse.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md323"></a>
+ <h2><a class="anchor" id="autotoc_md324"></a>
 PVP Attitude Change Events</h2>
 <ul>
 <li>NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE</li>
@@ -1559,7 +1575,7 @@ PVP Attitude Change Events</h2>
 <td class="markdownTableBodyNone">ATTITUDE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">0 = Dislike, 1 = Like  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md324"></a>
+ <h2><a class="anchor" id="autotoc_md325"></a>
 Input Walk To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE</li>
@@ -1581,7 +1597,7 @@ Input Walk To Events</h2>
 <td class="markdownTableBodyNone">RUN_TO_POINT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if player is running, FALSE if player is walking (eg when shift clicking)  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md325"></a>
+ <h2><a class="anchor" id="autotoc_md326"></a>
 Material Change Events</h2>
 <ul>
 <li>NWNX_ON_MATERIALCHANGE_BEFORE</li>
@@ -1596,7 +1612,7 @@ Material Change Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>: After a PC transitions to a new area, a surface material change event won't fire until after the PC moves.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md326"></a>
+ <h2><a class="anchor" id="autotoc_md327"></a>
 Input Attack Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE</li>
@@ -1616,7 +1632,7 @@ Input Attack Events</h2>
 <td class="markdownTableBodyNone">ADD_TO_FRONT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE / FALSE  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md327"></a>
+ <h2><a class="anchor" id="autotoc_md328"></a>
 Input Force Move To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE</li>
@@ -1630,7 +1646,7 @@ Input Force Move To Events</h2>
 <td class="markdownTableBodyNone">TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md328"></a>
+ <h2><a class="anchor" id="autotoc_md329"></a>
 Input Cast Spell Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_CAST_SPELL_BEFORE</li>
@@ -1673,7 +1689,7 @@ Input Cast Spell Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event runs the moment a creature starts casting</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md329"></a>
+ <h2><a class="anchor" id="autotoc_md330"></a>
 Input Keyboard Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_KEYBOARD_BEFORE</li>
@@ -1689,7 +1705,7 @@ Input Keyboard Events</h2>
 <dl class="section note"><dt>Note</dt><dd>To stop the player from moving you can do something like below, since normal immobilizing effects stop the client from sending input.</dd></dl>
 <p>location locPlayer = GetLocation(oPlayer); object oBoulder = CreateObject(OBJECT_TYPE_PLACEABLE, "plc_boulder", locPlayer, FALSE, "TESTPLC"); NWNX_Object_SetPosition(oPlayer, GetPositionFromLocation(locPlayer)); ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md330"></a>
+ <h2><a class="anchor" id="autotoc_md331"></a>
 Input Keyboard Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE</li>
@@ -1704,7 +1720,7 @@ Input Keyboard Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event also fires when a non-dm player presses the spacebar.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md331"></a>
+ <h2><a class="anchor" id="autotoc_md332"></a>
 Object Lock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_LOCK_BEFORE</li>
@@ -1720,7 +1736,7 @@ Object Lock Events</h2>
 <td class="markdownTableBodyNone">ACTION_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md332"></a>
+ <h2><a class="anchor" id="autotoc_md333"></a>
 Object Unlock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_UNLOCK_BEFORE</li>
@@ -1740,7 +1756,7 @@ Object Unlock Events</h2>
 <td class="markdownTableBodyNone">ACTION_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md333"></a>
+ <h2><a class="anchor" id="autotoc_md334"></a>
 UUID Collision Events</h2>
 <ul>
 <li>NWNX_ON_UUID_COLLISION_BEFORE</li>
@@ -1755,7 +1771,7 @@ UUID Collision Events</h2>
 </table>
 <p>Note: To get the existing object with <code>UUID</code> you can use GetObjectByUUID(), be aware that this event runs before the object is added to the world which means many functions (for example <code>GetArea(OBJECT_SELF)</code>) will not work.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md334"></a>
+ <h2><a class="anchor" id="autotoc_md335"></a>
 Resource Events</h2>
 <ul>
 <li>NWNX_ON_RESOURCE_ADDED</li>
@@ -1775,7 +1791,7 @@ Resource Events</h2>
 </table>
 <p>Note: These events fire when a file gets added/removed/modified in resource folders like /nwnx, /development and those defined in the Custom Resman Definition File</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md335"></a>
+ <h2><a class="anchor" id="autotoc_md336"></a>
 ELC Events</h2>
 <ul>
 <li>NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE</li>
@@ -1784,7 +1800,7 @@ ELC Events</h2>
 <p><code>OBJECT_SELF</code> = The player</p>
 <p>Note: NWNX_ELC must be loaded for these events to work. The <code>_AFTER</code> event only fires if the character successfully completes validation.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md336"></a>
+ <h2><a class="anchor" id="autotoc_md337"></a>
 Quickbar Events</h2>
 <ul>
 <li>NWNX_ON_QUICKBAR_SET_BUTTON_BEFORE</li>
@@ -1801,7 +1817,7 @@ Quickbar Events</h2>
 </table>
 <p>Note: Skipping the event does not prevent the client from changing the button clientside, the change won't however be saved to the bic file.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md337"></a>
+ <h2><a class="anchor" id="autotoc_md338"></a>
 Calendar Events</h2>
 <ul>
 <li>NWNX_ON_CALENDAR_HOUR</li>
@@ -1821,7 +1837,7 @@ Calendar Events</h2>
 <td class="markdownTableBodyNone">NEW </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The (Hour/Day/Month/Year) after the change. Not available in DAWN/DUSK.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md338"></a>
+ <h2><a class="anchor" id="autotoc_md339"></a>
 Broadcast Spell Cast Events</h2>
 <ul>
 <li>NWNX_ON_BROADCAST_CAST_SPELL_BEFORE</li>
@@ -1839,7 +1855,7 @@ Broadcast Spell Cast Events</h2>
 <td class="markdownTableBodyNone">FEAT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">65535 if a feat wasn't used, otherwise the feat ID  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md339"></a>
+ <h2><a class="anchor" id="autotoc_md340"></a>
 RunScript Debug Event</h2>
 <ul>
 <li>NWNX_ON_DEBUG_RUN_SCRIPT_BEFORE</li>
@@ -1856,7 +1872,7 @@ RunScript Debug Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event also runs for players that do not have permission to execute the command.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md340"></a>
+ <h2><a class="anchor" id="autotoc_md341"></a>
 RunScriptChunk Debug Event</h2>
 <ul>
 <li>NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_BEFORE</li>
@@ -1875,7 +1891,7 @@ RunScriptChunk Debug Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event also runs for players that do not have permission to execute the command.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md341"></a>
+ <h2><a class="anchor" id="autotoc_md342"></a>
 Play Visual Effect Event</h2>
 <ul>
 <li>NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE</li>
@@ -1893,7 +1909,7 @@ Play Visual Effect Event</h2>
 <p>DURATION | float | TARGET_POSITION_X | float | Will be 0.0 when playing visual effects on an object TARGET_POSITION_Y | float | Will be 0.0 when playing visual effects on an object TARGET_POSITION_Z | float | Will be 0.0 when playing visual effects on an object</p>
 <dl class="section note"><dt>Note</dt><dd>This is the <code>dm_visualeffect</code> console command. <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> when playing visual effects at a position in an area.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md342"></a>
+ <h2><a class="anchor" id="autotoc_md343"></a>
 Buy/Sell Store Events</h2>
 <ul>
 <li>NWNX_ON_STORE_REQUEST_BUY_BEFORE</li>
@@ -1915,7 +1931,7 @@ Buy/Sell Store Events</h2>
 <td class="markdownTableBodyNone">RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE whether the request was successful. Only in *_AFTER events.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md343"></a>
+ <h2><a class="anchor" id="autotoc_md344"></a>
 Server Send Area Events</h2>
 <ul>
 <li>NWNX_ON_SERVER_SEND_AREA_BEFORE</li>
@@ -1931,7 +1947,7 @@ Server Send Area Events</h2>
 <td class="markdownTableBodyNone">PLAYER_NEW_TO_MODULE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if it's the player's first time logging into the server since a restart  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md344"></a>
+ <h2><a class="anchor" id="autotoc_md345"></a>
 Journal Open/Close Events</h2>
 <ul>
 <li>NWNX_ON_JOURNAL_OPEN_BEFORE</li>
@@ -1942,7 +1958,7 @@ Journal Open/Close Events</h2>
 <p><code>OBJECT_SELF</code> = The player</p>
 <p>Event Data Tag | Type | Notes -------------------&mdash;|-----&mdash;|----&mdash;</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md345"></a>
+ <h2><a class="anchor" id="autotoc_md346"></a>
 Input Emote Event</h2>
 <ul>
 <li>NWNX_ON_INPUT_EMOTE_BEFORE</li>
@@ -1957,7 +1973,7 @@ Input Emote Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>Some emotes have a voiceline that will still play when the event is skipped. These voicelines can be skipped in the NWNX_ON_QUICKCHAT_* event.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md346"></a>
+ <h2><a class="anchor" id="autotoc_md347"></a>
 Combat Damage Resistance/Reduction Broken Event</h2>
 <ul>
 <li>NWNX_ON_COMBAT_DR_BROKEN_BEFORE</li>
@@ -1972,7 +1988,7 @@ Combat Damage Resistance/Reduction Broken Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event only fires when DR gets broken in combat.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md347"></a>
+ <h2><a class="anchor" id="autotoc_md348"></a>
 Creature Unpossess Familiar Event</h2>
 <ul>
 <li>NWNX_ON_UNPOSSESS_FAMILIAR_BEFORE</li>
@@ -1986,7 +2002,7 @@ Creature Unpossess Familiar Event</h2>
 <td class="markdownTableBodyNone">FAMILIAR </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The familiar. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md348"></a>
+ <h2><a class="anchor" id="autotoc_md349"></a>
 Client Levelup Begin Event</h2>
 <ul>
 <li>NWNX_ON_CLIENT_LEVEL_UP_BEGIN_BEFORE</li>
@@ -1995,7 +2011,7 @@ Client Levelup Begin Event</h2>
 <p><code>OBJECT_SELF</code> = The player clicking the levelup button</p>
 <p>Event Data Tag | Type | Notes -------------------&mdash;|-----&mdash;|----&mdash;</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md349"></a>
+ <h2><a class="anchor" id="autotoc_md350"></a>
 Creature Possess Familiar Event</h2>
 <ul>
 <li>NWNX_ON_POSSESS_FAMILIAR_BEFORE</li>
@@ -2009,7 +2025,7 @@ Creature Possess Familiar Event</h2>
 <td class="markdownTableBodyNone">FAMILIAR </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The familiar. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md350"></a>
+ <h2><a class="anchor" id="autotoc_md351"></a>
 Player CharacterSheet Permitted Event</h2>
 <ul>
 <li>NWNX_ON_CHARACTER_SHEET_PERMITTED_BEFORE</li>
@@ -2024,7 +2040,7 @@ Player CharacterSheet Permitted Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>When skipping this event, be sure to set the event result.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md351"></a>
+ <h2><a class="anchor" id="autotoc_md352"></a>
 Player CharacterSheet Open/Close Events</h2>
 <ul>
 <li>NWNX_ON_CHARACTER_SHEET_OPEN_BEFORE</li>
@@ -2040,7 +2056,7 @@ Player CharacterSheet Open/Close Events</h2>
 <td class="markdownTableBodyNone">TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md352"></a>
+ <h2><a class="anchor" id="autotoc_md353"></a>
 Player Device Property Events</h2>
 <ul>
 <li>NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE</li>
@@ -2058,7 +2074,7 @@ Player Device Property Events</h2>
 <td class="markdownTableBodyNone">NEW_VALUE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md353"></a>
+ <h2><a class="anchor" id="autotoc_md354"></a>
 Input Drop Item Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_DROP_ITEM_BEFORE</li>
@@ -2078,7 +2094,7 @@ Input Drop Item Events</h2>
 <td class="markdownTableBodyNone">POS_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md354"></a>
+ <h2><a class="anchor" id="autotoc_md355"></a>
 Decrement Spell Count Events</h2>
 <ul>
 <li>NWNX_ON_DECREMENT_SPELL_COUNT_BEFORE</li>
@@ -2100,7 +2116,7 @@ Decrement Spell Count Events</h2>
 <td class="markdownTableBodyNone">CASTERLEVEL </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Only returns for spell-like abilities  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md355"></a>
+ <h2><a class="anchor" id="autotoc_md356"></a>
 EventScript Events</h2>
 <ul>
 <li>NWNX_ON_RUN_EVENT_SCRIPT_BEFORE</li>
@@ -2126,7 +2142,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01713">1713</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01724">1724</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2165,7 +2181,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01722">1722</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01733">1733</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2211,7 +2227,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01731">1731</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01742">1742</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2257,7 +2273,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01741">1741</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01752">1752</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2288,7 +2304,7 @@ EventScript Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01751">1751</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01762">1762</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2319,7 +2335,7 @@ EventScript Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01760">1760</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01771">1771</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2340,7 +2356,7 @@ EventScript Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01770">1770</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01781">1781</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2378,7 +2394,7 @@ EventScript Events</h2>
 <li>Client Export Character event</li>
 <li>Spell events</li>
 <li>QuickChat events</li>
-<li>Barter event (START only)</li>
+<li>Barter event (START/ADD_ITEM only)</li>
 <li>Trap events</li>
 <li>Sticky Player Name event</li>
 <li>Server Character Save Events</li>
@@ -2403,7 +2419,7 @@ EventScript Events</h2>
 <li>EventScript event </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01779">1779</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01790">1790</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2439,7 +2455,7 @@ EventScript Events</h2>
 <li>CharacterSheetPermitted event -&gt; "1" allow the player to view the character sheet or "0" to disallow </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01786">1786</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01797">1797</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2460,7 +2476,7 @@ EventScript Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01794">1794</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01805">1805</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2497,7 +2513,7 @@ EventScript Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript(Chunk) If enabled, sEvent for sScript(Chunk) will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01802">1802</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01813">1813</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2535,7 +2551,7 @@ EventScript Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01812">1812</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01823">1823</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2573,7 +2589,7 @@ EventScript Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript(Chunk). </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01822">1822</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01833">1833</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2618,7 +2634,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01832">1832</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01843">1843</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2658,7 +2674,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01841">1841</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01852">1852</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2698,7 +2714,7 @@ EventScript Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01850">1850</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01861">1861</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2727,7 +2743,7 @@ EventScript Events</h2>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of subscribers sEvent has or 0 on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01859">1859</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01870">1870</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2737,7 +2753,7 @@ EventScript Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat May 14 2022 07:58:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue May 24 2022 09:30:13 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
