@@ -46,6 +46,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` | true or false | Fixes the DM creature selection box not showing up when player party control is off. |
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
 | `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG` | true or false | Fixes a bug where multiclass xp penalties are calculated incorrectly. |
+| `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
 
 ## Environment variable values
 
