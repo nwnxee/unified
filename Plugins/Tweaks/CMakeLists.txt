@@ -35,4 +35,5 @@ add_plugin(Tweaks
     "SummonAssociateUseComputeSafeLocation.cpp"
     "TURDByCDKey.cpp"
     "UnhardcodeShields.cpp"
+    "UncapDamageResistanceDamageFlags.cpp"
     "PreventAttackBonusBypassingReductions.cpp")
