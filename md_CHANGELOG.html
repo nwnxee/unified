@@ -113,6 +113,7 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION</code> to fix a rare issue where triggers/traps fire enter events without a creature inside.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG</code> to fix a bug where multiclass xp penalties are calculated incorrectly.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS</code> to uncap the compounded damage type flags of EffectDamageResistance().</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_RESOLVE_SPECIAL_ATTACK_DAMAGE</code> to fix special attacks dealing damage on a miss.</li>
 <li>Optimizations: added <code>NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG</code> to fix a bug where VFXs keep getting reapplied to placeables.</li>
 <li>Optimizations: added <code>NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS</code> to cache script chunks after first execution.</li>
 <li>Events: added skippable event <code>NWNX_ON_INPUT_DROP_ITEM_{BEFORE|AFTER}</code> which fires when a player attempts to drop an item.</li>
@@ -1328,7 +1329,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed May 25 2022 19:42:47 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Jun 17 2022 13:31:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
