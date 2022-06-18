@@ -3390,3 +3390,41 @@ NWNX_EXPORT ArgumentStack AddCastSpellActions(ArgumentStack&& args)
 
     return false;
 }
+
+NWNX_EXPORT ArgumentStack GetSpellUsesLeft(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        auto spellId = args.extract<int32_t>();
+          ASSERT_OR_THROW(spellId >= 0);
+        auto multiClass = args.extract<int32_t>();
+          ASSERT_OR_THROW(multiClass >= 0);
+          ASSERT_OR_THROW(multiClass < 3);
+        auto domainLevel = args.extract<int32_t>();
+          ASSERT_OR_THROW(domainLevel >= 0);
+        auto metaMagic = args.extract<int32_t>();
+          ASSERT_OR_THROW(metaMagic >= 0);
+
+        return pCreature->m_pStats->GetSpellUsesLeft(spellId, multiClass, domainLevel, metaMagic);
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetMemorizedSpellReadyCount(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        auto spellId = args.extract<int32_t>();
+          ASSERT_OR_THROW(spellId >= 0);
+        auto multiClass = args.extract<int32_t>();
+          ASSERT_OR_THROW(multiClass >= 0);
+          ASSERT_OR_THROW(multiClass < 3);
+        auto metaMagic = args.extract<int32_t>();
+          ASSERT_OR_THROW(metaMagic >= 0);
+
+        return pCreature->m_pStats->GetMemorizedSpellReadyCount(multiClass, spellId, metaMagic);
+    }
+
+    return 0;
+}

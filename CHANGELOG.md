@@ -35,6 +35,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Creature: GetBodyBag()
 - Creature: GetMovementRateFactorCap()
 - Creature: AddCastSpellActions()
+- Creature: GetSpellUsesLeft()
+- Creature: GetMemorizedSpellReadyCount()
 - Effect: AccessorizeVisualEffect()
 - Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()
