@@ -1046,6 +1046,25 @@ object NWNX_Creature_GetBodyBag(object oCreature);
 /// @return TRUE if the action was successfully added to oCreature's action queue.
 int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector vTargetLocation, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE, int nDomainLevel = 0, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstant = FALSE, int bClearActions = FALSE, int bAddToFront = FALSE);
 
+/// @brief Get the number of uses left of a spell.
+/// @note This function is for caster classes that don't need to memorize spells.
+/// @param oCreature The creature.
+/// @param nSpellID The spell ID.
+/// @param nMultiClass The position of the class to check, 0-2
+/// @param nDomainLevel The domain level if checking a domain spell.
+/// @param nMetaMagic A METAMAGIC_* constant.
+/// @return The number of spell uses left or 0 on error.
+int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE);
+
+/// @brief Get the number of memorized ready spells by spellid.
+/// @note This function is for caster classes that need to memorize spells.
+/// @param oCreature The creature.
+/// @param nSpellID The spell ID.
+/// @param nMultiClass The position of the class to check, 0-2
+/// @param nMetaMagic A METAMAGIC_* constant.
+/// @return The number of spell uses left or 0 on error.
+int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2658,6 +2677,33 @@ int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector v
     NWNX_PushArgumentFloat(vTargetLocation.y);
     NWNX_PushArgumentFloat(vTargetLocation.x);
     NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE)
+{
+    string sFunc = "GetSpellUsesLeft";
+
+    NWNX_PushArgumentInt(nMetaMagic);
+    NWNX_PushArgumentInt(nDomainLevel);
+    NWNX_PushArgumentInt(nMultiClass);
+    NWNX_PushArgumentInt(nSpellID);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE)
+{
+    string sFunc = "GetMemorizedSpellReadyCount";
+
+    NWNX_PushArgumentInt(nMetaMagic);
+    NWNX_PushArgumentInt(nMultiClass);
+    NWNX_PushArgumentInt(nSpellID);
     NWNX_PushArgumentObject(oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
