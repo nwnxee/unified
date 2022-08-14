@@ -26,36 +26,36 @@ struct CServerAIEventNodeComparator
 {
     bool operator()(const CServerAIEventNode& lhs, const CServerAIEventNode& rhs) const
     {
-        return (lhs.m_nCalendarDay == rhs.m_nCalendarDay) ? (lhs.m_nTimeOfDay > rhs.m_nTimeOfDay) : lhs.m_nCalendarDay > rhs.m_nCalendarDay;
+        return (lhs.m_nCalendarDay == rhs.m_nCalendarDay) ? (lhs.m_nTimeOfDay > rhs.m_nTimeOfDay) : (lhs.m_nCalendarDay > rhs.m_nCalendarDay);
     }
 };
 
-std::priority_queue<CServerAIEventNode, std::vector<CServerAIEventNode>, CServerAIEventNodeComparator> g_event_queue;
+static std::priority_queue<CServerAIEventNode, std::vector<CServerAIEventNode>, CServerAIEventNodeComparator> s_event_queue;
 
-void ClearEventQueue(CServerAIMaster*)
+static void ClearEventQueue(CServerAIMaster*)
 {
-    g_event_queue = {};
+    s_event_queue = {};
 }
 
-BOOL AddEventAbsoluteTime(CServerAIMaster*, uint32_t nCalendarDay, uint32_t nTimeOfDay, OBJECT_ID nCallerObjectId, OBJECT_ID nObjectId, uint32_t nEventId, void *pEventData)
+static BOOL AddEventAbsoluteTime(CServerAIMaster*, uint32_t nCalendarDay, uint32_t nTimeOfDay, OBJECT_ID nCallerObjectId, OBJECT_ID nObjectId, uint32_t nEventId, void *pEventData)
 {
-    g_event_queue.emplace(CServerAIEventNode { nCalendarDay, nTimeOfDay, nCallerObjectId, nObjectId, nEventId, pEventData });
+    s_event_queue.emplace(CServerAIEventNode { nCalendarDay, nTimeOfDay, nCallerObjectId, nObjectId, nEventId, pEventData });
     return true;
 }
 
-BOOL EventPending(CServerAIMaster* ai, uint32_t nCalendarDay, uint32_t nTimeOfDay)
+static BOOL EventPending(CServerAIMaster* ai, uint32_t nCalendarDay, uint32_t nTimeOfDay)
 {
-    if (g_event_queue.empty()) return false;
+    if (s_event_queue.empty()) return false;
 
-    const CServerAIEventNode& eventNode = g_event_queue.top();
+    const CServerAIEventNode& eventNode = s_event_queue.top();
     return ai->m_pExoAppInternal->m_pWorldTimer->CompareWorldTimes(eventNode.m_nCalendarDay, eventNode.m_nTimeOfDay, nCalendarDay, nTimeOfDay) <= 0;
 }
 
-BOOL GetPendingEvent(CServerAIMaster*, uint32_t *nCalendarDay, uint32_t *nTimeOfDay, OBJECT_ID *nCallerObjectId, OBJECT_ID *nObjectId, uint32_t *nEventId, void **pEventData)
+static BOOL GetPendingEvent(CServerAIMaster*, uint32_t *nCalendarDay, uint32_t *nTimeOfDay, OBJECT_ID *nCallerObjectId, OBJECT_ID *nObjectId, uint32_t *nEventId, void **pEventData)
 {
-    if (g_event_queue.empty()) return false;
+    if (s_event_queue.empty()) return false;
 
-    const CServerAIEventNode& eventNode = g_event_queue.top();
+    const CServerAIEventNode& eventNode = s_event_queue.top();
 
     *nCalendarDay     = eventNode.m_nCalendarDay;
     *nTimeOfDay       = eventNode.m_nTimeOfDay;
@@ -64,7 +64,7 @@ BOOL GetPendingEvent(CServerAIMaster*, uint32_t *nCalendarDay, uint32_t *nTimeOf
     *nEventId         = eventNode.m_nEventId;
     *pEventData       = eventNode.m_pEventData;
 
-    g_event_queue.pop();
+    s_event_queue.pop();
     return true; 
 }
 
@@ -84,11 +84,11 @@ void EventMasterPriorityQueue()
 
     if (Config::Get<bool>("EVENT_MASTER_PRIORITY_QUEUE", false))
     {
-        static Hooks::Hook _0 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster15ClearEventQueueEv, (void*)&ClearEventQueue, Hooks::Order::Early);
-        static Hooks::Hook _1 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster20AddEventAbsoluteTimeEjjjjjPv, (void*)&AddEventAbsoluteTime, Hooks::Order::Early);
-        static Hooks::Hook _2 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster27AddEventAbsoluteTimeViaTailEjjjjjPv, (void*)&AddEventAbsoluteTime, Hooks::Order::Early);
-        static Hooks::Hook _3 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster12EventPendingEjj, (void*)&EventPending, Hooks::Order::Early);
-        static Hooks::Hook _4 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster15GetPendingEventEPjS0_S0_S0_S0_PPv, (void*)&GetPendingEvent, Hooks::Order::Early);
+        static Hooks::Hook _0 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster15ClearEventQueueEv, (void*)&ClearEventQueue, Hooks::Order::Final);
+        static Hooks::Hook _1 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster20AddEventAbsoluteTimeEjjjjjPv, (void*)&AddEventAbsoluteTime, Hooks::Order::Final);
+        static Hooks::Hook _2 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster27AddEventAbsoluteTimeViaTailEjjjjjPv, (void*)&AddEventAbsoluteTime, Hooks::Order::Final);
+        static Hooks::Hook _3 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster12EventPendingEjj, (void*)&EventPending, Hooks::Order::Final);
+        static Hooks::Hook _4 = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster15GetPendingEventEPjS0_S0_S0_S0_PPv, (void*)&GetPendingEvent, Hooks::Order::Final);
     }
 }
 
