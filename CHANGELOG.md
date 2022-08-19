@@ -45,6 +45,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: UnsubscribeEventScriptChunk()
 - Events: GetNumSubscribers()
 - Object: SetConversationPrivate()
+- Object: SetAoEObjectRadius()
 - Player: UpdateWind();
 - Player: UpdateSkyBox();
 - Player: UpdateFogColor();

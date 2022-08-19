@@ -392,6 +392,11 @@ float NWNX_Object_GetAoEObjectDurationRemaining(object oAoE);
 /// @param bPrivate TRUE/FALSE.
 void NWNX_Object_SetConversationPrivate(object oObject, int bPrivate);
 
+/// @brief Sets the radius of a circle AoE object.
+/// @param oAoE The AreaOfEffect object.
+/// @param fRadius The radius, must be bigger than 0.0f.
+void NWNX_Object_SetAoEObjectRadius(object oAoE, float fRadius);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -971,5 +976,14 @@ void NWNX_Object_SetConversationPrivate(object oObject, int bPrivate)
     NWNX_PushArgumentInt(bPrivate);
     NWNX_PushArgumentObject(oObject);
 
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetAoEObjectRadius(object oAoE, float fRadius)
+{
+    string sFunc = "SetAoEObjectRadius";
+
+    NWNX_PushArgumentFloat(fRadius);
+    NWNX_PushArgumentObject(oAoE);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
