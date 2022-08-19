@@ -1062,3 +1062,14 @@ NWNX_EXPORT ArgumentStack SetAoEObjectRadius(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetAoEObjectRadius(ArgumentStack&& args)
+{
+    if (auto *pAoE = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args)))
+    {
+        if (pAoE->m_nShape == 0)
+            return pAoE->m_fRadius;
+    }
+
+    return 0.0f;
+}
