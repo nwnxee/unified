@@ -57,6 +57,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetAoEObjectDurationRemaining", "group__object.html#ga2009bb51273e2aba083895b9293c1d6b", null ],
     [ "NWNX_Object_SetConversationPrivate", "group__object.html#ga1a1f5efc6ea499ee3d2fd59e93f0d67a", null ],
     [ "NWNX_Object_SetAoEObjectRadius", "group__object.html#ga44a54cf581f28ab5ed0f5cd23b82548f", null ],
+    [ "NWNX_Object_GetAoEObjectRadius", "group__object.html#gaf28147e3eb4479dcb079e7eef439707e", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],

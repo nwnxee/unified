@@ -48,13 +48,13 @@ var NAVTREEINDEX =
 "group__data__array__find.html#gae5c0ac9d588b61cba53f296fcdee56b6",
 "group__events.html#events",
 "group__nwnx.html#autotoc_md167",
-"group__player.html#ga2fd3bac025586f796ff84d1037e00582",
-"group__race.html#gaab7fe982751745821c2b1dd3e82ae243",
-"group__tileset.html#gae1ca3b9434ed1c2f61456d78980ed5dd",
-"inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676",
-"nwnx__redis_8nss.html#ad6511b4abb1882077f79730d2bc0e56c",
-"nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85",
-"structNWNX__Tileset__TileEdgesAndCorners.html#a4b3593031bb6088c4e772c565efb23b5"
+"group__player.html#ga2f504adb87788d80bbecd6d38943659e",
+"group__race.html#gaa582f61c2877b0d4f74baf31521986d5",
+"group__tileset.html#gad5bfecaa36b537ace241662b2fa715af",
+"inc__array_8nss.html#a6cf84d080907d7e52d059d5669d74c24",
+"nwnx__redis_8nss.html#ad379ac93ae673b856a34cad1707b7bac",
+"nwnx__redis__short_8nss.html#aeb7b0168798b40a181627f3c73faf968",
+"structNWNX__Tileset__TileEdgesAndCorners.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
