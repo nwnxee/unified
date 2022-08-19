@@ -1049,3 +1049,16 @@ NWNX_EXPORT ArgumentStack SetConversationPrivate(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack SetAoEObjectRadius(ArgumentStack&& args)
+{
+    if (auto *pAoE = Utils::AsNWSAreaOfEffectObject(Utils::PopObject(args)))
+    {
+        const auto radius = args.extract<float>();
+          ASSERT_OR_THROW(radius > 0.0f);
+
+        if (pAoE->m_nShape == 0)
+            pAoE->SetShape(0, radius);
+    }
+
+    return {};
+}
