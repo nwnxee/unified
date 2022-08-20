@@ -3,4 +3,5 @@ add_plugin(Experimental
     "DisableLevelUpValidation.cpp"
     "SuppressPlayerLoginInfo.cpp"
     "UnhardcodeRangerDualWield.cpp"
-    "PlayerHitpointsAsPercentage.cpp")
+    "PlayerHitpointsAsPercentage.cpp"
+    "IgnoreModuleVersion.cpp")
