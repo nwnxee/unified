@@ -596,7 +596,7 @@ static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals()
     return NWNXLib::API::Globals::ExportedGlobals;
 }
 
-static void* RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+static void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
 {
     auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
