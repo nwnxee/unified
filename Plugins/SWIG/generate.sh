@@ -12,6 +12,8 @@ echo "%{" > $NWNXLIB_SWG
 find ../../../NWNXLib/API -type f -name '*.hpp' "${FIND_ARGS[@]}" -printf '#include "%P"\n' | sort >> $NWNXLIB_SWG
 echo "%}" >> $NWNXLIB_SWG
 
+echo "%include NamespaceUsings.i" >> $NWNXLIB_SWG
+
 for include in "${FIRST_INCLUDES[@]}"
 do
     echo "%include \"$include\"" >> $NWNXLIB_SWG
