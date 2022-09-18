@@ -568,9 +568,46 @@ static void NWNXCallFunction()
     Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
 
-static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals()
+static struct NWNXExportedGlobals
 {
-    return NWNXLib::API::Globals::ExportedGlobals;
+    CExoString            *psBuildNumber;
+    CExoString            *psBuildRevision;
+    CExoBase              *pExoBase;
+    CExoResMan            *pExoResMan;
+    CVirtualMachine       *pVirtualMachine;
+    CScriptCompiler       *pScriptCompiler;
+    CAppManager           *pAppManager;
+    CTlkTable             *pTlkTable;
+    CNWRules              *pRules;
+    Task::CExoTaskManager *pExoTaskManager;
+    int32_t                *pbEnableCombatDebugging;
+    int32_t                *pbEnableSavingThrowDebugging;
+    int32_t                *pbEnableMovementSpeedDebugging;
+    int32_t                *pbEnableHitDieDebugging;
+    int32_t                *pbExitProgram;
+} ExportedGlobals;
+static NWNXExportedGlobals GetNWNXExportedGlobals()
+{
+    if (ExportedGlobals.psBuildNumber == nullptr)
+    {
+        ExportedGlobals.psBuildNumber                  = Globals::BuildNumber();
+        ExportedGlobals.psBuildRevision                = Globals::BuildRevision();
+        ExportedGlobals.pExoBase                       = Globals::ExoBase();
+        ExportedGlobals.pExoResMan                     = Globals::ExoResMan();
+        ExportedGlobals.pVirtualMachine                = Globals::VirtualMachine();
+        ExportedGlobals.pScriptCompiler                = Globals::ScriptCompiler();
+        ExportedGlobals.pAppManager                    = Globals::AppManager();
+        ExportedGlobals.pTlkTable                      = Globals::TlkTable();
+        ExportedGlobals.pRules                         = Globals::Rules();
+        ExportedGlobals.pExoTaskManager                = Globals::TaskManager();
+        ExportedGlobals.pbEnableCombatDebugging        = Globals::EnableCombatDebugging();
+        ExportedGlobals.pbEnableSavingThrowDebugging   = Globals::EnableSavingThrowDebugging();
+        ExportedGlobals.pbEnableMovementSpeedDebugging = Globals::EnableMovementSpeedDebugging();
+        ExportedGlobals.pbEnableHitDieDebugging        = Globals::EnableHitDieDebugging();
+        ExportedGlobals.pbExitProgram                  = Globals::ExitProgram();
+    }
+
+    return ExportedGlobals;
 }
 
 static void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
