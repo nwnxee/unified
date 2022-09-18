@@ -33,7 +33,7 @@ void ClientGameObjectUpdateTime()
 
     static Hooks::Hook s_UpdateClientGameObjectsForPlayer = Hooks::HookFunction(
     API::Functions::_ZN21CServerExoAppInternal32UpdateClientGameObjectsForPlayerEP10CNWSPlayerim,
-    (void *) +[](CServerExoAppInternal*, CNWSPlayer *pPlayer, BOOL bForce, uint64_t nCurrentSystemTime) -> void
+    (void *) +[](CServerExoAppInternal *pThis, CNWSPlayer *pPlayer, BOOL bForce, uint64_t nCurrentSystemTime) -> void
     {
         auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
         uint64_t nSystemTime = nCurrentSystemTime;
@@ -76,7 +76,9 @@ void ClientGameObjectUpdateTime()
 
         if (bForce || bTimeForUpdate)
         {
-            pMessage->SendServerToPlayerGameObjUpdate(pPlayer);
+            // TODO: Make play nice with basegame improvements. Or just delete this file?
+            int messageLimit = pThis->GetGameObjectUpdateMessageLimit(NULL);
+            pMessage->SendServerToPlayerGameObjUpdate(pPlayer, API::Constants::OBJECT_INVALID, messageLimit);
 
             if (auto *pObject = pPlayer->GetGameObject())
             {

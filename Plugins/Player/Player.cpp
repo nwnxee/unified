@@ -615,9 +615,9 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
                             {
                                 auto *pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
 
-                                std::swap(*pObjectVisualTransformData, pObject->m_pVisualTransformData);
+                                std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
                                 pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                                std::swap(*pObjectVisualTransformData, pObject->m_pVisualTransformData);
+                                std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
 
                                 return;
                             }

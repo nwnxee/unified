@@ -38,7 +38,7 @@ struct AppearanceOverrideData
     uint8_t hairColor           = 0;
     uint8_t skinColor           = 0;
     uint8_t phenoType           = 0;
-    uint8_t headType            = 0;
+    uint16_t headType           = 0;
     uint16_t soundSet           = 0;
     uint32_t tailType           = 0;
     uint32_t wingType           = 0;
