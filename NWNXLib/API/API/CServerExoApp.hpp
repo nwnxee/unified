@@ -13,6 +13,7 @@
 NWN_API_PROLOGUE(CServerExoApp)
 #endif
 
+struct AdvertLUT;
 struct CCampaignDB;
 struct CConnectionLib;
 struct CGameObject;
@@ -206,6 +207,11 @@ struct CServerExoApp : CBaseExoApp
     void SetSkillBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     CExoString GetHostedPublicInternetAddressAndPort();
     BOOL SetDDCipherForModule(CExoString moduleName);
+    AdvertLUT & GetNWSyncAdvertLUT();
+    void SetGameObjectUpdateIntervalTarget(int target);
+    void SetGameObjectUpdateIntervalTargetLoading(int target);
+    void SetGameObjectUpdateMessageLimit(int target);
+    void SetGameObjectUpdateMessageLimitLoading(int target);
 
 
 #ifdef NWN_CLASS_EXTENSION_CServerExoApp

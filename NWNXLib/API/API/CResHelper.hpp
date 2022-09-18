@@ -25,6 +25,7 @@ template<class T,RESTYPE nType> struct CResHelper
     int32_t CancelRequest();
     int32_t Request();
     void SetResRef(const CResRef & cNewResRef, BOOL bSetAutoRequest = true);
+    bool ClearResHelper();
 
 
 #ifdef NWN_CLASS_EXTENSION_CResHelper

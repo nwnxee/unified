@@ -122,6 +122,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CWorldJournalEntry> m_pWorldJournal;
     BOOL m_bModuleLoadFinished;
     int32_t m_nMaxHenchmen;
+    int32_t m_nPartyControlMode;
     CExoArrayList<OBJECT_ID> m_aGameObjectsLimbo;
     CERFFile * m_pOutFile;
     CResStruct * m_pStructIFO;

@@ -25,6 +25,7 @@ struct CNWSkill
     BOOL m_bUntrained;
     BOOL m_bArmorCheckPenalty;
     BOOL m_bAllClassesCanUse;
+    BOOL m_bHideFromLevelUp;
 
     CNWSkill();
     ~CNWSkill();

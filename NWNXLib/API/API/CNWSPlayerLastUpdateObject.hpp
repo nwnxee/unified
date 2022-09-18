@@ -43,13 +43,13 @@ struct CNWSPlayerLastUpdateObject
     uint8_t * m_pAutoMapTileData;
     OBJECT_ID m_oidAutoMapArea;
     CExoArrayList<CNWVisibilityNode *> m_lstVisibilityList;
-    CExoArrayList<uint32_t> m_pKnownSpellList[3][10];
-    CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[3][10];
-    CExoArrayList<uint32_t> m_lstKnownSpellsToDelete[3];
-    CExoArrayList<uint32_t> m_lstKnownSpellsToAdd[3];
-    CExoArrayList<CSpell_Delete *> m_lstMemorizedSpellsToDelete[3];
-    CExoArrayList<CSpell_Add *> m_lstMemorizedSpellsToAdd[3];
-    uint8_t m_pKnownSpellUsesLeft[3][10];
+    CExoArrayList<uint32_t> m_pKnownSpellList[8][10];
+    CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[8][10];
+    CExoArrayList<uint32_t> m_lstKnownSpellsToDelete[8];
+    CExoArrayList<uint32_t> m_lstKnownSpellsToAdd[8];
+    CExoArrayList<CSpell_Delete *> m_lstMemorizedSpellsToDelete[8];
+    CExoArrayList<CSpell_Add *> m_lstMemorizedSpellsToAdd[8];
+    uint8_t m_pKnownSpellUsesLeft[8][10];
     CExoArrayList<CEffectIconObject *> m_aEffectIcons;
     CExoArrayList<CNWSStats_SpellLikeAbility> * m_pSpellLikeAbilityList;
 
