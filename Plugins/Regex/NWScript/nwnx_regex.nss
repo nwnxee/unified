@@ -20,6 +20,7 @@ int NWNX_Regex_Search(string str, string regex);
 string NWNX_Regex_Replace(string str, string regex, string replace = "", int firstOnly = FALSE);
 
 /// @brief Returns all matches in a string that match the regular expression.
+/// @deprecated Please use the basegame RegExpIterate() function!
 /// @param str The string to search.
 /// @param regex The regular expression to use.
 /// @return A json array with json arrays of all (sub)matches. Returns JsonNull() on error.
@@ -49,9 +50,6 @@ string NWNX_Regex_Replace(string str, string regex, string replace="", int first
 
 json NWNX_Regex_Match(string str, string regex)
 {
-    string sFunc = "Match";
-    NWNX_PushArgumentString(regex);
-    NWNX_PushArgumentString(str);
-    NWNX_CallFunction(NWNX_Regex, sFunc);
-    return NWNX_GetReturnValueJson();
+    WriteTimestampedLogEntry("NWNX_Regex_Match() is deprecated. Please use the basegame's RegExpIterate() instead!");
+    return RegExpIterate(regex, str);
 }
