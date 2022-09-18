@@ -489,13 +489,6 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
-    Commands::Register("resolve", [](std::string&, std::string& args)
-    {
-        auto addr = String::FromString<uint64_t>(args);
-        if (addr)
-            LOG_NOTICE("%s", NWNXLib::Platform::ResolveAddress(*addr));
-    });
-
 }
 
 
