@@ -64,9 +64,4 @@ FunctionHook::~FunctionHook()
     funchook_destroy((funchook_t*)m_funchook);
 }
 
-Hook HookFunction(void* address, void* funcPtr, int32_t order)
-{
-    return std::make_unique<FunctionHook>(address, funcPtr, order);
-}
-
 };
