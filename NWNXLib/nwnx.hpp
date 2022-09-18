@@ -2,7 +2,7 @@
 
 #include "API/ALL_CLASSES.hpp"
 #include "API/Constants.hpp"
-#include "API/nwn_api.hpp"
+#include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
 #include <string>
@@ -125,8 +125,6 @@ namespace Platform
     uintptr_t GetFunctionAddress(const std::string& mangledname);
 
     void CalculateBaseAddress();
-    uintptr_t GetRelocatedAddress(const uintptr_t address);
-    uintptr_t GetRelocatedGlobalAddress(const uintptr_t address);
 
     bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }

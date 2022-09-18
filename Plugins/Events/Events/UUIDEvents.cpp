@@ -31,7 +31,7 @@ bool LoadFromGffHook(CNWSUUID *thisPtr, CResGFF *pResGFF, CResStruct *pResStruct
     if (success && !uuid.IsEmpty())
     {
         auto LookupObjectIdByUUID = reinterpret_cast<ObjectID(*)(CExoString&)>(
-                NWNXLib::Platform::GetRelocatedAddress(Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
+                Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString);
 
         bCollided = LookupObjectIdByUUID(uuid) != Constants::OBJECT_INVALID;
 
