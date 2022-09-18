@@ -122,6 +122,11 @@ NWNXCore::NWNXCore()
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
     std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
+
+    // Initialise export table. New plugin code should endeavour to use direct linking
+    // for hook naming, but these might help if you want to target a overloaded function.
+    NWNXLib::API::Functions::Initialize();
+
     // This sets up the base address for every hook and patch to follow.
     Platform::CalculateBaseAddress();
 

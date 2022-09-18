@@ -2,7 +2,7 @@
 
 #include "API/ALL_CLASSES.hpp"
 #include "API/Constants.hpp"
-#include "API/nwn_api.hpp"
+#include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
 #include <string>
