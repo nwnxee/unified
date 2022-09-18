@@ -29,8 +29,8 @@ struct CNWSPlayerLUOAppearanceInfo
     uint8_t m_nHairColor;
     uint8_t m_nTattooColor1;
     uint8_t m_nTattooColor2;
-    uint8_t m_pPartVariation[19];
-    uint8_t m_nHeadVariation;
+    uint16_t m_pPartVariation[19];
+    uint16_t m_nHeadVariation;
     uint32_t m_nTailVariation;
     uint32_t m_nWingVariation;
     BOOL m_bForceArmorAppearanceUpdate;

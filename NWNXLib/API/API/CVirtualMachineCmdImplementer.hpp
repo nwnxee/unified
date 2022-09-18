@@ -24,8 +24,9 @@ struct CVirtualMachineCmdImplementer
     virtual ~CVirtualMachineCmdImplementer();
     virtual void InitializeCommands();
     virtual int32_t ExecuteCommand(int32_t nCommandId, int32_t nParameters);
-    virtual void RunScriptCallback(CExoString & sFileName);
-    virtual void ReportError(CExoString & sFileName, int32_t nError);
+    virtual void RunScriptCallback(CExoString * psFileName, int nRecursionLevel);
+    virtual void RunScriptEndCallback(CExoString * psFileName, int nRecursionLevel);
+    virtual void ReportError(const CExoString & sFileName, int32_t nError, const CExoString & customMsg = "");
     virtual void * CreateGameDefinedStructure(int32_t nUserDefinedType);
     virtual void DestroyGameDefinedStructure(int32_t nUserDefinedType, void * pStructureToDelete);
     virtual BOOL GetEqualGameDefinedStructure(int32_t nUserDefinedType, void * pStructure1, void * pStructure2);
