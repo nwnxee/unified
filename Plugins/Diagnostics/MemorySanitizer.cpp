@@ -83,15 +83,8 @@ static void ReportError(void *ptr)
         std::strncat(buffer, "\n  Allocation backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < 8; ++i)
         {
-            uintptr_t addr, addr2;
-            char backtraceBuffer[2048] = "";
-            char path[64];
+            char backtraceBuffer[2048];
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
-            {
-                std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    %s(%s) [0x%lx]\n", path, Platform::ResolveAddress(addr).c_str(), addr2);
-            }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
         std::puts(buffer);
