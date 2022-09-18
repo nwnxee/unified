@@ -127,9 +127,6 @@ NWNXCore::NWNXCore()
     // for hook naming, but these might help if you want to target a overloaded function.
     NWNXLib::API::Functions::Initialize();
 
-    // This sets up the base address for every hook and patch to follow.
-    Platform::CalculateBaseAddress();
-
     m_createServerHook = Hooks::HookFunction((void*)&CAppManager::CreateServer, (void*)&CreateServerHandler);
 }
 

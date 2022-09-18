@@ -124,8 +124,6 @@ namespace Platform
     std::string ResolveAddress(uintptr_t address);
     uintptr_t GetFunctionAddress(const std::string& mangledname);
 
-    void CalculateBaseAddress();
-
     bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 

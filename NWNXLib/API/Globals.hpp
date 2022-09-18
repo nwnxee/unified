@@ -2,56 +2,45 @@
 
 #include <cstdint>
 
-
-struct CExoBase;
-struct CExoResMan;
-struct CVirtualMachine;
-struct CScriptCompiler;
-struct CAppManager;
-struct CTlkTable;
-struct CNWRules;
-struct CExoString;
+extern CExoString                g_sBuildNumber;
+extern CExoString                g_sBuildRevision;
+extern class CExoBase           *g_pExoBase;
+extern class CExoResMan         *g_pExoResMan;
+extern class CVirtualMachine    *g_pVirtualMachine;
+extern class CScriptCompiler    *g_pScriptCompiler;
+extern class CAppManager        *g_pAppManager;
+extern class CTlkTable          *g_pTlkTable;
+extern class CNWRules           *g_pRules;
 namespace Task {
-struct CExoTaskManager;
+extern class CExoTaskManager    *g_pExoTaskManager;
 }
+extern int32_t                   g_bEnableCombatDebugging;
+extern int32_t                   g_bEnableSavingThrowDebugging;
+extern int32_t                   g_bEnableMovementSpeedDebugging;
+extern int32_t                   g_bEnableHitDieDebugging;
+extern int32_t                   g_bExitProgram;
 
 namespace NWNXLib::API::Globals {
 
-struct NWNXExportedGlobals
-{
-    CExoString            *psBuildNumber;
-    CExoString            *psBuildRevision;
-    CExoBase              **ppExoBase;
-    CExoResMan            **ppExoResMan;
-    CVirtualMachine       **ppVirtualMachine;
-    CScriptCompiler       **ppScriptCompiler;
-    CAppManager           **ppAppManager;
-    CTlkTable             **ppTlkTable;
-    CNWRules              **ppRules;
-    Task::CExoTaskManager **ppExoTaskManager;
-    int32_t                *pbEnableCombatDebugging;
-    int32_t                *pbEnableSavingThrowDebugging;
-    int32_t                *pbEnableMovementSpeedDebugging;
-    int32_t                *pbEnableHitDieDebugging;
-    int32_t                *pbExitProgram;
-};
-extern NWNXExportedGlobals ExportedGlobals;
+inline CExoString*            BuildNumber()     { return &g_sBuildNumber; }
+inline CExoString*            BuildRevision()   { return &g_sBuildRevision; }
+inline CExoBase*              ExoBase()         { return g_pExoBase; }
+inline CExoResMan*            ExoResMan()       { return g_pExoResMan; }
+inline CVirtualMachine*       VirtualMachine()  { return g_pVirtualMachine; }
+inline CScriptCompiler*       ScriptCompiler()  { return g_pScriptCompiler; }
+inline CAppManager*           AppManager()      { return g_pAppManager; }
+inline CTlkTable*             TlkTable()        { return g_pTlkTable; }
+inline CNWRules*              Rules()           { return g_pRules; }
+inline Task::CExoTaskManager* TaskManager()     { return Task::g_pExoTaskManager; }
 
-inline CExoString*            BuildNumber()     { return ExportedGlobals.psBuildNumber; }
-inline CExoString*            BuildRevision()   { return ExportedGlobals.psBuildRevision; }
-inline CExoBase*              ExoBase()         { return *ExportedGlobals.ppExoBase; }
-inline CExoResMan*            ExoResMan()       { return *ExportedGlobals.ppExoResMan; }
-inline CVirtualMachine*       VirtualMachine()  { return *ExportedGlobals.ppVirtualMachine; }
-inline CScriptCompiler*       ScriptCompiler()  { return *ExportedGlobals.ppScriptCompiler; }
-inline CAppManager*           AppManager()      { return *ExportedGlobals.ppAppManager; }
-inline CTlkTable*             TlkTable()        { return *ExportedGlobals.ppTlkTable; }
-inline CNWRules*              Rules()           { return *ExportedGlobals.ppRules; }
-inline Task::CExoTaskManager* TaskManager()     { return *ExportedGlobals.ppExoTaskManager; }
-
-inline int32_t* EnableCombatDebugging()         { return ExportedGlobals.pbEnableCombatDebugging; }
-inline int32_t* EnableSavingThrowDebugging()    { return ExportedGlobals.pbEnableSavingThrowDebugging; }
-inline int32_t* EnableMovementSpeedDebugging()  { return ExportedGlobals.pbEnableMovementSpeedDebugging; }
-inline int32_t* EnableHitDieDebugging()         { return ExportedGlobals.pbEnableHitDieDebugging; }
-inline int32_t* ExitProgram()                   { return ExportedGlobals.pbExitProgram; }
+inline int32_t* EnableCombatDebugging()         { return &g_bEnableCombatDebugging; }
+inline int32_t* EnableSavingThrowDebugging()    { return &g_bEnableSavingThrowDebugging; }
+inline int32_t* EnableMovementSpeedDebugging()  { return &g_bEnableMovementSpeedDebugging; }
+inline int32_t* EnableHitDieDebugging()         { return &g_bEnableHitDieDebugging; }
+#ifdef WIN32
+inline int32_t* ExitProgram()                   { return NULL; }
+#else
+inline int32_t* ExitProgram()                   { return &g_bExitProgram; }
+#endif
 
 }
