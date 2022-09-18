@@ -77,9 +77,6 @@ std::string ResolveAddress(uintptr_t address)
 {
     InitFunctionMap();
 
-    if (address > GetRelocatedAddress(0))
-        address -= GetRelocatedAddress(0);
-
     auto it = s_FunctionMap.upper_bound(address);
     if (it != s_FunctionMap.begin())
     {
@@ -105,9 +102,6 @@ uintptr_t GetFunctionAddress(const std::string& mangledname)
 bool AmICalledBy(uintptr_t address, uintptr_t returnAddress)
 {
     InitFunctionMap();
-
-    if (returnAddress > GetRelocatedAddress(0))
-        returnAddress -= GetRelocatedAddress(0);
 
     auto it = s_FunctionMap.upper_bound(returnAddress);
     if (it != s_FunctionMap.begin())
