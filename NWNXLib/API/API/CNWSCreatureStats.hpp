@@ -61,7 +61,7 @@ struct CNWSCreatureStats
     float m_fChallengeRating;
     uint8_t m_nStartingPackage;
     uint8_t m_nNumMultiClasses;
-    CNWSCreatureStats_ClassInfo m_ClassInfo[3];
+    CNWSCreatureStats_ClassInfo m_ClassInfo[8];
     uint16_t m_nRace;
     CExoString m_sSubRace;
     uint8_t m_nStrengthBase;
@@ -145,8 +145,8 @@ struct CNWSCreatureStats
     uint8_t m_nTattoo2Color;
     uint16_t m_nAppearanceType;
     uint8_t m_nPhenoType;
-    uint8_t m_nHeadVariation;
-    uint8_t m_pPartVariation[19];
+    uint16_t m_nHeadVariation;
+    uint16_t m_pPartVariation[19];
     uint32_t m_nTailVariation;
     uint32_t m_nWingVariation;
     int32_t m_nMovementRate;

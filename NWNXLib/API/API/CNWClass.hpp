@@ -19,6 +19,7 @@ typedef int BOOL;
 struct CNWClass
 {
     uint32_t m_nName;
+    uint32_t m_nShort;
     uint32_t m_nNameLower;
     uint32_t m_nNamePlural;
     uint32_t m_nDescription;
@@ -67,10 +68,12 @@ struct CNWClass
     uint8_t m_nArcSpellUsePerDayLevel;
     uint8_t m_nDivSpellUsePerDayLevel;
     uint8_t m_nEpicLevel;
+    BOOL m_bSkipSpellSelection;
 
     CNWClass();
     ~CNWClass();
     CExoString GetNameText();
+    CExoString GetShortNameText();
     CExoString GetNameLowerText();
     CExoString GetNamePluralText();
     CExoString GetDescriptionText();

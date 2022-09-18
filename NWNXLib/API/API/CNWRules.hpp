@@ -73,6 +73,7 @@ struct CNWRules
     int32_t GetDamageIndexFromFlags(uint32_t nDamageFlags);
     void ReloadAll();
     void UnloadAll();
+    uint32_t GetHighestDamageTypeFlag();
     CExoString GetRulesetStringEntry(const CExoString & label, CExoString whenMissing);
     int32_t GetRulesetIntEntry(const CExoString & label, int32_t whenMissing);
     float GetRulesetFloatEntry(const CExoString & label, float whenMissing);
@@ -82,6 +83,7 @@ struct CNWRules
     void LoadSkillInfo();
     void LoadDomainInfo();
     void InitLegacyClassDefaults(uint8_t nClass);
+    void InitLegacyRaceDefaults(uint8_t nRace);
     void LoadDifficultyInfo();
     void LoadRulesetInfo();
 

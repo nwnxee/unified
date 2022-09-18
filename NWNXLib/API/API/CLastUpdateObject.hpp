@@ -18,8 +18,10 @@ NWN_API_PROLOGUE(CLastUpdateObject)
 
 struct CLoopingVisualEffect;
 struct CNWSPlayerLUOQuickbarItemButton;
+struct ObjectVisualTransformData;
 
 
+typedef TextureReplaceInfo AnimationReplaceInfo;
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
@@ -89,8 +91,8 @@ struct CLastUpdateObject
     CExoString m_sSubRace;
     CExoString m_sDeity;
     uint8_t m_nGender;
-    uint8_t m_nClass[3];
-    uint8_t m_nLevel[3];
+    uint8_t m_nClass[8];
+    uint8_t m_nLevel[8];
     int16_t m_nAlignmentLawChaos;
     int16_t m_nAlignmentGoodEvil;
     BOOL m_bSelectableWhenDead;
@@ -108,17 +110,21 @@ struct CLastUpdateObject
     uint8_t m_nAbilityFinalINT;
     uint8_t m_nAbilityFinalWIS;
     uint8_t m_nAbilityFinalCHA;
-    ObjectVisualTransformData m_pObjectVisualTransformData;
+    ObjectVisualTransformData * m_pObjectVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
     CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
+    CExoArrayList<AnimationReplaceInfo> m_lAnimationReplaceInfo;
     Vector m_vHiliteColor;
     int32_t m_nMouseCursor;
+    BOOL m_bUseable;
     int32_t m_nUpdateDisplayNameSeq;
     int32_t m_nUpdateHiddenSeq;
     CNWSPlayerLUOQuickbarItemButton * m_pQuickbarButton;
 
     CLastUpdateObject();
     ~CLastUpdateObject();
+    const ObjectVisualTransformData & GetVisualTransformData();
+    void SetVisualTransformData(const ObjectVisualTransformData & data);
     void InitializeQuickbar();
 
 
