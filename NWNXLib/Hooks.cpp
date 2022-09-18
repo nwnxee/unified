@@ -12,7 +12,7 @@ using namespace NWNXLib;
 namespace NWNXLib::Hooks
 {
 
-FunctionHook::FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order)
+FunctionHook::FunctionHook(void* originalFunction, void* newFunction, int32_t order)
     : m_originalFunction(originalFunction), m_newFunction(newFunction), m_order(order)
 {
     auto &v = s_hooks[originalFunction];
@@ -64,9 +64,9 @@ FunctionHook::~FunctionHook()
     funchook_destroy((funchook_t*)m_funchook);
 }
 
-Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order)
+Hook HookFunction(void* address, void* funcPtr, int32_t order)
 {
-    return std::make_unique<FunctionHook>(Platform::GetRelocatedAddress(address), funcPtr, order);
+    return std::make_unique<FunctionHook>(address, funcPtr, order);
 }
 
 };
