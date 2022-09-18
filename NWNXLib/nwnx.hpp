@@ -120,11 +120,6 @@ namespace Platform
 {
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);
-
-    std::string ResolveAddress(uintptr_t address);
-    uintptr_t GetFunctionAddress(const std::string& mangledname);
-
-    bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 
 namespace Commands
