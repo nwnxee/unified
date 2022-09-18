@@ -484,8 +484,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
             int32_t nMods[6] = {0};
 
             auto GetStatBonusesFromFeats = reinterpret_cast<void (*)(CExoArrayList<uint16_t> *, int32_t *, int32_t)>(
-                    Platform::GetRelocatedAddress(
-                            API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii));
+                            API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii);
 
             GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
 
