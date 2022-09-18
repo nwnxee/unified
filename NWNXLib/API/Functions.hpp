@@ -5,7 +5,7 @@
 namespace NWNXLib::API::Functions {
     void Initialize();
 
-#define NWNXLIB_FUNCTION(name, address) \
+#define NWNXLIB_FUNCTION(name) \
     extern void* name;
 
 #ifdef _WIN32
