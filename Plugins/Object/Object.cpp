@@ -775,7 +775,7 @@ NWNX_EXPORT ArgumentStack PeekUUID(ArgumentStack&& args)
     if (auto *pGameObject = Utils::PopGameObject(args))
     {
         static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
-                Platform::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+                API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi);
 
         if (CanCarryUUID(pGameObject->m_nObjectType))
         {
