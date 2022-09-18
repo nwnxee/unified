@@ -28,6 +28,7 @@ struct CNWSEncounter;
 struct CNWSItem;
 struct CNWSMessage;
 struct CNWSModule;
+struct CNWSObject;
 struct CNWSPlaceable;
 struct CNWSPlayer;
 struct CNWSSoundObject;
@@ -44,6 +45,9 @@ struct SSubNetProfile;
 namespace NWSync {
 struct Advertisement; // NWSyncAdvertisement
 }
+struct AdvertLUT { 
+    std::unordered_map<CExoString, std::vector<void*>> m_map;
+};
 
 typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
@@ -138,6 +142,7 @@ struct CServerExoAppInternal
     int32_t m_AbilityPenaltyLimitModule;
     int32_t m_SkillBonusLimitModule;
     NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
+    AdvertLUT m_nwsyncAdvertLUT;
 
     CServerExoAppInternal();
     ~CServerExoAppInternal();
@@ -253,6 +258,12 @@ struct CServerExoAppInternal
     BOOL StripColorTokens(CExoString & sInput);
     void AddSubNetProfileSendSize(uint32_t nPlayerID, uint32_t nSize);
     CExoString GetHostedPublicInternetAddressAndPort();
+    int GetGameObjectUpdateInterval(CNWSObject * creature);
+    int GetGameObjectUpdateMessageLimit(CNWSObject * creature);
+    void SetGameObjectUpdateIntervalTarget(int target);
+    void SetGameObjectUpdateIntervalTargetLoading(int target);
+    void SetGameObjectUpdateMessageLimit(int target);
+    void SetGameObjectUpdateMessageLimitLoading(int target);
     BOOL StorePlayerCharacters();
     BOOL SendEnteringStartNewModuleMessage();
     BOOL SendExitingStartNewModuleMessage(BOOL bSuccess);

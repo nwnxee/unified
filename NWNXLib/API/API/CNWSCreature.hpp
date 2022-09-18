@@ -230,6 +230,7 @@ struct CNWSCreature : CNWSObject
     BOOL m_bMasterDroppedFromServer;
     uint32_t m_nMasterDroppedCalendarDay;
     uint32_t m_nMasterDroppedTimeOfDay;
+    OBJECT_ID m_oidCommandingPlayer;
     int32_t m_nOriginalFactionId;
     CExoArrayList<CNWSPersonalReputation> * m_pPersonalReputationList;
     CExoArrayList<int32_t> * m_pReputation;
@@ -346,7 +347,7 @@ struct CNWSCreature : CNWSObject
     int16_t GetMaxHitPoints(BOOL bIncludeToughness = true);
     void DoDamage(int32_t nDamage);
     uint8_t CalculateDamagePower(CNWSObject * pTarget, BOOL bOffHand = false);
-    uint16_t GetDamageFlags();
+    uint32_t GetDamageFlags();
     float MaxAttackRange(OBJECT_ID oidTarget, BOOL bBaseValue = false, BOOL bPassiveRange = false);
     float DesiredAttackRange(OBJECT_ID oidTarget, BOOL bBaseValue = false);
     uint8_t GetDetectMode();

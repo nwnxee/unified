@@ -71,6 +71,10 @@ struct CNWSpell
     int32_t m_nFeatId;
     BOOL m_bHasProjectile;
     uint32_t m_nSpellId;
+    uint32_t m_nTargetShape;
+    float m_nTargetSizeX;
+    float m_nTargetSizeY;
+    uint32_t m_nTargetFlags;
 
     CNWSpell();
     ~CNWSpell();

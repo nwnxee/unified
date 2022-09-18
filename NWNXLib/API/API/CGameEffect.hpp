@@ -41,6 +41,7 @@ struct CGameEffect
     BOOL m_bSkipOnLoad;
     uint64_t m_nItemPropertySourceId;
     CExoString m_sCustomTag;
+    BOOL m_bIgnoreImmunity;
 
     CGameEffect(BOOL bCreateNewID = true);
     CGameEffect(CGameEffect * pParent, BOOL bCopyIconVisibility = false);

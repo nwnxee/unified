@@ -8,6 +8,7 @@
 #include "CResRef.hpp"
 #include "ObjectVisualTransformData.hpp"
 #include "Vector.hpp"
+#include "Vector4.hpp"
 #include <vector>
 
 
@@ -120,6 +121,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerCamera_LockPitch(CNWSPlayer * pPlayer, BOOL bLock);
     BOOL SendServerToPlayerCamera_LockDistance(CNWSPlayer * pPlayer, BOOL bLock);
     BOOL SendServerToPlayerCamera_LockYaw(CNWSPlayer * pPlayer, BOOL bLock);
+    BOOL SendServerToPlayerCamera_SetLimits(CNWSPlayer * pPlayer, float fMinPitch, float fMaxPitch, float fMinDist, float fMaxDist);
     BOOL SendServerToPlayerLogin_CharacterQuery(CNWSPlayer * pPlayer, uint8_t & nNumClasses, int32_t * pClasses, uint8_t * pLevels, uint32_t & nXP);
     BOOL SendServerToPlayerLogin_NeedCharacter(uint32_t nPlayerId);
     BOOL SendServerToPlayerLoadBar_StartStallEvent(uint32_t nStallEvent);
@@ -159,8 +161,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerSoundObject_Stop(CNWSPlayer * pPlayer, OBJECT_ID oidSound);
     BOOL SendServerToPlayerSoundObject_ChangeVolume(CNWSPlayer * pPlayer, OBJECT_ID oidSound, int32_t nVolume);
     BOOL SendServerToPlayerSoundObject_ChangePosition(CNWSPlayer * pPlayer, OBJECT_ID oidSound, Vector vPos);
-    BOOL SendServerToPlayerGameObjUpdate(CNWSPlayer * pPlayer);
-    BOOL SendServerToPlayerGameObjUpdate(CNWSPlayer * pPlayer, OBJECT_ID oidObjectToUpdate);
+    BOOL SendServerToPlayerGameObjUpdate(CNWSPlayer * pPlayer, OBJECT_ID oidObjectToUpdate, int nMessageLimit);
     BOOL SendServerToPlayerGameObjUpdateVisEffect(CNWSPlayer * pPlayer, uint16_t nVisualEffectID, OBJECT_ID oidTarget, OBJECT_ID oidSource = 0x7f000000, uint8_t nSourceNode = 0, uint8_t nTargetNode = 0, Vector vTargetPosition = Vector(), float fDuration = 0.0f, ObjectVisualTransformData ovtd = ObjectVisualTransformData());
     BOOL SendServerToPlayerGameObjUpdateFloatyText(CNWSPlayer * pPlayer, uint32_t nStrRef, OBJECT_ID oidTarget);
     BOOL SendServerToPlayerQuickChatMessage(OBJECT_ID oidSpeaker, uint16_t nSoundSetSoundID);
@@ -168,7 +169,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerCombatRoundStarted(CNWSPlayer * pPlayer);
     BOOL SendServerToPlayerWhirlwindAttack(CNWSPlayer * pPlayer, CNWSCreature * pCreature);
     BOOL SendServerToPlayerWhirlwindAttackDamage(CNWSPlayer * pPlayer, CNWSCreature * pCreature);
-    BOOL SendServerToPlayerPlaceableUpdate_Useable(CNWSPlaceable * pPlaceable);
+    BOOL SendServerToPlayerObjectUpdate_Useable(CNWSObject * pObject);
     BOOL SendServerToPlayerGUICharacterSheet_NotPermitted(uint32_t nPlayerId, OBJECT_ID oidCharSheetFailure);
     BOOL SendServerToPlayerDestroyDeathGUI(uint32_t nPlayerId);
     BOOL SendServerToPlayerUpdateActiveItemPropertiesUses(CNWSPlayer * pPlayer, OBJECT_ID oidItem, uint8_t nUseableProperties, uint8_t nUseDiff, uint8_t * pUsesLeftPerProperty);
@@ -343,6 +344,11 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerNui_Binds(CNWSPlayer * pPlayer, const std::vector<Nui::JSON::BindUpdate> & updates);
     //BOOL SendServerToPlayerNui_SetLayout(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, const CExoString & elementId, const json & jData);
     BOOL HandlePlayerToServerNuiEvent(CNWSPlayer * pPlayer, uint8_t nMinor);
+    BOOL SendServerToPlayerSetShaderUniform_Float(CNWSPlayer * player, const uint8_t idx, const float v);
+    BOOL SendServerToPlayerSetShaderUniform_Int(CNWSPlayer * player, const uint8_t idx, const int v);
+    BOOL SendServerToPlayerSetShaderUniform_Vec(CNWSPlayer * player, const uint8_t idx, const Vector4 & v);
+    BOOL SendServerToPlayerSetSpellTargetingData(CNWSPlayer * player, const int spell, const int shape, const float sizeX, const float sizeY, const int flags);
+    BOOL SendServerToPlayerSetEnterTargetingModeData(CNWSPlayer * player, const int shape, const float sizeX, const float sizeY, const int flags, const float range, const int spellId, const int featId);
     void AddDoorAppearanceToMessage(CNWSPlayer * pPlayer, CNWSDoor * pDoor);
     void AddPlaceableAppearanceToMessage(CNWSPlayer * pPlayer, CNWSPlaceable * pPlaceable);
     void AddAreaOfEffectObjectToMessage(CNWSAreaOfEffectObject * pSpellImpact);
