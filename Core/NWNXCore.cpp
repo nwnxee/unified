@@ -125,7 +125,7 @@ NWNXCore::NWNXCore()
     // This sets up the base address for every hook and patch to follow.
     Platform::CalculateBaseAddress();
 
-    m_createServerHook = Hooks::HookFunction(API::Functions::_ZN11CAppManager12CreateServerEv, (void*)&CreateServerHandler);
+    m_createServerHook = Hooks::HookFunction((void*)&CAppManager::CreateServer, (void*)&CreateServerHandler);
 }
 
 NWNXCore::~NWNXCore()
@@ -174,18 +174,19 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, (void*)&SetVarHandler, Hooks::Order::Final);
-    m_vmGetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, (void*)&GetVarHandler, Hooks::Order::Final);
-    m_vmTagEffectHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, (void*)&TagEffectHandler, Hooks::Order::Final);
-    m_vmTagItemProperyHook = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, (void*)&TagItemPropertyHandler, Hooks::Order::Final);
-    m_vmPlaySoundHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, (void*)&PlaySoundHandler, Hooks::Order::Final);
+    m_vmSetVarHook         = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandSetVar, (void*)&SetVarHandler, Hooks::Order::Final);
+    m_vmGetVarHook         = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandGetVar, (void*)&GetVarHandler, Hooks::Order::Final);
+    m_vmTagEffectHook      = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandTagEffect, (void*)&TagEffectHandler, Hooks::Order::Final);
+    m_vmTagItemProperyHook = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandTagItemProperty, (void*)&TagItemPropertyHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook      = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandPlaySound, (void*)&PlaySoundHandler, Hooks::Order::Final);
+    
 
-    m_destroyServerHook    = Hooks::HookFunction(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooks::Order::Final);
-    m_mainLoopInternalHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooks::Order::Final);
+    m_destroyServerHook    = Hooks::HookFunction((void*)&CAppManager::DestroyServer, (void*)&DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook = Hooks::HookFunction((void*)&CServerExoAppInternal::MainLoop, (void*)&MainLoopInternalHandler, Hooks::Order::Final);
 
     POS::InitializeHooks();
 
-    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
+    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction((void*)&CNWSModule::LoadModuleInProgress,
             (void*)+[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
             {
                 int index = nAreasLoaded;
@@ -206,7 +207,7 @@ void NWNXCore::InitialSetupHooks()
             }, Hooks::Order::Earliest);
 
     static Hooks::Hook loadModuleFinishHook = Hooks::HookFunction(
-            API::Functions::_ZN10CNWSModule16LoadModuleFinishEv,
+            (void*)&CNWSModule::LoadModuleFinish,
             (void*)+[](CNWSModule *pModule) -> uint32_t
             {
                 MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
@@ -216,7 +217,7 @@ void NWNXCore::InitialSetupHooks()
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
-                API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
+                (void*)&CVirtualMachine::RunScriptChunk,
                 (void*)+[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
                 {
                     g_core->m_ScriptChunkRecursion += 1;

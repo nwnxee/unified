@@ -2,7 +2,7 @@
 
 #include "API/ALL_CLASSES.hpp"
 #include "API/Constants.hpp"
-#include "API/Functions.hpp"
+#include "API/nwn_api.hpp"
 #include "API/Globals.hpp"
 
 #include <string>
@@ -82,7 +82,7 @@ namespace Hooks
     class FunctionHook final
     {
     public:
-        FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Order::Default);
+        FunctionHook(void* originalFunction, void* newFunction, int32_t order = Order::Default);
         ~FunctionHook();
 
         void *GetOriginal() { return m_trampoline; }
@@ -93,17 +93,17 @@ namespace Hooks
         }
 
     private:
-        uintptr_t   m_originalFunction;
+        void*       m_originalFunction;
         void*       m_newFunction;
         int32_t     m_order;
         void*       m_funchook;
         void*       m_trampoline;
 
-        static inline std::unordered_map<uintptr_t, std::vector<FunctionHook*>> s_hooks;
+        static inline std::unordered_map<void*, std::vector<FunctionHook*>> s_hooks;
     };
 
     using Hook = std::unique_ptr<FunctionHook>;
-    [[nodiscard]] Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
+    [[nodiscard]] Hook HookFunction(void* address, void* funcPtr, int32_t order = Order::Default);
 }
 
 namespace MessageBus

@@ -63,11 +63,14 @@ static void InitFunctionMap()
 {
     if (!s_FunctionMap.empty()) return;
 
-#undef NWNXLIB_FUNCTION
-#define NWNXLIB_FUNCTION_NO_VERSION_CHECK
-#define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
-#include "API/FunctionsLinux.hpp"
-#undef NWNXLIB_FUNCTION
+    // TODO: This should no longer be necessary, backtrace() should now emit correct symbols.
+    // Validate and remove?
+
+// #undef NWNXLIB_FUNCTION
+// #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
+// #define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
+// #include "API/FunctionsLinux.hpp"
+// #undef NWNXLIB_FUNCTION
 }
 
 std::string ResolveAddress(uintptr_t address)

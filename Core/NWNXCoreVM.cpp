@@ -4,7 +4,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/Constants.hpp"
-#include "API/Functions.hpp"
+#include "API/nwn_api.hpp"
 #include "API/Globals.hpp"
 #include "API/Vector.hpp"
 #include "API/CExoString.hpp"
