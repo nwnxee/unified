@@ -20,8 +20,8 @@ void IgnoreModuleVersion()
 
     LOG_INFO("EXPERIMENTAL: Ignoring Module Version check");
 
-    s_ReadFieldCExoStringHook = Hooks::HookFunction(API::Functions::_ZN7CResGFF19ReadFieldCExoStringEP10CResStructPcRiRK10CExoString,
-        (void*)+[](CResGFF *pThis, CResStruct* pStructure, char* szFieldID, BOOL &bSuccess, const CExoString &sDefault) -> CExoString
+    s_ReadFieldCExoStringHook = Hooks::HookFunction(&CResGFF::ReadFieldCExoString,
+        +[](CResGFF *pThis, CResStruct* pStructure, char* szFieldID, BOOL &bSuccess, const CExoString &sDefault) -> CExoString
         {
             if (strcmp(szFieldID, "Mod_MinGameVer") == 0)
             {
