@@ -1,5 +1,6 @@
 #include "Events.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 
 namespace Events {
 
@@ -19,13 +20,13 @@ void EffectEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", []() {
         s_OnEffectAppliedHook = Hooks::HookFunction(
-                NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
-                (void*)&OnEffectAppliedHook, Hooks::Order::Earliest);
+                &CNWSEffectListHandler::OnEffectApplied,
+                &OnEffectAppliedHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", []() {
         s_OnEffectRemovedHook = Hooks::HookFunction(
-                NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
-                (void*)&OnEffectRemovedHook, Hooks::Order::Earliest);
+                &CNWSEffectListHandler::OnEffectRemoved,
+                &OnEffectRemovedHook, Hooks::Order::Earliest);
     });
 }
 

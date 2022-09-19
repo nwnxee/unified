@@ -17,8 +17,8 @@ void UUIDEvents() __attribute__((constructor));
 void UUIDEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_UUID_COLLISION_.*", []() {
-        s_UUIDLoadFromGffHook = NWNXLib::Hooks::HookFunction(Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct,
-                                             (void*)&LoadFromGffHook, NWNXLib::Hooks::Order::Earliest);
+        s_UUIDLoadFromGffHook = NWNXLib::Hooks::HookFunction(&CNWSUUID::LoadFromGff,
+                                             &LoadFromGffHook, NWNXLib::Hooks::Order::Earliest);
     });
 }
 

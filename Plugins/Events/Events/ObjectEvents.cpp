@@ -19,13 +19,13 @@ void ObjectEvents() __attribute__((constructor));
 void ObjectEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_OBJECT_LOCK_.*", []() {
-        s_AddLockObjectActionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject19AddLockObjectActionEj,
-                                                 (void*)&AddLockObjectActionHook, Hooks::Order::Early);
+        s_AddLockObjectActionHook = Hooks::HookFunction(&CNWSObject::AddLockObjectAction,
+                                                 &AddLockObjectActionHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_OBJECT_UNLOCK_.*", []() {
-        s_AddUnlockObjectActionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji,
-                                                   (void*)&AddUnlockObjectActionHook, Hooks::Order::Early);
+        s_AddUnlockObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUnlockObjectAction,
+                                                   &AddUnlockObjectActionHook, Hooks::Order::Early);
     });
 	
     InitOnFirstSubscribe("NWNX_ON_OBJECT_USE_.*", []() {
