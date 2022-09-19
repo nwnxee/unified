@@ -33,6 +33,7 @@
 #include "API/CNWSpell.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -917,16 +918,16 @@ NWNX_EXPORT ArgumentStack GetMovementRateFactorCap(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetMovementRateFactor_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv,
-        (void*)+[](CNWSCreature *pThis) -> float
+        Hooks::HookFunction(&CNWSCreature::GetMovementRateFactor,
+        +[](CNWSCreature *pThis) -> float
         {
             auto pRate = pThis->nwnxGet<float>("MOVEMENT_RATE_FACTOR");
             return pRate.value_or(pGetMovementRateFactor_hook->CallOriginal<float>(pThis));
         }, Hooks::Order::Late);
 
     static Hooks::Hook pSetMovementRateFactor_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf,
-        (void*)+[](CNWSCreature *pThis, float fRate) -> void
+        Hooks::HookFunction(&CNWSCreature::SetMovementRateFactor,
+        +[](CNWSCreature *pThis, float fRate) -> void
         {
             // Always set the default so it goes back to normal if cap is reset
             pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
@@ -1368,8 +1369,8 @@ NWNX_EXPORT ArgumentStack GetMovementType(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetWalkRateCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetWalkRate_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature11GetWalkRateEv,
-        (void*)+[](CNWSCreature *pThis) -> float
+        Hooks::HookFunction(&CNWSCreature::GetWalkRate,
+        +[](CNWSCreature *pThis) -> float
         {
             float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
 
@@ -1471,8 +1472,8 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 {
     static bool bSkipLevelUpValidation = false;
 
-    static Hooks::Hook pCanLevelUp_hook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
-        (void*)+[](CNWSCreatureStats *pThis) -> int32_t
+    static Hooks::Hook pCanLevelUp_hook = Hooks::HookFunction(&CNWSCreatureStats::CanLevelUp,
+        +[](CNWSCreatureStats *pThis) -> int32_t
         {
             if (bSkipLevelUpValidation && !pThis->m_bIsPC)
             {
@@ -1482,8 +1483,8 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
         }, Hooks::Order::Late);
 
     static Hooks::Hook pValidateLevelUp_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
-        (void*)+[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+        Hooks::HookFunction(&CNWSCreatureStats::ValidateLevelUp,
+        +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
         {
             if (bSkipLevelUpValidation)
             {
@@ -1957,12 +1958,12 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
 }
 static void InitCasterLevelHooks()
 {
-    s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
-                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
+    s_GetClassLevelHook = Hooks::HookFunction(&CNWSCreatureStats::GetClassLevel,
+                                       &CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ExecuteCommandGetCasterLevelHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
-                (void*)+[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetCasterLevel,
+                +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -1970,8 +1971,8 @@ static void InitCasterLevelHooks()
                     return retVal;
                 }, Hooks::Order::Early);
     static Hooks::Hook s_ExecuteCommandResistSpellHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
-                (void*)+[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandResistSpell,
+                +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -1979,8 +1980,8 @@ static void InitCasterLevelHooks()
                     return retVal;
                 }, Hooks::Order::Early);
     static Hooks::Hook s_SetCreatorHook =
-            Hooks::HookFunction(Functions::_ZN11CGameEffect10SetCreatorEj,
-        (void*)+[](CGameEffect *pThis, ObjectID oidCreator)
+            Hooks::HookFunction(&CGameEffect::SetCreator,
+                +[](CGameEffect *pThis, ObjectID oidCreator)
                 {
                     s_bAdjustCasterLevel = true;
                     s_SetCreatorHook->CallOriginal<void>(pThis, oidCreator);
@@ -2080,8 +2081,8 @@ NWNX_EXPORT ArgumentStack JumpToLimbo(ArgumentStack&& args)
 static void InitCriticalMultiplierHook()
 {
     static Hooks::Hook pGetCriticalHitMultiplier_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi,
-        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetCriticalHitMultiplier,
+        +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
             if (!bOffHand) //mainhand
@@ -2257,8 +2258,8 @@ NWNX_EXPORT ArgumentStack GetCriticalMultiplierOverride(ArgumentStack&& args)
 static void InitCriticalRangeHook()
 {
     static NWNXLib::Hooks::Hook pGetCriticalHitRoll_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi,
-        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetCriticalHitRoll,
+        +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
             if (!bOffHand) //mainhand
@@ -2475,8 +2476,8 @@ NWNX_EXPORT ArgumentStack SetEffectIconFlashing(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack OverrideDamageLevel(ArgumentStack&& args)
 {
-    static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(Functions::_ZN10CNWSObject14GetDamageLevelEv,
-        (void*)+[](CNWSObject *pThis) -> uint8_t
+    static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(&CNWSObject::GetDamageLevel,
+        +[](CNWSObject *pThis) -> uint8_t
         {
             auto damageLevel = pThis->nwnxGet<int>("CREATURE_DAMAGE_LEVEL_OVERRIDE");
             return damageLevel.value_or(pGetDamageLevelHook->CallOriginal<uint8_t>(pThis));
@@ -2744,8 +2745,8 @@ static void DoResolveAttackHook(CNWSCreature* pThis, CNWSObject* pTarget)
 
 static void InitResolveAttackRollHook()
 {
-    static auto s_ResolveAttackRoll = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
-    (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+    static auto s_ResolveAttackRoll = Hooks::HookFunction(&CNWSCreature::ResolveAttackRoll,
+    +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
     {
         auto pTargetCreature = Utils::AsNWSCreature(pTarget);
         int32_t bRoundPaused = false;
@@ -3021,8 +3022,8 @@ NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetBypassEffectImmunity(ArgumentStack&& args)
 {
     static Hooks::Hook pGetEffectImmunity_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats17GetEffectImmunityEhP12CNWSCreaturei,
-        (void*)+[](CNWSCreatureStats *pThis, uint8_t nType, CNWSCreature * pVersus, int32_t bConsiderFeats) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetEffectImmunity,
+        +[](CNWSCreatureStats *pThis, uint8_t nType, CNWSCreature * pVersus, int32_t bConsiderFeats) -> int32_t
         {
             int32_t BypassCounter = 0;
 
@@ -3212,8 +3213,8 @@ NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
 {
     static Hooks::Hook s_BroadcastSafeProjectileHook =
-            Hooks::HookFunction(Functions::_ZN10CNWSObject23BroadcastSafeProjectileEjj6VectorS0_jhjhh,
-            (void*)+[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
+            Hooks::HookFunction(&CNWSObject::BroadcastSafeProjectile,
+            +[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
                        uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType) -> void
             {
                 if (nProjectileType <= 5)
@@ -3249,8 +3250,8 @@ NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
 }
 static void InitInitiativeRollHook()
 {
-    static Hooks::Hook pResolveInitiative_hook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveInitiativeEv,
-    (void *) +[](CNWSCreature *pCreature) -> void
+    static Hooks::Hook pResolveInitiative_hook = Hooks::HookFunction(&CNWSCreature::ResolveInitiative,
+    +[](CNWSCreature *pCreature) -> void
     {
         auto initMod = pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
         if (!initMod)
