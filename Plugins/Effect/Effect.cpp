@@ -208,8 +208,8 @@ NWNX_EXPORT ArgumentStack UnpackEffect(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetEffectExpiredScript(ArgumentStack&& args)
 {
     static Hooks::Hook pOnEffectRemovedHook =
-            Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
-            (void*)+[](CNWSEffectListHandler *pEffectListHandler, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
+            Hooks::HookFunction(&CNWSEffectListHandler::OnEffectRemoved,
+            +[](CNWSEffectListHandler *pEffectListHandler, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
             {
                 CExoString& sScriptName = pEffect->m_sParamString[4];
                 if (!sScriptName.IsEmpty())
@@ -347,8 +347,8 @@ NWNX_EXPORT ArgumentStack Apply(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack AccessorizeVisualEffect(ArgumentStack&& args)
 {
-    static Hooks::Hook s_RemoveBadEffects = Hooks::HookFunction(Functions::_ZN12CNWSCreature16RemoveBadEffectsEv,
-    (void*)+[](CNWSCreature *pCreature) -> void
+    static Hooks::Hook s_RemoveBadEffects = Hooks::HookFunction(&CNWSCreature::RemoveBadEffects,
+    +[](CNWSCreature *pCreature) -> void
     {
         CExoArrayList<CGameEffect*> *pAppliedEffects = &pCreature->m_appliedEffects;
         int32_t nIndex = 0;
@@ -371,8 +371,8 @@ NWNX_EXPORT ArgumentStack AccessorizeVisualEffect(ArgumentStack&& args)
         }
     }, Hooks::Order::Final);
 
-    static Hooks::Hook s_OnApplyDeathHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler12OnApplyDeathEP10CNWSObjectP11CGameEffecti,
-    (void*)+[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame)-> int32_t
+    static Hooks::Hook s_OnApplyDeathHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDeath,
+    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame)-> int32_t
     {
         auto *pServerAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
