@@ -19,8 +19,8 @@ void AdjustReputationFix()
 
     LOG_INFO("EXPERIMENTAL: Attempting to resolve faction/reputation crash.");
 
-    static Hooks::Hook s_AdjustReputationHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AdjustReputationEii,
-        (void*)+[](CNWSCreature *pThis, int32_t nFactionId, int32_t nAdjustment) -> void
+    static Hooks::Hook s_AdjustReputationHook = Hooks::HookFunction(&CNWSCreature::AdjustReputation,
+        +[](CNWSCreature *pThis, int32_t nFactionId, int32_t nAdjustment) -> void
         {
             auto *pFactionManager = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager;
 
