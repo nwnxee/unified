@@ -17,8 +17,8 @@ void DisplayNumAttacksOverrideInCharacterSheet()
 
     LOG_INFO("Number of attacks per round overridden by SetBaseAttackBonus() will show on the character sheet.");
 
-    static Hooks::Hook s_GetAttacksPerRoundHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetAttacksPerRoundEv,
-    (void*)+[](CNWSCreatureStats *pCreatureStats) -> uint8_t
+    static Hooks::Hook s_GetAttacksPerRoundHook = Hooks::HookFunction(&CNWSCreatureStats::GetAttacksPerRound,
+    +[](CNWSCreatureStats *pCreatureStats) -> uint8_t
     {
         if (pCreatureStats->m_nOverrideBaseAttackBonus)
             return pCreatureStats->m_nOverrideBaseAttackBonus;

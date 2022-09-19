@@ -29,11 +29,11 @@ void SneakAttackCritImmunity()
     LOG_INFO("Sneak attacks will now be possible on creatures with immunity to critical hits");
 
     static Hooks::Hook s_ResolveSneakAttackHook =
-            Hooks::HookFunction(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_,
-            (void*)&ResolveSneakAttackHook, Hooks::Order::Final);
+            Hooks::HookFunction(&CNWSCreature::ResolveSneakAttack,
+            &ResolveSneakAttackHook, Hooks::Order::Final);
     static Hooks::Hook s_ResolveDeathAttackHook =
-            Hooks::HookFunction(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_,
-            (void*)&ResolveDeathAttackHook, Hooks::Order::Final);
+            Hooks::HookFunction(&CNWSCreature::ResolveDeathAttack,
+            &ResolveDeathAttackHook, Hooks::Order::Final);
 }
 
 static void ResolveSneakAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)

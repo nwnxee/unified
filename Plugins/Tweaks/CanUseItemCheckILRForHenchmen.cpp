@@ -31,8 +31,8 @@ void CanUseItemCheckILRForHenchmen()
 
     LOG_INFO("CNWSCreature::CanUseItem() will also check ILR for Henchmen.");
 
-    static Hooks::Hook s_CanUseItemHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi,
-    (void*)+[](CNWSCreature *pCreature, CNWSItem *pItem, BOOL bIgnoreIdentifiedFlag) -> BOOL
+    static Hooks::Hook s_CanUseItemHook = Hooks::HookFunction(&CNWSCreature::CanUseItem,
+    +[](CNWSCreature *pCreature, CNWSItem *pItem, BOOL bIgnoreIdentifiedFlag) -> BOOL
     {
         bool bUsable = true;
 

@@ -19,8 +19,8 @@ void RetainLocalVariablesOnItemSplit()
 
     static bool s_SplitItem;
     static Hooks::Hook s_SplitItemHook = Hooks::HookFunction(
-        API::Functions::_ZN8CNWSItem9SplitItemEi,
-        (void*)+[](CNWSItem *thisPtr, int32_t nNumberToSplitOff) -> CNWSItem*
+        &CNWSItem::SplitItem,
+        +[](CNWSItem *thisPtr, int32_t nNumberToSplitOff) -> CNWSItem*
         {
             s_SplitItem = true;
             auto retVal = s_SplitItemHook->CallOriginal<CNWSItem*>(thisPtr, nNumberToSplitOff);
@@ -29,8 +29,8 @@ void RetainLocalVariablesOnItemSplit()
         }, Hooks::Order::Earliest);
 
     static Hooks::Hook s_CopyItemHook = Hooks::HookFunction(
-        API::Functions::_ZN8CNWSItem8CopyItemEPS_i,
-        (void*)+[](CNWSItem *thisPtr, CNWSItem *pSourceItem, int32_t bCopyVars) -> int32_t
+        &CNWSItem::CopyItem,
+        +[](CNWSItem *thisPtr, CNWSItem *pSourceItem, int32_t bCopyVars) -> int32_t
         {
             return s_CopyItemHook->CallOriginal<int32_t>(thisPtr, pSourceItem, s_SplitItem ? true : bCopyVars);
         }, Hooks::Order::Early);

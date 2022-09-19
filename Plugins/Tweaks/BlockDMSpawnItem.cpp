@@ -16,8 +16,8 @@ void BlockDMSpawnItem()
     LOG_INFO("Blocking the 'dm_spawnitem' console command.");
 
     static Hooks::Hook s_HandlePlayerToServerGameObjectUpdateHook =
-            Hooks::HookFunction(Functions::_ZN11CNWSMessage36HandlePlayerToServerGameObjectUpdateEP10CNWSPlayerh,
-            (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor) -> int32_t
+            Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerGameObjectUpdate,
+            +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor) -> int32_t
             {
                 auto nMsgType = Utils::PeekMessage<uint8_t>(pMessage, 0);
 

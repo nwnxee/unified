@@ -20,8 +20,8 @@ void DeadCreatureFiresOnAreaExit()
 
     LOG_INFO("Dead creatures will fire on area exit.");
 
-    static Hooks::Hook s_RemoveObjectFromAreaHook = Hooks::HookFunction(Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj,
-        (void*)+[](CNWSArea *pArea, ObjectID objectId) -> int32_t
+    static Hooks::Hook s_RemoveObjectFromAreaHook = Hooks::HookFunction(&CNWSArea::RemoveObjectFromArea,
+        +[](CNWSArea *pArea, ObjectID objectId) -> int32_t
         {
             pArea->m_aGameObjects.Remove(objectId);
 
