@@ -257,6 +257,7 @@ struct CNWSCreatureStats
     uint16_t GetHighestLevelOfFeat(uint16_t nFeat);
     BOOL FeatRequirementsMetAfterLevelUp(uint16_t nFeatID, CNWLevelStats * pLevelUpStats, uint8_t nSchool);
     uint8_t GetFeatSourceClass(uint16_t nFeat);
+    static void GetStatBonusesFromFeats(CExoArrayList<uint16_t> *m_pFeats, int32_t *pMods, BOOL bSubtractBonuses = false);
     void ComputeFeatBonuses(CExoArrayList<uint16_t> * m_pFeats, BOOL bSubtractBonuses = false);
     void RemoveFeat(uint16_t nFeat);
     void ClearFeats();
