@@ -1,6 +1,7 @@
 #include "Timing.hpp"
 
 #include "API/CExoBase.hpp"
+#include "API/CExoBaseInternal.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Services/Metrics/Resamplers.hpp"
@@ -78,8 +79,8 @@ void FastTimer::Calibrate(const size_t runs, MetricsProxy* metrics)
         unhookedResults.emplace_back(runTest(10));
     }
 
-    s_CheckForCDHook = Hooks::HookFunction(Functions::_ZN16CExoBaseInternal10CheckForCDEj,
-                                   (void*)&ProfilerCalibrateHookFuncWithScope, Hooks::Order::Earliest);
+    s_CheckForCDHook = Hooks::HookFunction(&CExoBaseInternal::CheckForCD,
+                                   &ProfilerCalibrateHookFuncWithScope, Hooks::Order::Earliest);
     for (size_t i = 0; i < runs; ++i)
     {
         hookedResults.emplace_back(runTest(10));

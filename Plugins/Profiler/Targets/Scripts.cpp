@@ -6,6 +6,7 @@
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CVirtualMachine.hpp"
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
@@ -89,7 +90,7 @@ Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     g_typeTimings = typeTimings;
 
     DEFINE_PROFILER_TARGET_FAST(
-        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
+        RunScript, &CVirtualMachine::RunScript,
         int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t, int32_t);
 }
 
