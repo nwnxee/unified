@@ -17,8 +17,8 @@ void CacheScriptChunks()
     {
         LOG_INFO("Caching script chunks");
 
-        static Hooks::Hook s_SetUpJITCompiledScript = Hooks::HookFunction(API::Functions::_ZN15CVirtualMachine22SetUpJITCompiledScriptERK10CExoStringi,
-        (void*)+[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, BOOL bWrapIntoMain) -> int32_t
+        static Hooks::Hook s_SetUpJITCompiledScript = Hooks::HookFunction(&CVirtualMachine::SetUpJITCompiledScript,
+        +[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, BOOL bWrapIntoMain) -> int32_t
         {
             pVirtualMachine->m_nRecursionLevel += 1;
             if (pVirtualMachine->m_nRecursionLevel >= 8)
