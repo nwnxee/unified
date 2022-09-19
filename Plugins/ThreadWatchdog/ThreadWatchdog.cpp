@@ -1,5 +1,6 @@
 #include "ThreadWatchdog.hpp"
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 
 using namespace NWNXLib;
 
@@ -23,8 +24,8 @@ static Hooks::Hook s_MainLoopHook;
 ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                  (void*)&MainLoopUpdate, Hooks::Order::Earliest);
+    s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                                  &MainLoopUpdate, Hooks::Order::Earliest);
 
     s_watchdogPeriod = Config::Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite
