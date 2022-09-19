@@ -383,6 +383,10 @@ NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
             retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl;
             break;
 
+        case 28: // NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES
+            retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bShowPlayerJoinMessages;
+            break;
+
         default:
             LOG_NOTICE("Calling NWNX_Administration_GetPlayOption with invalid option: %d", option);
             break;
@@ -512,6 +516,10 @@ NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
 
         case 27: // NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL
             Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl = !!value;
+            break;
+
+        case 28: // NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES
+            Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bShowPlayerJoinMessages = !!value;
             break;
 
         default:
