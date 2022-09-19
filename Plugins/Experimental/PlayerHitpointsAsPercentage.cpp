@@ -69,10 +69,10 @@ void PlayerHitpointsAsPercentage()
 
     s_current_player = nullptr;
     s_damage_level = false;
-    
+
     s_CNWSObject_GetCurrentHitPoints_Hook = Hooks::HookFunction(
-        API::Functions::_ZN10CNWSObject19GetCurrentHitPointsEi,
-        (void *)+[](CNWSObject *pThis, BOOL bExcludeTemporaryHits) -> int16_t
+        &CNWSObject::GetCurrentHitPoints,
+        +[](CNWSObject *pThis, BOOL bExcludeTemporaryHits) -> int16_t
         {
             const int16_t cur = s_CNWSObject_GetCurrentHitPoints_Hook->CallOriginal<int16_t>(pThis, bExcludeTemporaryHits);
 
@@ -84,14 +84,14 @@ void PlayerHitpointsAsPercentage()
                     return std::clamp<int16_t>(100 * cur / std::max<int16_t>(max, 1), 0, 100);
                 }
             }
-            
+
             return cur;
         },
         Hooks::Order::Late);
 
     s_CNWSObject_GetDamageLevel_Hook = Hooks::HookFunction(
-        API::Functions::_ZN10CNWSObject14GetDamageLevelEv,
-        (void *)+[](CNWSObject *pThis) -> int8_t
+        &CNWSObject::GetDamageLevel,
+        +[](CNWSObject *pThis) -> int8_t
         {
             s_damage_level = true;
             int8_t ret = s_CNWSObject_GetDamageLevel_Hook->CallOriginal<int8_t>(pThis);
@@ -101,23 +101,23 @@ void PlayerHitpointsAsPercentage()
         Hooks::Order::Late);
 
     s_CNWSCreature_GetMaxHitPoints_Hook = Hooks::HookFunction(
-        API::Functions::_ZN12CNWSCreature15GetMaxHitPointsEi,
-        (void *)+[](CNWSCreature *pThis, BOOL bIncludeToughness) -> int16_t
+        &CNWSCreature::GetMaxHitPoints,
+        +[](CNWSCreature *pThis, BOOL bIncludeToughness) -> int16_t
         {
             int16_t ret = s_CNWSCreature_GetMaxHitPoints_Hook->CallOriginal<int16_t>(pThis, bIncludeToughness);
-            
+
             if (!s_damage_level && ObjectHitpointsAsPercentage(s_current_player, pThis))
             {
                 ret = 100; // %
             }
-                
+
             return ret;
         },
         Hooks::Order::Late);
-    
+
     s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook = Hooks::HookFunction(
-        API::Functions::_ZN11CNWSMessage31SendServerToPlayerGameObjUpdateEP10CNWSPlayerj,
-        (void *)+[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate) -> BOOL
+        &CNWSMessage::SendServerToPlayerGameObjUpdate,
+        +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate) -> BOOL
         {
             s_current_player = pPlayer;
             BOOL ret = s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook->CallOriginal<int16_t>(pThis, pPlayer, oidObjectToUpdate);
