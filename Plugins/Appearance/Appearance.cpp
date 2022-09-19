@@ -70,8 +70,8 @@ static void SetIntValue(int32_t type, int32_t value, std::bitset<OverrideType_MA
 }
 
 static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook =
-    Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
-        (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
+    Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+        +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
                    CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate)
         {
             if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
