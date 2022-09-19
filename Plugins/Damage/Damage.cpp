@@ -8,6 +8,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCombatRound.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 
 #include <cstring>
 #include <bitset>
@@ -42,9 +43,9 @@ Damage::Damage(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_OnApplyDamageHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooks::Order::Late);
-    m_SignalMeleeDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooks::Order::Late);
-    m_SignalRangedDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooks::Order::Late);
+    m_OnApplyDamageHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDamage, &OnApplyDamage, Hooks::Order::Late);
+    m_SignalMeleeDamageHook = Hooks::HookFunction(&CNWSCreature::SignalMeleeDamage, &SignalMeleeDamageHook, Hooks::Order::Late);
+    m_SignalRangedDamageHook = Hooks::HookFunction(&CNWSCreature::SignalRangedDamage, &SignalRangedDamageHook, Hooks::Order::Late);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
