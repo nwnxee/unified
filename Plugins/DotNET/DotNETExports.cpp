@@ -4,6 +4,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
@@ -71,8 +72,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.MainLoop)
     {
         LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
-        MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-            (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
+        MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+            +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
             {
                 static uint64_t frame = 0;
                 if (s_handlers.MainLoop)
@@ -94,8 +95,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.RunScript)
     {
         LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
-        RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
-            (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
+        RunScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
+            +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
                        int32_t eventId) -> int32_t
             {
                 if (!script || *script == "")
@@ -124,8 +125,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.Closure)
     {
         LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
-        RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
-            (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
+        RunScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
+            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
                        int32_t valid) -> int32_t
             {
                 uint64_t eventId;
