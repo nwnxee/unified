@@ -39,8 +39,8 @@ void FixTriggerEnterDetection()
 
     LOG_INFO("Will additionally validate trigger enter events to fix a trigger enter detection bug.");
 
-    static Hooks::Hook s_TriggerEventHandlerHook = Hooks::HookFunction(Functions::_ZN11CNWSTrigger12EventHandlerEjjPvjj,
-    (void*)+[](CNWSTrigger *thisPtr, uint32_t nEventId, OBJECT_ID nCallerObjectId, void* pScript, uint32_t nCalendarDay, uint32_t nTimeOfDay) -> void
+    static Hooks::Hook s_TriggerEventHandlerHook = Hooks::HookFunction(&CNWSTrigger::EventHandler,
+    +[](CNWSTrigger *thisPtr, uint32_t nEventId, OBJECT_ID nCallerObjectId, void* pScript, uint32_t nCalendarDay, uint32_t nTimeOfDay) -> void
     {
         if (nEventId == AIMasterEvent::SignalEvent)
         {

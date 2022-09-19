@@ -19,8 +19,8 @@ void FixGreaterSanctuaryBug()
     LOG_INFO("Greater sanctuary bug fixed.");
 
     static Hooks::Hook s_RemoveCombatInvisibilityEffectsHook =
-            Hooks::HookFunction(Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv,
-                (void*)+[](CNWSCreature *pThis) -> void
+            Hooks::HookFunction(&CNWSCreature::RemoveCombatInvisibilityEffects,
+                +[](CNWSCreature *pThis) -> void
                 {
                     int sanctPtr = pThis->m_pStats->m_nSanctuaryPtr;
                     int invPtr = pThis->m_pStats->m_nInvisibilityPtr;

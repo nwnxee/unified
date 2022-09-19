@@ -28,8 +28,8 @@ void FixResolveSpecialAttackDamage()
     LOG_INFO("Special Attacks will not resolve damage on a miss.");
 
     static Hooks::Hook s_ResolveMeleeSpecialAttackHook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature25ResolveMeleeSpecialAttackEiiP10CNWSObjecti,
-        (void*)+[](CNWSCreature *pThis, int32_t nAttackIndex, int32_t nAttacks, CNWSObject *pTarget, int32_t nTimeAnimation) -> void
+        Hooks::HookFunction(&CNWSCreature::ResolveMeleeSpecialAttack,
+        +[](CNWSCreature *pThis, int32_t nAttackIndex, int32_t nAttacks, CNWSObject *pTarget, int32_t nTimeAnimation) -> void
         {
             s_InResolveSpecialAttack = true;
             s_ResolveMeleeSpecialAttackHook->CallOriginal<void>(pThis, nAttackIndex, nAttacks, pTarget, nTimeAnimation);
@@ -38,8 +38,8 @@ void FixResolveSpecialAttackDamage()
         }, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ResolveRangedSpecialAttackHook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature26ResolveRangedSpecialAttackEP10CNWSObjecti,
-        (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget, int32_t nTimeAnimation) -> void
+        Hooks::HookFunction(&CNWSCreature::ResolveRangedSpecialAttack,
+        +[](CNWSCreature *pThis, CNWSObject *pTarget, int32_t nTimeAnimation) -> void
         {
             s_InResolveSpecialAttack = true;
             s_ResolveRangedSpecialAttackHook->CallOriginal<void>(pThis, pTarget, nTimeAnimation);
@@ -48,8 +48,8 @@ void FixResolveSpecialAttackDamage()
         }, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ResolveDamageHook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature13ResolveDamageEP10CNWSObject,
-        (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+        Hooks::HookFunction(&CNWSCreature::ResolveDamage,
+        +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
         {
             if (s_InResolveSpecialAttack)
             {
@@ -61,8 +61,8 @@ void FixResolveSpecialAttackDamage()
         }, Hooks::Order::Early);
 
     static Hooks::Hook s_ResolvePostMeleeDamageHook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature22ResolvePostMeleeDamageEP10CNWSObject,
-        (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+        Hooks::HookFunction(&CNWSCreature::ResolvePostMeleeDamage,
+        +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
         {
             if (s_InResolveSpecialAttack)
             {
@@ -74,8 +74,8 @@ void FixResolveSpecialAttackDamage()
         }, Hooks::Order::Early);
 
     static Hooks::Hook s_ResolvePostRangedDamageHook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature23ResolvePostRangedDamageEP10CNWSObject,
-        (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+        Hooks::HookFunction(&CNWSCreature::ResolvePostRangedDamage,
+        +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
         {
             if (s_InResolveSpecialAttack)
             {

@@ -26,8 +26,8 @@ void HideHardcodedItemVFX()
 
     LOG_INFO("One or more hardcoded Item VFX will be hidden: %i", s_HiddenVFX);
 
-    static Hooks::Hook s_UpdateVisualEffectHook = Hooks::HookFunction(Functions::_ZN8CNWSItem18UpdateVisualEffectEv,
-        (void*)+[](CNWSItem *pThis) -> void
+    static Hooks::Hook s_UpdateVisualEffectHook = Hooks::HookFunction(&CNWSItem::UpdateVisualEffect,
+        +[](CNWSItem *pThis) -> void
         {
             if (Globals::Rules()->m_pBaseItemArray->GetBaseItem(pThis->m_nBaseItem)->m_nModelType != 2/*Composite*/)
             {

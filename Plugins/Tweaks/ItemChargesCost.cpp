@@ -28,8 +28,8 @@ void ItemChargesCost()
 
     LOG_INFO("Changing cost for items with charges.");
 
-    static Hooks::Hook s_CalculateBaseCostsHook = Hooks::HookFunction(Functions::_ZN8CNWSItem18CalculateBaseCostsEv,
-        (void*)+[](CNWSItem* pThis) -> void
+    static Hooks::Hook s_CalculateBaseCostsHook = Hooks::HookFunction(&CNWSItem::CalculateBaseCosts,
+        +[](CNWSItem* pThis) -> void
         {
             int32_t savedCharges = pThis->m_nNumCharges;
 

@@ -37,8 +37,8 @@ void HideOnCharList()
         LOG_INFO("Hiding the display of classes to other PCs on the character list.");
 
     static Hooks::Hook s_SendServerToPlayerPlayModuleCharacterListResponseHook =
-            Hooks::HookFunction(API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
-                                (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooks::Order::Final);
+            Hooks::HookFunction(&CNWSMessage::SendServerToPlayerPlayModuleCharacterListResponse,
+                                &SendServerToPlayerPlayModuleCharacterListResponseHook, Hooks::Order::Final);
 }
 
 static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage* thisPtr, PlayerID nPlayerId, ObjectID nCharacterId, int32_t bAdd)

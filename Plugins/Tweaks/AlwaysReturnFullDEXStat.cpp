@@ -19,8 +19,8 @@ void AlwaysReturnFullDEXStat()
 
     LOG_INFO("GetDEXStat() is always returning a creature's full Dexterity Stat.");
 
-    static Hooks::Hook s_GetDEXStatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10GetDEXStatEv,
-        (void*)+[](CNWSCreatureStats *pCreatureStats) -> uint8_t
+    static Hooks::Hook s_GetDEXStatHook = Hooks::HookFunction(&CNWSCreatureStats::GetDEXStat,
+        +[](CNWSCreatureStats *pCreatureStats) -> uint8_t
         {
             return std::max(pCreatureStats->m_nDexterityBase +
                             pCreatureStats->GetTotalDEXBonus() +

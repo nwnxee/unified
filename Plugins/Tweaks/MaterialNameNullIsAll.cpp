@@ -130,12 +130,12 @@ void MaterialNameNullIsAll()
     LOG_INFO("Passing sMaterial=\"\" to SetMaterialShaderUniformXxx() will apply to all materials");
 
     static auto s_SetInt = Hooks::HookFunction(
-        Functions::_ZN10CNWSObject23SetMaterialShaderParamIERK10CExoStringS2_i,
-        (void*)hook_SetMaterialShaderParamI, Hooks::Order::Final);
+        &CNWSObject::SetMaterialShaderParamI,
+        hook_SetMaterialShaderParamI, Hooks::Order::Final);
 
     static auto s_SetVec4 = Hooks::HookFunction(
-        Functions::_ZN10CNWSObject26SetMaterialShaderParamVec4ERK10CExoStringS2_ffff,
-        (void*)hook_SetMaterialShaderParamVec4, Hooks::Order::Final);
+        &CNWSObject::SetMaterialShaderParamVec4,
+        hook_SetMaterialShaderParamVec4, Hooks::Order::Final);
 }
 
 }
