@@ -3,6 +3,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSModule.hpp"
 #include "API/CPathfindInformation.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
@@ -52,7 +53,7 @@ Pathing::Pathing(NWNXLib::Services::MetricsProxy* metrics)
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(
-        PlotPath, API::Functions::_ZN10CNWSModule8PlotPathEP20CPathfindInformationj,
+        PlotPath, &CNWSModule::PlotPath,
         int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
 }
 
