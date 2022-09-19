@@ -774,10 +774,7 @@ NWNX_EXPORT ArgumentStack PeekUUID(ArgumentStack&& args)
 {
     if (auto *pGameObject = Utils::PopGameObject(args))
     {
-        static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
-                API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi);
-
-        if (CanCarryUUID(pGameObject->m_nObjectType))
+        if (CNWSUUID::CanCarryUUID(pGameObject->m_nObjectType))
         {
             if (auto *pArea = Utils::AsNWSArea(pGameObject))
                 return pArea->m_pUUID.m_uuid.CStr();
