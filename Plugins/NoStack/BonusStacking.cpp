@@ -96,7 +96,7 @@ void BonusStacking()
         s_bAlwaysStackPenalties = Config::Get<bool>("ALWAYS_STACK_PENALTIES", false);
         s_bSeparateInvalidOidEffects = Config::Get<bool>("SEPARATE_INVALID_OID_EFFECTS", false);
 
-        s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, (void*)&CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
+        s_GetTotalEffectBonusHook = Hooks::HookFunction(&CNWSCreature::GetTotalEffectBonus, &CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
 
         s_positiveEffects.reserve(50);
         s_negativeEffects.reserve(50);
