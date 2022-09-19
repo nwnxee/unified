@@ -100,13 +100,13 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
 #define DEFINE_PROFILER_TARGET(name, address, ret, ...)                                \
 {                                                                                              \
     g_##name##Hook = Hooks::HookFunction(address,                                                     \
-        (void*)&ProfileLanding__##name<__VA_ARGS__>,                                           \
+        &ProfileLanding__##name<__VA_ARGS__>,                                           \
         NWNXLib::Hooks::Order::Earliest);                                                    \
 }
 
 #define DEFINE_PROFILER_TARGET_FAST(name, address, ret, ...)                              \
 {                                                                                                 \
     g_##name##Hook = Hooks::HookFunction(address,                                                        \
-        (void*)&ProfileLanding__##name<__VA_ARGS__>,                                              \
+        &ProfileLanding__##name<__VA_ARGS__>,                                              \
         NWNXLib::Hooks::Order::Earliest);                                                       \
 }

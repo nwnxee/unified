@@ -4,6 +4,7 @@
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedList.hpp"
 #include "API/CServerAIMaster.hpp"
+#include "API/CNWSObject.hpp"
 #include "API/Functions.hpp"
 #include "ProfilerMacros.hpp"
 #include "Services/Metrics/Resamplers.hpp"
@@ -28,32 +29,32 @@ AIMasterUpdates::AIMasterUpdates(const bool overkill, MetricsProxy* metrics)
 {
     g_metrics = metrics;
 
-    s_UpdateStateHook = Hooks::HookFunction(API::Functions::_ZN15CServerAIMaster11UpdateStateEv, (void*)&AIMasterUpdate, Hooks::Order::Earliest);
+    s_UpdateStateHook = Hooks::HookFunction(&CServerAIMaster::UpdateState, &AIMasterUpdate, Hooks::Order::Earliest);
 
     Resamplers::ResamplerFuncPtr resampler = &Resamplers::template Mean<uint32_t>;
     metrics->SetResampler("AIQueuedEvents", resampler, std::chrono::seconds(1));
     metrics->SetResampler("AIUpdateListObjects", resampler, std::chrono::seconds(1));
 
     DEFINE_PROFILER_TARGET(
-        AIMasterUpdateState, API::Functions::_ZN15CServerAIMaster11UpdateStateEv,
+        AIMasterUpdateState, &CServerAIMaster::UpdateState,
         void, CServerAIMaster*)
 
     if (overkill)
     {
         DEFINE_PROFILER_TARGET_FAST(
-            EventPending, API::Functions::_ZN15CServerAIMaster12EventPendingEjj,
+            EventPending, &CServerAIMaster::EventPending,
             int32_t, CServerAIMaster*, uint32_t, uint32_t)
 
         DEFINE_PROFILER_TARGET_FAST(
-            GetNextObject, API::Functions::_ZN13CServerAIList13GetNextObjectEv,
+            GetNextObject, &CServerAIList::GetNextObject,
             CNWSObject*, CServerAIList*)
 
         DEFINE_PROFILER_TARGET_FAST(
-            GetPendingEvent, API::Functions::_ZN15CServerAIMaster15GetPendingEventEPjS0_S0_S0_S0_PPv,
+            GetPendingEvent, &CServerAIMaster::GetPendingEvent,
             int32_t, CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
 
         DEFINE_PROFILER_TARGET_FAST(
-            UpdateDialog, API::Functions::_ZN10CNWSObject12UpdateDialogEv,
+            UpdateDialog, &CNWSObject::UpdateDialog,
             int32_t, CNWSObject*)
     }
 }
