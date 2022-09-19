@@ -29,8 +29,8 @@ static std::unordered_map<uint8_t, float> s_HearingDistances{{Constants::ChatCha
                                                              {Constants::ChatChannel::PlayerWhisper, 3.0f}};
 
 static Hooks::Hook s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
-        Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_,
-        (void *) +[](CNWSMessage *thisPtr, uint8_t nChatMessageType, OBJECT_ID oidSpeaker, CExoString sSpeakerMessage, uint32_t nTellPlayerId,
+        &CNWSMessage::SendServerToPlayerChatMessage,
+          +[](CNWSMessage *thisPtr, uint8_t nChatMessageType, OBJECT_ID oidSpeaker, CExoString sSpeakerMessage, uint32_t nTellPlayerId,
                      const CExoString &sTellName)
         {
             int32_t retVal = false;
