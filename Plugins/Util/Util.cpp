@@ -14,6 +14,7 @@
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CExoFile.hpp"
 #include "API/CNWSDoor.hpp"
@@ -65,8 +66,8 @@ static auto s_id = MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         }
     });
 
-static Hooks::Hook s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-    (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+static Hooks::Hook s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+    +[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
     {
         static int ticks;
         static time_t previous;
