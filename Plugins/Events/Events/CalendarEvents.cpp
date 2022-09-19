@@ -15,7 +15,7 @@ void CalendarEvents() __attribute__((constructor));
 void CalendarEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_CALENDAR_.*", []() {
-        s_UpdateTimeHook = Hooks::HookFunction(Functions::_ZN10CNWSModule10UpdateTimeEjjj, (void*)&HandleUpdateTimeHook, Hooks::Order::Earliest);
+        s_UpdateTimeHook = Hooks::HookFunction(&CNWSModule::UpdateTime, &HandleUpdateTimeHook, Hooks::Order::Earliest);
     });
 }
 

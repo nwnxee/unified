@@ -49,78 +49,78 @@ void ItemEvents() __attribute__((constructor));
 void ItemEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", []() {
-        s_CanUseItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi,
-                                        (void*)&CanUseItemHook, Hooks::Order::Early);
+        s_CanUseItemHook = Hooks::HookFunction(&CNWSCreature::CanUseItem,
+                                        &CanUseItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", []() {
-        s_UseItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorji,
-                                     (void*)&UseItemHook, Hooks::Order::Early);
+        s_UseItemHook = Hooks::HookFunction(&CNWSCreature::UseItem,
+                                     &UseItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_OPEN_.*", []() {
-        s_OpenInventoryHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem13OpenInventoryEj,
-                                           (void*)&OpenInventoryHook, Hooks::Order::Early);
+        s_OpenInventoryHook = Hooks::HookFunction(&CNWSItem::OpenInventory,
+                                           &OpenInventoryHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", []() {
-        s_CloseInventoryHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem14CloseInventoryEji,
-                                            (void*)&CloseInventoryHook, Hooks::Order::Early);
+        s_CloseInventoryHook = Hooks::HookFunction(&CNWSItem::CloseInventory,
+                                            &CloseInventoryHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", []() {
-        s_FindItemWithBaseItemIdHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository22FindItemWithBaseItemIdEji,
-                                                    (void*)&FindItemWithBaseItemIdHook, Hooks::Order::Early);
+        s_FindItemWithBaseItemIdHook = Hooks::HookFunction(&CItemRepository::FindItemWithBaseItemId,
+                                                    &FindItemWithBaseItemIdHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_SCROLL_LEARN_.*", []() {
-        s_LearnScrollHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11LearnScrollEj,
-                                         (void*)&LearnScrollHook, Hooks::Order::Early);
+        s_LearnScrollHook = Hooks::HookFunction(&CNWSCreature::LearnScroll,
+                                         &LearnScrollHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", []() {
-        s_CanEquipItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer,
-                                          (void*)&CanEquipItemHook, Hooks::Order::Early);
+        s_CanEquipItemHook = Hooks::HookFunction(&CNWSCreature::CanEquipItem,
+                                          &CanEquipItemHook, Hooks::Order::Early);
         });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", []() {
-        s_RunEquipHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature8RunEquipEjjj,
-                                      (void*)&RunEquipHook, Hooks::Order::Early);
+        s_RunEquipHook = Hooks::HookFunction(&CNWSCreature::RunEquip,
+                                      &RunEquipHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_UNEQUIP_.*", []() {
-        s_RunUnequipHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RunUnequipEjjhhij,
-                                        (void*)&RunUnequipHook, Hooks::Order::Early);
+        s_RunUnequipHook = Hooks::HookFunction(&CNWSCreature::RunUnequip,
+                                        &RunUnequipHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", []() {
-        s_ItemEventHandlerHook = Hooks::HookFunction(API::Functions::_ZN8CNWSItem12EventHandlerEjjPvjj,
-                                              (void*)&ItemEventHandlerHook, Hooks::Order::Early);
+        s_ItemEventHandlerHook = Hooks::HookFunction(&CNWSItem::EventHandler,
+                                              &ItemEventHandlerHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", []() {
-        s_UseLoreOnItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature13UseLoreOnItemEj,
-                                           (void*)&UseLoreOnItemHook, Hooks::Order::Early);
+        s_UseLoreOnItemHook = Hooks::HookFunction(&CNWSCreature::UseLoreOnItem,
+                                           &UseLoreOnItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", []() {
-        s_PayToIdenfifyItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature17PayToIdentifyItemEjj,
-                                               (void*)&PayToIdentifyItemHook, Hooks::Order::Early);
+        s_PayToIdenfifyItemHook = Hooks::HookFunction(&CNWSCreature::PayToIdentifyItem,
+                                               &PayToIdentifyItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", []() {
-        s_SplitItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi,
-                                       (void*)&SplitItemHook, Hooks::Order::Early);
+        s_SplitItemHook = Hooks::HookFunction(&CNWSCreature::SplitItem,
+                                       &SplitItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_MERGE_.*", []() {
-        s_MergeItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature9MergeItemEP8CNWSItemS1_,
-                                       (void*)&MergeItemHook, Hooks::Order::Early);
+        s_MergeItemHook = Hooks::HookFunction(&CNWSCreature::MergeItem,
+                                       &MergeItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_ACQUIRE_.*", []() {
-        s_AcquireItemHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11AcquireItemEPP8CNWSItemjjhhii,
-                                         (void*)&AcquireItemHook, Hooks::Order::Early);
+        s_AcquireItemHook = Hooks::HookFunction(&CNWSCreature::AcquireItem,
+                                         &AcquireItemHook, Hooks::Order::Early);
     });
 }
 
