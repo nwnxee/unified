@@ -33,10 +33,10 @@ void UnhardcodeShields()
 
     LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
 
-    s_CNWSItemItemComputeArmorClassHook = Hooks::HookFunction(Functions::_ZN8CNWSItem17ComputeArmorClassEv,
-                                                  (void*)&CNWSItem_ComputeArmorClassHook, Hooks::Order::Final);
-    s_CNWSCreatureComputeArmourClassHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ComputeArmourClassEP8CNWSItemii,
-                                                   (void*)&CNWSCreature_ComputeArmourClassHook, Hooks::Order::Late);
+    s_CNWSItemItemComputeArmorClassHook = Hooks::HookFunction(&CNWSItem::ComputeArmorClass,
+                                                  &CNWSItem_ComputeArmorClassHook, Hooks::Order::Final);
+    s_CNWSCreatureComputeArmourClassHook = Hooks::HookFunction(&CNWSCreature::ComputeArmourClass,
+                                                   &CNWSCreature_ComputeArmourClassHook, Hooks::Order::Late);
 }
 
 static int32_t CNWSItem_ComputeArmorClassHook(CNWSItem* thisPtr)

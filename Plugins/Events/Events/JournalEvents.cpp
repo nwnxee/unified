@@ -16,8 +16,8 @@ void JournalEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_JOURNAL_(OPEN|CLOSE)_.*", []() {
         s_HandlePlayerToServerJournalMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage34HandlePlayerToServerJournalMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerJournalMessageHook, Hooks::Order::Earliest);
+                &CNWSMessage::HandlePlayerToServerJournalMessage,
+                &HandlePlayerToServerJournalMessageHook, Hooks::Order::Earliest);
     });
 }
 

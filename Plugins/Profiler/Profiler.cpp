@@ -1,6 +1,7 @@
 #include "Profiler.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "ProfilerMacros.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
@@ -119,8 +120,8 @@ Profiler::Profiler(Services::ProxyServiceList* services)
 
     if (g_recalibrate || g_tickrate)
     {
-        s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                      (void*)&MainLoopUpdate, Hooks::Order::Earliest);
+        s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                                      &MainLoopUpdate, Hooks::Order::Earliest);
     }
 
     // Resamples all of the automated timing data.

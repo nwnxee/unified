@@ -26,23 +26,23 @@ void HookEvents()
     InitOnFirstSubscribe("NWNX_ON_RUN_EVENT_SCRIPT_(BEFORE|AFTER)", []() {
         ForceEnableWhitelist("NWNX_ON_RUN_EVENT_SCRIPT");
 
-        s_runAreaEventScript = NWNXLib::Hooks::HookFunction(Functions::_ZN8CNWSArea14RunEventScriptEiP10CExoString,
-                                             (void*)&AreaRunEventScript, NWNXLib::Hooks::Order::Earliest);
+        s_runAreaEventScript = NWNXLib::Hooks::HookFunction(&CNWSArea::RunEventScript,
+                                             &AreaRunEventScript, NWNXLib::Hooks::Order::Earliest);
 
-        s_runModuleEventScript = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSModule14RunEventScriptEiP10CExoString,
-                                             (void*)&ModuleRunEventScript, NWNXLib::Hooks::Order::Earliest);
+        s_runModuleEventScript = NWNXLib::Hooks::HookFunction(&CNWSModule::RunEventScript,
+                                             &ModuleRunEventScript, NWNXLib::Hooks::Order::Earliest);
 
-        s_runObjectEventScript = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSObject14RunEventScriptEiP10CExoString,
-                                             (void*)&ObjectRunEventScript, NWNXLib::Hooks::Order::Earliest);
+        s_runObjectEventScript = NWNXLib::Hooks::HookFunction(&CNWSObject::RunEventScript,
+                                             &ObjectRunEventScript, NWNXLib::Hooks::Order::Earliest);
     });
 }
 
-static BOOL DoEH(uint32_t tySelf, ObjectID idSelf, 
+static BOOL DoEH(uint32_t tySelf, ObjectID idSelf,
     int32_t nScriptIdx, CExoString* psScript,
     std::function<BOOL()> fnEv)
 {
     const int32_t nType = tySelf * 1000 + nScriptIdx;
-    
+
     if (!IsIDInWhitelist("NWNX_ON_RUN_EVENT_SCRIPT", nType))
     {
         return fnEv();
@@ -72,7 +72,7 @@ BOOL AreaRunEventScript(CNWSArea* thisPtr, int32_t nScript, CExoString* psOverri
     CExoString* psScript = psOverrideScriptName ? psOverrideScriptName : &(thisPtr->m_sScripts[nScript]);
 
     return DoEH(thisPtr->m_nObjectType, thisPtr->m_idSelf, nScript, psScript, [&]() -> BOOL {
-        return s_runAreaEventScript->CallOriginal<BOOL>(thisPtr, nScript, psOverrideScriptName);    
+        return s_runAreaEventScript->CallOriginal<BOOL>(thisPtr, nScript, psOverrideScriptName);
     });
 }
 

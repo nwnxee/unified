@@ -5,6 +5,7 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/CServerExoAppInternal.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CTwoDimArrays.hpp"
 
 
@@ -46,26 +47,26 @@ void AddPrestigeclassCasterLevels()
 
     LOG_INFO("Automatically adding prestige class caster levels using (Div|Arc)SpellLvlMod colums in classes.2da");
 
-    s_LoadClassInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules13LoadClassInfoEv, (void*)&LoadClassInfoHook, Hooks::Order::Early);
-    s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, (void*)&GetClassLevelHook, Hooks::Order::Early);
-    s_ExecuteCommandGetCasterLevelHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
-        (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+    s_LoadClassInfoHook = Hooks::HookFunction(&CNWRules::LoadClassInfo, &LoadClassInfoHook, Hooks::Order::Early);
+    s_GetClassLevelHook = Hooks::HookFunction(&CNWSCreatureStats::GetClassLevel, &GetClassLevelHook, Hooks::Order::Early);
+    s_ExecuteCommandGetCasterLevelHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetCasterLevel,
+        +[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
             s_bAdjustCasterLevel = false;
             return retVal;
         }, Hooks::Order::Early);
-    s_ExecuteCommandResistSpellHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
-        (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+    s_ExecuteCommandResistSpellHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandResistSpell,
+        +[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
             s_bAdjustCasterLevel = false;
             return retVal;
         }, Hooks::Order::Early);
-    s_SetCreatorHook = Hooks::HookFunction(Functions::_ZN11CGameEffect10SetCreatorEj,
-        (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
+    s_SetCreatorHook = Hooks::HookFunction(&CGameEffect::SetCreator,
+        +[](CGameEffect *thisPtr, ObjectID oidCreator)
         {
             s_bAdjustCasterLevel = true;
             s_SetCreatorHook->CallOriginal<void>(thisPtr, oidCreator);

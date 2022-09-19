@@ -1,6 +1,7 @@
 #include "Targets/MainLoop.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "ProfilerMacros.hpp"
 
 namespace Profiler {
@@ -18,15 +19,15 @@ MainLoop::MainLoop(NWNXLib::Services::MetricsProxy* metrics)
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(
-        ExoAppMainLoop, API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+        ExoAppMainLoop, &CServerExoAppInternal::MainLoop,
         int32_t, CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(
-        ExoAppConnectionLibMainLoop, API::Functions::_ZN21CServerExoAppInternal21ConnectionLibMainLoopEv,
+        ExoAppConnectionLibMainLoop, &CServerExoAppInternal::ConnectionLibMainLoop,
         void, CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(
-        ExoAppUpdateClientGameObjects, API::Functions::_ZN21CServerExoAppInternal23UpdateClientGameObjectsEi,
+        ExoAppUpdateClientGameObjects, &CServerExoAppInternal::UpdateClientGameObjects,
         void, CServerExoAppInternal*, int32_t);
 }
 

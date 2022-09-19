@@ -21,20 +21,20 @@ void MapEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", []() {
         s_HandlePlayerToServerMapPinSetMapPinAtHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer,
-                (void*)&HandleMapPinSetMapPinAtMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerMapPinSetMapPinAt,
+                &HandleMapPinSetMapPinAtMessageHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_MAP_PIN_CHANGE_PIN_.*", []() {
         s_HandlePlayerToServerMapPinChangePinHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer,
-                (void*)&HandleMapPinChangePinMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerMapPinChangePin,
+                &HandleMapPinChangePinMessageHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_MAP_PIN_DESTROY_PIN_.*", []() {
         s_HandlePlayerToServerMapPinDestroyMapPinHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer,
-                (void*)&HandleMapPinDestroyMapPinMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerMapPinDestroyMapPin,
+                &HandleMapPinDestroyMapPinMessageHook, Hooks::Order::Early);
     });
 
 }

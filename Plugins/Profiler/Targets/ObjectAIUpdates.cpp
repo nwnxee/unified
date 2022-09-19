@@ -1,6 +1,17 @@
 #include "Targets/ObjectAIUpdates.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSAreaOfEffectObject.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSStore.hpp"
+#include "API/CNWSTrigger.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "ProfilerMacros.hpp"
 
 namespace Profiler {
@@ -26,47 +37,47 @@ ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::MetricsProxy* metrics)
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateArea, API::Functions::_ZN8CNWSArea8AIUpdateEv,
+        AIUpdateArea, &CNWSArea::AIUpdate,
         int32_t, CNWSArea*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateAreaOfEffect, API::Functions::_ZN22CNWSAreaOfEffectObject8AIUpdateEv,
+        AIUpdateAreaOfEffect, &CNWSAreaOfEffectObject::AIUpdate,
         void, CNWSAreaOfEffectObject*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateCreature, API::Functions::_ZN12CNWSCreature8AIUpdateEv,
+        AIUpdateCreature, &CNWSCreature::AIUpdate,
         void, CNWSCreature*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateDoor, API::Functions::_ZN8CNWSDoor8AIUpdateEv,
+        AIUpdateDoor, &CNWSDoor::AIUpdate,
         void, CNWSDoor*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateEncounter, API::Functions::_ZN13CNWSEncounter8AIUpdateEv,
+        AIUpdateEncounter, &CNWSEncounter::AIUpdate,
         void, CNWSEncounter*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateItem, API::Functions::_ZN8CNWSItem8AIUpdateEv,
+        AIUpdateItem, &CNWSItem::AIUpdate,
         void, CNWSItem*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateModule, API::Functions::_ZN10CNWSModule8AIUpdateEv,
+        AIUpdateModule, &CNWSModule::AIUpdate,
         int32_t, CNWSModule*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdatePlaceable, API::Functions::_ZN13CNWSPlaceable8AIUpdateEv,
+        AIUpdatePlaceable, &CNWSPlaceable::AIUpdate,
         void, CNWSPlaceable*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateStore, API::Functions::_ZN9CNWSStore8AIUpdateEv,
+        AIUpdateStore, &CNWSStore::AIUpdate,
         void, CNWSStore*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateTrigger, API::Functions::_ZN11CNWSTrigger8AIUpdateEv,
+        AIUpdateTrigger, &CNWSTrigger::AIUpdate,
         void, CNWSTrigger*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateWaypoint, API::Functions::_ZN12CNWSWaypoint8AIUpdateEv,
+        AIUpdateWaypoint, &CNWSWaypoint::AIUpdate,
         void, CNWSWaypoint*);
 }
 

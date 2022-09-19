@@ -17,8 +17,8 @@ void DisableMonkAbilitiesWhenPolymorphed()
 
     LOG_INFO("Monk abilities (ac, speed, attacks) will be disabled during polymorph");
 
-    static Hooks::Hook s_GetUseMonkAbilitiesHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv,
-        (void*)+[](CNWSCreature *pThis) -> int32_t
+    static Hooks::Hook s_GetUseMonkAbilitiesHook = Hooks::HookFunction(&CNWSCreature::GetUseMonkAbilities,
+        +[](CNWSCreature *pThis) -> int32_t
         {
             if ( pThis->m_bIsPolymorphed )
                 return false;

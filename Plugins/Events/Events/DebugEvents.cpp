@@ -16,8 +16,8 @@ void DebugEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", []() {
         s_HandlePlayerToServerCheatMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerCheatMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerCheatMessage,
+                &HandlePlayerToServerCheatMessageHook, Hooks::Order::Early);
     });
 }
 

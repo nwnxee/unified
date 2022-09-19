@@ -13,8 +13,8 @@ static int32_t GetGlobalOverride(ObjectID);
 static int32_t GetPersonalOverride(ObjectID, ObjectID);
 
 static Hooks::Hook s_TestObjectVisibleHook =
-        Hooks::HookFunction(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_,
-        (void*)+[](CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject) -> int32_t
+        Hooks::HookFunction(&CNWSMessage::TestObjectVisible,
+        +[](CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject) -> int32_t
         {
             if (pAreaObject->m_idSelf == pPlayerGameObject->m_idSelf)
             {

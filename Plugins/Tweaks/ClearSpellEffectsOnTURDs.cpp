@@ -18,8 +18,8 @@ void ClearSpellEffectsOnTURDs()
     LOG_INFO("Effects on logged out users will be removed when a caster rests.");
 
     static Hooks::Hook s_ClearSpellEffectsOnOthersHook =
-            Hooks::HookFunction(Functions::_ZN10CNWSObject25ClearSpellEffectsOnOthersEv,
-            (void*)+[](CNWSObject *pObject) -> void
+            Hooks::HookFunction(&CNWSObject::ClearSpellEffectsOnOthers,
+            +[](CNWSObject *pObject) -> void
             {
                 if (auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
                 {

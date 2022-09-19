@@ -15,8 +15,8 @@ void FactionEvents() __attribute__((constructor));
 void FactionEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_SET_NPC_FACTION_REPUTATION_.*", []() {
-        s_HandleSetNPCFactionReputationHook = Hooks::HookFunction(API::Functions::_ZN15CFactionManager23SetNPCFactionReputationEiii,
-                                                           (void*)&HandleSetNPCFactionReputationHook, Hooks::Order::Early);
+        s_HandleSetNPCFactionReputationHook = Hooks::HookFunction(&CFactionManager::SetNPCFactionReputation,
+                                                           &HandleSetNPCFactionReputationHook, Hooks::Order::Early);
         });
 }
 

@@ -61,8 +61,8 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_LoadRulesetInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules15LoadRulesetInfoEv, (void*)&LoadRulesetInfoHook, Hooks::Order::Earliest);
-    static auto s_GetSkillRank = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooks::Order::Final);
+    s_LoadRulesetInfoHook = Hooks::HookFunction(&CNWRules::LoadRulesetInfo, (void*)&LoadRulesetInfoHook, Hooks::Order::Earliest);
+    static auto s_GetSkillRank = Hooks::HookFunction(&CNWSCreatureStats::GetSkillRank, (void*)&GetSkillRankHook, Hooks::Order::Final);
 }
 
 SkillRanks::~SkillRanks()
@@ -672,7 +672,7 @@ char SkillRanks::GetSkillRankHook(CNWSCreatureStats* thisPtr, uint8_t nSkill, CN
     // Area set skill rank modifiers
     if (pArea)
     {
-        if(auto areaMod = pArea->nwnxGet<int>(areaModPOSKey + std::to_string(nSkill))) 
+        if(auto areaMod = pArea->nwnxGet<int>(areaModPOSKey + std::to_string(nSkill)))
         {
             retVal += *areaMod;
         }

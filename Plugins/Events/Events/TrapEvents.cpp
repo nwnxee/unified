@@ -27,18 +27,18 @@ void TrapEvents() __attribute__((constructor));
 void TrapEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_TRAP_.*", []() {
-        s_AIActionDisarmTrapHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode,
-                                                (void*)&AIActionDisarmTrapHook, Hooks::Order::Early);
-        s_AIActionExamineTrapHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AIActionExamineTrapEP20CNWSObjectActionNode,
-                                                 (void*)&AIActionExamineTrapHook, Hooks::Order::Early);
-        s_AIActionFlagTrapHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AIActionFlagTrapEP20CNWSObjectActionNode,
-                                              (void*)&AIActionFlagTrapHook, Hooks::Order::Early);
-        s_AIActionRecoverTrapHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AIActionRecoverTrapEP20CNWSObjectActionNode,
-                                                 (void*)&AIActionRecoverTrapHook, Hooks::Order::Early);
-        s_AIActionSetTrapHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15AIActionSetTrapEP20CNWSObjectActionNode,
-                                             (void*)&AIActionSetTrapHook, Hooks::Order::Early);
-        s_OnEnterTrapHook = Hooks::HookFunction(API::Functions::_ZN11CNWSTrigger11OnEnterTrapEi,
-                                         (void*)&OnEnterTrapHook, Hooks::Order::Early);
+        s_AIActionDisarmTrapHook = Hooks::HookFunction(&CNWSCreature::AIActionDisarmTrap,
+                                                &AIActionDisarmTrapHook, Hooks::Order::Early);
+        s_AIActionExamineTrapHook = Hooks::HookFunction(&CNWSCreature::AIActionExamineTrap,
+                                                 &AIActionExamineTrapHook, Hooks::Order::Early);
+        s_AIActionFlagTrapHook = Hooks::HookFunction(&CNWSCreature::AIActionFlagTrap,
+                                              &AIActionFlagTrapHook, Hooks::Order::Early);
+        s_AIActionRecoverTrapHook = Hooks::HookFunction(&CNWSCreature::AIActionRecoverTrap,
+                                                 &AIActionRecoverTrapHook, Hooks::Order::Early);
+        s_AIActionSetTrapHook = Hooks::HookFunction(&CNWSCreature::AIActionSetTrap,
+                                             &AIActionSetTrapHook, Hooks::Order::Early);
+        s_OnEnterTrapHook = Hooks::HookFunction(&CNWSTrigger::OnEnterTrap,
+                                         &OnEnterTrapHook, Hooks::Order::Early);
     });
 }
 
