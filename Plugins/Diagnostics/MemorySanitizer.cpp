@@ -1,6 +1,7 @@
 #include "nwnx.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
@@ -52,8 +53,8 @@ void MemorySanitizer()
         LOG_WARNING("Please see Diagnostics/README.md for instructions");
         return;
     }
-    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-            (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+            +[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
                 FreePending();
@@ -218,7 +219,7 @@ static void FreePending()
 {
     MetaFunction mf;
     std::lock_guard<std::recursive_mutex> guard(lock);
-    
+
     for (auto* ptr : pending_free)
     {
         size_t size = CheckFence(ptr);
