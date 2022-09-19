@@ -4,6 +4,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSModule.hpp"
@@ -34,45 +35,45 @@ void ClientEvents() __attribute__((constructor));
 void ClientEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", []() {
-        s_RemovePCFromWorldHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer,
-                                               (void*)&RemovePCFromWorldHook, Hooks::Order::Earliest);
+        s_RemovePCFromWorldHook = Hooks::HookFunction(&CServerExoAppInternal::RemovePCFromWorld,
+                                               &RemovePCFromWorldHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_SERVER_CHARACTER_SAVE_.*", []() {
-        s_ServerCharacterSaveHook = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi,
-                                                 (void*)&SaveServerCharacterHook, Hooks::Order::Early);
+        s_ServerCharacterSaveHook = Hooks::HookFunction(&CNWSPlayer::SaveServerCharacter,
+                                                 &SaveServerCharacterHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", []() {
         s_SendServerToPlayerCharListHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer,
-                (void*)&SendServerToPlayerCharListHook, Hooks::Order::Early);
+                &CNWSMessage::SendServerToPlayerCharList,
+                &SendServerToPlayerCharListHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", []() {
         s_CheckStickyPlayerNameReservedHook = Hooks::HookFunction(
-                API::Functions::_ZN21CServerExoAppInternal29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i,
-                (void*)&CheckStickyPlayerNameReservedHook, Hooks::Order::Early);
+                &CServerExoAppInternal::CheckStickyPlayerNameReserved,
+                &CheckStickyPlayerNameReservedHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CLIENT_EXPORT_CHARACTER_.*", []() {
         s_SendServerToPlayerModule_ExportReplyHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer,
-                (void*)&SendServerToPlayerModule_ExportReplyHook, Hooks::Order::Early);
+                &CNWSMessage::SendServerToPlayerModule_ExportReply,
+                &SendServerToPlayerModule_ExportReplyHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_SERVER_SEND_AREA_.*", []()
     {
         s_SendServerToPlayerArea_ClientAreaHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage33SendServerToPlayerArea_ClientAreaEP10CNWSPlayerP8CNWSAreafffRK6Vectori,
-                (void*)&SendServerToPlayerArea_ClientAreaHook, Hooks::Order::Earliest);
+                &CNWSMessage::SendServerToPlayerArea_ClientArea,
+                &SendServerToPlayerArea_ClientAreaHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_.*", []()
     {
         s_HandlePlayerToServerDeviceHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage26HandlePlayerToServerDeviceEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerDeviceHook, Hooks::Order::Earliest);
+                &CNWSMessage::HandlePlayerToServerDevice,
+                &HandlePlayerToServerDeviceHook, Hooks::Order::Earliest);
     });
 }
 

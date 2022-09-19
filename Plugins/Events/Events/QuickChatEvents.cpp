@@ -16,8 +16,8 @@ void QuickChatEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", []() {
         s_HandlePlayerToServerQuickChatMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerQuickChatMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerQuickChatMessage,
+                &HandlePlayerToServerQuickChatMessageHook, Hooks::Order::Early);
     });
 }
 

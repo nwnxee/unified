@@ -32,28 +32,28 @@ void InventoryEvents()
     InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", []()
     {
         s_HandlePlayerToServerGuiInventoryMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerGuiInventoryMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerGuiInventoryMessage,
+                &HandlePlayerToServerGuiInventoryMessageHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", []() {
-        s_AddItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii,
-                                     (void*)&AddItemHook, Hooks::Order::Early);
+        s_AddItemHook = Hooks::HookFunction(&CItemRepository::AddItem,
+                                     &AddItemHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", []() {
-        s_RemoveItemHook = Hooks::HookFunction(API::Functions::_ZN15CItemRepository10RemoveItemEP8CNWSItem,
-                                        (void*)&RemoveItemHook, Hooks::Order::Earliest);
+        s_RemoveItemHook = Hooks::HookFunction(&CItemRepository::RemoveItem,
+                                        &RemoveItemHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", []() {
-        s_AddGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature7AddGoldEii,
-                                     (void*)&AddGoldHook, Hooks::Order::Early);
+        s_AddGoldHook = Hooks::HookFunction(&CNWSCreature::AddGold,
+                                     &AddGoldHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", []() {
-        s_RemoveGoldHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RemoveGoldEii,
-                                        (void*)&RemoveGoldHook, Hooks::Order::Early);
+        s_RemoveGoldHook = Hooks::HookFunction(&CNWSCreature::RemoveGold,
+                                        &RemoveGoldHook, Hooks::Order::Early);
     });
 }
 

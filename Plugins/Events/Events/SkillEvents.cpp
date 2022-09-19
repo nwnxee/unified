@@ -13,8 +13,8 @@ void SkillEvents() __attribute__((constructor));
 void SkillEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", []() {
-        s_UseSkillHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji,
-                                      (void*)&UseSkillHook, Hooks::Order::Early);
+        s_UseSkillHook = Hooks::HookFunction(&CNWSCreature::UseSkill,
+                                      &UseSkillHook, Hooks::Order::Early);
     });
 }
 

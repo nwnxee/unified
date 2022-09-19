@@ -17,8 +17,8 @@ void PartyEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_PARTY_.*", []() {
         s_HandlePlayerToServerPartyHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh,
-                (void*)&HandlePartyMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerParty,
+                &HandlePartyMessageHook, Hooks::Order::Early);
     });
 }
 
