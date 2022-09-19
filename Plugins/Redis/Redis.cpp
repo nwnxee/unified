@@ -22,7 +22,7 @@ using namespace NWNXLib::Services;
 Redis::Redis(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    m_ClearStackHook = Hooks::HookFunction(Functions::_ZN20CVirtualMachineStack10ClearStackEv, (void*)&CleanState, Hooks::Order::Early);
+    m_ClearStackHook = Hooks::HookFunction(&CVirtualMachineStack::ClearStack, &CleanState, Hooks::Order::Early);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 
