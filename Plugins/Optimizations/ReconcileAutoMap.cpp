@@ -4,6 +4,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 
 namespace Optimizations {
 
@@ -28,8 +29,8 @@ void ReconcileAutoMap()
     {
         LOG_INFO("AutoMap data fixup optimization enabled");
 
-        s_ReconcileAutoMapData = Hooks::HookFunction(Functions::_ZN12CNWSCreature20ReconcileAutoMapDataEv, (void*)ReconcileAutoMapData, Hooks::Order::Early);
-        s_VMAreaManagement     = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandAreaManagementEii, (void*)ExecuteCommandAreaManagement, Hooks::Order::Early);
+        s_ReconcileAutoMapData = Hooks::HookFunction(&CNWSCreature::ReconcileAutoMapData, ReconcileAutoMapData, Hooks::Order::Early);
+        s_VMAreaManagement     = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandAreaManagement, ExecuteCommandAreaManagement, Hooks::Order::Early);
         s_SeqTable.Initialize();
     }
 }
