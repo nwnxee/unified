@@ -151,8 +151,8 @@ static int32_t s_ELCSkillID;
 static int32_t s_ELCFeatID;
 static int32_t s_ELCSpellID;
 
-static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi,
-        (void*)+[](CNWSPlayer *pPlayer, int32_t *bFailedServerRestriction) -> int32_t
+static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateCharacter,
+        +[](CNWSPlayer *pPlayer, int32_t *bFailedServerRestriction) -> int32_t
         {
             // Reset Variables
             s_ILRItemOID = Constants::OBJECT_INVALID;
