@@ -21,8 +21,6 @@ function(add_swig_plugin target language interfaces)
       SWIG_USE_TARGET_INCLUDE_DIRECTORIES ON
       POSITION_INDEPENDENT_CODE ON)
 
-    target_link_options(${target} PRIVATE "LINKER:--no-undefined,--no-demangle")
-
     add_custom_command(TARGET ${target}_swig_compilation POST_BUILD
             COMMAND chmod a+x postprocess.sh && ./postprocess.sh
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${target}
