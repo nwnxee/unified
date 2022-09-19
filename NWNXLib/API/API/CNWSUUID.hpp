@@ -22,7 +22,10 @@ struct CNWSUUID
 
     CNWSUUID(CGameObject * );
     virtual ~CNWSUUID();
+    static bool CanCarryUUID(int32_t objectType);
     bool CanCarryUUID();
+    static CExoString MakeRandom();
+    static OBJECT_ID LookupObjectIdByUUID(const CExoString& uuid);
     bool TryAssign(const CExoString & uuid);
     void AssignRandom();
     CExoString GetOrAssignRandom();
