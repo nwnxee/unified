@@ -40,7 +40,7 @@ Reveal::Reveal(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_DoStealthDetection = Hooks::HookFunction(Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i, (void*)&HookStealthDetection, Hooks::Order::Late);
+    m_DoStealthDetection = Hooks::HookFunction(&CNWSCreature::DoStealthDetection, (void*)&HookStealthDetection, Hooks::Order::Late);
 }
 
 Reveal::~Reveal()
