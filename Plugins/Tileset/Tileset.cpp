@@ -1,11 +1,13 @@
 #include "nwnx.hpp"
 
+#include "API/CExoResMan.hpp"
 #include "API/CResStruct.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWTileSetManager.hpp"
 #include "API/CNWTileSet.hpp"
 #include "API/CNWSTile.hpp"
 #include "API/CNWTileData.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CAppManager.hpp"
 
 using namespace NWNXLib;
@@ -83,8 +85,8 @@ static bool s_CreatingArea = false;
 static std::string s_OriginalSourceAreaResRef;
 
 static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
-        API::Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandAreaManagementEii,
-        (void*)+[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
+        &CNWVirtualMachineCommands::ExecuteCommandAreaManagement,
+        +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
         {
             if (nCommandId == Constants::VMCommand::CreateArea)
             {
@@ -98,8 +100,8 @@ static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
         }, Hooks::Order::Earliest);
 
 static Hooks::Hook s_ResManGet = Hooks::HookFunction(
-        API::Functions::_ZN10CExoResMan3GetERK7CResReft,
-        (void*)+[](CExoResMan *pThis, CResRef* cResRef, RESTYPE nType) -> DataBlockRef
+        &CExoResMan::Get,
+        +[](CExoResMan *pThis, CResRef* cResRef, RESTYPE nType) -> DataBlockRef
         {
             if (s_CreatingArea && nType == Constants::ResRefType::ARE)
                 s_OriginalSourceAreaResRef = cResRef->GetResRefStr();
@@ -107,8 +109,8 @@ static Hooks::Hook s_ResManGet = Hooks::HookFunction(
         }, Hooks::Order::Earliest);
 
 static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
-        API::Functions::_ZN8CNWSArea15LoadTileSetInfoEP10CResStruct,
-        (void*)+[](CNWSArea *pArea, CResStruct *pStruct) -> int32_t
+        &CNWSArea::LoadTileSetInfo,
+        +[](CNWSArea *pArea, CResStruct *pStruct) -> int32_t
         {
             if (s_CreatingArea)
             {
