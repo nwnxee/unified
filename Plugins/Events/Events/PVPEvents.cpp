@@ -18,8 +18,8 @@ void PVPEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_PVP_ATTITUDE_CHANGE_.*", []() {
         s_HandlePlayerToServerPVPListOperationsHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage37HandlePlayerToServerPVPListOperationsEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerPVPListOperationsHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerPVPListOperations,
+                &HandlePlayerToServerPVPListOperationsHook, Hooks::Order::Early);
     });
 }
 

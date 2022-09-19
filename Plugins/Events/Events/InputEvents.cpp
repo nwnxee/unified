@@ -32,36 +32,36 @@ void InputEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", []() {
         s_HandlePlayerToServerInputWalkToWaypointHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer,
-                (void*)&HandlePlayerToServerInputWalkToWaypointHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerInputWalkToWaypoint,
+                &HandlePlayerToServerInputWalkToWaypointHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", []() {
-        s_AddAttackActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii,
-                                              (void*)&AddAttackActionsHook, Hooks::Order::Early);
+        s_AddAttackActionsHook = Hooks::HookFunction(&CNWSCreature::AddAttackActions,
+                                              &AddAttackActionsHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", []() {
         s_AddMoveToPointActionToFrontHook = Hooks::HookFunction(
-                API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii,
-                (void*)&AddMoveToPointActionToFrontHook, Hooks::Order::Early);
+                &CNWSCreature::AddMoveToPointActionToFront,
+                &AddMoveToPointActionToFrontHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", []() {
-        s_AddCastSpellActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih,
-                                                 (void*)&AddCastSpellActionsHook, Hooks::Order::Early);
+        s_AddCastSpellActionsHook = Hooks::HookFunction(&CNWSCreature::AddCastSpellActions,
+                                                 &AddCastSpellActionsHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", []() {
         s_HandlePlayerToServerInputMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerInputMessage,
+                &HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_INPUT_DROP_ITEM_.*", []() {
         s_HandlePlayerToServerInventoryMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage36HandlePlayerToServerInventoryMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerInventoryMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerInventoryMessage,
+                &HandlePlayerToServerInventoryMessageHook, Hooks::Order::Early);
     });
 }
 

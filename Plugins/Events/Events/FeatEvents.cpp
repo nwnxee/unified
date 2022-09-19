@@ -18,11 +18,11 @@ void FeatEvents() __attribute__((constructor));
 void FeatEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", []() {
-        s_UseFeatHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector, (void*)&UseFeatHook, Hooks::Order::Early);
+        s_UseFeatHook = Hooks::HookFunction(&CNWSCreature::UseFeat, &UseFeatHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_HAS_FEAT_.*", []() {
         ForceEnableWhitelist("NWNX_ON_HAS_FEAT");
-        s_HasFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7HasFeatEt, (void*)&HasFeatHook, Hooks::Order::Early);
+        s_HasFeatHook = Hooks::HookFunction(&CNWSCreatureStats::HasFeat, &HasFeatHook, Hooks::Order::Early);
     });
 }
 

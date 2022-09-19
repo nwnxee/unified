@@ -17,10 +17,10 @@ void TimingBarEvents() __attribute__((constructor));
 void TimingBarEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", []() {
-        s_SendServerToPlayerGuiTimingEventHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj,
-                                                              (void*)&SendServerToPlayerGuiTimingEventHook, Hooks::Order::Earliest);
+        s_SendServerToPlayerGuiTimingEventHook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerGuiTimingEvent,
+                                                              &SendServerToPlayerGuiTimingEventHook, Hooks::Order::Earliest);
         s_HandlePlayerToServerInputCancelGuiTimingEventHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
+                &CNWSMessage::HandlePlayerToServerInputCancelGuiTimingEvent,
                 (void*)&HandlePlayerToServerInputCancelGuiTimingEventHook, Hooks::Order::Earliest);
     });
 }
