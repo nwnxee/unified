@@ -19,8 +19,8 @@ void UncapDamageResistanceDamageFlags()
     LOG_INFO("Damage flags for EffectDamageResistance will be uncapped.");
 
     static Hooks::Hook s_ExecuteCommandEffectDamageResistanceHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands36ExecuteCommandEffectDamageResistanceEii,
-    (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t, int32_t) -> int32_t
+            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandEffectDamageResistance,
+    +[](CNWVirtualMachineCommands *thisPtr, int32_t, int32_t) -> int32_t
             {
                 auto *pVM = Globals::VirtualMachine();
                 int32_t nDamageFlags, nAmount, nLimit;

@@ -20,8 +20,8 @@ void StringToIntBaseToAuto()
     LOG_INFO("Setting StringToInt() base to auto to allow for conversion of hex strings to proper values.");
 
     static Hooks::Hook s_ExecuteCommandStringConversionsHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii,
-            (void*)+[](CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters) -> int32_t
+            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandStringConversions,
+            +[](CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters) -> int32_t
             {
                 ASSERT(thisPtr); ASSERT(nParameters == 1);
                 auto *vm = Globals::VirtualMachine();
