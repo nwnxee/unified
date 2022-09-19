@@ -27,8 +27,8 @@ void FixItemNullptrInCItemRepository()
 
     LOG_INFO("Will check for invalid items in the CItemRepository List.");
 
-    static Hooks::Hook s_CalculateContentsWeightHook = Hooks::HookFunction(Functions::_ZN15CItemRepository23CalculateContentsWeightEv,
-                                                                           (void*)&CalculateContentsWeightHook, Hooks::Order::Final);
+    static Hooks::Hook s_CalculateContentsWeightHook = Hooks::HookFunction(&CItemRepository::CalculateContentsWeight,
+                                                                           &CalculateContentsWeightHook, Hooks::Order::Final);
 }
 
 static int32_t CalculateContentsWeightHook(CItemRepository *pThis)
