@@ -25,7 +25,7 @@ inline std::string TrimMessage(CExoString* message)
 }
 
 static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToLogFile,
-    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
+    +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
         std::string str = TrimMessage(message);
 
@@ -45,7 +45,7 @@ static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction((void*)&CExoDebugI
     }, Hooks::Order::VeryEarly);
 
 static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToErrorFile,
-    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
+    +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
         std::string str = TrimMessage(message);
         LOG_INFO("(Error) %s", str);
@@ -54,7 +54,7 @@ static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction((void*)&CExoDebu
     }, Hooks::Order::VeryEarly);
 
 static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandPrintString,
-    (void*)+[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
+    +[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
     {
         s_printString = true;
         auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);
