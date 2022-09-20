@@ -104,14 +104,6 @@ NWNX_EXPORT ArgumentStack GetCurrentHitPoints(ArgumentStack&& args)
     return 0;
 }
 
-NWNX_EXPORT ArgumentStack SetCurrentHitPoints(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-        pObject->m_nCurrentHitPoints = args.extract<int32_t>();
-
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack SetMaxHitPoints(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))
@@ -216,51 +208,6 @@ NWNX_EXPORT ArgumentStack GetHasVisualEffect(ArgumentStack&& args)
     }
 
     return false;
-}
-
-NWNX_EXPORT ArgumentStack CheckFit(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        CItemRepository *pRepo;
-
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
-            pRepo = pCreature->m_pcItemRepository;
-        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
-            pRepo = pPlaceable->m_pcItemRepository;
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
-            pRepo = pItem->m_pItemRepository;
-        else
-        {
-            return -1;
-        }
-        const auto baseitem = args.extract<int32_t>();
-
-        if (pRepo == nullptr || Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem) == nullptr)
-        {
-            LOG_ERROR("Base Item or Object Repository not found.");
-            return -1;
-        }
-
-        static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
-        tmp->m_nBaseItem = baseitem;
-
-        uint8_t width  = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotWidth;
-        uint8_t height = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotHeight;
-
-        for (uint8_t y = 0; y < (pRepo->m_nHeight - height + 1); y++)
-        {
-            for (uint8_t x = 0; x < (pRepo->m_nWidth - width + 1); x++)
-            {
-                if (pRepo->CheckFit(tmp, x, y))
-                {
-                    return 1;
-                }
-            }
-        }
-        return 0;
-    }
-    return -1;
 }
 
 NWNX_EXPORT ArgumentStack GetDamageImmunity(ArgumentStack&& args)
@@ -450,72 +397,6 @@ NWNX_EXPORT ArgumentStack SetTriggerGeometry(ArgumentStack&& args)
         {
             LOG_WARNING("NWNX_Object_SetTriggerGeometry() called on non trigger object.");
         }
-    }
-
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack RemoveIconEffect(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto nIcon = args.extract<int32_t>();
-
-        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
-        {
-            auto *eff = pObject->m_appliedEffects.element[i];
-
-            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
-            {
-                pObject->RemoveEffect(eff);
-                break;
-            }
-        }
-    }
-
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack AddIconEffect(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto nIcon = args.extract<int32_t>();
-        ASSERT_OR_THROW(nIcon > 0);
-        const auto fDuration = args.extract<float>();
-
-        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
-        {
-            auto *eff = pObject->m_appliedEffects.element[i];
-
-            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
-            {
-                pObject->RemoveEffect(eff);
-                break;
-            }
-        }
-
-        auto *effIcon = new CGameEffect(true);
-        effIcon->m_oidCreator = 0;
-        effIcon->m_nType      = Constants::EffectTrueType::Icon;
-        effIcon->m_nSubType   = Constants::EffectSubType::Supernatural;
-        effIcon->m_bShowIcon  = true;
-        effIcon->m_bExpose    = true;
-        effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
-
-        effIcon->m_nParamInteger[0] = nIcon;
-
-        if (fDuration > 0.0)
-        {
-            effIcon->m_nSubType |= Constants::EffectDurationType::Temporary;
-            effIcon->m_fDuration = fDuration;
-        }
-        else
-        {
-            effIcon->m_nSubType |= Constants::EffectDurationType::Permanent;
-        }
-
-        pObject->ApplyEffect(effIcon, false, true);
     }
 
     return {};
@@ -749,17 +630,6 @@ NWNX_EXPORT ArgumentStack AcquireItem(ArgumentStack&& args)
     }
 
     return false;
-}
-
-NWNX_EXPORT ArgumentStack SetFacing(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto degrees = args.extract<float>();
-        Utils::SetOrientation(pObject, degrees);
-    }
-
-    return {};
 }
 
 NWNX_EXPORT ArgumentStack ClearSpellEffectsOnOthers(ArgumentStack&& args)

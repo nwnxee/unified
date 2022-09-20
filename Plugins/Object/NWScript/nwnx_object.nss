@@ -68,13 +68,6 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 
-/// @brief Convert an object id to the actual object.
-/// @param id The object id.
-/// @return An object from the provided object ID.
-/// @remark This is the counterpart to ObjectToString.
-/// @deprecated Use the basegame StringToObject() function. This will be removed in a future NWNX release.
-object NWNX_Object_StringToObject(string id);
-
 /// @brief Set oObject's position.
 /// @param oObject The object.
 /// @param vPosition A vector position.
@@ -86,11 +79,6 @@ void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubare
 /// @param obj The object.
 /// @return The hit points.
 int NWNX_Object_GetCurrentHitPoints(object obj);
-
-/// @brief Set an object's hit points.
-/// @param obj The object.
-/// @param hp The hit points.
-void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
 
 /// @brief Adjust an object's maximum hit points
 /// @note Will not work on PCs.
@@ -136,12 +124,6 @@ int NWNX_Object_GetAppearance(object oPlaceable);
 /// @param nVFX The visual effect id.
 /// @return TRUE if the object has the visual effect applied to it
 int NWNX_Object_GetHasVisualEffect(object obj, int nVFX);
-
-/// @brief Check if an item can fit in an object's inventory.
-/// @param obj The object with an inventory.
-/// @param baseitem The base item id to check for a fit.
-/// @return TRUE if an item of base item type can fit in object's inventory
-int NWNX_Object_CheckFit(object obj, int baseitem);
 
 /// @brief Get an object's damage immunity.
 /// @param obj The object.
@@ -191,19 +173,6 @@ string NWNX_Object_GetTriggerGeometry(object oTrigger);
 ///
 /// @remark The minimum number of vertices is 3.
 void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry);
-
-/// @brief Add an effect to an object that displays an icon and has no other effect.
-/// @remark See effecticons.2da for a list of possible effect icons.
-/// @param obj The object to apply the effect.
-/// @param nIcon The icon id.
-/// @param fDuration If specified the effect will be temporary and last this length in seconds, otherwise the effect
-/// will be permanent.
-void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
-
-/// @brief Remove an icon effect from an object that was added by the NWNX_Object_AddIconEffect() function.
-/// @param obj The object.
-/// @param nIcon The icon id.
-void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 
 /// @brief Export an object to the UserDirectory/nwnx folder.
 /// @param sFileName The filename without extension, 16 or less characters.
@@ -289,14 +258,6 @@ int NWNX_Object_GetInternalObjectType(object oObject);
 /// @param oItem The item.
 /// @return TRUE on success.
 int NWNX_Object_AcquireItem(object oObject, object oItem);
-
-/// @brief Cause oObject to face fDirection.
-/// @note This function is almost identical to SetFacing(), the only difference being that it allows you to specify
-/// the target object without the use of AssignCommand(). This is useful when you want to change the facing of an object
-/// in an ExecuteScriptChunk() call where AssignCommand() does not work.
-/// @param oObject The object to change its facing of
-/// @param fDirection The direction the object should face
-void NWNX_Object_SetFacing(object oObject, float fDirection);
 
 /// @brief Clear all spell effects oObject has applied to others.
 /// @param oObject The object that applied the spell effects.
@@ -433,13 +394,6 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
     return var;
 }
 
-object NWNX_Object_StringToObject(string id)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_StringToObject() is deprecated, please use the basegame's StringToObject()");
-
-    return StringToObject(id);
-}
-
 void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
 {
     string sFunc = "SetPosition";
@@ -461,16 +415,6 @@ int NWNX_Object_GetCurrentHitPoints(object creature)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
-}
-
-void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
-{
-    string sFunc = "SetCurrentHitPoints";
-
-    NWNX_PushArgumentInt(hp);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetMaxHitPoints(object creature, int hp)
@@ -548,18 +492,6 @@ int NWNX_Object_GetHasVisualEffect(object obj, int nVFX)
     string sFunc = "GetHasVisualEffect";
 
     NWNX_PushArgumentInt(nVFX);
-    NWNX_PushArgumentObject(obj);
-
-    NWNX_CallFunction(NWNX_Object, sFunc);
-
-    return NWNX_GetReturnValueInt();
-}
-
-int NWNX_Object_CheckFit(object obj, int baseitem)
-{
-    string sFunc = "CheckFit";
-
-    NWNX_PushArgumentInt(baseitem);
     NWNX_PushArgumentObject(obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
@@ -647,25 +579,6 @@ void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry)
 
     NWNX_PushArgumentString(sGeometry);
     NWNX_PushArgumentObject(oTrigger);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-}
-
-void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0)
-{
-    string sFunc = "AddIconEffect";
-
-    NWNX_PushArgumentFloat(fDuration);
-    NWNX_PushArgumentInt(nIcon);
-    NWNX_PushArgumentObject(obj);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-}
-
-void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
-{
-    string sFunc = "RemoveIconEffect";
-
-    NWNX_PushArgumentInt(nIcon);
-    NWNX_PushArgumentObject(obj);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
@@ -813,15 +726,6 @@ int NWNX_Object_AcquireItem(object oObject, object oItem)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
-}
-
-void NWNX_Object_SetFacing(object oObject, float fDirection)
-{
-    string sFunc = "SetFacing";
-
-    NWNX_PushArgumentFloat(fDirection);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_ClearSpellEffectsOnOthers(object oObject)
