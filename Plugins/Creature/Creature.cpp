@@ -517,104 +517,6 @@ NWNX_EXPORT ArgumentStack GetPrePolymorphAbilityScore(ArgumentStack&& args)
     return -1;
 }
 
-NWNX_EXPORT ArgumentStack GetMemorisedSpell(ArgumentStack&& args)
-{
-    int32_t id, ready, meta, domain;
-    id = ready = meta = domain = -1;
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<uint8_t>(level),
-                                                                            static_cast<uint8_t>(index)))
-                {
-                    id     = static_cast<int32_t>(pSpell->m_nSpellId);
-                    ready  = pSpell->m_bReadied;
-                    meta   = pSpell->m_nMetaType;
-                    domain = pSpell->m_bDomainSpell;
-                }
-                break;
-            }
-        }
-    }
-    return {id, ready, meta, domain};
-}
-
-NWNX_EXPORT ArgumentStack GetMemorisedSpellCountByLevel(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return classInfo.GetNumberMemorizedSpellSlots(static_cast<uint8_t>(level));
-        }
-    }
-    return 0;
-}
-
-NWNX_EXPORT ArgumentStack SetMemorisedSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        const auto domain  = args.extract<int32_t>();
-        const auto meta    = args.extract<int32_t>();
-        const auto ready   = args.extract<int32_t>();
-        const auto id      = args.extract<int32_t>();
-          ASSERT_OR_THROW(id >= 0);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.SetMemorizedSpellSlot(static_cast<uint8_t>(level),
-                                                static_cast<uint8_t>(index),
-                                                static_cast<uint32_t>(id),
-                                                domain,
-                                                static_cast<uint8_t>(meta));
-
-                classInfo.SetMemorizedSpellInSlotReady(static_cast<uint8_t>(level),
-                                                       static_cast<uint8_t>(index),
-                                                       ready);
-                return {};
-            }
-        }
-    }
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -684,51 +586,6 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
     return -1;
 }
 
-NWNX_EXPORT ArgumentStack GetKnownSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return (int32_t)classInfo.GetKnownSpell(level, index);
-        }
-    }
-    return -1;
-}
-
-NWNX_EXPORT ArgumentStack GetKnownSpellCount(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return classInfo.GetNumberKnownSpells(static_cast<uint8_t>(level));
-        }
-    }
-    return -1;
-}
-
 NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -774,56 +631,6 @@ NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
             if (classInfo.m_nClass == classId)
             {
                 classInfo.AddKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
-                break;
-            }
-        }
-    }
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack ClearMemorisedKnownSpells(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto id      = args.extract<int32_t>();
-          ASSERT_OR_THROW(id >= 0);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.ClearMemorizedKnownSpells(static_cast<uint32_t>(id));
-                break;
-            }
-        }
-    }
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack ClearMemorisedSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.ClearMemorizedSpellSlot(level, index);
                 break;
             }
         }
@@ -1039,26 +846,6 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetSoundset(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-        return pCreature->m_nSoundSet;
-
-    return -1;
-}
-
-NWNX_EXPORT ArgumentStack SetSoundset(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto soundset = args.extract<int32_t>();
-          ASSERT_OR_THROW(soundset >= 0);
-
-        pCreature->m_nSoundSet = static_cast<uint16_t>(soundset);
-    }
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -1194,20 +981,6 @@ NWNX_EXPORT ArgumentStack GetAttacksPerRound(ArgumentStack&& args)
     return -1;
 }
 
-NWNX_EXPORT ArgumentStack SetGender(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto gender = args.extract<int32_t>();
-          ASSERT_OR_THROW(gender >= 0);
-          ASSERT_OR_THROW(gender <= 255);
-
-        pCreature->m_pStats->m_nGender = gender;
-        pCreature->m_cAppearance.m_nGender = gender;
-    }
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack RestoreFeats(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -1221,27 +994,6 @@ NWNX_EXPORT ArgumentStack RestoreSpecialAbilities(ArgumentStack&& args)
     if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_pStats->ResetSpellLikeAbilities();
 
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack RestoreSpells(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto level = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= -1);
-          ASSERT_OR_THROW(level <= 9);
-
-        if (level >= 0 && level <= 9)
-        {
-            pCreature->m_pStats->ReadySpellLevel(level);
-        }
-        else
-        {
-            for (int i = 0; i <= 9; i++)
-               pCreature->m_pStats->ReadySpellLevel(i);
-        }
-    }
     return {};
 }
 
@@ -3390,44 +3142,6 @@ NWNX_EXPORT ArgumentStack AddCastSpellActions(ArgumentStack&& args)
     }
 
     return false;
-}
-
-NWNX_EXPORT ArgumentStack GetSpellUsesLeft(ArgumentStack&& args)
-{
-    if (auto* pCreature = Utils::PopCreature(args))
-    {
-        auto spellId = args.extract<int32_t>();
-          ASSERT_OR_THROW(spellId >= 0);
-        auto multiClass = args.extract<int32_t>();
-          ASSERT_OR_THROW(multiClass >= 0);
-          ASSERT_OR_THROW(multiClass < 3);
-        auto domainLevel = args.extract<int32_t>();
-          ASSERT_OR_THROW(domainLevel >= 0);
-        auto metaMagic = args.extract<int32_t>();
-          ASSERT_OR_THROW(metaMagic >= 0);
-
-        return pCreature->m_pStats->GetSpellUsesLeft(spellId, multiClass, domainLevel, metaMagic);
-    }
-
-    return 0;
-}
-
-NWNX_EXPORT ArgumentStack GetMemorizedSpellReadyCount(ArgumentStack&& args)
-{
-    if (auto* pCreature = Utils::PopCreature(args))
-    {
-        auto spellId = args.extract<int32_t>();
-          ASSERT_OR_THROW(spellId >= 0);
-        auto multiClass = args.extract<int32_t>();
-          ASSERT_OR_THROW(multiClass >= 0);
-          ASSERT_OR_THROW(multiClass < 3);
-        auto metaMagic = args.extract<int32_t>();
-          ASSERT_OR_THROW(metaMagic >= 0);
-
-        return pCreature->m_pStats->GetMemorizedSpellReadyCount(multiClass, spellId, metaMagic);
-    }
-
-    return 0;
 }
 
 NWNX_EXPORT ArgumentStack GetIsFlanking(ArgumentStack&& args)
