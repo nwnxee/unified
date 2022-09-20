@@ -172,3 +172,39 @@ json NWNX_Regex_Match(string str, string regex)
 {
     return RegExpIterate(regex, str);
 }
+
+// *** NWNX_Util
+
+/// @brief Determines if the supplied resref exists.
+/// @param resref The resref to check.
+/// @param type The @ref resref_types "Resref Type".
+/// @return TRUE/FALSE
+int NWNX_Util_IsValidResRef(string resref, int type = RESTYPE_UTC);
+
+/// @anchor twoda_row_count
+/// @brief Gets the row count for a 2da.
+/// @param str The 2da to check (do not include the .2da).
+/// @return The amount of rows in the 2da.
+int NWNX_Util_Get2DARowCount(string str);
+
+/// @brief Gets the contents of a .nss script file as a string.
+/// @param sScriptName The name of the script to get the contents of.
+/// @param nMaxLength The max length of the return string, -1 to get everything
+/// @return The script file contents or "" on error.
+string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
+
+int NWNX_Util_IsValidResRef(string resref, int type = RESTYPE_UTC)
+{
+    return ResManGetAliasFor(resref, type) != "";
+}
+
+int NWNX_Util_Get2DARowCount(string str)
+{
+    return Get2DARowCount(str);
+}
+
+string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
+{
+    string s = ResManGetFileContents(sScriptName, RESTYPE_NSS;
+    return nMaxLength == -1 ? s : GetStringLeft(s, nMaxLength);
+}

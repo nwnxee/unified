@@ -72,7 +72,6 @@ string NWNX_Util_GetCustomToken(int customTokenNumber);
 /// @return The converted itemproperty.
 itemproperty NWNX_Util_EffectToItemProperty(effect e);
 
-///
 /// @brief Convert an itemproperty type to an effect type.
 /// @param ip The itemproperty to convert to an effect.
 /// @return The converted effect.
@@ -82,12 +81,6 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 /// @param str The string to strip of color.
 /// @return The new string without any color codes.
 string NWNX_Util_StripColors(string str);
-
-/// @brief Determines if the supplied resref exists.
-/// @param resref The resref to check.
-/// @param type The @ref resref_types "Resref Type".
-/// @return TRUE/FALSE
-int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE);
 
 /// @brief Retrieves an environment variable.
 /// @param sVarname The environment variable to query.
@@ -107,12 +100,6 @@ void NWNX_Util_SetMinutesPerHour(int minutes);
 /// @param str The string to encode for a URL.
 /// @return The url encoded string.
 string NWNX_Util_EncodeStringForURL(string str);
-
-/// @anchor twoda_row_count
-/// @brief Gets the row count for a 2da.
-/// @param str The 2da to check (do not include the .2da).
-/// @return The amount of rows in the 2da.
-int NWNX_Util_Get2DARowCount(string str);
 
 /// @brief Get the first resref of nType.
 /// @param nType A @ref resref_types "Resref Type".
@@ -147,12 +134,6 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 /// @param sAlias The alias of the resource directory to add the ncs file to. Default: UserDirectory/nwnx
 /// @return "" on success, or the compilation error.
 string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE, string sAlias = "NWNX");
-
-/// @brief Gets the contents of a .nss script file as a string.
-/// @param sScriptName The name of the script to get the contents of.
-/// @param nMaxLength The max length of the return string, -1 to get everything
-/// @return The script file contents or "" on error.
-string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
 /// @brief Adds a nss file to the UserDirectory/nwnx folder, or to the location of sAlias.
 /// @note Will override existing nss files that are in the module
@@ -325,15 +306,6 @@ string NWNX_Util_StripColors(string str)
     return NWNX_GetReturnValueString();
 }
 
-int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE)
-{
-    string sFunc = "IsValidResRef";
-    NWNX_PushArgumentInt(type);
-    NWNX_PushArgumentString(resref);
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
 string NWNX_Util_GetEnvironmentVariable(string sVarname)
 {
     string sFunc = "GetEnvironmentVariable";
@@ -364,14 +336,6 @@ string NWNX_Util_EncodeStringForURL(string sURL)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString();
-}
-
-int NWNX_Util_Get2DARowCount(string str)
-{
-    string sFunc = "Get2DARowCount";
-    NWNX_PushArgumentString(str);
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
 }
 
 string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModuleResourcesOnly = TRUE)
@@ -423,17 +387,6 @@ string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMa
     NWNX_PushArgumentInt(bWrapIntoMain);
     NWNX_PushArgumentString(sScriptData);
     NWNX_PushArgumentString(sFileName);
-    NWNX_CallFunction(NWNX_Util, sFunc);
-
-    return NWNX_GetReturnValueString();
-}
-
-string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
-{
-    string sFunc = "GetNSSContents";
-
-    NWNX_PushArgumentInt(nMaxLength);
-    NWNX_PushArgumentString(sScriptName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString();

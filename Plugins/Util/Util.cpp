@@ -190,14 +190,6 @@ NWNX_EXPORT ArgumentStack StripColors(ArgumentStack&& args)
     return retVal;
 }
 
-NWNX_EXPORT ArgumentStack IsValidResRef(ArgumentStack&& args)
-{
-    const auto resRef = args.extract<std::string>();
-    const auto resType = args.extract<int32_t>();
-
-    return Globals::ExoResMan()->Exists(CResRef(resRef.c_str()), resType, nullptr);
-}
-
 NWNX_EXPORT ArgumentStack GetEnvironmentVariable(ArgumentStack&& args)
 {
     std::string retVal;
@@ -258,14 +250,6 @@ NWNX_EXPORT ArgumentStack EncodeStringForURL(ArgumentStack&& args)
     }
     // **
     return result;
-}
-
-NWNX_EXPORT ArgumentStack Get2DARowCount(ArgumentStack&& args)
-{
-    const auto twodaRef = args.extract<std::string>();
-    auto *pTwoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
-
-    return pTwoda ? pTwoda->m_nNumRows : 0;
 }
 
 NWNX_EXPORT ArgumentStack GetFirstResRef(ArgumentStack&& args)
@@ -399,31 +383,6 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
         return s_scriptCompiler->m_sCapturedError.CStr();
 
     return "";
-}
-
-NWNX_EXPORT ArgumentStack GetNSSContents(ArgumentStack&& args)
-{
-    std::string retVal;
-
-    const auto scriptName = args.extract<std::string>();
-      ASSERT_OR_THROW(!scriptName.empty());
-      ASSERT_OR_THROW(scriptName.size() <= 16);
-    const auto maxLength = args.extract<int32_t>();
-
-    if (Globals::ExoResMan()->Exists(scriptName.c_str(), Constants::ResRefType::NSS, nullptr))
-    {
-        CScriptSourceFile scriptSourceFile;
-        char *data;
-        uint32_t size = 0;
-
-        if (scriptSourceFile.LoadScript(scriptName, &data, &size) == 0)
-        {
-            retVal.assign(data, maxLength < 0 ? size : (uint32_t)maxLength > size ? size : maxLength);
-            scriptSourceFile.UnloadScript();
-        }
-    }
-
-    return retVal;
 }
 
 NWNX_EXPORT ArgumentStack AddNSSFile(ArgumentStack&& args)
