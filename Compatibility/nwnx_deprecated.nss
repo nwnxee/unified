@@ -30,21 +30,25 @@ effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect);
 
 effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "")
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Effect_SetEffectExpiredScript");
     return EffectLinkEffects(EffectRunScript("", script, "", 0.0f, data), e);
 }
 
 string NWNX_Effect_GetEffectExpiredData()
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Effect_GetEffectExpiredData");
     return GetEffectString(GetLastRunScriptEffect(), 0);
 }
 
 object NWNX_Effect_GetEffectExpiredCreator()
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Effect_GetEffectExpiredCreator");
     return GetEffectCreator(GetLastRunScriptEffect());
 }
 
 effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Effect_AccessorizeVisualEffect");
     if (GetEffectType(eEffect) == EFFECT_TYPE_VISUALEFFECT)
         return UnyieldingEffect(eEffect);
     else
@@ -94,21 +98,25 @@ void NWNX_Object_SetFacing(object oObject, float fDirection);
 
 object NWNX_Object_StringToObject(string id)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_StringToObject");
     return StringToObject(id);
 }
 
 void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_SetCurrentHitPoints");
     SetCurrentHitPoints(creature, hp);
 }
 
 int NWNX_Object_CheckFit(object obj, int baseitem)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_CheckFit");
     return GetBaseItemFitsInInventory(baseitem, obj);
 }
 
 void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_AddIconEffect");
     effect eEffect = GetFirstEffect(obj);
     while (GetIsEffectValid(eEffect))
     {
@@ -123,6 +131,7 @@ void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0)
 
 void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_RemoveIconEffect");
     effect eEffect = GetFirstEffect(obj);
     while (GetIsEffectValid(eEffect))
     {
@@ -134,6 +143,7 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
 
 void NWNX_Object_SetFacing(object oObject, float fDirection)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_SetFacing");
     AssignCommand(oObject, SetFacing(fDirection));
 }
 
@@ -160,16 +170,19 @@ json NWNX_Regex_Match(string str, string regex);
 
 int NWNX_Regex_Search(string str, string regex)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Regex_Search");
     return JsonGetLength(RegExpMatch(regex, str));
 }
 
 string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Regex_Replace");
     return RegExpReplace(regex, str, replace, firstOnly ? REGEXP_FORMAT_FIRST_ONLY : REGEXP_FORMAT_DEFAULT);
 }
 
 json NWNX_Regex_Match(string str, string regex)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Regex_Match");
     return RegExpIterate(regex, str);
 }
 
@@ -195,16 +208,19 @@ string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
 int NWNX_Util_IsValidResRef(string resref, int type = RESTYPE_UTC)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_IsValidResRef");
     return ResManGetAliasFor(resref, type) != "";
 }
 
 int NWNX_Util_Get2DARowCount(string str)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_Get2DARowCount");
     return Get2DARowCount(str);
 }
 
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
 {
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_GetNSSContents");
     string s = ResManGetFileContents(sScriptName, RESTYPE_NSS;
     return nMaxLength == -1 ? s : GetStringLeft(s, nMaxLength);
 }
