@@ -2,6 +2,250 @@
 
 // *** NWNX_Creature
 
+/// @name Cleric Domains
+/// @anchor cleric_domains
+///
+/// The clerical domains.
+/// @{
+const int NWNX_CREATURE_CLERIC_DOMAIN_AIR         = 0;
+const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL      = 1;
+const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH       = 3;
+const int NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION = 4;
+const int NWNX_CREATURE_CLERIC_DOMAIN_EARTH       = 5;
+const int NWNX_CREATURE_CLERIC_DOMAIN_EVIL        = 6;
+const int NWNX_CREATURE_CLERIC_DOMAIN_FIRE        = 7;
+const int NWNX_CREATURE_CLERIC_DOMAIN_GOOD        = 8;
+const int NWNX_CREATURE_CLERIC_DOMAIN_HEALING     = 9;
+const int NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE   = 10;
+const int NWNX_CREATURE_CLERIC_DOMAIN_MAGIC       = 13;
+const int NWNX_CREATURE_CLERIC_DOMAIN_PLANT       = 14;
+const int NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION  = 15;
+const int NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH    = 16;
+const int NWNX_CREATURE_CLERIC_DOMAIN_SUN         = 17;
+const int NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL      = 18;
+const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY    = 19;
+const int NWNX_CREATURE_CLERIC_DOMAIN_WAR         = 20;
+const int NWNX_CREATURE_CLERIC_DOMAIN_WATER       = 21;
+/// @}
+
+/// @struct NWNX_Creature_MemorisedSpell
+/// @brief A memorised spell structure.
+struct NWNX_Creature_MemorisedSpell
+{
+    int id; ///< Spell ID
+    int ready; ///< Whether the spell can be cast
+    int meta; ///< Metamagic type, if any
+    int domain; ///< Clerical domain, if any
+};
+
+/// @brief Gets the count of memorised spells for a creature's class at a level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The memorised spell count.
+int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level);
+
+/// @brief Gets the memorised spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
+/// @return An NWNX_Creature_MemorisedSpell() struct.
+struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
+
+/// @brief Sets the memorised spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
+/// @param spell An NWNX_Creature_MemorisedSpell() struct.
+void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell);
+
+/// @brief Gets the known spell count (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The known spell count.
+int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level);
+
+/// @brief Gets the known spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetKnownSpellCount().
+/// @return The spell id.
+int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index);
+
+/// @brief Clear a specific spell from the creature's spellbook for class
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param spellId The spell to clear.
+void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId);
+
+/// @brief Clear the memorised spell of the creature for the class, level and index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
+
+/// @brief Get the soundset index for creature.
+/// @param creature The creature object.
+/// @return The soundset used by the creature.
+int NWNX_Creature_GetSoundset(object creature);
+
+/// @brief Set the soundset index for creature.
+/// @param creature The creature object.
+/// @param soundset The soundset index.
+void NWNX_Creature_SetSoundset(object creature, int soundset);
+
+/// @brief Sets the creature gender.
+/// @param creature The creature object.
+/// @param gender The GENDER_ constant.
+void NWNX_Creature_SetGender(object creature, int gender);
+
+/// @brief Restore all creature spells per day for given level.
+/// @param creature The creature object.
+/// @param level The level to restore. If -1, all spells are restored.
+void NWNX_Creature_RestoreSpells(object creature, int level = -1);
+
+/// @brief Gets one of creature's domains.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param index The first or second domain.
+/// @deprecated Use GetDomain(). This will be removed in future NWNX releases.
+int NWNX_Creature_GetDomain(object creature, int class, int index);
+
+/// @brief Gets the creature's specialist school.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @deprecated Use GetSpecialization(). This will be removed in future NWNX releases.
+int NWNX_Creature_GetSpecialization(object creature, int class);
+
+/// @brief Get the number of uses left of a spell.
+/// @note This function is for caster classes that don't need to memorize spells.
+/// @param oCreature The creature.
+/// @param nSpellID The spell ID.
+/// @param nMultiClass The position of the class to check, 0-2
+/// @param nDomainLevel The domain level if checking a domain spell.
+/// @param nMetaMagic A METAMAGIC_* constant.
+/// @return The number of spell uses left or 0 on error.
+int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE);
+
+/// @brief Get the number of memorized ready spells by spellid.
+/// @note This function is for caster classes that need to memorize spells.
+/// @param oCreature The creature.
+/// @param nSpellID The spell ID.
+/// @param nMultiClass The position of the class to check, 0-2
+/// @param nMetaMagic A METAMAGIC_* constant.
+/// @return The number of spell uses left or 0 on error.
+int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE);
+
+int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetMemorisedSpellCountByLevel");
+    return GetMemorizedSpellCountByLevel(creature, class, level);
+}
+
+struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetMemorisedSpell");
+    struct NWNX_Creature_MemorisedSpell spell;
+    spell.domain = GetMemorizedSpellIsDomainSpell(creature, class, level, index);
+    spell.meta   = GetMemorizedSpellMetaMagic(creature, class, level, index);
+    spell.ready  = GetMemorizedSpellReady(creature, class, level, index);
+    spell.id     = GetMemorizedSpellId(creature, class, level, index);
+    return spell;
+}
+
+void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_SetMemorisedSpell");
+    SetMemorizedSpell(creature, class, level, index, spell.id, spell.ready, spell.meta, spell.domain);
+}
+
+int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetKnownSpellCount");
+    return GetKnownSpellCount(creature, class, level);
+}
+
+int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetKnownSpell");
+    return GetKnownSpellId(creature, class, level, index);
+}
+
+void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_ClearMemorisedKnownSpells");
+    ClearMemorizedSpellBySpellId(creature, class, spellId);
+}
+
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_ClearMemorisedSpell");
+    ClearMemorizedSpell(creature, class, level, index);
+}
+
+int NWNX_Creature_GetSoundset(object creature)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetSoundset");
+    return GetSoundset(creature);
+}
+
+void NWNX_Creature_SetSoundset(object creature, int soundset)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_SetSoundset");
+    SetSoundset(creature, soundset);
+}
+
+void NWNX_Creature_SetGender(object creature, int gender)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_SetGender");
+    SetGender(creature, gender);
+}
+
+void NWNX_Creature_RestoreSpells(object creature, int level = -1)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_RestoreSpells");
+    if (level == -1)
+    {
+        int i;
+        for (i = 0; i < 10; i++)
+        {
+            ReadySpellLevel(creature, i);
+        }
+    }
+    else
+        ReadySpellLevel(creature, level);
+
+}
+
+int NWNX_Creature_GetDomain(object creature, int class, int index)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetDomain");
+    return GetDomain(creature, index, class);
+}
+
+int NWNX_Creature_GetSpecialization(object creature, int class)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetSpecialization");
+    return GetSpecialization(creature, class);
+}
+
+int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetSpellUsesLeft");
+    return GetSpellUsesLeft(oCreature, GetClassByPosition(nMultiClass + 1), nSpellID, nMetaMagic, nDomainLevel);
+}
+
+int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetMemorizedSpellReadyCount");
+    return GetSpellUsesLeft(oCreature, GetClassByPosition(nMultiClass + 1), nSpellID, nMetaMagic);
+}
+
 // *** NWNX_Effect
 
 /// @brief Set a script with optional data that runs when an effect expires
