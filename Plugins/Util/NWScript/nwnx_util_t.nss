@@ -33,11 +33,6 @@ void main()
     string strip_colors = NWNX_Util_StripColors(str);
     NWNX_Tests_Report("NWNX_Util", "RegexReplace", strip_colors == "This is a test of stripped colors.");
 
-    string sValidResRef = "nw_undeadhigh";
-    NWNX_Tests_Report("NWNX_Util", "IsValidResRef", NWNX_Util_IsValidResRef(sValidResRef, NWNX_UTIL_RESREF_TYPE_ENCOUNTER));
-    string sInValidResRef = "aaaaaaaaaaaaaaaa";
-    NWNX_Tests_Report("NWNX_Util", "IsValidResRef", NWNX_Util_IsValidResRef(sInValidResRef, NWNX_UTIL_RESREF_TYPE_ITEM) == 0);
-
     string sEnvVar = "NWNX_CORE_LOG_LEVEL";
     NWNX_Tests_Report("NWNX_Util", "GetEnvironmentVariable", StringToInt(NWNX_Util_GetEnvironmentVariable(sEnvVar)) > 0);
 
@@ -48,9 +43,6 @@ void main()
 
     string sStringForURL = "This is a test, yes.";
     NWNX_Tests_Report("NWNX_Util", "EncodeStringForURL", NWNX_Util_EncodeStringForURL(sStringForURL) == "This+is+a+test%2C+yes.");
-
-    string sTwoDA = "bodybag";
-    NWNX_Tests_Report("NWNX_Util", "Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
 
     NWNX_Tests_Report("NWNX_Util", "GetFirstResRef", NWNX_Util_GetFirstResRef(NWNX_UTIL_RESREF_TYPE_NSS, "nwnx_util.*") != "");
     NWNX_Tests_Report("NWNX_Util", "GetNextResRef", NWNX_Util_GetNextResRef() != "");
