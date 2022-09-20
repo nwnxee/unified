@@ -136,3 +136,39 @@ void NWNX_Object_SetFacing(object oObject, float fDirection)
 {
     AssignCommand(oObject, SetFacing(fDirection));
 }
+
+// *** NWNX_Regex
+
+/// @param str The string to search.
+/// @param regex The regular expression to use when searching.
+/// @return TRUE if string matches the regular expression.
+int NWNX_Regex_Search(string str, string regex);
+
+/// @brief Replaces any matches of the regular expression with a string.
+/// @param str The string to search.
+/// @param regex The regular expression to use when searching.
+/// @param replace The string to replace the matches with.
+/// @param firstOnly Set to TRUE to only replace the first match.
+/// @return A new string with any replacements made.
+string NWNX_Regex_Replace(string str, string regex, string replace = "", int firstOnly = FALSE);
+
+/// @brief Returns all matches in a string that match the regular expression.
+/// @param str The string to search.
+/// @param regex The regular expression to use.
+/// @return A json array with json arrays of all (sub)matches. Returns JsonNull() on error.
+json NWNX_Regex_Match(string str, string regex);
+
+int NWNX_Regex_Search(string str, string regex)
+{
+    return JsonGetLength(RegExpMatch(regex, str));
+}
+
+string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0)
+{
+    return RegExpReplace(regex, str, replace, firstOnly ? REGEXP_FORMAT_FIRST_ONLY : REGEXP_FORMAT_DEFAULT);
+}
+
+json NWNX_Regex_Match(string str, string regex)
+{
+    return RegExpIterate(regex, str);
+}
