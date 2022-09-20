@@ -50,3 +50,89 @@ effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
     else
         return eEffect;
 }
+
+// *** NWNX_Object
+
+/// @brief Convert an object id to the actual object.
+/// @param id The object id.
+/// @return An object from the provided object ID.
+/// @remark This is the counterpart to ObjectToString.
+/// @deprecated Use the basegame StringToObject() function. This will be removed in a future NWNX release.
+object NWNX_Object_StringToObject(string id);
+
+/// @brief Set an object's hit points.
+/// @param obj The object.
+/// @param hp The hit points.
+void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
+
+/// @brief Check if an item can fit in an object's inventory.
+/// @param obj The object with an inventory.
+/// @param baseitem The base item id to check for a fit.
+/// @return TRUE if an item of base item type can fit in object's inventory
+int NWNX_Object_CheckFit(object obj, int baseitem);
+
+/// @brief Add an effect to an object that displays an icon and has no other effect.
+/// @remark See effecticons.2da for a list of possible effect icons.
+/// @param obj The object to apply the effect.
+/// @param nIcon The icon id.
+/// @param fDuration If specified the effect will be temporary and last this length in seconds, otherwise the effect
+/// will be permanent.
+void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
+
+/// @brief Remove an icon effect from an object that was added by the NWNX_Object_AddIconEffect() function.
+/// @param obj The object.
+/// @param nIcon The icon id.
+void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
+
+/// @brief Cause oObject to face fDirection.
+/// @note This function is almost identical to SetFacing(), the only difference being that it allows you to specify
+/// the target object without the use of AssignCommand(). This is useful when you want to change the facing of an object
+/// in an ExecuteScriptChunk() call where AssignCommand() does not work.
+/// @param oObject The object to change its facing of
+/// @param fDirection The direction the object should face
+void NWNX_Object_SetFacing(object oObject, float fDirection);
+
+object NWNX_Object_StringToObject(string id)
+{
+    return StringToObject(id);
+}
+
+void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
+{
+    SetCurrentHitPoints(creature, hp);
+}
+
+int NWNX_Object_CheckFit(object obj, int baseitem)
+{
+    return GetBaseItemFitsInInventory(baseitem, obj);
+}
+
+void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0)
+{
+    effect eEffect = GetFirstEffect(obj);
+    while (GetIsEffectValid(eEffect))
+    {
+        if (GetEffectTag(eEffect) == "NWNX_Object_IconEffect" && GetEffectInteger(eEffect, 0) == nIcon)
+            RemoveEffect(obj, eEffect);
+        eEffect = GetNextEffect(obj);
+    }
+
+    effect eIcon = TagEffect(SupernaturalEffect(EffectIcon(nIcon)), "NWNX_Object_IconEffect");
+    ApplyEffectToObject(fDuration == 0.0 ? DURATION_TYPE_PERMANENT : DURATION_TYPE_TEMPORARY, eIcon, obj, fDuration);
+}
+
+void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
+{
+    effect eEffect = GetFirstEffect(obj);
+    while (GetIsEffectValid(eEffect))
+    {
+        if (GetEffectTag(eEffect) == "NWNX_Object_IconEffect" && GetEffectInteger(eEffect, 0) == nIcon)
+            RemoveEffect(obj, eEffect);
+        eEffect = GetNextEffect(obj);
+    }
+}
+
+void NWNX_Object_SetFacing(object oObject, float fDirection)
+{
+    AssignCommand(oObject, SetFacing(fDirection));
+}
