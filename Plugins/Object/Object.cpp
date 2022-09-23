@@ -104,6 +104,14 @@ NWNX_EXPORT ArgumentStack GetCurrentHitPoints(ArgumentStack&& args)
     return 0;
 }
 
+NWNX_EXPORT ArgumentStack SetCurrentHitPoints(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+        pObject->m_nCurrentHitPoints = args.extract<int32_t>();
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SetMaxHitPoints(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))

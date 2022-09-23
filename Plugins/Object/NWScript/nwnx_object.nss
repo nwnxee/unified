@@ -80,6 +80,11 @@ void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubare
 /// @return The hit points.
 int NWNX_Object_GetCurrentHitPoints(object obj);
 
+/// @brief Set an object's hit points.
+/// @param obj The object.
+/// @param hp The hit points.
+void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
+
 /// @brief Adjust an object's maximum hit points
 /// @note Will not work on PCs.
 /// @param obj The object.
@@ -427,6 +432,16 @@ int NWNX_Object_GetCurrentHitPoints(object creature)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
+{
+    string sFunc = "SetCurrentHitPoints";
+
+    NWNX_PushArgumentInt(hp);
+    NWNX_PushArgumentObject(creature);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetMaxHitPoints(object creature, int hp)
