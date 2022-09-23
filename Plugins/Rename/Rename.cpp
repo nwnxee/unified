@@ -120,8 +120,9 @@ Rename::Rename(Services::ProxyServiceList* services)
 
     if (m_RenameAllowDM)
     {
+        BOOL (CNWSMessage::* funcPtr)(uint32_t) = &CNWSMessage::SendServerToPlayerDungeonMasterUpdatePartyList;
         s_SendServerToPlayerDungeonMasterUpdatePartyList = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage46SendServerToPlayerDungeonMasterUpdatePartyListEj,
+                funcPtr,
                 (void*)&SendServerToPlayerDungeonMasterUpdatePartyListHook, Hooks::Order::Early);
         LOG_INFO("DMs will be included with rename logic.");
     }
