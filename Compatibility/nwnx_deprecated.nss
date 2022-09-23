@@ -1,4 +1,5 @@
 // The following functions have been removed from NWNX, please replace them with their basegame implementation!
+// To use this file, include it to nwnx.nss and recompile all your scripts.
 
 // *** NWNX_Creature
 
@@ -308,11 +309,6 @@ effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
 /// @deprecated Use the basegame StringToObject() function. This will be removed in a future NWNX release.
 object NWNX_Object_StringToObject(string id);
 
-/// @brief Set an object's hit points.
-/// @param obj The object.
-/// @param hp The hit points.
-void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
-
 /// @brief Check if an item can fit in an object's inventory.
 /// @param obj The object with an inventory.
 /// @param baseitem The base item id to check for a fit.
@@ -344,12 +340,6 @@ object NWNX_Object_StringToObject(string id)
 {
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_StringToObject");
     return StringToObject(id);
-}
-
-void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
-{
-    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Object_SetCurrentHitPoints");
-    SetCurrentHitPoints(creature, hp);
 }
 
 int NWNX_Object_CheckFit(object obj, int baseitem)
@@ -465,6 +455,6 @@ int NWNX_Util_Get2DARowCount(string str)
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
 {
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_GetNSSContents");
-    string s = ResManGetFileContents(sScriptName, RESTYPE_NSS;
+    string s = ResManGetFileContents(sScriptName, RESTYPE_NSS);
     return nMaxLength == -1 ? s : GetStringLeft(s, nMaxLength);
 }
