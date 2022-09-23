@@ -67,11 +67,14 @@ void GameObjectLookup()
             pThis->m_nArraySize            = 0;
         }, Hooks::Order::Final);
 
+    uint8_t (CGameObjectArray::* delete1Ptr)(OBJECT_ID, CGameObject**) = &CGameObjectArray::Delete;
+    uint8_t (CGameObjectArray::* delete2Ptr)(OBJECT_ID) = &CGameObjectArray::Delete;
+
     static auto s_AddObjectAtPos    = Hooks::HookFunction(&CGameObjectArray::AddObjectAtPos, &AddObjectAtPos, Hooks::Order::Final);
     static auto s_AddExternalObject = Hooks::HookFunction(&CGameObjectArray::AddExternalObject, &AddExternalObject, Hooks::Order::Final);
     static auto s_AddInternalObject = Hooks::HookFunction(&CGameObjectArray::AddInternalObject, &AddInternalObject, Hooks::Order::Final);
-    static auto s_Delete1           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject, (void*)&Delete, Hooks::Order::Final);
-    static auto s_Delete2           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEj, (void*)+[](void* p, uint32_t id) -> uint8_t { return Delete(p, id, nullptr); }, Hooks::Order::Final);
+    static auto s_Delete1           = Hooks::HookFunction(delete1Ptr, &Delete, Hooks::Order::Final);
+    static auto s_Delete2           = Hooks::HookFunction(delete2Ptr, +[](void* p, uint32_t id) -> uint8_t { return Delete(p, id, nullptr); }, Hooks::Order::Final);
     static auto s_GetGameObject     = Hooks::HookFunction(&CGameObjectArray::GetGameObject, &GetGameObject, Hooks::Order::Final);
 
     s_nNextObjectArrayID[InternalObject] = 0x00000000;
