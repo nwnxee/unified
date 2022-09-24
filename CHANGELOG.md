@@ -54,6 +54,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Player: UpdateSkyBox();
 - Player: UpdateFogColor();
 - Player: UpdateFogAmount();
+- Player: GetGameObject()
 - Regex: Match()
 
 ### Changed
