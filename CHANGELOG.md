@@ -81,6 +81,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final
 - Player: UpdateSkyBox();
 - Player: UpdateFogColor();
 - Player: UpdateFogAmount();
+- Player: GetGameObject()
 - Regex: Match()
 - Core: PluginExists()
 
