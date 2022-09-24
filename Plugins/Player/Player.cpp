@@ -1770,3 +1770,25 @@ NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
     }
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
+{
+    if (auto *obj = Utils::PopGameObject(args))
+    {
+        auto *playerList = (CExoLinkedList<CNWSClient>*) Globals::AppManager()->m_pServerExoApp->GetPlayerList();
+        CExoLinkedListPosition pListPosition = playerList->GetHeadPos();
+        while (pListPosition != NULL)
+        {
+            auto pPlayer = (CNWSPlayer *) playerList->GetAtPos(pListPosition);
+
+            if (pPlayer->m_oidPCObject == obj->m_idSelf)
+            {
+                return pPlayer->m_oidNWSObject;
+            }
+
+            playerList->GetNext(pListPosition);
+        }
+    }
+
+    return Constants::OBJECT_INVALID;
+}
