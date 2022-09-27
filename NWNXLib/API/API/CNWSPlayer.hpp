@@ -85,6 +85,7 @@ struct CNWSPlayer : CNWSClient
     BOOL m_bTargetMode;
     std::unordered_map<std::string, int32_t> m_device_properties;
     NuiState m_cNuiState;
+    OBJECT_ID m_oidCameraTarget;
     OBJECT_ID m_oidDungeonMasterAvatar;
     uint8_t m_nPossessState;
     BOOL m_bWasSentITP;

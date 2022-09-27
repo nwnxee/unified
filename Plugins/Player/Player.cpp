@@ -657,10 +657,10 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
             else
             {
                 pObjectVisualTransformData = new ObjectVisualTransformData();
-                pObjectVisualTransformData->m_scale = Vector{1.0f, 1.0f, 1.0f};
-                pObjectVisualTransformData->m_rotate = Vector{0.0f, 0.0f, 0.0f};
-                pObjectVisualTransformData->m_translate = Vector{0.0f, 0.0f, 0.0f};
-                pObjectVisualTransformData->m_animationSpeed = 1.0f;
+                pObjectVisualTransformData->m_scopes[0].m_scale = Vector{1.0f, 1.0f, 1.0f};
+                pObjectVisualTransformData->m_scopes[0].m_rotate = Vector{0.0f, 0.0f, 0.0f};
+                pObjectVisualTransformData->m_scopes[0].m_translate = Vector{0.0f, 0.0f, 0.0f};
+                pObjectVisualTransformData->m_scopes[0].m_animationSpeed = 1.0f;
 
                 obj->nwnxSet("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
                         pObjectVisualTransformData, [](void*p) { delete static_cast<ObjectVisualTransformData*>(p); });
@@ -669,35 +669,35 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
             switch (transform)
             {
                 case Constants::ObjectVisualTransform::Scale:
-                    pObjectVisualTransformData->m_scale.x = value;
+                    pObjectVisualTransformData->m_scopes[0].m_scale.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateX:
-                    pObjectVisualTransformData->m_rotate.x = value;
+                    pObjectVisualTransformData->m_scopes[0].m_rotate.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateY:
-                    pObjectVisualTransformData->m_rotate.y = value;
+                    pObjectVisualTransformData->m_scopes[0].m_rotate.y = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateZ:
-                    pObjectVisualTransformData->m_rotate.z = value;
+                    pObjectVisualTransformData->m_scopes[0].m_rotate.z = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateX:
-                    pObjectVisualTransformData->m_translate.x = value;
+                    pObjectVisualTransformData->m_scopes[0].m_translate.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateY:
-                    pObjectVisualTransformData->m_translate.y = value;
+                    pObjectVisualTransformData->m_scopes[0].m_translate.y = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateZ:
-                    pObjectVisualTransformData->m_translate.z = value;
+                    pObjectVisualTransformData->m_scopes[0].m_translate.z = value;
                     break;
 
                 case Constants::ObjectVisualTransform::AnimationSpeed:
-                    pObjectVisualTransformData->m_animationSpeed = value;
+                    pObjectVisualTransformData->m_scopes[0].m_animationSpeed = value;
                     break;
 
                 default:
