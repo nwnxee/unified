@@ -117,6 +117,9 @@ struct CLastUpdateObject
     Vector m_vHiliteColor;
     int32_t m_nMouseCursor;
     BOOL m_bUseable;
+    int32_t m_nUiDiscoveryMask;
+    uint32_t m_nTextBubbleOverrideType;
+    CExoString m_sTextBubbleOverrideText;
     int32_t m_nUpdateDisplayNameSeq;
     int32_t m_nUpdateHiddenSeq;
     CNWSPlayerLUOQuickbarItemButton * m_pQuickbarButton;

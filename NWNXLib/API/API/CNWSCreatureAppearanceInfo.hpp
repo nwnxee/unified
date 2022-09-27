@@ -38,6 +38,8 @@ struct CNWSCreatureAppearanceInfo
     ObjectVisualTransformData m_pRightHandItemVisualTransform;
     ObjectVisualTransformData m_pLeftHandItemVisualTransform;
 
+    CNWSCreatureAppearanceInfo();
+    void Clear();
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSCreatureAppearanceInfo
