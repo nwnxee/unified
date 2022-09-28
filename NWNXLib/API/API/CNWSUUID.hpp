@@ -20,6 +20,8 @@ struct CNWSUUID
     CGameObject * m_parent;
     CExoString m_uuid;
 
+    static void* GetMapPtr();
+
     CNWSUUID(CGameObject * );
     virtual ~CNWSUUID();
     static bool CanCarryUUID(int32_t objectType);
