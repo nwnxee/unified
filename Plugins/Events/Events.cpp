@@ -246,6 +246,30 @@ NWNX_EXPORT ArgumentStack UnsubscribeEvent(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack UnsubscribeAllStartingWith(ArgumentStack&& args)
+{
+    const auto prefix = args.extract<std::string>();
+
+    for (auto& eventMapPair : s_eventMap)
+    {
+        auto it = eventMapPair.second.begin();
+        while (it != eventMapPair.second.end())
+        {
+            if (it->second.rfind(prefix, 0) == 0)
+            {
+                LOG_INFO("Script '%s' unsubscribed from event '%s'.", it->second, eventMapPair.first);
+                it = eventMapPair.second.erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SubscribeEventScriptChunk(ArgumentStack&& args)
 {
     const auto event = args.extract<std::string>();
