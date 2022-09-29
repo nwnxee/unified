@@ -342,6 +342,13 @@ void NWNX_Area_SetAreaFlags(object oArea, int nFlags);
 /// @param oArea The area.
 struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea);
 
+/// @brief Set the default discoverability mask for objects in an area.
+/// @param oArea The area or OBJECT_INVALID to set a global mask for all areas. Per area masks will override the global mask.
+/// @param nObjectTypes A mask of OBJECT_TYPE_* constants or OBJECT_TYPE_ALL for all suitable object types. Currently only works on Creatures, Doors (Hilite only), Items and Useable Placeables.
+/// @param nMask A mask of OBJECT_UI_DISCOVERY_*
+/// @param bForceUpdate If TRUE, will update the discovery mask of ALL objects in the area or module(if oArea == OBJECT_INVALID), according to the current mask. Use with care.
+void NWNX_Area_SetDefaultObjectUiDiscoveryMask(object oArea, int nObjectTypes, int nMask, int bForceUpdate = FALSE);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -867,4 +874,15 @@ struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea)
     data.vDirection.z = NWNX_GetReturnValueFloat();
 
     return data;
+}
+
+void NWNX_Area_SetDefaultObjectUiDiscoveryMask(object oArea, int nObjectTypes, int nMask, int bForceUpdate = FALSE)
+{
+    string sFunc = "SetDefaultObjectUiDiscoveryMask";
+
+    NWNX_PushArgumentInt(bForceUpdate);
+    NWNX_PushArgumentInt(nMask);
+    NWNX_PushArgumentInt(nObjectTypes);
+    NWNX_PushArgumentObject(oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
 }

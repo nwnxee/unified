@@ -265,6 +265,8 @@ namespace Utils
     CNWSWaypoint*  PopWaypoint(ArgumentStack& args, bool throwOnFail=false);
     CNWSTrigger*   PopTrigger(ArgumentStack& args, bool throwOnFail=false);
     CNWSDoor*      PopDoor(ArgumentStack& args, bool throwOnFail=false);
+
+    int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType);
 }
 
 namespace POS
