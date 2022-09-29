@@ -1070,3 +1070,40 @@ NWNX_EXPORT ArgumentStack GetAoEObjectRadius(ArgumentStack&& args)
 
     return 0.0f;
 }
+
+NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        auto GetUUIDPtr = [](CGameObject* obj) -> CNWSUUID*
+        {
+            if (auto *nwo = Utils::AsNWSObject(obj)) return &nwo->m_pUUID;
+            else if (auto *are = Utils::AsNWSArea(obj)) return &are->m_pUUID;
+            else return nullptr;
+        };
+
+        auto sUUID = args.extract<std::string>();
+
+        // Internal UUID references in the game are all in exactly this format.
+        const auto cUUID = CUUID::rebuild(sUUID);
+        ASSERT_OR_THROW(cUUID.str() == sUUID);
+
+        auto *newuuid = GetUUIDPtr(pGameObject);
+        ASSERT_OR_THROW(newuuid);
+
+        using MapType = std::unordered_map<std::string, CGameObject*>;
+        auto& map = *reinterpret_cast<MapType*>(CNWSUUID::GetMapPtr());
+
+        if (map.find(sUUID) != map.end())
+        {
+            auto *old = GetUUIDPtr(map.at(sUUID));
+            ASSERT_OR_THROW(old);
+            old->m_uuid = "";
+            map.erase(sUUID);
+        }
+        
+        newuuid->TryAssign(sUUID);
+    }
+
+    return {};
+}

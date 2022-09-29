@@ -402,6 +402,11 @@ void NWNX_Object_SetAoEObjectRadius(object oAoE, float fRadius);
 /// @return The radius or 0.0f on error
 float NWNX_Object_GetAoEObjectRadius(object oAoE);
 
+/// @brief Force the given object to carry the given UUID. Any other object currently owning the UUID is stripped of it.
+/// @param oObject The object
+/// @param sUUID The UUID to force
+void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -1003,3 +1008,11 @@ float NWNX_Object_GetAoEObjectRadius(object oAoE)
     return NWNX_GetReturnValueFloat();
 }
 
+void NWNX_Object_ForceAssignUUID(object oObject, string sUUID)
+{
+    string sFunc = "ForceAssignUUID";
+
+    NWNX_PushArgumentString(sUUID);
+    NWNX_PushArgumentObject(oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
