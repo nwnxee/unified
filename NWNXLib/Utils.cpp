@@ -526,5 +526,22 @@ CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
     return pPlayer;
 }
 
+int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType)
+{
+    switch (nwscriptObjectType)
+    {
+        case 1: return Constants::ObjectType::Creature;
+        case 2: return Constants::ObjectType::Item;
+        case 4: return Constants::ObjectType::Trigger;
+        case 8: return Constants::ObjectType::Door;
+        case 16: return Constants::ObjectType::AreaOfEffect;
+        case 32: return Constants::ObjectType::Waypoint;
+        case 64: return Constants::ObjectType::Placeable;
+        case 128: return Constants::ObjectType::Store;
+        case 256: return Constants::ObjectType::Encounter;
+        default: return 0;
+    }
+}
+
 
 }
