@@ -1588,6 +1588,10 @@ void NWNX_Events_SubscribeEvent(string evt, string script);
 /// @param script The script.
 void NWNX_Events_UnsubscribeEvent(string evt, string script);
 
+/// @brief Unsubscribe all scripts from all events starting with prefix.
+/// @param prefix the prefix to match against. Can be empty.
+void NWNX_Events_UnsubscribeAllStartingWith(string prefix);
+
 /// @brief Script chunks can subscribe to events.
 ///
 /// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
@@ -1746,6 +1750,14 @@ void NWNX_Events_UnsubscribeEvent(string evt, string script)
 
     NWNX_PushArgumentString(script);
     NWNX_PushArgumentString(evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_UnsubscribeAllStartingWith(string prefix)
+{
+    string sFunc = "UnsubscribeAllStartingWith";
+
+    NWNX_PushArgumentString(prefix);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
