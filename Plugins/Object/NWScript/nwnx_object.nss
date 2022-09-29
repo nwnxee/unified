@@ -414,6 +414,11 @@ int NWNX_Object_GetLastSpellCastSpontaneous(object oObject);
 /// @return Domain level of the cast spell, 0 if not a domain spell
 int NWNX_Object_GetLastSpellCastDomainLevel(object oObject);
 
+/// @brief Force the given object to carry the given UUID. Any other object currently owning the UUID is stripped of it.
+/// @param oObject The object
+/// @param sUUID The UUID to force
+void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -1033,4 +1038,13 @@ int NWNX_Object_GetLastSpellCastDomainLevel(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Object_ForceAssignUUID(object oObject, string sUUID)
+{
+    string sFunc = "ForceAssignUUID";
+
+    NWNX_PushArgumentString(sUUID);
+    NWNX_PushArgumentObject(oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
