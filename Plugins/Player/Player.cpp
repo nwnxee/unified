@@ -1793,3 +1793,44 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
 
     return Constants::OBJECT_INVALID;
 }
+
+NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
+{
+    static Hooks::Hook pSetObjectUiDiscoveryMaskOverrideHook =
+            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                {
+                    if (auto discoveryMask = pObject->nwnxGet<int>("OBJUDO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                    {
+                        auto value = (uint32_t)*discoveryMask;
+                        std::swap(value, pObject->m_nUiDiscoveryMask);
+                        pSetObjectUiDiscoveryMaskOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        std::swap(value, pObject->m_nUiDiscoveryMask);
+                        return;
+                    }
+                }
+                pSetObjectUiDiscoveryMaskOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
+
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        auto oidTarget = args.extract<ObjectID>();
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto discoveryMask = args.extract<int32_t>();
+
+        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        {
+            if (discoveryMask < 0)
+            {
+                pObject->nwnxRemove("OBJUDO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            }
+            else
+            {
+                pObject->nwnxSet("OBJUDO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), discoveryMask);
+            }
+        }
+    }
+    return {};
+}
