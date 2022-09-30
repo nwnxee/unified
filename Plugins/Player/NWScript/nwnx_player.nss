@@ -421,6 +421,12 @@ void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFog
 /// @return the actual game object of oPlayer, or OBJECT_INVALID on error.
 object NWNX_Player_GetGameObject(object oPlayer);
 
+/// @brief Override the ui discovery mask of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The target object.
+/// @param nMask A mask of OBJECT_UI_DISCOVERY_*, or -1 to clear the override
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -1062,4 +1068,15 @@ object NWNX_Player_GetGameObject(object oPlayer)
     NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask)
+{
+    string sFunc = "SetObjectUiDiscoveryMaskOverride";
+
+    NWNX_PushArgumentInt(nMask);
+    NWNX_PushArgumentObject(oObject);
+    NWNX_PushArgumentObject(oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
