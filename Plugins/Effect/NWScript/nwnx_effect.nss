@@ -128,6 +128,11 @@ void NWNX_Effect_Apply(effect eEffect, object oObject);
 /// @return The accessorized effect or an unchanged effect if not an EffectVisualEffect().
 effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect);
 
+/// @brief Sets an effect creator. 
+/// @param eEffect The effect to be modified.
+/// @return The effect with creator field set.
+effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject);
+
 /// @}
 
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
@@ -378,5 +383,17 @@ effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
     string sFunc = "AccessorizeVisualEffect";
     NWNX_PushArgumentEffect(eEffect);
     NWNX_CallFunction(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueEffect();
+}
+
+effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject)
+{
+    string sFunc = "SetEffectCreator";
+
+    NWNX_PushArgumentObject(oObject);
+    NWNX_PushArgumentEffect(eEffect);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
     return NWNX_GetReturnValueEffect();
 }

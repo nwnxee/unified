@@ -684,3 +684,15 @@ NWNX_EXPORT ArgumentStack AccessorizeVisualEffect(ArgumentStack&& args)
 
     return pEffect;
 }
+
+NWNX_EXPORT ArgumentStack SetEffectCreator(ArgumentStack&& args)
+{
+    auto effect = args.extract<CGameEffect*>();
+    ASSERT_OR_THROW(effect);
+    auto creator = Utils::PopObject(args);
+    ASSERT_OR_THROW(creator);
+
+    effect->m_oidCreator = creator->m_idSelf;
+
+    return effect;
+}
