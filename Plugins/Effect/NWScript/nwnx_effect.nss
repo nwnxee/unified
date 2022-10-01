@@ -6,6 +6,20 @@
 
 const string NWNX_Effect = "NWNX_Effect"; ///< @private
 
+/// EQUIPPED effects are always associated with a slotted item:
+/// Setting this duration type requires the effect creator
+/// to be set to the (already equipped) item that should remove
+/// this effect when unequipped.
+/// Removal behaviour for effects where the creator is NOT a equipped
+/// item is undefined.
+/// They are not removed by resting, cannot be dispelled, etc.
+const int DURATION_TYPE_EQUIPPED = 3;
+
+/// These are feat/racial effects used internally by the game to
+/// implement things like movement speed changes and darkvision.
+/// They cannot be removed by resting, dispelling, etc.
+const int DURATION_TYPE_INNATE   = 4;
+
 /// An unpacked effect
 struct NWNX_EffectUnpacked
 {
@@ -132,6 +146,23 @@ effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect);
 /// @param eEffect The effect to be modified.
 /// @return The effect with creator field set.
 effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject);
+
+/// @brief Checks if the given effect is valid. Unlike the game builtin, this call considers internal types too.
+/// @param eEffect The effect to check
+/// @return TRUE if the effect is valid (including internal types).
+int NWNX_Effect_GetIsEffectValid(effect eEffect);
+
+/// @brief Returns the number of applied effects on the given object.
+/// @param oObject The object to get the applied effect count for.
+/// @return The number of applied effects, including internal.
+int NWNX_Effect_GetAppliedEffectCount(object oObject);
+
+/// @brief Returns the nNth applied effect on a object.
+/// @param oObject The object to get the applied effect copy for.
+/// @param nNth The effect index to get.
+/// @note Make sure to check with NWNX_Effect_GetIsEffectValid, as this iterator also includes internal effects.
+/// @return A copy of the applied game effect, or a invalid effect.
+effect NWNX_Effect_GetAppliedEffect(object oObject, int nNth);
 
 /// @}
 
@@ -392,6 +423,40 @@ effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject)
 
     NWNX_PushArgumentObject(oObject);
     NWNX_PushArgumentEffect(eEffect);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueEffect();
+}
+
+int NWNX_Effect_GetIsEffectValid(effect eEffect)
+{
+    string sFunc = "GetIsEffectValid";
+
+    NWNX_PushArgumentEffect(eEffect);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Effect_GetAppliedEffectCount(object oObject)
+{
+    string sFunc = "GetAppliedEffectCount";
+
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+effect NWNX_Effect_GetAppliedEffect(object oObject, int nNth)
+{
+    string sFunc = "GetAppliedEffect";
+
+    NWNX_PushArgumentInt(nNth);
+    NWNX_PushArgumentObject(oObject);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
