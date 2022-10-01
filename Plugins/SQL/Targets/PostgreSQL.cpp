@@ -7,6 +7,16 @@
 
 #include "PostgreSQL.hpp"
 using namespace NWNXLib;
+
+static bool s_nextQueryBinaryResults;
+
+NWNX_EXPORT Events::ArgumentStack PostgreSQL_SetNextQueryResultsBinaryMode(Events::ArgumentStack&&)
+{
+    LOG_DEBUG("Next query only: Results will be returned in binary mode.");
+    s_nextQueryBinaryResults = true;
+    return {};
+}
+
 namespace SQL {
 
 PostgreSQL::PostgreSQL()
@@ -143,8 +153,17 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         {
             if (m_params[i])
             {
-                paramValues[i] = new char[m_params[i]->size()+1];
-                strcpy(paramValues[i], m_params[i]->c_str());
+                if (m_formats[i] == 1)
+                {
+                    size_t toLen;
+                    paramValues[i] = (char*) PQescapeByteaConn(m_conn,
+                        (const unsigned char*) m_params[i]->c_str(), m_params[i]->size(), &toLen);
+                }
+                else
+                {
+                    paramValues[i] = new char[m_params[i]->size()+1];
+                    strcpy(paramValues[i], m_params[i]->c_str());
+                }
             }
             else
             {
@@ -158,8 +177,10 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         "",                                     // statement name (same as in the prepare above)
         m_paramCount,                           // m_paramCount from previous
         paramValues,                            // param data (can be null)
-        m_lengths.data(),                                   // param lengths - only for binary data
-        m_formats.data(),                                   // param formats - server will infer text
+        // NB: Both of these are null; all data passed in is text mode.
+        //     bytea data gets escaped automatically by setting m_format[i] in PrepareBinary().
+        NULL,                                   // param lengths - only for binary data
+        NULL,                                   // param formats - server will infer text
         0);                                     // result format, 0=text, 1=binary
 
     // done with parameters.
@@ -186,10 +207,21 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
             row.reserve(cols);
             for (int j=0; j<(int)cols; j++)
             {
-                row.emplace_back(Result(PQgetvalue(res, i, j), PQgetlength(res, i, j)));
+                const unsigned char* ptr = (unsigned char*) PQgetvalue(res, i, j);
+                size_t ptrLen = PQgetlength(res, i, j);
+                if (j == 0 && s_nextQueryBinaryResults)
+                {
+                    LOG_DEBUG("Forcefully unescaping query result column %d.", j);
+                    ptr = PQunescapeBytea(ptr, &ptrLen);
+                }
+
+                row.emplace_back(Result((char*) ptr, ptrLen));
             }
             results.push(row);
         }
+
+        // Always disable binary mode, even if no columns with it were read.
+        s_nextQueryBinaryResults = false;
 
         PQclear(res);
         return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
