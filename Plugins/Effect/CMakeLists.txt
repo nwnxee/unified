@@ -1,2 +1,3 @@
 add_plugin(Effect
-    "Effect.cpp")
+    "Effect.cpp"
+    "ExtendDurationType.cpp")
