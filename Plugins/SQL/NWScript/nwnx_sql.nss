@@ -102,6 +102,10 @@ string NWNX_SQL_GetLastError();
 /// @return Returns the number of parameters expected by the prepared query or -1 if no query is prepared.
 int NWNX_SQL_GetPreparedQueryParamCount();
 
+/// @brief Set the next query to return full binary results **ON THE FIRST COLUMN ONLY**.
+/// @note This is ONLY needed on PostgreSQL, and ONLY if you want to deserialize raw bytea in NWNX_SQL_ReadFullObjectInActiveRow with base64=FALSE.
+void NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode();
+
 /// @}
 
 int NWNX_SQL_PrepareQuery(string query)
@@ -260,4 +264,11 @@ int NWNX_SQL_GetPreparedQueryParamCount()
 
     NWNX_CallFunction(NWNX_SQL, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode()
+{
+    string sFunc = "PostgreSQL_SetNextQueryResultsBinaryMode";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 }
