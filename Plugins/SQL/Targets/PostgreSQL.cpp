@@ -65,6 +65,20 @@ void PostgreSQL::Connect()
     }
 
     s_nextQueryBinaryResults = false;
+
+    if (auto charset = Config::Get<std::string>("CHARACTER_SET"))
+    {
+        LOG_INFO("Connection character set is '%s'", *charset);
+        const std::string query = "SET CLIENT_ENCODING TO '" + *charset + "';";
+        PGresult* ret = PQexec(m_conn, query.c_str());
+        SCOPEGUARD(PQclear(ret));
+        if (PQresultStatus(ret) != PGRES_COMMAND_OK)
+        {
+            throw std::runtime_error(std::string("unable to set connection character set: ") +
+                PQerrorMessage(m_conn));
+        }
+
+    }
 }
 
 bool PostgreSQL::IsConnected()

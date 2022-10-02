@@ -112,11 +112,19 @@ export NWNX_SQL_USE_UTF8=true
 
 Set the connection's character set to be used.
 
-Only supported on mysql. For pgsql and sqlite this can be achieved with a query.
+Only supported on mysql and pgsql. For sqlite this can be achieved with a query.
 
-__Examples__
+__Examples (MySQL)__
 
 ```
 export NWNX_SQL_CHARACTER_SET=utf8
 export NWNX_SQL_CHARACTER_SET=cp1251
 ```
+
+__Examples (PostgreSQL)__
+
+```
+export NWNX_SQL_CHARACTER_SET=WIN1252
+```
+
+(see https://www.postgresql.org/docs/current/multibyte.html for list)
