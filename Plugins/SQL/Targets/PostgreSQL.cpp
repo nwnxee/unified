@@ -63,6 +63,8 @@ void PostgreSQL::Connect()
     {
         throw std::runtime_error("Error connecting to Postgres DB");
     }
+
+    s_nextQueryBinaryResults = false;
 }
 
 bool PostgreSQL::IsConnected()
@@ -320,6 +322,8 @@ void PostgreSQL::DestroyPreparedQuery()
     // Force deallocation
     std::vector<std::optional<std::string>>().swap(m_params);
     m_paramCount = 0;
+
+    s_nextQueryBinaryResults = false;
 }
 
 }
