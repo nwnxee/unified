@@ -32,6 +32,9 @@ public:
     ArgumentStack DestroyPreparedQuery          (ArgumentStack&& args);
     ArgumentStack GetLastError                  (ArgumentStack&& args);
     ArgumentStack GetPreparedQueryParamCount    (ArgumentStack&& args);
+
+    ITarget* GetTarget() { return m_target.get(); }
+
 private:
     bool Reconnect(int32_t attempts = 1);
 
