@@ -139,7 +139,7 @@ struct CNWSObject : CGameObject
     int32_t m_nMouseCursor;
     BOOL m_bUseable;
     float m_fVisibleDistance;
-    uint32_t m_nUiDiscoveryMask;
+    int32_t m_nUiDiscoveryMask;
     int32_t m_nTextBubbleOverrideType;
     CExoString m_sTextBubbleOverrideText;
     CNWSTransition m_pTransition;
