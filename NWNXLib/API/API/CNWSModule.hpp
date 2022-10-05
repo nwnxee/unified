@@ -147,6 +147,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     int32_t m_nLastGuiEventType;
     int32_t m_nLastGuiEventInteger;
     OBJECT_ID m_oidLastGuiEventObject;
+    Vector m_vLastGuiEventVector;
     OBJECT_ID m_oidLastPlayerToDoTileAction;
     int32_t m_nLastPlayerTileActionId;
     Vector m_vLastPlayerTileActionPosition;
