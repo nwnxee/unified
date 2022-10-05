@@ -1804,10 +1804,9 @@ NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
                 {
                     if (auto discoveryMask = pObject->nwnxGet<int>("OBJUDO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
-                        auto value = (uint32_t)*discoveryMask;
-                        std::swap(value, pObject->m_nUiDiscoveryMask);
+                        std::swap(*discoveryMask, pObject->m_nUiDiscoveryMask);
                         pSetObjectUiDiscoveryMaskOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                        std::swap(value, pObject->m_nUiDiscoveryMask);
+                        std::swap(*discoveryMask, pObject->m_nUiDiscoveryMask);
                         return;
                     }
                 }
