@@ -29,11 +29,13 @@ enum class LerpTimerType {
 struct LerpFloat
 {
     LerpTimerType m_timer_type;
-    float m_value_to;
-    float m_value_from;
+    mutable float m_value_to;
+    mutable float m_value_from;
     int m_lerp_type;
     float m_lerp_duration;
     float m_lerp_existing_progress;
+    int m_behavior_flags;
+    mutable int m_repeats_remaining;
 
     struct TimeType
     {
@@ -67,16 +69,21 @@ struct LerpFloat
             m_value_from(initial),
             m_lerp_type(0),
             m_lerp_duration(0.0),
-            m_lerp_existing_progress(0.0)
+            m_lerp_existing_progress(0.0),
+            m_behavior_flags(0),
+            m_repeats_remaining(0)
     {}
 
-    LerpFloat(LerpTimerType type, float to, float from, int lerpType, float lerpDuration, float existingProgress = 0.0) :
+    LerpFloat(LerpTimerType type, float to, float from, int lerpType, float lerpDuration, float existingProgress = 0.0,
+              int behaviorFlags = 0, int repeatsRemaining = 0) :
             m_timer_type(type),
             m_value_to(to),
             m_value_from(from),
             m_lerp_type(lerpType),
             m_lerp_duration(lerpDuration),
-            m_lerp_existing_progress(existingProgress)
+            m_lerp_existing_progress(existingProgress),
+            m_behavior_flags(behaviorFlags),
+            m_repeats_remaining(repeatsRemaining)
     {
         Refresh();
     }
@@ -120,6 +127,8 @@ struct LerpFloat
         m_lerp_type = 0;
         m_lerp_duration = 0;
         m_lerp_existing_progress = 0.0;
+        m_behavior_flags = 0;
+        m_repeats_remaining = 0;
     }
 
     void AdoptLerp(const LerpFloat& other)
@@ -132,6 +141,8 @@ struct LerpFloat
         m_lerp_existing_progress = other.m_lerp_existing_progress;
         m_lerp_start = other.m_lerp_start;
         m_lerp_end = other.m_lerp_end;
+        m_behavior_flags = other.m_behavior_flags;
+        m_repeats_remaining = other.m_repeats_remaining;
         Refresh();
     }
 
