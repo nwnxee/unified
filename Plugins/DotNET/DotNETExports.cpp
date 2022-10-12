@@ -542,9 +542,11 @@ static const char* NWNXPopString()
 static const char* NWNXPopRawString()
 {
     auto value = Events::Pop<std::string>();
+
+    static std::string retVal;
     if (value.has_value())
     {
-        static auto retVal = value.value();
+        retVal = value.value();
         return retVal.c_str();
     }
     else
