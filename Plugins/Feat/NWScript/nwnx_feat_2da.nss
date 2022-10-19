@@ -2,7 +2,6 @@
 /// @file nwnx_feat_2da.nss
 /// @brief Parse a column in the feat.2da to load the modifiers.
 #include "nwnx_feat"
-#include "nwnx_util"
 
 /// @ingroup feat
 /// @brief Translate a modifier type from a string to its constant.
@@ -12,7 +11,6 @@ int NWNX_Feat_GetModifierConstant(string featMod);
 
 /// @ingroup feat
 /// @brief Loops through feat.2da and checks for the column for feat modifications and sets them.
-/// @note Requires NWNX_Util_Get2DARowCount()
 /// @param sColumnName The column name in the feat.2da that defines the 2da for the feat mods.
 void NWNX_Feat_LoadFeatModifiers(string sColumnName = "FeatModsTable");
 
@@ -50,14 +48,14 @@ int NWNX_Feat_GetModifierConstant(string featMod)
 
 void NWNX_Feat_LoadFeatModifiers(string sColumnName = "FeatModsTable")
 {
-    int iFeatRows = NWNX_Util_Get2DARowCount("feat");
+    int iFeatRows = Get2DARowCount("feat");
     int iFeat;
     for (iFeat = 0; iFeat < iFeatRows; iFeat++)
     {
         string sFeatModTable = Get2DAString("feat", sColumnName, iFeat);
         if(sFeatModTable != "")
         {
-            int iFeatModRows = NWNX_Util_Get2DARowCount(sFeatModTable);
+            int iFeatModRows = Get2DARowCount(sFeatModTable);
             int iFeatMod;
             for (iFeatMod = 0; iFeatMod < iFeatModRows; iFeatMod++)
             {
