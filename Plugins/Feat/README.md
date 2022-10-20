@@ -15,6 +15,22 @@ Once your feat has been added (or it's also fine to modify existing feats) build
 
 The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the NWNX_SkillRanks plugin for changing those.
 
+### The 2da Method
+To use the 2da method, the builder must create a new column at the end of the `feat.2da` named **FeatModsTable**. This column should then be populated with a string value that references another 2da file in which we will define our feat modifiers. Once that is done the builder needs to **include nwnx_feat_2da and make sure to run `NWNX_Feat_LoadFeatModifiers()` in their OnModuleLoad script**.
+
+For example, we've inserted a new feat called **Fireproof** into `feat.2da` at line 1200. In the `FeatModsTable` column we enter **FEATMOD_FIREPRF** (Remember maximum 16 characters, case insensitive)
+
+We will now create and define our `featmod_fireprf.2da` file and enter appropriate lines for each modifier we want our feat to grant. The end result will look something like this:
+
+```text
+2DA V2.0
+
+    LABEL                       Type            Param1  Param2  Param3  Param4
+0   SaveVsFire                  SAVEVSTYPE      0       7       2       ****
+1   FireResist                  DMGRESIST       256     10      ****    ****
+2   CombustImmunity             SPELLIMMUNITY   518     ****    ****    ****
+```
+
 ## Feat Modifiers
 
 These commands should be ran `on_module_load`.
