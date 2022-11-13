@@ -21,6 +21,7 @@ struct CVirtualMachineScript
     int32_t m_nSecondaryInstructPtr;
     CExoString m_sScriptName;
     DataBlockRef m_pCode;
+    DataBlockRef m_pNDB;
     int32_t m_nScriptEventID;
 
 
