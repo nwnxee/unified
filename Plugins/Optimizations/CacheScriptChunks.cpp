@@ -2,13 +2,14 @@
 
 #include "API/CVirtualMachine.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoResMan.hpp"
 
 namespace Optimizations {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static std::unordered_map<std::string, DataBlockRef> s_CachedScriptChunks;
+static std::unordered_map<std::string, std::pair<DataBlockRef, DataBlockRef>> s_CachedScriptChunks;
 
 void CacheScriptChunks() __attribute__((constructor));
 void CacheScriptChunks()
@@ -30,9 +31,9 @@ void CacheScriptChunks()
             auto cachedScript = s_CachedScriptChunks.find(sScriptChunk.CStr());
             if (cachedScript != s_CachedScriptChunks.end())
             {
-                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "Chunk";
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_nScriptEventID = 0;
-                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], cachedScript->second);
+                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], cachedScript->second.first, cachedScript->second.second);
                 return 0;
             }
 
@@ -67,11 +68,13 @@ void CacheScriptChunks()
                 DataBlockRef pScriptDataBlock = std::make_shared<DataBlock>();
                 pScriptDataBlock->Append(pScriptData, nScriptDataSize);
 
-                s_CachedScriptChunks[sScriptChunk.CStr()] = pScriptDataBlock;
+                auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
 
-                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "Chunk";
+                s_CachedScriptChunks[sScriptChunk.CStr()] = std::make_pair(pScriptDataBlock, pNDB);
+
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_nScriptEventID = 0;
-                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], pScriptDataBlock);
+                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], pScriptDataBlock, pNDB);
                 return 0;
             }
 
