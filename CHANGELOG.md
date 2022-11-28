@@ -40,7 +40,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Creature: AddCastSpellActions()
 - Creature: GetSpellUsesLeft()
 - Creature: GetMemorizedSpellReadyCount()
-- Creature: GetIsFlanked()
+- Creature: GetIsFlanking()
 - Effect: AccessorizeVisualEffect()
 - Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()

@@ -1068,8 +1068,8 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
 /// @brief Get whether oCreature is flanking oTargetCreature.
 /// @param oCreature The creature object.
 /// @param oTargetCreature The target creature object.
-/// @return TRUE if oTargetCreature is being flanked by oCreature.
-int NWNX_Creature_GetIsFlanked(object oCreature, object oTargetCreature);
+/// @return TRUE if oCreature is flanking oTargetCreature.
+int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature);
 
 /// @}
 
@@ -2716,9 +2716,9 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Creature_GetIsFlanked(object oCreature, object oTargetCreature)
+int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
 {
-    string sFunc = "GetIsFlanked";
+    string sFunc = "GetIsFlanking";
 
     NWNX_PushArgumentObject(oTargetCreature);
     NWNX_PushArgumentObject(oCreature);
