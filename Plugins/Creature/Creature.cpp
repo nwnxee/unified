@@ -3428,3 +3428,16 @@ NWNX_EXPORT ArgumentStack GetMemorizedSpellReadyCount(ArgumentStack&& args)
 
     return 0;
 }
+
+NWNX_EXPORT ArgumentStack GetIsFlanking(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pTargetCreature = Utils::PopCreature(args))
+        {
+            return pCreature->GetFlanked(pTargetCreature);
+        }
+    }
+
+    return false;
+}

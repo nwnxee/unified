@@ -1065,6 +1065,12 @@ int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiCla
 /// @return The number of spell uses left or 0 on error.
 int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE);
 
+/// @brief Get whether oCreature is flanking oTargetCreature.
+/// @param oCreature The creature object.
+/// @param oTargetCreature The target creature object.
+/// @return TRUE if oCreature is flanking oTargetCreature.
+int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2704,6 +2710,17 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
     NWNX_PushArgumentInt(nMetaMagic);
     NWNX_PushArgumentInt(nMultiClass);
     NWNX_PushArgumentInt(nSpellID);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
+{
+    string sFunc = "GetIsFlanking";
+
+    NWNX_PushArgumentObject(oTargetCreature);
     NWNX_PushArgumentObject(oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
