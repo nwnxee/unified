@@ -1535,6 +1535,16 @@ _______________________________________
     ```
     @warning Toggling the Whitelist to be off for this event will degrade performance.
 _______________________________________
+	## Object Use Events (Placeables)
+	- NWNX_ON_OBJECT_USE_BEFORE
+	- NWNX_ON_OBJECT_USE_AFTER
+
+	`OBJECT_SELF` = The player using the object
+
+	Event Data Tag        | Type   | Notes
+	----------------------|--------|-------
+	OBJECT                | object | The Object being used |
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
