@@ -175,6 +175,13 @@ namespace NWSQLite {
     using Database = void*;
 }
 
+template<typename T>
+struct SharedPtrEngineStructure
+{
+    std::shared_ptr<T> m_shared;
+    virtual ~SharedPtrEngineStructure() {}
+};
+
 #define NWN_CLASS_EXTENSION_CGameObject \
     using CleanupFunc = std::function<void(void*)>;                                                                         \
     void nwnxSet(const std::string& key, int value, bool persist = false, const char *pn = PLUGIN_NAME);                    \
