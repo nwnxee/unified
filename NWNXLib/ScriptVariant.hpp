@@ -77,7 +77,7 @@ struct ScriptVariant
             auto e = Get<CGameEffect*>();
             return e ? std::string("EffectID:") + std::to_string(e->m_nID) : std::string("nullptr effect");
         }
-        else if (Holds<JsonEngineStructure>()) { return std::string("JSON: ") + Get<JsonEngineStructure>().m_json.dump(); }
+        else if (Holds<JsonEngineStructure>()) { return std::string("JSON: ") + Get<JsonEngineStructure>().m_shared->m_json.dump(); }
         return "(unknown argument type)";
     }
 
