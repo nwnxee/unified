@@ -16,4 +16,4 @@ Game optimizations. Improves performance of various game elements.
 | `NWNX_OPTIMIZATIONS_RECONCILE_AUTOMAP_DATA` | true/false | Reduces the number of checks for mismatches between players' and module's area list |
 | `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` | true/false | Caches all script chunks, improving performance |
 | `NWNX_OPTIMIZATIONS_UPDATE_LIST_COMPARISONS` | int | Optimizes the visibility and vfx List comparisons. |
-
+| `NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES` | true/false | Caches all nwscript debugger instances, improving GetScriptBacktrace() performance |
