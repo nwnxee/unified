@@ -27,11 +27,11 @@ void ObjectEvents()
         s_AddUnlockObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUnlockObjectAction,
                                                    &AddUnlockObjectActionHook, Hooks::Order::Early);
     });
-	
+
     InitOnFirstSubscribe("NWNX_ON_OBJECT_USE_.*", []() {
-        s_AddUseObjectActionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject18AddUseObjectActionEj,
+        s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUseObjectAction,
                                                    (void*)&AddUseObjectActionHook, Hooks::Order::Early);
-    });	
+    });
 }
 
 int32_t AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor)
