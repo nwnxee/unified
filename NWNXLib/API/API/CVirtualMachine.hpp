@@ -21,6 +21,7 @@ struct CScriptLog;
 struct CScriptLog;
 struct CVirtualMachineCmdImplementer;
 struct CVirtualMachineDebuggingContext;
+struct CVirtualMachineDebuggerInstance;
 
 
 typedef int BOOL;
@@ -44,7 +45,7 @@ struct CVirtualMachine
     int32_t m_nSecondaryInstructionPointer;
     int32_t m_nStackSizeToSave;
     int32_t m_nBaseStackSizeToSave;
-    int32_t * m_pCurrentInstructionPointer;
+    int32_t * m_pCurrentInstructionPointer[8];
     CVirtualMachineCmdImplementer * m_pCmdImplementer;
     BOOL m_bDebugGUIRequired;
     BOOL m_bDebuggerSpawned;
@@ -97,6 +98,7 @@ struct CVirtualMachine
     BOOL SaveScriptSituation_Internal(CVirtualMachineScript * pScript, CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadScriptSituation_Internal(CVirtualMachineScript * * pScript, CResGFF * pRes, CResStruct * pStruct);
     CScriptLog * GetScriptLog(const CExoString & sScript);
+    std::shared_ptr<CVirtualMachineDebuggerInstance> GetDebuggerInstance();
 
 
 #ifdef NWN_CLASS_EXTENSION_CVirtualMachine

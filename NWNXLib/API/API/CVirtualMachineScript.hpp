@@ -40,6 +40,7 @@ struct CVirtualMachineScript
     };
 
     std::unordered_map<std::string, JmpData> m_cLongJmpData;
+    CExoString m_sScriptChunk;
 
 
 
