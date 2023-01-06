@@ -1,6 +1,5 @@
 #pragma once
 
-#include "nwnx.hpp"
 #include "API/API/CGameEffect.hpp"
 #include "API/API/JsonEngineStructure.hpp"
 
