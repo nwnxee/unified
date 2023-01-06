@@ -6,4 +6,5 @@ add_plugin(Optimizations
         "ReconcileAutoMap.cpp"
         "CacheScriptChunks.cpp"
         "UpdateListComparisons.cpp"
+        "CacheDebuggerInstances.cpp"
 )
