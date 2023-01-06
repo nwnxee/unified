@@ -5,4 +5,5 @@ add_plugin(Optimizations
         "PlayerLookup.cpp"
         "ReconcileAutoMap.cpp"
         "CacheScriptChunks.cpp"
+        "CacheDebuggerInstances.cpp"
 )
