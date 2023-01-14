@@ -80,21 +80,27 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                 }
                 break;
             case Constants::ItemAppearanceType::WeaponColor:
-                if (val >= 0 && val <= 255 && idx >= 0 && idx <= 5)
+                if (val >= 1 && val <= 9 && idx >= 0 && idx <= 2)
                 {
-                    pItem->m_nLayeredTextureColors[idx] = val;
+                    uint16_t nTemp = pItem->m_nModelPart[idx];
+                    nTemp = nTemp - (nTemp % 10) + val;
+                    pItem->m_nModelPart[idx] = nTemp;
                 }
                 break;
             case Constants::ItemAppearanceType::WeaponModel:
                 if (val >= 0 && idx >= 0 && idx <= 2)
                 {
-                    pItem->m_nModelPart[idx] = val;
+                    uint16_t nTemp = pItem->m_nModelPart[idx];
+                    nTemp = (nTemp % 10) + (val * 10);
+                    pItem->m_nModelPart[idx] = nTemp;
                 }
                 break;
             case Constants::ItemAppearanceType::ArmorModel:
                 if (val >= 0 && idx >= 0 && idx <= 18)
                 {
                     pItem->m_nArmorModelPart[idx] = val;
+                    pItem->m_nArmorValue = pItem->ComputeArmorClass();
+                    pItem->ComputeWeight();
                 }
                 break;
             case Constants::ItemAppearanceType::ArmorColor:
