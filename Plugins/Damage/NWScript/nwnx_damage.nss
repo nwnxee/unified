@@ -24,6 +24,25 @@ struct NWNX_Damage_DamageEventData
     int iPositive; ///< Positive damage
     int iSonic; ///< Sonic damage
     int iBase; ///< Base damage
+    int iCustom1; ///< Custom1 damage
+    int iCustom2; ///< Custom2 damage
+    int iCustom3; ///< Custom3 damage
+    int iCustom4; ///< Custom4 damage
+    int iCustom5; ///< Custom5 damage
+    int iCustom6; ///< Custom6 damage
+    int iCustom7; ///< Custom7 damage
+    int iCustom8; ///< Custom8 damage
+    int iCustom9; ///< Custom9 damage
+    int iCustom10; ///< Custom10 damage
+    int iCustom11; ///< Custom11 damage
+    int iCustom12; ///< Custom12 damage
+    int iCustom13; ///< Custom13 damage
+    int iCustom14; ///< Custom14 damage
+    int iCustom15; ///< Custom15 damage
+    int iCustom16; ///< Custom16 damage
+    int iCustom17; ///< Custom17 damage
+    int iCustom18; ///< Custom18 damage
+    int iCustom19; ///< Custom19 damage
 };
 
 /// @struct NWNX_Damage_AttackEventData
@@ -44,6 +63,25 @@ struct NWNX_Damage_AttackEventData
     int iPositive; ///< Positive damage
     int iSonic; ///< Sonic damage
     int iBase; ///< Base damage
+    int iCustom1; ///< Custom1 damage
+    int iCustom2; ///< Custom2 damage
+    int iCustom3; ///< Custom3 damage
+    int iCustom4; ///< Custom4 damage
+    int iCustom5; ///< Custom5 damage
+    int iCustom6; ///< Custom6 damage
+    int iCustom7; ///< Custom7 damage
+    int iCustom8; ///< Custom8 damage
+    int iCustom9; ///< Custom9 damage
+    int iCustom10; ///< Custom10 damage
+    int iCustom11; ///< Custom11 damage
+    int iCustom12; ///< Custom12 damage
+    int iCustom13; ///< Custom13 damage
+    int iCustom14; ///< Custom14 damage
+    int iCustom15; ///< Custom15 damage
+    int iCustom16; ///< Custom16 damage
+    int iCustom17; ///< Custom17 damage
+    int iCustom18; ///< Custom18 damage
+    int iCustom19; ///< Custom19 damage
     int iAttackNumber; ///< 1-based index of the attack in current combat round
     int iAttackResult; ///< 1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit
     int iWeaponAttackType; ///< 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra
@@ -70,13 +108,32 @@ struct NWNX_Damage_DamageData
     int iNegative; ///< Negative damage
     int iPositive; ///< Positive damage
     int iSonic; ///< Sonic damage
+    int iCustom1; ///< Custom1 damage
+    int iCustom2; ///< Custom2 damage
+    int iCustom3; ///< Custom3 damage
+    int iCustom4; ///< Custom4 damage
+    int iCustom5; ///< Custom5 damage
+    int iCustom6; ///< Custom6 damage
+    int iCustom7; ///< Custom7 damage
+    int iCustom8; ///< Custom8 damage
+    int iCustom9; ///< Custom9 damage
+    int iCustom10; ///< Custom10 damage
+    int iCustom11; ///< Custom11 damage
+    int iCustom12; ///< Custom12 damage
+    int iCustom13; ///< Custom13 damage
+    int iCustom14; ///< Custom14 damage
+    int iCustom15; ///< Custom15 damage
+    int iCustom16; ///< Custom16 damage
+    int iCustom17; ///< Custom17 damage
+    int iCustom18; ///< Custom18 damage
+    int iCustom19; ///< Custom19 damage
     int iPower; ///< For overcoming DR
 };
 
 /// @brief Sets the script to run with a damage event.
 /// @param sScript The script that will handle the damage event.
 /// @param oOwner An object if only executing for a specific object or OBJECT_INVALID for global.
-void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID);
+void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner = OBJECT_INVALID);
 
 /// @brief Get Damage Event Data
 /// @return A NWNX_Damage_DamageEventData struct.
@@ -91,7 +148,7 @@ void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
 /// @brief Sets the script to run with an attack event.
 /// @param sScript The script that will handle the attack event.
 /// @param oOwner An object if only executing for a specific object or OBJECT_INVALID for global.
-void NWNX_Damage_SetAttackEventScript(string sScript, object oOwner=OBJECT_INVALID);
+void NWNX_Damage_SetAttackEventScript(string sScript, object oOwner = OBJECT_INVALID);
 
 /// @brief Get Attack Event Data
 /// @return A NWNX_Damage_AttackEventData struct.
@@ -109,7 +166,7 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 /// @param oTarget The target object on whom the damage is dealt.
 /// @param oSource The source of the damage.
 /// @param iRanged Whether the attack should be treated as ranged by the engine (for example when considering damage inflicted by Acid Sheath and other such effects)
-void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF, int iRanged = FALSE);
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource = OBJECT_SELF, int iRanged = FALSE);
 
 /// @}
 
@@ -145,6 +202,25 @@ struct NWNX_Damage_DamageEventData NWNX_Damage_GetDamageEventData()
     data.iPositive    = NWNX_GetReturnValueInt();
     data.iSonic       = NWNX_GetReturnValueInt();
     data.iBase        = NWNX_GetReturnValueInt();
+    data.iCustom1     = NWNX_GetReturnValueInt();
+    data.iCustom2     = NWNX_GetReturnValueInt();
+    data.iCustom3     = NWNX_GetReturnValueInt();
+    data.iCustom4     = NWNX_GetReturnValueInt();
+    data.iCustom5     = NWNX_GetReturnValueInt();
+    data.iCustom6     = NWNX_GetReturnValueInt();
+    data.iCustom7     = NWNX_GetReturnValueInt();
+    data.iCustom8     = NWNX_GetReturnValueInt();
+    data.iCustom9     = NWNX_GetReturnValueInt();
+    data.iCustom10    = NWNX_GetReturnValueInt();
+    data.iCustom11    = NWNX_GetReturnValueInt();
+    data.iCustom12    = NWNX_GetReturnValueInt();
+    data.iCustom13    = NWNX_GetReturnValueInt();
+    data.iCustom14    = NWNX_GetReturnValueInt();
+    data.iCustom15    = NWNX_GetReturnValueInt();
+    data.iCustom16    = NWNX_GetReturnValueInt();
+    data.iCustom17    = NWNX_GetReturnValueInt();
+    data.iCustom18    = NWNX_GetReturnValueInt();
+    data.iCustom19    = NWNX_GetReturnValueInt();
 
     return data;
 }
@@ -153,6 +229,25 @@ void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data)
 {
     string sFunc = "SetDamageEventData";
 
+    NWNX_PushArgumentInt(data.iCustom19);
+    NWNX_PushArgumentInt(data.iCustom18);
+    NWNX_PushArgumentInt(data.iCustom17);
+    NWNX_PushArgumentInt(data.iCustom16);
+    NWNX_PushArgumentInt(data.iCustom15);
+    NWNX_PushArgumentInt(data.iCustom14);
+    NWNX_PushArgumentInt(data.iCustom13);
+    NWNX_PushArgumentInt(data.iCustom12);
+    NWNX_PushArgumentInt(data.iCustom11);
+    NWNX_PushArgumentInt(data.iCustom10);
+    NWNX_PushArgumentInt(data.iCustom9);
+    NWNX_PushArgumentInt(data.iCustom8);
+    NWNX_PushArgumentInt(data.iCustom7);
+    NWNX_PushArgumentInt(data.iCustom6);
+    NWNX_PushArgumentInt(data.iCustom5);
+    NWNX_PushArgumentInt(data.iCustom4);
+    NWNX_PushArgumentInt(data.iCustom3);
+    NWNX_PushArgumentInt(data.iCustom2);
+    NWNX_PushArgumentInt(data.iCustom1);
     NWNX_PushArgumentInt(data.iBase);
     NWNX_PushArgumentInt(data.iSonic);
     NWNX_PushArgumentInt(data.iPositive);
@@ -202,6 +297,25 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iPositive         = NWNX_GetReturnValueInt();
     data.iSonic            = NWNX_GetReturnValueInt();
     data.iBase             = NWNX_GetReturnValueInt();
+    data.iCustom1          = NWNX_GetReturnValueInt();
+    data.iCustom2          = NWNX_GetReturnValueInt();
+    data.iCustom3          = NWNX_GetReturnValueInt();
+    data.iCustom4          = NWNX_GetReturnValueInt();
+    data.iCustom5          = NWNX_GetReturnValueInt();
+    data.iCustom6          = NWNX_GetReturnValueInt();
+    data.iCustom7          = NWNX_GetReturnValueInt();
+    data.iCustom8          = NWNX_GetReturnValueInt();
+    data.iCustom9          = NWNX_GetReturnValueInt();
+    data.iCustom10         = NWNX_GetReturnValueInt();
+    data.iCustom11         = NWNX_GetReturnValueInt();
+    data.iCustom12         = NWNX_GetReturnValueInt();
+    data.iCustom13         = NWNX_GetReturnValueInt();
+    data.iCustom14         = NWNX_GetReturnValueInt();
+    data.iCustom15         = NWNX_GetReturnValueInt();
+    data.iCustom16         = NWNX_GetReturnValueInt();
+    data.iCustom17         = NWNX_GetReturnValueInt();
+    data.iCustom18         = NWNX_GetReturnValueInt();
+    data.iCustom19         = NWNX_GetReturnValueInt();
     data.iAttackNumber     = NWNX_GetReturnValueInt();
     data.iAttackResult     = NWNX_GetReturnValueInt();
     data.iWeaponAttackType = NWNX_GetReturnValueInt();
@@ -219,6 +333,25 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
     string sFunc = "SetAttackEventData";
 
     NWNX_PushArgumentInt(data.iAttackResult);
+    NWNX_PushArgumentInt(data.iCustom19);
+    NWNX_PushArgumentInt(data.iCustom18);
+    NWNX_PushArgumentInt(data.iCustom17);
+    NWNX_PushArgumentInt(data.iCustom16);
+    NWNX_PushArgumentInt(data.iCustom15);
+    NWNX_PushArgumentInt(data.iCustom14);
+    NWNX_PushArgumentInt(data.iCustom13);
+    NWNX_PushArgumentInt(data.iCustom12);
+    NWNX_PushArgumentInt(data.iCustom11);
+    NWNX_PushArgumentInt(data.iCustom10);
+    NWNX_PushArgumentInt(data.iCustom9);
+    NWNX_PushArgumentInt(data.iCustom8);
+    NWNX_PushArgumentInt(data.iCustom7);
+    NWNX_PushArgumentInt(data.iCustom6);
+    NWNX_PushArgumentInt(data.iCustom5);
+    NWNX_PushArgumentInt(data.iCustom4);
+    NWNX_PushArgumentInt(data.iCustom3);
+    NWNX_PushArgumentInt(data.iCustom2);
+    NWNX_PushArgumentInt(data.iCustom1);
     NWNX_PushArgumentInt(data.iBase);
     NWNX_PushArgumentInt(data.iSonic);
     NWNX_PushArgumentInt(data.iPositive);
@@ -242,6 +375,26 @@ void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, 
 
     NWNX_PushArgumentInt(iRanged);
     NWNX_PushArgumentInt(data.iPower);
+    NWNX_PushArgumentInt(data.iCustom19);
+    NWNX_PushArgumentInt(data.iCustom18);
+    NWNX_PushArgumentInt(data.iCustom17);
+    NWNX_PushArgumentInt(data.iCustom16);
+    NWNX_PushArgumentInt(data.iCustom15);
+    NWNX_PushArgumentInt(data.iCustom14);
+    NWNX_PushArgumentInt(data.iCustom13);
+    NWNX_PushArgumentInt(data.iCustom12);
+    NWNX_PushArgumentInt(data.iCustom11);
+    NWNX_PushArgumentInt(data.iCustom10);
+    NWNX_PushArgumentInt(data.iCustom9);
+    NWNX_PushArgumentInt(data.iCustom8);
+    NWNX_PushArgumentInt(data.iCustom7);
+    NWNX_PushArgumentInt(data.iCustom6);
+    NWNX_PushArgumentInt(data.iCustom5);
+    NWNX_PushArgumentInt(data.iCustom4);
+    NWNX_PushArgumentInt(data.iCustom3);
+    NWNX_PushArgumentInt(data.iCustom2);
+    NWNX_PushArgumentInt(data.iCustom1);
+    NWNX_PushArgumentInt(0);// Padding for Base Damage
     NWNX_PushArgumentInt(data.iSonic);
     NWNX_PushArgumentInt(data.iPositive);
     NWNX_PushArgumentInt(data.iNegative);
