@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` to cache script chunks after first execution.
 - Optimizations: added `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME` to change the global client gameobject update time.
 - Optimizations: added `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME_LOADING` to change the client gameobject update time for players loading an area.
+- Optimizations: added `NWNX_OPTIMIZATIONS_UPDATE_LIST_COMPARISONS` which optimizes the visibility and vvf list comparisons.
 - Events: added skippable event `NWNX_ON_INPUT_DROP_ITEM_{BEFORE|AFTER}` which fires when a player attempts to drop an item.
 - Events: added skippable event `NWNX_ON_DECREMENT_SPELL_COUNT_{BEFORE|AFTER}` which fires when spell count (Memorized, non-memorized, or spell-like ability) decreases.
 - Events: added skippable event `NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_{BEFORE|AFTER}` which fires when the dm_visualeffect console command is used.
