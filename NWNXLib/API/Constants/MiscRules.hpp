@@ -143,9 +143,10 @@ namespace SavingThrowType
         Evil         = 17,
         Law          = 18,
         Chaos        = 19,
+        Paralysis    = 20,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 19;
+    constexpr int32_t MAX   = 20;
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -171,6 +172,7 @@ namespace SavingThrowType
             "Evil",
             "Law",
             "Chaos",
+            "Paralysis",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];

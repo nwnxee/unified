@@ -378,19 +378,17 @@ void CastOnHitSpell(CNWSCreature* pCaster, CNWSObject* pTarget, int32_t nSpellID
     Globals::AppManager()->m_pServerExoApp->GetServerAIMaster()->AddEventDeltaTime(0, 0, pCaster->m_idSelf, pCaster->m_idSelf, Constants::AIMasterEvent::ItemOnHitSpellImpact, (void*)pSpellScriptData);
 }
 
-void ApplyStateEffect(CNWSCreature* pEffectSource, CNWSObject* pTarget, int32_t nVfxEffect, int32_t nVfxDurationType, int32_t nState, float fDuration, int nEffectIntCount = 0, int nEffectInt1 = 0, int nEffectInt2 = 0)
+void ApplyStateEffect(CNWSCreature* pEffectSource, CNWSObject* pTarget, int32_t nVfxEffect, int32_t nVfxDurationType, int32_t nState, float fDuration, int nEffectInt = -1, BOOL bSupernatural = false)
 {
     auto *pOnHitEffect = new CGameEffect(true);
     pOnHitEffect->m_nType = Constants::EffectTrueType::SetState;
     pOnHitEffect->SetDurationType(Constants::EffectDurationType::Temporary);
     pOnHitEffect->m_fDuration = fDuration;
     pOnHitEffect->SetCreator(pEffectSource->m_idSelf);
-    pOnHitEffect->SetNumIntegers(nEffectIntCount + 1);
+    pOnHitEffect->SetNumIntegers(1 + (nEffectInt != -1));
     pOnHitEffect->SetInteger(0, nState);
-    if (nEffectIntCount > 0)
-        pOnHitEffect->SetInteger(1, nEffectInt1);
-    if (nEffectIntCount > 1)
-        pOnHitEffect->SetInteger(2, nEffectInt2);
+    if (nEffectInt != -1)
+        pOnHitEffect->SetInteger(1, nEffectInt);
 
     auto pCessate = new CGameEffect(true);
     pCessate->m_nType = Constants::EffectTrueType::VisualEffect;
@@ -415,15 +413,12 @@ void ApplyStateEffect(CNWSCreature* pEffectSource, CNWSObject* pTarget, int32_t 
 
     auto* pLink = LinkEffects(pOnHitEffect, pCessate);
     if (nVfxDurationType == Constants::EffectDurationType::Temporary)
-    {
         pLink = LinkEffects(pLink, pVis);
-        pTarget->ApplyEffect(pLink, false, true);
-    }
     else
-    {
-        pTarget->ApplyEffect(pLink, false, true);
         pTarget->ApplyEffect(pVis, false, true);
-    }
+
+    if (bSupernatural) pLink->SetSubType_Supernatural();
+    pTarget->ApplyEffect(pLink, false, true);
 }
 
 int32_t RollDamage(int32_t nNumDice, int32_t nDice, int32_t nCritMultiplier, BOOL bRollMaxDamage)
@@ -766,7 +761,7 @@ void ApplyOnHitSleep(CNWSCreature* pAttacker, CNWSCreature* pTarget, int32_t nTr
     if ((bDoesTrigger) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::MindSpells, pAttacker) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::Sleep, pAttacker))
     {
         if (!pTarget->SavingThrowRoll(Constants::SavingThrow::Will, nDC, Constants::SavingThrowType::MindSpells, pAttacker->m_idSelf))
-            ApplyStateEffect(pAttacker, pTarget, 94, Constants::EffectDurationType::Instant, 9, nDuration, 1, 1);
+            ApplyStateEffect(pAttacker, pTarget, 94, Constants::EffectDurationType::Instant, 9, nDuration, 1);
     }
 }
 
@@ -778,7 +773,7 @@ void ApplyOnHitStun(CNWSCreature* pAttacker, CNWSCreature* pTarget, int32_t nTri
     if ((bDoesTrigger) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::MindSpells, pAttacker) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::Stun, pAttacker))
     {
         if (!pTarget->SavingThrowRoll(Constants::SavingThrow::Will, nDC, Constants::SavingThrowType::MindSpells, pAttacker->m_idSelf))
-            ApplyStateEffect(pAttacker, pTarget, 208, Constants::EffectDurationType::Temporary, 6, nDuration, 1, 0); // CREATURE_STATE_HELD?, VFX_DUR_MIND_AFFECTING_DISABLED 
+            ApplyStateEffect(pAttacker, pTarget, 208, Constants::EffectDurationType::Temporary, 6, nDuration, 0); // CREATURE_STATE_HELD?, VFX_DUR_MIND_AFFECTING_DISABLED 
     }
 }
 
@@ -790,7 +785,7 @@ void ApplyOnHitHold(CNWSCreature* pAttacker, CNWSCreature* pTarget, int32_t nTri
     if ((bDoesTrigger) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::MindSpells, pAttacker) && !pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::Paralysis, pAttacker))
     {
         if (!pTarget->SavingThrowRoll(Constants::SavingThrow::Will, nDC, Constants::SavingThrowType::None, pAttacker->m_idSelf))
-            ApplyStateEffect(pAttacker, pTarget, 82, Constants::EffectDurationType::Temporary, 8, nDuration, 1, 0); // CREATURE_STATE_HELD, VFX_DUR_PARALYZE_HOLD
+            ApplyStateEffect(pAttacker, pTarget, 82, Constants::EffectDurationType::Temporary, 8, nDuration, 0); // CREATURE_STATE_HELD, VFX_DUR_PARALYZE_HOLD
     }
 }
 
@@ -1526,9 +1521,10 @@ NWNX_EXPORT ArgumentStack DealMeleeDamage(ArgumentStack&& args)
         {
             auto nAssassinLevel = pAttacker->m_pStats->GetNumLevelsOfClass(Constants::ClassType::Assassin);
             auto nDeathAttackDC = Globals::Rules()->GetRulesetIntEntry("DEATH_ATTACK_BASE_SAVE_DC", 10) + pAttacker->m_pStats->GetAbilityMod(Constants::Ability::Intelligence) + nAssassinLevel;
-            if ((!pTargetCreature->m_bCombatState) && (!pTargetCreature->SavingThrowRoll(Constants::SavingThrow::Will, nDeathAttackDC, Constants::SavingThrowType::None, pAttacker->m_idSelf)))
+            if ((!pTargetCreature->m_bCombatState) && (!pTargetCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::Paralysis, pAttacker)) && 
+                (!pTargetCreature->SavingThrowRoll(Constants::SavingThrow::Fortitude, nDeathAttackDC, Constants::SavingThrowType::Paralysis, pAttacker->m_idSelf)))
             {
-                ApplyStateEffect(pAttacker, pTarget, 82, Constants::EffectDurationType::Temporary, 8, nAssassinLevel * 6.0f, 1, 1);
+                ApplyStateEffect(pAttacker, pTarget, 82, Constants::EffectDurationType::Temporary, 8, nAssassinLevel * 6.0f, 1, true);
             }
         }
 
