@@ -51,6 +51,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Feat: LoadFeatModifiers()
 - Object: SetConversationPrivate()
 - Object: {Get|Set}AoEObjectRadius()
+- Object: GetLastSpellCastSpontaneous()
+- Object: GetLastSpellCastDomainLevel()
 - Player: UpdateWind();
 - Player: UpdateSkyBox();
 - Player: UpdateFogColor();

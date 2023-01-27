@@ -1073,3 +1073,23 @@ NWNX_EXPORT ArgumentStack GetAoEObjectRadius(ArgumentStack&& args)
 
     return 0.0f;
 }
+
+NWNX_EXPORT ArgumentStack GetLastSpellCastSpontaneous(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        return pObject->m_bLastSpellCastSpontaneous;
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetLastSpellCastDomainLevel(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        return pObject->m_nLastDomainLevel;
+    }
+
+    return 0;
+}
