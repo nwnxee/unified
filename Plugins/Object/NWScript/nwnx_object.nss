@@ -412,7 +412,7 @@ int NWNX_Object_GetLastSpellCastSpontaneous(object oObject);
 /// @note Should be called in a spell script.
 /// @param oObject The object.
 /// @return Domain level of the cast spell, 0 if not a domain spell
-int NWNX_Object_GetLastSpellDomainLevel(object oObject);
+int NWNX_Object_GetLastSpellCastDomainLevel(object oObject);
 
 /// @}
 
@@ -1025,9 +1025,9 @@ int NWNX_Object_GetLastSpellCastSpontaneous(object oObject)
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Object_GetLastSpellDomainLevel(object oObject)
+int NWNX_Object_GetLastSpellCastDomainLevel(object oObject)
 {
-    string sFunc = "GetLastSpellDomainLevel";
+    string sFunc = "GetLastSpellCastDomainLevel";
 
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);

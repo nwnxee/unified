@@ -1084,7 +1084,7 @@ NWNX_EXPORT ArgumentStack GetLastSpellCastSpontaneous(ArgumentStack&& args)
     return 0;
 }
 
-NWNX_EXPORT ArgumentStack GetLastSpellDomainLevel(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetLastSpellCastDomainLevel(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))
     {
