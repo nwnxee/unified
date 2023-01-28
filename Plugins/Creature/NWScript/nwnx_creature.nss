@@ -1071,30 +1071,23 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
 /// @return TRUE if oCreature is flanking oTargetCreature.
 int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature);
 
-/// @brief Get the remaining spell slots for a specific class and spell level
-/// @param oCreature The creature object.
-/// @param nClass A class index from classes.2da to specify the caster class
-/// @param nSpellLevel The spell level for which the remaining spell slots should be returned
-/// @return The remaining spells slots for nSpellLevel
-int NWNX_Creature_GetSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel);
+/// @brief Decrements the remaining spell slots (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
-/// @brief Decrements the remaining spell slots for a specific class and spell level
-/// @param oCreature The creature object.
-/// @param nClass A class index from classes.2da to specify the caster class
-/// @param nSpellLevel The spell level for which the remaining spell slots should be decremented
-void NWNX_Creature_DecrementSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel);
+/// @brief Increments the remaining spell slots (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
-/// @brief Increments the remaining spell slots for a specific class and spell level
-/// @param oCreature The creature object.
-/// @param nClass A class index from classes.2da to specify the caster class
-/// @param nSpellLevel The spell level for which the remaining spell slots should be incremented
-void NWNX_Creature_IncrementSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel);
-
-/// @brief Resets the remaining spell slots for a specific class and spell level
-/// @param oCreature The creature object.
-/// @param nClass A class index from classes.2da to specify the caster class
-/// @param nSpellLevel The spell level for which the remaining spell slots should be reset
-void NWNX_Creature_ResetSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel);
+/// @brief Resets the remaining spell slots (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+void NWNX_Creature_ResetRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
 /// @}
 
@@ -2752,22 +2745,9 @@ int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Creature_GetSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel)
+void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
 {
-    string sFunc = "GetSpellsPerDayLeft";
-
-    NWNX_PushArgumentInt(nSpellLevel);
-    NWNX_PushArgumentInt(nClass);
-    NWNX_PushArgumentObject(oCreature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-
-    return NWNX_GetReturnValueInt();
-}
-
-void NWNX_Creature_DecrementSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel)
-{
-    string sFunc = "DecrementSpellsPerDayLeft";
+    string sFunc = "DecrementRemainingSpellSlots";
 
     NWNX_PushArgumentInt(nSpellLevel);
     NWNX_PushArgumentInt(nClass);
@@ -2776,9 +2756,9 @@ void NWNX_Creature_DecrementSpellsPerDayLeft(object oCreature, int nClass, int n
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_IncrementSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel)
+void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
 {
-    string sFunc = "IncrementSpellsPerDayLeft";
+    string sFunc = "IncrementRemainingSpellSlots";
 
     NWNX_PushArgumentInt(nSpellLevel);
     NWNX_PushArgumentInt(nClass);
@@ -2787,9 +2767,9 @@ void NWNX_Creature_IncrementSpellsPerDayLeft(object oCreature, int nClass, int n
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_ResetSpellsPerDayLeft(object oCreature, int nClass, int nSpellLevel)
+void NWNX_Creature_ResetRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
 {
-    string sFunc = "ResetSpellsPerDayLeft";
+    string sFunc = "ResetRemainingSpellSlots";
 
     NWNX_PushArgumentInt(nSpellLevel);
     NWNX_PushArgumentInt(nClass);
