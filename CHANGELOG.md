@@ -43,10 +43,9 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Creature: GetSpellUsesLeft()
 - Creature: GetMemorizedSpellReadyCount()
 - Creature: GetIsFlanking()
-- Creature: NWNX_Creature_GetSpellsPerDayLeft()
-- Creature: NWNX_Creature_DecrementSpellsPerDayLeft()
-- Creature: NWNX_Creature_IncrementSpellsPerDayLeft()
-- Creature: NWNX_Creature_ResetSpellsPerDayLeft()
+- Creature: DecrementRemainingSpellSlots()
+- Creature: IncrementRemainingSpellSlots()
+- Creature: ResetRemainingSpellSlots()
 - Effect: AccessorizeVisualEffect()
 - Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()
@@ -87,6 +86,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: Fixed a crash when skipping `NWNX_ON_CLIENT_CONNECT_BEFORE`
 - Tweaks: Fixed an issue where lobby PC list viewers would see new characters logged in when those names should be suppressed
 - Tweaks: Classes are not hidden from DMs when using `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`
+- Creature: Fixed assertions preventing custom races/feats/classes to be used with certain functions
+- Creature: Unhardcoded functions accessing multiclass data to be able to access more than 3 classes
 
 ## 8193.34
 https://github.com/nwnxee/unified/compare/build8193.33...build8193.34
