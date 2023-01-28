@@ -50,8 +50,12 @@ static void ReconcileAutoMapData(CNWSCreature* pThis)
 {
     uint64_t seq = (uint64_t)s_SeqTable.Get(pThis->m_idSelf);
     if (seq != s_AreaListSeq)
-    {
-        s_ReconcileAutoMapData->CallOriginal<void>(pThis);
+    {   
+        if (seq > 0)
+        {
+            // We only need to reconcile if there's an area list update after we have been initialized.
+            s_ReconcileAutoMapData->CallOriginal<void>(pThis);
+        }
         s_SeqTable.Add(pThis->m_idSelf, (void*) s_AreaListSeq);
     }
 }
