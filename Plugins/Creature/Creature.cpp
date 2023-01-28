@@ -3441,3 +3441,53 @@ NWNX_EXPORT ArgumentStack GetIsFlanking(ArgumentStack&& args)
 
     return false;
 }
+
+NWNX_EXPORT ArgumentStack DecrementRemainingSpellSlots(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+
+        auto nSpellLevel = args.extract<int32_t>();
+        ASSERT_OR_THROW(nSpellLevel >= 0);
+        ASSERT_OR_THROW(nSpellLevel < 10);
+
+        for (int i=0; i < pCreature->m_pStats->m_nNumMultiClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->DecrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack IncrementRemainingSpellSlots(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+
+        auto nSpellLevel = args.extract<int32_t>();
+        ASSERT_OR_THROW(nSpellLevel >= 0);
+        ASSERT_OR_THROW(nSpellLevel < 10);
+
+        for (int i=0; i < pCreature->m_pStats->m_nNumMultiClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->IncrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}

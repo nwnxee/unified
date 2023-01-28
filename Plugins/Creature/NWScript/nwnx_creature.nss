@@ -1071,6 +1071,18 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
 /// @return TRUE if oCreature is flanking oTargetCreature.
 int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature);
 
+/// @brief Decrements the remaining spell slots (innate casting) at a class level.
+/// @param oCreature The creature object.
+/// @param nClass The class id from classes.2da. (Not class index 0-2)
+/// @param nSpellLevel The spell level.
+void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
+
+/// @brief Increments the remaining spell slots (innate casting) at a class level.
+/// @param oCreature The creature object.
+/// @param nClass The class id from classes.2da. (Not class index 0-2)
+/// @param nSpellLevel The spell level.
+void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2725,4 +2737,26 @@ int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
+{
+    string sFunc = "DecrementRemainingSpellSlots";
+
+    NWNX_PushArgumentInt(nSpellLevel);
+    NWNX_PushArgumentInt(nClass);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
+{
+    string sFunc = "IncrementRemainingSpellSlots";
+
+    NWNX_PushArgumentInt(nSpellLevel);
+    NWNX_PushArgumentInt(nClass);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
