@@ -43,6 +43,8 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Creature: GetSpellUsesLeft()
 - Creature: GetMemorizedSpellReadyCount()
 - Creature: GetIsFlanking()
+- Creature: DecrementRemainingSpellSlots()
+- Creature: IncrementRemainingSpellSlots()
 - Effect: AccessorizeVisualEffect()
 - Encounter: Destroy()
 - Events: SubscribeEventScriptChunk()

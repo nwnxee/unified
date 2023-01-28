@@ -2726,3 +2726,25 @@ int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt();
 }
+
+void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
+{
+    string sFunc = "DecrementRemainingSpellSlots";
+
+    NWNX_PushArgumentInt(nSpellLevel);
+    NWNX_PushArgumentInt(nClass);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel)
+{
+    string sFunc = "IncrementRemainingSpellSlots";
+
+    NWNX_PushArgumentInt(nSpellLevel);
+    NWNX_PushArgumentInt(nClass);
+    NWNX_PushArgumentObject(oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
