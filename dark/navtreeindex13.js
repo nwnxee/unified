@@ -1,5 +1,9 @@
 var NAVTREEINDEX13 =
 {
+"structNWNX__Tileset__CustomTileData.html":[0,41,6],
+"structNWNX__Tileset__CustomTileData.html#a031372788579109aea15190cc9f669e1":[0,41,6,3],
+"structNWNX__Tileset__CustomTileData.html#a03d7816f7820a8a5ce99e487c490da55":[0,41,6,2],
+"structNWNX__Tileset__CustomTileData.html#a1aed6d385d1dabe3ebd93d34db2b471b":[0,41,6,4],
 "structNWNX__Tileset__CustomTileData.html#a1bee0e1c334d3b979be6aca7649c7151":[0,41,6,0],
 "structNWNX__Tileset__CustomTileData.html#a30505568a8b8de5ae31632768738ff65":[0,41,6,1],
 "structNWNX__Tileset__CustomTileData.html#a72f43f39bfe435c2271885f34db1478d":[0,41,6,9],

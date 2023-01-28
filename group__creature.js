@@ -166,6 +166,8 @@ var group__creature =
     [ "NWNX_Creature_GetSpellUsesLeft", "group__creature.html#ga3ac4b6f5bc75b039929e16b19b7217a1", null ],
     [ "NWNX_Creature_GetMemorizedSpellReadyCount", "group__creature.html#ga4eeecc7b0fa9bf3409aafdb8af07221a", null ],
     [ "NWNX_Creature_GetIsFlanking", "group__creature.html#ga47d27b45ce4950faafd4954a3fa02eed", null ],
+    [ "NWNX_Creature_DecrementRemainingSpellSlots", "group__creature.html#ga7674718206327542a5d3c5c601354481", null ],
+    [ "NWNX_Creature_IncrementRemainingSpellSlots", "group__creature.html#gac11415b7ba623c6ee2c8690463799f5d", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
