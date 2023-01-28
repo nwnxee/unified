@@ -1072,21 +1072,21 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
 int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature);
 
 /// @brief Decrements the remaining spell slots (innate casting) at a class level.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
+/// @param oCreature The creature object.
+/// @param nClass The class id from classes.2da. (Not class index 0-2)
+/// @param nSpellLevel The spell level.
 void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
 /// @brief Increments the remaining spell slots (innate casting) at a class level.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
+/// @param oCreature The creature object.
+/// @param nClass The class id from classes.2da. (Not class index 0-2)
+/// @param nSpellLevel The spell level.
 void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
 /// @brief Resets the remaining spell slots (innate casting) at a class level.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
+/// @param oCreature The creature object.
+/// @param nClass The class id from classes.2da. (Not class index 0-2)
+/// @param nSpellLevel The spell level.
 void NWNX_Creature_ResetRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
 /// @}
