@@ -59,7 +59,7 @@ NWNX_EXPORT ArgumentStack AddFeat(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
         pCreature->m_pStats->AddFeat(static_cast<uint16_t>(feat));
     }
@@ -73,7 +73,7 @@ NWNX_EXPORT ArgumentStack AddFeatByLevel(ArgumentStack&& args)
     {
         const auto feat  = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
           ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
@@ -95,7 +95,7 @@ NWNX_EXPORT ArgumentStack RemoveFeat(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
         pCreature->m_pStats->RemoveFeat(static_cast<uint16_t>(feat));
 
@@ -109,7 +109,7 @@ NWNX_EXPORT ArgumentStack RemoveFeatByLevel(ArgumentStack&& args)
     {
         const auto feat  = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
           ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
@@ -130,7 +130,7 @@ NWNX_EXPORT ArgumentStack GetKnowsFeat(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
         return pCreature->m_pStats->HasFeat(static_cast<uint16_t>(feat));
     }
@@ -182,7 +182,7 @@ NWNX_EXPORT ArgumentStack GetFeatGrantLevel(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
         ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-        ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+        ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto uFeat = static_cast<uint16_t>(feat);
 
         for (int32_t i = 0; i < pCreature->m_pStats->GetLevel(); i++)
@@ -229,7 +229,7 @@ NWNX_EXPORT ArgumentStack GetMeetsFeatRequirements(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         CExoArrayList<uint16_t> unused = {};
 
         return pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat), &unused);
@@ -524,7 +524,7 @@ NWNX_EXPORT ArgumentStack GetMemorisedSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -558,7 +558,7 @@ NWNX_EXPORT ArgumentStack GetMemorisedSpellCountByLevel(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -579,7 +579,7 @@ NWNX_EXPORT ArgumentStack SetMemorisedSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -620,7 +620,7 @@ NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -641,7 +641,7 @@ NWNX_EXPORT ArgumentStack SetRemainingSpellSlots(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -668,7 +668,7 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -689,7 +689,7 @@ NWNX_EXPORT ArgumentStack GetKnownSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -713,7 +713,7 @@ NWNX_EXPORT ArgumentStack GetKnownSpellCount(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -734,7 +734,7 @@ NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -760,7 +760,7 @@ NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -786,7 +786,7 @@ NWNX_EXPORT ArgumentStack ClearMemorisedKnownSpells(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto id      = args.extract<int32_t>();
           ASSERT_OR_THROW(id >= 0);
 
@@ -809,7 +809,7 @@ NWNX_EXPORT ArgumentStack ClearMemorisedSpell(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto level   = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
@@ -987,7 +987,7 @@ NWNX_EXPORT ArgumentStack SetDomain(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto index = args.extract<int32_t>();
           ASSERT_OR_THROW(index >= 1);
           ASSERT_OR_THROW(index <= 2);
@@ -1017,7 +1017,7 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
     {
         const auto classId = args.extract<int32_t>();
           ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto school = args.extract<int32_t>();
           ASSERT_OR_THROW(school <= 255);
           ASSERT_OR_THROW(school >= 0);
@@ -1065,7 +1065,7 @@ NWNX_EXPORT ArgumentStack SetSkillRank(ArgumentStack&& args)
         const auto skill = args.extract<int32_t>();
         const auto rank = args.extract<int32_t>();
           ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
-          ASSERT_OR_THROW(skill < Globals::Rules()->m_nNumSkills);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
           ASSERT_OR_THROW(rank >= -127);
           ASSERT_OR_THROW(rank <= 128);
 
@@ -1081,7 +1081,7 @@ NWNX_EXPORT ArgumentStack GetSkillRankByLevel(ArgumentStack&& args)
         const auto skill = args.extract<int32_t>();
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
-          ASSERT_OR_THROW(skill < Globals::Rules()->m_nNumSkills);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
           ASSERT_OR_THROW(level >= 1);
           ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
@@ -1103,7 +1103,7 @@ NWNX_EXPORT ArgumentStack SetSkillRankByLevel(ArgumentStack&& args)
         const auto rank = args.extract<int32_t>();
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(skill >= Constants::Skill::MIN);
-          ASSERT_OR_THROW(skill < Globals::Rules()->m_nNumSkills);
+          ASSERT_OR_THROW(skill <= Constants::Skill::MAX);
           ASSERT_OR_THROW(rank >= -127);
           ASSERT_OR_THROW(rank <= 128);
           ASSERT_OR_THROW(level >= 1);
@@ -1129,7 +1129,7 @@ NWNX_EXPORT ArgumentStack SetClassByPosition(ArgumentStack&& args)
           ASSERT_OR_THROW(position >= 0);
           ASSERT_OR_THROW(position <= 2);
           ASSERT_OR_THROW(classID >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classID < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(classID <= Constants::ClassType::MAX);
 
         // Save the old class id, then replace it with the new one
         const auto classIDold = pCreature->m_pStats->GetClass(position);
@@ -1327,7 +1327,7 @@ NWNX_EXPORT ArgumentStack SetRacialType(ArgumentStack&& args)
     {
         const auto race = args.extract<int32_t>();
           ASSERT_OR_THROW(race >= Constants::RacialType::MIN);
-          ASSERT_OR_THROW(race < Globals::Rules()->m_nNumRaces);
+          ASSERT_OR_THROW(race <= Constants::RacialType::MAX);
 
         pCreature->m_pStats->m_nRace = static_cast<uint16_t>(race);
     }
@@ -1619,7 +1619,7 @@ NWNX_EXPORT ArgumentStack GetHighestLevelOfFeat(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         return pCreature->m_pStats->GetHighestLevelOfFeat(feat);
     }
     return -1;
@@ -1631,7 +1631,7 @@ NWNX_EXPORT ArgumentStack GetFeatRemainingUses(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         return pCreature->m_pStats->GetFeatRemainingUses(feat);
     }
     return -1;
@@ -1643,7 +1643,7 @@ NWNX_EXPORT ArgumentStack GetFeatTotalUses(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         return pCreature->m_pStats->GetFeatTotalUses(feat);
     }
     return -1;
@@ -1655,7 +1655,7 @@ NWNX_EXPORT ArgumentStack SetFeatRemainingUses(ArgumentStack&& args)
     {
         const auto feat = args.extract<int32_t>();
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
-          ASSERT_OR_THROW(feat < Globals::Rules()->m_nNumFeats);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto uses = args.extract<int32_t>();
           ASSERT_OR_THROW(uses >= 0);
           ASSERT_OR_THROW(uses <= 255);
@@ -1997,7 +1997,7 @@ NWNX_EXPORT ArgumentStack SetCasterLevelModifier(ArgumentStack&& args)
     {
         const auto nClass = args.extract<int32_t>();
         ASSERT_OR_THROW(nClass >= 0);
-        ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nModifier = args.extract<int32_t>();
         const bool bPersist = !!args.extract<int32_t>();
 
@@ -2018,7 +2018,7 @@ NWNX_EXPORT ArgumentStack GetCasterLevelModifier(ArgumentStack&& args)
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
-          ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         return pCreature->nwnxGet<int>("CASTERLEVEL_MODIFIER" + std::to_string(nClass)).value_or(0);
     }
 
@@ -2034,7 +2034,7 @@ NWNX_EXPORT ArgumentStack SetCasterLevelOverride(ArgumentStack&& args)
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
-          ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nLevel = args.extract<int32_t>();
         const bool bPersist = !!args.extract<int32_t>();
 
@@ -2055,7 +2055,7 @@ NWNX_EXPORT ArgumentStack GetCasterLevelOverride(ArgumentStack&& args)
     {
         const auto nClass = args.extract<int32_t>();
           ASSERT_OR_THROW(nClass >= 0);
-          ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+          ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         return pCreature->nwnxGet<int>("CASTERLEVEL_OVERRIDE" + std::to_string(nClass)).value_or(-1);
     }
 
@@ -3446,7 +3446,7 @@ NWNX_EXPORT ArgumentStack DecrementRemainingSpellSlots(ArgumentStack&& args)
     {
         auto nClass = args.extract<int32_t>();
         ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
-        ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
 
         auto nSpellLevel = args.extract<int32_t>();
         ASSERT_OR_THROW(nSpellLevel >= 0);
@@ -3471,7 +3471,7 @@ NWNX_EXPORT ArgumentStack IncrementRemainingSpellSlots(ArgumentStack&& args)
     {
         auto nClass = args.extract<int32_t>();
         ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
-        ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
 
         auto nSpellLevel = args.extract<int32_t>();
         ASSERT_OR_THROW(nSpellLevel >= 0);
@@ -3496,7 +3496,7 @@ NWNX_EXPORT ArgumentStack ResetRemainingSpellSlots(ArgumentStack&& args)
     {
         auto nClass = args.extract<int32_t>();
         ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
-        ASSERT_OR_THROW(nClass < Globals::Rules()->m_nNumClasses);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
 
         auto nSpellLevel = args.extract<int32_t>();
         ASSERT_OR_THROW(nSpellLevel >= 0);
