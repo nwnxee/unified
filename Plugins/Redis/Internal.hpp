@@ -10,12 +10,12 @@ namespace Redis
 {
 
 struct Internal {
-    Internal(Pool<cpp_redis::redis_client>::MakeFunc m) :
+    Internal(NWNXLib::Pool<cpp_redis::redis_client>::MakeFunc m) :
         m_redis_pool(m) {}
 
     // Connection pool for redis, used both for nwscript and for
     // external consumers (like other Plugins).
-    Pool<cpp_redis::redis_client> m_redis_pool;
+    NWNXLib::Pool<cpp_redis::redis_client> m_redis_pool;
 
     // The pubsub connection.
     cpp_redis::redis_subscriber m_connection_pubsub;

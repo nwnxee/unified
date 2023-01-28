@@ -4,6 +4,11 @@
 #include <set>
 #include <thread>
 #include <mutex>
+#include <functional>
+
+#include "nwnx.hpp"
+
+namespace NWNXLib {
 
 // This is a generic pool you can use to manage opaque objects.
 // It can be used, for example, to do database connection management, but is
@@ -119,4 +124,6 @@ private:
     MakeFunc m_make;
     size_t m_min;
     size_t m_max;
+};
+
 };
