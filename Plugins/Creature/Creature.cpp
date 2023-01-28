@@ -3441,3 +3441,84 @@ NWNX_EXPORT ArgumentStack GetIsFlanking(ArgumentStack&& args)
 
     return false;
 }
+
+NWNX_EXPORT ArgumentStack GetSpellsPerDayLeft(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        auto nSpellLevel = args.extract<int32_t>();
+
+        int nMaxClasses = std::size(pCreature->m_pStats->m_ClassInfo);
+        for (int i=0; i < nMaxClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+                return pCreature->m_pStats->GetSpellsPerDayLeft(i, nSpellLevel);
+        }
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack DecrementSpellsPerDayLeft(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        auto nSpellLevel = args.extract<int32_t>();
+
+        int nMaxClasses = std::size(pCreature->m_pStats->m_ClassInfo);
+        for (int i=0; i < nMaxClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->DecrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack IncrementSpellsPerDayLeft(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        auto nSpellLevel = args.extract<int32_t>();
+
+        int nMaxClasses = std::size(pCreature->m_pStats->m_ClassInfo);
+        for (int i=0; i < nMaxClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->IncrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack ResetSpellsPerDayLeft(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        auto nSpellLevel = args.extract<int32_t>();
+
+        int nMaxClasses = std::size(pCreature->m_pStats->m_ClassInfo);
+        for (int i=0; i < nMaxClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->ResetSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
