@@ -73,7 +73,7 @@ ObjectEventHandlers::ObjectEventHandlers(NWNXLib::Services::MetricsProxy* metric
         void, CNWSStore*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(
-        EventHandlerTrigger, &CNWSTrigger::EventHandler,
+        EventHandlerTrigger, API::Functions::_ZN11CNWSTrigger12EventHandlerEjjPvjj,
         void, CNWSTrigger*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(

@@ -7,3 +7,7 @@ NWNXLIB_FUNCTION(_ZN16CGameObjectArrayC1Ei)
 NWNXLIB_FUNCTION(_ZN10CNWSPlayerD0Ev)
 NWNXLIB_FUNCTION(_ZN10CNWSPlayerD1Ev)
 NWNXLIB_FUNCTION(_ZN10CNWSModule15LoadModuleStartE10CExoStringiiRKN6NWSync13AdvertisementE)
+// TODO: figure out why &CNWSTrigger::EventHandler and &CNWSTrigger::AIUpdate return weird addresses (0x101 and 0xf1) that can't be hooked
+NWNXLIB_FUNCTION(_ZN11CNWSTrigger12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN11CNWSTrigger8AIUpdateEv)
+// ***
