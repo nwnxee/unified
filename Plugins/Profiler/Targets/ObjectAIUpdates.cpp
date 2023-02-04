@@ -73,7 +73,7 @@ ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::MetricsProxy* metrics)
         void, CNWSStore*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateTrigger, &CNWSTrigger::AIUpdate,
+        AIUpdateTrigger, API::Functions::_ZN11CNWSTrigger8AIUpdateEv,
         void, CNWSTrigger*);
 
     DEFINE_PROFILER_TARGET_FAST(
