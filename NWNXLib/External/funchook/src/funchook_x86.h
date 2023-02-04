@@ -28,48 +28,40 @@
  * You should have received a copy of the GNU General Public License
  * along with Funchook. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef OS_FUNC_H
-#define OS_FUNC_H 1
-#include <stdarg.h>
+#ifndef FUNCHOOK_X86_H
+#define FUNCHOOK_X86_H 1
 
-/* os_func.c */
-char *funchook_strlcpy(char *dest, const char *src, size_t n);
-int funchook_snprintf(char *str, size_t size, const char *format, ...);
-int funchook_vsnprintf(char *str, size_t size, const char *format, va_list ap);
+#define MAX_INSN_LEN 16
+#define MAX_INSN_CHECK_SIZE 256
 
-#undef strlcpy
-#define strlcpy funchook_strlcpy
-#undef snprintf
-#define snprintf funchook_snprintf
-#undef vsnprintf
-#define vsnprintf funchook_vsnprintf
-
-#ifdef WIN32
-/* os_func_windows.c */
-/* no function for now */
-#else
-#include <sys/types.h>
-/* os_func_unix.c */
-extern int funchook_os_errno;
-long funchook_os_syscall(long, ...);
-int funchook_os_open(const char *pathname, int flags, ...);
-int funchook_os_close(int fd);
-ssize_t funchook_os_read(int fd, void *buf, size_t count);
-ssize_t funchook_os_write(int fd, const void *buf, size_t count);
-void *funchook_os_mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
-int funchook_os_munmap(void *addr, size_t length);
-int funchook_os_mprotect(void *addr, size_t len, int prot);
-
-#undef errno
-#define errno funchook_os_errno
-#define syscall funchook_os_syscall
-#define open funchook_os_open
-#define close funchook_os_close
-#define read funchook_os_read
-#define write funchook_os_write
-#define mmap funchook_os_mmap
-#define munmap funchook_os_munmap
-#define mprotect funchook_os_mprotect
+#define JUMP32_SIZE 5
+#ifdef CPU_X86_64
+#define JUMP64_SIZE 14
 #endif
 
-#endif /* OS_FUNC_H */
+#define TRAMPOLINE_SIZE (JUMP32_SIZE + (MAX_INSN_LEN - 1) + JUMP32_SIZE)
+
+typedef uint8_t insn_t;
+
+typedef struct funchook_entry {
+    void *target_func;
+    void *hook_func;
+    uint8_t trampoline[TRAMPOLINE_SIZE];
+    uint8_t old_code[JUMP32_SIZE];
+    uint8_t new_code[JUMP32_SIZE];
+#ifdef CPU_X86_64
+    uint8_t transit[JUMP64_SIZE];
+#endif
+} funchook_entry_t;
+
+typedef struct {
+    const insn_t *dst_addr;
+    intptr_t src_addr_offset;
+    intptr_t pos_offset;
+} ip_displacement_entry_t;
+
+typedef struct {
+    ip_displacement_entry_t disp[2];
+} ip_displacement_t;
+
+#endif
