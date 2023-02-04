@@ -7,7 +7,34 @@ NWNXLIB_FUNCTION(_ZN16CGameObjectArrayC1Ei)
 NWNXLIB_FUNCTION(_ZN10CNWSPlayerD0Ev)
 NWNXLIB_FUNCTION(_ZN10CNWSPlayerD1Ev)
 NWNXLIB_FUNCTION(_ZN10CNWSModule15LoadModuleStartE10CExoStringiiRKN6NWSync13AdvertisementE)
-// TODO: figure out why &CNWSTrigger::EventHandler and &CNWSTrigger::AIUpdate return weird addresses (0x101 and 0xf1) that can't be hooked
+
+// Hooking functions that override a virtual functions doesn't work with the new &Class::Function way...
+// .. so we need these!
 NWNXLIB_FUNCTION(_ZN11CNWSTrigger12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN12CNWSCreature12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN12CNWSWaypoint12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN13CNWSEncounter12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN13CNWSPlaceable12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN14CNWSPlayerTURD12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN15CNWSSoundObject12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN22CNWSAreaOfEffectObject12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN8CNWSDoor12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN8CNWSItem12EventHandlerEjjPvjj)
+NWNXLIB_FUNCTION(_ZN9CNWSStore12EventHandlerEjjPvjj)
+
 NWNXLIB_FUNCTION(_ZN11CNWSTrigger8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN12CNWSCreature8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN12CNWSWaypoint8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN13CNWSEncounter8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN13CNWSPlaceable8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN14CNWSPlayerTURD8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN15CNWSSoundObject8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN22CNWSAreaOfEffectObject8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN8CNWSDoor8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN8CNWSItem8AIUpdateEv)
+NWNXLIB_FUNCTION(_ZN9CNWSStore8AIUpdateEv)
+
+NWNXLIB_FUNCTION(_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti)
+NWNXLIB_FUNCTION(_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect)
+
 // ***
