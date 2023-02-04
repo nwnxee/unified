@@ -28,25 +28,26 @@
  * along with Funchook. If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef FUNCHOOK_H
-#define FUNCHOOK_H
+#define FUNCHOOK_H 1
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Only functions with FUNCHOOK_EXPORT are visible from outside of funchook.dll
  * or libfunchook.so. Others are invisible.
  */
-#ifdef WIN32
 #ifdef FUNCHOOK_EXPORTS
+#if defined(WIN32)
 #define FUNCHOOK_EXPORT __declspec(dllexport)
-#else /* FUNCHOOK_EXPORTS */
-#define FUNCHOOK_EXPORT __declspec(dllimport)
-#endif /* FUNCHOOK_EXPORTS */
 #elif defined(__GNUC__)
 #define FUNCHOOK_EXPORT __attribute__((visibility("default")))
-#else
+#endif
+#endif /* FUNCHOOK_EXPORTS */
+#ifndef FUNCHOOK_EXPORT
 #define FUNCHOOK_EXPORT
-#endif /* WIN32 */
+#endif
 
 typedef struct funchook funchook_t;
 
@@ -62,6 +63,7 @@ typedef struct funchook funchook_t;
 #define FUNCHOOK_ERROR_MEMORY_ALLOCATION       8 /* memory allocation error */
 #define FUNCHOOK_ERROR_MEMORY_FUNCTION         9 /* other memory function errors */
 #define FUNCHOOK_ERROR_NOT_INSTALLED          10
+#define FUNCHOOK_ERROR_NO_AVAILABLE_REGISTERS 11
 
 /**
  * Create a funchook handle
@@ -121,5 +123,9 @@ FUNCHOOK_EXPORT const char *funchook_error_message(const funchook_t *funchook);
  * @return             error code. one of FUNCHOOK_ERROR_*.
  */
 FUNCHOOK_EXPORT int funchook_set_debug_file(const char *name);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
