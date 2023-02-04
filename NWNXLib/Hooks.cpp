@@ -4,9 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-extern "C" {
-    #include "External/funchook/include/funchook.h"
-}
+#include "External/funchook/include/funchook.h"
 
 using namespace NWNXLib;
 namespace NWNXLib::Hooks
@@ -38,7 +36,7 @@ FunctionHook::FunctionHook(void* originalFunction, void* newFunction, int32_t or
     }
 
     v.insert(v.begin() + insert, this);
-    
+
     for (int32_t i = insert; i < (int32_t)v.size(); i++)
     {
         v[i]->m_trampoline = (void*)originalFunction;
