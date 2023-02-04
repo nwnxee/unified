@@ -20,12 +20,12 @@ void EffectEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", []() {
         s_OnEffectAppliedHook = Hooks::HookFunction(
-                &CNWSEffectListHandler::OnEffectApplied,
+                Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
                 &OnEffectAppliedHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", []() {
         s_OnEffectRemovedHook = Hooks::HookFunction(
-                &CNWSEffectListHandler::OnEffectRemoved,
+                Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
                 &OnEffectRemovedHook, Hooks::Order::Earliest);
     });
 }
