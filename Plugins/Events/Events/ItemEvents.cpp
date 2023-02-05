@@ -94,7 +94,7 @@ void ItemEvents()
     });
 
     InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", []() {
-        s_ItemEventHandlerHook = Hooks::HookFunction(&CNWSItem::EventHandler,
+        s_ItemEventHandlerHook = Hooks::HookFunction(Functions::_ZN8CNWSItem12EventHandlerEjjPvjj,
                                               &ItemEventHandlerHook, Hooks::Order::Early);
     });
 
