@@ -49,3 +49,5 @@ target_link_libraries(NWNXLib ${CMAKE_DL_LIBS})
 
 # For hooks -- pulled in from External.
 target_link_libraries(NWNXLib funchook-static)
+
+target_link_libraries(NWNXLib sqlite3)
