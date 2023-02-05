@@ -48,7 +48,7 @@ void SpellEvents()
     });
 
     InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", []() {
-        s_OnEffectAppliedHook = Hooks::HookFunction(&CNWSEffectListHandler::OnEffectApplied,
+        s_OnEffectAppliedHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti,
                                              &OnEffectAppliedHook, Hooks::Order::Earliest);
     });
 
