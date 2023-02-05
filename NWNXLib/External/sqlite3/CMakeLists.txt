@@ -1,0 +1,16 @@
+project(Sqlite3)
+
+add_definitions(-DSQLITE_DEFAULT_AUTOVACUUM=1)
+add_definitions(-DSQLITE_DQS=0 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_OMIT_DEPRECATED)
+add_definitions(-DSQLITE_THREADSAFE=1)
+add_definitions(-DSQLITE_ENABLE_NULL_TRIM)
+add_definitions(-DSQLITE_ENABLE_API_ARMOR)
+add_definitions(-DSQLITE_ENABLE_COLUMN_METADATA)
+add_definitions(-DSQLITE_ENABLE_NORMALIZE)
+add_definitions(-DSQLITE_SOUNDEX)
+add_definitions(-DSQLITE_ENABLE_MATH_FUNCTIONS)
+add_definitions(-DSQLITE_ENABLE_JSON1)
+
+include_directories(include)
+add_library(sqlite3 STATIC sqlite3.c)
+target_include_directories(sqlite3 PUBLIC include sqlite_modern_cpp)
