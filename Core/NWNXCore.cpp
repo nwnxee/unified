@@ -227,6 +227,24 @@ void NWNXCore::InitialSetupHooks()
                     g_core->m_ScriptChunkRecursion -= 1;
                     return retVal;
                 }, Hooks::Order::VeryEarly);
+
+        static Hooks::Hook runScriptSituationHook = Hooks::HookFunction(
+                &CVirtualMachine::RunScriptSituation,
+                +[](CVirtualMachine *pVirtualMachine, void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid) -> BOOL
+                {
+                    auto *pVirtualMachineScript = (CVirtualMachineScript*)pScriptSituation;
+                    bool isScriptChunk = !pVirtualMachineScript->m_sScriptChunk.IsEmpty();
+
+                    if (isScriptChunk)
+                        g_core->m_ScriptChunkRecursion += 1;
+
+                    auto retVal = runScriptSituationHook->CallOriginal<BOOL>(pVirtualMachine, pScriptSituation, oid, bOidValid);
+
+                    if (isScriptChunk)
+                        g_core->m_ScriptChunkRecursion -= 1;
+
+                    return retVal;
+                }, Hooks::Order::VeryEarly);
     }
 }
 
