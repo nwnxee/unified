@@ -3,6 +3,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CScriptCompiler.hpp"
 #include "API/CExoResMan.hpp"
+#include "API/CTlkTable.hpp"
 
 namespace Optimizations {
 
@@ -99,6 +100,58 @@ extern "C" ArgumentStack FlushCachedChunks(ArgumentStack&& args)
         s_CachedScriptChunks.erase(scriptChunk);
 
     return {};
+}
+
+extern "C" Events::ArgumentStack CacheScriptChunk(Events::ArgumentStack&& args)
+{
+    const auto scriptChunk = args.extract<std::string>();
+    const auto wrapIntoMain = args.extract<int32_t>();
+
+    if (scriptChunk.empty())
+        return "";
+
+    if (s_CachedScriptChunks.find(scriptChunk) != s_CachedScriptChunks.end())
+        return "";
+
+    int32_t nReturnValue = Globals::VirtualMachine()->m_pJitCompiler->CompileScriptChunk(scriptChunk, wrapIntoMain);
+    if (nReturnValue < 0)
+    {
+        CExoString retVal;
+        retVal.Format("%s: %s", Globals::TlkTable()->GetSimpleString(-nReturnValue).CStr(), Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+        return retVal.CStr();
+    }
+
+    char *pScriptData;
+    int32_t nScriptDataSize;
+    Globals::VirtualMachine()->m_pJitCompiler->GetCompiledScriptCode(&pScriptData, &nScriptDataSize);
+
+    if (pScriptData[0] == 'N' && pScriptData[1] == 'C' && pScriptData[2] == 'S' && pScriptData[3] == ' ' &&
+        pScriptData[4] == 'V' && pScriptData[6] == '.' && pScriptData[8] == 'B')
+    {
+        int32_t nVersion = 0;
+        if (pScriptData[5] >= '1' && pScriptData[5] <= '9')
+            nVersion += (pScriptData[5] - '0') * 10;
+        if (pScriptData[7] >= '1' && pScriptData[7] <= '9')
+            nVersion += pScriptData[7] - '0';
+        if (nVersion != 10)
+        {
+            CExoString retVal;
+            retVal.Format("%s: %s", Globals::TlkTable()->GetSimpleString(635).CStr(), Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+            return retVal.CStr();
+        }
+
+        pScriptData += 13;
+        nScriptDataSize -= 13;
+
+        DataBlockRef pScriptDataBlock = std::make_shared<DataBlock>();
+        pScriptDataBlock->Append(pScriptData, nScriptDataSize);
+
+        auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
+
+        s_CachedScriptChunks[scriptChunk] = std::make_pair(pScriptDataBlock, pNDB);
+    }
+
+    return "";
 }
 
 }
