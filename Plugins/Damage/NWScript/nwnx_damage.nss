@@ -130,6 +130,26 @@ struct NWNX_Damage_DamageData
     int iPower; ///< For overcoming DR
 };
 
+/// @name Critical Hit Modes
+/// @anchor crit_modes
+///
+/// Used with NWNX_Damage_DealMeleeDamage()
+/// @{
+const int NWNX_DAMAGE_CRIT_MODE_DONT = 0;
+const int NWNX_DAMAGE_CRIT_MODE_ROLL = 1;
+const int NWNX_DAMAGE_CRIT_MODE_CRIT = 2;
+/// @}
+
+/// @name Sneak Modes
+/// @anchor sneak_modes
+///
+/// Used with NWNX_Damage_DealMeleeDamage()
+/// @{
+const int NWNX_DAMAGE_SNEAK_MODE_DONT = 0;
+const int NWNX_DAMAGE_SNEAK_MODE_CHECK = 1;
+const int NWNX_DAMAGE_SNEAK_MODE_DO = 2;
+/// @}
+
 /// @brief Sets the script to run with a damage event.
 /// @param sScript The script that will handle the damage event.
 /// @param oOwner An object if only executing for a specific object or OBJECT_INVALID for global.
@@ -167,6 +187,20 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 /// @param oSource The source of the damage.
 /// @param iRanged Whether the attack should be treated as ranged by the engine (for example when considering damage inflicted by Acid Sheath and other such effects)
 void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource = OBJECT_SELF, int iRanged = FALSE);
+
+/// @brief Deals melee hit damage to a target
+/// @param oTarget The target receiving melee damage
+/// @param oAttacker The creature dealing melee damage
+/// @param fDamageMultiplier Damage multiplier to apply to the final damage (before resistances/immunities/reductions)
+/// @param bOffhand false = use mainhand weapon, true = use offhand weapon
+/// @param nCritMode A @ref crit_modes "Crit Mode" deciding whether or not to deal critical damage
+/// @param nSneakAttackMode A @ref sneak_modes "Sneak Mode" deciding whether or not to deal sneak attack damage
+/// @param bDoOnHitEffects Apply OnHit effects?
+/// @param bRollMaxDamage Roll maximum possible damage?
+/// @param nMaxOnHitSpellTriggers By default only 1 "On Hit Cast Spell" property will be triggered by the engine. -1 to trigger all
+/// @param bSkipDevastatingCritEffect Don't kill the target on a devastating critical hit
+/// @return 0 = failed, 1 = dealt normal damage, 3 = dealt critical damage, 10 = successful devastating critical hit
+int NWNX_Damage_DealMeleeDamage(object oTarget, object oAttacker = OBJECT_SELF, float fDamageMultiplier = 1.0f, int bOffhand = FALSE, int nCritMode = NWNX_DAMAGE_CRIT_MODE_DONT, int nSneakAttackMode = NWNX_DAMAGE_SNEAK_MODE_DONT, int bDoOnHitEffects = FALSE, int bRollMaxDamage = FALSE, int nMaxOnHitSpellTriggers = 1, int bSkipDevastatingCritEffect = FALSE);
 
 /// @}
 
@@ -411,4 +445,24 @@ void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, 
     NWNX_PushArgumentObject(oSource);
 
     NWNX_CallFunction(NWNX_Damage, sFunc);
+}
+
+int NWNX_Damage_DealMeleeDamage(object oTarget, object oAttacker = OBJECT_SELF, float fDamageMultiplier = 1.0f, int bOffhand = FALSE, int nCritMode = NWNX_DAMAGE_CRIT_MODE_DONT, int nSneakAttackMode = NWNX_DAMAGE_SNEAK_MODE_DONT, int bDoOnHitEffects = FALSE, int bRollMaxDamage = FALSE, int nMaxOnHitSpellTriggers = 1, int bSkipDevastatingCritEffect = FALSE)
+{
+    string sFunc = "DealMeleeDamage";
+    
+    NWNX_PushArgumentInt(bSkipDevastatingCritEffect);
+    NWNX_PushArgumentInt(nMaxOnHitSpellTriggers);
+    NWNX_PushArgumentInt(bRollMaxDamage);
+    NWNX_PushArgumentInt(bDoOnHitEffects);
+    NWNX_PushArgumentInt(nSneakAttackMode);
+    NWNX_PushArgumentInt(nCritMode);
+    NWNX_PushArgumentInt(bOffhand);
+    NWNX_PushArgumentFloat(fDamageMultiplier);
+    NWNX_PushArgumentObject(oAttacker);
+    NWNX_PushArgumentObject(oTarget);
+
+    NWNX_CallFunction(NWNX_Damage, sFunc);
+
+    return NWNX_GetReturnValueInt();
 }
