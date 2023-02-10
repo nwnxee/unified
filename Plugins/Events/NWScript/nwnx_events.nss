@@ -1363,13 +1363,22 @@ _______________________________________
     - NWNX_ON_STORE_REQUEST_SELL_AFTER
 
     `OBJECT_SELF` = The creature buying or selling an item
-
+    
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     ITEM                  | object | The item being bought or sold. Convert to object with StringToObject()  |
     STORE                 | object | The store the item is being sold to or bought from. Convert to object with StringToObject() |
     PRICE                 | int    | The buy or sell price |
     RESULT                | int    | TRUE/FALSE whether the request was successful. Only in *_AFTER events.
+    
+    @warning RESULT in NWNX_ON_STORE_REQUEST_BUY_AFTER only fails if it's due to lack of gold.  It will not fail if item does not fit in player's inventory.  If you want to check and fail on that condition, you can do something like this in the NWNX_ON_STORE_REQUEST_BUY_AFTER event:
+    ```c
+	if (!GetBaseItemFitsInInventory(GetBaseItemType(oItem), oPlayer))
+	{
+		NWNX_Events_SetEventResult("0");
+		return;
+	}
+    ```
 
 _______________________________________
     ## Server Send Area Events

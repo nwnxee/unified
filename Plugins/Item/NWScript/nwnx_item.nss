@@ -16,6 +16,7 @@ void NWNX_Item_SetWeight(object oItem, int weight);
 /// @remark Total cost = base_value + additional_value.
 /// @remark Equivalent to SetGoldPieceValue NWNX2 function.
 /// @note Will not persist through saving.
+/// @note This value will also revert if item is identified or player relogs into server.
 /// @param oItem The item object.
 /// @param gold The base gold value.
 void NWNX_Item_SetBaseGoldPieceValue(object oItem, int gold);
