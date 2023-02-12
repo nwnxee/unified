@@ -4,7 +4,7 @@
 #include <bitset>
 #include <map>
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace SkillRanks {
 

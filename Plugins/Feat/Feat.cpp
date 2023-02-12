@@ -48,7 +48,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
@@ -908,17 +908,17 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
 {
-    auto featId = Events::ExtractArgument<int>(args);
-    auto featMod = static_cast<FeatModifier>(Events::ExtractArgument<int>(args));
-    auto param1 = Events::ExtractArgument<int>(args);
-    auto param2 = Events::ExtractArgument<int>(args);
-    auto param3 = Events::ExtractArgument<int>(args);
-    auto param4 = Events::ExtractArgument<int>(args);
+    auto featId = ScriptAPI::ExtractArgument<int>(args);
+    auto featMod = static_cast<FeatModifier>(ScriptAPI::ExtractArgument<int>(args));
+    auto param1 = ScriptAPI::ExtractArgument<int>(args);
+    auto param2 = ScriptAPI::ExtractArgument<int>(args);
+    auto param3 = ScriptAPI::ExtractArgument<int>(args);
+    auto param4 = ScriptAPI::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
         g_plugin->m_Feats.insert(featId);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

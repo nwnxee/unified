@@ -6,7 +6,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace Rename {
 

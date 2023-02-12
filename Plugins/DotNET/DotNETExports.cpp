@@ -485,63 +485,63 @@ static void NWNXSetFunction(const char* plugin, const char* function)
 
 static void NWNXPushInt(int32_t n)
 {
-    Events::Push(n);
+    ScriptAPI::Push(n);
 }
 
 static void NWNXPushFloat(float f)
 {
-    Events::Push(f);
+    ScriptAPI::Push(f);
 }
 
 static void NWNXPushObject(uint32_t o)
 {
-    Events::Push((ObjectID)o);
+    ScriptAPI::Push((ObjectID)o);
 }
 
 static void NWNXPushString(const char* s)
 {
-    Events::Push(String::FromUTF8(s));
+    ScriptAPI::Push(String::FromUTF8(s));
 }
 
 static void NWNXPushRawString(const char* s)
 {
-    Events::Push<std::string>(s);
+    ScriptAPI::Push<std::string>(s);
 }
 
 static void NWNXPushEffect(CGameEffect* e)
 {
-    Events::Push(e);
+    ScriptAPI::Push(e);
 }
 
 static void NWNXPushItemProperty(CGameEffect* ip)
 {
-    Events::Push(ip);
+    ScriptAPI::Push(ip);
 }
 
 static int32_t NWNXPopInt()
 {
-    return Events::Pop<int32_t>().value_or(0);
+    return ScriptAPI::Pop<int32_t>().value_or(0);
 }
 
 static float NWNXPopFloat()
 {
-    return Events::Pop<float>().value_or(0.0f);
+    return ScriptAPI::Pop<float>().value_or(0.0f);
 }
 
 static uint32_t NWNXPopObject()
 {
-    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
+    return ScriptAPI::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 
 static const char* NWNXPopString()
 {
-    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    auto str = ScriptAPI::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
 
 static const char* NWNXPopRawString()
 {
-    auto value = Events::Pop<std::string>();
+    auto value = ScriptAPI::Pop<std::string>();
 
     static std::string retVal;
     if (value.has_value())
@@ -557,17 +557,17 @@ static const char* NWNXPopRawString()
 
 static CGameEffect* NWNXPopEffect()
 {
-    return Events::Pop<CGameEffect*>().value_or(nullptr);
+    return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 static CGameEffect* NWNXPopItemProperty()
 {
-    return Events::Pop<CGameEffect*>().value_or(nullptr);
+    return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 static void NWNXCallFunction()
 {
-    Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
+    ScriptAPI::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
 
 static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals()

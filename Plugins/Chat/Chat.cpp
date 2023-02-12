@@ -153,7 +153,7 @@ static Hooks::Hook s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
             return retVal;
         }, Hooks::Order::Late);
 
-NWNX_EXPORT ArgumentStack SendMessage(Events::ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack SendMessage(ArgumentStack &&args)
 {
     int32_t retVal = false;
     const auto channel = static_cast<Constants::ChatChannel::TYPE>(args.extract<int32_t>());
@@ -246,42 +246,42 @@ NWNX_EXPORT ArgumentStack SendMessage(Events::ArgumentStack &&args)
         }
     }
 
-    return Events::Arguments(retVal);
+    return ScriptAPI::Arguments(retVal);
 }
 
-NWNX_EXPORT ArgumentStack RegisterChatScript(Events::ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack RegisterChatScript(ArgumentStack &&args)
 {
     s_ChatScript = args.extract<std::string>();
     return {};
 }
 
-NWNX_EXPORT ArgumentStack SkipMessage(Events::ArgumentStack &&)
+NWNX_EXPORT ArgumentStack SkipMessage(ArgumentStack &&)
 {
     s_SkipMessage = true;
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetChannel(Events::ArgumentStack &&)
+NWNX_EXPORT ArgumentStack GetChannel(ArgumentStack &&)
 {
     return static_cast<int32_t>(s_ActiveChannel);
 }
 
-NWNX_EXPORT ArgumentStack GetMessage(Events::ArgumentStack &&)
+NWNX_EXPORT ArgumentStack GetMessage(ArgumentStack &&)
 {
     return s_ActiveMessage;
 }
 
-NWNX_EXPORT ArgumentStack GetSender(Events::ArgumentStack &&)
+NWNX_EXPORT ArgumentStack GetSender(ArgumentStack &&)
 {
     return s_ActiveSenderObjectId;
 }
 
-NWNX_EXPORT ArgumentStack GetTarget(Events::ArgumentStack &&)
+NWNX_EXPORT ArgumentStack GetTarget(ArgumentStack &&)
 {
     return s_ActiveTargetObjectId;
 }
 
-NWNX_EXPORT ArgumentStack SetChatHearingDistance(Events::ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack SetChatHearingDistance(ArgumentStack &&args)
 {
     const auto distance = args.extract<float>();
       ASSERT_OR_THROW(distance >= 0.0f);
@@ -312,7 +312,7 @@ NWNX_EXPORT ArgumentStack SetChatHearingDistance(Events::ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetChatHearingDistance(Events::ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetChatHearingDistance(ArgumentStack &&args)
 {
     const auto playerOid = args.extract<ObjectID>();
     const auto channel = (Constants::ChatChannel::TYPE)args.extract<int32_t>();

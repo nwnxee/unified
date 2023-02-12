@@ -24,7 +24,7 @@ nwnxlib_add(
     "Encoding.cpp"
     "Plugin.cpp"
     "Commands.cpp"
-    "Events.cpp"
+    "ScriptAPI.cpp"
     "MessageBus.cpp"
     "Hooks.cpp"
     "Tasks.cpp"

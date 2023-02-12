@@ -32,7 +32,7 @@ Reveal::Reveal(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func)              \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(RevealTo);
@@ -82,26 +82,26 @@ int32_t Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreatu
 
 ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 {
-    auto stealtherID = Events::ExtractArgument<ObjectID>(args);
-    auto observerID = Events::ExtractArgument<ObjectID>(args);
-    auto detectionVector = Events::ExtractArgument<int>(args);
+    auto stealtherID = ScriptAPI::ExtractArgument<ObjectID>(args);
+    auto observerID = ScriptAPI::ExtractArgument<ObjectID>(args);
+    auto detectionVector = ScriptAPI::ExtractArgument<int>(args);
 
     auto stealther = Utils::GetGameObject(stealtherID);
     stealther->nwnxSet(revealKey + Utils::ObjectIDToString(observerID), true); //store stealth to observer reveal map
     stealther->nwnxSet(detectionKey + Utils::ObjectIDToString(observerID), detectionVector); //store the means through which detection happens
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 {
-    auto stealtherID = Events::ExtractArgument<ObjectID>(args);
-    auto revealToPartyState = Events::ExtractArgument<int>(args);
-    auto detectionVector = Events::ExtractArgument<int>(args);
+    auto stealtherID = ScriptAPI::ExtractArgument<ObjectID>(args);
+    auto revealToPartyState = ScriptAPI::ExtractArgument<int>(args);
+    auto detectionVector = ScriptAPI::ExtractArgument<int>(args);
 
     auto stealther = Utils::GetGameObject(stealtherID);
     stealther->nwnxSet(revealKey + "PARTY", revealToPartyState, true); //store party reveal state
     stealther->nwnxSet(detectionKey + "PARTY", detectionVector, true); //store the means through which detection happens
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

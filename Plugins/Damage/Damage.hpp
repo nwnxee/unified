@@ -1,7 +1,6 @@
 #pragma once
 
 #include "nwnx.hpp"
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 struct DamageDataStr
 {
@@ -25,6 +24,7 @@ struct AttackDataStr
 };
 
 namespace Damage {
+using NWNXLib::ArgumentStack;
 
 class Damage : public NWNXLib::Plugin
 {

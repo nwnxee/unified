@@ -346,7 +346,7 @@ static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage* msg, CNWSPlayer *pPlaye
 }
 
 // No nwscript export, call it manually.
-extern "C" Events::ArgumentStack SetObjectUpdateDistance(Events::ArgumentStack&& args)
+extern "C" ArgumentStack SetObjectUpdateDistance(ArgumentStack&& args)
 {
     const auto dist = args.extract<float>();
     const auto objtype = args.extract<int32_t>();

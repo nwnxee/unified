@@ -5,7 +5,7 @@
 
 #include <memory>
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace SQL {
 

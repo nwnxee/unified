@@ -84,7 +84,7 @@ void CacheScriptChunks()
 }
 
 // No nwscript export, call it manually.
-extern "C" Events::ArgumentStack FlushCachedChunks(Events::ArgumentStack&& args)
+extern "C" ArgumentStack FlushCachedChunks(ArgumentStack&& args)
 {
     const auto scriptChunk = args.extract<std::string>();
 

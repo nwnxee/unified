@@ -1,7 +1,7 @@
 #pragma once
 
 #include "nwnx.hpp"
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace Reveal {
 
