@@ -329,3 +329,4 @@ struct SHA1;
 struct CNWSync;
 struct NWSyncAdvertisementManifest;
 struct NWSyncAdvertisement;
+struct NWVMachineUtils;
