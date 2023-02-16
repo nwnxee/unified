@@ -22,9 +22,9 @@ namespace Lua {
 	    Lua(NWNXLib::Services::ProxyServiceList* services);
 	    virtual ~Lua();
 	    lua_State *m_luaInstance;
-	    Events::ArgumentStack Eval(Events::ArgumentStack&& args);
-	    Events::ArgumentStack EvalVoid(Events::ArgumentStack&& args);
-	    Events::ArgumentStack RunEvent(Events::ArgumentStack&& args);
+	    ArgumentStack Eval(ArgumentStack&& args);
+	    ArgumentStack EvalVoid(ArgumentStack&& args);
+	    ArgumentStack RunEvent(ArgumentStack&& args);
 	    void OnToken(ObjectID oid, char* token);
 	    bool OnScript(const char* scriptName, ObjectID objId, bool valid);
 	private:

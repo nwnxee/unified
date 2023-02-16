@@ -46,7 +46,7 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSkillFeat);
@@ -724,19 +724,19 @@ char SkillRanks::GetSkillRankHook(CNWSCreatureStats* thisPtr, uint8_t nSkill, CN
 
 ArgumentStack SkillRanks::GetSkillFeatCountForSkill(ArgumentStack&& args)
 {
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
-    return Events::Arguments((int32_t)g_plugin->m_skillFeatMap[skillId].size());
+    return ScriptAPI::Arguments((int32_t)g_plugin->m_skillFeatMap[skillId].size());
 }
 
 ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
 {
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto featId = Events::ExtractArgument<int32_t>(args);
+    const auto featId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(featId >= Constants::Feat::MIN);
     ASSERT_OR_THROW(featId < Globals::Rules()->m_nNumFeats);
 
@@ -747,7 +747,7 @@ ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
         std::string sBitClass = skillFeats[featId].bitsetClasses.to_string();
         sBitClass.erase(0, sBitClass.find_first_not_of('0'));
 
-        return Events::Arguments
+        return ScriptAPI::Arguments
         (
             skillFeats[featId].nKeyAbilityMask,
             skillFeats[featId].bBypassArmorCheckPenalty,
@@ -761,15 +761,15 @@ ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
         );
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
 {
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto index = Events::ExtractArgument<int32_t>(args);
+    const auto index = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(index >= 0);
     ASSERT_OR_THROW(index < int32_t(g_plugin->m_skillFeatMap[skillId].size()));
 
@@ -784,7 +784,7 @@ ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
             std::string sBitClass = skillFeats[featId].bitsetClasses.to_string();
             sBitClass.erase(0, sBitClass.find_first_not_of('0'));
 
-            return Events::Arguments
+            return ScriptAPI::Arguments
             (
                 skillFeats[featId].nKeyAbilityMask,
                 skillFeats[featId].bBypassArmorCheckPenalty,
@@ -802,34 +802,34 @@ ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
         iterCount++;
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
 {
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto featId = Events::ExtractArgument<int32_t>(args);
+    const auto featId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(featId >= Constants::Feat::MIN);
     ASSERT_OR_THROW(featId < Globals::Rules()->m_nNumFeats);
 
     SkillFeats skillFeats {};
-    skillFeats.nModifier = Events::ExtractArgument<int32_t>(args);
-    skillFeats.nFocusFeat = Events::ExtractArgument<int32_t>(args);
-    std::bitset<255> cbs(Events::ExtractArgument<std::string>(args));
+    skillFeats.nModifier = ScriptAPI::ExtractArgument<int32_t>(args);
+    skillFeats.nFocusFeat = ScriptAPI::ExtractArgument<int32_t>(args);
+    std::bitset<255> cbs(ScriptAPI::ExtractArgument<std::string>(args));
     skillFeats.bitsetClasses = cbs;
 
     // If fClassLevelMod is not 0 and bitsetClasses is unset then we set it for all classes
-    skillFeats.fClassLevelMod = Events::ExtractArgument<float>(args);
+    skillFeats.fClassLevelMod = ScriptAPI::ExtractArgument<float>(args);
     if (skillFeats.fClassLevelMod != 0 && skillFeats.bitsetClasses.none())
         skillFeats.bitsetClasses.set();
 
-    skillFeats.nAreaFlagsRequired = Events::ExtractArgument<int32_t>(args);
-    skillFeats.nAreaFlagsForbidden = Events::ExtractArgument<int32_t>(args);
-    skillFeats.nDayOrNight = Events::ExtractArgument<int32_t>(args);
-    skillFeats.bBypassArmorCheckPenalty = Events::ExtractArgument<int32_t>(args);
-    skillFeats.nKeyAbilityMask = Events::ExtractArgument<int32_t>(args);
+    skillFeats.nAreaFlagsRequired = ScriptAPI::ExtractArgument<int32_t>(args);
+    skillFeats.nAreaFlagsForbidden = ScriptAPI::ExtractArgument<int32_t>(args);
+    skillFeats.nDayOrNight = ScriptAPI::ExtractArgument<int32_t>(args);
+    skillFeats.bBypassArmorCheckPenalty = ScriptAPI::ExtractArgument<int32_t>(args);
+    skillFeats.nKeyAbilityMask = ScriptAPI::ExtractArgument<int32_t>(args);
 
     // If they supplied an ability but didn't supply a calc mask bit, use MAX
     if (skillFeats.nKeyAbilityMask &&
@@ -842,7 +842,7 @@ ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
         skillFeats.nKeyAbilityMask |= maxMask;
     }
 
-    const auto createIfNonExistent = Events::ExtractArgument<int32_t>(args);
+    const auto createIfNonExistent = ScriptAPI::ExtractArgument<int32_t>(args);
     if (!createIfNonExistent && !g_plugin->m_skillFeatMap[skillId].count(featId))
     {
         LOG_ERROR("Attempt to set values on a Skill Feat that doesn't exist.");
@@ -852,13 +852,13 @@ ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
         g_plugin->m_skillFeatMap[skillId][featId] = skillFeats;
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
 {
-    const auto mod = Events::ExtractArgument<int32_t>(args);
-    const auto epicFocus = Events::ExtractArgument<int32_t>(args);
+    const auto mod = ScriptAPI::ExtractArgument<int32_t>(args);
+    const auto epicFocus = ScriptAPI::ExtractArgument<int32_t>(args);
 
     for (int nSkill = 0; nSkill < Globals::Rules()->m_nNumSkills; nSkill++)
     {
@@ -874,61 +874,61 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
         }
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Events::ExtractArgument<ObjectID>(args);
+    const auto areaOid = ScriptAPI::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
         LOG_ERROR("GetAreaModifier function called on non-area object %x", areaOid);
-        return Events::Arguments();
+        return ScriptAPI::Arguments();
     }
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
     int32_t retVal = *pArea->nwnxGet<int>(areaModPOSKey + std::to_string(skillId));
 
-    return Events::Arguments(retVal);
+    return ScriptAPI::Arguments(retVal);
 }
 
 ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Events::ExtractArgument<ObjectID>(args);
+    const auto areaOid = ScriptAPI::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
         LOG_ERROR("SetAreaModifier function called on non-area object %x", areaOid);
-        return Events::Arguments();
+        return ScriptAPI::Arguments();
     }
-    const auto skillId = Events::ExtractArgument<int32_t>(args);
+    const auto skillId = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto modifier = Events::ExtractArgument<int32_t>(args);
+    const auto modifier = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(modifier >= -127);
     ASSERT_OR_THROW(modifier < 127);
 
     pArea->nwnxSet(areaModPOSKey + std::to_string(skillId), modifier, true);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack SkillRanks::GetBlindnessPenalty(ArgumentStack &&)
 {
-    return Events::Arguments(g_plugin->m_blindnessMod);
+    return ScriptAPI::Arguments(g_plugin->m_blindnessMod);
 }
 
 ArgumentStack SkillRanks::SetBlindnessPenalty(ArgumentStack &&args)
 {
-    const auto mod = Events::ExtractArgument<int32_t>(args);
+    const auto mod = ScriptAPI::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(mod >= -255);
     ASSERT_OR_THROW(mod < 255);
     g_plugin->m_blindnessMod = mod;
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

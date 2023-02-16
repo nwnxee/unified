@@ -12,14 +12,14 @@
 #include <vector>
 #include <optional>
 
-namespace NWNXLib::Events
+namespace NWNXLib::ScriptAPI
 {
     extern ArgumentStack s_arguments;
     extern ArgumentStack s_returns;
 
     template <typename T> void Push(T&& value)
     {
-        s_arguments.push(Events::Argument(std::forward<T>(value)));
+        s_arguments.push(ScriptAPI::Argument(std::forward<T>(value)));
         LOG_DEBUG("Pushing argument '%s'", s_arguments.top());
     }
 

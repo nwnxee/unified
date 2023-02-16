@@ -10,7 +10,6 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 struct EventParams
 {

@@ -27,7 +27,7 @@ Weapon::Weapon(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeaponFocusFeat);
@@ -84,10 +84,10 @@ Weapon::~Weapon()
 
 ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -109,15 +109,15 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -139,15 +139,15 @@ ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Greater Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -169,15 +169,15 @@ ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Epic Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto size     = Events::ExtractArgument<int32_t>(args);
+    const auto size     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(size > 0);
       ASSERT_OR_THROW(size <= 255);
 
@@ -188,14 +188,14 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetWeaponFinesseSize(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
-    const auto baseItem  = Events::ExtractArgument<int32_t>(args);
+    const auto baseItem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(baseItem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(baseItem <= Constants::BaseItem::MAX);
 
@@ -203,12 +203,12 @@ ArgumentStack Weapon::GetWeaponFinesseSize(ArgumentStack&& args)
     if (search != m_WeaponFinesseSizeMap.end())
         retVal = search->second;
 
-    return Events::Arguments(retVal);
+    return ScriptAPI::Arguments(retVal);
 }
 
 ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
 
@@ -219,12 +219,12 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Base Item Type %d [%s] set as unarmed weapon", w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
 
@@ -237,15 +237,15 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Base Item Type %d [%s] set as monk weapon", w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -267,15 +267,15 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Improved Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -297,15 +297,15 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -327,15 +327,15 @@ ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Greater Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -357,15 +357,15 @@ ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Epic Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -387,15 +387,15 @@ ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Overwhelming Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -417,15 +417,15 @@ ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Devastating Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -447,13 +447,13 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon of Choice Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetOption(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
-    const auto nVal     = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
+    const auto nVal     = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
@@ -466,34 +466,34 @@ ArgumentStack Weapon::SetOption(ArgumentStack&& args)
             LOG_INFO("Set NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS to %d", nVal);
             break;
     }
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetDevastatingCriticalEventScript(ArgumentStack&& args)
 {
-    m_DCScript = Events::ExtractArgument<std::string>(args);
+    m_DCScript = ScriptAPI::ExtractArgument<std::string>(args);
     LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetEventData(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
         case NWNX_WEAPON_GETDATA_DC:
-            return Events::Arguments(m_DCData.nDamage, m_DCData.oidTarget, m_DCData.oidWeapon);
+            return ScriptAPI::Arguments(m_DCData.nDamage, m_DCData.oidTarget, m_DCData.oidWeapon);
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
-    const auto nVal     = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
+    const auto nVal     = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
@@ -503,7 +503,7 @@ ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
             break;
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 int32_t Weapon::GetWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
@@ -1205,16 +1205,16 @@ int Weapon::GetLevelByClass(CNWSCreatureStats *pStats, uint32_t nClassType)
 
 ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
 {
-    auto objectId = Events::ExtractArgument<ObjectID>(args);
+    auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     if(objectId == Constants::OBJECT_INVALID)
     {
         LOG_INFO("Invalid Object Passed into SetOneHalfStrength");
-        return Events::Arguments();
+        return ScriptAPI::Arguments();
     }
 
-    auto bMulti = Events::ExtractArgument<int32_t>(args);
-    bool bPersist = !!Events::ExtractArgument<int32_t>(args);
+    auto bMulti = ScriptAPI::ExtractArgument<int32_t>(args);
+    bool bPersist = !!ScriptAPI::ExtractArgument<int32_t>(args);
 
     auto obj = Utils::GetGameObject(objectId);
     if(bMulti)
@@ -1222,12 +1222,12 @@ ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
     else
         obj->nwnxRemove("ONE_HALF_STRENGTH");
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
 {
-    auto objectId = Events::ExtractArgument<ObjectID>(args);
+    auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
     int32_t retVal = 0;
     if(objectId != Constants::OBJECT_INVALID)
     {
@@ -1237,7 +1237,7 @@ ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
             retVal = exist.value();
     }
 
-    return Events::Arguments(retVal);
+    return ScriptAPI::Arguments(retVal);
 }
 
 ArgumentStack Weapon::SetMaxRangedAttackDistanceOverride(ArgumentStack&& args)

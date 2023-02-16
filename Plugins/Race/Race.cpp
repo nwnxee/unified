@@ -62,7 +62,7 @@ Race::Race(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetRacialModifier);
@@ -1155,28 +1155,28 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
 
 ArgumentStack Race::SetRacialModifier(ArgumentStack&& args)
 {
-    auto raceId = Events::ExtractArgument<int>(args);
-    auto raceMod = static_cast<RaceModifier>(Events::ExtractArgument<int>(args));
-    auto param1 = Events::ExtractArgument<int>(args);
-    auto param2 = Events::ExtractArgument<int>(args);
-    auto param3 = Events::ExtractArgument<int>(args);
+    auto raceId = ScriptAPI::ExtractArgument<int>(args);
+    auto raceMod = static_cast<RaceModifier>(ScriptAPI::ExtractArgument<int>(args));
+    auto param1 = ScriptAPI::ExtractArgument<int>(args);
+    auto param2 = ScriptAPI::ExtractArgument<int>(args);
+    auto param3 = ScriptAPI::ExtractArgument<int>(args);
 
     SetRaceModifier(raceId, raceMod, param1, param2, param3);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Race::GetParentRace(ArgumentStack&& args)
 {
-    auto raceId = Events::ExtractArgument<int>(args);
+    auto raceId = ScriptAPI::ExtractArgument<int>(args);
     auto parentRace = g_plugin->m_RaceParent[raceId] == RacialType::Invalid ? raceId : g_plugin->m_RaceParent[raceId];
-    return Events::Arguments(parentRace);
+    return ScriptAPI::Arguments(parentRace);
 }
 
 ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
 {
-    auto raceId = Events::ExtractArgument<int>(args);
-    auto featId = Events::ExtractArgument<int>(args);
+    auto raceId = ScriptAPI::ExtractArgument<int>(args);
+    auto featId = ScriptAPI::ExtractArgument<int>(args);
 
     CNWFeat *pFeat = Globals::Rules()->GetFeat(featId);
     ASSERT_OR_THROW(pFeat);
@@ -1185,7 +1185,7 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
 
     LOG_INFO("%s: Setting Favored Enemy Feat to %s.", Globals::Rules()->m_lstRaces[raceId].GetNameText().CStr(), pFeat->GetNameText().CStr());
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 int32_t Race::GetAttackModifierVersusHook(CNWSCreatureStats* pStats, CNWSCreature* pCreature)

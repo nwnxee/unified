@@ -129,7 +129,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             int32_t n = 0;
             if (nwnx)
             {
-                n = Events::Pop<int32_t>().value_or(n);
+                n = ScriptAPI::Pop<int32_t>().value_or(n);
             }
             else if (vartable)
             {
@@ -143,7 +143,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             float f = 0.0f;
             if (nwnx)
             {
-                f = Events::Pop<float>().value_or(f);
+                f = ScriptAPI::Pop<float>().value_or(f);
             }
             else if (vartable)
             {
@@ -157,7 +157,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             CExoString str = "";
             if (nwnx)
             {
-                str = Events::Pop<std::string>().value_or(str);
+                str = ScriptAPI::Pop<std::string>().value_or(str);
             }
             else if (vartable)
             {
@@ -171,7 +171,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             ObjectID oid = Constants::OBJECT_INVALID;
             if (nwnx)
             {
-                oid = Events::Pop<ObjectID>().value_or(oid);
+                oid = ScriptAPI::Pop<ObjectID>().value_or(oid);
             }
             else if (vartable)
             {
@@ -185,7 +185,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             JsonEngineStructure j;
             if (nwnx)
             {
-                j = Events::Pop<JsonEngineStructure>().value_or(j);
+                j = ScriptAPI::Pop<JsonEngineStructure>().value_or(j);
             }
             else if (vartable)
             {
@@ -240,7 +240,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                Events::Push(value);
+                ScriptAPI::Push(value);
             }
             else if (vartable)
             {
@@ -256,7 +256,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                Events::Push(value);
+                ScriptAPI::Push(value);
             }
             else if (vartable)
             {
@@ -272,7 +272,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                Events::Push(std::string(value.CStr()));
+                ScriptAPI::Push(std::string(value.CStr()));
             }
             else if (vartable)
             {
@@ -288,7 +288,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                Events::Push(value);
+                ScriptAPI::Push(value);
             }
             else if (vartable)
             {
@@ -304,7 +304,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                Events::Push(*json);
+                ScriptAPI::Push(*json);
             }
             else if (vartable)
             {
@@ -342,11 +342,11 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
         if (nwnx->operation == "PUSH")
         {
             bSkipDelete = true;
-            Events::Push(pEffect);
+            ScriptAPI::Push(pEffect);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = Events::Pop<CGameEffect*>())
+            if (auto res = ScriptAPI::Pop<CGameEffect*>())
             {
                 Utils::DestroyGameEffect(pEffect);
                 pEffect = *res;
@@ -393,11 +393,11 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
         if (nwnx->operation == "PUSH")
         {
             bSkipDelete = true;
-            Events::Push(pItemProperty);
+            ScriptAPI::Push(pItemProperty);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = Events::Pop<CGameEffect*>())
+            if (auto res = ScriptAPI::Pop<CGameEffect*>())
             {
                 Utils::DestroyGameEffect(pItemProperty);
                 pItemProperty = *res;
@@ -437,7 +437,7 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     {
         ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
         if (g_core->m_ScriptChunkRecursion == 0)
-            Events::Call(nwnx->plugin, nwnx->event);
+            ScriptAPI::Call(nwnx->plugin, nwnx->event);
         else
             LOG_NOTICE("NWNX function '%s_%s' in ExecuteScriptChunk() was blocked due to configuration", nwnx->plugin, nwnx->event);
     }

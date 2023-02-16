@@ -28,7 +28,7 @@ SpellChecker::SpellChecker(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(FindMisspell);
@@ -81,7 +81,7 @@ void SpellChecker::Init()
 }
 ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 {
-    std::string sentence = Events::ExtractArgument<std::string>(args);
+    std::string sentence = ScriptAPI::ExtractArgument<std::string>(args);
 
     std::string  word;
     std::vector <std::string> list;
@@ -105,12 +105,12 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
             output += list[i] + ",";
     }
 
-    return Events::Arguments(output);
+    return ScriptAPI::Arguments(output);
 }
 
 ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 {
-    std::string word = Events::ExtractArgument<std::string>(args);
+    std::string word = ScriptAPI::ExtractArgument<std::string>(args);
 
     const char* cword;
     int sc;
@@ -130,7 +130,7 @@ ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
             SpellChecker::free_e(SpellChecker::created, &wlst, ns);
         }
     }
-    return Events::Arguments(output);
+    return ScriptAPI::Arguments(output);
 }
 
 

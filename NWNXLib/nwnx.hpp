@@ -50,7 +50,7 @@ namespace Config
 
 struct ScriptVariant;
 struct ScriptVariantStack;
-namespace Events
+namespace ScriptAPI
 {
     using Argument = ScriptVariant;
     using ArgumentStack = ScriptVariantStack;
@@ -62,7 +62,7 @@ namespace Events
     template <typename T> static std::optional<T> Pop();
     void Call(const std::string& pluginName, const std::string& eventName);
 }
-using ArgumentStack = Events::ArgumentStack;
+using ArgumentStack = ScriptVariantStack;
 
 namespace Hooks
 {
@@ -301,7 +301,7 @@ namespace Tasks
 #include "Assert.hpp"
 #include "ScriptVariant.hpp"
 #include "Config.hpp"
-#include "Events.hpp"
+#include "ScriptAPI.hpp"
 #include "Utils.hpp"
 
 namespace NWNXLib

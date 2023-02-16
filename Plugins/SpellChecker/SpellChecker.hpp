@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 using HandleType = void*;
 
 namespace SpellChecker {

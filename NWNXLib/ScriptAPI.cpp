@@ -8,15 +8,15 @@
 #include <sstream>
 
 
-namespace NWNXLib::Events
+namespace NWNXLib::ScriptAPI
 {
 ArgumentStack s_arguments;
 ArgumentStack s_returns;
 
-using PluginEventMap = std::unordered_map<std::string, Events::FunctionCallback>;
+using PluginEventMap = std::unordered_map<std::string, ScriptAPI::FunctionCallback>;
 static std::unordered_map<std::string, PluginEventMap> s_eventMap;
 
-std::optional<Events::FunctionCallback> GetEventCallback(const std::string& pluginName, const std::string& eventName)
+std::optional<ScriptAPI::FunctionCallback> GetEventCallback(const std::string& pluginName, const std::string& eventName)
 {
     auto& events = s_eventMap[pluginName];
     auto it = events.find(eventName);
