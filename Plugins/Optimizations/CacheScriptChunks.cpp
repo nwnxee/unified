@@ -102,7 +102,7 @@ extern "C" ArgumentStack FlushCachedChunks(ArgumentStack&& args)
     return {};
 }
 
-extern "C" Events::ArgumentStack CacheScriptChunk(Events::ArgumentStack&& args)
+extern "C" ArgumentStack CacheScriptChunk(ArgumentStack&& args)
 {
     const auto scriptChunk = args.extract<std::string>();
     const auto wrapIntoMain = args.extract<int32_t>();

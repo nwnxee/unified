@@ -129,9 +129,9 @@ static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t
 
 NWNX_EXPORT ArgumentStack SetEventScript(ArgumentStack&& args)
 {
-    const auto sEvent = Events::ExtractArgument<std::string>(args);
-    const auto sScript = Events::ExtractArgument<std::string>(args);
-    const auto oidTarget = Events::ExtractArgument<ObjectID>(args);
+    const auto sEvent = args.extract<std::string>();
+    const auto sScript = args.extract<std::string>();
+    const auto oidTarget = args.extract<ObjectID>();
 
     if (oidTarget == Constants::OBJECT_INVALID)
     {
@@ -165,9 +165,9 @@ NWNX_EXPORT ArgumentStack GetDamageEventData(ArgumentStack&&)
 
     for (int k = (MAX_DAMAGE_TYPES - 1); k >= 0; k--)
     {
-        Events::InsertArgument(stack, s_DamageData.vDamage[k]);
+        ScriptAPI::InsertArgument(stack, s_DamageData.vDamage[k]);
     }
-    Events::InsertArgument(stack, s_DamageData.oidDamager);
+    ScriptAPI::InsertArgument(stack, s_DamageData.oidDamager);
 
     return stack;
 }
@@ -187,19 +187,19 @@ NWNX_EXPORT ArgumentStack GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
-    Events::InsertArgument(stack, s_AttackData.nToHitModifier);
-    Events::InsertArgument(stack, s_AttackData.nToHitRoll);
-    Events::InsertArgument(stack, s_AttackData.nAttackType);
-    Events::InsertArgument(stack, s_AttackData.bKillingBlow);
-    Events::InsertArgument(stack, s_AttackData.nSneakAttack);
-    Events::InsertArgument(stack, s_AttackData.nWeaponAttackType);
-    Events::InsertArgument(stack, s_AttackData.nAttackResult);
-    Events::InsertArgument(stack, s_AttackData.nAttackNumber);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nToHitModifier);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nToHitRoll);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nAttackType);
+    ScriptAPI::InsertArgument(stack, s_AttackData.bKillingBlow);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nSneakAttack);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nWeaponAttackType);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nAttackResult);
+    ScriptAPI::InsertArgument(stack, s_AttackData.nAttackNumber);
     for (int k = (MAX_DAMAGE_TYPES - 1); k >= 0; k--)
     {
-        Events::InsertArgument(stack, s_AttackData.vDamage[k]);
+        ScriptAPI::InsertArgument(stack, s_AttackData.vDamage[k]);
     }
-    Events::InsertArgument(stack, s_AttackData.oidTarget);
+    ScriptAPI::InsertArgument(stack, s_AttackData.oidTarget);
 
     return stack;
 }
@@ -221,8 +221,8 @@ NWNX_EXPORT ArgumentStack DealDamage(ArgumentStack&& args)
     int vDamage[MAX_DAMAGE_TYPES];
     std::bitset<MAX_DAMAGE_TYPES> positive;
 
-    const auto oidSource = Events::ExtractArgument<ObjectID>(args);
-    const auto oidTarget = Events::ExtractArgument<ObjectID>(args);
+    const auto oidSource = args.extract<ObjectID>();
+    const auto oidTarget = args.extract<ObjectID>();
 
     for (int k = 0; k < MAX_DAMAGE_TYPES; k++)
     {
