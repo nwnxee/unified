@@ -1,5 +1,3 @@
-#include "nwnx_regex"
-
 /// @addtogroup data Data
 /// @brief Provides a number of data structures for NWN code to use (simulated arrays)
 /// @{
@@ -131,7 +129,7 @@ string GetTableName(string tag, object obj=OBJECT_INVALID, int bare=FALSE) {
 
     string sName = "array_" + ObjectToString(obj) + "_" + tag;
     // Remove invalid characters from the tag rather than failing.
-    string sCleansed = NWNX_Regex_Replace(sName, "[^A-Za-z0-9_\$@#]", "");
+    string sCleansed = RegExpReplace("[^A-Za-z0-9_\$@#]", sName, "");
     // But provide some feedback.
     if (GetStringLength(sName) != GetStringLength(sCleansed) || GetStringLength(sCleansed) == 0) {
         WriteTimestampedLogEntry("WARNING:  Invalid table name detected for array with tag <" + tag + ">.  Only characters (a-zA-Z0-9), _, @, $ and # are allowed. Using <"+sCleansed+"> instead.");
