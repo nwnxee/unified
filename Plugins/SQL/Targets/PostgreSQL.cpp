@@ -10,7 +10,7 @@ using namespace NWNXLib;
 
 static bool s_nextQueryBinaryResults;
 
-NWNX_EXPORT Events::ArgumentStack PostgreSQL_SetNextQueryResultsBinaryMode(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack PostgreSQL_SetNextQueryResultsBinaryMode(ArgumentStack&&)
 {
     LOG_DEBUG("Next query only: Results will be returned in binary mode.");
     s_nextQueryBinaryResults = true;
