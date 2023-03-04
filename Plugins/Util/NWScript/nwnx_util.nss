@@ -518,10 +518,8 @@ void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
 
 int NWNX_Util_PluginExists(string sPlugin)
 {
-    string sFunc = "PluginExists";
-    NWNX_PushArgumentString(sPlugin);
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
+    WriteTimestampedLogEntry("WARNING:  NWNX_Util_PluginExists is deprecated.  You should migrate to NWNX_PluginExists.");
+    return NWNX_PluginExists(sPlugin);
 }
 
 string NWNX_Util_GetUserDirectory()
