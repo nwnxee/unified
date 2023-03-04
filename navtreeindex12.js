@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d":[4,0,3,28,0,3,73],
+"nwnx__redis__short_8nss.html#adde70c729765e95f861cdddb8193e3ed":[4,0,3,28,0,3,120],
+"nwnx__redis__short_8nss.html#adeb2f9a3935768c1e1f3b5d346d02b38":[4,0,3,28,0,3,24],
 "nwnx__redis__short_8nss.html#adf532e5e37cbde194b492b06d856f3d2":[4,0,3,28,0,3,207],
 "nwnx__redis__short_8nss.html#ae00d293d2f7c84f869c1187a46aa2535":[4,0,3,28,0,3,110],
 "nwnx__redis__short_8nss.html#ae05b8bc47bbf98f853c71a3d1865d724":[4,0,3,28,0,3,164],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369":[0,37,2,7],
 "structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7":[0,37,2,0],
 "structNWNX__SkillRanks__SkillFeat.html#a7dd800dcb05d188252a50c070ae71f2b":[0,37,2,9],
-"structNWNX__SkillRanks__SkillFeat.html#aae9925da408c3283b3fde29b1ebfec20":[0,37,2,4],
-"structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742":[0,37,2,2],
-"structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3":[0,37,2,8],
-"structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7":[0,37,2,6]
+"structNWNX__SkillRanks__SkillFeat.html#aae9925da408c3283b3fde29b1ebfec20":[0,37,2,4]
 };

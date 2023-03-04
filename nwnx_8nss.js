@@ -15,6 +15,8 @@ var nwnx_8nss =
     [ "NWNX_GetReturnValueEffect", "group__nwnx.html#ga9f0628baff6b1b0275da288206078f1b", null ],
     [ "NWNX_GetReturnValueItemProperty", "group__nwnx.html#ga0c3dece5a08fe4de9f04b40e898ab407", null ],
     [ "NWNX_GetReturnValueJson", "group__nwnx.html#gac5f2cda8d53f022e974c48687db2b6c8", null ],
+    [ "NWNX_PluginExists", "group__nwnx.html#ga8d619f07b8154d06b1f9462d57385fb5", null ],
+    [ "NWNX_Core", "group__nwnx.html#ga8529720078883bbb53c4a41d0c40e3f3", null ],
     [ "NWNX_PUSH", "group__nwnx.html#ga04bfa92f470436f363402654aae73d9b", null ],
     [ "NWNX_POP", "group__nwnx.html#ga0448ef12ff047f3fb7dbc8bc253f135f", null ]
 ];
