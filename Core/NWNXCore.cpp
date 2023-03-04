@@ -601,4 +601,9 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);
 }
 
+NWNX_EXPORT ArgumentStack PluginExists(ArgumentStack&& args)
+{
+    return Plugin::Find(args.extract<std::string>()) ? 1 : 0;
+}
+
 }
