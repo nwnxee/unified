@@ -3,5 +3,5 @@
 #Cleanup macro comments left by SWIG.
 for f in out/*.cs
 do
-  sed -i '/^[ \t]*\/\*@SWIG/d' "$f"
+  sed -i 's/\/\*@SWIG.*\*\///' "$f"
 done
