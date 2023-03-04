@@ -61,6 +61,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Player: UpdateFogColor();
 - Player: UpdateFogAmount();
 - Regex: Match()
+- Core: PluginExists()
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
@@ -72,7 +73,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added event data `TARGET`/`FACTION_ID`/`FACTION_NAME` to `NWNX_ON_DM_SET_FACTION_*`
 
 ### Deprecated
-- N/A
+- Util: PluginExists()
 
 ### Removed
 - N/A
