@@ -118,8 +118,6 @@ struct LerpFloat
     float Progress() const { return 1.0; }
     float Lerped() const { return m_value_to; }
 
-    void WriteGFF(CResGFF* pRes, CResStruct* pStruct, char* szLabel);
-
     void AssignStatic(float to)
     {
         m_value_to = to;

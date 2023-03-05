@@ -38,9 +38,6 @@ struct CNWSPlayerLUOAppearanceInfo
     ObjectVisualTransformData m_pRightHandItemVisualTransform;
     ObjectVisualTransformData m_pLeftHandItemVisualTransform;
 
-    CNWSPlayerLUOAppearanceInfo();
-    void Clear();
-
 #ifdef NWN_CLASS_EXTENSION_CNWSPlayerLUOAppearanceInfo
     NWN_CLASS_EXTENSION_CNWSPlayerLUOAppearanceInfo
 #endif
