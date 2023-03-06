@@ -20,6 +20,7 @@ using MainLoopHandlerType  = void (*)(uint64_t);
 using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
+using AssertHandlerType = void (*)(const char*, const char*);
 
 struct AllHandlers
 {
@@ -27,6 +28,7 @@ struct AllHandlers
     RunScriptHandlerType RunScript;
     ClosureHandlerType   Closure;
     SignalHandlerType    SignalHandler;
+    AssertHandlerType    AssertHandler;
 };
 static AllHandlers s_handlers;
 
@@ -161,6 +163,25 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
                 else
                 {
                     s_handlers.SignalHandler(message[0].c_str());
+                }
+            });
+    }
+
+    if (s_handlers.AssertHandler)
+    {
+        LOG_DEBUG("Registered native assertion handler: %p", s_handlers.AssertHandler);
+        MessageBus::Subscribe("NWNX_ASSERT_FAIL",
+            [](const std::vector<std::string>& message)
+            {
+                if (API::Globals::VirtualMachine())
+                {
+                    Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    Utils::PopScriptContext();
+                }
+                else
+                {
+                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
                 }
             });
     }
