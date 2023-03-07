@@ -7,7 +7,6 @@ docker
 LICENSE
 *.md
 .git*
-.circleci
 .idea/
 .vscode/
 Binaries/
