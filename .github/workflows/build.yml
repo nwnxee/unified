@@ -33,6 +33,7 @@ jobs:
       image: docker://nwnxee/builder:latest
     steps:
     - uses: actions/checkout@v3
+    - run: git config --system --add safe.directory /__w/unified/unified
 
     - name: Set outputs
       id: vars
@@ -168,6 +169,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
+      - run: git config --system --add safe.directory /__w/unified/unified
 
       - name: Set outputs
         id: vars
