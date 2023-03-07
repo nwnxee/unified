@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - update-ci
     paths-ignore:
       - '**.md'
       - 'docgen/**'
@@ -33,7 +32,7 @@ jobs:
     container:
       image: docker://nwnxee/builder:latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set outputs
       id: vars
@@ -49,7 +48,7 @@ jobs:
           echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> $GITHUB_OUTPUT
 
     - name: ccache cache files
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .ccache
         key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
@@ -119,21 +118,21 @@ jobs:
       run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
 
     - name: Upload Binaries
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: github.event_name == 'push'
       with:
        path: ./NWNX-EE.zip
        name: NWNX-EE.zip
 
     - name: Upload Scripts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: github.event_name == 'push'
       with:
         path: ./NWScript.zip
         name: NWScript.zip
 
     - name: Upload Tar Binaries for Docker
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: github.event_name == 'push'
       with:
         name: NWNX-EE.tar
@@ -168,7 +167,7 @@ jobs:
     if: github.event_name == 'push'
     needs: build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set outputs
         id: vars
@@ -179,21 +178,21 @@ jobs:
           echo "nwn_build_revision=$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
 
       - name: Download Binaries
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: NWNX-EE.tar
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USERNAME }}
@@ -201,7 +200,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: ./
           file: ./gha.Dockerfile
@@ -248,7 +247,7 @@ jobs:
         run: |
           echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           path: ./upload_url
           name: upload_url
@@ -260,19 +259,19 @@ jobs:
 
     steps:
     - name: Download Binaries
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v3
       with:
         name: NWNX-EE.zip
         path: ./
 
     - name: Download Scripts
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v3
       with:
         name: NWScript.zip
         path: ./
 
     - name: Download URL
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v3
       with:
         name: upload_url
         path: ./
