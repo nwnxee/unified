@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - '**.md'
       - 'docgen/**'
-      - '.circleci/**'
       - 'builder.Dockerfile'
   pull_request:
     branches:
@@ -15,7 +14,6 @@ on:
     paths-ignore:
       - '**.md'
       - 'docgen/**'
-      - '.circleci/**'
       - 'builder.Dockerfile'
 
 env:
