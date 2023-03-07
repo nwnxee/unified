@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - update-ci
     paths-ignore:
       - '**.md'
       - 'docgen/**'
@@ -28,7 +29,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container:
       image: docker://nwnxee/builder:latest
     steps:
@@ -165,7 +166,7 @@ jobs:
            ./NWScript.zip
 
   docker:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: github.event_name == 'push'
     needs: build
     steps:
@@ -230,7 +231,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: build
 
     steps:
@@ -256,7 +257,7 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: release
 
     steps:
