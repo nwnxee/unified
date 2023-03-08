@@ -93,7 +93,7 @@ struct CNWSObject : CGameObject
     CExoLinkedList<CNWSObjectActionNode> m_lQueuedActions;
     CNWSScriptVarTable m_ScriptVars;
     CExoArrayList<CGameEffect *> m_appliedEffects;
-    CExoArrayList<CLoopingVisualEffect *> m_lstLoopingVisualEffects;
+    CExoArrayList<CLoopingVisualEffect> m_lstLoopingVisualEffects;
     CExoArrayList<OBJECT_ID> m_lstEffectTargets;
     BOOL m_bPendingEffectRemoval;
     uint32_t m_nSavingThrowSpellId;

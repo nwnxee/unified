@@ -42,7 +42,7 @@ struct CNWSPlayerLastUpdateObject
     CNWActionNode m_pActionQueueList[10];
     uint8_t * m_pAutoMapTileData;
     OBJECT_ID m_oidAutoMapArea;
-    CExoArrayList<CNWVisibilityNode *> m_lstVisibilityList;
+    CExoArrayList<CNWVisibilityNode> m_lstVisibilityList;
     CExoArrayList<uint32_t> m_pKnownSpellList[8][10];
     CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[8][10];
     CExoArrayList<uint32_t> m_lstKnownSpellsToDelete[8];

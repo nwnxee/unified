@@ -208,7 +208,7 @@ NWNX_EXPORT ArgumentStack GetHasVisualEffect(ArgumentStack&& args)
         auto& vfx = pObject->m_lstLoopingVisualEffects;
         for (int k = 0; k < vfx.num; k++)
         {
-            if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
+            if (vfx.element[k].m_nId == nVfx)
             {
                 return true;
             }
@@ -433,7 +433,7 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
             LOG_WARNING("NWNX_Object_Export() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
             alias = "NWNX";
         }
-		
+
         auto ExportObject = [&](RESTYPE resType) -> void
         {
             std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
@@ -698,8 +698,8 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
             }
 
             uint32_t prevSpellId;
-            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus); 
-            if(spellId>=0) 
+            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus);
+            if(spellId>=0)
             {
                 if(pAoEObject)
                 {
@@ -710,12 +710,12 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
                 {
                     prevSpellId = pVersus->m_nLastSpellId;
                     pVersus->m_nLastSpellId = spellId;
-                } 
+                }
             }
 
             auto ret = pObject->DoSpellImmunity(pVersus);
 
-            if(spellId>=0) 
+            if(spellId>=0)
             {
                 if(pAoEObject)
                 {
@@ -724,7 +724,7 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
                 else
                 {
                     pVersus->m_nLastSpellId = prevSpellId;
-                } 
+                }
             }
 
             return ret;
@@ -754,12 +754,12 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
                 spellLevel = -1;
                 spellSchool = -1;
             }
-            
+
             ASSERT_OR_THROW(spellLevel <= 10);
             ASSERT_OR_THROW(spellSchool <= 8);
-            
+
             auto pCaster = Utils::AsNWSCreature(pVersus);
-            if(!pCaster) 
+            if(!pCaster)
                 return -1;
 
             if(pObject->m_appliedEffects.num < 1)
@@ -782,12 +782,12 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
             }
 
             uint8_t prevSpellLevel;
-            BOOL prevLastItemCastSpell; 
+            BOOL prevLastItemCastSpell;
             if(pSpell && spellLevel >= 0)
             {
                 prevLastItemCastSpell = pCaster->m_bLastItemCastSpell;
                 prevSpellLevel = pSpell->m_nInnateLevel;
-                
+
                 pCaster->m_bLastItemCastSpell = 1; // DoSpellLevelAbsorption uses innate level in case of item spells
                 pSpell->m_nInnateLevel = spellLevel;
             }

@@ -84,7 +84,6 @@ struct CVirtualMachine
     BOOL StackPushEngineStructure(int32_t nEngineStructure, void * pEngineStructure);
     void DeleteScriptSituation(void * pScript);
     int32_t ExecuteCode(int32_t * nInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
-    BOOL Test_RunAllScriptsInDirectory(CExoString & sRunDirectoryAlias);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
     void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData, DataBlockRef pDataNDB = nullptr);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);

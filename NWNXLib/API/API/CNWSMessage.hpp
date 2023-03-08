@@ -360,10 +360,10 @@ struct CNWSMessage : CNWMessage
     uint32_t ComputeAppearanceUpdateRequired(CNWSObject * pGameObject, CLastUpdateObject * pLastUpdateObject);
     BOOL ComputeInventoryUpdateRequired(CNWSPlayer * pPlayer, uint32_t nInventorySlot, CNWSPlayerInventoryGUI * pInventoryGUI);
     BOOL ComputeRepositoryUpdateRequired(CNWSPlayer * pPlayer, CExoLinkedListPosition pPosition, CExoLinkedListPosition pOldPosition);
-    void AssignVisualEffectLists(CExoArrayList<CLoopingVisualEffect *> * pTargetList, CExoArrayList<CLoopingVisualEffect *> * pSourceList);
-    BOOL CompareVisualEffectLists(CExoArrayList<CLoopingVisualEffect *> * pSourceList1, CExoArrayList<CLoopingVisualEffect *> * pSourceList2);
+    void AssignVisualEffectLists(CExoArrayList<CLoopingVisualEffect> * pTargetList, CExoArrayList<CLoopingVisualEffect> * pSourceList);
+    BOOL CompareVisualEffectLists(const CExoArrayList<CLoopingVisualEffect> * pSourceList1, const CExoArrayList<CLoopingVisualEffect> * pSourceList2);
     void AssignCreatureLists(CExoArrayList<OBJECT_ID> * pSourceList, CExoArrayList<OBJECT_ID> * pTargetList);
-    BOOL CompareCreatureLists(CExoArrayList<OBJECT_ID> * pSourceList, CExoArrayList<OBJECT_ID> * pTargetList);
+    BOOL CompareCreatureLists(const CExoArrayList<OBJECT_ID> * pSourceList, const CExoArrayList<OBJECT_ID> * pTargetList);
     void UpdateLastUpdateVisibilityList(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     BOOL ComputeVisibilityLists(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     uint32_t ComputeUpdateRequired(CNWSPlayer * pPlayer, CNWSObject * pGameObject, CLastUpdateObject * pLastUpdateObject, BOOL bPlayerObject);

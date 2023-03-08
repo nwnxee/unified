@@ -91,6 +91,8 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     OBJECT_ID m_oidLastItemEquippedBy;
     OBJECT_ID m_oidLastItemUnequipped;
     OBJECT_ID m_oidLastItemUnequippedBy;
+    int32_t m_nLastItemEquippedSlot;
+    int32_t m_nLastItemUnequippedSlot;
     OBJECT_ID m_oidLastRested;
     uint8_t m_nLastRestEventType;
     OBJECT_ID m_oidLastPlayerDied;

@@ -45,7 +45,7 @@ struct SSubNetProfile;
 namespace NWSync {
 struct Advertisement; // NWSyncAdvertisement
 }
-struct AdvertLUT { 
+struct AdvertLUT {
     std::unordered_map<CExoString, std::vector<void*>> m_map;
 };
 
@@ -280,8 +280,6 @@ struct CServerExoAppInternal
     BOOL UpdateShutdownTimer(uint64_t nTime);
     BOOL UpdateLogHeartbeatTimer(uint64_t nTime);
     BOOL UpdateAutoSaveTimer();
-    BOOL Test_Unit_Script_Compile();
-    BOOL Test_Unit_Script_Run();
     void AddSubNetProfile(uint32_t nPlayerID, CExoString sPlayerName, CExoString sCDPublicKey);
     void RemoveSubNetProfile(uint32_t nPlayerID);
     void AddSubNetProfileRecvSize(uint32_t nPlayerID, uint32_t nSize);

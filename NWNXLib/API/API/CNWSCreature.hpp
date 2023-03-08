@@ -158,7 +158,7 @@ struct CNWSCreature : CNWSObject
     uint8_t m_nLastMoveSilentlyRoll;
     uint8_t m_nLastSpotRoll;
     uint8_t m_nLastListenRoll;
-    CExoArrayList<CNWVisibilityNode *> m_pVisibleCreaturesList;
+    CExoArrayList<CNWVisibilityNode> m_pVisibleCreaturesList;
     OBJECT_ID m_oidInvitedToPartyBy;
     BOOL m_bInvitedToParty;
     uint32_t m_nInvitedToPartyDay;

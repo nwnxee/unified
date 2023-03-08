@@ -56,7 +56,7 @@ struct CLastUpdateObject
     CExoLocString m_sLocLastName;
     float m_fWalkRate;
     float m_fRunRate;
-    CExoArrayList<CLoopingVisualEffect *> m_lstLoopingVisualEffects;
+    CExoArrayList<CLoopingVisualEffect> m_lstLoopingVisualEffects;
     uint16_t m_nAssociateState;
     uint8_t m_nDamageLevel;
     uint8_t m_nDomain1;
