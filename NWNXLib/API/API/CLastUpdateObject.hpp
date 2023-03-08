@@ -126,7 +126,7 @@ struct CLastUpdateObject
 
     CLastUpdateObject();
     ~CLastUpdateObject();
-    const ObjectVisualTransformData & GetVisualTransformData();
+    const ObjectVisualTransformData & GetVisualTransformData() const;
     void SetVisualTransformData(const ObjectVisualTransformData & data);
     void InitializeQuickbar();
 

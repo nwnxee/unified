@@ -143,7 +143,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerArea_SetName(CNWSPlayer * player, OBJECT_ID oidArea);
     BOOL SendServerToPlayerArea_Destroyed(CNWSPlayer * player, OBJECT_ID oidArea);
     BOOL SendServerToPlayerUpdateSkyBox(int32_t nSkyBox, OBJECT_ID oidArea);
-    BOOL SendServerToPlayerUpdateFogColor(uint32_t nSunFogColor, uint32_t nMoonFogColor, OBJECT_ID oidArea);
+    BOOL SendServerToPlayerUpdateFogColor(uint32_t nSunFogColor, uint32_t nMoonFogColor, OBJECT_ID oidArea, float fFadeTime);
     BOOL SendServerToPlayerUpdateFogAmount(uint8_t nSunFogAmount, uint8_t nMoonFogAmount, OBJECT_ID oidArea);
     BOOL SendServerToPlayerArea_UpdateWind(CNWSPlayer * pPlayer, Vector vDirection, float fMagnitude, float fYaw, float fPitch);
     BOOL SendServerToPlayerSetCustomToken(uint32_t nPlayerID, int32_t nCustomTokenNumber, const CExoString & sTokenValue);
@@ -336,7 +336,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerPolymorph(CNWSPlayer * pPlayer, OBJECT_ID oidMorpher, BOOL bMorphing, BOOL bAllowCancel);
     BOOL HandlePlayerToServerCutscene(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerPlayerList(CNWSPlayer * pPlayer, uint8_t nMinor);
-    BOOL SendServerToPlayerGuiEvent_Disable(uint32_t nPlayerId, int32_t nGuiElement, BOOL bDisable);
+    BOOL SendServerToPlayerGuiEvent_Disable(CNWSPlayer *pPlayer, int32_t nGuiElement, BOOL bDisable, OBJECT_ID oidTarget = NWNXLib::API::Constants::OBJECT_INVALID);
     BOOL HandlePlayerToServerDevice(CNWSPlayer * pPlayer, uint8_t nMinor);
     //BOOL SendServerToPlayerNui_Create(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, Nui::JSON::WindowIdentifier sId, const json & jData);
     BOOL SendServerToPlayerNui_CreateClient(CNWSPlayer * pPlayer, Nui::JSON::WindowToken cToken, Nui::JSON::WindowIdentifier sId, const CResRef & cResRef);

@@ -118,7 +118,7 @@ struct LerpFloat
     float Progress() const { return 1.0; }
     float Lerped() const { return m_value_to; }
 
-    void WriteGFF(CResGFF* pRes, CResStruct* pStruct, char* szLabel);
+    void WriteGFF(CResGFF* pRes, CResStruct* pStruct, char* szLabel) const;
 
     void AssignStatic(float to)
     {

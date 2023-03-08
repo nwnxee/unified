@@ -44,7 +44,6 @@ struct CRes
     virtual BOOL OnResourceFreed();
     virtual BOOL OnResourceServiced();
     int32_t Release();
-    int32_t Request();
     void SetID(RESID nNewID);
 
 
