@@ -35,7 +35,6 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static int32_t s_tickCount;
 static size_t s_resRefIndex;
 static std::vector<std::string> s_listResRefs;
 static std::unique_ptr<CScriptCompiler> s_scriptCompiler;
@@ -65,31 +64,6 @@ static auto s_id = MessageBus::Subscribe("NWNX_CORE_SIGNAL",
             }
         }
     });
-
-static Hooks::Hook s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
-    +[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
-    {
-        static int ticks;
-        static time_t previous;
-
-        auto retVal = s_MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
-
-        time_t current = time(nullptr);
-
-        if (current == previous)
-        {
-            ticks++;
-        }
-        else
-        {
-            s_tickCount = ticks;
-            previous = current;
-            ticks = 1;
-        }
-
-        return retVal;
-    }, Hooks::Order::Earliest);
-
 
 NWNX_EXPORT ArgumentStack GetCurrentScriptName(ArgumentStack&& args)
 {
@@ -301,11 +275,6 @@ NWNX_EXPORT ArgumentStack GetNextResRef(ArgumentStack&&)
     }
 
     return retVal;
-}
-
-NWNX_EXPORT ArgumentStack GetServerTicksPerSecond(ArgumentStack&&)
-{
-    return s_tickCount;
 }
 
 NWNX_EXPORT ArgumentStack GetLastCreatedObject(ArgumentStack&& args)

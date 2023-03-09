@@ -440,6 +440,11 @@ int NWNX_Util_Get2DARowCount(string str);
 /// @return The script file contents or "" on error.
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
+/// @brief Get the ticks per second of the server.
+/// @remark Useful to dynamically detect lag and adjust behavior accordingly.
+/// @return The ticks per second.
+int NWNX_Util_GetServerTicksPerSecond();
+
 int NWNX_Util_IsValidResRef(string resref, int type = RESTYPE_UTC)
 {
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_IsValidResRef");
@@ -457,4 +462,10 @@ string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_GetNSSContents");
     string s = ResManGetFileContents(sScriptName, RESTYPE_NSS);
     return nMaxLength == -1 ? s : GetStringLeft(s, nMaxLength);
+}
+
+int NWNX_Util_GetServerTicksPerSecond()
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Util_GetServerTicksPerSecond");
+    return GetTickRate();
 }
