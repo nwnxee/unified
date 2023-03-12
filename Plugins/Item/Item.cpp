@@ -126,7 +126,7 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetEntireItemAppearance(ArgumentStack&& args)
 {
     std::stringstream retval;
-    char buf[4];
+    char buf[5];
 
     if (auto *pItem = Utils::PopItem(args))
     {
@@ -138,12 +138,12 @@ NWNX_EXPORT ArgumentStack GetEntireItemAppearance(ArgumentStack&& args)
 
         for (int idx = 0; idx < 3; idx++)
         {
-            sprintf(buf, "%02X", pItem->m_nModelPart[idx]);
+            sprintf(buf, "%04X", pItem->m_nModelPart[idx]);
             retval << buf;
         }
         for (int idx = 0; idx < 19; idx++)
         {
-            sprintf(buf, "%02X", pItem->m_nArmorModelPart[idx]);
+            sprintf(buf, "%04X", pItem->m_nArmorModelPart[idx]);
             retval << buf;
         }
         for (uint8_t texture = 0; texture < 6; texture++)
@@ -164,30 +164,48 @@ NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
     if (auto *pItem = Utils::PopItem(args))
     {
         const auto sAppString = args.extract<std::string>();
-        int  stringPos = 0;
-        int  strLength = sAppString.length();
+        const auto strLength = sAppString.length();
+        size_t stringPos = 0;
 
-
-        if (strLength == 2*142 || strLength == 2*28)
+        switch (strLength)
         {
-            for (int idx = 0; idx < 6; idx++)
+            case 56:// No .35 extended model parts, no layered colors.
             {
-                pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-                stringPos += 2;
+                for (int idx = 0; idx < 6; idx++)
+                {
+                    pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                for (int idx = 0; idx < 3; idx++)
+                {
+                    pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                for (int idx = 0; idx < 19; idx++)
+                {
+                    pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                break;
             }
 
-            for (int idx = 0; idx < 3; idx++)
+            case 284: // No .35+ Extended Modelparts
             {
-                pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-                stringPos += 2;
-            }
-            for (int idx = 0; idx < 19; idx++)
-            {
-                pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-                stringPos += 2;
-            }
-            if (strLength == 2*142)
-            {
+                for (int idx = 0; idx < 6; idx++)
+                {
+                    pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                for (int idx = 0; idx < 3; idx++)
+                {
+                    pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                for (int idx = 0; idx < 19; idx++)
+                {
+                    pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
                 for (uint8_t texture = 0; texture < 6; texture++)
                 {
                     for (uint8_t part = 0; part < 19; part++)
@@ -196,12 +214,41 @@ NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
                         stringPos += 2;
                     }
                 }
+                break;
+            }
+
+            case 328:// .35+ Extended Model Parts
+            {
+                for (int idx = 0; idx < 6; idx++)
+                {
+                    pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+                    stringPos += 2;
+                }
+                for (int idx = 0; idx < 3; idx++)
+                {
+                    pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,4), nullptr, 16);
+                    stringPos += 4;
+                }
+                for (int idx = 0; idx < 19; idx++)
+                {
+                    pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,4), nullptr, 16);
+                    stringPos += 4;
+                }
+                for (uint8_t texture = 0; texture < 6; texture++)
+                {
+                    for (uint8_t part = 0; part < 19; part++)
+                    {
+                        pItem->SetLayeredTextureColorPerPart(texture, part, std::stoul(sAppString.substr(stringPos,2), nullptr, 16));
+                        stringPos += 2;
+                    }
+                }
+                break;
             }
         }
     }
     else
     {
-        LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 284");
+        LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 56 or 284 or 328");
     }
     return {};
 }
