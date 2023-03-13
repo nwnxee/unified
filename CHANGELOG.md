@@ -4,8 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.34-HEAD
-https://github.com/nwnxee/unified/compare/build8193.34...HEAD
+## 8193.34Final-HEAD
+https://github.com/nwnxee/unified/compare/build8193.34final...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.34Final
+https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
@@ -27,9 +51,6 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added skippable event `NWNX_ON_BARTER_ADD_ITEM_{BEFORE|AFTER}` which fires when an item is added to the barter window.
 - Experimental: added `NWNX_EXPERIMENTAL_IGNORE_MODULE_VERSION` to ignore the module version when loading. 
 - Events: added `NWNX_ON_OBJECT_USE_{BEFORE|AFTER}` which fires when player uses a placeable.
-
-##### New Plugins
-- N/A
 
 ##### New NWScript Functions
 - Area: GetTileInfoByTileIndex()
@@ -74,9 +95,6 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 
 ### Deprecated
 - Util: PluginExists()
-
-### Removed
-- N/A
 
 ### Fixed
 - Race: Fixed an issue with feat usages being reset upon character relog
