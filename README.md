@@ -2,7 +2,7 @@
 
 # NWNX:EE (build 8193.34 - v86)
 
-- Latest release: [build8193.34-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334-HEAD)
+- Latest release: [build8193.34final-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334final-HEAD)
 - Docker tag: `nwnxee/unified:latest`
 - nwserver-linux md5: `1d17b4cc7680fc4defbd36dcc5bd9e9b`
 
