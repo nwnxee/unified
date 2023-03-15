@@ -35,9 +35,7 @@ struct CVirtualMachineStack
     BOOL SaveStack(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadStack(CResGFF * pRes, CResStruct * pStruct);
     void ClearStack();
-    int32_t GetBasePointer();
-    void SetBasePointer(int32_t nSize);
-    int32_t GetStackPointer();
+    inline int32_t GetStackPointer() { return m_nStackPointer; }
     void SetStackPointer(int32_t nSize);
 
 
