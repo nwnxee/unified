@@ -51,7 +51,7 @@ var NAVTREEINDEX =
 "group__player.html#ga1b56a647b228119c3977dc8fc567d548",
 "group__race.html#ga2764ca25d58580933fe71c0643636eb4",
 "group__tileset.html#ga1e227a98d7129a15fe1a6d3180b4850d",
-"group__webhook.html#autotoc_md560",
+"group__webhook.html#autotoc_md566",
 "nwnx__redis_8nss.html#abc16c5a2e9eeab572b7a457d2cd36ab0",
 "nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d",
 "structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742"
