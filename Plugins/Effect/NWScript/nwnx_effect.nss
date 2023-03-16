@@ -120,6 +120,7 @@ void NWNX_Effect_Apply(effect eEffect, object oObject);
 
 /// @brief Sets an effect creator.
 /// @param eEffect The effect to be modified.
+/// @param oObject The effect creator.
 /// @return The effect with creator field set.
 effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject);
 
