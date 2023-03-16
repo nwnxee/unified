@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.34Final-HEAD
-https://github.com/nwnxee/unified/compare/build8193.34final...HEAD
+## Unreleased
+https://github.com/nwnxee/unified/compare/build8193.35...HEAD
 
 ### Added
 - N/A
@@ -27,6 +27,77 @@ https://github.com/nwnxee/unified/compare/build8193.34final...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.35
+https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35
+
+### Added
+- Administration: added `NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES` to {Get|Set}PlayOption.
+- Effect: added `NWNX_EFFECT_EXTEND_DURATION_TYPE` which extends ApplyEffectToObject() to apply effects with `DURATION_TYPE_EQUIPPED` and `DURATION_TYPE_INNATE`.
+- SQL: added `CHARACTER_SET` support to PostgresSQL.
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES` to cache nwscript debugger instances, improving GetScriptBacktrace() performance.
+
+##### New NWScript Functions
+- Area: SetDefaultObjectUiDiscoveryMask()
+- Effect: SetEffectCreator()
+- Effect: GetIsEffectValid()
+- Effect: GetAppliedEffectCount()
+- Effect: GetAppliedEffect()
+- Events: UnsubscribeAllStartingWith()
+- Object: ForceAssignUUID()
+- Player: GetGameObject()
+- Player: SetObjectUiDiscoveryMaskOverride()
+- SQL: PostgreSQL_SetNextQueryResultsBinaryMode()
+
+### Changed
+- SQL: Sqlite support now uses the sqlite3 embedded in NWNX.
+- Core: NWScript NWNX Functions are now also blocked in DelayCommand/AssignCommand spawned from script chunks unless disabled by config.
+- Item: GetEntireItemAppearance() and RestoreItemAppearance() now support the new extended model part range.
+
+### Removed
+- The following tweaks / optimizations have been removed due to being fixed or added in the basegame:
+  - `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION`
+  - `NWNX_TWEAKS_FIX_DM_FACTION_BUG`
+  - `NWNX_TWEAKS_FIX_DM_SELECTION_BOX`
+  - `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG`
+  - `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG`
+  - `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME` `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME_LOADING`
+  - `NWNX_OPTIMIZATIONS_RECONCILE_AUTOMAP_DATA`
+  - `NWNX_OPTIMIZATIONS_UPDATE_LIST_COMPARISONS`
+- The following NWNX NWScript functions have been removed due to being implemented in the basegame, see [Compatibility/nwnx_deprecated.nss](Compatibility/nwnx_deprecated.nss) for more information!
+  - Creature: GetMemorisedSpellCountByLevel()
+  - Creature: GetMemorisedSpell()
+  - Creature: SetMemorisedSpell()
+  - Creature: GetKnownSpellCount()
+  - Creature: GetKnownSpell()
+  - Creature: ClearMemorisedKnownSpells()
+  - Creature: ClearMemorisedSpell()
+  - Creature: {Get|Set}Soundset()
+  - Creature: SetGender()
+  - Creature: RestoreSpells()
+  - Creature: GetDomain()
+  - Creature: GetSpecialization()
+  - Creature: GetSpellUsesLeft()
+  - Creature: GetMemorizedSpellReadyCount()
+  - Effect: SetEffectExpiredScript()
+  - Effect: GetEffectExpiredData()
+  - Effect: GetEffectExpiredCreator()
+  - Effect: AccessorizeVisualEffect() 
+  - Object: StringToObject()
+  - Object: CheckFit()
+  - Object: AddIconEffect()
+  - Object: RemoveIconEffect()
+  - Object: SetFacing()
+  - Regex: Search()
+  - Regex: Replace()
+  - Regex: Match()
+  - Util: IsValidResRef()
+  - Util: Get2DARowCount()
+  - Util: GetNSSContents()
+  - Util: GetServerTicksPerSecond()
+
+### Fixed
+- Item: SetItemAppearance() now properly works with WeaponColor/Model, identical to CopyItemAndModify()
 
 ## 8193.34Final
 https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final
