@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35...HEAD
+https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 
 ### Added
 - N/A
@@ -28,8 +28,8 @@ https://github.com/nwnxee/unified/compare/build8193.35...HEAD
 ### Fixed
 - N/A
 
-## 8193.35
-https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35
+## 8193.35.36
+https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36
 
 ### Added
 - Administration: added `NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES` to {Get|Set}PlayOption.
