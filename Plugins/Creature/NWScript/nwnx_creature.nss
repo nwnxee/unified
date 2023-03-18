@@ -693,12 +693,6 @@ int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int 
 /// @param nAssociateType The associate type, one of ASSOCIATE_TYPE_*, except _NONE
 void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssociateType);
 
-/// @brief Set whether an effect icon is flashing or not.
-/// @param oCreature The target creature.
-/// @param nIconId The icon id, see effecticons.2da.
-/// @param bFlashing TRUE for flashing, FALSE for not flashing.
-void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing);
-
 /// @brief Override the damage level of oCreature.
 /// @note Damage levels are the damage state under a creature's name, for example: 'Near Death'
 /// @param oCreature The target creature.
@@ -2005,16 +1999,6 @@ void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssoci
     NWNX_PushArgumentObject(oAssociate);
     NWNX_PushArgumentObject(oCreature);
 
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing)
-{
-    string sFunc = "SetEffectIconFlashing";
-
-    NWNX_PushArgumentInt(bFlashing);
-    NWNX_PushArgumentInt(nIconId);
-    NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 

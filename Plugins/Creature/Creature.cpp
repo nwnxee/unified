@@ -2205,27 +2205,6 @@ NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack SetEffectIconFlashing(ArgumentStack&& args)
-{
-    if (auto* pCreature = Utils::PopCreature(args))
-    {
-        auto iconId = args.extract<int32_t>();
-          ASSERT_OR_THROW(iconId >= 0);
-          ASSERT_OR_THROW(iconId <= 255);
-        auto flashing = !!args.extract<int32_t>();
-
-        for (auto* effectIconObject : pCreature->m_aEffectIcons)
-        {
-            if (effectIconObject->m_nIcon == iconId && effectIconObject->m_nPlayerBar)
-            {
-                effectIconObject->m_bFlashing = flashing;
-            }
-        }
-    }
-
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack OverrideDamageLevel(ArgumentStack&& args)
 {
     static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(&CNWSObject::GetDamageLevel,

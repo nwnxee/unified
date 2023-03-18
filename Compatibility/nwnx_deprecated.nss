@@ -142,6 +142,12 @@ int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiCla
 /// @return The number of spell uses left or 0 on error.
 int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE);
 
+/// @brief Set whether an effect icon is flashing or not.
+/// @param oCreature The target creature.
+/// @param nIconId The icon id, see effecticons.2da.
+/// @param bFlashing TRUE for flashing, FALSE for not flashing.
+void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing);
+
 int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level)
 {
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetMemorisedSpellCountByLevel");
@@ -245,6 +251,12 @@ int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, in
 {
     WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_GetMemorizedSpellReadyCount");
     return GetSpellUsesLeft(oCreature, GetClassByPosition(nMultiClass + 1), nSpellID, nMetaMagic);
+}
+
+void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing)
+{
+    WriteTimestampedLogEntry("WARNING: Calling deprecated NWNX Function: NWNX_Creature_SetEffectIconFlashing");
+    SetEffectIconFlashing(oCreature, nIconId, bFlashing);
 }
 
 // *** NWNX_Effect

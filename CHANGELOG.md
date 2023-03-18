@@ -79,6 +79,7 @@ https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36
   - Creature: GetSpecialization()
   - Creature: GetSpellUsesLeft()
   - Creature: GetMemorizedSpellReadyCount()
+  - Creature: SetEffectIconFlashing()
   - Effect: SetEffectExpiredScript()
   - Effect: GetEffectExpiredData()
   - Effect: GetEffectExpiredCreator()
