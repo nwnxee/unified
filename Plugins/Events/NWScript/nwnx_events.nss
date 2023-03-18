@@ -652,7 +652,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    SPELL_MULTICLASS      | int | Index of the spell casting class (0-2) |
+    SPELL_MULTICLASS      | int | Index of the spell casting class (0-7) |
     SPELL_SLOT            | int | |
     SPELL_ID              | int | |
     SPELL_DOMAIN          | int | |
@@ -669,7 +669,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    SPELL_MULTICLASS      | int    | Index of the spell casting class (0-2) |
+    SPELL_MULTICLASS      | int    | Index of the spell casting class (0-7) |
     SPELL_LEVEL           | int    | |
     SPELL_SLOT            | int    | |
 
@@ -1701,10 +1701,10 @@ const string NWNX_ON_DISARM_BEFORE = "NWNX_ON_DISARM_BEFORE";
 const string NWNX_ON_DISARM_AFTER = "NWNX_ON_DISARM_AFTER";
 const string NWNX_ON_CAST_SPELL_BEFORE = "NWNX_ON_CAST_SPELL_BEFORE";
 const string NWNX_ON_CAST_SPELL_AFTER = "NWNX_ON_CAST_SPELL_AFTER";
-const string NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE = "NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE";
-const string NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER = "NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER";
-const string NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE = "NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE";
-const string NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER = "NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER";
+const string NWNX_ON_SET_MEMORIZED_SPELL_SLOT_BEFORE = "NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE";
+const string NWNX_ON_SET_MEMORIZED_SPELL_SLOT_AFTER = "NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER";
+const string NWNX_ON_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE = "NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE";
+const string NWNX_ON_CLEAR_MEMORIZED_SPELL_SLOT_AFTER = "NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER";
 const string NWNX_ON_SPELL_INTERRUPTED_BEFORE = "NWNX_ON_SPELL_INTERRUPTED_BEFORE";
 const string NWNX_ON_SPELL_INTERRUPTED_AFTER = "NWNX_ON_SPELL_INTERRUPTED_AFTER";
 const string NWNX_ON_HEALER_KIT_BEFORE = "NWNX_ON_HEALER_KIT_BEFORE";

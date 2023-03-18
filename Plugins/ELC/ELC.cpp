@@ -133,7 +133,7 @@ const int32_t STRREF_CUSTOM                                 = 164;
 
 // Magic Numbers
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
-const int32_t NUM_MULTICLASS                = 3;
+const int32_t NUM_MULTICLASS                = 8;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
 const int32_t NUM_SPELL_LEVELS              = 10;
 

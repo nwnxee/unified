@@ -528,7 +528,7 @@ NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -552,7 +552,7 @@ NWNX_EXPORT ArgumentStack SetRemainingSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(slots >= 0);
           ASSERT_OR_THROW(slots <= 255);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -576,7 +576,7 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -599,7 +599,7 @@ NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
         const auto spellId = args.extract<int32_t>();
           ASSERT_OR_THROW(spellId >= 0);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -625,7 +625,7 @@ NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
         const auto spellId = args.extract<int32_t>();
           ASSERT_OR_THROW(spellId >= 0);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -806,7 +806,7 @@ NWNX_EXPORT ArgumentStack SetDomain(ArgumentStack&& args)
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
           ASSERT_OR_THROW(pClass != nullptr);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -833,7 +833,7 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
           ASSERT_OR_THROW(pClass != nullptr);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
