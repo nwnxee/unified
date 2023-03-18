@@ -96,7 +96,8 @@ namespace ValidationFailureSubType
         SkillListComparison,
         FeatListComparison,
         MiscSavingThrow,
-        NumFeatComparison
+        NumFeatComparison,
+        NumMulticlass
     };
 }
 // Validation Failure STRREFS
@@ -109,6 +110,7 @@ const int32_t STRREF_CHARACTER_NON_PLAYER_CLASS             = 66167;
 const int32_t STRREF_CHARACTER_TOO_MANY_HITPOINTS           = 3109;
 const int32_t STRREF_CHARACTER_SAVING_THROW                 = 8066;
 const int32_t STRREF_CHARACTER_INVALID_ABILITY_SCORES       = 63761;
+const int32_t STRREF_CHARACTER_NUMBERMULTICLASSES           = 63764;
 const int32_t STRREF_ITEM_LEVEL_RESTRICTION                 = 68521;
 const int32_t STRREF_SKILL_UNUSEABLE                        = 63815;
 const int32_t STRREF_SKILL_INVALID_RANKS                    = 66165;
@@ -238,6 +240,18 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                 }
             }
             // **********************************************************************************************************************
+
+            if (pCreatureStats->m_nNumMultiClasses > std::clamp<int32_t>(Globals::Rules()->GetRulesetIntEntry("MULTICLASS_LIMIT", 3), 1, 8))
+            {
+                if (auto strrefFailure = HandleValidationFailure(
+                        ValidationFailureType::Character,
+                        ValidationFailureSubType::NumMulticlass,
+                        STRREF_CHARACTER_NUMBERMULTICLASSES))
+                {
+                    *bFailedServerRestriction = true;
+                    return strrefFailure;
+                }
+            }
 
             // *** Level Hack Check *************************************************************************************************
             // Character level is stored in an uint8_t which means if a character has say 80/80/120 as their levels it'll wrap around
