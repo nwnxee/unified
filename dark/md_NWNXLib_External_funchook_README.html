@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.34</span>
+								&#160;<span id="projectnumber">8193.35.36</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,41 +100,125 @@ $(document).ready(function(){initNavTree('md_NWNXLib_External_funchook_README.ht
 <div class="title">Funchook - an API hook library </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md177"></a>
-NOTE</h1>
-<p>This is a minimal copy of the original <a href="https://github.com/kubo/funchook">funchook repo</a>, including only the files necessary for NWNX to work.</p>
-<hr  />
-<p>This library depends on <a href="https://github.com/gdabah/distorm/">diStorm3</a>.</p>
-<p><a href="https://travis-ci.org/kubo/funchook"><object type="image/svg+xml" data="https://travis-ci.org/kubo/funchook.svg?branch=master" style="pointer-events: none;">Build Status</object></a> <a href="https://ci.appveyor.com/project/kubo/funchook/branch/master"><img src="https://ci.appveyor.com/api/projects/status/molkbu0csbshbnmh/branch/master?svg=true" alt="Build status" class="inline"/></a></p>
-<h2><a class="anchor" id="autotoc_md179"></a>
-TODO</h2>
+<div class="textblock"><p><a href="https://github.com/kubo/funchook/actions/workflows/run-tests.yml"><object type="image/svg+xml" data="https://github.com/kubo/funchook/actions/workflows/run-tests.yml/badge.svg?branch=master" style="pointer-events: none;">tests</object></a></p>
+<p>This library depends on one of the following disassemblers.</p>
+<p>On x86_64 and x86</p><ul>
+<li><a href="https://github.com/gdabah/distorm/">diStorm3</a> (default)</li>
+<li><a href="https://github.com/zyantific/zydis">zydis</a> (when <code>-DFUNCHOOK_DISASM=zydis</code> is passed to the <code>cmake</code> command)</li>
+<li><a href="https://github.com/aquynh/capstone">capstone</a> (when <code>-DFUNCHOOK_DISASM=capstone</code> is passed to the <code>cmake</code> command)</li>
+</ul>
+<p>On arm64</p><ul>
+<li><a href="https://github.com/aquynh/capstone">capstone</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md181"></a>
+TODO</h1>
 <ul>
 <li>write documents.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md180"></a>
-Supported Platforms</h2>
+<h1><a class="anchor" id="autotoc_md182"></a>
+News</h1>
+<h2><a class="anchor" id="autotoc_md183"></a>
+1.1.1 (2022-10-02)</h2>
 <ul>
-<li>Linux x86_64 (*1)</li>
-<li>Linux x86 (*1)</li>
-<li>OS X x86_64 (*1) (Xcode version &lt;= 10.3(*3))</li>
-<li>OS X x86 (*1) (Xcode version &lt;= 10.1(*4))</li>
-<li>Windows x64 (*2) (except C-runtime functions under <a href="https://www.winehq.org/">Wine</a>)</li>
-<li>Windows 32-bit (*2)</li>
+<li>More permissive check for page allocation mmap (<a href="https://github.com/kubo/funchook/pull/25">#25</a>)</li>
+<li>Flush instruction cache for arm64. It does nothing for intel CPU.</li>
+<li>Disassember engine<ul>
+<li>Upgrade capstone to 4.0.2</li>
+<li>Upgrade distorm to 3.5.2</li>
 </ul>
-<p>*1 tested on <a href="https://travis-ci.org/kubo/funchook">Travis CI</a> <br  />
- *2 tested on <a href="https://ci.appveyor.com/project/kubo/funchook/branch/master">AppVeyor</a> <br  />
- *3 Unit tests pass with xcode 10.3 on macOS 10.14.4 Mojave but fail with xcode 11.0 on the same macOS version. See <a href="https://travis-ci.org/kubo/funchook/builds/601220026">here</a>. <br  />
- *4 Xcode 10.2 dropped support for building 32-bit apps.</p>
-<h2><a class="anchor" id="autotoc_md181"></a>
-Compilation</h2>
+</li>
+<li>CMakefile<ul>
+<li>Allow user to specify FUNCHOOK_CPU explicitly (<a href="https://github.com/kubo/funchook/pull/19">#19</a>)</li>
+<li>Avoid polluting global include and link dirs (<a href="https://github.com/kubo/funchook/pull/20">#20</a>)</li>
+<li>Use target based compile options for gcc's -Wall (<a href="https://github.com/kubo/funchook/pull/21">#21</a>)</li>
+<li>Use ExternalProject_add to download captone only (<a href="https://github.com/kubo/funchook/pull/30">#30</a>)</li>
+<li>Add option FUNCHOOK_INSTALL (<a href="https://github.com/kubo/funchook/pull/31">#31</a>)</li>
+<li>Use "FUNCHOOK_CPU MATCHES &lt;string&gt;" (<a href="https://github.com/kubo/funchook/pull/32">#32</a>)</li>
+</ul>
+</li>
+<li>Documentation<ul>
+<li>added example usage from python (<a href="https://github.com/kubo/funchook/pull/22">#22</a>)</li>
+</ul>
+</li>
+<li>Fix tests on Android (<a href="https://github.com/kubo/funchook/pull/29">#29</a>)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md184"></a>
+1.1.0 (2020-03-22)</h2>
+<ul>
+<li>Arm64 Linux support. <a href="https://github.com/aquynh/capstone">capstone</a> is used as the disassembler library on arm64.</li>
+<li>Options to use <a href="https://github.com/zyantific/zydis">zydis</a> and <a href="https://github.com/aquynh/capstone">capstone</a> as a disassembler library on x86_64 and x86.</li>
+<li><code>extern "C"</code> was added in funchook.h for C++. (<a href="https://github.com/kubo/funchook/issues/15">#15</a>)</li>
+<li>Libc-compatible functions were removed to simplify code.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md185"></a>
+1.0.0 (2020-01-19)</h2>
+<ul>
+<li><a href="https://github.com/gdabah/distorm/">diStorm3</a> is used as the disassembler library.</li>
+<li>Libc-compatible functions were implemented on Linux in order not to hook function calls issued by funchook itself.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md186"></a>
+Supported Platforms</h1>
+<ul>
+<li>Linux x86_64</li>
+<li>Linux x86</li>
+<li>Linux arm64 (since 1.1.0)</li>
+<li>macOS x86_64 (Functions in executables cannot be hooked when Xcode version &gt;= 11.0. (*1))</li>
+<li>Windows x64 (except C-runtime functions under <a href="https://www.winehq.org/">Wine</a>)</li>
+<li>Windows 32-bit</li>
+</ul>
+<p>*1 <a href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mprotect.2.html"><code>mprotect</code></a> fails with EACCES. <br  />
+</p>
+<h1><a class="anchor" id="autotoc_md187"></a>
+Unsupported Platforms</h1>
+<ul>
+<li>macOS arm64 (*1)</li>
+</ul>
+<p>*1 I received a mail that <a href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mprotect.2.html"><code>mprotect</code></a> failed with <code>EINVAL</code>. Apple seems to prevent executable memory regions from being writable.</p>
+<h1><a class="anchor" id="autotoc_md188"></a>
+Compilation and installation</h1>
+<h2><a class="anchor" id="autotoc_md189"></a>
+Unix</h2>
 <div class="fragment"><div class="line">$ git clone --recursive https://github.com/kubo/funchook.git</div>
-<div class="line">$ cd funchook</div>
-<div class="line">$ ./autogen.sh</div>
-<div class="line">$ ./configure</div>
+<div class="line">$ mkdir build</div>
+<div class="line">$ cd build</div>
+<div class="line">$ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/path/to/install/directory ../funchook</div>
 <div class="line">$ make</div>
-<div class="line">$ make test</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md182"></a>
-Example</h2>
+<div class="line">$ make install</div>
+</div><!-- fragment --><ul>
+<li>Available <a href="https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html"><code>CMAKE_BUILD_TYPE</code></a> values are empty(default), <code>Debug</code>, <code>Release</code>, <code>RelWithDebInfo</code>(release build with debug information) and <code>MinSizeRel</code>.</li>
+<li><p class="startli">When <a href="https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html"><code>CMAKE_INSTALL_PREFIX</code></a> isn't set, funchook is installed at <code>/usr/local</code>.</p>
+<p class="startli">installed files:</p><ul>
+<li><code>${CMAKE_INSTALL_PREFIX}/include/funchook.h</code> (header file)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}/lib/libfunchook.so</code> (symbolic link to <code>libfunchook.so.1</code>)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}/lib/libfunchook.so.1</code> (<a href="https://en.wikipedia.org/wiki/Soname">soname</a>; symbolic link to <code>libfunchook.so.1.1.0</code>)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}/lib/libfunchook.so.1.1.0</code> (shared library)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}/lib/libfunchook.a</code> (static library)</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md190"></a>
+Windows</h2>
+<p>Here is an example to compile funchook with Visual Studio 2017 Win64. Change the argument of <code>-G</code> to use other compilers.</p>
+<div class="fragment"><div class="line">$ git clone --recursive https://github.com/kubo/funchook.git</div>
+<div class="line">$ mkdir build</div>
+<div class="line">$ cd build</div>
+<div class="line">$ cmake -G &quot;Visual Studio 15 2017 Win64&quot; -DCMAKE_INSTALL_PREFIX=c:\path\to\install\directory ..\funchook</div>
+<div class="line">$ cmake --build . --config Release --target INSTALL</div>
+</div><!-- fragment --><ul>
+<li>Available <code>-G</code> arguments (generators) are listed in the output of <code>cmake --help</code>.</li>
+<li>Available <code>--config</code> arguments are <code>Debug</code>(default), <code>Release</code>, <code>RelWithDebInfo</code> and <code>MinSizeRel</code>.</li>
+<li><p class="startli">When <a href="https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html"><code>CMAKE_INSTALL_PREFIX</code></a> isn't set, funchook is installed at <code>c:\Program Files\funchook</code>.</p>
+<p class="startli">installed files:</p><ul>
+<li><code>${CMAKE_INSTALL_PREFIX}\include\funchook.h</code> (header file)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}\bin\funchook.dll</code> (shared library)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}\bin\funchook.pdb</code> (debug file for <code>funchook.dll</code> when <code>--config</code> is <code>Debug</code> or <code>RelWithDebInfo</code>)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}\lib\funchook.lib</code> (static library)</li>
+<li><code>${CMAKE_INSTALL_PREFIX}\lib\funchook_dll.lib</code> (import library for <code>funchook.dll</code>)</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md191"></a>
+Example</h1>
 <div class="fragment"><div class="line"><span class="keyword">static</span> ssize_t (*send_func)(<span class="keywordtype">int</span> sockfd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> flags);</div>
 <div class="line"><span class="keyword">static</span> ssize_t (*recv_func)(<span class="keywordtype">int</span> sockfd, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> flags);</div>
 <div class="line"> </div>
@@ -191,12 +275,59 @@ Example</h2>
 <div class="line">       ...</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md183"></a>
-License</h2>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md192"></a>
+Example - Using Python ctypes</h1>
+<div class="fragment"><div class="line"># should work on python 2.7/3 windows/linux</div>
+<div class="line"> </div>
+<div class="line"># load funchook</div>
+<div class="line">import ctypes</div>
+<div class="line">fh_lib = ctypes.cdll.LoadLibrary(&#39;/path/to/funchook/dll/or/so&#39;)</div>
+<div class="line"> </div>
+<div class="line"># define signatures</div>
+<div class="line">funchook_create = fh_lib.funchook_create</div>
+<div class="line">funchook_create.restype = ctypes.c_void_p</div>
+<div class="line">funchook_create.argtypes = []</div>
+<div class="line"> </div>
+<div class="line">funchook_prepare = fh_lib.funchook_prepare</div>
+<div class="line">funchook_prepare.restype = ctypes.c_ssize_t</div>
+<div class="line">funchook_prepare.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]</div>
+<div class="line"> </div>
+<div class="line">funchook_install = fh_lib.funchook_install</div>
+<div class="line">funchook_install.restype = ctypes.c_ssize_t</div>
+<div class="line">funchook_install.argtypes = [ctypes.c_void_p, ctypes.c_int]</div>
+<div class="line"> </div>
+<div class="line">PySys_WriteStdout = ctypes.pythonapi.PySys_WriteStdout</div>
+<div class="line">PySys_WriteStdout.restype = None</div>
+<div class="line">PySys_WriteStdout.argtypes=[ctypes.c_char_p]</div>
+<div class="line"> </div>
+<div class="line"># must keep those references alive, or stuff will be GC&#39;d and weird errors will occur</div>
+<div class="line">global orig_write, hook, orig_write_ptr</div>
+<div class="line"> </div>
+<div class="line"># create hook (this function will replace the original function)</div>
+<div class="line">hook_type = ctypes.PYFUNCTYPE(None, ctypes.c_char_p)</div>
+<div class="line">orig_write = None</div>
+<div class="line">def hook_impl(msg):</div>
+<div class="line">    print(&#39;about to write: &#39; + str(msg)) # do what we want</div>
+<div class="line">    orig_write(msg)                      # call the original function</div>
+<div class="line"> </div>
+<div class="line">hook = hook_type(hook_impl)</div>
+<div class="line"> </div>
+<div class="line">fh = funchook_create()</div>
+<div class="line"># create a pointer object with the function address</div>
+<div class="line">orig_write_ptr = ctypes.c_void_p(ctypes.c_void_p.from_address(ctypes.addressof(PySys_WriteStdout)).value)</div>
+<div class="line"># orig_write_ptr.value will get a ptr to the original PySys_WriteStdout and PySys_WriteStdout will now point to the hook</div>
+<div class="line">ret = funchook_prepare(fh, ctypes.addressof(orig_write_ptr), hook)</div>
+<div class="line">assert not ret, &#39;ret is &#39; + str(ret)</div>
+<div class="line">ret = funchook_install(fh, 0)</div>
+<div class="line">assert not ret, &#39;ret is &#39; + str(ret)</div>
+<div class="line">orig_write = hook_type.from_address(ctypes.addressof(orig_write_ptr))</div>
+<div class="line">PySys_WriteStdout(b&#39;hi there\n&#39;)</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md193"></a>
+License</h1>
 <p>GPLv2 or later with a <a href="https://en.wikipedia.org/wiki/GPL_linking_exception">GPL linking exception</a>.</p>
 <p>You can use funchook in any software. Though funchook is licensed under the GPL, it doesn't affect outside of funchook due to the linking exception. You have no need to open your souce code under the GPL except funchook itself.</p>
 <p>If you modify funchook itself and release it, the modifed part must be open under the GPL with or without the linking exception because funchook itself is under the GPL.</p>
-<p><a href="https://github.com/gdabah/distorm/">diStorm3</a> has been released under 3-clause BSD since Nov 19, 2016. The license is compatible with the GPL. </p>
+<p><a href="https://github.com/gdabah/distorm/">diStorm3</a> and <a href="https://github.com/aquynh/capstone">capstone</a> are released under the 3-clause BSD license. <a href="https://github.com/zyantific/zydis">zydis</a> is released under the MIT license. They are compatible with the GPL. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
@@ -204,7 +335,7 @@ License</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Mar 15 2023 20:36:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 19 2023 22:00:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

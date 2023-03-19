@@ -56,6 +56,7 @@ var nwnx__admin_8nss =
     [ "NWNX_ADMINISTRATION_OPTION_RESET_ENCOUNTER_SPAWN_POOL", "group__admin.html#ga47e9cb52c719592063eeea164d92b5a1", null ],
     [ "NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED", "group__admin.html#gabfe310b49ceb74689e5a70b0bf5d3d35", null ],
     [ "NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL", "group__admin.html#gaaec94357bcb512b38571f24e5d8c7a34", null ],
+    [ "NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES", "group__admin.html#ga93e504e699f7360c428587e3856557de", null ],
     [ "NWNX_ADMINISTRATION_DEBUG_COMBAT", "group__admin.html#gac6c0c822dfeedf1df82ad39f2c664691", null ],
     [ "NWNX_ADMINISTRATION_DEBUG_SAVING_THROW", "group__admin.html#ga4fb71a8cd99ccd530dbeccd89820a9df", null ],
     [ "NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED", "group__admin.html#ga9094a95e0bc955700c951fe4ce75bed4", null ],

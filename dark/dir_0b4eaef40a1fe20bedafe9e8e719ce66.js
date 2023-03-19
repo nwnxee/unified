@@ -29,7 +29,6 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Profiler", "dir_a46c4fd3222911991c647c19f5e48dd1.html", "dir_a46c4fd3222911991c647c19f5e48dd1" ],
     [ "Race", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a.html", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a" ],
     [ "Redis", "dir_872591aa012bd12d901a16e34de85f03.html", "dir_872591aa012bd12d901a16e34de85f03" ],
-    [ "Regex", "dir_8216a0b06e8aaeaa76588854f1803caf.html", "dir_8216a0b06e8aaeaa76588854f1803caf" ],
     [ "Rename", "dir_c96403ecabd325e52498389c4003b46e.html", "dir_c96403ecabd325e52498389c4003b46e" ],
     [ "Reveal", "dir_2dd1f4b35de9e27d2bf14be9b6b1c8dd.html", "dir_2dd1f4b35de9e27d2bf14be9b6b1c8dd" ],
     [ "Ruby", "dir_96ade152febc262a31be38f7a77ed436.html", "dir_96ade152febc262a31be38f7a77ed436" ],

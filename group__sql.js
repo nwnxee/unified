@@ -19,5 +19,6 @@ var group__sql =
     [ "NWNX_SQL_GetDatabaseType", "group__sql.html#ga4fbbffe1e86ad0e677185395b52949f5", null ],
     [ "NWNX_SQL_DestroyPreparedQuery", "group__sql.html#ga62eac22694f19682a18f6e01a5bc6e02", null ],
     [ "NWNX_SQL_GetLastError", "group__sql.html#gae466d7b9d1eaa42f683115d6aa94f27b", null ],
-    [ "NWNX_SQL_GetPreparedQueryParamCount", "group__sql.html#ga20bd6aab821d657863d4ae05758536d3", null ]
+    [ "NWNX_SQL_GetPreparedQueryParamCount", "group__sql.html#ga20bd6aab821d657863d4ae05758536d3", null ],
+    [ "NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode", "group__sql.html#gace46d42e89cb992a5f6b8f0d8b6fd6c4", null ]
 ];

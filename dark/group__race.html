@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.34</span>
+								&#160;<span id="projectnumber">8193.35.36</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,20 +105,20 @@ $(document).ready(function(){initNavTree('group__race.html',''); initResizable()
 <div class="contents">
 
 
-<h3><a id="race"></a>Readme</h3><div class="textblock">This plugin allows for the builder to add new races or subraces and define many traits for the races via 2da entry or scripting. This plugin also applies effects, and weapon properties, versus a parent race to effect a child race, as well as effects vs that specific child race.<h2><a class="anchor" id="autotoc_md445"></a>
+<h3><a id="race"></a>Readme</h3><div class="textblock">This plugin allows for the builder to add new races or subraces and define many traits for the races via 2da entry or scripting. This plugin also applies effects, and weapon properties, versus a parent race to effect a child race, as well as effects vs that specific child race.<h2><a class="anchor" id="autotoc_md459"></a>
 Environmental Variables</h2>
 <p><code>NWNX_RACE_SHOW_EFFECT_ICON</code> - Helpful when debugging, this shows the effect's icon (the red and green squares). Some builders may even wish this permanently.</p>
-<h2><a class="anchor" id="autotoc_md446"></a>
+<h2><a class="anchor" id="autotoc_md460"></a>
 Required NWNX Plugins</h2>
 <ul>
 <li><a class="el" href="group__skillranks.html">NWNX_SkillRanks</a> - Needed if you're modifying skill ranks.</li>
-<li><a class="el" href="group__util.html">NWNX_Util</a> - Needed if you're using the 2da method which requires new <code><a class="el" href="group__util.html#gaed488173b6e22ef52c888d8fe542440f" title="Gets the row count for a 2da.">NWNX_Util_Get2DARowCount()</a></code>.</li>
+<li><a class="el" href="group__util.html">NWNX_Util</a> - Needed if you're using the 2da method which requires new <code><a class="el" href="nwnx__deprecated_8nss.html#aed488173b6e22ef52c888d8fe542440f" title="Gets the row count for a 2da.">NWNX_Util_Get2DARowCount()</a></code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md447"></a>
+<h2><a class="anchor" id="autotoc_md461"></a>
 Setup</h2>
 <p>Adding new races is beyond the scope of this documentation. The builder should know how to add new races by adding a new entry in the <code>racialtypes.2da</code> as well as adding the appropriate TLK reference identifiers for that new race then adjusting the appropriate columns for their race, including the Ability Score modifications.</p>
 <p>The <b>NWNX Race plugin does not provide modifications to ability scores</b>, use the <code>racialtypes.2da</code> columns for changing those.</p>
-<h3><a class="anchor" id="autotoc_md448"></a>
+<h3><a class="anchor" id="autotoc_md462"></a>
 The 2da Method</h3>
 <p>To use the 2da method, the builder must create a new column at the end of the <code>racialtypes.2da</code> named <b>RacialModsTable</b>. This column should then be populated with a string value that references another 2da file in which we will define our racial modifiers. Once that is done the builder needs to <b>include nwnx_race_2da and make sure to run <code><a class="el" href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e" title="Loops through racialtypes.2da and checks for the column for racial modifications and sets them.">NWNX_Race_LoadRacialModifiers()</a></code> in their OnModuleLoad script</b>.</p>
 <p>For example, we've inserted a new race called <b>Aasimar</b> into <code>racialtypes.2da</code> at line 150. In the <code>RacialModsTable</code> column we enter <b>RACEMOD_AASIMAR</b> (Remember maximum 16 characters, case insensitive)</p>
@@ -135,7 +135,7 @@ The 2da Method</h3>
 <div class="line">6   Listen                      SKILL           6       2       ****</div>
 <div class="line">7   LightFeatUsage              FEATUSAGE       1107    1       10</div>
 <div class="line">8   UniversalSaves              SAVE            0       2       ****</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md449"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md463"></a>
 The Scripting Method</h3>
 <p>The scripting method involves running a command for each race and each modifier OnModuleLoad.</p>
 <p>The end result for the Aasimar using the script method would be something like: </p><div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gabd27e620484c5db0a9688c506efdd000">NWNX_RACE_MODIFIER_RACE</a>, RACIAL_TYPE_HUMAN);</div>
@@ -147,7 +147,7 @@ The Scripting Method</h3>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gabbb3a1a6bb65b47f9345f6f7d6e782d7">NWNX_RACE_MODIFIER_SKILL</a>, SKILL_LISTEN, 2);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga9e56c1d901b4598d5e8d878d33f50c04">NWNX_RACE_MODIFIER_FEATUSAGE</a>, 1107, 1, 10);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga2718944b0d93d529f781397ce0b8dd4f">NWNX_RACE_MODIFIER_SAVE</a>, 0, 2);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md450"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md464"></a>
 Racial Modifiers</h2>
 <ul>
 <li><a href="#ab">AB</a></li>
@@ -174,146 +174,146 @@ Racial Modifiers</h2>
 <li><a href="#srinclevel">SRINCLEVEL</a></li>
 </ul>
 <hr  />
-<h3><a class="anchor" id="autotoc_md451"></a>
+<h3><a class="anchor" id="autotoc_md465"></a>
 AB</h3>
 <p>The <code>AB</code> entry is used to modify an attack bonus for a race. Note: this is not a change to the base attack bonus, it's added on top of that.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md452"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md466"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    InateAB                  AB              1      ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md453"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md467"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaab7fe982751745821c2b1dd3e82ae243">NWNX_RACE_MODIFIER_AB</a>, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md454"></a>
+ <h3><a class="anchor" id="autotoc_md468"></a>
 ABVSRACE</h3>
 <p>The <code>ABVSRACE</code> entry is used to modify the attack bonus for a race versus another specific race.</p>
 <ul>
 <li>Param1 = Racial ID from racialtypes.2da</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md455"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md469"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    DragonAB                 ABVSRACE        11     3      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md456"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md470"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga92ca11baf510761c396c25cd7cd6e62d">NWNX_RACE_MODIFIER_ABVSRACE</a>, RACIAL_TYPE_DRAGON, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md457"></a>
+ <h3><a class="anchor" id="autotoc_md471"></a>
 AC</h3>
 <p>The <code>AC</code> entry is used to modify the base AC for a race.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 <li>Param2 = Armor Class type. Keep in mind that non-dodge AC types won't stack with other non-dodge AC from spell effects nor item properties.</li>
 </ul>
-<p><a class="anchor" id="autotoc_md458"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md472"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    InateAC                  AC              1      0      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md459"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md473"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga2764ca25d58580933fe71c0643636eb4">NWNX_RACE_MODIFIER_AC</a>, 1, AC_DODGE_BONUS);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md460"></a>
+ <h3><a class="anchor" id="autotoc_md474"></a>
 ACVSRACE</h3>
 <p>The <code>ACVSRACE</code> entry is used to modify the base AC for a race versus another specific race.</p>
 <ul>
 <li>Param1 = Racial ID from racialtypes.2da</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md461"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md475"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    DragonAC                 ACVSRACE        11     4      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md462"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md476"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga268bd591313ab1a0f01133d4f9b18b5f">NWNX_RACE_MODIFIER_ACVSRACE</a>, RACIAL_TYPE_DRAGON, 4);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md463"></a>
+ <h3><a class="anchor" id="autotoc_md477"></a>
 CONCEALMENT</h3>
 <p>The <code>CONCEALMENT</code> entry is used to grant an inate concealment to a race.</p>
 <ul>
 <li>Param1 = Modifier value (1-100)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md464"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md478"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    Concealment              CONCEALMENT     30     ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md465"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md479"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga05f5f5062977be3cd819c12fa136f9c6">NWNX_RACE_MODIFIER_CONCEALMENT</a>, 30);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md466"></a>
+ <h3><a class="anchor" id="autotoc_md480"></a>
 DMGREDUCTION</h3>
 <p>The <code>DMGREDUCTION</code> entry gives an inate damage reduction</p>
 <ul>
 <li>Param1 = Points to soak (+)</li>
 <li>Param2 = Level of soak (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md467"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md481"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    DR_SOAK5_PLUS5           DMGREDUCTION    5      5      ****</div>
 <div class="line">1    DR_SOAK10_PLUS4          DMGREDUCTION    10     4      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md468"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md482"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaecbf8ca60128917d1b58e383baac3c9f">NWNX_RACE_MODIFIER_DMGREDUCTION</a>, 5, 5);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaecbf8ca60128917d1b58e383baac3c9f">NWNX_RACE_MODIFIER_DMGREDUCTION</a>, 10, 4);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md469"></a>
+ <h3><a class="anchor" id="autotoc_md483"></a>
 DMGRESIST</h3>
 <p>The <code>DMGRESIST</code> entry gives an inate resistance to damage types</p>
 <ul>
 <li>Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.</li>
 <li>Param2 = Points to resist (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md470"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md484"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    FireDamageResist         DMGRESIST       256    10     ****</div>
 <div class="line">1    FireColdDamageResist     DMGRESIST       288    5      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md471"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md485"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gae47769a7dbf97fa4c3d31343042a622b">NWNX_RACE_MODIFIER_DMGRESIST</a>, DAMAGE_TYPE_FIRE, 10);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gae47769a7dbf97fa4c3d31343042a622b">NWNX_RACE_MODIFIER_DMGRESIST</a>, DAMAGE_TYPE_FIRE &amp; DAMAGE_TYPE_COLD, 5);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md472"></a>
+ <h3><a class="anchor" id="autotoc_md486"></a>
 DMGIMMUNITY</h3>
 <p>The <code>DMGIMMUNITY</code> entry gives an inate immunity to damage types</p>
 <ul>
 <li>Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.</li>
 <li>Param2 = Percentage to resist (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md473"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md487"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    FireDamageImmunity       DMGIMMUNITY     256    100    ****</div>
 <div class="line">1    AcidDamageVulnerability  DMGIMMUNITY     16     -50    ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md474"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md488"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga591c32b5b9d309a8b897d16658e6bcc7">NWNX_RACE_MODIFIER_DMGIMMUNITY</a>, DAMAGE_TYPE_FIRE, 100);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga591c32b5b9d309a8b897d16658e6bcc7">NWNX_RACE_MODIFIER_DMGIMMUNITY</a>, DAMAGE_TYPE_ACID, -50);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md475"></a>
+ <h3><a class="anchor" id="autotoc_md489"></a>
 FEAT</h3>
 <p>The <code>FEAT</code> entry awards a feat at a specified level. This feat is awarded after the creature levels up. Level 1 feats can still be added using the <b>FeatsTable</b> column of the <code>racialtypes.2da</code>.</p>
 <ul>
 <li>Param1 = The row in feat.2da</li>
 <li>Param2 = The level to grant the feat</li>
 </ul>
-<p><a class="anchor" id="autotoc_md476"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md490"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    IronWill                 FEAT            22     3      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md477"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md491"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gada07b335c83ba70aace0c190c61b8ed8">NWNX_RACE_MODIFIER_FEAT</a>, 22, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md478"></a>
+ <h3><a class="anchor" id="autotoc_md492"></a>
 FEATUSAGE</h3>
 <p>The <code>FEATUSAGE</code> controls the amount of usages a race will have based upon their character level for a custom feat they are granted.</p>
 <ul>
@@ -321,101 +321,101 @@ FEATUSAGE</h3>
 <li>Param2 = Usages a day granted at character creation</li>
 <li>Param3 = Additional usages a day granted for this many levels</li>
 </ul>
-<p><a class="anchor" id="autotoc_md479"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md493"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    LightFeatUsage           FEATUSAGE       1101   1      5</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md480"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md494"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga9e56c1d901b4598d5e8d878d33f50c04">NWNX_RACE_MODIFIER_FEATUSAGE</a>, 1101, 1, 5);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md481"></a>
+ <h3><a class="anchor" id="autotoc_md495"></a>
 IMMUNITY</h3>
 <p>The <code>IMMUNITY</code> entry is used to grant the race a total immunity to a variety of effects.</p>
 <ul>
 <li>Param1 = The IMMUNITY_TYPE_ constant value</li>
 </ul>
-<p><a class="anchor" id="autotoc_md482"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md496"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    FearImmunity             IMMUNITY        4      ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md483"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md497"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaa09f8a7cc99ac652243d1a8f1a775e56">NWNX_RACE_MODIFIER_IMMUNITY</a>, IMMUNITY_TYPE_FEAR);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md484"></a>
+ <h3><a class="anchor" id="autotoc_md498"></a>
 INITIATIVE</h3>
 <p>The <code>INITIATIVE</code> entry is used to modify the initiative check.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md485"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md499"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    PoorInitiative           INITIATIVE      -3     ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md486"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md500"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga905efddc4ef7f929e7c042ceaf1188cf">NWNX_RACE_MODIFIER_INITIATIVE</a>, -3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md487"></a>
+ <h3><a class="anchor" id="autotoc_md501"></a>
 MOVEMENTSPEED</h3>
 <p>The <code>MOVEMENTSPEED</code> can modify the speed at which the race moves by default.</p>
 <ul>
 <li>Param1 = The percentage change to their speed (-99/+99)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md488"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md502"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    Faster                   MOVEMENTSPEED   33     ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md489"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md503"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga11db9a14433e9a8e666a5d6b1dc807f7">NWNX_RACE_MODIFIER_MOVEMENTSPEED</a>, 33);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md490"></a>
+ <h3><a class="anchor" id="autotoc_md504"></a>
 RACE</h3>
 <p>The <code>RACE</code> entry is used when the race the builder is adding has a parent race with which to inherit some hard coded checks. For example, a Ghostwise Halfling would have its <code>RACE</code> set as <code>3</code> representing the Halfling race and in turn a player with that race would have an additional +1 to ranged attacks as is set for the Halfling race.</p>
 <ul>
 <li>Param1 = Race ID from racialtypes.2da</li>
 </ul>
-<p><a class="anchor" id="autotoc_md491"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md505"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    Race                     RACE            3      ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md492"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md506"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gabd27e620484c5db0a9688c506efdd000">NWNX_RACE_MODIFIER_RACE</a>, RACIAL_TYPE_HALFLING);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md493"></a>
+ <h3><a class="anchor" id="autotoc_md507"></a>
 REGENERATION</h3>
 <p>The <code>REGENERATION</code> entry is used to grant the race an inate regeneration.</p>
 <ul>
 <li>Param1 = How many hitpoints to increase (+)</li>
 <li>Param2 = How often in seconds to increase the hitpoints (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md494"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md508"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    Regeneration             REGENERATION    2      6      ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md495"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md509"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaeaa1fa14d18cc965b1d83e7c1eb3d148">NWNX_RACE_MODIFIER_REGENERATION</a>, 2, 6);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md496"></a>
+ <h3><a class="anchor" id="autotoc_md510"></a>
 SAVE</h3>
 <p>The <code>SAVE</code> entry is used to modify base save values.</p>
 <ul>
 <li>Param1 = 0-3 meaning SAVING_THROW_ALL, SAVING_THROW_FORT, SAVING_THROW_REFLEX or SAVING_THROW_WILL</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md497"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md511"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    FortitudeVulnerable      SAVE            1      -2     ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md498"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md512"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga2718944b0d93d529f781397ce0b8dd4f">NWNX_RACE_MODIFIER_SAVE</a>, SAVING_THROW_FORT, -2);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md499"></a>
+ <h3><a class="anchor" id="autotoc_md513"></a>
 SAVEVSRACE</h3>
 <p>The <code>SAVEVSRACE</code> entry is used to modify base save values vs a specific race. Param1 is the Save constant ID and param2 is the target race constant ID and param3 is the modifier.</p>
 <ul>
@@ -423,15 +423,15 @@ SAVEVSRACE</h3>
 <li>Param2 = Racial ID from racialtypes.2da</li>
 <li>Param3 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md500"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md514"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    UniversalSaveVsUndead    SAVEVSRACE      0      24     5</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md501"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md515"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gad7d6db9078587bc95ac28f2a26636c30">NWNX_RACE_MODIFIER_SAVEVSRACE</a>, SAVING_THROW_ALL, RACIAL_TYPE_UNDEAD, 5);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md502"></a>
+ <h3><a class="anchor" id="autotoc_md516"></a>
 SAVEVSTYPE</h3>
 <p>The <code>SAVEVSTYPE</code> entry is used to modify base save values vs a specific type. Param1 is the Save constant ID and param2 is the Saving Throw Type constant ID and param3 is the modifier.</p>
 <ul>
@@ -439,61 +439,61 @@ SAVEVSTYPE</h3>
 <li>Param2 = A SAVING_THROW_TYPE_ constant</li>
 <li>Param3 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md503"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md517"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    ReflexSaveVsTraps        SAVEVSTYPE      2      14     3</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md504"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md518"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaa582f61c2877b0d4f74baf31521986d5">NWNX_RACE_MODIFIER_SAVEVSTYPE</a>, SAVING_THROW_REFLEX, SAVING_THROW_TYPE_TRAP, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md505"></a>
+ <h3><a class="anchor" id="autotoc_md519"></a>
 SKILL</h3>
 <p>The <code>SKILL</code> entry is used to modify base skill ranks. Note: This requires the <code>NWNX_SkillRanks</code> plugin.</p>
 <ul>
 <li>Param1 = Skill ID from skills.2da</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md506"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md520"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    IntimidateBonus+2        SKILL           24     2      ****</div>
 <div class="line">1    HealLimited-2            SKILL           5      -2     ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md507"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md521"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gabbb3a1a6bb65b47f9345f6f7d6e782d7">NWNX_RACE_MODIFIER_SKILL</a>, SKILL_INTIMIDATE, 2);</div>
 <div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gabbb3a1a6bb65b47f9345f6f7d6e782d7">NWNX_RACE_MODIFIER_SKILL</a>, SKILL_HEAL, -2);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md508"></a>
+ <h3><a class="anchor" id="autotoc_md522"></a>
 SPELLIMMUNITY</h3>
 <p>The <code>SPELLIMMUNITY</code> entry is used to grant the race a total immunity to specific spells. Note: Only spells that can be resisted can have immunities.</p>
 <ul>
 <li>Param1 = The spell row from spells.2da</li>
 </ul>
-<p><a class="anchor" id="autotoc_md509"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md523"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    HorridWiltingImmune      SPELLIMMUNITY   367    ****   ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md510"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md524"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga4afefee1c243d6ee74587ff54bef3b07">NWNX_RACE_MODIFIER_SPELLIMMUNITY</a>, SPELL_HORRID_WILTING);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md511"></a>
+ <h3><a class="anchor" id="autotoc_md525"></a>
 SRCHARGEN</h3>
 <p>The <code>SRCHARGEN</code> entry is used to award the race a default spell resistance on character creation.</p>
 <ul>
 <li>Param1 = Modifier value (+)</li>
 <li>Param2 (Optional) = Maximum value all Spell Resistance racial values can reach</li>
 </ul>
-<p><a class="anchor" id="autotoc_md512"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md526"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    SRAtCharCreation         SRCHARGEN       10     36     ****</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md513"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md527"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#ga46636fc9b03e0379a27ba89dc691b4ad">NWNX_RACE_MODIFIER_SRCHARGEN</a>, 10, 36);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md514"></a>
+ <h3><a class="anchor" id="autotoc_md528"></a>
 SRINCLEVEL</h3>
 <p>The <code>SRINCLEVEL</code> entry is used to award a spell resistance racial bonus as the creature's level increases.</p>
 <ul>
@@ -501,12 +501,12 @@ SRINCLEVEL</h3>
 <li>Param2 = Level per increment (+)</li>
 <li>Param3 = Level at which the incremental gains begin (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md515"></a></p><h5>Example 2da entry</h5>
+<p><a class="anchor" id="autotoc_md529"></a></p><h5>Example 2da entry</h5>
 <div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
 <div class="line">     LABEL                    Type            Param1 Param2 Param3</div>
 <div class="line">0    SRIncrementLevels        SRINCLEVEL      1      1      6</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md516"></a></p><h5>Example script on_module_load</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md530"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a>(150, <a class="code" href="group__race.html#gaf0bc6f3762b6b4eb7d4c8e0618d182cf">NWNX_RACE_MODIFIER_SRINCLEVEL</a>, 1, 1, 6);</div>
 </div><!-- fragment --> </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
@@ -688,7 +688,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The constant for the race modifier. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__race__2da_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__race__2da_8nss_source.html">nwnx_race_2da.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__race__2da_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__race__2da_8nss_source.html">nwnx_race_2da.nss</a>.</p>
 
 </div>
 </div>
@@ -709,7 +709,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Loops through racialtypes.2da and checks for the column for racial modifications and sets them. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="group__util.html#gaed488173b6e22ef52c888d8fe542440f" title="Gets the row count for a 2da.">NWNX_Util_Get2DARowCount()</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="nwnx__deprecated_8nss.html#aed488173b6e22ef52c888d8fe542440f" title="Gets the row count for a 2da.">NWNX_Util_Get2DARowCount()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sColumnName</td><td>The column name in the racialtypes.2da that defines the 2da for the racial mods. </td></tr>
@@ -717,7 +717,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__race__2da_8nss_source.html#l00046">46</a> of file <a class="el" href="nwnx__race__2da_8nss_source.html">nwnx_race_2da.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__race__2da_8nss_source.html#l00045">45</a> of file <a class="el" href="nwnx__race__2da_8nss_source.html">nwnx_race_2da.nss</a>.</p>
 
 </div>
 </div>
@@ -1119,7 +1119,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Mar 15 2023 20:36:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 19 2023 22:00:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

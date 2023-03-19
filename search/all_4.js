@@ -14,5 +14,7 @@ var searchData=
   ['discard_130',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
   ['domain_131',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]],
   ['dotnet_132',['DotNET',['../group__dotnet.html',1,'']]],
-  ['dump_133',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
+  ['dump_133',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]],
+  ['duration_5ftype_5fequipped_134',['DURATION_TYPE_EQUIPPED',['../group__effect.html#gaf89fa852a405322e05a2abd62f629ca5',1,'nwnx_effect.nss']]],
+  ['duration_5ftype_5finnate_135',['DURATION_TYPE_INNATE',['../group__effect.html#gaf63543b31d06ab0b742025e26aab53aa',1,'nwnx_effect.nss']]]
 ];

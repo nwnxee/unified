@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.34</span>
+								&#160;<span id="projectnumber">8193.35.36</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('group__sql.html',''); initResizable();
 <div class="contents">
 
 
-<h3><a id="sql"></a>Readme</h3><div class="textblock">General data access, storage and manipulation of persistent data in a database.<h2><a class="anchor" id="autotoc_md539"></a>
+<h3><a id="sql"></a>Readme</h3><div class="textblock">General data access, storage and manipulation of persistent data in a database.<h2><a class="anchor" id="autotoc_md553"></a>
 Migration</h2>
 <p><a class="el" href="md_Plugins_SQL_Migration_Guide.html#sql_migrate">Migration from Legacy NWNX</a></p>
-<h2><a class="anchor" id="autotoc_md540"></a>
+<h2><a class="anchor" id="autotoc_md554"></a>
 Environment Variables</h2>
-<h3><a class="anchor" id="autotoc_md541"></a>
+<h3><a class="anchor" id="autotoc_md555"></a>
 NWNX_SQL_TYPE</h3>
 <p>Controls the target database type used at runtime.</p>
 <p>Possible values (case insensitive):</p>
@@ -121,56 +121,59 @@ NWNX_SQL_TYPE</h3>
 </ul>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_TYPE=POSTGRESQL</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md542"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md556"></a>
 NWNX_SQL_HOST</h3>
 <p>Host name where the database resides. Typically <code>localhost</code> but can be any valid host name or IP address.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_HOST=localhost</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md543"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md557"></a>
 NWNX_SQL_PORT</h3>
 <p>The port for the database connection. If left unset it will use the default port.</p>
 <p>Only used by MySQL.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_PORT=3307</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md544"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md558"></a>
 NWNX_SQL_USERNAME</h3>
 <p>Database username used for the connection.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_USERNAME=nwn_db</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md545"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md559"></a>
 NWNX_SQL_PASSWORD</h3>
 <p>Password for the database connection.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_PASSWORD=lathander_rulez</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md546"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md560"></a>
 NWNX_SQL_DATABASE</h3>
 <p>The database to connect to.</p>
 <p>The filename of the database when using SQLite, it is stored in the UserDirectory/database folder.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_DATABASE=mymodulename</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md547"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md561"></a>
 NWNX_SQL_QUERY_METRICS</h3>
 <p>Export query execution metrics.</p>
 <p>The Metrics_InfluxDB plugin and a visualizer like Grafana are required to view these metrics.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_QUERY_METRICS=true</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md548"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md562"></a>
 NWNX_SQL_USE_UTF8</h3>
 <p>Convert all strings going between the database and game to/from UTF8</p>
 <p>This takes into account the core locale as well.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_USE_UTF8=true</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md549"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md563"></a>
 NWNX_SQL_CHARACTER_SET</h3>
 <p>Set the connection's character set to be used.</p>
-<p>Only supported on mysql. For pgsql and sqlite this can be achieved with a query.</p>
-<p><b>Examples</b></p>
+<p>Only supported on mysql and pgsql. For sqlite this can be achieved with a query.</p>
+<p><b>Examples (MySQL)</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_CHARACTER_SET=utf8</div>
 <div class="line">export NWNX_SQL_CHARACTER_SET=cp1251</div>
-</div><!-- fragment --> </div><table class="memberdecls">
+</div><!-- fragment --><p><b>Examples (PostgreSQL)</b></p>
+<div class="fragment"><div class="line">export NWNX_SQL_CHARACTER_SET=WIN1252</div>
+</div><!-- fragment --><p>(see <a href="https://www.postgresql.org/docs/current/multibyte.html">https://www.postgresql.org/docs/current/multibyte.html</a> for list) </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__sql_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__sql_8nss.html">nwnx_sql.nss</a></td></tr>
@@ -228,6 +231,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga20bd6aab821d657863d4ae05758536d3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#ga20bd6aab821d657863d4ae05758536d3">NWNX_SQL_GetPreparedQueryParamCount</a> ()</td></tr>
 <tr class="memdesc:ga20bd6aab821d657863d4ae05758536d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of parameteres expected by a prepared query.  <a href="group__sql.html#ga20bd6aab821d657863d4ae05758536d3">More...</a><br /></td></tr>
 <tr class="separator:ga20bd6aab821d657863d4ae05758536d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace46d42e89cb992a5f6b8f0d8b6fd6c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#gace46d42e89cb992a5f6b8f0d8b6fd6c4">NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode</a> ()</td></tr>
+<tr class="memdesc:gace46d42e89cb992a5f6b8f0d8b6fd6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the next query to return full binary results <b>ON THE FIRST COLUMN ONLY</b>.  <a href="group__sql.html#gace46d42e89cb992a5f6b8f0d8b6fd6c4">More...</a><br /></td></tr>
+<tr class="separator:gace46d42e89cb992a5f6b8f0d8b6fd6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gae2e0e27014d82accfe4a0e510720515f"></a>
@@ -256,7 +262,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the query was successfully prepared. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00107">107</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00111">111</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -278,7 +284,7 @@ Functions</h2></td></tr>
 <p>Executes a query which has been prepared. </p>
 <dl class="section return"><dt>Returns</dt><dd>The ID of this query if successful, else FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00116">116</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00120">120</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -302,7 +308,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Clears previously prepared query states. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The ID of this query if successful, else FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00124">124</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00128">128</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -322,7 +328,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="anchor" id="sql_rtrnr"></a></p><dl class="section return"><dt>Returns</dt><dd>TRUE if one or more rows are ready, FALSE otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00137">137</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00141">141</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -344,7 +350,7 @@ Functions</h2></td></tr>
 <p>Reads the next row of returned data. </p>
 <p><a class="anchor" id="sql_rnr"></a></p><dl class="section remark"><dt>Remarks</dt><dd>Should only be called after a successful call to <a class="el" href="group__sql.html#sql_rtrnr">NWNX_SQL_ReadyToReadNextRow()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00145">145</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00149">149</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -372,7 +378,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Data at the nth (0-based) column of the active row. </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Should only be called after a successful call to <a class="el" href="group__sql.html#sql_rnr">NWNX_SQL_ReadNextRow()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00152">152</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00156">156</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -411,7 +417,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00162">162</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00166">166</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -450,7 +456,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00170">170</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00174">174</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -489,7 +495,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00178">178</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00182">182</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -528,7 +534,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00186">186</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00190">190</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -574,7 +580,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00194">194</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00198">198</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -602,7 +608,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00203">203</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00207">207</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -674,7 +680,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The deserialized object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00212">212</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00216">216</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -697,7 +703,7 @@ Functions</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>This command is for non-row-based statements like INSERT, UPDATE, DELETE, etc. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of rows affected by SQL statement or -1 if the query was not non-row-based. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00226">226</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00230">230</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -718,7 +724,7 @@ Functions</h2></td></tr>
 <p>Gets the database type. </p><dl class="section return"><dt>Returns</dt><dd>The database type we're interacting with. </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>This is the same value as the value of NWNX_SQL_TYPE environment variable. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00234">234</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00238">238</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -740,7 +746,7 @@ Functions</h2></td></tr>
 <p>Free any resources attached to an existing prepared query. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Resources are automatically freed when a new query is prepared, so calling this isn't necessary. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00242">242</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00246">246</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -760,7 +766,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The last error message generated by the database. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00249">249</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00253">253</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -782,7 +788,29 @@ Functions</h2></td></tr>
 <p>Gets the number of parameteres expected by a prepared query. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns the number of parameters expected by the prepared query or -1 if no query is prepared. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00257">257</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00261">261</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+
+</div>
+</div>
+<a id="gace46d42e89cb992a5f6b8f0d8b6fd6c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace46d42e89cb992a5f6b8f0d8b6fd6c4">&#9670;&nbsp;</a></span>NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the next query to return full binary results <b>ON THE FIRST COLUMN ONLY</b>. </p>
+<dl class="section note"><dt>Note</dt><dd>This is ONLY needed on PostgreSQL, and ONLY if you want to deserialize raw bytea in NWNX_SQL_ReadFullObjectInActiveRow with base64=FALSE. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00269">269</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -792,7 +820,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Mar 15 2023 20:36:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 19 2023 22:00:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

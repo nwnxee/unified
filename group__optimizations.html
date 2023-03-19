@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.34</span>
+								&#160;<span id="projectnumber">8193.35.36</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('group__optimizations.html',''); initRe
 <div class="contents">
 
 
-<h3><a id="optimizations"></a>Readme</h3><div class="textblock">Game optimizations. Improves performance of various game elements.<h2><a class="anchor" id="autotoc_md441"></a>
+<h3><a id="optimizations"></a>Readme</h3><div class="textblock">Game optimizations. Improves performance of various game elements.<h2><a class="anchor" id="autotoc_md455"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -116,19 +116,11 @@ Environment Variables</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_LUO_LOOKUP</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Optimizes LastUpdateObject lookup code, improving performance  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Fixes a bug where visual effects on placeables keep getting reapplied. Requires <code>LUO_LOOKUP</code>.  </td></tr>
-<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_ALTERNATE_GAME_OBJECT_UPDATE</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Uses an experimental alternative update mechanism. Requires <code>LUO_LOOKUP</code>. <b>WARNING</b>: Will break all of NWNX_Appearance and the following NWNX_Player functions: SetObjectVisualTransformOverride, ApplyLoopingVisualEffectToObject, SetPlaceableNameOverride, SetCreatureNameOverride, SetObjectMouseCursorOverride and SetObjectHiliteColorOverride. Forcing objects to be always visible with NWNX_Visibility will also break.  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_RECONCILE_AUTOMAP_DATA</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Reduces the number of checks for mismatches between players' and module's area list  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Caches all script chunks, improving performance  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME</code> </td><td class="markdownTableBodyCenter">int </td><td class="markdownTableBodyNone">The global client gameobject update time in microseconds, default 200000 (200 milliseconds)  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME_LOADING</code> </td><td class="markdownTableBodyCenter">int </td><td class="markdownTableBodyNone">The client gameobject update time in microseconds for players loading an area, default 200000 (200 milliseconds)  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_UPDATE_LIST_COMPARISONS</code> </td><td class="markdownTableBodyCenter">int </td><td class="markdownTableBodyNone">Optimizes the visibility and vfx List comparisons.  </td></tr>
+<td class="markdownTableBodyNone"><code>NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Caches all nwscript debugger instances, improving GetScriptBacktrace() performance  </td></tr>
 </table>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
@@ -136,7 +128,7 @@ Environment Variables</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Mar 15 2023 20:36:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 19 2023 22:00:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

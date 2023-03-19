@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.34</span>
+								&#160;<span id="projectnumber">8193.35.36</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -99,14 +99,35 @@ $(document).ready(function(){initNavTree('group__effect.html',''); initResizable
   <div class="summary">
 <a href="#files">Files</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Effect</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 
-<h3><a id="effect"></a>Readme</h3><div class="textblock">Provide various utility functions to manipulate builtin effect type </div><table class="memberdecls">
+<h3><a id="effect"></a>Readme</h3><div class="textblock">Provide various utility functions to manipulate builtin effect type<h2><a class="anchor" id="autotoc_md266"></a>
+Environment Variables</h2>
+<h3><a class="anchor" id="autotoc_md267"></a>
+NWNX_EFFECT_EXTEND_DURATION_TYPE = true/false</h3>
+<p>Allow ApplyEffectToObject to apply internal duration types; simply give the new constants as described below to the function.</p>
+<p>To correctly read and iterate these functions, you need to use:</p>
+<ul>
+<li><a class="el" href="group__effect.html#ga0c64255302407cf3dd53d329feb8a188" title="Checks if the given effect is valid. Unlike the game builtin, this call considers internal types too.">NWNX_Effect_GetIsEffectValid()</a></li>
+<li><a class="el" href="group__effect.html#ga4c13206726a4e8ca68bb7005331a709a" title="Returns the number of applied effects on the given object.">NWNX_Effect_GetAppliedEffectCount()</a></li>
+<li><a class="el" href="group__effect.html#ga86a29b10362c8010d4e6cf917aa49a58" title="Returns the nNth applied effect on a object.">NWNX_Effect_GetAppliedEffect()</a></li>
+</ul>
+<p>The builtin functions (GetFirstEffect, GetNextEffect, GetIsEffectValid) do not expose internal effect types.</p>
+<h4><a class="anchor" id="autotoc_md268"></a>
+const int DURATION_TYPE_EQUIPPED = 3;</h4>
+<p>This effect gets automatically removed when the item that created it gets unequipped.</p>
+<p>For this to work, the effect creator needs to be a valid equipped item; you can set this either by spawning the effect from the item handler, or by using SetEffectCreator().</p>
+<p>Behaviour without a equipped item in the effect creator slot is undefined.</p>
+<h4><a class="anchor" id="autotoc_md269"></a>
+const int DURATION_TYPE_INNATE = 4;</h4>
+<p>This is used by the game to represent things like racial and feat effects, as well as movement speed adjustments. </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__effect_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__effect_8nss.html">nwnx_effect.nss</a></td></tr>
@@ -126,15 +147,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8c7e4f71ab7b12105e5051ec90e9fd2e"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga8c7e4f71ab7b12105e5051ec90e9fd2e">NWNX_Effect_PackEffect</a> (struct <a class="el" href="structNWNX__EffectUnpacked.html">NWNX_EffectUnpacked</a> e)</td></tr>
 <tr class="memdesc:ga8c7e4f71ab7b12105e5051ec90e9fd2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert unpacked effect structure to native type.  <a href="group__effect.html#ga8c7e4f71ab7b12105e5051ec90e9fd2e">More...</a><br /></td></tr>
 <tr class="separator:ga8c7e4f71ab7b12105e5051ec90e9fd2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3c6b1b67f4bd4332f8b2b4fdf8217aec"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec">NWNX_Effect_SetEffectExpiredScript</a> (effect e, string script, string data=&quot;&quot;)</td></tr>
-<tr class="memdesc:ga3c6b1b67f4bd4332f8b2b4fdf8217aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a script with optional data that runs when an effect expires.  <a href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec">More...</a><br /></td></tr>
-<tr class="separator:ga3c6b1b67f4bd4332f8b2b4fdf8217aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabb4f9e4e4b8315cda42c1e7dc4d2dff3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gabb4f9e4e4b8315cda42c1e7dc4d2dff3">NWNX_Effect_GetEffectExpiredData</a> ()</td></tr>
-<tr class="memdesc:gabb4f9e4e4b8315cda42c1e7dc4d2dff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a>  <a href="group__effect.html#gabb4f9e4e4b8315cda42c1e7dc4d2dff3">More...</a><br /></td></tr>
-<tr class="separator:gabb4f9e4e4b8315cda42c1e7dc4d2dff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484">NWNX_Effect_GetEffectExpiredCreator</a> ()</td></tr>
-<tr class="memdesc:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the effect creator.  <a href="group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484">More...</a><br /></td></tr>
-<tr class="separator:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b">NWNX_Effect_ReplaceEffect</a> (object obj, effect eOld, effect eNew)</td></tr>
 <tr class="memdesc:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="mdescLeft">&#160;</td><td class="mdescRight">replace an already applied effect on an object Only duration, subtype, tag and spell related fields can be overwritten.  <a href="group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b">More...</a><br /></td></tr>
 <tr class="separator:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,9 +165,25 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0e78c0b3879c2de62fda891fcb81f045"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045">NWNX_Effect_Apply</a> (effect eEffect, object oObject)</td></tr>
 <tr class="memdesc:ga0e78c0b3879c2de62fda891fcb81f045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applys an effect, bypassing any processing done by ApplyEffectToObject.  <a href="group__effect.html#ga0e78c0b3879c2de62fda891fcb81f045">More...</a><br /></td></tr>
 <tr class="separator:ga0e78c0b3879c2de62fda891fcb81f045"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf3bdb3b79ca470444368a552b9931825"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gaf3bdb3b79ca470444368a552b9931825">NWNX_Effect_AccessorizeVisualEffect</a> (effect eEffect)</td></tr>
-<tr class="memdesc:gaf3bdb3b79ca470444368a552b9931825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessorize an EffectVisualEffect(), making it undispellable and unable to be removed by resting or death.  <a href="group__effect.html#gaf3bdb3b79ca470444368a552b9931825">More...</a><br /></td></tr>
-<tr class="separator:gaf3bdb3b79ca470444368a552b9931825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa763621ffdb535388bcdeacbf6720f62"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gaa763621ffdb535388bcdeacbf6720f62">NWNX_Effect_SetEffectCreator</a> (effect eEffect, object oObject)</td></tr>
+<tr class="memdesc:gaa763621ffdb535388bcdeacbf6720f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an effect creator.  <a href="group__effect.html#gaa763621ffdb535388bcdeacbf6720f62">More...</a><br /></td></tr>
+<tr class="separator:gaa763621ffdb535388bcdeacbf6720f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c64255302407cf3dd53d329feb8a188"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga0c64255302407cf3dd53d329feb8a188">NWNX_Effect_GetIsEffectValid</a> (effect eEffect)</td></tr>
+<tr class="memdesc:ga0c64255302407cf3dd53d329feb8a188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given effect is valid. Unlike the game builtin, this call considers internal types too.  <a href="group__effect.html#ga0c64255302407cf3dd53d329feb8a188">More...</a><br /></td></tr>
+<tr class="separator:ga0c64255302407cf3dd53d329feb8a188"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c13206726a4e8ca68bb7005331a709a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga4c13206726a4e8ca68bb7005331a709a">NWNX_Effect_GetAppliedEffectCount</a> (object oObject)</td></tr>
+<tr class="memdesc:ga4c13206726a4e8ca68bb7005331a709a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of applied effects on the given object.  <a href="group__effect.html#ga4c13206726a4e8ca68bb7005331a709a">More...</a><br /></td></tr>
+<tr class="separator:ga4c13206726a4e8ca68bb7005331a709a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga86a29b10362c8010d4e6cf917aa49a58"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga86a29b10362c8010d4e6cf917aa49a58">NWNX_Effect_GetAppliedEffect</a> (object oObject, int nNth)</td></tr>
+<tr class="memdesc:ga86a29b10362c8010d4e6cf917aa49a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the nNth applied effect on a object.  <a href="group__effect.html#ga86a29b10362c8010d4e6cf917aa49a58">More...</a><br /></td></tr>
+<tr class="separator:ga86a29b10362c8010d4e6cf917aa49a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaf89fa852a405322e05a2abd62f629ca5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gaf89fa852a405322e05a2abd62f629ca5">DURATION_TYPE_EQUIPPED</a> = 3</td></tr>
+<tr class="separator:gaf89fa852a405322e05a2abd62f629ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf63543b31d06ab0b742025e26aab53aa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gaf63543b31d06ab0b742025e26aab53aa">DURATION_TYPE_INNATE</a> = 4</td></tr>
+<tr class="separator:gaf63543b31d06ab0b742025e26aab53aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga10a9c2babd8ee53cf383342585b239e7"></a>
@@ -183,7 +211,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__EffectUnpacked.html" title="An unpacked effect.">NWNX_EffectUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00265">265</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00278">278</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -212,101 +240,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00274">274</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga3c6b1b67f4bd4332f8b2b4fdf8217aec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3c6b1b67f4bd4332f8b2b4fdf8217aec">&#9670;&nbsp;</a></span>NWNX_Effect_SetEffectExpiredScript()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">effect NWNX_Effect_SetEffectExpiredScript </td>
-          <td>(</td>
-          <td class="paramtype">effect&#160;</td>
-          <td class="paramname"><em>e</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>script</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>data</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set a script with optional data that runs when an effect expires. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td>The effect. </td></tr>
-    <tr><td class="paramname">script</td><td>The script to run when the effect expires. </td></tr>
-    <tr><td class="paramname">data</td><td>Any other data you wish to send back to the script. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section remark"><dt>Remarks</dt><dd>OBJECT_SELF in the script is the object the effect is applied to. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Only works for TEMPORARY and PERMANENT effects applied to an object. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00284">284</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
-
-</div>
-</div>
-<a id="gabb4f9e4e4b8315cda42c1e7dc4d2dff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabb4f9e4e4b8315cda42c1e7dc4d2dff3">&#9670;&nbsp;</a></span>NWNX_Effect_GetEffectExpiredData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">string NWNX_Effect_GetEffectExpiredData </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the data set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a> </p>
-<dl class="section note"><dt>Note</dt><dd>Should only be called from a script set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a>. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The data attached to the effect. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00297">297</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga9dfcfd6d65f0e22b66dd9c6b51df5484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9dfcfd6d65f0e22b66dd9c6b51df5484">&#9670;&nbsp;</a></span>NWNX_Effect_GetEffectExpiredCreator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">object NWNX_Effect_GetEffectExpiredCreator </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the effect creator. </p>
-<dl class="section note"><dt>Note</dt><dd>Should only be called from a script set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a>. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The object from which the effect originated. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00306">306</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00287">287</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -346,7 +280,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>eNew and eOld need to have the same type. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of internal effects updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00315">315</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00297">297</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -375,7 +309,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of effects (item properties and other non-exposed effects included) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00328">328</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00310">310</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -415,7 +349,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__EffectUnpacked.html" title="An unpacked effect.">NWNX_EffectUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00337">337</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00319">319</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -462,7 +396,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Cannot replace an effect with a different type or ID. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00347">347</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00329">329</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -502,7 +436,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>FALSE/0 on failure TRUE/1 on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00358">358</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00340">340</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -541,18 +475,58 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00368">368</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00350">350</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
-<a id="gaf3bdb3b79ca470444368a552b9931825"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf3bdb3b79ca470444368a552b9931825">&#9670;&nbsp;</a></span>NWNX_Effect_AccessorizeVisualEffect()</h2>
+<a id="gaa763621ffdb535388bcdeacbf6720f62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa763621ffdb535388bcdeacbf6720f62">&#9670;&nbsp;</a></span>NWNX_Effect_SetEffectCreator()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">effect NWNX_Effect_AccessorizeVisualEffect </td>
+          <td class="memname">effect NWNX_Effect_SetEffectCreator </td>
+          <td>(</td>
+          <td class="paramtype">effect&#160;</td>
+          <td class="paramname"><em>eEffect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets an effect creator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">eEffect</td><td>The effect to be modified. </td></tr>
+    <tr><td class="paramname">oObject</td><td>The effect creator. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The effect with creator field set. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00358">358</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga0c64255302407cf3dd53d329feb8a188"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0c64255302407cf3dd53d329feb8a188">&#9670;&nbsp;</a></span>NWNX_Effect_GetIsEffectValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Effect_GetIsEffectValid </td>
           <td>(</td>
           <td class="paramtype">effect&#160;</td>
           <td class="paramname"><em>eEffect</em></td><td>)</td>
@@ -561,17 +535,121 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Accessorize an EffectVisualEffect(), making it undispellable and unable to be removed by resting or death. </p>
-<dl class="section note"><dt>Note</dt><dd>If linked with a non-visualeffect or a non-accessorized visualeffect it <em>will</em> get removed. </dd></dl>
+<p>Checks if the given effect is valid. Unlike the game builtin, this call considers internal types too. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">eEffect</td><td>An EffectVisualEffect(), does not work for other effect types. </td></tr>
+    <tr><td class="paramname">eEffect</td><td>The effect to check </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The accessorized effect or an unchanged effect if not an EffectVisualEffect(). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the effect is valid (including internal types). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00376">376</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00370">370</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga4c13206726a4e8ca68bb7005331a709a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c13206726a4e8ca68bb7005331a709a">&#9670;&nbsp;</a></span>NWNX_Effect_GetAppliedEffectCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Effect_GetAppliedEffectCount </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of applied effects on the given object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oObject</td><td>The object to get the applied effect count for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of applied effects, including internal. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00381">381</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga86a29b10362c8010d4e6cf917aa49a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga86a29b10362c8010d4e6cf917aa49a58">&#9670;&nbsp;</a></span>NWNX_Effect_GetAppliedEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect NWNX_Effect_GetAppliedEffect </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nNth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the nNth applied effect on a object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oObject</td><td>The object to get the applied effect copy for. </td></tr>
+    <tr><td class="paramname">nNth</td><td>The effect index to get. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Make sure to check with NWNX_Effect_GetIsEffectValid, as this iterator also includes internal effects. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A copy of the applied game effect, or a invalid effect. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00392">392</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gaf89fa852a405322e05a2abd62f629ca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf89fa852a405322e05a2abd62f629ca5">&#9670;&nbsp;</a></span>DURATION_TYPE_EQUIPPED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int DURATION_TYPE_EQUIPPED = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>EQUIPPED effects are always associated with a slotted item: Setting this duration type requires the effect creator to be set to the (already equipped) item that should remove this effect when unequipped. Removal behaviour for effects where the creator is NOT a equipped item is undefined. They are not removed by resting, cannot be dispelled, etc. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaf63543b31d06ab0b742025e26aab53aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf63543b31d06ab0b742025e26aab53aa">&#9670;&nbsp;</a></span>DURATION_TYPE_INNATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int DURATION_TYPE_INNATE = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>These are feat/racial effects used internally by the game to implement things like movement speed changes and darkvision. They cannot be removed by resting, dispelling, etc. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -581,7 +659,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Mar 15 2023 20:36:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 19 2023 22:00:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

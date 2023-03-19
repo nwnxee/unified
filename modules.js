@@ -32,7 +32,6 @@ var modules =
     [ "Profiler", "group__profiler.html", "group__profiler" ],
     [ "Race", "group__race.html", "group__race" ],
     [ "Redis", "group__redis.html", "group__redis" ],
-    [ "Regex", "group__regex.html", "group__regex" ],
     [ "Rename", "group__rename.html", "group__rename" ],
     [ "Reveal", "group__reveal.html", "group__reveal" ],
     [ "Ruby", "group__ruby.html", "group__ruby" ],
