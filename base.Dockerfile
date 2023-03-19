@@ -12,7 +12,7 @@ RUN runDeps="hunspell \
     libpq5 \
     libsqlite3-0 \
     libruby3.1 \
-    luajit libluajit-5.1 \
+    luajit libluajit-5.1-2 \
     libssl3 \
     inotify-tools \
     patch \
