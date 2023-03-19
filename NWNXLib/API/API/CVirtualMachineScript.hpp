@@ -21,7 +21,26 @@ struct CVirtualMachineScript
     int32_t m_nSecondaryInstructPtr;
     CExoString m_sScriptName;
     DataBlockRef m_pCode;
+    DataBlockRef m_pNDB;
     int32_t m_nScriptEventID;
+
+    struct JmpData
+    {
+        struct Target
+        {
+            int32_t nVMInstPtr;
+            int32_t nInstPtr;
+            int32_t nStackPtr;
+            int32_t nInstPtrLevel;
+        };
+
+        bool    bFromLongJmp;
+        int32_t nRetVal;
+        Target cTarget;
+    };
+
+    std::unordered_map<std::string, JmpData> m_cLongJmpData;
+    CExoString m_sScriptChunk;
 
 
 

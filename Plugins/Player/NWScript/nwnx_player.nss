@@ -416,6 +416,17 @@ void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogCo
 /// @param nMoonFogAmount The int value of Moon Fog amount (range 0-255).
 void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFogAmount);
 
+/// @brief Return's the currently-possessed game object of a player.
+/// @param oPlayer The player object (e.g. from GetFirst/NextPC()).
+/// @return the actual game object of oPlayer, or OBJECT_INVALID on error.
+object NWNX_Player_GetGameObject(object oPlayer);
+
+/// @brief Override the ui discovery mask of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The target object.
+/// @param nMask A mask of OBJECT_UI_DISCOVERY_*, or -1 to clear the override
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -1047,5 +1058,25 @@ void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFog
     NWNX_PushArgumentInt(nMoonFogAmount);
     NWNX_PushArgumentInt(nSunFogAmount);
     NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+object NWNX_Player_GetGameObject(object oPlayer)
+{
+    string sFunc = "GetGameObject";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask)
+{
+    string sFunc = "SetObjectUiDiscoveryMaskOverride";
+
+    NWNX_PushArgumentInt(nMask);
+    NWNX_PushArgumentObject(oObject);
+    NWNX_PushArgumentObject(oPlayer);
+
     NWNX_CallFunction(NWNX_Player, sFunc);
 }

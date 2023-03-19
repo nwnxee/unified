@@ -1,5 +1,6 @@
 #include "Events.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 
 namespace Events {
 
@@ -16,12 +17,12 @@ void PolymorphEvents() __attribute__((constructor));
 void PolymorphEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", []() {
-        s_OnApplyPolymorphHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,
-                                              (void*)&OnApplyPolymorphHook, Hooks::Order::Early);
+        s_OnApplyPolymorphHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyPolymorph,
+                                              &OnApplyPolymorphHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", []() {
-        s_OnRemovePolymorphHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect,
-                                               (void*)&OnRemovePolymorphHook, Hooks::Order::Early);
+        s_OnRemovePolymorphHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemovePolymorph,
+                                              &OnRemovePolymorphHook, Hooks::Order::Early);
     });
 }
 

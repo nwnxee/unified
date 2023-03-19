@@ -20,8 +20,8 @@ void PreserveActionsOnDMPossess()
 
     LOG_INFO("DMs possessing a creature will no longer clear their actions");
 
-    static Hooks::Hook s_PossessCreatureHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17PossessCreatureDMEjh,
-        (void*)+[](CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode) -> void
+    static Hooks::Hook s_PossessCreatureHook = Hooks::HookFunction(&CNWSCreature::PossessCreatureDM,
+        +[](CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode) -> void
         {
             if (nObjectId != Constants::OBJECT_INVALID)
             {

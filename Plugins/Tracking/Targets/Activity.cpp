@@ -23,7 +23,7 @@ static Hooks::Hook s_MainLoopHook;
 Activity::Activity(Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
-    s_MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopUpdate, Hooks::Order::Earliest);
+    s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopUpdate, Hooks::Order::Earliest);
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }

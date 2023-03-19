@@ -25,6 +25,7 @@
 #include "API/CNWTilePathNode.hpp"
 #include "API/CNWTileSetManager.hpp"
 #include "API/CNWTileSurfaceMesh.hpp"
+#include "API/CGameObjectArray.hpp"
 
 #include <cmath>
 #include <set>
@@ -1356,6 +1357,111 @@ NWNX_EXPORT ArgumentStack GetAreaWind(ArgumentStack&& args)
             pArea->m_fWindYaw,
             pArea->m_fWindPitch
         };
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetDefaultObjectUiDiscoveryMask(ArgumentStack&& args)
+{
+    static std::unordered_map<int32_t, int32_t> s_globalMask;
+
+    static auto SetObjectMask = [](CNWSArea *pArea, CNWSObject *pObject)
+    {
+        if (auto value = pArea->nwnxGet<int>("AREA_DISCOVERY_MASK_" + std::to_string(pObject->m_nObjectType)))
+        {
+            pObject->m_nUiDiscoveryMask = *value;
+        }
+        else
+        {
+            auto globalMask = s_globalMask.find(pObject->m_nObjectType);
+            if (globalMask != s_globalMask.end())
+            {
+                pObject->m_nUiDiscoveryMask = globalMask->second;
+            }
+        }
+    };
+
+    static Hooks::Hook pAddObjectToAreaHook = Hooks::HookFunction(&CNWSArea::AddObjectToArea,
+    +[](CNWSArea *pThis, ObjectID id, BOOL bRunScripts) -> BOOL
+    {
+        auto retVal = pAddObjectToAreaHook->CallOriginal<BOOL>(pThis, id, bRunScripts);
+
+        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(id)))
+        {
+            SetObjectMask(pThis, pObject);
+        }
+
+        return retVal;
+    }, Hooks::Order::Early);
+
+    const auto oidArea = args.extract<ObjectID>();
+    const auto objectTypes = args.extract<int32_t>();
+    const auto discoveryMask = args.extract<int32_t>();
+    const auto forceUpdate = !!args.extract<int32_t>();
+
+    if (oidArea == Constants::OBJECT_INVALID)
+    {
+        auto UpdateGlobalDiscoveryMask = [&](int32_t nwscriptObjectType)
+        {
+            if ((objectTypes & nwscriptObjectType))
+            {
+                if (discoveryMask == -1)
+                    s_globalMask.erase(Utils::NWScriptObjectTypeToEngineObjectType(nwscriptObjectType));
+                else
+                    s_globalMask[Utils::NWScriptObjectTypeToEngineObjectType(nwscriptObjectType)] = discoveryMask;
+            }
+        };
+
+        UpdateGlobalDiscoveryMask(1);   // Creature
+        UpdateGlobalDiscoveryMask(2);   // Item
+        UpdateGlobalDiscoveryMask(8);   // Door
+        UpdateGlobalDiscoveryMask(64);  // Placeable
+
+        if (forceUpdate)
+        {
+            auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
+
+            for(int oid = pGameObjectArray->m_nNextObjectArrayID[0] - 1; oid >= 0; oid--)
+            {
+                if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oid)))
+                {
+                    if (auto *pArea = pObject->GetArea())
+                    {
+                        SetObjectMask(pArea, pObject);
+                    }
+                }
+            }
+        }
+    }
+    else if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
+    {
+        auto UpdateAreaDiscoveryMask = [&](int32_t nwscriptObjectType)
+        {
+            if ((objectTypes & nwscriptObjectType))
+            {
+                if (discoveryMask == -1)
+                    pArea->nwnxRemove("AREA_DISCOVERY_MASK_" + std::to_string(Utils::NWScriptObjectTypeToEngineObjectType(nwscriptObjectType)));
+                else
+                    pArea->nwnxSet("AREA_DISCOVERY_MASK_" + std::to_string(Utils::NWScriptObjectTypeToEngineObjectType(nwscriptObjectType)), discoveryMask);
+            }
+        };
+
+        UpdateAreaDiscoveryMask(1);   // Creature
+        UpdateAreaDiscoveryMask(2);   // Item
+        UpdateAreaDiscoveryMask(8);   // Door
+        UpdateAreaDiscoveryMask(64);  // Placeable
+
+        if (forceUpdate)
+        {
+            for (int i = 0; i < pArea->m_aGameObjects.num; i++)
+            {
+                if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(pArea->m_aGameObjects[i])))
+                {
+                    SetObjectMask(pArea, pObject);
+                }
+            }
+        }
     }
 
     return {};

@@ -10,6 +10,7 @@ NWN_API_PROLOGUE(CExoTimers)
 struct CExoTimersInternal;
 
 
+typedef int BOOL;
 
 
 struct CExoTimers
@@ -18,8 +19,8 @@ struct CExoTimers
 
     CExoTimers();
     ~CExoTimers();
-    uint32_t GetLowResolutionTimer();
-    uint64_t GetHighResolutionTimer();
+    uint32_t GetLowResolutionTimer(BOOL bForceSyncTimer = false);
+    uint64_t GetHighResolutionTimer(BOOL bForceSyncTimer = false);
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoTimers

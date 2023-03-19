@@ -67,12 +67,15 @@ void GameObjectLookup()
             pThis->m_nArraySize            = 0;
         }, Hooks::Order::Final);
 
-    static auto s_AddObjectAtPos    = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject, (void*)&AddObjectAtPos, Hooks::Order::Final);
-    static auto s_AddExternalObject = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti, (void*)&AddExternalObject, Hooks::Order::Final);
-    static auto s_AddInternalObject = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti, (void*)&AddInternalObject, Hooks::Order::Final);
-    static auto s_Delete1           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject, (void*)&Delete, Hooks::Order::Final);
-    static auto s_Delete2           = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray6DeleteEj, (void*)+[](void* p, uint32_t id) -> uint8_t { return Delete(p, id, nullptr); }, Hooks::Order::Final);
-    static auto s_GetGameObject     = Hooks::HookFunction(API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject, (void*)&GetGameObject, Hooks::Order::Final);
+    uint8_t (CGameObjectArray::* delete1Ptr)(OBJECT_ID, CGameObject**) = &CGameObjectArray::Delete;
+    uint8_t (CGameObjectArray::* delete2Ptr)(OBJECT_ID) = &CGameObjectArray::Delete;
+
+    static auto s_AddObjectAtPos    = Hooks::HookFunction(&CGameObjectArray::AddObjectAtPos, &AddObjectAtPos, Hooks::Order::Final);
+    static auto s_AddExternalObject = Hooks::HookFunction(&CGameObjectArray::AddExternalObject, &AddExternalObject, Hooks::Order::Final);
+    static auto s_AddInternalObject = Hooks::HookFunction(&CGameObjectArray::AddInternalObject, &AddInternalObject, Hooks::Order::Final);
+    static auto s_Delete1           = Hooks::HookFunction(delete1Ptr, &Delete, Hooks::Order::Final);
+    static auto s_Delete2           = Hooks::HookFunction(delete2Ptr, +[](void* p, uint32_t id) -> uint8_t { return Delete(p, id, nullptr); }, Hooks::Order::Final);
+    static auto s_GetGameObject     = Hooks::HookFunction(&CGameObjectArray::GetGameObject, &GetGameObject, Hooks::Order::Final);
 
     s_nNextObjectArrayID[InternalObject] = 0x00000000;
     s_nNextCharArrayID[InternalObject]   = 0x7FFFFFFF;
@@ -161,19 +164,19 @@ static CNWSSoundObject*        GetSoundObject  (CServerExoApp*, ObjectID oid) __
 
 static void SetupWrapperHooks()
 {
-    static auto s_GetGameObj      = Hooks::HookFunction(Functions::_ZN13CServerExoApp13GetGameObjectEj,                 (void*)&GetGameObj,      Hooks::Order::Final);
-    static auto s_GetStore        = Hooks::HookFunction(Functions::_ZN13CServerExoApp22GetStoreByGameObjectIDEj,        (void*)&GetStore,        Hooks::Order::Final);
-    static auto s_GetItem         = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetItemByGameObjectIDEj,         (void*)&GetItem,         Hooks::Order::Final);
-    static auto s_GetCreature     = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetCreatureByGameObjectIDEj,     (void*)&GetCreature,     Hooks::Order::Final);
-    static auto s_GetModule       = Hooks::HookFunction(Functions::_ZN13CServerExoApp23GetModuleByGameObjectIDEj,       (void*)&GetModule,       Hooks::Order::Final);
-    static auto s_GetArea         = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetAreaByGameObjectIDEj,         (void*)&GetArea,         Hooks::Order::Final);
-    static auto s_GetTrigger      = Hooks::HookFunction(Functions::_ZN13CServerExoApp24GetTriggerByGameObjectIDEj,      (void*)&GetTrigger,      Hooks::Order::Final);
-    static auto s_GetPlaceable    = Hooks::HookFunction(Functions::_ZN13CServerExoApp26GetPlaceableByGameObjectIDEj,    (void*)&GetPlaceable,    Hooks::Order::Final);
-    static auto s_GetDoor         = Hooks::HookFunction(Functions::_ZN13CServerExoApp21GetDoorByGameObjectIDEj,         (void*)&GetDoor,         Hooks::Order::Final);
-    static auto s_GetAreaOfEffect = Hooks::HookFunction(Functions::_ZN13CServerExoApp29GetAreaOfEffectByGameObjectIDEj, (void*)&GetAreaOfEffect, Hooks::Order::Final);
-    static auto s_GetWaypoint     = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetWaypointByGameObjectIDEj,     (void*)&GetWaypoint,     Hooks::Order::Final);
-    static auto s_GetEncounter    = Hooks::HookFunction(Functions::_ZN13CServerExoApp26GetEncounterByGameObjectIDEj,    (void*)&GetEncounter,    Hooks::Order::Final);
-    static auto s_GetSoundObject  = Hooks::HookFunction(Functions::_ZN13CServerExoApp28GetSoundObjectByGameObjectIDEj,  (void*)&GetSoundObject,  Hooks::Order::Final);
+    static auto s_GetGameObj      = Hooks::HookFunction(&CServerExoApp::GetGameObject,                 &GetGameObj,      Hooks::Order::Final);
+    static auto s_GetStore        = Hooks::HookFunction(&CServerExoApp::GetStoreByGameObjectID,        &GetStore,        Hooks::Order::Final);
+    static auto s_GetItem         = Hooks::HookFunction(&CServerExoApp::GetItemByGameObjectID,         &GetItem,         Hooks::Order::Final);
+    static auto s_GetCreature     = Hooks::HookFunction(&CServerExoApp::GetCreatureByGameObjectID,     &GetCreature,     Hooks::Order::Final);
+    static auto s_GetModule       = Hooks::HookFunction(&CServerExoApp::GetModuleByGameObjectID,       &GetModule,       Hooks::Order::Final);
+    static auto s_GetArea         = Hooks::HookFunction(&CServerExoApp::GetAreaByGameObjectID,         &GetArea,         Hooks::Order::Final);
+    static auto s_GetTrigger      = Hooks::HookFunction(&CServerExoApp::GetTriggerByGameObjectID,      &GetTrigger,      Hooks::Order::Final);
+    static auto s_GetPlaceable    = Hooks::HookFunction(&CServerExoApp::GetPlaceableByGameObjectID,    &GetPlaceable,    Hooks::Order::Final);
+    static auto s_GetDoor         = Hooks::HookFunction(&CServerExoApp::GetDoorByGameObjectID,         &GetDoor,         Hooks::Order::Final);
+    static auto s_GetAreaOfEffect = Hooks::HookFunction(&CServerExoApp::GetAreaOfEffectByGameObjectID, &GetAreaOfEffect, Hooks::Order::Final);
+    static auto s_GetWaypoint     = Hooks::HookFunction(&CServerExoApp::GetWaypointByGameObjectID,     &GetWaypoint,     Hooks::Order::Final);
+    static auto s_GetEncounter    = Hooks::HookFunction(&CServerExoApp::GetEncounterByGameObjectID,    &GetEncounter,    Hooks::Order::Final);
+    static auto s_GetSoundObject  = Hooks::HookFunction(&CServerExoApp::GetSoundObjectByGameObjectID,  &GetSoundObject,  Hooks::Order::Final);
 }
 
 static CGameObject* GetGameObj(CServerExoApp*, ObjectID oid)

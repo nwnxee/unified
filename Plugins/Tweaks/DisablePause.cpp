@@ -17,8 +17,8 @@ void DisablePause()
 
     LOG_INFO("Disabling pausing of the server");
 
-    static Hooks::Hook s_SetPauseState_hook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi,
-        (void*)+[](CServerExoAppInternal* thisPtr, uint8_t nState, int32_t bPause) -> void
+    static Hooks::Hook s_SetPauseState_hook = Hooks::HookFunction(&CServerExoAppInternal::SetPauseState,
+        +[](CServerExoAppInternal* thisPtr, uint8_t nState, int32_t bPause) -> void
         {
             // nState=1 - timestop
             // nState=2 - DM pause

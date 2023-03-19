@@ -8,14 +8,6 @@
 NWN_API_PROLOGUE(CassowarySolverEngineStructure)
 #endif
 
-template<typename T>
-struct SharedPtrEngineStructure
-{
-    std::shared_ptr<T> m_shared;
-    virtual ~SharedPtrEngineStructure() {}
-};
-
-
 struct CassowarySolverEngineStructureShared;
 struct CassowarySolverEngineStructure : public SharedPtrEngineStructure<CassowarySolverEngineStructureShared>
 {

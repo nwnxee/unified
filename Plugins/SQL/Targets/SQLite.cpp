@@ -1,10 +1,7 @@
-#if defined(NWNX_SQL_SQLITE_SUPPORT)
-
 #include "SQLite.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 
-#include <sqlite3.h>
 
 namespace SQL {
 
@@ -228,5 +225,3 @@ void SQLite::DestroyPreparedQuery()
 }
 
 }
-
-#endif

@@ -31,6 +31,7 @@ jobs:
         echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
         echo "nwn_build=$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
         echo "nwn_build_revision=$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
+        echo "nwn_build_postfix=$(grep 'set(TARGET_NWN_BUILD_POSTFIX ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -54,7 +55,7 @@ jobs:
       with:
         context: ./
         file: ./base.Dockerfile
-        build-args: BD_NWSERVER_IMAGE=beamdog/nwserver:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
+        build-args: NWSERVER_IMAGE=ghcr.io/urothis/nwserver:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}
         push: true
         labels: |
           org.opencontainers.image.title=NWNX:EE Base

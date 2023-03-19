@@ -43,7 +43,7 @@ struct CScriptCompiler
     int32_t m_nCurrentLineNumberBinaryStartInstruction;
     int32_t m_nCurrentLineNumberBinaryEndInstruction;
     int32_t m_nTableFileNames;
-    CExoString m_psTableFileNames[128];
+    CExoString m_psTableFileNames[512];
     int32_t m_nLineNumberEntries;
     int32_t m_nFinalLineNumberEntries;
     CExoArrayList<int32_t> m_pnTableInstructionFileReference;
@@ -74,7 +74,7 @@ struct CScriptCompiler
     CScriptCompilerIdentifierHashTableEntry * m_pIdentifierHashTable;
     int32_t m_nTokenStatus;
     int32_t m_nTokenCharacters;
-    char m_pchToken[512];
+    char m_pchToken[8192];
     CScriptCompilerStackEntry * m_pSRStack;
     int32_t m_nSRStackEntries;
     int32_t m_nSRStackStates;
@@ -177,9 +177,6 @@ struct CScriptCompiler
     int32_t CompileScriptConditional(const CExoString & sScriptConditional);
     int32_t GetCompiledScriptCode(char * * pnCode, int32_t * nCodeSize);
     void ClearCompiledScriptCode();
-    void Test_CompileAllScriptsInDirectory(CExoString & sSourceDirectoryAlias, CExoString & sTargetDirectoryAlias, CExoString & sIdentifierFile);
-    BOOL Test_CompareDirectoryContents(CExoString & sSourceDirectoryAlias, CExoString & sTargetDirectoryAlias);
-    BOOL Test_CompareFileInclusion(CExoString & sTargetAlias, CExoString & sBaseAlias, CExoStringList * plFileNames, uint16_t nResType);
     void Initialize();
     void ShutDown();
     uint32_t HashString(const CExoString & sString);

@@ -17,8 +17,8 @@ void MaterialChangeEvents() __attribute__((constructor));
 void MaterialChangeEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", []() {
-        s_SetPositionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject11SetPositionE6Vectori,
-                                         (void*)&SetPositionHook, Hooks::Order::Earliest);
+        s_SetPositionHook = Hooks::HookFunction(&CNWSObject::SetPosition,
+                                         &SetPositionHook, Hooks::Order::Earliest);
     });
 }
 

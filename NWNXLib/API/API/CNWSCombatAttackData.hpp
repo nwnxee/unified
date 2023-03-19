@@ -33,7 +33,7 @@ struct CNWSCombatAttackData
     uint8_t m_nThreatRoll;
     int32_t m_nToHitMod;
     char m_nMissedBy;
-    int16_t m_nDamage[13];
+    int16_t m_nDamage[32];
     uint8_t m_nWeaponAttackType;
     uint8_t m_nAttackMode;
     uint8_t m_nConcealment;
@@ -61,9 +61,9 @@ struct CNWSCombatAttackData
     void ClearAttackData();
     void Copy(CNWSCombatAttackData * pData, BOOL bCopyDebugInfo = false);
     void SetBaseDamage(int32_t nDamage);
-    void SetDamage(uint16_t nDamageType, int32_t nDamage);
-    void AddDamage(uint16_t nDamageType, int32_t nDamage);
-    int32_t GetDamage(uint16_t nDamageType);
+    void SetDamage(uint32_t damageFlags, int32_t nDamage);
+    void AddDamage(uint32_t damageFlags, int32_t nDamage);
+    int32_t GetDamage(uint32_t damageFlags);
     int32_t GetTotalDamage(BOOL bBaseDamage = false);
     BOOL SaveData(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadData(CResGFF * pRes, CResStruct * pStruct);

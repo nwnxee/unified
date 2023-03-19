@@ -1,7 +1,5 @@
 #pragma once
 
-#if defined(NWNX_SQL_SQLITE_SUPPORT)
-
 #include <sqlite3.h>
 #include "Targets/ITarget.hpp"
 
@@ -39,5 +37,3 @@ private:
 };
 
 }
-
-#endif

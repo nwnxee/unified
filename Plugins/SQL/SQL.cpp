@@ -62,11 +62,11 @@ SQL::SQL(Services::ProxyServiceList* services)
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
     }
 
-    auto type = Config::Get<std::string>("TYPE", "MYSQL");
-    std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
+    m_databaseType = Config::Get<std::string>("TYPE", "MYSQL");
+    std::transform(std::begin(m_databaseType), std::end(m_databaseType), std::begin(m_databaseType), ::toupper);
 
-    LOG_INFO("Connecting to type %s", type);
-    if (type == "MYSQL")
+    LOG_INFO("Connecting to type %s", m_databaseType);
+    if (m_databaseType == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
         m_target = std::make_unique<MySQL>();
@@ -74,7 +74,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Targeting MySQL, but no MySQL support built in.");
 #endif
     }
-    else if (type == "POSTGRESQL")
+    else if (m_databaseType == "POSTGRESQL")
     {
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
         m_target = std::make_unique<PostgreSQL>();
@@ -82,13 +82,9 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
     }
-    else if (type == "SQLITE")
+    else if (m_databaseType == "SQLITE")
     {
-#if defined(NWNX_SQL_SQLITE_SUPPORT)
         m_target = std::make_unique<SQLite>();
-#else
-        throw std::runtime_error("Targeting SQLite3, but no SQLite3 support built in.");
-#endif
     }
     else
     {
@@ -412,7 +408,7 @@ ArgumentStack SQL::GetAffectedRows(ArgumentStack&&)
 
 ArgumentStack SQL::GetDatabaseType(ArgumentStack&&)
 {
-    return Config::Get<std::string>("TYPE", "MYSQL");
+    return m_databaseType;
 }
 
 ArgumentStack SQL::DestroyPreparedQuery(ArgumentStack&&)

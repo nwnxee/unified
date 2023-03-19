@@ -21,6 +21,7 @@ struct CScriptLog;
 struct CScriptLog;
 struct CVirtualMachineCmdImplementer;
 struct CVirtualMachineDebuggingContext;
+struct CVirtualMachineDebuggerInstance;
 
 
 typedef int BOOL;
@@ -44,6 +45,7 @@ struct CVirtualMachine
     int32_t m_nSecondaryInstructionPointer;
     int32_t m_nStackSizeToSave;
     int32_t m_nBaseStackSizeToSave;
+    int32_t * m_pCurrentInstructionPointer[8];
     CVirtualMachineCmdImplementer * m_pCmdImplementer;
     BOOL m_bDebugGUIRequired;
     BOOL m_bDebuggerSpawned;
@@ -55,6 +57,7 @@ struct CVirtualMachine
     uint32_t m_nScriptStartTime;
     uint32_t m_nScriptEndTime;
     uint32_t m_nInstructionLimit;
+    CExoString m_sAbortCustomError;
 
     CVirtualMachine();
     ~CVirtualMachine();
@@ -81,9 +84,8 @@ struct CVirtualMachine
     BOOL StackPushEngineStructure(int32_t nEngineStructure, void * pEngineStructure);
     void DeleteScriptSituation(void * pScript);
     int32_t ExecuteCode(int32_t * nInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
-    BOOL Test_RunAllScriptsInDirectory(CExoString & sRunDirectoryAlias);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
-    void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData);
+    void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData, DataBlockRef pDataNDB = nullptr);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);
     BOOL PushInstructionPtr(int32_t nInstructionPointer);
     int32_t ReadScriptFile(CExoString * sFileName, int32_t nScriptEvent = 0);
@@ -95,6 +97,7 @@ struct CVirtualMachine
     BOOL SaveScriptSituation_Internal(CVirtualMachineScript * pScript, CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadScriptSituation_Internal(CVirtualMachineScript * * pScript, CResGFF * pRes, CResStruct * pStruct);
     CScriptLog * GetScriptLog(const CExoString & sScript);
+    std::shared_ptr<CVirtualMachineDebuggerInstance> GetDebuggerInstance();
 
 
 #ifdef NWN_CLASS_EXTENSION_CVirtualMachine

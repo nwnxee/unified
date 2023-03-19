@@ -82,7 +82,7 @@ namespace Hooks
     class FunctionHook final
     {
     public:
-        FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Order::Default);
+        FunctionHook(void* originalFunction, void* newFunction, int32_t order = Order::Default);
         ~FunctionHook();
 
         void *GetOriginal() { return m_trampoline; }
@@ -93,17 +93,22 @@ namespace Hooks
         }
 
     private:
-        uintptr_t   m_originalFunction;
+        void*       m_originalFunction;
         void*       m_newFunction;
         int32_t     m_order;
         void*       m_funchook;
         void*       m_trampoline;
 
-        static inline std::unordered_map<uintptr_t, std::vector<FunctionHook*>> s_hooks;
+        static inline std::unordered_map<void*, std::vector<FunctionHook*>> s_hooks;
     };
 
     using Hook = std::unique_ptr<FunctionHook>;
-    [[nodiscard]] Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
+
+    template <typename T1, typename T2>
+    [[nodiscard]] Hook HookFunction(T1 original, T2 replacement, int32_t order = Order::Default)
+    {
+        return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
+    }
 }
 
 namespace MessageBus
@@ -120,15 +125,6 @@ namespace Platform
 {
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);
-
-    std::string ResolveAddress(uintptr_t address);
-    uintptr_t GetFunctionAddress(const std::string& mangledname);
-
-    void CalculateBaseAddress();
-    uintptr_t GetRelocatedAddress(const uintptr_t address);
-    uintptr_t GetRelocatedGlobalAddress(const uintptr_t address);
-
-    bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 
 namespace Commands
@@ -269,6 +265,8 @@ namespace Utils
     CNWSWaypoint*  PopWaypoint(ArgumentStack& args, bool throwOnFail=false);
     CNWSTrigger*   PopTrigger(ArgumentStack& args, bool throwOnFail=false);
     CNWSDoor*      PopDoor(ArgumentStack& args, bool throwOnFail=false);
+
+    int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType);
 }
 
 namespace POS

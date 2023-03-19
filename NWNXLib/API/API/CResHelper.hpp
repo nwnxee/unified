@@ -15,16 +15,14 @@ typedef int BOOL;
 
 template<class T,RESTYPE nType> struct CResHelper
 {
-    BOOL m_bAutoRequest;
     T * m_pRes;
     CResRef m_cResRef;
 
     CResHelper();
-    CResHelper(const CResRef & cNewResRef, BOOL bSetAutoRequest = true);
+    CResHelper(const CResRef & cNewResRef, BOOL bThisDoesNothing = true);
     virtual ~CResHelper();
-    int32_t CancelRequest();
-    int32_t Request();
-    void SetResRef(const CResRef & cNewResRef, BOOL bSetAutoRequest = true);
+    void SetResRef(const CResRef & cNewResRef, BOOL bThisDoesNothing = true);
+    bool ClearResHelper();
 
 
 #ifdef NWN_CLASS_EXTENSION_CResHelper

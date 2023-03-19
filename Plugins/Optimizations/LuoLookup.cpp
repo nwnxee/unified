@@ -37,7 +37,6 @@ static void DestroyPlayer0(CNWSPlayer* pThis);
 static void DestroyPlayer1(CNWSPlayer* pThis);
 static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage*, CNWSPlayer*, ObjectID);
 
-static bool s_FixPlaceableEffectReapplyBug;
 
 void LuoLookup() __attribute__((constructor));
 void LuoLookup()
@@ -47,31 +46,25 @@ void LuoLookup()
         LOG_INFO("LastUpdateObject lookup optimization enabled");
         s_playerluo.Initialize();
 
-        s_CreateNewLastUpdateObject           = Hooks::HookFunction(Functions::_ZN11CNWSMessage25CreateNewLastUpdateObjectEP10CNWSPlayerP10CNWSObjectPjS4_, (void*)CreateNewLastUpdateObject, Hooks::Order::Early);
+        s_CreateNewLastUpdateObject           = Hooks::HookFunction(&CNWSMessage::CreateNewLastUpdateObject, CreateNewLastUpdateObject, Hooks::Order::Early);
         s_DestroyPlayer0                      = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD0Ev, (void*)DestroyPlayer0, Hooks::Order::Early);
         s_DestroyPlayer1                      = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD1Ev, (void*)DestroyPlayer1, Hooks::Order::Early);
 
-        s_GetLastUpdateObject                 = Hooks::HookFunction(Functions::_ZN10CNWSPlayer19GetLastUpdateObjectEj, (void*)GetLastUpdateObject, Hooks::Order::Final);
-        s_TestObjectUpdateDifferences         = Hooks::HookFunction(Functions::_ZN11CNWSMessage27TestObjectUpdateDifferencesEP10CNWSPlayerP10CNWSObjectPP17CLastUpdateObjectPjS7_, (void*)TestObjectUpdateDifferences, Hooks::Order::Final);
-        s_DeleteLastUpdateObjectsForObject    = Hooks::HookFunction(Functions::_ZN11CNWSMessage32DeleteLastUpdateObjectsForObjectEP10CNWSPlayerj, (void*)DeleteLastUpdateObjectsForObject, Hooks::Order::Final);
-        s_DeleteLastUpdateObjectsInOtherAreas = Hooks::HookFunction(Functions::_ZN11CNWSMessage35DeleteLastUpdateObjectsInOtherAreasEP10CNWSPlayer, (void*)DeleteLastUpdateObjectsInOtherAreas, Hooks::Order::Final);
+        s_GetLastUpdateObject                 = Hooks::HookFunction(&CNWSPlayer::GetLastUpdateObject, GetLastUpdateObject, Hooks::Order::Final);
+        s_TestObjectUpdateDifferences         = Hooks::HookFunction(&CNWSMessage::TestObjectUpdateDifferences, TestObjectUpdateDifferences, Hooks::Order::Final);
+        s_DeleteLastUpdateObjectsForObject    = Hooks::HookFunction(&CNWSMessage::DeleteLastUpdateObjectsForObject, DeleteLastUpdateObjectsForObject, Hooks::Order::Final);
+        s_DeleteLastUpdateObjectsInOtherAreas = Hooks::HookFunction(&CNWSMessage::DeleteLastUpdateObjectsInOtherAreas, DeleteLastUpdateObjectsInOtherAreas, Hooks::Order::Final);
 
         if (Config::Get<bool>("ALTERNATE_GAME_OBJECT_UPDATE", false))
         {
             LOG_INFO("Using alternative game object update mechanism");
-            s_SendServerToPlayerGameObjUpdate = Hooks::HookFunction(Functions::_ZN11CNWSMessage31SendServerToPlayerGameObjUpdateEP10CNWSPlayerj, (void*)SendServerToPlayerGameObjUpdate, Hooks::Order::Final);
+            s_SendServerToPlayerGameObjUpdate = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerGameObjUpdate, SendServerToPlayerGameObjUpdate, Hooks::Order::Final);
 
             auto dist = Config::Get<float>("OBJECT_UPDATE_DISTANCE", 45.0);
             LOG_INFO("Object update distance is %f", dist);
 
             for (int32_t i = 0; i <= Constants::ObjectType::MAX; i++)
                 s_UpdateDistances[i] = dist * dist;
-        }
-
-        if (Config::Get<bool>("FIX_PLACEABLE_VFX_REAPPLY_BUG", false))
-        {
-            LOG_INFO("Fixing a bug where VFXs on placeables keep getting reapplied");
-            s_FixPlaceableEffectReapplyBug = true;
         }
     }
 }
@@ -152,9 +145,6 @@ static void MessageDeleteLuo(CNWSMessage* msg, CLastUpdateObject* luo, CNWSPlaye
             if (pgo && (obj->GetArea() == pgo->GetArea()))
                 bDelete = false;
         }
-
-        if (s_FixPlaceableEffectReapplyBug && luo->m_nObjectType == Constants::ObjectType::Placeable)
-            bDelete = true;
 
         msg->WriteBOOL(bDelete);
     }

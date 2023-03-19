@@ -23,20 +23,20 @@ void LevelEvents() __attribute__((constructor));
 void LevelEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", []() {
-        s_LevelUpHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi,
-                                     (void*)&LevelUpHook, Hooks::Order::Earliest);
+        s_LevelUpHook = Hooks::HookFunction(&CNWSCreatureStats::LevelUp,
+                                     &LevelUpHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", []() {
-        s_LevelUpAutomaticHook= Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
-                                             (void*)&LevelUpAutomaticHook, Hooks::Order::Earliest);
+        s_LevelUpAutomaticHook= Hooks::HookFunction(&CNWSCreatureStats::LevelUpAutomatic,
+                                             &LevelUpAutomaticHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", []() {
-        s_LevelDownHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
-                                       (void*)&LevelDownHook, Hooks::Order::Earliest);
+        s_LevelDownHook = Hooks::HookFunction(&CNWSCreatureStats::LevelDown,
+                                       &LevelDownHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_.*", []() {
-        s_HandlePlayerToServerLevelUpMessageHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage34HandlePlayerToServerLevelUpMessageEP10CNWSPlayerh,
-                                                                       (void*)&HandlePlayerToServerLevelUpMessageHook, Hooks::Order::Early);
+        s_HandlePlayerToServerLevelUpMessageHook = Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerLevelUpMessage,
+                                                                       &HandlePlayerToServerLevelUpMessageHook, Hooks::Order::Early);
     });
 }
 

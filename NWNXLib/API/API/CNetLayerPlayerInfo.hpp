@@ -42,6 +42,7 @@ struct CNetLayerPlayerInfo
     uint8_t m_nPlatformId;
     int32_t m_nBuildVersion;
     int32_t m_nPatchRevision;
+    int32_t m_nPatchPostfix;
     CExoString m_sCommitHash;
 
     CNetLayerPlayerInfo();

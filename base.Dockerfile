@@ -1,8 +1,8 @@
 # This image is the base for NWNX:EE, it includes all the dependencies required to run NWNX and all plugins. It
 # is used as an intermediary image before the freshly built binaries are dropped in.
 
-ARG BD_NWSERVER_IMAGE=beamdog/nwserver
-FROM $BD_NWSERVER_IMAGE
+ARG NWSERVER_IMAGE=ghcr.io/urothis/nwserver
+FROM $NWSERVER_IMAGE
 RUN mkdir -p /nwn/nwnx
 
 # Install plugin run dependencies

@@ -42,6 +42,7 @@ struct CPlayOptions
     BOOL bResetEncounterSpawnPool;
     BOOL bHideHitPointsGained;
     BOOL bPlayerPartyControl;
+    BOOL bShowPlayerJoinMessages;
 
 
 
