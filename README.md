@@ -5,7 +5,7 @@
 This branch contains the latest stable build of NWN. It is only current in cases when the master branch is targeting a development build. If the master branch is targeting a stable build, this branch is one stable build out of date.
 
 - Latest release: [build8193.34final-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334final-HEAD)
-- Docker tag: `nwnxee/unified:build8193.34final`
+- Docker tag: `nwnxee/unified:build8193.34`
 - nwserver-linux md5: `1d17b4cc7680fc4defbd36dcc5bd9e9b`
 
 @mainpage
