@@ -48,6 +48,13 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
     std::string sAux;
 
     PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
+    if (event == "SET")
+    {
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
+        PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
+        PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
+        PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
+    }
 
     if (SignalEvent("NWNX_ON_TRAP_" + event + "_BEFORE", pCreature->m_idSelf, &sAux))
     {
@@ -61,6 +68,13 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
     }
 
     PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
+    if (event == "SET")
+    {
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
+        PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
+        PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
+        PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
+    }
     PushEventData("ACTION_RESULT", std::to_string(retVal));
 
     SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);

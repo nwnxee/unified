@@ -956,6 +956,10 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     TRAP_OBJECT_ID        | object | Convert to object with StringToObject()
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject(), only in SET events
+    TARGET_POSITION_X     | float  | Only in SET events
+    TARGET_POSITION_Y     | float  | Only in SET events
+    TARGET_POSITION_Z     | float  | Only in SET events
     TRAP_FORCE_SET        | int    | TRUE/FALSE, only in ENTER events
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events (not ENTER)
 

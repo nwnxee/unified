@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 
 ### Added
-- N/A
+- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
 
 ##### New Plugins
 - N/A
