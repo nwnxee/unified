@@ -47,37 +47,68 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
     uint32_t retVal;
     std::string sAux;
 
-    PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
-    if (event == "SET")
-    {
-        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
-        PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
-        PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
-        PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
-    }
-
-    if (SignalEvent("NWNX_ON_TRAP_" + event + "_BEFORE", pCreature->m_idSelf, &sAux))
-    {
-        retVal = originalTrapHook->CallOriginal<uint32_t>(pCreature, pNode);
-    }
+    BOOL bInRange;
+    if (event != "SET")
+        bInRange = pCreature->GetIsInUseRange((ObjectID)pNode->m_pParameter[0]);
     else
     {
-        retVal = atoi(sAux.c_str());
-        if(retVal == 0)
-            retVal = 3; //CNWSObject::ACTION_FAILED;
+        Vector vTarget = Vector(*(float*)&pNode->m_pParameter[2], *(float*)&pNode->m_pParameter[3], *(float*)&pNode->m_pParameter[4]);
+        vTarget = VectorMath::Subtract(vTarget, VectorMath::Normalize(VectorMath::Subtract(pCreature->m_vPosition, vTarget)));
+        bInRange = (VectorMath::MagnitudeSquared(VectorMath::Subtract(pCreature->m_vPosition, vTarget)) < 2.25f);
     }
-
-    PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
-    if (event == "SET")
+    
+    if (!bInRange || !pCreature->m_bTrapAnimationPlayed) // BEFORE
     {
-        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
-        PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
-        PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
-        PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
-    }
-    PushEventData("ACTION_RESULT", std::to_string(retVal));
+        PushEventData("NEEDS_TO_MOVE", std::to_string((uint32_t)!bInRange));
+        PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
+        if (event == "SET")
+        {
+            PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
+            PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
+            PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
+            PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
+        }
 
-    SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);
+        if (SignalEvent("NWNX_ON_TRAP_" + event + "_BEFORE", pCreature->m_idSelf, &sAux))
+        {
+            retVal = originalTrapHook->CallOriginal<uint32_t>(pCreature, pNode);
+        }
+        else
+        {
+            retVal = atoi(sAux.c_str());
+            if(retVal == 0)
+                retVal = 3; //CNWSObject::ACTION_FAILED;
+
+            PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
+            if (event == "SET")
+            {
+                PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
+                PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
+                PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
+                PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
+            }
+            PushEventData("ACTION_RESULT", std::to_string(retVal != 3));
+
+            SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);
+        }
+    }
+    else // AFTER
+    {
+        retVal = originalTrapHook->CallOriginal<uint32_t>(pCreature, pNode);
+
+        PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
+        if (event == "SET")
+        {
+            PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1])));
+            PushEventData("TARGET_POSITION_X", std::to_string(*(float*)&pNode->m_pParameter[2]));
+            PushEventData("TARGET_POSITION_Y", std::to_string(*(float*)&pNode->m_pParameter[3]));
+            PushEventData("TARGET_POSITION_Z", std::to_string(*(float*)&pNode->m_pParameter[4]));
+        }
+        PushEventData("ACTION_RESULT", std::to_string(retVal != 3));
+
+        SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);
+    }
+ 
     return retVal;
 }
 
