@@ -40,11 +40,20 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "API/CNWSFaction.hpp"
+
 
 #include <set>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
+
+const int32_t GUI_PANEL_PARTY_INVITE = 1;
+
+const uint16_t FEEDBACK_PARTY_ALREADY_CONSIDERING = 34;
+const uint16_t FEEDBACK_PARTY_ALREADY_INVOLVED = 35;
+const uint16_t FEEDBACK_PARTY_INVITATION_IGNORED = 39;
+const uint16_t FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON = 202;
 
 static std::unordered_map<std::string, std::pair<ObjectID, bool>> s_PersistentLocationWP;
 
@@ -1831,5 +1840,60 @@ NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
             }
         }
     }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
+{
+    if (auto *pInvitedCreature = Utils::PopCreature(args))
+    {
+        if (auto *pInvitingCreature = Utils::PopCreature(args))
+        {
+            auto bForceInvite = args.extract<int32_t>();
+            auto bHideDialog = args.extract<int32_t>();
+
+            // Neither of the inviting or invited can be already invited.
+            if ((pInvitedCreature->m_bInvitedToParty) || (pInvitingCreature->m_bInvitedToParty))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited has already been invited to join someone else's party
+                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_ALREADY_CONSIDERING, pMessageData);
+            }
+            else if (pInvitedCreature->GetNumInvited() != 0)
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited is in the middle of inviting someone else to join them
+                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_ALREADY_INVOLVED, pMessageData);
+            }
+            else if ((!bForceInvite) && (pInvitedCreature->GetIsInInvitationsIgnored(pInvitingCreature->m_idSelf)))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited has put the inviter onto their ignored list
+                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_INVITATION_IGNORED, pMessageData);
+            }
+            else if ((pInvitedCreature->GetFaction() && (!pInvitedCreature->GetFaction()->GetSingletonParty())))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited is already in another party
+                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON, pMessageData);
+            }
+            else if (pInvitingCreature->GetFaction()->InviteMember(pInvitedCreature->m_idSelf, pInvitingCreature->m_idSelf) && (!bHideDialog))
+            {
+                if (auto *pMessageUI = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+                {
+                    pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, GUI_PANEL_PARTY_INVITE, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
+                }
+            }
+        }    
+    }
+
     return {};
 }
