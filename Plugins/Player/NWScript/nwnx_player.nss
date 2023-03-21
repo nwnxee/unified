@@ -427,6 +427,13 @@ object NWNX_Player_GetGameObject(object oPlayer);
 /// @param nMask A mask of OBJECT_UI_DISCOVERY_*, or -1 to clear the override
 void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask);
 
+/// @brief Send a party invite from oInviter to oPlayer
+/// @param oPlayer The player to invite
+/// @param oInviter The one inviting the player
+/// @param bForceInvite TRUE: Sends the invite even if the target ignores invites
+/// @param bHideDialog TRUE: Does not show the party invitation dialog
+void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -1076,6 +1083,18 @@ void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject
 
     NWNX_PushArgumentInt(nMask);
     NWNX_PushArgumentObject(oObject);
+    NWNX_PushArgumentObject(oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE)
+{
+    string sFunc = "SendPartyInvite";
+
+    NWNX_PushArgumentInt(bHideDialog);
+    NWNX_PushArgumentInt(bForceInvite);
+    NWNX_PushArgumentObject(oInviter);
     NWNX_PushArgumentObject(oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

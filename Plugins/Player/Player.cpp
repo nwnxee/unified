@@ -40,6 +40,8 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "API/CNWSFaction.hpp"
+
 
 #include <set>
 
@@ -1831,5 +1833,60 @@ NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
             }
         }
     }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
+{
+    if (auto *pInvitedCreature = Utils::PopCreature(args))
+    {
+        if (auto *pInvitingCreature = Utils::PopCreature(args))
+        {
+            auto bForceInvite = args.extract<int32_t>();
+            auto bHideDialog = args.extract<int32_t>();
+
+            // Neither of the inviting or invited can be already invited.
+            if ((pInvitedCreature->m_bInvitedToParty) || (pInvitingCreature->m_bInvitedToParty))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited has already been invited to join someone else's party
+                pInvitingCreature->SendFeedbackMessage(34/*FEEDBACK_PARTY_ALREADY_CONSIDERING*/, pMessageData);
+            }
+            else if (pInvitedCreature->GetNumInvited() != 0)
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited is in the middle of inviting someone else to join them
+                pInvitingCreature->SendFeedbackMessage(35/*FEEDBACK_PARTY_ALREADY_INVOLVED*/, pMessageData);
+            }
+            else if ((!bForceInvite) && (pInvitedCreature->GetIsInInvitationsIgnored(pInvitingCreature->m_idSelf)))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited has put the inviter onto their ignored list
+                pInvitingCreature->SendFeedbackMessage(39/*FEEDBACK_PARTY_INVITATION_IGNORED*/, pMessageData);
+            }
+            else if ((pInvitedCreature->GetFaction() && (!pInvitedCreature->GetFaction()->GetSingletonParty())))
+            {
+                auto pMessageData = new CNWCCMessageData;
+                pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
+
+                // Invited is already in another party
+                pInvitingCreature->SendFeedbackMessage(202/*FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON*/, pMessageData);
+            }
+            else if (pInvitingCreature->GetFaction()->InviteMember(pInvitedCreature->m_idSelf, pInvitingCreature->m_idSelf) && (!bHideDialog))
+            {
+                if (auto *pMessageUI = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+                {
+                    pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, 1/*GUI_PANEL_PARTY_INVITE*/, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
+                }
+            }
+        }    
+    }
+
     return {};
 }
