@@ -1,13 +1,15 @@
 var NAVTREEINDEX15 =
 {
-"group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a":[4,0,3,43,0,0,3],
+"group__weapon.html#gad6bf3d2ce2abfeb00c289345ff92a92a":[4,0,3,43,0,0,4],
+"group__weapon.html#gad6bf3d2ce2abfeb00c289345ff92a92a":[0,45,7],
 "group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a":[0,45,6],
+"group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a":[4,0,3,43,0,0,3],
 "group__weapon.html#gae42853a0c8a7721686bb406b3965d7ff":[4,0,3,43,0,0,25],
 "group__weapon.html#gae42853a0c8a7721686bb406b3965d7ff":[0,45,27],
 "group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[4,0,3,43,0,0,18],
 "group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[0,45,21],
-"group__weapon.html#gae8574965a3aae542e79e051bfad60217":[4,0,3,43,0,0,1],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[0,45,4],
+"group__weapon.html#gae8574965a3aae542e79e051bfad60217":[4,0,3,43,0,0,1],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[4,0,3,43,0,0,24],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,45,26],
 "group__weapon.html#weapon":[0,45,0],
@@ -143,7 +145,7 @@ var NAVTREEINDEX15 =
 "nwnx__object_8nss.html":[4,0,3,23,0,0],
 "nwnx__object_8nss_source.html":[4,0,3,23,0,0],
 "nwnx__player_8nss.html":[4,0,3,25,0,0],
-"nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4":[4,0,3,25,0,0,54],
+"nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4":[4,0,3,25,0,0,55],
 "nwnx__player_8nss_source.html":[4,0,3,25,0,0],
 "nwnx__player__qbs_8nss.html":[4,0,3,25,0,1],
 "nwnx__player__qbs_8nss_source.html":[4,0,3,25,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "nwnx__redis_8nss.html#a6a703b75524d7fa63359b5c91c645914":[4,0,3,28,0,0,125],
 "nwnx__redis_8nss.html#a6b07983d014b3bf195397c50b79fce95":[4,0,3,28,0,0,62],
 "nwnx__redis_8nss.html#a6b9df4e2134f4ea26ea660b50b3cc817":[4,0,3,28,0,0,74],
-"nwnx__redis_8nss.html#a6d1f9aa60ff2a33fc7b8c68bb223fe44":[4,0,3,28,0,0,48],
-"nwnx__redis_8nss.html#a6d324b1d115a65eebee0f31cfc75da63":[4,0,3,28,0,0,164],
-"nwnx__redis_8nss.html#a6ed53adf0a393d41b4037f178b48872b":[4,0,3,28,0,0,29]
+"nwnx__redis_8nss.html#a6d1f9aa60ff2a33fc7b8c68bb223fe44":[4,0,3,28,0,0,48]
 };

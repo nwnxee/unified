@@ -54,6 +54,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_UpdateFogAmount", "group__player.html#ga9385c73ca1762939cfe3c1e434870080", null ],
     [ "NWNX_Player_GetGameObject", "group__player.html#gae74e9ff12663e7af59965ea3e5fe6b84", null ],
     [ "NWNX_Player_SetObjectUiDiscoveryMaskOverride", "group__player.html#gab71886625585721519e1e3f64d4b5699", null ],
+    [ "NWNX_Player_SendPartyInvite", "group__player.html#gae8493cf3d7d5bf22fd6cdbc6c6fcc22f", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],

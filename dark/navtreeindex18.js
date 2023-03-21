@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"structNWNX__Damage__DamageEventData.html#a4a32a9c0538c69d040fb6c346032736c":[0,9,2,32],
+"structNWNX__Damage__DamageEventData.html#a4aa92aff650d2562d96f38a25a1a25fe":[0,9,2,18],
 "structNWNX__Damage__DamageEventData.html#a4abb22e26f7ab484c221d33550f3aefd":[0,9,2,6],
 "structNWNX__Damage__DamageEventData.html#a4c91e86c8a6ca9a054169846c67e6ce3":[0,9,2,2],
 "structNWNX__Damage__DamageEventData.html#a4fcc2588b676de7e4546406dce7ee3e8":[0,9,2,31],
