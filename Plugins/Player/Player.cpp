@@ -48,13 +48,6 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-const int32_t GUI_PANEL_PARTY_INVITE = 1;
-
-const uint16_t FEEDBACK_PARTY_ALREADY_CONSIDERING = 34;
-const uint16_t FEEDBACK_PARTY_ALREADY_INVOLVED = 35;
-const uint16_t FEEDBACK_PARTY_INVITATION_IGNORED = 39;
-const uint16_t FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON = 202;
-
 static std::unordered_map<std::string, std::pair<ObjectID, bool>> s_PersistentLocationWP;
 
 NWNX_EXPORT ArgumentStack ForcePlaceableExamineWindow(ArgumentStack&& args)
@@ -1859,7 +1852,7 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
                 pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
 
                 // Invited has already been invited to join someone else's party
-                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_ALREADY_CONSIDERING, pMessageData);
+                pInvitingCreature->SendFeedbackMessage(34/*FEEDBACK_PARTY_ALREADY_CONSIDERING*/, pMessageData);
             }
             else if (pInvitedCreature->GetNumInvited() != 0)
             {
@@ -1867,7 +1860,7 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
                 pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
 
                 // Invited is in the middle of inviting someone else to join them
-                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_ALREADY_INVOLVED, pMessageData);
+                pInvitingCreature->SendFeedbackMessage(35/*FEEDBACK_PARTY_ALREADY_INVOLVED*/, pMessageData);
             }
             else if ((!bForceInvite) && (pInvitedCreature->GetIsInInvitationsIgnored(pInvitingCreature->m_idSelf)))
             {
@@ -1875,7 +1868,7 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
                 pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
 
                 // Invited has put the inviter onto their ignored list
-                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_INVITATION_IGNORED, pMessageData);
+                pInvitingCreature->SendFeedbackMessage(39/*FEEDBACK_PARTY_INVITATION_IGNORED*/, pMessageData);
             }
             else if ((pInvitedCreature->GetFaction() && (!pInvitedCreature->GetFaction()->GetSingletonParty())))
             {
@@ -1883,13 +1876,13 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
                 pMessageData->SetObjectID(0, pInvitedCreature->m_idSelf);
 
                 // Invited is already in another party
-                pInvitingCreature->SendFeedbackMessage(FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON, pMessageData);
+                pInvitingCreature->SendFeedbackMessage(202/*FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON*/, pMessageData);
             }
             else if (pInvitingCreature->GetFaction()->InviteMember(pInvitedCreature->m_idSelf, pInvitingCreature->m_idSelf) && (!bHideDialog))
             {
                 if (auto *pMessageUI = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
                 {
-                    pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, GUI_PANEL_PARTY_INVITE, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
+                    pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, 1/*GUI_PANEL_PARTY_INVITE*/, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
                 }
             }
         }    
