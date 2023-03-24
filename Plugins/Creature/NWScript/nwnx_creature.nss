@@ -938,6 +938,19 @@ void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, in
 /// @param nSpellLevel The spell level.
 void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
 
+/// @brief Gets the maximum number of bonus attacks a creature can have from EffectModifyAttacks().
+/// @param oCreature The creature.
+/// @return The maximum number of bonus attacks or 0 on error.
+int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
+
+/// @brief Sets the maximum number of bonus attacks a creature can have from EffectModifyAttacks().
+/// @note This function also removes the limit of 5 bonus attacks from EffectModifyAttacks().
+/// @param oCreature The creature.
+/// @param nMaxBonusAttacks The maximum number of bonus attacks. Values < 0 will set the limit back to the default of 5.
+/// @param bPersist Whether the modifier should persist to .bic file (for PCs).
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2428,5 +2441,24 @@ void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, in
     NWNX_PushArgumentInt(nClass);
     NWNX_PushArgumentObject(oCreature);
 
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetMaximumBonusAttacks(object oCreature)
+{
+    string sFunc = "GetMaximumBonusAttacks";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE)
+{
+    string sFunc = "SetMaximumBonusAttacks";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

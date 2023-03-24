@@ -34,6 +34,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -3181,6 +3182,121 @@ NWNX_EXPORT ArgumentStack IncrementRemainingSpellSlots(ArgumentStack&& args)
                 break;
             }
         }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaximumBonusAttacks(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+            retVal = *maxBonusAttacks;
+        else
+            retVal = 5;
+    }
+
+    return retVal;
+}
+
+NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
+{
+    static Hooks::Hook s_ExecuteCommandEffectModifyAttacksHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandEffectModifyAttacks,
+    +[](CNWVirtualMachineCommands *pThis, int32_t, int32_t) -> int32_t
+    {
+        int32_t nNumAttacks;
+
+        if (!Globals::VirtualMachine()->StackPopInteger(&nNumAttacks))
+            return Constants::VMError::StackUnderflow;
+
+        CGameEffect effect(true);
+        effect.m_nType = Constants::EffectTrueType::ModifyNumAttacks;
+        effect.SetCreator(pThis->m_oidObjectRunScript);
+        effect.SetSubType_Magical();
+        effect.SetInteger(0, nNumAttacks);
+
+        if (!Globals::VirtualMachine()->StackPushEngineStructure(Constants::VMStructure::Effect, (void*)&effect))
+            return Constants::VMError::StackOverflow;
+
+        return 0;
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook s_OnApplyModifyNumAttacksHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyModifyNumAttacks,
+    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> int32_t
+    {
+        if (pObject->GetDead() && !bLoadingGame)
+            return 1;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            int32_t nMaxBonusAttacks = 5;
+            if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+                nMaxBonusAttacks = *maxBonusAttacks;
+
+            if (pCreature->m_pcCombatRound->m_nBonusEffectAttacks > nMaxBonusAttacks)
+                return 1;
+            else
+            {
+                int32_t nBonusAttacks = pCreature->m_pcCombatRound->m_nBonusEffectAttacks + pEffect->GetInteger(0);
+                nBonusAttacks = std::min(nBonusAttacks, nMaxBonusAttacks);
+                pCreature->m_pcCombatRound->m_nBonusEffectAttacks = nBonusAttacks;
+            }
+        }
+
+        return 0;
+    }, Hooks::Order::Final);
+
+    static auto RecalculateBonusAttacks = [](CNWSCreature *pCreature, CGameEffect *pEffect = nullptr) -> void
+    {
+        int32_t nBonusAttacks = 0;
+        auto *pAppliedEffects = &pCreature->m_appliedEffects;
+        for (int32_t i = 0; i < pAppliedEffects->num; i++)
+        {
+            auto *pAppliedEffect = (*pAppliedEffects)[i];
+            if (pAppliedEffect->m_nType == Constants::EffectTrueType::ModifyNumAttacks)
+            {
+                if (!pEffect || pAppliedEffect != pEffect)
+                    nBonusAttacks += pAppliedEffect->GetInteger(0);
+            }
+            else if (pAppliedEffect->m_nType > Constants::EffectTrueType::ModifyNumAttacks)
+            {
+                break;
+            }
+        }
+
+        int32_t nMaxBonusAttacks = 5;
+        if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+            nMaxBonusAttacks = *maxBonusAttacks;
+
+        nBonusAttacks = std::min(nBonusAttacks, nMaxBonusAttacks);
+        pCreature->m_pcCombatRound->m_nBonusEffectAttacks = nBonusAttacks;
+    };
+
+    static Hooks::Hook s_OnRemoveModifyNumAttacksHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveModifyNumAttacks,
+    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
+    {
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            RecalculateBonusAttacks(pCreature, pEffect);
+        }
+
+        return 1;
+    }, Hooks::Order::Final);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto maxBonusAttacks = args.extract<int32_t>();
+        const auto persist = !!args.extract<int32_t>();
+
+        if (maxBonusAttacks >= 0)
+            pCreature->nwnxSet("MAXIMUM_BONUS_ATTACKS", maxBonusAttacks, persist);
+        else
+            pCreature->nwnxRemove("MAXIMUM_BONUS_ATTACKS");
+
+        RecalculateBonusAttacks(pCreature);
     }
 
     return {};
