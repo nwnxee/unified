@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 
 ##### New NWScript Functions
 - Player: SendPartyInvite()
+- Item: MoveTo()
 
 ### Changed
 - N/A

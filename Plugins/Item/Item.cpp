@@ -7,6 +7,10 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CItemRepository.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSStore.hpp"
+#include "API/CNWCCMessageData.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -267,4 +271,150 @@ NWNX_EXPORT ArgumentStack GetMinEquipLevel(ArgumentStack&& args)
         return pItem->GetMinEquipLevel();
 
     return -1;
+}
+
+CItemRepository* GetObjectItemRepository(OBJECT_ID oidPossessor)
+{
+    auto pPossessor = Utils::GetGameObject(oidPossessor);
+    if (!pPossessor) return nullptr;
+
+    switch (pPossessor->m_nObjectType)
+    {
+        case Constants::ObjectType::Creature: 
+            return Utils::AsNWSCreature(pPossessor)->m_pcItemRepository;
+        case Constants::ObjectType::Placeable: 
+            return Utils::AsNWSPlaceable(pPossessor)->m_pcItemRepository;
+        case Constants::ObjectType::Item:
+            return Utils::AsNWSItem(pPossessor)->m_pItemRepository;
+    }
+
+    return nullptr;
+}
+
+NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
+{
+    if (auto *pItem = Utils::PopItem(args))
+    {
+        if (auto *pTarget = Utils::PopObject(args))
+        {
+            auto bHideAllFeedback = !!args.extract<int32_t>();
+
+            auto oidRealItemPossessor = pItem->m_oidPossessor;
+            if (pItem->m_oidPossessor != Constants::OBJECT_INVALID) // Item on the ground
+            {
+                auto pPossessor = Utils::GetGameObject(pItem->m_oidPossessor);
+                oidRealItemPossessor = (pPossessor->m_nObjectType == Constants::ObjectType::Item) ? Utils::AsNWSItem(pPossessor)->m_oidPossessor : pPossessor->m_idSelf;
+            }
+            auto oidRealTargetPossessor = (pTarget->m_nObjectType == Constants::ObjectType::Item) ? Utils::AsNWSItem(pTarget)->m_oidPossessor : pTarget->m_idSelf;
+        
+            // Is the item already on/in the target?
+            if (oidRealItemPossessor == oidRealTargetPossessor)
+            {
+                auto pTargetItemRepo = GetObjectItemRepository(pTarget->m_idSelf);
+                if ((pTargetItemRepo) && (pTargetItemRepo->GetItemInRepository(pItem)))
+                {
+                    LOG_DEBUG("NWNX_Item_MoveTo: Item is already on the target!");
+                    return true;
+                }
+            }
+
+            auto bSendFeedback = (!bHideAllFeedback) && (oidRealItemPossessor != oidRealTargetPossessor); // Only send feeback if the item actually changed its owner
+            switch (pTarget->m_nObjectType)
+            {
+                // Target is a creature
+                case Constants::ObjectType::Creature:
+                {
+                    auto pTargetCreature = Utils::AsNWSCreature(pTarget);
+                    
+                    uint8_t x, y;
+                    if (!pTargetCreature->m_pcItemRepository->FindPosition(pItem, x, y))
+                    {
+                        LOG_DEBUG("NWNX_Item_MoveTo: Item does not fit in target creature!");
+                        return false;
+                    }
+
+                    pTargetCreature->AcquireItem(&pItem, pItem->m_oidPossessor, Constants::OBJECT_INVALID, 0xFF, 0xFF, false, bSendFeedback);
+                    break;
+                }
+
+                // Target is a placeable
+                case Constants::ObjectType::Placeable:
+                {
+                    auto pTargetPlaceable = Utils::AsNWSPlaceable(pTarget);
+
+                    uint8_t x, y;
+                    if  ((pTargetPlaceable->m_pcItemRepository->m_nHeight >= 125 /* 25 maximum pages x 5 rows per page */) &&
+                         (!pTargetPlaceable->m_pcItemRepository->FindPosition(pItem, x, y)))
+                    {
+                        LOG_DEBUG("NWNX_Item_MoveTo: Item does not fit in target placeable!");
+                        return false;
+                    }
+                    
+                    pTargetPlaceable->AcquireItem(&pItem, pItem->m_oidPossessor, 0xFF, 0xFF, bSendFeedback);
+                    break;
+                }
+
+                // Target is a store
+                case Constants::ObjectType::Store:
+                {
+                    auto pTargetStore = Utils::AsNWSStore(pTarget);
+                    auto pOriginalOwnerRepository = GetObjectItemRepository(pItem->m_oidPossessor);
+
+                    pTargetStore->AcquireItem(pItem, false, 0xFF, 0xFF);
+
+                    // CNWSStore::AcquireItem doesn't remove the source item
+                    if (pOriginalOwnerRepository) 
+                        pOriginalOwnerRepository->RemoveItem(pItem); 
+                    else if (pItem->m_oidArea != Constants::OBJECT_INVALID)
+                        pItem->RemoveFromArea();
+
+                    break;
+                }
+
+                // Target is a container (bag)
+                case Constants::ObjectType::Item:
+                {
+                    if (pItem->m_pItemRepository)
+                    {
+                        LOG_DEBUG("NWNX_Item_MoveTo: Can't put a container in a container!");
+                        return false;
+                    }
+
+                    auto pTargetContainer = Utils::AsNWSItem(pTarget);
+                    if (!pTargetContainer->m_pItemRepository)
+                    {
+                        LOG_DEBUG("NWNX_Item_MoveTo: Target item is not a container!");
+                        return false;
+                    }
+
+                    uint8_t x, y;
+                    if (!pTargetContainer->m_pItemRepository->FindPosition(pItem, x, y))
+                    {
+                        LOG_DEBUG("NWNX_Item_MoveTo: Item does not fit in target container!");
+                        
+                        auto pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidRealTargetPossessor));
+                        if (pOwnerCreature)
+                        {
+                            auto pMessageData = new CNWCCMessageData;
+                            pMessageData->SetObjectID(0, pOwnerCreature->m_idSelf);
+                            pOwnerCreature->SendFeedbackMessage(212/*FEEDBACK_CONTAINER_FULL*/, pMessageData);
+                        }
+
+                        return false;
+                    }
+
+                    pTargetContainer->AcquireItem(&pItem, pItem->m_oidPossessor, 0xFF, 0xFF, bSendFeedback);
+                    break;
+                }
+                
+                default: 
+                    LOG_ERROR("NWNX_Item_MoveTo: Invalid target object type!");
+                    return false;
+            }
+
+            return true;
+        }
+    }
+
+    return false;
 }
