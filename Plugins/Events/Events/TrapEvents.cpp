@@ -52,11 +52,16 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
         bInRange = pCreature->GetIsInUseRange((ObjectID)pNode->m_pParameter[0]);
     else
     {
-        Vector vTarget = Vector(*(float*)&pNode->m_pParameter[2], *(float*)&pNode->m_pParameter[3], *(float*)&pNode->m_pParameter[4]);
-        vTarget = VectorMath::Subtract(vTarget, VectorMath::Normalize(VectorMath::Subtract(pCreature->m_vPosition, vTarget)));
-        bInRange = (VectorMath::MagnitudeSquared(VectorMath::Subtract(pCreature->m_vPosition, vTarget)) < 2.25f);
+        if (auto *pGO = Utils::GetGameObject((uintptr_t)(pNode->m_pParameter[1])))
+            bInRange = pCreature->GetIsInUseRange(pGO->m_idSelf, 0.5f, false);
+        else
+        {
+            Vector vTarget = Vector(*(float*)&pNode->m_pParameter[2], *(float*)&pNode->m_pParameter[3], *(float*)&pNode->m_pParameter[4]);
+            vTarget = VectorMath::Subtract(vTarget, VectorMath::Normalize(VectorMath::Subtract(pCreature->m_vPosition, vTarget)));
+            bInRange = (VectorMath::MagnitudeSquared(VectorMath::Subtract(pCreature->m_vPosition, vTarget)) < 2.25f);
+        }
     }
-    
+
     if (!bInRange || !pCreature->m_bTrapAnimationPlayed) // BEFORE
     {
         PushEventData("NEEDS_TO_MOVE", std::to_string((uint32_t)!bInRange));
@@ -108,7 +113,7 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
 
         SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);
     }
- 
+
     return retVal;
 }
 
