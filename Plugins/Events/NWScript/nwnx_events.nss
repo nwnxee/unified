@@ -960,6 +960,7 @@ _______________________________________
     TARGET_POSITION_X     | float  | Only in SET events
     TARGET_POSITION_Y     | float  | Only in SET events
     TARGET_POSITION_Z     | float  | Only in SET events
+    NEEDS_TO_MOVE         | int    | TRUE/FALSE, only in _BEFORE events (not ENTER), if TRUE another _BEFORE event will be fired before the actual interaction with the trap
     TRAP_FORCE_SET        | int    | TRUE/FALSE, only in ENTER events
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events (not ENTER)
 
