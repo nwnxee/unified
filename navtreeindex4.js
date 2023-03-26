@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"group__diagnostics.html":[0,10],
+"group__diagnostics.html#autotoc_md244":[8],
+"group__diagnostics.html#autotoc_md245":[9],
+"group__diagnostics.html#diagnostics":[0,10,0],
 "group__dialog.html":[0,11],
 "group__dialog.html#dialog":[0,11,0],
 "group__dialog.html#ga02897365405b702936fb2e2491c3dc70":[0,11,13],
@@ -114,8 +118,8 @@ var NAVTREEINDEX4 =
 "group__elc.html#autotoc_md272":[17],
 "group__elc.html#autotoc_md273":[18],
 "group__elc.html#elc":[0,14,0],
-"group__elc.html#ga060ab8827e57d31919d2c591645749ef":[0,14,54],
 "group__elc.html#ga060ab8827e57d31919d2c591645749ef":[4,0,3,11,0,0,53],
+"group__elc.html#ga060ab8827e57d31919d2c591645749ef":[0,14,54],
 "group__elc.html#ga065809eaac19a4cd88aebde2761325dc":[4,0,3,11,0,0,55],
 "group__elc.html#ga065809eaac19a4cd88aebde2761325dc":[0,14,56],
 "group__elc.html#ga07256d7e47ab36f29bfca8c0c1562aad":[0,14,21],
@@ -213,8 +217,8 @@ var NAVTREEINDEX4 =
 "group__elc.html#gaacd02a1af0ad8e78ed791343b97da5e6":[4,0,3,11,0,0,14],
 "group__elc.html#gaad9923769b2110cb1b59c732ebfc2025":[4,0,3,11,0,0,70],
 "group__elc.html#gaad9923769b2110cb1b59c732ebfc2025":[0,14,71],
-"group__elc.html#gab3d16b1da2c36010d82aaa91d7766c41":[0,14,55],
 "group__elc.html#gab3d16b1da2c36010d82aaa91d7766c41":[4,0,3,11,0,0,54],
+"group__elc.html#gab3d16b1da2c36010d82aaa91d7766c41":[0,14,55],
 "group__elc.html#gab972f430b5120e2f0484c50b14017928":[0,14,2],
 "group__elc.html#gab972f430b5120e2f0484c50b14017928":[4,0,3,11,0,0,0],
 "group__elc.html#gaba8456ea776417c0a8656699861d49a5":[0,14,12],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "group__elc.html#gaf204259b43b1f440fbbb05739cec0a03":[4,0,3,11,0,0,18],
 "group__elc.html#gaf2a34f70f8bccc2472d00722c50c0de6":[0,14,39],
 "group__elc.html#gaf2a34f70f8bccc2472d00722c50c0de6":[4,0,3,11,0,0,38],
-"group__elc.html#gaf308f34a3d82ec7e89aba1c0f04c4bec":[4,0,3,11,0,0,60],
-"group__elc.html#gaf308f34a3d82ec7e89aba1c0f04c4bec":[0,14,61],
-"group__elc.html#gaf5a2f1edcc82ce86555a14842891921d":[0,14,49],
-"group__elc.html#gaf5a2f1edcc82ce86555a14842891921d":[4,0,3,11,0,0,48],
-"group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b":[0,14,3]
+"group__elc.html#gaf308f34a3d82ec7e89aba1c0f04c4bec":[4,0,3,11,0,0,60]
 };
