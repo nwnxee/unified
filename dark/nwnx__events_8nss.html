@@ -1399,8 +1399,10 @@ Trap Events</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">TARGET_POSITION_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone">Only in SET events  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">TRAP_FORCE_SET </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in ENTER events  </td></tr>
+<td class="markdownTableBodyNone">NEEDS_TO_MOVE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _BEFORE events (not ENTER), if TRUE another _BEFORE event will be fired before the actual interaction with the trap  </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TRAP_FORCE_SET </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in ENTER events  </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">ACTION_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events (not ENTER)  </td></tr>
 </table>
 <hr  />
@@ -2831,7 +2833,7 @@ Object Use Events (Placeables)</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sun Mar 26 2023 16:44:46 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 26 2023 17:51:14 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

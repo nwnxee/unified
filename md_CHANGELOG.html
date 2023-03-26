@@ -109,6 +109,7 @@ Unreleased</h1>
 Added</h2>
 <ul>
 <li>Events: added event data <code>TARGET_OBJECT_ID</code>, <code>TARGET_POSITION_X</code>, <code>TARGET_POSITION_Y</code> and <code>TARGET_POSITION_Z</code> to the <code>NWNX_ON_TRAP_SET_*</code> events</li>
+<li>Events: added <code>NEEDS_TO_MOVE</code> event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md12"></a>
 New Plugins</h4>
@@ -125,7 +126,7 @@ New NWScript Functions</h4>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Changed</h2>
 <ul>
-<li>N/A</li>
+<li>Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md15"></a>
 Deprecated</h2>
@@ -1462,7 +1463,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Mar 26 2023 16:44:44 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 26 2023 17:51:13 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
