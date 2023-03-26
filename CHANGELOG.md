@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Creature: {Get|Set}MaximumBonusAttacks()
 - Player: SendPartyInvite()
 - Item: MoveTo()
 
