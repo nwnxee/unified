@@ -12,5 +12,6 @@ var group__item =
     [ "NWNX_Item_GetEntireItemAppearance", "group__item.html#ga267c047a82417b633ebb2fc2a2a1b51e", null ],
     [ "NWNX_Item_RestoreItemAppearance", "group__item.html#ga511381fc65b8cdf4c8df4fe5ac6bfda0", null ],
     [ "NWNX_Item_GetBaseArmorClass", "group__item.html#ga8a874145d6373bf0df9050db4614fce5", null ],
-    [ "NWNX_Item_GetMinEquipLevel", "group__item.html#ga4fddf862386c3c71adf2bea037b239f7", null ]
+    [ "NWNX_Item_GetMinEquipLevel", "group__item.html#ga4fddf862386c3c71adf2bea037b239f7", null ],
+    [ "NWNX_Item_MoveTo", "group__item.html#gaaa1fb482a60f6b04cf2751653eee24e6", null ]
 ];
