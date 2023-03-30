@@ -121,7 +121,7 @@ NWNXCore::NWNXCore()
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-    std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
+    std::printf("Starting NWNX %d.%d-%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_TARGET_NWN_BUILD_POSTFIX, NWNX_BUILD_SHA);
 
     // Initialise export table. New plugin code should endeavour to use direct linking
     // for hook naming, but these might help if you want to target a overloaded function.
@@ -252,16 +252,19 @@ void NWNXCore::InitialVersionCheck()
 {
     CExoString *pBuildNumber = Globals::BuildNumber();
     CExoString *pBuildRevision = Globals::BuildRevision();
+    CExoString *pBuildPostfix = Globals::BuildPostfix();
 
-    if (pBuildNumber && pBuildRevision)
+    if (pBuildNumber && pBuildRevision && pBuildPostfix)
     {
         const uint32_t version = std::stoul(pBuildNumber->m_sString);
         const uint32_t revision = std::stoul(pBuildRevision->m_sString);
+        const uint32_t postfix = std::stoul(pBuildPostfix->m_sString);
 
-        if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
+        if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION || postfix != NWNX_TARGET_NWN_BUILD_POSTFIX)
         {
-            std::fprintf(stdout, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
-                                      NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
+            std::fprintf(stdout, "NWNX: Expected build %u.%u-%u, got build %u.%u-%u.\n",
+                                      NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_TARGET_NWN_BUILD_POSTFIX,
+                                      version, revision, postfix);
             std::fprintf(stdout, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
             std::fflush(stdout);
             std::exit(1);

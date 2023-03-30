@@ -4,6 +4,7 @@
 
 extern CExoString                g_sBuildNumber;
 extern CExoString                g_sBuildRevision;
+extern CExoString                g_sBuildPostfix;
 extern class CExoBase           *g_pExoBase;
 extern class CExoResMan         *g_pExoResMan;
 extern class CVirtualMachine    *g_pVirtualMachine;
@@ -24,6 +25,7 @@ namespace NWNXLib::API::Globals {
 
 inline CExoString*            BuildNumber()     { return &g_sBuildNumber; }
 inline CExoString*            BuildRevision()   { return &g_sBuildRevision; }
+inline CExoString*            BuildPostfix()    { return &g_sBuildPostfix; }
 inline CExoBase*              ExoBase()         { return g_pExoBase; }
 inline CExoResMan*            ExoResMan()       { return g_pExoResMan; }
 inline CVirtualMachine*       VirtualMachine()  { return g_pVirtualMachine; }
