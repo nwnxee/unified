@@ -56,9 +56,8 @@ uint32_t HandleTrapHook(const std::string& event, Hooks::FunctionHook* originalT
             bInRange = pCreature->GetIsInUseRange(pGO->m_idSelf, 0.5f, false);
         else
         {
-            Vector vTarget = Vector(*(float*)&pNode->m_pParameter[2], *(float*)&pNode->m_pParameter[3], *(float*)&pNode->m_pParameter[4]);
-            vTarget = VectorMath::Subtract(vTarget, VectorMath::Normalize(VectorMath::Subtract(pCreature->m_vPosition, vTarget)));
-            bInRange = (VectorMath::MagnitudeSquared(VectorMath::Subtract(pCreature->m_vPosition, vTarget)) < 2.25f);
+            Vector vTargetPosition = Vector(*(float*)&pNode->m_pParameter[2], *(float*)&pNode->m_pParameter[3], *(float*)&pNode->m_pParameter[4]);
+            bInRange = Vector::MagnitudeSquared(pCreature->m_vPosition - (vTargetPosition - Vector::Normalize(pCreature->m_vPosition - vTargetPosition))) < 2.25f;
         }
     }
 
