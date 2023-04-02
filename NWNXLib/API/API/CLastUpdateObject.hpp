@@ -59,9 +59,6 @@ struct CLastUpdateObject
     CExoArrayList<CLoopingVisualEffect> m_lstLoopingVisualEffects;
     uint16_t m_nAssociateState;
     uint8_t m_nDamageLevel;
-    uint8_t m_nDomain1;
-    uint8_t m_nDomain2;
-    uint8_t m_nSchool;
     int16_t m_nCurrentHitPoints;
     int16_t m_nBaseHitPoints;
     int16_t m_nTemporaryHitPoints;
@@ -93,6 +90,9 @@ struct CLastUpdateObject
     uint8_t m_nGender;
     uint8_t m_nClass[8];
     uint8_t m_nLevel[8];
+    uint8_t m_nDomain1[8];
+    uint8_t m_nDomain2[8];
+    uint8_t m_nSchool[8];
     int16_t m_nAlignmentLawChaos;
     int16_t m_nAlignmentGoodEvil;
     BOOL m_bSelectableWhenDead;
