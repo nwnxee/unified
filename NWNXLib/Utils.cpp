@@ -258,14 +258,6 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
     }
 }
 
-bool operator==(Vector& v1, Vector& v2)
-{
-    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
-}
-bool operator!=(Vector& v1, Vector& v2)
-{
-    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
-}
 
 bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2)
 {
