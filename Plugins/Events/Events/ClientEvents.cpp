@@ -124,6 +124,7 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
     std::string versionMajor = std::to_string(pPlayerInfo->m_nBuildVersion);
     std::string versionMinor = std::to_string(pPlayerInfo->m_nPatchRevision);
+    std::string versionPostfix = std::to_string(pPlayerInfo->m_nPatchPostfix);
     std::string platformId = std::to_string(pPlayerInfo->m_nPlatformId);
 
     std::string reason;
@@ -134,6 +135,7 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
         PushEventData("IP_ADDRESS", ipAddress);
         PushEventData("VERSION_MAJOR", versionMajor);
         PushEventData("VERSION_MINOR", versionMinor);
+        PushEventData("VERSION_POSTFIX", versionPostfix);
         PushEventData("PLATFORM_ID", platformId);
         return SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
     };
