@@ -10,6 +10,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 ### Added
 - Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
 - Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
+- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
 
 ##### New Plugins
 - N/A

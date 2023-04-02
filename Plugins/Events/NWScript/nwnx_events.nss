@@ -580,6 +580,7 @@ _______________________________________
     IP_ADDRESS            | string | The IP address of the connecting client
     VERSION_MAJOR         | int    | The client's major version, eg 8193, or 0 if unavailable.
     VERSION_MINOR         | int    | The client's minor version, eg 34, or 0 if unavailable.
+    VERSION_POSTFIX       | int    | The client's postfix version, eg 37, or 0 if unavailable.
     PLATFORM_ID           | int    | The client's platform id, PLAYER_DEVICE_PLATFORM_*, or 0 if unavailable.
 
     @note Skipping the _BEFORE event will cause the client's connection to be denied.
