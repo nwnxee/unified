@@ -101,11 +101,7 @@ static Hooks::Hook s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
                                 if (auto customHearingDistance = pListenerCreature->nwnxGet<float>("HEARING_DISTANCE:" + std::to_string(nChatMessageType)))
                                     distance = *customHearingDistance;
 
-                                auto v = pListenerCreature->m_vPosition;
-                                v.x -= speakerPos.x;
-                                v.y -= speakerPos.y;
-                                v.z -= speakerPos.z;
-                                float vSquared = v.x * v.x + v.y * v.y + v.z * v.z;
+                                float vSquared = Vector::MagnitudeSquared(pListenerCreature->m_vPosition - speakerPos);
 
                                 if (pSpeakerArea == pListenerCreature->GetArea() && vSquared <= distance * distance)
                                 {
