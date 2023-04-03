@@ -139,7 +139,7 @@ jobs:
         path: ./NWNX-EE.tar
 
     - name: Delete Old Version Release
-      uses: dev-drprasad/delete-tag-and-release@v0.2.1
+      uses: dev-drprasad/delete-tag-and-release@v1.0
       if: github.event_name == 'push'
       with:
         tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
@@ -147,7 +147,7 @@ jobs:
         delete_release: true
 
     - name: Delete Old Latest Release
-      uses: dev-drprasad/delete-tag-and-release@v0.2.1
+      uses: dev-drprasad/delete-tag-and-release@v1.0
       if: github.event_name == 'push'
       with:
         tag_name: "latest"
