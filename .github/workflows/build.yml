@@ -139,25 +139,27 @@ jobs:
         path: ./NWNX-EE.tar
 
     - name: Tag With Version and Release
-      uses: "marvinpinto/action-automatic-releases@latest"
+      uses: "softprops/action-gh-release@v1"
       if: github.event_name == 'push'
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         prerelease: false
-        title: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        generate_release_notes: true
+        name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         files: |
           ./NWNX-EE.zip
           ./NWScript.zip
 
     - name: Tag With Latest and Release
-      uses: "marvinpinto/action-automatic-releases@latest"
+      uses: "softprops/action-gh-release@v1"
       if: github.event_name == 'push'
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        tag_name: "latest"
         prerelease: false
-        title: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        generate_release_notes: true
+        name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         files: |
            ./NWNX-EE.zip
            ./NWScript.zip
