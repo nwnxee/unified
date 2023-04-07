@@ -9,6 +9,7 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "API/CTwoDimArrays.hpp"
@@ -48,7 +49,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
@@ -59,20 +60,20 @@ Feat::Feat(Services::ProxyServiceList* services)
     m_nCustomSpellID = Config::Get<uint32_t>("CUSTOM_SPELL_ID", 0xFFFFFFFF);
 
     // We want the feat bonuses to not count toward limits
-    s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
-                                                             (void*)&GetTotalEffectBonusHook, Hooks::Order::Early);
-    s_SavingThrowRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
-                                                         (void*)&SavingThrowRollHook, Hooks::Order::Early);
-    s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
-                                                        (void*)&GetWeaponPowerHook, Hooks::Order::Early);
+    s_GetTotalEffectBonusHook = Hooks::HookFunction(&CNWSCreature::GetTotalEffectBonus,
+                                                             &GetTotalEffectBonusHook, Hooks::Order::Early);
+    s_SavingThrowRollHook = Hooks::HookFunction(&CNWSCreature::SavingThrowRoll,
+                                                         &SavingThrowRollHook, Hooks::Order::Early);
+    s_GetWeaponPowerHook = Hooks::HookFunction(&CNWSCreature::GetWeaponPower,
+                                                        &GetWeaponPowerHook, Hooks::Order::Early);
 
-    s_AddFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7AddFeatEt, (void*)&AddFeatHook, Hooks::Order::Early);
-    s_RemoveFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, (void*)&RemoveFeatHook, Hooks::Order::Early);
-    s_OnApplyBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti,
-                                                          (void*)&OnApplyBonusFeatHook, Hooks::Order::Early);
-    s_OnRemoveBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect,
-                                                           (void*)&OnRemoveBonusFeatHook, Hooks::Order::Early);
-    s_EatTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&EatTURDHook, Hooks::Order::Early);
+    s_AddFeatHook = Hooks::HookFunction(&CNWSCreatureStats::AddFeat, &AddFeatHook, Hooks::Order::Early);
+    s_RemoveFeatHook = Hooks::HookFunction(&CNWSCreatureStats::RemoveFeat, &RemoveFeatHook, Hooks::Order::Early);
+    s_OnApplyBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyBonusFeat,
+                                                          &OnApplyBonusFeatHook, Hooks::Order::Early);
+    s_OnRemoveBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveBonusFeat,
+                                                           &OnRemoveBonusFeatHook, Hooks::Order::Early);
+    s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD, &EatTURDHook, Hooks::Order::Early);
 }
 
 Feat::~Feat()
@@ -326,8 +327,8 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         if (!pCalculateSpellSaveDC_hook)
         {
             pCalculateSpellSaveDC_hook = Hooks::HookFunction(
-                    Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi,
-                    (void*)+[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
+                    &CNWSCreature::CalculateSpellSaveDC,
+                    +[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
                         int iMods = 0;
                         for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
@@ -908,17 +909,17 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
 {
-    auto featId = Events::ExtractArgument<int>(args);
-    auto featMod = static_cast<FeatModifier>(Events::ExtractArgument<int>(args));
-    auto param1 = Events::ExtractArgument<int>(args);
-    auto param2 = Events::ExtractArgument<int>(args);
-    auto param3 = Events::ExtractArgument<int>(args);
-    auto param4 = Events::ExtractArgument<int>(args);
+    auto featId = ScriptAPI::ExtractArgument<int>(args);
+    auto featMod = static_cast<FeatModifier>(ScriptAPI::ExtractArgument<int>(args));
+    auto param1 = ScriptAPI::ExtractArgument<int>(args);
+    auto param2 = ScriptAPI::ExtractArgument<int>(args);
+    auto param3 = ScriptAPI::ExtractArgument<int>(args);
+    auto param4 = ScriptAPI::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
         g_plugin->m_Feats.insert(featId);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

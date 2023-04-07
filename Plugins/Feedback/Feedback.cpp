@@ -26,16 +26,16 @@ static int32_t SendServerToPlayerJournalUpdatedHook(CNWSMessage*, CNWSPlayer*, i
 
 
 static NWNXLib::Hooks::Hook s_SendFeedbackMessageHook = Hooks::HookFunction(
-    API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
-    (void*)&SendFeedbackMessageHook, Hooks::Order::Late);
+    &CNWSCreature::SendFeedbackMessage,
+    &SendFeedbackMessageHook, Hooks::Order::Late);
 
 static NWNXLib::Hooks::Hook s_SendServerToPlayerCCMessageHook = Hooks::HookFunction(
-    API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData,
-    (void*)&SendServerToPlayerCCMessageHook, Hooks::Order::Late);
+    &CNWSMessage::SendServerToPlayerCCMessage,
+    &SendServerToPlayerCCMessageHook, Hooks::Order::Late);
 
 static NWNXLib::Hooks::Hook s_SendServerToPlayerJournalUpdatedHook = Hooks::HookFunction(
-     API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString,
-     (void*)&SendServerToPlayerJournalUpdatedHook, Hooks::Order::Late);
+     &CNWSMessage::SendServerToPlayerJournalUpdated,
+     &SendServerToPlayerJournalUpdatedHook, Hooks::Order::Late);
 
 
 static void SendFeedbackMessageHook(CNWSCreature *pCreature, uint16_t nFeedbackID, CNWCCMessageData *pMessageData , CNWSPlayer *pFeedbackPlayer)

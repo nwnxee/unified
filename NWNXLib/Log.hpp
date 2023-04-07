@@ -83,6 +83,17 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 
     static constexpr const char * SEVERITY_NAMES[] = { "", "", "F", "E", "W", "N", "I", "D" };
 
+    std::ostringstream formatted_message;
+    tfm::format(formatted_message, format, std::forward<Args>(args)...);
+
+    MessageBus::Broadcast("NWNX_CORE_LOG_MESSAGE", {
+        std::to_string((int) channel),
+        plugin,
+        file,
+        std::to_string(line),
+        formatted_message.str()
+    });
+
     // Get filename without the full path.
     const char* filename = file;
     const char* filenameTemp = filename;
@@ -112,7 +123,8 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
     {
         tfm::format(stream, "[%s:%d] ", filename, line);
     }
-    tfm::format(stream, format, std::forward<Args>(args)...);
+
+    stream << formatted_message.str();
 
     InternalTrace(channel, allowedChannel, stream.str().c_str());
 }

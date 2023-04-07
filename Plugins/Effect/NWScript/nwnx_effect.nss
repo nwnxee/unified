@@ -6,6 +6,20 @@
 
 const string NWNX_Effect = "NWNX_Effect"; ///< @private
 
+/// EQUIPPED effects are always associated with a slotted item:
+/// Setting this duration type requires the effect creator
+/// to be set to the (already equipped) item that should remove
+/// this effect when unequipped.
+/// Removal behaviour for effects where the creator is NOT a equipped
+/// item is undefined.
+/// They are not removed by resting, cannot be dispelled, etc.
+const int DURATION_TYPE_EQUIPPED = 3;
+
+/// These are feat/racial effects used internally by the game to
+/// implement things like movement speed changes and darkvision.
+/// They cannot be removed by resting, dispelling, etc.
+const int DURATION_TYPE_INNATE   = 4;
+
 /// An unpacked effect
 struct NWNX_EffectUnpacked
 {
@@ -69,24 +83,6 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
 /// @return The effect.
 effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
 
-/// @brief Set a script with optional data that runs when an effect expires
-/// @param e The effect.
-/// @param script The script to run when the effect expires.
-/// @param data Any other data you wish to send back to the script.
-/// @remark OBJECT_SELF in the script is the object the effect is applied to.
-/// @note Only works for TEMPORARY and PERMANENT effects applied to an object.
-effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "");
-
-/// @brief Get the data set with NWNX_Effect_SetEffectExpiredScript()
-/// @note Should only be called from a script set with NWNX_Effect_SetEffectExpiredScript().
-/// @return The data attached to the effect.
-string NWNX_Effect_GetEffectExpiredData();
-
-/// @brief Get the effect creator.
-/// @note Should only be called from a script set with NWNX_Effect_SetEffectExpiredScript().
-/// @return The object from which the effect originated.
-object NWNX_Effect_GetEffectExpiredCreator();
-
 /// @brief replace an already applied effect on an object
 /// Only duration, subtype, tag and spell related fields can be overwritten.
 /// @note eNew and eOld need to have the same type.
@@ -122,11 +118,28 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 /// @param oObject The object to apply it to.
 void NWNX_Effect_Apply(effect eEffect, object oObject);
 
-/// @brief Accessorize an EffectVisualEffect(), making it undispellable and unable to be removed by resting or death.
-/// @note If linked with a non-visualeffect or a non-accessorized visualeffect it *will* get removed.
-/// @param eEffect An EffectVisualEffect(), does not work for other effect types.
-/// @return The accessorized effect or an unchanged effect if not an EffectVisualEffect().
-effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect);
+/// @brief Sets an effect creator.
+/// @param eEffect The effect to be modified.
+/// @param oObject The effect creator.
+/// @return The effect with creator field set.
+effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject);
+
+/// @brief Checks if the given effect is valid. Unlike the game builtin, this call considers internal types too.
+/// @param eEffect The effect to check
+/// @return TRUE if the effect is valid (including internal types).
+int NWNX_Effect_GetIsEffectValid(effect eEffect);
+
+/// @brief Returns the number of applied effects on the given object.
+/// @param oObject The object to get the applied effect count for.
+/// @return The number of applied effects, including internal.
+int NWNX_Effect_GetAppliedEffectCount(object oObject);
+
+/// @brief Returns the nNth applied effect on a object.
+/// @param oObject The object to get the applied effect copy for.
+/// @param nNth The effect index to get.
+/// @note Make sure to check with NWNX_Effect_GetIsEffectValid, as this iterator also includes internal effects.
+/// @return A copy of the applied game effect, or a invalid effect.
+effect NWNX_Effect_GetAppliedEffect(object oObject, int nNth);
 
 /// @}
 
@@ -281,37 +294,6 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     return NWNX_GetReturnValueEffect();
 }
 
-effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "")
-{
-    string sFunc = "SetEffectExpiredScript";
-
-    NWNX_PushArgumentString(data);
-    NWNX_PushArgumentString(script);
-    NWNX_PushArgumentEffect(e);
-
-    NWNX_CallFunction(NWNX_Effect, sFunc);
-
-    return NWNX_GetReturnValueEffect();
-}
-
-string NWNX_Effect_GetEffectExpiredData()
-{
-    string sFunc = "GetEffectExpiredData";
-
-    NWNX_CallFunction(NWNX_Effect, sFunc);
-
-    return NWNX_GetReturnValueString();
-}
-
-object NWNX_Effect_GetEffectExpiredCreator()
-{
-    string sFunc = "GetEffectExpiredCreator";
-
-    NWNX_CallFunction(NWNX_Effect, sFunc);
-
-    return NWNX_GetReturnValueObject();
-}
-
 int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew)
 {
     string sFunc = "ReplaceEffect";
@@ -373,10 +355,48 @@ void NWNX_Effect_Apply(effect eEffect, object oObject)
     NWNX_CallFunction(NWNX_Effect, sFunc);
 }
 
-effect NWNX_Effect_AccessorizeVisualEffect(effect eEffect)
+effect NWNX_Effect_SetEffectCreator(effect eEffect, object oObject)
 {
-    string sFunc = "AccessorizeVisualEffect";
+    string sFunc = "SetEffectCreator";
+
+    NWNX_PushArgumentObject(oObject);
     NWNX_PushArgumentEffect(eEffect);
+
     NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueEffect();
+}
+
+int NWNX_Effect_GetIsEffectValid(effect eEffect)
+{
+    string sFunc = "GetIsEffectValid";
+
+    NWNX_PushArgumentEffect(eEffect);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+int NWNX_Effect_GetAppliedEffectCount(object oObject)
+{
+    string sFunc = "GetAppliedEffectCount";
+
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+effect NWNX_Effect_GetAppliedEffect(object oObject, int nNth)
+{
+    string sFunc = "GetAppliedEffect";
+
+    NWNX_PushArgumentInt(nNth);
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
     return NWNX_GetReturnValueEffect();
 }

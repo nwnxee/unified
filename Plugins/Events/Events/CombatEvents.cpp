@@ -6,6 +6,8 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "API/CNWCCMessageData.hpp"
+#include "API/CNWSEffectListHandler.hpp"
+#include "API/CNWSMessage.hpp"
 
 namespace Events {
 
@@ -29,27 +31,27 @@ void CombatEvents() __attribute__((constructor));
 void CombatEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", []() {
-        s_StartCombatRoundHook = Hooks::HookFunction(API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
-                                                     (void*)&StartCombatRoundHook, Hooks::Order::Earliest);
+        s_StartCombatRoundHook = Hooks::HookFunction(&CNWSCombatRound::StartCombatRound,
+                                                     &StartCombatRoundHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_DISARM_*", []() {
-        s_ApplyDisarmHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti,
-                                                (void*)&ApplyDisarmHook, Hooks::Order::Early);
+        s_ApplyDisarmHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDisarm,
+                                                &ApplyDisarmHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", []() {
         s_SendServerToPlayerAmbientBattleMusicPlayHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji,
-                (void*)&SendServerToPlayerAmbientBattleMusicPlayHook, Hooks::Order::Earliest);
+                &CNWSMessage::SendServerToPlayerAmbientBattleMusicPlay,
+                &SendServerToPlayerAmbientBattleMusicPlayHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_COMBAT_DR_BROKEN.*", []() {
         s_SendFeedbackMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
-                (void*)&SendFeedbackMessageHook, Hooks::Order::Earliest);
+                &CNWSCreature::SendFeedbackMessage,
+                &SendFeedbackMessageHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_COMBAT_MODE_.*", []() {
         s_SetCombatModeHook = Hooks::HookFunction(
-                API::Functions::_ZN12CNWSCreature13SetCombatModeEhi,
-                (void*)&SetCombatModeHook, Hooks::Order::Early);
+                &CNWSCreature::SetCombatMode,
+                &SetCombatModeHook, Hooks::Order::Early);
     });
 }
 

@@ -43,7 +43,6 @@ struct CNetLayerWindow
     uint16_t m_pOutgoingBuffers[16];
     BOOL m_pbTimeOutSet[16];
     uint32_t m_pnTimeOut[16];
-    BOOL m_pbTimeOutDelay[16];
     uint16_t m_pIncomingBuffers[16];
     BOOL m_pbArrived[16];
     CExoArrayList<uint16_t> m_lQueueOutgoingHiFrames;
@@ -54,7 +53,6 @@ struct CNetLayerWindow
     uint8_t m_pHighPriorityHoldBuffer[960];
     uint32_t m_nLowPriorityHoldBufferSize;
     uint32_t m_nHighPriorityHoldBufferSize;
-    BOOL m_bCrapNetBandwidthNoSend;
     uint32_t m_nOutgoingNumBuffers;
     uint32_t m_nIncomingNumBuffers;
     uint32_t m_nOutgoingPacketsSinceResend;

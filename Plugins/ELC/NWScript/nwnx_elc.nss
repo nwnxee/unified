@@ -21,11 +21,8 @@ const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM                   = 6;
 
 /// @anchor elc_fail_subtype
 /// @name ELC Failure Subtypes
-/// @note By default these constants are commented out to avoid a
-/// limitation on constants. Uncomment them as needed.
 /// @{
 const int NWNX_ELC_SUBTYPE_NONE                                     = 0;
-/*
 const int NWNX_ELC_SUBTYPE_SERVER_LEVEL_RESTRICTION                 = 1;
 const int NWNX_ELC_SUBTYPE_LEVEL_HACK                               = 2;
 const int NWNX_ELC_SUBTYPE_COLORED_NAME                             = 3;
@@ -75,7 +72,7 @@ const int NWNX_ELC_SUBTYPE_SKILL_LIST_COMPARISON                    = 48;
 const int NWNX_ELC_SUBTYPE_FEAT_LIST_COMPARISON                     = 49;
 const int NWNX_ELC_SUBTYPE_MISC_SAVING_THROW                        = 50;
 const int NWNX_ELC_SUBTYPE_NUM_FEAT_COMPARISON                      = 51;
- */
+const int NWNX_ELC_SUBTYPE_NUM_MULTICLASS                           = 52;
 /// @}
 
 /// @brief Sets the script that runs whenever an ELC validation failure happens

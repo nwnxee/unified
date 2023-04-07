@@ -25,6 +25,8 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static uint32_t s_PostFixVersion;
+
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
 {
@@ -40,10 +42,18 @@ extern "C" void nwnx_signal_handler(int sig)
 
     std::fprintf(stdout, " NWNX Signal Handler:\n"
         "==============================================================\n"
-        " NWNX %d.%d (%s) has crashed. Fatal error: %s (%d).\n"
+        " NWNX %d.%d-%d (%s) has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
-        NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
+        NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_TARGET_NWN_BUILD_POSTFIX, NWNX_BUILD_SHA, err, sig);
+
+    if (s_PostFixVersion != NWNX_TARGET_NWN_BUILD_POSTFIX)
+    {
+        std::fprintf(stdout, " Postfix Version Mismatch: Expected: %d, Got: %d\n"
+                " This may have been the cause of this crash.\n"
+                "==============================================================\n",
+                NWNX_TARGET_NWN_BUILD_POSTFIX, s_PostFixVersion);
+    }
 
     std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
     std::fflush(stdout);
@@ -121,11 +131,13 @@ NWNXCore::NWNXCore()
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-    std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
-    // This sets up the base address for every hook and patch to follow.
-    Platform::CalculateBaseAddress();
+    std::printf("Starting NWNX %d.%d-%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_TARGET_NWN_BUILD_POSTFIX, NWNX_BUILD_SHA);
 
-    m_createServerHook = Hooks::HookFunction(API::Functions::_ZN11CAppManager12CreateServerEv, (void*)&CreateServerHandler);
+    // Initialise export table. New plugin code should endeavour to use direct linking
+    // for hook naming, but these might help if you want to target a overloaded function.
+    NWNXLib::API::Functions::Initialize();
+
+    m_createServerHook = Hooks::HookFunction(&CAppManager::CreateServer, &CreateServerHandler);
 }
 
 NWNXCore::~NWNXCore()
@@ -174,19 +186,20 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, (void*)&SetVarHandler, Hooks::Order::Final);
-    m_vmGetVarHook         = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, (void*)&GetVarHandler, Hooks::Order::Final);
-    m_vmTagEffectHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, (void*)&TagEffectHandler, Hooks::Order::Final);
-    m_vmTagItemProperyHook = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, (void*)&TagItemPropertyHandler, Hooks::Order::Final);
-    m_vmPlaySoundHook      = Hooks::HookFunction(API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, (void*)&PlaySoundHandler, Hooks::Order::Final);
+    m_vmSetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandSetVar, &SetVarHandler, Hooks::Order::Final);
+    m_vmGetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetVar, &GetVarHandler, Hooks::Order::Final);
+    m_vmTagEffectHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagEffect, &TagEffectHandler, Hooks::Order::Final);
+    m_vmTagItemProperyHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagItemProperty, &TagItemPropertyHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
 
-    m_destroyServerHook    = Hooks::HookFunction(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooks::Order::Final);
-    m_mainLoopInternalHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooks::Order::Final);
+
+    m_destroyServerHook    = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
 
     POS::InitializeHooks();
 
-    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
-            (void*)+[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
+    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(&CNWSModule::LoadModuleInProgress,
+            +[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
             {
                 int index = nAreasLoaded;
                 auto *node = pModule->m_lstModuleArea.m_pcExoLinkedListInternal->pHead;
@@ -206,8 +219,8 @@ void NWNXCore::InitialSetupHooks()
             }, Hooks::Order::Earliest);
 
     static Hooks::Hook loadModuleFinishHook = Hooks::HookFunction(
-            API::Functions::_ZN10CNWSModule16LoadModuleFinishEv,
-            (void*)+[](CNWSModule *pModule) -> uint32_t
+            &CNWSModule::LoadModuleFinish,
+            +[](CNWSModule *pModule) -> uint32_t
             {
                 MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
                 return loadModuleFinishHook->CallOriginal<uint32_t>(pModule);
@@ -216,12 +229,30 @@ void NWNXCore::InitialSetupHooks()
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
-                API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
-                (void*)+[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
+                &CVirtualMachine::RunScriptChunk,
+                +[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
                 {
                     g_core->m_ScriptChunkRecursion += 1;
                     auto retVal = runScriptChunkHook->CallOriginal<int32_t>(pVirtualMachine, sScriptChunk, oid, bOidValid, bWrapIntoMain);
                     g_core->m_ScriptChunkRecursion -= 1;
+                    return retVal;
+                }, Hooks::Order::VeryEarly);
+
+        static Hooks::Hook runScriptSituationHook = Hooks::HookFunction(
+                &CVirtualMachine::RunScriptSituation,
+                +[](CVirtualMachine *pVirtualMachine, void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid) -> BOOL
+                {
+                    auto *pVirtualMachineScript = (CVirtualMachineScript*)pScriptSituation;
+                    bool isScriptChunk = !pVirtualMachineScript->m_sScriptChunk.IsEmpty();
+
+                    if (isScriptChunk)
+                        g_core->m_ScriptChunkRecursion += 1;
+
+                    auto retVal = runScriptSituationHook->CallOriginal<BOOL>(pVirtualMachine, pScriptSituation, oid, bOidValid);
+
+                    if (isScriptChunk)
+                        g_core->m_ScriptChunkRecursion -= 1;
+
                     return retVal;
                 }, Hooks::Order::VeryEarly);
     }
@@ -231,19 +262,29 @@ void NWNXCore::InitialVersionCheck()
 {
     CExoString *pBuildNumber = Globals::BuildNumber();
     CExoString *pBuildRevision = Globals::BuildRevision();
+    CExoString *pBuildPostfix = Globals::BuildPostfix();
 
-    if (pBuildNumber && pBuildRevision)
+    if (pBuildNumber && pBuildRevision && pBuildPostfix)
     {
         const uint32_t version = std::stoul(pBuildNumber->m_sString);
         const uint32_t revision = std::stoul(pBuildRevision->m_sString);
+        const uint32_t postfix = std::stoul(pBuildPostfix->m_sString);
+
+        s_PostFixVersion = postfix;
 
         if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stdout, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
-                                      NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
+            std::fprintf(stdout, "NWNX: Expected build %u.%u, got build %u.%u.\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
             std::fprintf(stdout, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
             std::fflush(stdout);
             std::exit(1);
+        }
+
+        if (postfix != NWNX_TARGET_NWN_BUILD_POSTFIX)
+        {
+            std::fprintf(stdout, "NWNX: WARNING: POSTFIX VERSION MISMATCH: EXPECTED: %d, GOT: %d\n", NWNX_TARGET_NWN_BUILD_POSTFIX, postfix);
+            std::fprintf(stdout, "NWNX:          THE NWNX API MAY NOT BE UP TO DATE AND CRASH YOUR SERVER.\n");
+            std::fflush(stdout);
         }
     }
     else
@@ -287,7 +328,7 @@ void NWNXCore::InitialSetupPlugins()
         const std::string& pluginName = dynamicLibrary;
         const std::string pluginNameWithoutExtension = String::Basename(pluginName);
 
-        if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
+        if (pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
         {
             continue; // Not a plugin.
         }
@@ -298,7 +339,9 @@ void NWNXCore::InitialSetupPlugins()
         }
 
         auto services = ConstructProxyServices(pluginNameWithoutExtension);
-        if (Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
+
+        // Always load core.
+        if (pluginNameWithoutExtension != NWNX_CORE_PLUGIN_NAME && Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
             continue;
@@ -364,7 +407,7 @@ void NWNXCore::InitialSetupResourceDirectories()
 
                     g_core->m_CustomResourceDirectoryAliases.emplace_back(resDir.first);
 
-                    Globals::ExoBase()->m_pcExoAliasList->Add(alias, path);
+                    Globals::ExoBase()->m_pcExoAliasList->Add(resDir.first, path);
                     Globals::ExoResMan()->CreateDirectory(alias);
                     Globals::ExoResMan()->AddResourceDirectory(alias, resDir.second.second, true);
                 }
@@ -486,13 +529,6 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
-    Commands::Register("resolve", [](std::string&, std::string& args)
-    {
-        auto addr = String::FromString<uint64_t>(args);
-        if (addr)
-            LOG_NOTICE("%s", NWNXLib::Platform::ResolveAddress(*addr));
-    });
-
 }
 
 
@@ -597,6 +633,11 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
     Commands::RunScheduled();
 
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);
+}
+
+NWNX_EXPORT ArgumentStack PluginExists(ArgumentStack&& args)
+{
+    return Plugin::Find(args.extract<std::string>()) ? 1 : 0;
 }
 
 }

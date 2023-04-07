@@ -34,32 +34,6 @@ const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP        = 3;
 const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
 /// @}
 
-/// @name Cleric Domains
-/// @anchor cleric_domains
-///
-/// The clerical domains.
-/// @{
-const int NWNX_CREATURE_CLERIC_DOMAIN_AIR         = 0;
-const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL      = 1;
-const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH       = 3;
-const int NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION = 4;
-const int NWNX_CREATURE_CLERIC_DOMAIN_EARTH       = 5;
-const int NWNX_CREATURE_CLERIC_DOMAIN_EVIL        = 6;
-const int NWNX_CREATURE_CLERIC_DOMAIN_FIRE        = 7;
-const int NWNX_CREATURE_CLERIC_DOMAIN_GOOD        = 8;
-const int NWNX_CREATURE_CLERIC_DOMAIN_HEALING     = 9;
-const int NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE   = 10;
-const int NWNX_CREATURE_CLERIC_DOMAIN_MAGIC       = 13;
-const int NWNX_CREATURE_CLERIC_DOMAIN_PLANT       = 14;
-const int NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION  = 15;
-const int NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH    = 16;
-const int NWNX_CREATURE_CLERIC_DOMAIN_SUN         = 17;
-const int NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL      = 18;
-const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY    = 19;
-const int NWNX_CREATURE_CLERIC_DOMAIN_WAR         = 20;
-const int NWNX_CREATURE_CLERIC_DOMAIN_WATER       = 21;
-/// @}
-
 /// @name Bonus Types
 /// @anchor bonus_types
 ///
@@ -94,16 +68,6 @@ struct NWNX_Creature_SpecialAbility
     int id; ///< The spell id
     int ready; ///< Whether it can be used
     int level; ///< The level of the ability
-};
-
-/// @struct NWNX_Creature_MemorisedSpell
-/// @brief A memorised spell structure.
-struct NWNX_Creature_MemorisedSpell
-{
-    int id; ///< Spell ID
-    int ready; ///< Whether the spell can be cast
-    int meta; ///< Metamagic type, if any
-    int domain; ///< Clerical domain, if any
 };
 
 /// @brief Gives the creature a feat.
@@ -246,29 +210,6 @@ void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modif
 /// @return The raw ability score.
 int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability);
 
-/// @brief Gets the count of memorised spells for a creature's class at a level.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @return The memorised spell count.
-int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level);
-
-/// @brief Gets the memorised spell at a class level's index.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
-/// @return An NWNX_Creature_MemorisedSpell() struct.
-struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
-
-/// @brief Sets the memorised spell at a class level's index.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
-/// @param spell An NWNX_Creature_MemorisedSpell() struct.
-void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell);
-
 /// @brief Gets the remaining spell slots (innate casting) at a class level's index.
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
@@ -290,21 +231,6 @@ void NWNX_Creature_SetRemainingSpellSlots(object creature, int class, int level,
 /// @return The maximum spell slot count.
 int NWNX_Creature_GetMaxSpellSlots(object creature, int class, int level);
 
-/// @brief Gets the known spell count (innate casting) at a class level.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @return The known spell count.
-int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level);
-
-/// @brief Gets the known spell at a class level's index.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetKnownSpellCount().
-/// @return The spell id.
-int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index);
-
 /// @brief Add a spell to a creature's spellbook for class.
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
@@ -318,19 +244,6 @@ void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spel
 /// @param level The spell level.
 /// @param spellId The spell to remove.
 void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int spellId);
-
-/// @brief Clear a specific spell from the creature's spellbook for class
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param spellId The spell to clear.
-void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId);
-
-/// @brief Clear the memorised spell of the creature for the class, level and index.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param level The spell level.
-/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
-void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
 
 /// @brief Gets the maximum hit points for creature for level.
 /// @param creature The creature object.
@@ -395,16 +308,6 @@ void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
 /// @param value The value to set.
 void NWNX_Creature_SetAlignmentLawChaos(object creature, int value);
 
-/// @brief Get the soundset index for creature.
-/// @param creature The creature object.
-/// @return The soundset used by the creature.
-int NWNX_Creature_GetSoundset(object creature);
-
-/// @brief Set the soundset index for creature.
-/// @param creature The creature object.
-/// @param soundset The soundset index.
-void NWNX_Creature_SetSoundset(object creature, int soundset);
-
 /// @brief Set the base ranks in a skill for creature
 /// @param creature The creature object.
 /// @param skill The skill id.
@@ -461,11 +364,6 @@ void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
 /// @return The attacks per round.
 int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
 
-/// @brief Sets the creature gender.
-/// @param creature The creature object.
-/// @param gender The GENDER_ constant.
-void NWNX_Creature_SetGender(object creature, int gender);
-
 /// @brief Restore all creature feat uses.
 /// @param creature The creature object.
 void NWNX_Creature_RestoreFeats(object creature);
@@ -473,11 +371,6 @@ void NWNX_Creature_RestoreFeats(object creature);
 /// @brief Restore all creature special ability uses.
 /// @param creature The creature object.
 void NWNX_Creature_RestoreSpecialAbilities(object creature);
-
-/// @brief Restore all creature spells per day for given level.
-/// @param creature The creature object.
-/// @param level The level to restore. If -1, all spells are restored.
-void NWNX_Creature_RestoreSpells(object creature, int level = -1);
 
 /// @brief Restore uses for all items carried by the creature.
 /// @param creature The creature object.
@@ -660,25 +553,12 @@ int NWNX_Creature_GetDisarmable(object creature);
 /// @param disarmable Set to TRUE if the creature can be disarmed.
 void NWNX_Creature_SetDisarmable(object creature, int disarmable);
 
-/// @brief Gets one of creature's domains.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @param index The first or second domain.
-/// @deprecated Use GetDomain(). This will be removed in future NWNX releases.
-int NWNX_Creature_GetDomain(object creature, int class, int index);
-
 /// @brief Sets one of creature's domains.
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
 /// @param index The first or second domain.
 /// @param domain The domain constant to set.
 void NWNX_Creature_SetDomain(object creature, int class, int index, int domain);
-
-/// @brief Gets the creature's specialist school.
-/// @param creature The creature object.
-/// @param class The class id from classes.2da. (Not class index 0-2)
-/// @deprecated Use GetSpecialization(). This will be removed in future NWNX releases.
-int NWNX_Creature_GetSpecialization(object creature, int class);
 
 /// @brief Sets creature's specialist school.
 /// @param creature The creature object.
@@ -812,12 +692,6 @@ int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int 
 /// @param oAssociate The associate, must be a NPC
 /// @param nAssociateType The associate type, one of ASSOCIATE_TYPE_*, except _NONE
 void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssociateType);
-
-/// @brief Set whether an effect icon is flashing or not.
-/// @param oCreature The target creature.
-/// @param nIconId The icon id, see effecticons.2da.
-/// @param bFlashing TRUE for flashing, FALSE for not flashing.
-void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing);
 
 /// @brief Override the damage level of oCreature.
 /// @note Damage levels are the damage state under a creature's name, for example: 'Near Death'
@@ -1046,25 +920,6 @@ object NWNX_Creature_GetBodyBag(object oCreature);
 /// @return TRUE if the action was successfully added to oCreature's action queue.
 int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector vTargetLocation, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE, int nDomainLevel = 0, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstant = FALSE, int bClearActions = FALSE, int bAddToFront = FALSE);
 
-/// @brief Get the number of uses left of a spell.
-/// @note This function is for caster classes that don't need to memorize spells.
-/// @param oCreature The creature.
-/// @param nSpellID The spell ID.
-/// @param nMultiClass The position of the class to check, 0-2
-/// @param nDomainLevel The domain level if checking a domain spell.
-/// @param nMetaMagic A METAMAGIC_* constant.
-/// @return The number of spell uses left or 0 on error.
-int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE);
-
-/// @brief Get the number of memorized ready spells by spellid.
-/// @note This function is for caster classes that need to memorize spells.
-/// @param oCreature The creature.
-/// @param nSpellID The spell ID.
-/// @param nMultiClass The position of the class to check, 0-2
-/// @param nMetaMagic A METAMAGIC_* constant.
-/// @return The number of spell uses left or 0 on error.
-int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE);
-
 /// @brief Get whether oCreature is flanking oTargetCreature.
 /// @param oCreature The creature object.
 /// @param oTargetCreature The target creature object.
@@ -1082,6 +937,19 @@ void NWNX_Creature_DecrementRemainingSpellSlots(object oCreature, int nClass, in
 /// @param nClass The class id from classes.2da. (Not class index 0-2)
 /// @param nSpellLevel The spell level.
 void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, int nSpellLevel);
+
+/// @brief Gets the maximum number of bonus attacks a creature can have from EffectModifyAttacks().
+/// @param oCreature The creature.
+/// @return The maximum number of bonus attacks or 0 on error.
+int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
+
+/// @brief Sets the maximum number of bonus attacks a creature can have from EffectModifyAttacks().
+/// @note This function also removes the limit of 5 bonus attacks from EffectModifyAttacks().
+/// @param oCreature The creature.
+/// @param nMaxBonusAttacks The maximum number of bonus attacks. Values < 0 will set the limit back to the default of 5.
+/// @param bPersist Whether the modifier should persist to .bic file (for PCs).
+/// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
 
 /// @}
 
@@ -1339,54 +1207,6 @@ int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability)
     return NWNX_GetReturnValueInt();
 }
 
-struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index)
-{
-    string sFunc = "GetMemorisedSpell";
-    struct NWNX_Creature_MemorisedSpell spell;
-
-    NWNX_PushArgumentInt(index);
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-
-    spell.domain = NWNX_GetReturnValueInt();
-    spell.meta   = NWNX_GetReturnValueInt();
-    spell.ready  = NWNX_GetReturnValueInt();
-    spell.id     = NWNX_GetReturnValueInt();
-    return spell;
-}
-
-int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level)
-{
-    string sFunc = "GetMemorisedSpellCountByLevel";
-
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
-void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell)
-{
-    string sFunc = "SetMemorisedSpell";
-
-    NWNX_PushArgumentInt(spell.id);
-    NWNX_PushArgumentInt(spell.ready);
-    NWNX_PushArgumentInt(spell.meta);
-    NWNX_PushArgumentInt(spell.domain);
-
-    NWNX_PushArgumentInt(index);
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level)
 {
     string sFunc = "GetRemainingSpellSlots";
@@ -1411,31 +1231,6 @@ void NWNX_Creature_SetRemainingSpellSlots(object creature, int class, int level,
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index)
-{
-    string sFunc = "GetKnownSpell";
-
-    NWNX_PushArgumentInt(index);
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
-int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level)
-{
-    string sFunc = "GetKnownSpellCount";
-
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
 void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int spellId)
 {
     string sFunc = "RemoveKnownSpell";
@@ -1453,29 +1248,6 @@ void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spel
     string sFunc = "AddKnownSpell";
 
     NWNX_PushArgumentInt(spellId);
-    NWNX_PushArgumentInt(level);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId)
-{
-    string sFunc = "ClearMemorisedKnownSpells";
-
-    NWNX_PushArgumentInt(spellId);
-    NWNX_PushArgumentInt(class);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index)
-{
-    string sFunc = "ClearMemorisedSpell";
-
-    NWNX_PushArgumentInt(index);
     NWNX_PushArgumentInt(level);
     NWNX_PushArgumentInt(class);
     NWNX_PushArgumentObject(creature);
@@ -1586,26 +1358,6 @@ void NWNX_Creature_SetAlignmentLawChaos(object creature, int value)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetSoundset(object creature)
-{
-    string sFunc = "GetSoundset";
-
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
-void NWNX_Creature_SetSoundset(object creature, int soundset)
-{
-    string sFunc = "SetSoundset";
-
-    NWNX_PushArgumentInt(soundset);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
 {
     string sFunc = "SetSkillRank";
@@ -1680,15 +1432,6 @@ int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE)
     return NWNX_GetReturnValueInt();
 }
 
-void NWNX_Creature_SetGender(object creature, int gender)
-{
-    string sFunc = "SetGender";
-    NWNX_PushArgumentInt(gender);
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
 void NWNX_Creature_RestoreFeats(object creature)
 {
     string sFunc = "RestoreFeats";
@@ -1700,15 +1443,6 @@ void NWNX_Creature_RestoreFeats(object creature)
 void NWNX_Creature_RestoreSpecialAbilities(object creature)
 {
     string sFunc = "RestoreSpecialAbilities";
-    NWNX_PushArgumentObject(creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_RestoreSpells(object creature, int level = -1)
-{
-    string sFunc = "RestoreSpells";
-    NWNX_PushArgumentInt(level);
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -2049,13 +1783,6 @@ void NWNX_Creature_SetDisarmable(object creature, int disarmable)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetDomain(object creature, int class, int index)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: GetDomain() is deprecated. Please use the basegame's GetDomain() instead");
-
-    return GetDomain(creature, index, class);
-}
-
 void NWNX_Creature_SetDomain(object creature, int class, int index, int domain)
 {
     string sFunc = "SetDomain";
@@ -2066,13 +1793,6 @@ void NWNX_Creature_SetDomain(object creature, int class, int index, int domain)
     NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-int NWNX_Creature_GetSpecialization(object creature, int class)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: GetSpecialization() is deprecated. Please use the basegame's GetSpecialization() instead");
-
-    return GetSpecialization(creature, class);
 }
 
 void NWNX_Creature_SetSpecialization(object creature, int class, int school)
@@ -2292,16 +2012,6 @@ void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssoci
     NWNX_PushArgumentObject(oAssociate);
     NWNX_PushArgumentObject(oCreature);
 
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing)
-{
-    string sFunc = "SetEffectIconFlashing";
-
-    NWNX_PushArgumentInt(bFlashing);
-    NWNX_PushArgumentInt(nIconId);
-    NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
@@ -2701,33 +2411,6 @@ int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector v
     return NWNX_GetReturnValueInt();
 }
 
-int NWNX_Creature_GetSpellUsesLeft(object oCreature, int nSpellID, int nMultiClass, int nDomainLevel = 0, int nMetaMagic = METAMAGIC_NONE)
-{
-    string sFunc = "GetSpellUsesLeft";
-
-    NWNX_PushArgumentInt(nMetaMagic);
-    NWNX_PushArgumentInt(nDomainLevel);
-    NWNX_PushArgumentInt(nMultiClass);
-    NWNX_PushArgumentInt(nSpellID);
-    NWNX_PushArgumentObject(oCreature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
-int NWNX_Creature_GetMemorizedSpellReadyCount(object oCreature, int nSpellID, int nMultiClass, int nMetaMagic = METAMAGIC_NONE)
-{
-    string sFunc = "GetMemorizedSpellReadyCount";
-
-    NWNX_PushArgumentInt(nMetaMagic);
-    NWNX_PushArgumentInt(nMultiClass);
-    NWNX_PushArgumentInt(nSpellID);
-    NWNX_PushArgumentObject(oCreature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt();
-}
-
 int NWNX_Creature_GetIsFlanking(object oCreature, object oTargetCreature)
 {
     string sFunc = "GetIsFlanking";
@@ -2758,5 +2441,24 @@ void NWNX_Creature_IncrementRemainingSpellSlots(object oCreature, int nClass, in
     NWNX_PushArgumentInt(nClass);
     NWNX_PushArgumentObject(oCreature);
 
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetMaximumBonusAttacks(object oCreature)
+{
+    string sFunc = "GetMaximumBonusAttacks";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE)
+{
+    string sFunc = "SetMaximumBonusAttacks";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

@@ -23,8 +23,8 @@ void TURDByCDKey()
 
     LOG_INFO("TURDs are associated by CDKey/CharacterName instead of PlayerName/CharacterName.");
 
-    static Hooks::Hook s_GetPlayerNameHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer13GetPlayerNameEv,
-        (void*)+[](CNWSPlayer *pPlayer) -> CExoString
+    static Hooks::Hook s_GetPlayerNameHook = Hooks::HookFunction(&CNWSPlayer::GetPlayerName,
+        +[](CNWSPlayer *pPlayer) -> CExoString
         {
             if (s_GetCDKeyInsteadOfPlayerName)
             {
@@ -39,24 +39,24 @@ void TURDByCDKey()
                 return s_GetPlayerNameHook->CallOriginal<CExoString>(pPlayer);
         }, Hooks::Order::Late);
 
-    static Hooks::Hook s_DropTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer8DropTURDEv,
-        (void*)+[](CNWSPlayer *pPlayer) -> void
+    static Hooks::Hook s_DropTURDHook = Hooks::HookFunction(&CNWSPlayer::DropTURD,
+        +[](CNWSPlayer *pPlayer) -> void
         {
             s_GetCDKeyInsteadOfPlayerName = true;
             s_DropTURDHook->CallOriginal<void>(pPlayer);
             s_GetCDKeyInsteadOfPlayerName = false;
         }, Hooks::Order::Early);
 
-    static Hooks::Hook s_RemoveFromTURDListHook = Hooks::HookFunction(Functions::_ZN10CNWSModule18RemoveFromTURDListEP10CNWSPlayer,
-        (void*)+[](CNWSModule *pModule, CNWSPlayer *pPlayer) -> void
+    static Hooks::Hook s_RemoveFromTURDListHook = Hooks::HookFunction(&CNWSModule::RemoveFromTURDList,
+        +[](CNWSModule *pModule, CNWSPlayer *pPlayer) -> void
         {
             s_GetCDKeyInsteadOfPlayerName = true;
             s_RemoveFromTURDListHook->CallOriginal<void>(pModule, pPlayer);
             s_GetCDKeyInsteadOfPlayerName = false;
         }, Hooks::Order::Early);
 
-    static Hooks::Hook s_GetPlayerTURDFromListHook = Hooks::HookFunction(Functions::_ZN10CNWSModule21GetPlayerTURDFromListEP10CNWSPlayer,
-        (void*)+[](CNWSModule *pModule, CNWSPlayer *pPlayer) -> CNWSPlayerTURD*
+    static Hooks::Hook s_GetPlayerTURDFromListHook = Hooks::HookFunction(&CNWSModule::GetPlayerTURDFromList,
+        +[](CNWSModule *pModule, CNWSPlayer *pPlayer) -> CNWSPlayerTURD*
         {
             s_GetCDKeyInsteadOfPlayerName = true;
             auto retVal = s_GetPlayerTURDFromListHook->CallOriginal<CNWSPlayerTURD*>(pModule, pPlayer);

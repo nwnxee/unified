@@ -1,5 +1,8 @@
 #include "nwnx.hpp"
 
+#include "API/CExoDebugInternal.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -21,8 +24,8 @@ inline std::string TrimMessage(CExoString* message)
     return String::Trim(s);
 }
 
-static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
-    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
+static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToLogFile,
+    +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
         std::string str = TrimMessage(message);
 
@@ -41,8 +44,8 @@ static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction(Functions::_ZN17CE
         s_WriteToLogFileHook->CallOriginal<void>(pExoDebugInternal, message);
     }, Hooks::Order::VeryEarly);
 
-static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction(Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
-    (void*)+[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
+static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToErrorFile,
+    +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
         std::string str = TrimMessage(message);
         LOG_INFO("(Error) %s", str);
@@ -50,8 +53,8 @@ static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction(Functions::_ZN17
         s_WriteToErrorFileHook->CallOriginal<void>(pExoDebugInternal, message);
     }, Hooks::Order::VeryEarly);
 
-static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
-    (void*)+[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
+static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandPrintString,
+    +[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
     {
         s_printString = true;
         auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);

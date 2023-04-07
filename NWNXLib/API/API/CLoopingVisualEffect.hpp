@@ -21,6 +21,7 @@ struct CLoopingVisualEffect
     uint8_t m_nBodyPart;
     ObjectVisualTransformData m_ovtd;
 
+    CLoopingVisualEffect();
     BOOL GetIsBeam();
 
 

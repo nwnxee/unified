@@ -1,6 +1,17 @@
 #include "Targets/ObjectAIUpdates.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSAreaOfEffectObject.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSStore.hpp"
+#include "API/CNWSTrigger.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "ProfilerMacros.hpp"
 
 namespace Profiler {
@@ -26,7 +37,7 @@ ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::MetricsProxy* metrics)
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateArea, API::Functions::_ZN8CNWSArea8AIUpdateEv,
+        AIUpdateArea, &CNWSArea::AIUpdate,
         int32_t, CNWSArea*);
 
     DEFINE_PROFILER_TARGET_FAST(
@@ -50,7 +61,7 @@ ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::MetricsProxy* metrics)
         void, CNWSItem*);
 
     DEFINE_PROFILER_TARGET_FAST(
-        AIUpdateModule, API::Functions::_ZN10CNWSModule8AIUpdateEv,
+        AIUpdateModule, &CNWSModule::AIUpdate,
         int32_t, CNWSModule*);
 
     DEFINE_PROFILER_TARGET_FAST(

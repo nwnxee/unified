@@ -54,14 +54,14 @@ static CExoLinkedListNode* FindTURD(std::string playerName, std::string characte
     return foundNode;
 }
 
-NWNX_EXPORT Events::ArgumentStack GetPlayerPassword(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetPlayerPassword(ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
     LOG_DEBUG("Returned player password '%s'.", password.m_sString);
     return std::string(password.m_sString ? password.m_sString : "");
 }
 
-NWNX_EXPORT Events::ArgumentStack SetPlayerPassword(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetPlayerPassword(ArgumentStack&& args)
 {
     const auto newPass = args.extract<std::string>();
     LOG_NOTICE("Set player password to '%s'.", newPass);
@@ -69,21 +69,21 @@ NWNX_EXPORT Events::ArgumentStack SetPlayerPassword(Events::ArgumentStack&& args
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack ClearPlayerPassword(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack ClearPlayerPassword(ArgumentStack&&)
 {
     LOG_NOTICE("Cleared player password.");
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword("");
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack GetDMPassword(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetDMPassword(ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
     LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
     return std::string(password.m_sString ? password.m_sString : "");
 }
 
-NWNX_EXPORT Events::ArgumentStack SetDMPassword(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetDMPassword(ArgumentStack&& args)
 {
     const auto newPass = args.extract<std::string>();
     LOG_NOTICE("Set DM password to '%s'.", newPass);
@@ -91,14 +91,14 @@ NWNX_EXPORT Events::ArgumentStack SetDMPassword(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack ShutdownServer(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack ShutdownServer(ArgumentStack&&)
 {
     LOG_NOTICE("Shutting down the server!");
     *Globals::ExitProgram() = true;
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack DeletePlayerCharacter(ArgumentStack&& args)
 {
     const auto objectId = args.extract<ObjectID>();
     const bool bPreserveBackup = !!args.extract<int32_t>();
@@ -185,7 +185,7 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack AddBannedIP(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddBannedIP(ArgumentStack&& args)
 {
     const auto ip = args.extract<std::string>();
     LOG_NOTICE("Banning IP %s", ip);
@@ -193,7 +193,7 @@ NWNX_EXPORT Events::ArgumentStack AddBannedIP(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack RemoveBannedIP(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RemoveBannedIP(ArgumentStack&& args)
 {
     const auto ip = args.extract<std::string>();
     LOG_NOTICE("Unbanning IP %s", ip);
@@ -201,7 +201,7 @@ NWNX_EXPORT Events::ArgumentStack RemoveBannedIP(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack AddBannedCDKey(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddBannedCDKey(ArgumentStack&& args)
 {
     const auto key = args.extract<std::string>();
     LOG_NOTICE("Banning CDKey %s", key);
@@ -209,7 +209,7 @@ NWNX_EXPORT Events::ArgumentStack AddBannedCDKey(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack RemoveBannedCDKey(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RemoveBannedCDKey(ArgumentStack&& args)
 {
     const auto key = args.extract<std::string>();
     LOG_NOTICE("Unbanning CDKey %s", key);
@@ -217,7 +217,7 @@ NWNX_EXPORT Events::ArgumentStack RemoveBannedCDKey(Events::ArgumentStack&& args
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack AddBannedPlayerName(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack AddBannedPlayerName(ArgumentStack&& args)
 {
     const auto playername = args.extract<std::string>();
     LOG_NOTICE("Banning Player name %s", playername);
@@ -225,7 +225,7 @@ NWNX_EXPORT Events::ArgumentStack AddBannedPlayerName(Events::ArgumentStack&& ar
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack RemoveBannedPlayerName(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack RemoveBannedPlayerName(ArgumentStack&& args)
 {
     const auto playername = args.extract<std::string>();
     LOG_NOTICE("Unbanning Player name %s", playername);
@@ -233,13 +233,13 @@ NWNX_EXPORT Events::ArgumentStack RemoveBannedPlayerName(Events::ArgumentStack&&
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack GetBannedList(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetBannedList(ArgumentStack&&)
 {
     std::string list = Globals::AppManager()->m_pServerExoApp->GetBannedListString().CStr();
     return list;
 }
 
-NWNX_EXPORT Events::ArgumentStack SetModuleName(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetModuleName(ArgumentStack&& args)
 {
     const auto newName = args.extract<std::string>();
     LOG_NOTICE("Set module name to '%s'.", newName);
@@ -247,7 +247,7 @@ NWNX_EXPORT Events::ArgumentStack SetModuleName(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack SetServerName(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetServerName(ArgumentStack&& args)
 {
     const auto newName = args.extract<std::string>();
     LOG_NOTICE("Set server name to '%s'.", newName);
@@ -255,13 +255,13 @@ NWNX_EXPORT Events::ArgumentStack SetServerName(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack GetServerName(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetServerName(ArgumentStack&&)
 {
     CExoString serverName = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetSessionName();
     return serverName.CStr();
 }
 
-NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetPlayOption(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
@@ -383,6 +383,10 @@ NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
             retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl;
             break;
 
+        case 28: // NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES
+            retVal = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bShowPlayerJoinMessages;
+            break;
+
         default:
             LOG_NOTICE("Calling NWNX_Administration_GetPlayOption with invalid option: %d", option);
             break;
@@ -391,7 +395,7 @@ NWNX_EXPORT Events::ArgumentStack GetPlayOption(Events::ArgumentStack&& args)
     return retVal;
 }
 
-NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetPlayOption(ArgumentStack&& args)
 {
     const auto option = args.extract<int32_t>();
     const auto value = args.extract<int32_t>();
@@ -514,6 +518,10 @@ NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
             Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bPlayerPartyControl = !!value;
             break;
 
+        case 28: // NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES
+            Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bShowPlayerJoinMessages = !!value;
+            break;
+
         default:
             LOG_NOTICE("Calling NWNX_Administration_SetPlayOption with invalid option: %d", option);
             break;
@@ -522,7 +530,7 @@ NWNX_EXPORT Events::ArgumentStack SetPlayOption(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack DeleteTURD(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack DeleteTURD(ArgumentStack&& args)
 {
     int32_t retVal = false;
     const auto playerName = args.extract<std::string>();
@@ -543,7 +551,7 @@ NWNX_EXPORT Events::ArgumentStack DeleteTURD(Events::ArgumentStack&& args)
     return retVal;
 }
 
-NWNX_EXPORT Events::ArgumentStack GetDebugValue(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetDebugValue(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
@@ -577,7 +585,7 @@ NWNX_EXPORT Events::ArgumentStack GetDebugValue(Events::ArgumentStack&& args)
     return retVal;
 }
 
-NWNX_EXPORT Events::ArgumentStack SetDebugValue(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetDebugValue(ArgumentStack&& args)
 {
     const auto debugType = args.extract<int32_t>();
      ASSERT_OR_THROW(debugType >= 0);
@@ -612,20 +620,20 @@ NWNX_EXPORT Events::ArgumentStack SetDebugValue(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack ReloadRules(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack ReloadRules(ArgumentStack&&)
 {
     LOG_NOTICE("Reloading rules!");
     Globals::Rules()->ReloadAll();
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack GetMinLevel(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetMinLevel(ArgumentStack&&)
 {
     auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
     return pServerInfo->m_JoiningRestrictions.nMinLevel;
 }
 
-NWNX_EXPORT Events::ArgumentStack SetMinLevel(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetMinLevel(ArgumentStack&& args)
 {
     const auto nLevel = args.extract<int32_t>();
     ASSERT_OR_THROW(nLevel >= 1);
@@ -636,13 +644,13 @@ NWNX_EXPORT Events::ArgumentStack SetMinLevel(Events::ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT Events::ArgumentStack GetMaxLevel(Events::ArgumentStack&&)
+NWNX_EXPORT ArgumentStack GetMaxLevel(ArgumentStack&&)
 {
     auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
     return pServerInfo->m_JoiningRestrictions.nMaxLevel;
 }
 
-NWNX_EXPORT Events::ArgumentStack SetMaxLevel(Events::ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack SetMaxLevel(ArgumentStack&& args)
 {
     const auto nLevel = args.extract<int32_t>();
     ASSERT_OR_THROW(nLevel >= 1);

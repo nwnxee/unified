@@ -1,6 +1,7 @@
 #include "nwnx.hpp"
 #include "API/CGameObject.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CGameObjectArray.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSUUID.hpp"
@@ -10,6 +11,9 @@
 #include <regex>
 #include <unordered_map>
 #include <sstream>
+
+extern "C" void _ZN10CNWSObjectD1Ev(CNWSObject*);
+extern "C" void _ZN8CNWSAreaD1Ev(CNWSArea*);
 
 using namespace NWNXLib;
 namespace NWNXLib::POS
@@ -381,30 +385,30 @@ void RemoveRegex(CGameObject *pGameObject, const std::string& prefix, const std:
 
 void InitializeHooks()
 {
-    static Hooks::Hook s_ObjectDtorHook      = Hooks::HookFunction(API::Functions::_ZN10CNWSObjectD1Ev, 
-        (void*)+[](CNWSObject* pThis)
+    static Hooks::Hook s_ObjectDtorHook      = Hooks::HookFunction(&_ZN10CNWSObjectD1Ev, 
+        +[](CNWSObject* pThis)
         {
             s_ObjectDtorHook->CallOriginal<void>(pThis);
             DestroyObjectStorage(static_cast<CGameObject*>(pThis));
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_AreaDtorHook        = Hooks::HookFunction(API::Functions::_ZN8CNWSAreaD1Ev, 
-        (void*)+[](CNWSArea* pThis)
+    static Hooks::Hook s_AreaDtorHook        = Hooks::HookFunction(&_ZN8CNWSAreaD1Ev,
+        +[](CNWSArea* pThis)
         {
             s_AreaDtorHook->CallOriginal<void>(pThis);
             DestroyObjectStorage(static_cast<CGameObject*>(pThis));
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, 
-        (void*)+[](CNWSPlayer* pThis, CNWSPlayerTURD* pTURD)
+    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(&CNWSPlayer::EatTURD, 
+        +[](CNWSPlayer* pThis, CNWSPlayerTURD* pTURD)
         {
             auto pObjThis = Utils::GetGameObject(pThis->m_oidNWSObject);
             GetObjectStorage(pObjThis)->CloneFrom(GetObjectStorage(pTURD));
             s_EatTURDHook->CallOriginal<void>(pThis, pTURD);
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_DropTURDHook        = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer8DropTURDEv, 
-        (void*)+[](CNWSPlayer* pThis)
+    static Hooks::Hook s_DropTURDHook        = Hooks::HookFunction(&CNWSPlayer::DropTURD,
+        +[](CNWSPlayer* pThis)
         {
             s_DropTURDHook->CallOriginal<void>(pThis);
 
@@ -424,15 +428,15 @@ void InitializeHooks()
             }
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_UUIDSaveToGffHook   = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, 
-        (void*)+[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
+    static Hooks::Hook s_UUIDSaveToGffHook   = Hooks::HookFunction(&CNWSUUID::SaveToGff,
+        +[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
         {
             pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis->m_parent)->Serialize(), GffFieldName);
             s_UUIDSaveToGffHook->CallOriginal<void>(pThis, pRes, pStruct);
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_UUIDLoadFromGffHook = Hooks::HookFunction(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, 
-        (void*)+[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct) -> bool
+    static Hooks::Hook s_UUIDLoadFromGffHook = Hooks::HookFunction(&CNWSUUID::LoadFromGff,
+        +[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct) -> bool
         {
             int32_t success;
             auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);

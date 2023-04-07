@@ -4,8 +4,108 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.34-HEAD
-https://github.com/nwnxee/unified/compare/build8193.34...HEAD
+## Unreleased
+https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
+
+### Added
+- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
+- Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
+- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- Creature: {Get|Set}MaximumBonusAttacks()
+- Player: SendPartyInvite()
+- Item: MoveTo()
+
+### Changed
+- Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.35.36
+https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36
+
+### Added
+- Administration: added `NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES` to {Get|Set}PlayOption.
+- Effect: added `NWNX_EFFECT_EXTEND_DURATION_TYPE` which extends ApplyEffectToObject() to apply effects with `DURATION_TYPE_EQUIPPED` and `DURATION_TYPE_INNATE`.
+- SQL: added `CHARACTER_SET` support to PostgresSQL.
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES` to cache nwscript debugger instances, improving GetScriptBacktrace() performance.
+
+##### New NWScript Functions
+- Area: SetDefaultObjectUiDiscoveryMask()
+- Effect: SetEffectCreator()
+- Effect: GetIsEffectValid()
+- Effect: GetAppliedEffectCount()
+- Effect: GetAppliedEffect()
+- Events: UnsubscribeAllStartingWith()
+- Object: ForceAssignUUID()
+- Player: GetGameObject()
+- Player: SetObjectUiDiscoveryMaskOverride()
+- SQL: PostgreSQL_SetNextQueryResultsBinaryMode()
+
+### Changed
+- SQL: Sqlite support now uses the sqlite3 embedded in NWNX.
+- Core: NWScript NWNX Functions are now also blocked in DelayCommand/AssignCommand spawned from script chunks unless disabled by config.
+- Item: GetEntireItemAppearance() and RestoreItemAppearance() now support the new extended model part range.
+
+### Removed
+- The following tweaks / optimizations have been removed due to being fixed or added in the basegame:
+  - `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION`
+  - `NWNX_TWEAKS_FIX_DM_FACTION_BUG`
+  - `NWNX_TWEAKS_FIX_DM_SELECTION_BOX`
+  - `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG`
+  - `NWNX_OPTIMIZATIONS_FIX_PLACEABLE_VFX_REAPPLY_BUG`
+  - `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME` `NWNX_OPTIMIZATIONS_CLIENT_GAMEOBJECT_UPDATE_TIME_LOADING`
+  - `NWNX_OPTIMIZATIONS_RECONCILE_AUTOMAP_DATA`
+  - `NWNX_OPTIMIZATIONS_UPDATE_LIST_COMPARISONS`
+- The following NWNX NWScript functions have been removed due to being implemented in the basegame, see [Compatibility/nwnx_deprecated.nss](Compatibility/nwnx_deprecated.nss) for more information!
+  - Creature: GetMemorisedSpellCountByLevel()
+  - Creature: GetMemorisedSpell()
+  - Creature: SetMemorisedSpell()
+  - Creature: GetKnownSpellCount()
+  - Creature: GetKnownSpell()
+  - Creature: ClearMemorisedKnownSpells()
+  - Creature: ClearMemorisedSpell()
+  - Creature: {Get|Set}Soundset()
+  - Creature: SetGender()
+  - Creature: RestoreSpells()
+  - Creature: GetDomain()
+  - Creature: GetSpecialization()
+  - Creature: GetSpellUsesLeft()
+  - Creature: GetMemorizedSpellReadyCount()
+  - Creature: SetEffectIconFlashing()
+  - Effect: SetEffectExpiredScript()
+  - Effect: GetEffectExpiredData()
+  - Effect: GetEffectExpiredCreator()
+  - Effect: AccessorizeVisualEffect() 
+  - Object: StringToObject()
+  - Object: CheckFit()
+  - Object: AddIconEffect()
+  - Object: RemoveIconEffect()
+  - Object: SetFacing()
+  - Regex: Search()
+  - Regex: Replace()
+  - Regex: Match()
+  - Util: IsValidResRef()
+  - Util: Get2DARowCount()
+  - Util: GetNSSContents()
+  - Util: GetServerTicksPerSecond()
+
+### Fixed
+- Item: SetItemAppearance() now properly works with WeaponColor/Model, identical to CopyItemAndModify()
+
+## 8193.34Final
+https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.
@@ -27,9 +127,6 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added skippable event `NWNX_ON_BARTER_ADD_ITEM_{BEFORE|AFTER}` which fires when an item is added to the barter window.
 - Experimental: added `NWNX_EXPERIMENTAL_IGNORE_MODULE_VERSION` to ignore the module version when loading. 
 - Events: added `NWNX_ON_OBJECT_USE_{BEFORE|AFTER}` which fires when player uses a placeable.
-
-##### New Plugins
-- N/A
 
 ##### New NWScript Functions
 - Area: GetTileInfoByTileIndex()
@@ -60,7 +157,9 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Player: UpdateSkyBox();
 - Player: UpdateFogColor();
 - Player: UpdateFogAmount();
+- Player: GetGameObject()
 - Regex: Match()
+- Core: PluginExists()
 
 ### Changed
 - Events: added event data `VERSION_MAJOR`/`VERSION_MINOR`/`PLATFORM_ID` to `NWNX_ON_CLIENT_CONNECT_*`
@@ -72,10 +171,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added event data `TARGET`/`FACTION_ID`/`FACTION_NAME` to `NWNX_ON_DM_SET_FACTION_*`
 
 ### Deprecated
-- N/A
-
-### Removed
-- N/A
+- Util: PluginExists()
 
 ### Fixed
 - Race: Fixed an issue with feat usages being reset upon character relog

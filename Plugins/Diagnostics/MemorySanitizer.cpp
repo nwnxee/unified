@@ -1,6 +1,7 @@
 #include "nwnx.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
@@ -52,8 +53,8 @@ void MemorySanitizer()
         LOG_WARNING("Please see Diagnostics/README.md for instructions");
         return;
     }
-    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-            (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+            +[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
                 FreePending();
@@ -83,15 +84,8 @@ static void ReportError(void *ptr)
         std::strncat(buffer, "\n  Allocation backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < 8; ++i)
         {
-            uintptr_t addr, addr2;
-            char backtraceBuffer[2048] = "";
-            char path[64];
+            char backtraceBuffer[2048];
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
-            {
-                std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    %s(%s) [0x%lx]\n", path, Platform::ResolveAddress(addr).c_str(), addr2);
-            }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
         std::puts(buffer);
@@ -225,7 +219,7 @@ static void FreePending()
 {
     MetaFunction mf;
     std::lock_guard<std::recursive_mutex> guard(lock);
-    
+
     for (auto* ptr : pending_free)
     {
         size_t size = CheckFence(ptr);

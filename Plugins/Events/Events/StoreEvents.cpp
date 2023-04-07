@@ -18,11 +18,11 @@ void StoreEvents() __attribute__((constructor));
 void StoreEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_BUY_.*", []() {
-        s_RequestBuyHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature10RequestBuyEjjj, (void*)&RequestBuyHook, Hooks::Order::Early);
+        s_RequestBuyHook = Hooks::HookFunction(&CNWSCreature::RequestBuy, &RequestBuyHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_SELL_.*", []() {
-        s_RequestSellHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature11RequestSellEjj, (void*)&RequestSellHook, Hooks::Order::Early);
+        s_RequestSellHook = Hooks::HookFunction(&CNWSCreature::RequestSell, &RequestSellHook, Hooks::Order::Early);
     });
 }
 

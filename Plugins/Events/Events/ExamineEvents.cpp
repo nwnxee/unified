@@ -24,7 +24,7 @@ void ExamineEvents()
 
         #define HOOK_EXAMINE(_address) \
             static Hooks::Hook CAT(pExamineHook, __LINE__) = Hooks::HookFunction(_address, \
-            (void*)+[](CNWSMessage *pMessage, CNWSPlayer* pPlayer, ObjectID oidObject) -> int32_t \
+            +[](CNWSMessage *pMessage, CNWSPlayer* pPlayer, ObjectID oidObject) -> int32_t \
             { \
                 HandleExamine(true, pPlayer->m_oidNWSObject, oidObject); \
                 auto retVal = CAT(pExamineHook, __LINE__)->CallOriginal<int32_t>(pMessage, pPlayer, oidObject); \
@@ -32,28 +32,28 @@ void ExamineEvents()
                 return retVal; \
             }, Hooks::Order::Earliest)
 
-                HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj);
-                HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_DoorDataEP10CNWSPlayerj);
-                HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_ItemDataEP10CNWSPlayerj);
-                HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage42SendServerToPlayerExamineGui_PlaceableDataEP10CNWSPlayerj);
+                HOOK_EXAMINE(&CNWSMessage::SendServerToPlayerExamineGui_CreatureData);
+                HOOK_EXAMINE(&CNWSMessage::SendServerToPlayerExamineGui_DoorData);
+                HOOK_EXAMINE(&CNWSMessage::SendServerToPlayerExamineGui_ItemData);
+                HOOK_EXAMINE(&CNWSMessage::SendServerToPlayerExamineGui_PlaceableData);
 
         #undef HOOK_EXAMINE
 
         s_SendServerToPlayerExamineGui_TrapDataHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_TrapDataEP10CNWSPlayerjP12CNWSCreaturei,
-                (void*)&ExamineTrapHook, Hooks::Order::Earliest);
+                &CNWSMessage::SendServerToPlayerExamineGui_TrapData,
+                &ExamineTrapHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_PERMITTED_.*", []() {
         s_PermittedToDisplayCharacterSheetHook = Hooks::HookFunction(
-                API::Functions::_ZN10CNWSPlayer32PermittedToDisplayCharacterSheetEj,
-                (void*)&PermittedToDisplayCharacterSheetHook, Hooks::Order::Early);
+                &CNWSPlayer::PermittedToDisplayCharacterSheet,
+                &PermittedToDisplayCharacterSheetHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CHARACTER_SHEET_(OPEN|CLOSE)_.*", []() {
         static Hooks::Hook s_HandlePlayerToServerCharacterSheetMessageHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage41HandlePlayerToServerCharacterSheetMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerCharacterSheetMessageHook, Hooks::Order::Final);
+                &CNWSMessage::HandlePlayerToServerCharacterSheetMessage,
+                &HandlePlayerToServerCharacterSheetMessageHook, Hooks::Order::Final);
     });
 }
 

@@ -41,6 +41,7 @@ struct CGameEffect
     BOOL m_bSkipOnLoad;
     uint64_t m_nItemPropertySourceId;
     CExoString m_sCustomTag;
+    BOOL m_bIgnoreImmunity;
 
     CGameEffect(BOOL bCreateNewID = true);
     CGameEffect(CGameEffect * pParent, BOOL bCopyIconVisibility = false);
@@ -83,6 +84,8 @@ struct CGameEffect
     inline void SetSubType_Supernatural() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Supernatural | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK);}
     inline BOOL GetSubType_Extraordinary() { return (m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK) == NWNXLib::API::Constants::EffectSubType::Extraordinary; }
     inline void SetSubType_Extraordinary() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Extraordinary | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK);}
+    inline BOOL GetSubType_Unyielding() { return (m_nSubType & NWNXLib::API::Constants::EffectSubType::MASK) == NWNXLib::API::Constants::EffectSubType::Unyielding; }
+    inline void SetSubType_Unyielding() { m_nSubType = NWNXLib::API::Constants::EffectSubType::Unyielding | (m_nSubType & ~NWNXLib::API::Constants::EffectSubType::MASK);}
 
 #ifdef NWN_CLASS_EXTENSION_CGameEffect
     NWN_CLASS_EXTENSION_CGameEffect

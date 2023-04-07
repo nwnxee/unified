@@ -1,6 +1,17 @@
 #include "Targets/ObjectEventHandlers.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSAreaOfEffectObject.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSEncounter.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSStore.hpp"
+#include "API/CNWSTrigger.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "ProfilerMacros.hpp"
 
 namespace Profiler {
@@ -26,7 +37,7 @@ ObjectEventHandlers::ObjectEventHandlers(NWNXLib::Services::MetricsProxy* metric
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(
-        EventHandlerArea, API::Functions::_ZN8CNWSArea12EventHandlerEjjPvjj,
+        EventHandlerArea, &CNWSArea::EventHandler,
         void, CNWSArea*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(
@@ -50,7 +61,7 @@ ObjectEventHandlers::ObjectEventHandlers(NWNXLib::Services::MetricsProxy* metric
         void, CNWSItem*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(
-        EventHandlerModule, API::Functions::_ZN10CNWSModule12EventHandlerEjjPvjj,
+        EventHandlerModule, &CNWSModule::EventHandler,
         void, CNWSModule*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(

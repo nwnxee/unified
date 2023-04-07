@@ -208,7 +208,7 @@ NWNX_EXPORT ArgumentStack GetHasVisualEffect(ArgumentStack&& args)
         auto& vfx = pObject->m_lstLoopingVisualEffects;
         for (int k = 0; k < vfx.num; k++)
         {
-            if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
+            if (vfx.element[k].m_nId == nVfx)
             {
                 return true;
             }
@@ -216,51 +216,6 @@ NWNX_EXPORT ArgumentStack GetHasVisualEffect(ArgumentStack&& args)
     }
 
     return false;
-}
-
-NWNX_EXPORT ArgumentStack CheckFit(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        CItemRepository *pRepo;
-
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
-            pRepo = pCreature->m_pcItemRepository;
-        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
-            pRepo = pPlaceable->m_pcItemRepository;
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
-            pRepo = pItem->m_pItemRepository;
-        else
-        {
-            return -1;
-        }
-        const auto baseitem = args.extract<int32_t>();
-
-        if (pRepo == nullptr || Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem) == nullptr)
-        {
-            LOG_ERROR("Base Item or Object Repository not found.");
-            return -1;
-        }
-
-        static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
-        tmp->m_nBaseItem = baseitem;
-
-        uint8_t width  = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotWidth;
-        uint8_t height = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotHeight;
-
-        for (uint8_t y = 0; y < (pRepo->m_nHeight - height + 1); y++)
-        {
-            for (uint8_t x = 0; x < (pRepo->m_nWidth - width + 1); x++)
-            {
-                if (pRepo->CheckFit(tmp, x, y))
-                {
-                    return 1;
-                }
-            }
-        }
-        return 0;
-    }
-    return -1;
 }
 
 NWNX_EXPORT ArgumentStack GetDamageImmunity(ArgumentStack&& args)
@@ -455,72 +410,6 @@ NWNX_EXPORT ArgumentStack SetTriggerGeometry(ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack RemoveIconEffect(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto nIcon = args.extract<int32_t>();
-
-        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
-        {
-            auto *eff = pObject->m_appliedEffects.element[i];
-
-            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
-            {
-                pObject->RemoveEffect(eff);
-                break;
-            }
-        }
-    }
-
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack AddIconEffect(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto nIcon = args.extract<int32_t>();
-        ASSERT_OR_THROW(nIcon > 0);
-        const auto fDuration = args.extract<float>();
-
-        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
-        {
-            auto *eff = pObject->m_appliedEffects.element[i];
-
-            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
-            {
-                pObject->RemoveEffect(eff);
-                break;
-            }
-        }
-
-        auto *effIcon = new CGameEffect(true);
-        effIcon->m_oidCreator = 0;
-        effIcon->m_nType      = Constants::EffectTrueType::Icon;
-        effIcon->m_nSubType   = Constants::EffectSubType::Supernatural;
-        effIcon->m_bShowIcon  = true;
-        effIcon->m_bExpose    = true;
-        effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
-
-        effIcon->m_nParamInteger[0] = nIcon;
-
-        if (fDuration > 0.0)
-        {
-            effIcon->m_nSubType |= Constants::EffectDurationType::Temporary;
-            effIcon->m_fDuration = fDuration;
-        }
-        else
-        {
-            effIcon->m_nSubType |= Constants::EffectDurationType::Permanent;
-        }
-
-        pObject->ApplyEffect(effIcon, false, true);
-    }
-
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
 {
     if (auto *pGameObject = Utils::PopObject(args))
@@ -544,7 +433,7 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
             LOG_WARNING("NWNX_Object_Export() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
             alias = "NWNX";
         }
-		
+
         auto ExportObject = [&](RESTYPE resType) -> void
         {
             std::vector<uint8_t> serialized = Utils::SerializeGameObject(pGameObject, true);
@@ -751,17 +640,6 @@ NWNX_EXPORT ArgumentStack AcquireItem(ArgumentStack&& args)
     return false;
 }
 
-NWNX_EXPORT ArgumentStack SetFacing(ArgumentStack&& args)
-{
-    if (auto *pObject = Utils::PopObject(args))
-    {
-        const auto degrees = args.extract<float>();
-        Utils::SetOrientation(pObject, degrees);
-    }
-
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack ClearSpellEffectsOnOthers(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))
@@ -774,10 +652,7 @@ NWNX_EXPORT ArgumentStack PeekUUID(ArgumentStack&& args)
 {
     if (auto *pGameObject = Utils::PopGameObject(args))
     {
-        static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
-                Platform::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
-
-        if (CanCarryUUID(pGameObject->m_nObjectType))
+        if (CNWSUUID::CanCarryUUID(pGameObject->m_nObjectType))
         {
             if (auto *pArea = Utils::AsNWSArea(pGameObject))
                 return pArea->m_pUUID.m_uuid.CStr();
@@ -823,8 +698,8 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
             }
 
             uint32_t prevSpellId;
-            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus); 
-            if(spellId>=0) 
+            auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus);
+            if(spellId>=0)
             {
                 if(pAoEObject)
                 {
@@ -835,12 +710,12 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
                 {
                     prevSpellId = pVersus->m_nLastSpellId;
                     pVersus->m_nLastSpellId = spellId;
-                } 
+                }
             }
 
             auto ret = pObject->DoSpellImmunity(pVersus);
 
-            if(spellId>=0) 
+            if(spellId>=0)
             {
                 if(pAoEObject)
                 {
@@ -849,7 +724,7 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
                 else
                 {
                     pVersus->m_nLastSpellId = prevSpellId;
-                } 
+                }
             }
 
             return ret;
@@ -879,12 +754,12 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
                 spellLevel = -1;
                 spellSchool = -1;
             }
-            
+
             ASSERT_OR_THROW(spellLevel <= 10);
             ASSERT_OR_THROW(spellSchool <= 8);
-            
+
             auto pCaster = Utils::AsNWSCreature(pVersus);
-            if(!pCaster) 
+            if(!pCaster)
                 return -1;
 
             if(pObject->m_appliedEffects.num < 1)
@@ -907,12 +782,12 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
             }
 
             uint8_t prevSpellLevel;
-            BOOL prevLastItemCastSpell; 
+            BOOL prevLastItemCastSpell;
             if(pSpell && spellLevel >= 0)
             {
                 prevLastItemCastSpell = pCaster->m_bLastItemCastSpell;
                 prevSpellLevel = pSpell->m_nInnateLevel;
-                
+
                 pCaster->m_bLastItemCastSpell = 1; // DoSpellLevelAbsorption uses innate level in case of item spells
                 pSpell->m_nInnateLevel = spellLevel;
             }
@@ -1092,4 +967,41 @@ NWNX_EXPORT ArgumentStack GetLastSpellCastDomainLevel(ArgumentStack&& args)
     }
 
     return 0;
+}
+
+NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        auto GetUUIDPtr = [](CGameObject* obj) -> CNWSUUID*
+        {
+            if (auto *nwo = Utils::AsNWSObject(obj)) return &nwo->m_pUUID;
+            else if (auto *are = Utils::AsNWSArea(obj)) return &are->m_pUUID;
+            else return nullptr;
+        };
+
+        auto sUUID = args.extract<std::string>();
+
+        // Internal UUID references in the game are all in exactly this format.
+        const auto cUUID = CUUID::rebuild(sUUID);
+        ASSERT_OR_THROW(cUUID.str() == sUUID);
+
+        auto *newuuid = GetUUIDPtr(pGameObject);
+        ASSERT_OR_THROW(newuuid);
+
+        using MapType = std::unordered_map<std::string, CGameObject*>;
+        auto& map = *reinterpret_cast<MapType*>(CNWSUUID::GetMapPtr());
+
+        if (map.find(sUUID) != map.end())
+        {
+            auto *old = GetUUIDPtr(map.at(sUUID));
+            ASSERT_OR_THROW(old);
+            old->m_uuid = "";
+            map.erase(sUUID);
+        }
+
+        newuuid->TryAssign(sUUID);
+    }
+
+    return {};
 }

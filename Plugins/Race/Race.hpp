@@ -9,7 +9,7 @@ using namespace std;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace Race {
 

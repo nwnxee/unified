@@ -2,13 +2,15 @@
 
 #include "API/CVirtualMachine.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoResMan.hpp"
+#include "API/CTlkTable.hpp"
 
 namespace Optimizations {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static std::unordered_map<std::string, DataBlockRef> s_CachedScriptChunks;
+static std::unordered_map<std::string, std::pair<DataBlockRef, DataBlockRef>> s_CachedScriptChunks;
 
 void CacheScriptChunks() __attribute__((constructor));
 void CacheScriptChunks()
@@ -17,8 +19,8 @@ void CacheScriptChunks()
     {
         LOG_INFO("Caching script chunks");
 
-        static Hooks::Hook s_SetUpJITCompiledScript = Hooks::HookFunction(API::Functions::_ZN15CVirtualMachine22SetUpJITCompiledScriptERK10CExoStringi,
-        (void*)+[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, BOOL bWrapIntoMain) -> int32_t
+        static Hooks::Hook s_SetUpJITCompiledScript = Hooks::HookFunction(&CVirtualMachine::SetUpJITCompiledScript,
+        +[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, BOOL bWrapIntoMain) -> int32_t
         {
             pVirtualMachine->m_nRecursionLevel += 1;
             if (pVirtualMachine->m_nRecursionLevel >= 8)
@@ -30,9 +32,10 @@ void CacheScriptChunks()
             auto cachedScript = s_CachedScriptChunks.find(sScriptChunk.CStr());
             if (cachedScript != s_CachedScriptChunks.end())
             {
-                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "Chunk";
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_nScriptEventID = 0;
-                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], cachedScript->second);
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptChunk = sScriptChunk;
+                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], cachedScript->second.first, cachedScript->second.second);
                 return 0;
             }
 
@@ -67,11 +70,14 @@ void CacheScriptChunks()
                 DataBlockRef pScriptDataBlock = std::make_shared<DataBlock>();
                 pScriptDataBlock->Append(pScriptData, nScriptDataSize);
 
-                s_CachedScriptChunks[sScriptChunk.CStr()] = pScriptDataBlock;
+                auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
 
-                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "Chunk";
+                s_CachedScriptChunks[sScriptChunk.CStr()] = std::make_pair(pScriptDataBlock, pNDB);
+
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_nScriptEventID = 0;
-                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], pScriptDataBlock);
+                pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptChunk = sScriptChunk;
+                pVirtualMachine->InitializeScript(&pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel], pScriptDataBlock, pNDB);
                 return 0;
             }
 
@@ -84,7 +90,7 @@ void CacheScriptChunks()
 }
 
 // No nwscript export, call it manually.
-extern "C" Events::ArgumentStack FlushCachedChunks(Events::ArgumentStack&& args)
+extern "C" ArgumentStack FlushCachedChunks(ArgumentStack&& args)
 {
     const auto scriptChunk = args.extract<std::string>();
 
@@ -94,6 +100,58 @@ extern "C" Events::ArgumentStack FlushCachedChunks(Events::ArgumentStack&& args)
         s_CachedScriptChunks.erase(scriptChunk);
 
     return {};
+}
+
+extern "C" ArgumentStack CacheScriptChunk(ArgumentStack&& args)
+{
+    const auto scriptChunk = args.extract<std::string>();
+    const auto wrapIntoMain = args.extract<int32_t>();
+
+    if (scriptChunk.empty())
+        return "";
+
+    if (s_CachedScriptChunks.find(scriptChunk) != s_CachedScriptChunks.end())
+        return "";
+
+    int32_t nReturnValue = Globals::VirtualMachine()->m_pJitCompiler->CompileScriptChunk(scriptChunk, wrapIntoMain);
+    if (nReturnValue < 0)
+    {
+        CExoString retVal;
+        retVal.Format("%s: %s", Globals::TlkTable()->GetSimpleString(-nReturnValue).CStr(), Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+        return retVal.CStr();
+    }
+
+    char *pScriptData;
+    int32_t nScriptDataSize;
+    Globals::VirtualMachine()->m_pJitCompiler->GetCompiledScriptCode(&pScriptData, &nScriptDataSize);
+
+    if (pScriptData[0] == 'N' && pScriptData[1] == 'C' && pScriptData[2] == 'S' && pScriptData[3] == ' ' &&
+        pScriptData[4] == 'V' && pScriptData[6] == '.' && pScriptData[8] == 'B')
+    {
+        int32_t nVersion = 0;
+        if (pScriptData[5] >= '1' && pScriptData[5] <= '9')
+            nVersion += (pScriptData[5] - '0') * 10;
+        if (pScriptData[7] >= '1' && pScriptData[7] <= '9')
+            nVersion += pScriptData[7] - '0';
+        if (nVersion != 10)
+        {
+            CExoString retVal;
+            retVal.Format("%s: %s", Globals::TlkTable()->GetSimpleString(635).CStr(), Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+            return retVal.CStr();
+        }
+
+        pScriptData += 13;
+        nScriptDataSize -= 13;
+
+        DataBlockRef pScriptDataBlock = std::make_shared<DataBlock>();
+        pScriptDataBlock->Append(pScriptData, nScriptDataSize);
+
+        auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
+
+        s_CachedScriptChunks[scriptChunk] = std::make_pair(pScriptDataBlock, pNDB);
+    }
+
+    return "";
 }
 
 }

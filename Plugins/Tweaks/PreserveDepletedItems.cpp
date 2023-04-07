@@ -18,8 +18,8 @@ void PreserveDepletedItems()
 
     LOG_INFO("Items will no longer be destroyed when they run out of charges");
 
-    static Hooks::Hook s_AIActionItemCastSpellHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
-        (void*)+[](CNWSCreature *thisPtr, CNWSObjectActionNode *pNode) -> uint32_t
+    static Hooks::Hook s_AIActionItemCastSpellHook = Hooks::HookFunction(&CNWSCreature::AIActionItemCastSpell,
+        +[](CNWSCreature *thisPtr, CNWSObjectActionNode *pNode) -> uint32_t
         {
             if (auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((ObjectID)(uintptr_t)pNode->m_pParameter[0])))
             {

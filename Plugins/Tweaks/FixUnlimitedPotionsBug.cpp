@@ -2,6 +2,7 @@
 
 #include "API/CNWSItem.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CServerAIMaster.hpp"
 
 
 namespace Tweaks {
@@ -25,10 +26,10 @@ void FixUnlimitedPotionsBug()
 
     LOG_INFO("Fixing unlimited potion/scroll uses bug");
 
-    s_AIActionItemCastSpellHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode,
-                                                      (void*)&AIActionItemCastSpellHook, Hooks::Order::Early);
-    s_AddEventDeltaTimeHook = Hooks::HookFunction(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv,
-                                                  (void*)&AddEventDeltaTimeHook, Hooks::Order::Late);
+    s_AIActionItemCastSpellHook = Hooks::HookFunction(&CNWSCreature::AIActionItemCastSpell,
+                                                      &AIActionItemCastSpellHook, Hooks::Order::Early);
+    s_AddEventDeltaTimeHook = Hooks::HookFunction(&CServerAIMaster::AddEventDeltaTime,
+                                                  &AddEventDeltaTimeHook, Hooks::Order::Late);
 }
 
 static uint32_t AIActionItemCastSpellHook(CNWSCreature *thisPtr, CNWSObjectActionNode *pNode)

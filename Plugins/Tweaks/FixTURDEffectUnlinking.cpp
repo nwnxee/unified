@@ -25,8 +25,8 @@ void FixTURDEffectUnlinking()
 
     LOG_INFO("Fixing effects unlinking when restored from a TURD.");
 
-    static Hooks::Hook s_EatTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD,
-    (void*)+[](CNWSPlayer *pThis, CNWSPlayerTURD *pTURD) -> void
+    static Hooks::Hook s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD,
+    +[](CNWSPlayer *pThis, CNWSPlayerTURD *pTURD) -> void
     {
         auto *pCreature = Utils::AsNWSCreature(pThis->GetGameObject());
 
@@ -92,8 +92,8 @@ void FixTURDEffectUnlinking()
         Utils::GetModule()->RemoveFromTURDList(pThis);
     }, Hooks::Order::Final);
 
-    static Hooks::Hook s_CopyEffectListHook = Hooks::HookFunction(Functions::_ZN14CNWSPlayerTURD14CopyEffectListEP13CExoArrayListIP11CGameEffectE,
-    (void*)+[](CNWSPlayerTURD *pThis, CExoArrayList<CGameEffect*> *pEffectList) -> void
+    static Hooks::Hook s_CopyEffectListHook = Hooks::HookFunction(&CNWSPlayerTURD::CopyEffectList,
+    +[](CNWSPlayerTURD *pThis, CExoArrayList<CGameEffect*> *pEffectList) -> void
     {
         for (int i = 0; i < pEffectList->num; i++)
         {

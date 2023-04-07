@@ -158,7 +158,7 @@ struct CNWSCreature : CNWSObject
     uint8_t m_nLastMoveSilentlyRoll;
     uint8_t m_nLastSpotRoll;
     uint8_t m_nLastListenRoll;
-    CExoArrayList<CNWVisibilityNode *> m_pVisibleCreaturesList;
+    CExoArrayList<CNWVisibilityNode> m_pVisibleCreaturesList;
     OBJECT_ID m_oidInvitedToPartyBy;
     BOOL m_bInvitedToParty;
     uint32_t m_nInvitedToPartyDay;
@@ -230,6 +230,7 @@ struct CNWSCreature : CNWSObject
     BOOL m_bMasterDroppedFromServer;
     uint32_t m_nMasterDroppedCalendarDay;
     uint32_t m_nMasterDroppedTimeOfDay;
+    OBJECT_ID m_oidCommandingPlayer;
     int32_t m_nOriginalFactionId;
     CExoArrayList<CNWSPersonalReputation> * m_pPersonalReputationList;
     CExoArrayList<int32_t> * m_pReputation;
@@ -346,7 +347,7 @@ struct CNWSCreature : CNWSObject
     int16_t GetMaxHitPoints(BOOL bIncludeToughness = true);
     void DoDamage(int32_t nDamage);
     uint8_t CalculateDamagePower(CNWSObject * pTarget, BOOL bOffHand = false);
-    uint16_t GetDamageFlags();
+    uint32_t GetDamageFlags();
     float MaxAttackRange(OBJECT_ID oidTarget, BOOL bBaseValue = false, BOOL bPassiveRange = false);
     float DesiredAttackRange(OBJECT_ID oidTarget, BOOL bBaseValue = false);
     uint8_t GetDetectMode();

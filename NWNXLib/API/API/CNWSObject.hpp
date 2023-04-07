@@ -40,6 +40,7 @@ struct CResGFF;
 struct CResStruct;
 
 
+typedef TextureReplaceInfo AnimationReplaceInfo;
 typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
@@ -92,7 +93,7 @@ struct CNWSObject : CGameObject
     CExoLinkedList<CNWSObjectActionNode> m_lQueuedActions;
     CNWSScriptVarTable m_ScriptVars;
     CExoArrayList<CGameEffect *> m_appliedEffects;
-    CExoArrayList<CLoopingVisualEffect *> m_lstLoopingVisualEffects;
+    CExoArrayList<CLoopingVisualEffect> m_lstLoopingVisualEffects;
     CExoArrayList<OBJECT_ID> m_lstEffectTargets;
     BOOL m_bPendingEffectRemoval;
     uint32_t m_nSavingThrowSpellId;
@@ -136,11 +137,17 @@ struct CNWSObject : CGameObject
     BOOL m_bOpenDoorAnimationPlayed;
     Vector m_vHiliteColor;
     int32_t m_nMouseCursor;
+    BOOL m_bUseable;
+    float m_fVisibleDistance;
+    int32_t m_nUiDiscoveryMask;
+    int32_t m_nTextBubbleOverrideType;
+    CExoString m_sTextBubbleOverrideText;
     CNWSTransition m_pTransition;
     std::shared_ptr<void*> m_sqlite_db;
-    ObjectVisualTransformData m_pVisualTransformData;
+    ObjectVisualTransformData * m_pVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
     CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
+    CExoArrayList<AnimationReplaceInfo> m_lAnimationReplaceInfo;
     CNWSUUID m_pUUID;
 
     CNWSObject(uint8_t nObjectType, OBJECT_ID oidId = 0x7f000000, BOOL bCharacterObject = false, BOOL bAddObjectToArray = true);
@@ -206,12 +213,12 @@ struct CNWSObject : CGameObject
     virtual int16_t GetCurrentHitPoints(BOOL bExcludeTemporaryHits = false);
     virtual void DoDamage(int32_t nDamage);
     virtual int32_t DoDamageReduction(CNWSCreature * pDamager, int32_t nDamage, uint8_t nDamagePower, BOOL bSimulation, BOOL bCombatDamage);
-    virtual int32_t DoDamageResistance(CNWSCreature * pDamager, int32_t nDamage, uint16_t nFlags, BOOL bSimulation, BOOL bCombatDamage, BOOL bBaseWeaponDamage = false);
-    virtual int32_t GetMaximumDamageResistanceVsDamageFlag(uint16_t nDamageFlag, int32_t * nBestIndex);
-    virtual int32_t DoDamageImmunity(CNWSCreature * pDamager, int32_t nDamage, uint16_t nFlags, BOOL bSimulation, BOOL bCombatDamage);
+    virtual int32_t DoDamageResistance(CNWSCreature * pDamager, int32_t nDamage, uint32_t nFlags, BOOL bSimulation, BOOL bCombatDamage, BOOL bBaseWeaponDamage = false);
+    virtual int32_t GetMaximumDamageResistanceVsDamageFlag(uint32_t nDamageFlag, int32_t * nBestIndex);
+    virtual int32_t DoDamageImmunity(CNWSCreature * pDamager, int32_t nDamage, uint32_t nFlags, BOOL bSimulation, BOOL bCombatDamage);
     virtual char GetDamageImmunity(uint8_t nType);
-    virtual char GetDamageImmunityByFlags(uint16_t nFlags);
-    void SetDamageImmunity(uint16_t nFlags, int32_t nValue);
+    virtual char GetDamageImmunityByFlags(uint32_t nFlags);
+    void SetDamageImmunity(uint32_t nFlags, int32_t nValue);
     int32_t DoSpellLevelAbsorption(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
     int32_t DoSpellImmunity(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
     uint8_t GetDamageLevel();
@@ -233,7 +240,7 @@ struct CNWSObject : CGameObject
     void RemoveLoopingVisualEffect(uint16_t nVisEffectID);
     void BroadcastDialog(CExoString sSpokenString, float fRadius);
     Vector CalculateSpellRangedMissTarget(OBJECT_ID oidSource, OBJECT_ID oidTarget);
-    int32_t GetLastDamageAmountByFlags(int32_t nDamageFlags);
+    int32_t GetLastDamageAmountByFlags(uint32_t nDamageFlags);
     void SetLastHostileActor(OBJECT_ID oidHostileActor, BOOL bForceSet = false);
     int32_t SetListenExpression(CExoString sExpression, int32_t nPos);
     int32_t TestListenExpression(CExoString sStringToTest);
@@ -268,6 +275,8 @@ struct CNWSObject : CGameObject
     void LoadMiscVisuals(CResGFF * pRes, CResStruct * pStruct);
     void SaveTextureOverrides(CResGFF * pRes, CResStruct * pStruct);
     void LoadTextureOverrides(CResGFF * pRes, CResStruct * pStruct);
+    void SaveAnimationOverrides(CResGFF * pRes, CResStruct * pStruct);
+    void LoadAnimationOverrides(CResGFF * pRes, CResStruct * pStruct);
     void LoadSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
     void SaveSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
     BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
@@ -276,6 +285,7 @@ struct CNWSObject : CGameObject
     void SetMaterialShaderParamVec4(const CExoString & sMaterialName, const CExoString & sParamName, float fValue1, float fValue2, float fValue3, float fValue4);
     void ResetMaterialShaderParams(const CExoString & sMaterialName = "", const CExoString & sParamName = "");
     void SetTextureReplace(const CExoString & sOld, const CExoString & sNew);
+    void SetAnimationReplace(const CExoString & sOld, const CExoString & sNew);
     void AddActionNodeParameter(CNWSObjectActionNode * pNode, uint32_t nParameterNumber, uint32_t nParameterType, void * pParameter);
     void RunActions(uint32_t nCalendarDay, uint32_t nTimeOfDay, uint64_t nStartOfUpdate);
     BOOL TerminateAISliceAfterAction(uint32_t nActionId);

@@ -32,9 +32,6 @@ struct CExoFile
     int32_t GetSize();
     uint32_t Read(void * ptr, uint32_t size, uint32_t number);
     uint32_t Read(CExoString & string, uint32_t length);
-    void ReadAsync(void * ptr, uint32_t size, uint32_t number);
-    BOOL ReadAsyncComplete();
-    uint32_t ReadAsyncBytesRead();
     uint32_t Write(const void * ptr, uint32_t size, uint32_t number);
     uint32_t Write(const char * string);
     uint32_t Write(const CExoString & string);

@@ -132,6 +132,7 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %nodefaultctor CVirtualMachineDebugLoader;
 %nodefaultctor CResARE;
 %nodefaultctor CResIFO;
+%nodefaultctor JsonEngineStructureShared;
 
 // Ignore ambigious types.
 %ignore MIN;

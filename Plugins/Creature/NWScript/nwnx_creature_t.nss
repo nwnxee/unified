@@ -145,10 +145,6 @@ void main()
     NWNX_Tests_Report("NWNX_Creature", "GetAttacksPerRound - base", NWNX_Creature_GetAttacksPerRound(oCreature, TRUE) == 2);
     NWNX_Tests_Report("NWNX_Creature", "GetAttacksPerRound - override", NWNX_Creature_GetAttacksPerRound(oCreature, FALSE) == 2);
 
-    int nGender = GetGender(oCreature);
-    NWNX_Creature_SetGender(oCreature, !nGender);
-    NWNX_Tests_Report("NWNX_Creature", "SetGender", GetGender(oCreature) != nGender);
-
     int nSize = GetCreatureSize(oCreature);
     NWNX_Creature_SetSize(oCreature, nSize + 1);
     NWNX_Tests_Report("NWNX_Creature", "SetSize", GetCreatureSize(oCreature) != nSize);
@@ -221,19 +217,19 @@ void main()
     }
 
     //Test specialization functions on a class that has specialization
-    int nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD);
+    int nSchool = GetSpecialization(oCreature, CLASS_TYPE_WIZARD);
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_WIZARD, (nSchool+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
 
     //Test domain functions on a class that doesn't have domains
-    int nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1);
-    NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == 0);
+    int nDomain = GetDomain(oCreature, 1, CLASS_TYPE_WIZARD);
+    NWNX_Tests_Report("NWNX_Creature", "GetDomain", GetDomain(oCreature, 1, CLASS_TYPE_WIZARD) == 0);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 1, (nDomain+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == (nDomain+1)%5);
-    int nDomain2 = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2);
-    NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == 0);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", GetDomain(oCreature, 1, CLASS_TYPE_WIZARD) == (nDomain+1)%5);
+    int nDomain2 = GetDomain(oCreature, 2, CLASS_TYPE_WIZARD);
+    NWNX_Tests_Report("NWNX_Creature", "GetDomain", GetDomain(oCreature, 2, CLASS_TYPE_WIZARD) == 0);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 2, (nDomain2+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == (nDomain2+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", GetDomain(oCreature, 2, CLASS_TYPE_WIZARD) == (nDomain2+1)%5);
 
     //Get/Set Last Item Caster level
     NWNX_Creature_SetLastItemCasterLevel(oCreature, 5);
@@ -248,18 +244,18 @@ void main()
     }
 
     //Test specialization functions on a class that doesn't have specialization
-    nSchool = NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC);
-    NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == 0);
+    nSchool = GetSpecialization(oCreature2, CLASS_TYPE_CLERIC);
+    NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == 0);
     NWNX_Creature_SetSpecialization(oCreature2, CLASS_TYPE_CLERIC, (nSchool+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
 
     //Test domain functions on a class that has domains
-    nDomain = NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 1);
+    nDomain = GetDomain(oCreature2, 1, CLASS_TYPE_CLERIC);
     NWNX_Creature_SetDomain(oCreature2, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
-    nDomain2 = NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 2);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", GetDomain(oCreature2, 1, CLASS_TYPE_CLERIC) == (nDomain+1)%5);
+    nDomain2 = GetDomain(oCreature2, 2, CLASS_TYPE_CLERIC);
     NWNX_Creature_SetDomain(oCreature2, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", GetDomain(oCreature2, 1, CLASS_TYPE_CLERIC) == (nDomain2+1)%5);
 
 	//Test Armor class versus function, elf mage vs bandit
     NWNX_Tests_Report("NWNX_Creature", "Without a Versus GetArmorClassVersus", NWNX_Creature_GetArmorClassVersus(oCreature, OBJECT_INVALID) > 0);

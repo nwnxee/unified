@@ -32,8 +32,8 @@ void Redis::RegisterWithNWScript()
 {
     // NWScript: Executes a raw redis command with a variable argument list.
     // Returns a opaque identifier you can use to access the result
-    Events::RegisterEvent(PLUGIN_NAME, "Deferred",
-            [&](Events::ArgumentStack && arg)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "Deferred",
+            [&](ArgumentStack && arg)
             {
                 std::vector<std::string> v;
                 while (!arg.empty())
@@ -51,14 +51,14 @@ void Redis::RegisterWithNWScript()
                 s_results.emplace_back(ret);
 
                 // We return the assigned opaque value. Ignore that this is an array index.
-                return Events::Arguments(static_cast<int32_t>(s_results.size() - 1));
+                return ScriptAPI::Arguments(static_cast<int32_t>(s_results.size() - 1));
             });
 
     // NWScript: Returns the last query result type as a int.
-    Events::RegisterEvent(PLUGIN_NAME, "GetResultType",
-            [&](Events::ArgumentStack && arg)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "GetResultType",
+            [&](ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(ScriptAPI::ExtractArgument<int32_t>(arg));
 
                 int type = 0;
                 if (resultId < s_results.size())
@@ -70,15 +70,15 @@ void Redis::RegisterWithNWScript()
                     LOG_ERROR("Result %d was not found. This is a error on your side.", resultId);
                 }
 
-                return Events::Arguments(type);
+                return ScriptAPI::Arguments(type);
             });
 
     // NWScript: Get list length of result. Returns 0 if not a list.
     // N.B: Redis can return multi-list results. This is not handled here
-    Events::RegisterEvent(PLUGIN_NAME, "GetResultArrayLength",
-            [&](Events::ArgumentStack && arg)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "GetResultArrayLength",
+            [&](ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(ScriptAPI::ExtractArgument<int32_t>(arg));
 
                 int32_t len = 0;
                 if (resultId < s_results.size() && s_results[resultId].is_array())
@@ -91,15 +91,15 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId);
                 }
 
-                return Events::Arguments(len);
+                return ScriptAPI::Arguments(len);
             });
 
     // NWScript: Get array element as a new result.
-    Events::RegisterEvent(PLUGIN_NAME, "GetResultArrayElement",
-            [&](Events::ArgumentStack && arg)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "GetResultArrayElement",
+            [&](ArgumentStack && arg)
             {
-                const auto arrayIndex = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
-                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
+                const auto arrayIndex = static_cast<uint32_t>(ScriptAPI::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(ScriptAPI::ExtractArgument<int32_t>(arg));
 
                 int32_t newResultId = 0;
                 std::string ret;
@@ -117,14 +117,14 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId, arrayIndex);
                 }
 
-                return Events::Arguments(newResultId);
+                return ScriptAPI::Arguments(newResultId);
             });
 
     // NWScript: Get a result force-cast to string.
-    Events::RegisterEvent(PLUGIN_NAME, "GetResultAsString",
-            [&](Events::ArgumentStack && arg)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "GetResultAsString",
+            [&](ArgumentStack && arg)
             {
-                const auto resultId = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(arg));
+                const auto resultId = static_cast<uint32_t>(ScriptAPI::ExtractArgument<int32_t>(arg));
 
                 std::string ret;
 
@@ -139,15 +139,15 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId);
                 }
 
-                return Events::Arguments(ret);
+                return ScriptAPI::Arguments(ret);
             });
 
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
-    Events::RegisterEvent(PLUGIN_NAME, "GetPubSubData",
-            [&](Events::ArgumentStack &&)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "GetPubSubData",
+            [&](ArgumentStack &&)
             {
-                return Events::Arguments(m_internal->m_last_pubsub_channel, m_internal->m_last_pubsub_message);
+                return ScriptAPI::Arguments(m_internal->m_last_pubsub_channel, m_internal->m_last_pubsub_message);
             });
 }
 

@@ -4,6 +4,7 @@
 #include "API/CNWCCMessageData.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/CServerAIMaster.hpp"
@@ -29,11 +30,11 @@ void FixDispelEffectLevels()
     LOG_INFO("Fixing dispel checks vs. effects created by deleted objects.");
 
     static Hooks::Hook s_ApplyDispelAllMagic =
-            Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti,
-                                (void*)&OnApplyDispelAllMagicHook, Hooks::Order::Final);
+            Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDispelAllMagic,
+                                &OnApplyDispelAllMagicHook, Hooks::Order::Final);
     static Hooks::Hook s_ApplyDispelBestMagic =
-            Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti,
-                                (void*)&OnApplyDispelBestMagicHook, Hooks::Order::Final);
+            Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDispelBestMagic,
+                                &OnApplyDispelBestMagicHook, Hooks::Order::Final);
 }
 
 static int32_t OnApplyDispelAllMagicHook(CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect, BOOL)

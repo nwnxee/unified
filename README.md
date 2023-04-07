@@ -1,10 +1,10 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.34 - v86)
+# NWNX:EE (build 8193.35.36 - v87 - DEVELOPMENT)
 
-- Latest release: [build8193.34-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819334-HEAD)
+- Latest release: [build8193.35.36-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#Unreleased)
 - Docker tag: `nwnxee/unified:latest`
-- nwserver-linux md5: `1d17b4cc7680fc4defbd36dcc5bd9e9b`
+- nwserver-linux md5: `3acf861f2ab3938cc1f678bbcf3ba4c4`
 
 @mainpage
 @tableofcontents
@@ -71,11 +71,11 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 
 * `[commit-hash]` (7 characters)
 * `latest`
-* `[tag]` (for example: `build8193.20`)
+* `[tag]` (for example: `build8193.20` or `build8193.35.36`)
 
 Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
 
-Run the image exactly the same as you would run the `beamdog/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker.com/r/beamdog/nwserver/).
+Run the image exactly the same as you would run the `urothis/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker.com/r/urothis/nwserver/).
 
 nwnxee plugins are configured using environment variables passed to `docker run`. With the exception of ServerLogRedirector, all plugins are skipped by default. Plugins are activated by passing `n` to the corresponding environment variable for a given plugin in order to not skip it, e.g. `-e NWNX_ADMINISTRATION_SKIP=n`.
 

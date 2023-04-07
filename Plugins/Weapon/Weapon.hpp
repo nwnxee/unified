@@ -28,7 +28,7 @@ struct MaxRangedAttackDistanceOverride
     float maxRangedPassiveAttackDistance;
 };
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace Weapon {
 

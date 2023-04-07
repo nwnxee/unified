@@ -258,14 +258,6 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
     }
 }
 
-bool operator==(Vector& v1, Vector& v2)
-{
-    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
-}
-bool operator!=(Vector& v1, Vector& v2)
-{
-    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
-}
 
 bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2)
 {
@@ -524,6 +516,23 @@ CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
             throw std::runtime_error("Function called on non-player object");
     }
     return pPlayer;
+}
+
+int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType)
+{
+    switch (nwscriptObjectType)
+    {
+        case 1: return Constants::ObjectType::Creature;
+        case 2: return Constants::ObjectType::Item;
+        case 4: return Constants::ObjectType::Trigger;
+        case 8: return Constants::ObjectType::Door;
+        case 16: return Constants::ObjectType::AreaOfEffect;
+        case 32: return Constants::ObjectType::Waypoint;
+        case 64: return Constants::ObjectType::Placeable;
+        case 128: return Constants::ObjectType::Store;
+        case 256: return Constants::ObjectType::Encounter;
+        default: return 0;
+    }
 }
 
 

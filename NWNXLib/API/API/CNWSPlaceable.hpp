@@ -65,7 +65,6 @@ struct CNWSPlaceable : CNWSObject
     uint8_t m_nReflexSave;
     CExoArrayList<OBJECT_ID> m_poidCreatures;
     BOOL m_bHasInventory;
-    BOOL m_bUseable;
     BOOL m_bPickable;
     BOOL m_bLockable;
     BOOL m_bDieWhenEmpty;

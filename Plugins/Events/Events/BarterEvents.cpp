@@ -31,20 +31,20 @@ void BarterEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", []() {
         s_HandlePlayerToServerBarter_StartBarterHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer,
-                (void*)&HandlePlayerToServerBarter_StartBarterHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerBarter_StartBarter,
+                &HandlePlayerToServerBarter_StartBarterHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", []() {
-        s_SetListAcceptedHook = Hooks::HookFunction(Functions::_ZN10CNWSBarter15SetListAcceptedEi,
-            (void*)&SetListAcceptedHook, Hooks::Order::Earliest);
+        s_SetListAcceptedHook = Hooks::HookFunction(&CNWSBarter::SetListAccepted,
+            &SetListAcceptedHook, Hooks::Order::Earliest);
         s_SendServerToPlayerBarterCloseBarterHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage35SendServerToPlayerBarterCloseBarterEjji,
-                (void*)&SendServerToPlayerBarterCloseBarterHook, Hooks::Order::Earliest);
+                &CNWSMessage::SendServerToPlayerBarterCloseBarter,
+                &SendServerToPlayerBarterCloseBarterHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_BARTER_ADD_ITEM_.*", []() {
         s_AddItemHook = Hooks::HookFunction(
-                Functions::_ZN10CNWSBarter7AddItemEjRhS0_,
-                (void*)&AddItemHook, Hooks::Order::Early);
+                &CNWSBarter::AddItem,
+                &AddItemHook, Hooks::Order::Early);
     });
 }
 

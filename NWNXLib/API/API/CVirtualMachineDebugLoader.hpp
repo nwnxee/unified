@@ -18,8 +18,11 @@ typedef int BOOL;
 struct CVirtualMachineDebugLoader : CResHelper<CResNDB, 2064>
 {
     BOOL m_bLoaded;
+    DataBlockRef m_pNDB;
 
+    int32_t SetDebugInfo(DataBlockRef pNDB);
     int32_t DemandDebugInfo(CExoString * psFileName);
+    bool Verify();
     uint8_t * GetDataPtr();
     uint32_t GetSize();
     int32_t ReleaseDebugInfo();

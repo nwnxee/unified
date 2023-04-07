@@ -4,6 +4,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
@@ -20,6 +21,7 @@ using MainLoopHandlerType  = void (*)(uint64_t);
 using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
+using AssertHandlerType = void (*)(const char*, const char*);
 
 struct AllHandlers
 {
@@ -27,6 +29,7 @@ struct AllHandlers
     RunScriptHandlerType RunScript;
     ClosureHandlerType   Closure;
     SignalHandlerType    SignalHandler;
+    AssertHandlerType    AssertHandler;
 };
 static AllHandlers s_handlers;
 
@@ -71,8 +74,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.MainLoop)
     {
         LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
-        MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-            (void*)+[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
+        MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+            +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
             {
                 static uint64_t frame = 0;
                 if (s_handlers.MainLoop)
@@ -94,8 +97,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.RunScript)
     {
         LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
-        RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
-            (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
+        RunScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
+            +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
                        int32_t eventId) -> int32_t
             {
                 if (!script || *script == "")
@@ -124,8 +127,8 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     if (s_handlers.Closure)
     {
         LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
-        RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
-            (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
+        RunScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
+            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
                        int32_t valid) -> int32_t
             {
                 uint64_t eventId;
@@ -161,6 +164,25 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
                 else
                 {
                     s_handlers.SignalHandler(message[0].c_str());
+                }
+            });
+    }
+
+    if (s_handlers.AssertHandler)
+    {
+        LOG_DEBUG("Registered native assertion handler: %p", s_handlers.AssertHandler);
+        MessageBus::Subscribe("NWNX_ASSERT_FAIL",
+            [](const std::vector<std::string>& message)
+            {
+                if (API::Globals::VirtualMachine())
+                {
+                    Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    Utils::PopScriptContext();
+                }
+                else
+                {
+                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
                 }
             });
     }
@@ -485,63 +507,63 @@ static void NWNXSetFunction(const char* plugin, const char* function)
 
 static void NWNXPushInt(int32_t n)
 {
-    Events::Push(n);
+    ScriptAPI::Push(n);
 }
 
 static void NWNXPushFloat(float f)
 {
-    Events::Push(f);
+    ScriptAPI::Push(f);
 }
 
 static void NWNXPushObject(uint32_t o)
 {
-    Events::Push((ObjectID)o);
+    ScriptAPI::Push((ObjectID)o);
 }
 
 static void NWNXPushString(const char* s)
 {
-    Events::Push(String::FromUTF8(s));
+    ScriptAPI::Push(String::FromUTF8(s));
 }
 
 static void NWNXPushRawString(const char* s)
 {
-    Events::Push<std::string>(s);
+    ScriptAPI::Push<std::string>(s);
 }
 
 static void NWNXPushEffect(CGameEffect* e)
 {
-    Events::Push(e);
+    ScriptAPI::Push(e);
 }
 
 static void NWNXPushItemProperty(CGameEffect* ip)
 {
-    Events::Push(ip);
+    ScriptAPI::Push(ip);
 }
 
 static int32_t NWNXPopInt()
 {
-    return Events::Pop<int32_t>().value_or(0);
+    return ScriptAPI::Pop<int32_t>().value_or(0);
 }
 
 static float NWNXPopFloat()
 {
-    return Events::Pop<float>().value_or(0.0f);
+    return ScriptAPI::Pop<float>().value_or(0.0f);
 }
 
 static uint32_t NWNXPopObject()
 {
-    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
+    return ScriptAPI::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 
 static const char* NWNXPopString()
 {
-    auto str = Events::Pop<std::string>().value_or(std::string{""});
+    auto str = ScriptAPI::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
 
 static const char* NWNXPopRawString()
 {
-    auto value = Events::Pop<std::string>();
+    auto value = ScriptAPI::Pop<std::string>();
 
     static std::string retVal;
     if (value.has_value())
@@ -557,25 +579,62 @@ static const char* NWNXPopRawString()
 
 static CGameEffect* NWNXPopEffect()
 {
-    return Events::Pop<CGameEffect*>().value_or(nullptr);
+    return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 static CGameEffect* NWNXPopItemProperty()
 {
-    return Events::Pop<CGameEffect*>().value_or(nullptr);
+    return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 static void NWNXCallFunction()
 {
-    Events::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
+    ScriptAPI::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
 
-static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals()
+static struct NWNXExportedGlobals
 {
-    return NWNXLib::API::Globals::ExportedGlobals;
+    CExoString            *psBuildNumber;
+    CExoString            *psBuildRevision;
+    CExoBase              *pExoBase;
+    CExoResMan            *pExoResMan;
+    CVirtualMachine       *pVirtualMachine;
+    CScriptCompiler       *pScriptCompiler;
+    CAppManager           *pAppManager;
+    CTlkTable             *pTlkTable;
+    CNWRules              *pRules;
+    Task::CExoTaskManager *pExoTaskManager;
+    int32_t                *pbEnableCombatDebugging;
+    int32_t                *pbEnableSavingThrowDebugging;
+    int32_t                *pbEnableMovementSpeedDebugging;
+    int32_t                *pbEnableHitDieDebugging;
+    int32_t                *pbExitProgram;
+} ExportedGlobals;
+static NWNXExportedGlobals GetNWNXExportedGlobals()
+{
+    if (ExportedGlobals.psBuildNumber == nullptr)
+    {
+        ExportedGlobals.psBuildNumber                  = Globals::BuildNumber();
+        ExportedGlobals.psBuildRevision                = Globals::BuildRevision();
+        ExportedGlobals.pExoBase                       = Globals::ExoBase();
+        ExportedGlobals.pExoResMan                     = Globals::ExoResMan();
+        ExportedGlobals.pVirtualMachine                = Globals::VirtualMachine();
+        ExportedGlobals.pScriptCompiler                = Globals::ScriptCompiler();
+        ExportedGlobals.pAppManager                    = Globals::AppManager();
+        ExportedGlobals.pTlkTable                      = Globals::TlkTable();
+        ExportedGlobals.pRules                         = Globals::Rules();
+        ExportedGlobals.pExoTaskManager                = Globals::TaskManager();
+        ExportedGlobals.pbEnableCombatDebugging        = Globals::EnableCombatDebugging();
+        ExportedGlobals.pbEnableSavingThrowDebugging   = Globals::EnableSavingThrowDebugging();
+        ExportedGlobals.pbEnableMovementSpeedDebugging = Globals::EnableMovementSpeedDebugging();
+        ExportedGlobals.pbEnableHitDieDebugging        = Globals::EnableHitDieDebugging();
+        ExportedGlobals.pbExitProgram                  = Globals::ExitProgram();
+    }
+
+    return ExportedGlobals;
 }
 
-static void* RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+static void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
 {
     auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
