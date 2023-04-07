@@ -507,8 +507,8 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
 
         // The client may crash if we send an object update for a creature that does not exist in its
         // last update object list
-        if (!IsCreatureInLastUpdateObjectList(observerPlayerObject, targetCreature->m_idSelf))
-            continue;
+        //if (!IsCreatureInLastUpdateObjectList(observerPlayerObject, targetCreature->m_idSelf))
+        //    continue;
 
         if (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM)
         {
