@@ -54,7 +54,7 @@ var NAVTREEINDEX =
 "group__feedback.html#gaa649c5ca606592f96075f9685d94ded1",
 "group__lua.html#ga5a16247c28d75f20ccdefbd517cf557b",
 "group__object.html#object",
-"group__race.html#autotoc_md463",
+"group__race.html#autotoc_md467",
 "group__sql.html#gace46d42e89cb992a5f6b8f0d8b6fd6c4",
 "group__weapon.html#gac044782b4fc6b0035aa9b499c0d8aa66",
 "nwnx__redis_8nss.html#a66438bac27c6b82d083699d708a59a33",

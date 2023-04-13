@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.35.36</span>
+								&#160;<span id="projectnumber">8193.35.37</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('group__sql.html',''); initResizable();
 <div class="contents">
 
 
-<h3><a id="sql"></a>Readme</h3><div class="textblock">General data access, storage and manipulation of persistent data in a database.<h2><a class="anchor" id="autotoc_md553"></a>
+<h3><a id="sql"></a>Readme</h3><div class="textblock">General data access, storage and manipulation of persistent data in a database.<h2><a class="anchor" id="autotoc_md557"></a>
 Migration</h2>
 <p><a class="el" href="md_Plugins_SQL_Migration_Guide.html#sql_migrate">Migration from Legacy NWNX</a></p>
-<h2><a class="anchor" id="autotoc_md554"></a>
+<h2><a class="anchor" id="autotoc_md558"></a>
 Environment Variables</h2>
-<h3><a class="anchor" id="autotoc_md555"></a>
+<h3><a class="anchor" id="autotoc_md559"></a>
 NWNX_SQL_TYPE</h3>
 <p>Controls the target database type used at runtime.</p>
 <p>Possible values (case insensitive):</p>
@@ -121,49 +121,49 @@ NWNX_SQL_TYPE</h3>
 </ul>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_TYPE=POSTGRESQL</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md556"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md560"></a>
 NWNX_SQL_HOST</h3>
 <p>Host name where the database resides. Typically <code>localhost</code> but can be any valid host name or IP address.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_HOST=localhost</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md557"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md561"></a>
 NWNX_SQL_PORT</h3>
 <p>The port for the database connection. If left unset it will use the default port.</p>
 <p>Only used by MySQL.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_PORT=3307</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md558"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md562"></a>
 NWNX_SQL_USERNAME</h3>
 <p>Database username used for the connection.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_USERNAME=nwn_db</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md559"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md563"></a>
 NWNX_SQL_PASSWORD</h3>
 <p>Password for the database connection.</p>
 <p>Not used if using SQLite.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_PASSWORD=lathander_rulez</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md560"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md564"></a>
 NWNX_SQL_DATABASE</h3>
 <p>The database to connect to.</p>
 <p>The filename of the database when using SQLite, it is stored in the UserDirectory/database folder.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_DATABASE=mymodulename</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md561"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md565"></a>
 NWNX_SQL_QUERY_METRICS</h3>
 <p>Export query execution metrics.</p>
 <p>The Metrics_InfluxDB plugin and a visualizer like Grafana are required to view these metrics.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_QUERY_METRICS=true</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md562"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md566"></a>
 NWNX_SQL_USE_UTF8</h3>
 <p>Convert all strings going between the database and game to/from UTF8</p>
 <p>This takes into account the core locale as well.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_USE_UTF8=true</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md563"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md567"></a>
 NWNX_SQL_CHARACTER_SET</h3>
 <p>Set the connection's character set to be used.</p>
 <p>Only supported on mysql and pgsql. For sqlite this can be achieved with a query.</p>
@@ -820,7 +820,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Apr 2 2023 15:16:00 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 13 2023 20:49:00 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
