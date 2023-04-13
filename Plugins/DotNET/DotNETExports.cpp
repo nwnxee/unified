@@ -208,10 +208,13 @@ static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
     auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+
+    int pushedCount = s_pushedCount;
+    s_pushedCount = 0;
+
     LOG_DEBUG("Calling BuiltIn %i.", id);
     ASSERT(vm->m_nRecursionLevel >= 0);
-    cmd->ExecuteCommand(id, s_pushedCount);
-    s_pushedCount = 0;
+    cmd->ExecuteCommand(id, pushedCount);
 }
 
 static void StackPushInteger(int32_t value)
