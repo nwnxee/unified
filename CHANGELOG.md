@@ -5,23 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
+https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
-- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
-- Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
-- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
+- N/A
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
-- Creature: {Get|Set}MaximumBonusAttacks()
-- Player: SendPartyInvite()
-- Item: MoveTo()
+- N/A
 
 ### Changed
-- Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first
+- N/A
 
 ### Deprecated
 - N/A
@@ -31,6 +27,22 @@ https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.35.37
+https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37
+
+### Added
+- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
+- Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
+- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
+
+##### New NWScript Functions
+- Creature: {Get|Set}MaximumBonusAttacks()
+- Player: SendPartyInvite()
+- Item: MoveTo()
+
+### Changed
+- Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first
 
 ## 8193.35.36
 https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36
