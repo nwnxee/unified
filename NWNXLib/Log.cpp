@@ -128,6 +128,7 @@ void WriteToLogFile(const char* message)
 // doesn't provide a hashing function for a const char* and I'm too lazy to write or copy/paste one.
 // Small perf hit when logging.
 static std::unordered_map<std::string, Channel::Enum> s_LogLevelMap;
+static Channel::Enum s_LogLevelMax;
 
 Channel::Enum GetLogLevel(const char* plugin)
 {
@@ -136,9 +137,15 @@ Channel::Enum GetLogLevel(const char* plugin)
     return entry == std::end(s_LogLevelMap) ? Channel::SEV_NOTICE : entry->second;
 }
 
+Channel::Enum GetMaxLogLevel()
+{
+    return s_LogLevelMax;
+}
+
 void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 {
     s_LogLevelMap[plugin] = logLevel;
+    s_LogLevelMax = std::max(s_LogLevelMax, logLevel);
 }
 
 }
