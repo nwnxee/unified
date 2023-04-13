@@ -124,15 +124,33 @@ void WriteToLogFile(const char* message)
     }
 }
 
-// Unfortunately this needs to be backed by an std::string rather than a const char* because the C++ standard library
-// doesn't provide a hashing function for a const char* and I'm too lazy to write or copy/paste one.
-// Small perf hit when logging.
-static std::unordered_map<std::string, Channel::Enum> s_LogLevelMap;
+template <typename T>
+struct CharpEqualTo : public std::binary_function<T, T, bool>
+{
+    bool operator()(const T& x, const T& y) const
+    {
+        return !strcmp(x, y);
+    }
+};
+
+struct CharpHash
+{
+    int operator()(const char * s) const
+    {
+        int i = 0, h = 0;
+        while (s[i]) {
+            h += s[i];
+            i++;
+        }
+        return h | (i << 20);
+    }
+};
+
+static std::unordered_map<const char*, Channel::Enum, CharpHash, CharpEqualTo<const char*>> s_LogLevelMap;
 static Channel::Enum s_LogLevelMax;
 
 Channel::Enum GetLogLevel(const char* plugin)
 {
-    // TODO: Is this thread safe? I think so if we're just looking up but I don't know.
     auto entry = s_LogLevelMap.find(plugin);
     return entry == std::end(s_LogLevelMap) ? Channel::SEV_NOTICE : entry->second;
 }
