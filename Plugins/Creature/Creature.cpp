@@ -2850,9 +2850,12 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
           ASSERT_OR_THROW(delay >= 0.0f);
         auto projectilePathType = args.extract<int32_t>();
         auto projectileSpellID = args.extract<int32_t>();
+        auto oidItem = args.extract<ObjectID>();
+        auto impactScript = args.extract<std::string>();
 
         auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(spellID);
         auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
+        auto *pItem = Utils::AsNWSObject(Utils::GetGameObject(oidItem));
         auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea));
 
         if (!pSpell || (!pTarget && !pArea))
@@ -2887,9 +2890,9 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         pSpellScriptData->m_nFeatId = 0xFFFF;
         pSpellScriptData->m_oidCaster = pCaster->m_idSelf;
         pSpellScriptData->m_oidTarget = pTarget ? pTarget->m_idSelf : Constants::OBJECT_INVALID;
-        pSpellScriptData->m_oidItem = Constants::OBJECT_INVALID;
+        pSpellScriptData->m_oidItem = pItem ? pItem->m_idSelf : Constants::OBJECT_INVALID;
         pSpellScriptData->m_vTargetPosition = vTargetPosition;
-        pSpellScriptData->m_sScript = pSpell->m_sImpactScript;
+        pSpellScriptData->m_sScript = !impactScript.empty() ? CExoString(impactScript) : pSpell->m_sImpactScript;
         pSpellScriptData->m_oidArea = oidTargetArea;
         pSpellScriptData->m_nItemCastLevel = casterLevel;
 
@@ -3297,6 +3300,23 @@ NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
             pCreature->nwnxRemove("MAXIMUM_BONUS_ATTACKS");
 
         RecalculateBonusAttacks(pCreature);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidSingleTarget = Constants::OBJECT_INVALID;
+        
+        if (auto *pTarget = Utils::PopCreature(args))
+            oidSingleTarget = pTarget->m_idSelf;
+
+        bool bMovement = !!args.extract<int32_t>();
+
+        pCreature->BroadcastAttackOfOpportunity(oidSingleTarget, bMovement);
     }
 
     return {};
