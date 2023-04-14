@@ -101,7 +101,7 @@ var searchData=
   ['nwnx_5fcreature_5fcomputesafelocation_2946',['NWNX_Creature_ComputeSafeLocation',['../group__creature.html#ga36db232e8294ec90dc5f1203ee38ac56',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fdecrementremainingspellslots_2947',['NWNX_Creature_DecrementRemainingSpellSlots',['../group__creature.html#ga7674718206327542a5d3c5c601354481',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fdeserializequickbar_2948',['NWNX_Creature_DeserializeQuickbar',['../group__creature.html#gab71f0c54c88e6c54bfdb025c67a5aa44',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fdoitemcastspell_2949',['NWNX_Creature_DoItemCastSpell',['../group__creature.html#gaf03a816c11492f7465ebbe977c278bbf',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fdoitemcastspell_2949',['NWNX_Creature_DoItemCastSpell',['../group__creature.html#gaed84f6ef274ccc147e687d16ee9c0756',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fdoperceptionupdateoncreature_2950',['NWNX_Creature_DoPerceptionUpdateOnCreature',['../group__creature.html#ga07ef1d837354f127b72d7d301555c857',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetarmorcheckpenalty_2951',['NWNX_Creature_GetArmorCheckPenalty',['../group__creature.html#ga1300b28822e4534d0210593c8e65042c',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetarmorclassversus_2952',['NWNX_Creature_GetArmorClassVersus',['../group__creature.html#gacd4022d011b84e8b015b4bbe5abca7fa',1,'nwnx_creature.nss']]],
