@@ -387,6 +387,7 @@ void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
 
 /// @brief Returns how many items are in oObject's inventory.
 /// @param oObject A creature, placeable, or item.
+/// @return Returns a count of how many items are in oObject's inventory.
 int NWNX_Object_GetInventoryItemCount(object oObject);
 
 /// @}
