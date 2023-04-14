@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ### Changed
-- N/A
+- Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
 
 ### Deprecated
 - N/A
