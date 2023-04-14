@@ -1560,6 +1560,27 @@ _______________________________________
 	----------------------|--------|-------
 	OBJECT                | object | The Object being used |
 _______________________________________
+	## Broadcast Attack of Opportunity Events
+	- NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE
+	- NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER
+
+	`OBJECT_SELF` = The creature broadcasting the Attack of Opportunity event
+
+	Event Data Tag        | Type   | Notes
+	----------------------|--------|-------
+	TARGET_OBJECT_ID      | object | A single object the attack of opportunity is being broadcast to. Convert to object with StringToObject() |
+    MOVEMENT              | int    | Whether this attack of opportunity is being triggered from movement |
+_______________________________________
+	## Combat Attack of Opportunity Events
+	- NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE
+	- NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER
+
+	`OBJECT_SELF` = The creature performing the Attack of Opportunity against the broadcasting target.
+
+	Event Data Tag        | Type   | Notes
+	----------------------|--------|-------
+	TARGET_OBJECT_ID      | object | The target of the attack of opportunity. Convert to object with StringToObject() |
+_______________________________________
 */
 
 /// @name Events Event Constants
@@ -1886,6 +1907,10 @@ const string NWNX_ON_RUN_EVENT_SCRIPT_BEFORE = "NWNX_ON_RUN_EVENT_SCRIPT_BEFORE"
 const string NWNX_ON_RUN_EVENT_SCRIPT_AFTER = "NWNX_ON_RUN_EVENT_SCRIPT_AFTER";
 const string NWNX_ON_OBJECT_USE_BEFORE = "NWNX_ON_OBJECT_USE_BEFORE";
 const string NWNX_ON_OBJECT_USE_AFTER = "NWNX_ON_OBJECT_USE_AFTER";
+const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE";
+const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER";
+const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE";
+const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
