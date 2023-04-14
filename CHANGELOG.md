@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ##### New NWScript Functions
 - Util: GetStringLevenshteinDistance()
+- Creature: {Get|Set}LockOrientationToObject()
 - Creature: BroadcastAttackOfOpportunity()
 
 ### Changed

@@ -953,11 +953,22 @@ int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
 
+/// @brief Gets the current object oCreature's orientation is locked to.
+/// @param oCreature The creature object.
+/// @return The object oCreature's orientation is locked to, or OBJECT_INVALID if oCreature's orientation is not locked.
+object NWNX_Creature_GetLockOrientationToObject(object oCreature);
+
+/// @brief Locks oCreature's orientation to always face oTarget.
+/// @param oCreature The creature object.
+/// @param oTarget The target to lock oCreature's orientation to. Use OBJECT_INVALID to remove the orientation lock.
+void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget);
+
 /// @brief Causes oCreature to broadcast an Attack of Opportunity against themself.
 /// @param oCreature The creature object.
 /// @param oSingleCreature A single creature to broadcast the Attack of Opporunity to. Use OBJECT_INVALID to broadcast to all nearby enemies.
 /// @param bMovement Whether the Attack of Opportunity was caused by movement.
 void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2468,6 +2479,25 @@ void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks
 
     NWNX_PushArgumentInt(bPersist);
     NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+object NWNX_Creature_GetLockOrientationToObject(object oCreature)
+{
+    string sFunc = "GetLockOrientationToObject";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget)
+{
+    string sFunc = "SetLockOrientationToObject";
+
+    NWNX_PushArgumentObject(oTarget);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
