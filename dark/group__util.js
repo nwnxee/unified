@@ -48,6 +48,7 @@ var group__util =
     [ "NWNX_Util_GetHighResTimeStamp", "group__util.html#gab1478de40af08e03284db6fe313f319c", null ],
     [ "NWNX_Util_GetTTY", "group__util.html#gadfdd32feae60ad5d4835d455a6990c38", null ],
     [ "NWNX_Util_SetCurrentlyRunningEvent", "group__util.html#gaa598506a63683dee987428df6e208f2b", null ],
+    [ "NWNX_Util_GetStringLevenshteinDistance", "group__util.html#ga702f3eead5be67d20df768f72f5938da", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
     [ "NWNX_UTIL_RESREF_TYPE_AREA_ARE", "group__util.html#ga610bf05a8489288df5ce9ad2326bd54c", null ],

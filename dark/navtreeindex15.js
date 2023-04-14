@@ -1,15 +1,17 @@
 var NAVTREEINDEX15 =
 {
+"group__weapon.html#ga8deec30028f3ba99c22c775ed8edb973":[0,45,8],
 "group__weapon.html#ga928cbbcbedeb6fcd313d5da26e4f547a":[0,45,10],
+"group__weapon.html#ga928cbbcbedeb6fcd313d5da26e4f547a":[4,0,3,43,0,0,7],
 "group__weapon.html#ga9e7cb99d054449dc1ca00d8c6e8f2881":[4,0,3,43,0,0,21],
 "group__weapon.html#ga9f7b80d39ddb553be2764ad399c98f2d":[4,0,3,43,0,0,10],
 "group__weapon.html#ga9f7b80d39ddb553be2764ad399c98f2d":[0,45,13],
 "group__weapon.html#gaa74f691d599e48f697719ea8731f11be":[4,0,3,43,0,0,0],
 "group__weapon.html#gaa74f691d599e48f697719ea8731f11be":[0,45,3],
-"group__weapon.html#gab6f2ce92fc80b5deac9c83c06a0b294c":[4,0,3,43,0,0,20],
 "group__weapon.html#gab6f2ce92fc80b5deac9c83c06a0b294c":[0,45,23],
-"group__weapon.html#gab865cdef1423787f87307127c2d66c1b":[0,45,17],
+"group__weapon.html#gab6f2ce92fc80b5deac9c83c06a0b294c":[4,0,3,43,0,0,20],
 "group__weapon.html#gab865cdef1423787f87307127c2d66c1b":[4,0,3,43,0,0,14],
+"group__weapon.html#gab865cdef1423787f87307127c2d66c1b":[0,45,17],
 "group__weapon.html#gac044782b4fc6b0035aa9b499c0d8aa66":[0,45,25],
 "group__weapon.html#gac044782b4fc6b0035aa9b499c0d8aa66":[4,0,3,43,0,0,23],
 "group__weapon.html#gac097d2ac46c1ccb933c7777e2f851453":[4,0,3,43,0,0,2],
@@ -26,8 +28,8 @@ var NAVTREEINDEX15 =
 "group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[0,45,21],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[4,0,3,43,0,0,1],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[0,45,4],
-"group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,45,26],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[4,0,3,43,0,0,24],
+"group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,45,26],
 "group__weapon.html#weapon":[0,45,0],
 "group__webhook.html":[0,46],
 "group__webhook.html#autotoc_md584":[68],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "nwnx__redis_8nss.html#a505d07d392eb5f0c3acf2ba90ec5662b":[4,0,3,28,0,0,45],
 "nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b":[4,0,3,28,0,0,71],
 "nwnx__redis_8nss.html#a519ce0b6710b178c58ca6201e2ddb392":[4,0,3,28,0,0,117],
-"nwnx__redis_8nss.html#a520b13f886a7181758de46a0278e2306":[4,0,3,28,0,0,190],
-"nwnx__redis_8nss.html#a52caa07fdb3ddc25813c7090df60d255":[4,0,3,28,0,0,203],
-"nwnx__redis_8nss.html#a52e1d639d750bd902e534b327b67dc94":[4,0,3,28,0,0,208]
+"nwnx__redis_8nss.html#a520b13f886a7181758de46a0278e2306":[4,0,3,28,0,0,190]
 };
