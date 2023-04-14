@@ -26,7 +26,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Tweaks: Fixed a crash in `NWNX_TWEAKS_FIX_RESOLVE_SPECIAL_ATTACK_DAMAGE` when a ranged special attack was avoided with epic dodge.
 
 ## 8193.35.37
 https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37

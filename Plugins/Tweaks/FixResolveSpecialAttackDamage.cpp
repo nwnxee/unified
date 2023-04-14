@@ -1,5 +1,6 @@
 #include "nwnx.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "API/CNWSCombatAttackData.hpp"
 
@@ -81,8 +82,18 @@ void FixResolveSpecialAttackDamage()
             {
                 if (!GetAttackResultHit(pThis->m_pcCombatRound->GetAttack(pThis->m_pcCombatRound->m_nCurrentAttack)))
                 {
-                    pThis->ResolveRangedMiss(pTarget);
-                    return;
+                    bool bEpicDodgeUsed = true;
+                    if (auto *pTargetCreature = Utils::AsNWSCreature(pTarget))
+                    {
+                        if (pTargetCreature->m_pStats->HasFeat(Constants::Feat::EpicDodge))
+                            bEpicDodgeUsed = pTargetCreature->m_pcCombatRound->m_bEpicDodgeUsed;
+                    }
+
+                    if (bEpicDodgeUsed)
+                    {
+                        pThis->ResolveRangedMiss(pTarget);
+                        return;
+                    }
                 }
             }
 
