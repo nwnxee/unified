@@ -9,15 +9,19 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which casts all On Hit: Cast Spell item properties on hit, instead of only the first property.
+- Events: added skippable event `NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows skipping a creature provoking attacks of opportunities from enemies.
+- Events: added skippable event `NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows stopping a creature from performing an attack of opportunity against a target.
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Util: GetStringLevenshteinDistance()
+- Creature: {Get|Set}LockOrientationToObject()
+- Creature: BroadcastAttackOfOpportunity()
 
 ### Changed
-- N/A
+- ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
 
 ### Deprecated
 - N/A

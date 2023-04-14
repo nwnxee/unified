@@ -865,7 +865,9 @@ void NWNX_Creature_SetLastKiller(object oCreature, object oKiller);
 /// @param fProjectileTime The time in seconds for the projectile to reach the target. 0.0f for no projectile.
 /// @param nProjectilePathType A PROJECTILE_PATH_TYPE_* constant.
 /// @param nProjectileSpellID An optional spell ID which to use the projectile vfx of. -1 to use nSpellID's projectile vfx.
-void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1);
+/// @param oItem The spell cast item retrieved by GetSpellCastItem().
+/// @param sImpactScript The spell impact script. Set to "****"" to not run any impact script. If left blank, will execute nSpellID's impact script.
+void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1, object oItem = OBJECT_INVALID, string sImpactScript = "");
 
 /// @brief Have oCreature instantly equip oItem to nInventorySlot.
 /// @param oCreature The creature.
@@ -950,6 +952,22 @@ int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
 /// @param bPersist Whether the modifier should persist to .bic file (for PCs).
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
+
+/// @brief Gets the current object oCreature's orientation is locked to.
+/// @param oCreature The creature object.
+/// @return The object oCreature's orientation is locked to, or OBJECT_INVALID if oCreature's orientation is not locked.
+object NWNX_Creature_GetLockOrientationToObject(object oCreature);
+
+/// @brief Locks oCreature's orientation to always face oTarget.
+/// @param oCreature The creature object.
+/// @param oTarget The target to lock oCreature's orientation to. Use OBJECT_INVALID to remove the orientation lock.
+void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget);
+
+/// @brief Causes oCreature to broadcast an Attack of Opportunity against themself.
+/// @param oCreature The creature object.
+/// @param oSingleCreature A single creature to broadcast the Attack of Opporunity to. Use OBJECT_INVALID to broadcast to all nearby enemies.
+/// @param bMovement Whether the Attack of Opportunity was caused by movement.
+void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE);
 
 /// @}
 
@@ -2307,13 +2325,15 @@ void NWNX_Creature_SetLastKiller(object oCreature, object oKiller)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1)
+void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1, object oItem = OBJECT_INVALID, string sImpactScript = "")
 {
     string sFunc = "DoItemCastSpell";
 
     object oArea = GetAreaFromLocation(locTarget);
     vector vPosition = GetPositionFromLocation(locTarget);
 
+    NWNX_PushArgumentString(sImpactScript);
+    NWNX_PushArgumentObject(oItem);
     NWNX_PushArgumentInt(nProjectileSpellID);
     NWNX_PushArgumentInt(nProjectilePathType);
     NWNX_PushArgumentFloat(fProjectileTime);
@@ -2459,6 +2479,35 @@ void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks
 
     NWNX_PushArgumentInt(bPersist);
     NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+object NWNX_Creature_GetLockOrientationToObject(object oCreature)
+{
+    string sFunc = "GetLockOrientationToObject";
+
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget)
+{
+    string sFunc = "SetLockOrientationToObject";
+
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE)
+{
+    string sFunc = "BroadcastAttackOfOpportunity";
+
+    NWNX_PushArgumentInt(bMovement);
+    NWNX_PushArgumentObject(oSingleCreature);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
