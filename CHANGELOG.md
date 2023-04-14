@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ### Changed
-- Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
+- ***ABI BREAKING:*** Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 
 ### Deprecated
 - N/A
