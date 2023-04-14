@@ -1312,7 +1312,24 @@ _______________________________________
     SPELL_ID              | int    | |
     MULTI_CLASS           | int    | |
     FEAT                  | int    | 65535 if a feat wasn't used, otherwise the feat ID |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    TARGET_POSITION_X     | float  | |
+    TARGET_POSITION_Y     | float  | |
+    TARGET_POSITION_Z     | float  | |
+    SPELL_DOMAIN          | int    | |
+    SPELL_SPONTANEOUS     | int    | |
+    SPELL_METAMAGIC       | int    | METAMAGIC_* |
+    PROJECTILE_PATH_TYPE  | int    | PROJECTILE_PATH_TYPE_* |
 
+    @note TARGET_OBJECT_ID, TARGET_POSITION_*, SPELL_DOMAIN, SPELL_SPONTANEOUS, SPELL_METAMAGIC, and PROJECTILE_PATH_TYPE may
+          be invalid if BroadcastCastSpell was called outside AIActionCastSpell.
+          This can be tested for by checking if TARGET_OBJECT_ID is the caster's area and if all three TARGET_POSITION_* equal 0.0.
+          \code{.c}
+          if (oTarget == GetArea(oCaster) && Vector(vX, vY, fZ) == Vector())
+          {
+            // ...
+          }
+          \endcode
 _______________________________________
     ## RunScript Debug Event
     - NWNX_ON_DEBUG_RUN_SCRIPT_BEFORE
