@@ -52,7 +52,6 @@ template <typename ... Args>
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args);
 
 Channel::Enum GetLogLevel(const char* plugin);
-Channel::Enum GetMaxLogLevel();
 void SetLogLevel(const char* plugin, Channel::Enum logLevel);
 void SetPrintTimestamp(bool value);
 bool GetPrintTimestamp();
@@ -74,12 +73,6 @@ void WriteToLogFile(const char* message);
 template <typename ... Args>
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args)
 {
-    if (channel > GetMaxLogLevel())
-    {
-        // No need to do anything. No plugins have this log level.
-        return;
-    }
-
     Channel::Enum allowedChannel = GetLogLevel(plugin);
 
     if (channel > allowedChannel)
