@@ -399,6 +399,7 @@ void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
 /// @param nSpellID A "SPELL_*" constant. -1 to ignore.
 /// @param bPersist Whether the override should persist to the .bic file (for PCs).
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
+///       This will override all spell projectile VFX from oCreature until the override is removed.
 void NWNX_Object_OverrideSpellProjectileVFX(object oCreature, int nProjectileType = -1, int nProjectilePathType = -1, int nSpellID = -1, int bPersist = FALSE);
 
 /// @}
