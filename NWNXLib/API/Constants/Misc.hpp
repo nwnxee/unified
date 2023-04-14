@@ -301,6 +301,25 @@ namespace MetaMagicType
         Still           = 0x20,
         Any             = 0xFF,
     };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 255;
+    static_assert(MAX == Any);
+    
+    constexpr const char* ToString(const unsigned value)
+    {
+        switch (value)
+        {
+            case None:      return "None";
+            case Empower:   return "Empower";
+            case Extend:    return "Extend";
+            case Maximize:  return "Maximize";
+            case Quicken:   return "Quicken";
+            case Silent:    return "Silent";
+            case Still:     return "Still";
+            case Any:       return "Any";
+        }
+        return "(invalid)";
+    }
 }
 
 }
