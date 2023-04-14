@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Util: GetStringLevenshteinDistance()
 - Creature: BroadcastAttackOfOpportunity()
 
 ### Changed
