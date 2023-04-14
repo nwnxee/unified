@@ -29,7 +29,7 @@ void CastAllOnHitCastSpellItemProperties()
     LOG_INFO("All On Hit: Cast Spell item properties will be cast on hit");
 
     static Hooks::Hook s_ApplyOnHitCastSpellHook = Hooks::HookFunction(&CNWSCreature::ApplyOnHitCastSpell,
-        (void*)+[](CNWSCreature *pCreature, CNWSObject *pTarget, __attribute__((unused)) CNWItemProperty *pProperty, CNWSItem *pItem) -> void
+        (void*)+[](CNWSCreature *pCreature, CNWSObject *pTarget, CNWItemProperty*, CNWSItem *pItem) -> void
         {
             bool bArmorHit = pItem->m_nBaseItem == Constants::BaseItem::CreatureItem ||
                              pItem->m_nBaseItem == Constants::BaseItem::TowerShield ||
