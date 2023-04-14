@@ -1005,3 +1005,35 @@ NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetInventoryItemCount(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        CItemRepository *pRepo;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pRepo = pCreature->m_pcItemRepository;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pRepo = pPlaceable->m_pcItemRepository;
+        else if (auto *pItem = Utils::AsNWSItem(pObject))
+            pRepo = pItem->m_pItemRepository;
+        else
+            return 0;
+
+        auto nItems = 0;
+        for (auto *pNode = pRepo->m_oidItems.m_pcExoLinkedListInternal->pHead; pNode; pNode = pNode->pNext)
+        {
+            if (auto *pItem = pRepo->ItemListGetItem(pNode))
+            {
+                nItems++;
+                if (auto *pItemRepo = pItem->m_pItemRepository)
+                    nItems += pItemRepo->m_oidItems.Count();
+            }
+        }
+
+        return nItems;
+    }
+
+    return 0;
+}

@@ -385,6 +385,10 @@ int NWNX_Object_GetLastSpellCastDomainLevel(object oObject);
 /// @param sUUID The UUID to force
 void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
 
+/// @brief Returns how many items are in oObject's inventory.
+/// @param oObject A creature, placeable, or item.
+int NWNX_Object_GetInventoryItemCount(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -966,4 +970,13 @@ void NWNX_Object_ForceAssignUUID(object oObject, string sUUID)
     NWNX_PushArgumentString(sUUID);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetInventoryItemCount(object oObject)
+{
+    string sFunc = "GetInventoryItemCount";
+
+    NWNX_PushArgumentObject(oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt();
 }
