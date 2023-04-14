@@ -34,4 +34,5 @@ add_plugin(Tweaks
     "TURDByCDKey.cpp"
     "UnhardcodeShields.cpp"
     "UncapDamageResistanceDamageFlags.cpp"
-    "PreventAttackBonusBypassingReductions.cpp")
+    "PreventAttackBonusBypassingReductions.cpp"
+    "RangedWeaponsUseOnHitCastSpellItemProperties.cpp")
