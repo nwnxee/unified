@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
-- N/A
+- Tweaks: added `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which casts all On Hit: Cast Spell item properties on hit, instead of only the first property.
 
 ##### New Plugins
 - N/A
