@@ -3301,3 +3301,37 @@ NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetLockOrientationToObject(ArgumentStack&& args)
+{
+    ObjectID retval = Constants::OBJECT_INVALID;
+
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(pObject->GetLockOrientationToObject())))
+        {
+            retval = pTarget->m_idSelf;
+        }
+    }
+
+    return retval;
+}
+
+NWNX_EXPORT ArgumentStack SetLockOrientationToObject(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        const auto oidTarget = args.extract<ObjectID>();
+
+        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        {
+            pObject->SetLockOrientationToObject(pTarget->m_idSelf);
+        }
+        else
+        {
+            pObject->SetLockOrientationToObject(Constants::OBJECT_INVALID);
+        }
+    }
+
+    return {};
+}
