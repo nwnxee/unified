@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
-- N/A
+Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).
 
 ##### New Plugins
 - N/A
