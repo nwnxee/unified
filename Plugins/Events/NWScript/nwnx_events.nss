@@ -2040,6 +2040,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Decrement Spell Count event
 /// - Play Visual Effect event
 /// - EventScript event
+/// - Attack of Opportunity events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
