@@ -951,6 +951,11 @@ int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
 
+/// @brief Causes oCreature to broadcast an Attack of Opportunity against themself.
+/// @param oCreature The creature object.
+/// @param oSingleCreature A single creature to broadcast the Attack of Opporunity to. Use OBJECT_INVALID to broadcast to all nearby enemies.
+/// @param bMovement Whether the Attack of Opportunity was caused by movement.
+void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE);
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2459,6 +2464,16 @@ void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks
 
     NWNX_PushArgumentInt(bPersist);
     NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE)
+{
+    string sFunc = "BroadcastAttackOfOpportunity";
+
+    NWNX_PushArgumentInt(bMovement);
+    NWNX_PushArgumentObject(oSingleCreature);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

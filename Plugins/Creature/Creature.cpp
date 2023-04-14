@@ -3301,3 +3301,20 @@ NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidSingleTarget = Constants::OBJECT_INVALID;
+        
+        if (auto *pTarget = Utils::PopCreature(args))
+            oidSingleTarget = pTarget->m_idSelf;
+
+        bool bMovement = !!args.extract<int32_t>();
+
+        pCreature->BroadcastAttackOfOpportunity(oidSingleTarget, bMovement);
+    }
+
+    return {};
+}
