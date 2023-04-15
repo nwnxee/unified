@@ -38,7 +38,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Tweaks: FixResolveSpecialAttackDamage: fixed a crash involving ranged special attacks interacting oddly with Epic Dodge. 
 
 ## 8193.35.37
 https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37
