@@ -392,6 +392,11 @@ int NWNX_Object_GetLastSpellCastDomainLevel(object oObject);
 /// @param sUUID The UUID to force
 void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
 
+/// @brief Returns how many items are in oObject's inventory.
+/// @param oObject A creature, placeable, or item.
+/// @return Returns a count of how many items are in oObject's inventory.
+int NWNX_Object_GetInventoryItemCount(object oObject);
+
 /// @brief Override the projectile visual effect of ranged/throwing weapons and spells.
 /// @param oCreature The creature.
 /// @param nProjectileType A @ref projectile_types "NWNX_OBJECT_SPELL_PROJECTILE_TYPE_*" constant or -1 to remove the override.
@@ -983,6 +988,15 @@ void NWNX_Object_ForceAssignUUID(object oObject, string sUUID)
     NWNX_PushArgumentString(sUUID);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetInventoryItemCount(object oObject)
+{
+    string sFunc = "GetInventoryItemCount";
+
+    NWNX_PushArgumentObject(oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 void NWNX_Object_OverrideSpellProjectileVFX(object oCreature, int nProjectileType = -1, int nProjectilePathType = -1, int nSpellID = -1, int bPersist = FALSE)
