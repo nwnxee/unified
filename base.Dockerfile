@@ -17,8 +17,8 @@ RUN runDeps="hunspell \
     inotify-tools \
     patch \
     unzip \
-    dotnet-runtime-6.0 \
-    dotnet-apphost-pack-6.0" \
+    dotnet-runtime-7.0 \
+    dotnet-apphost-pack-7.0" \
     installDeps="ca-certificates wget" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $installDeps \
