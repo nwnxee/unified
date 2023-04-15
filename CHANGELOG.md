@@ -23,6 +23,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - Creature: BroadcastAttackOfOpportunity()
 
 ### Changed
+- Events: Added event data `TARGET_OBJECT_ID`/`TARGET_POSITION_{X|Y|Z}`/`SPELL_DOMAIN`/`SPELL_SPONTANEOUS`/`SPELL_METAMAGIC`/`PROJECTILE_PATH_TYPE` to `NWNX_ON_BROADCAST_CAST_SPELL_*`
 - ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
 
 ### Deprecated
