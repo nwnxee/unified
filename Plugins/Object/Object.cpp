@@ -1037,3 +1037,56 @@ NWNX_EXPORT ArgumentStack GetInventoryItemCount(ArgumentStack&& args)
 
     return 0;
 }
+
+NWNX_EXPORT ArgumentStack OverrideSpellProjectileVFX(ArgumentStack&& args)
+{
+    static Hooks::Hook s_BroadcastSafeProjectileHook =
+            Hooks::HookFunction(&CNWSObject::BroadcastSafeProjectile,
+            (void*)+[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
+                       uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType) -> void
+            {
+                if (nProjectileType >= 6)
+                {
+                    if (auto *pOriginator = Utils::AsNWSObject(Utils::GetGameObject(oidOriginator)))
+                    {
+                        if (auto projectileVfxOverride = pOriginator->nwnxGet<int32_t>("OSPVFX_TYPE"))
+                            nProjectileType = *projectileVfxOverride;
+                        
+                        if (auto projectilePathOverride = pOriginator->nwnxGet<int32_t>("OSPVFX_PATH"))
+                            nProjectilePathType = *projectilePathOverride;
+
+                        if (auto spellIDOverride = pOriginator->nwnxGet<int32_t>("OSPVFX_SPELLID"))
+                            nSpellID = *spellIDOverride;
+                    }
+                }
+
+                s_BroadcastSafeProjectileHook->CallOriginal<void>(pThis, oidOriginator, oidTarget, vOriginator, vTarget, nDelta, nProjectileType, nSpellID, nAttackResult, nProjectilePathType);
+            }, Hooks::Order::Late);
+
+    if (auto *pObject = Utils::PopGameObject(args))
+    {
+        const auto nProjectileVfx = args.extract<int32_t>();
+          ASSERT_OR_THROW(nProjectileVfx >= 6 || nProjectileVfx < 0);
+          ASSERT_OR_THROW(nProjectileVfx <= 7);
+        const auto nProjectilePath = args.extract<int32_t>();
+          ASSERT_OR_THROW(nProjectilePath <= 4);
+        const auto nSpellId = args.extract<int32_t>();
+          ASSERT_OR_THROW(nSpellId < Globals::Rules()->m_pSpellArray->m_nNumSpells);
+        const auto bPersist = !!args.extract<int32_t>();
+
+        if (nProjectileVfx < 0)
+        {
+            pObject->nwnxRemove("OSPVFX_TYPE");
+            pObject->nwnxRemove("OSPVFX_PATH");
+            pObject->nwnxRemove("OSPVFX_SPELLID");
+        }
+        else
+        {
+            pObject->nwnxSet("OSPVFX_TYPE", nProjectileVfx, bPersist);
+            pObject->nwnxSet("OSPVFX_PATH", nProjectilePath, bPersist);
+            pObject->nwnxSet("OSPVFX_SPELLID", nSpellId, bPersist);
+        }
+    }
+
+    return {};
+}

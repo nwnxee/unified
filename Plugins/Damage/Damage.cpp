@@ -110,6 +110,8 @@ static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, const std::
     std::memcpy(pCombatAttackData->m_nDamage, s_AttackData.vDamage, MAX_DAMAGE_TYPES * sizeof(int16_t));
 
     pCombatAttackData->m_nAttackResult = s_AttackData.nAttackResult;
+    pCombatAttackData->m_bSneakAttack = (s_AttackData.nSneakAttack & 1) == 1;
+    pCombatAttackData->m_bDeathAttack = (s_AttackData.nSneakAttack & 2) == 2;
 }
 
 static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks)
@@ -211,6 +213,7 @@ NWNX_EXPORT ArgumentStack SetAttackEventData(ArgumentStack&& args)
         k = (int16_t)args.extract<int32_t>();
     }
     s_AttackData.nAttackResult = args.extract<int32_t>();
+    s_AttackData.nSneakAttack = args.extract<int32_t>();
 
     return {};
 }
