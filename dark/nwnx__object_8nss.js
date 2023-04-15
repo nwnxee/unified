@@ -56,6 +56,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetLastSpellCastSpontaneous", "group__object.html#gaf0263fbe80a9703b80532502160c1fd7", null ],
     [ "NWNX_Object_GetLastSpellCastDomainLevel", "group__object.html#ga8080b55bcc436a65737e4ad781328b0d", null ],
     [ "NWNX_Object_ForceAssignUUID", "group__object.html#ga697b5d0c5512a4446b23d2eef6f577e4", null ],
+    [ "NWNX_Object_GetInventoryItemCount", "group__object.html#gad7eb3bf209f3637c8b3c5b28e7010d51", null ],
     [ "NWNX_Object_OverrideSpellProjectileVFX", "group__object.html#gab9ade3b58934c2d91d6df894cbcf4cbb", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
