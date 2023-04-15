@@ -56,6 +56,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetLastSpellCastSpontaneous", "group__object.html#gaf0263fbe80a9703b80532502160c1fd7", null ],
     [ "NWNX_Object_GetLastSpellCastDomainLevel", "group__object.html#ga8080b55bcc436a65737e4ad781328b0d", null ],
     [ "NWNX_Object_ForceAssignUUID", "group__object.html#ga697b5d0c5512a4446b23d2eef6f577e4", null ],
+    [ "NWNX_Object_OverrideSpellProjectileVFX", "group__object.html#gab9ade3b58934c2d91d6df894cbcf4cbb", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
@@ -80,5 +81,7 @@ var nwnx__object_8nss =
     [ "NWNX_OBJECT_TYPE_INTERNAL_ENCOUNTER", "group__object.html#ga252000c1215ad2da9da97f9a0763429c", null ],
     [ "NWNX_OBJECT_TYPE_INTERNAL_STORE", "group__object.html#ga1108d7179b7090f0221cbb35de8c57ee", null ],
     [ "NWNX_OBJECT_TYPE_INTERNAL_PORTAL", "group__object.html#gaa41fc9594c49da9708602813a55f5dde", null ],
-    [ "NWNX_OBJECT_TYPE_INTERNAL_SOUND", "group__object.html#gaa6a5101e20e74f4bd6fadc13b058d732", null ]
+    [ "NWNX_OBJECT_TYPE_INTERNAL_SOUND", "group__object.html#gaa6a5101e20e74f4bd6fadc13b058d732", null ],
+    [ "NWNX_OBJECT_SPELL_PROJECTILE_TYPE_DEFAULT", "group__object.html#gaf3d5e081d4f2336bab43660a2d9fa1bc", null ],
+    [ "NWNX_OBJECT_SPELL_PROJECTILE_TYPE_USE_PATH", "group__object.html#ga76681a1156d1b221575e0c999cc29f4d", null ]
 ];
