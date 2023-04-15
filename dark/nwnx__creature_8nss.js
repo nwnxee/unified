@@ -141,6 +141,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_IncrementRemainingSpellSlots", "group__creature.html#gac11415b7ba623c6ee2c8690463799f5d", null ],
     [ "NWNX_Creature_GetMaximumBonusAttacks", "group__creature.html#gac11f554f22871ca48771ab45035eaf67", null ],
     [ "NWNX_Creature_SetMaximumBonusAttacks", "group__creature.html#gaf64b13c4c6970ad4c681d5c66cd979e6", null ],
+    [ "NWNX_Creature_DoCleaveAttack", "group__creature.html#ga35b4eb49fb912f626928f80d2977387d", null ],
     [ "NWNX_Creature_GetLockOrientationToObject", "group__creature.html#gadae179f00dc664572de797fb99e1d9b9", null ],
     [ "NWNX_Creature_SetLockOrientationToObject", "group__creature.html#gae248e97e200f68b22baac808e89a6ecf", null ],
     [ "NWNX_Creature_BroadcastAttackOfOpportunity", "group__creature.html#gae049e21bae9c132cf1072e29e014c725", null ],
