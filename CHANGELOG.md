@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
+- Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).
 - Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition).
 - Tweaks: added `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which casts all On Hit: Cast Spell item properties on hit, instead of only the first property.
 - Events: added skippable event `NWNX_ON_BROADCAST_SAFE_PROJECTILE_{BEFORE|AFTER}` which fires whenever a projectile VFX is created for ranged weapons and spells.

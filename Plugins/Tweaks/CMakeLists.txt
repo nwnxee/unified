@@ -35,5 +35,6 @@ add_plugin(Tweaks
     "UnhardcodeShields.cpp"
     "UncapDamageResistanceDamageFlags.cpp"
     "PreventAttackBonusBypassingReductions.cpp"
+    "RangedWeaponsUseOnHitEffectItemProperties.cpp"
     "RangedWeaponsUseOnHitCastSpellItemProperties.cpp"
     "CastAllOnHitCastSpellItemProperties.cpp")
