@@ -951,9 +951,9 @@ int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
 
-/// @brief Makes oCreature instantly perform a cleave or great cleave attack.
+/// @brief Inserts a cleave or great cleave attack into oCreature's current attack round against the nearest enemy within melee reach.
 /// @param oCreature The creature object.
-/// @note oCreature must have the cleave or great cleave feats.
+/// @note oCreature must have the cleave or great cleave feats, must be in combat, and must have available attacks remaining in their combat round to use for cleave attack.
 void NWNX_Creature_DoCleaveAttack(object oCreature);
 
 /// @}
