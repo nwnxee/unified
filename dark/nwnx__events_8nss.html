@@ -2135,6 +2135,39 @@ Object Use Events (Placeables)</h2>
 </table>
 <hr  />
  <h2><a class="anchor" id="autotoc_md383"></a>
+Broadcast Safe Projectile Events</h2>
+<ul>
+<li>NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE</li>
+<li>NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature casting the spell</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID </td><td class="markdownTableBodyNone">string </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_X </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">DELTA </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Time in milliseconds before the projectile reaches its destination  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PROJECTILE_TYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"><a class="el" href="group__events.html#events_projtype">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_ID </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ATTACK_RESULT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">0=n/a, 1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PROJECTILE_PATH_TYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"><a href="https://nwnlexicon.com/index.php?title=Projectile_path_type" target="_blank">PROJECTILE_PATH_TYPE_*</a>  </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>This event fires for all projectiles. It's recommended to use ID whitelists with this event. You can whitelist the event by the projectile type, spell id, or both: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE&quot;</span>, NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*);</div>
+<div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
+</div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md384"></a>
 Broadcast Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2150,7 +2183,7 @@ Broadcast Attack of Opportunity Events</h2>
 <td class="markdownTableBodyNone">MOVEMENT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Whether this attack of opportunity is being triggered from movement  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md384"></a>
+ <h2><a class="anchor" id="autotoc_md385"></a>
 Combat Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2808,6 +2841,10 @@ Combat Attack of Opportunity Events</h2>
 <tr class="separator:ga299f3034a258c43d0c40c51732ee638c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1acdb7c210009a2cecabf69cfea93bbe"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1acdb7c210009a2cecabf69cfea93bbe">NWNX_ON_OBJECT_USE_AFTER</a> = &quot;NWNX_ON_OBJECT_USE_AFTER&quot;</td></tr>
 <tr class="separator:ga1acdb7c210009a2cecabf69cfea93bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1d4499d6cd8e646ec45fbcca98b8241b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1d4499d6cd8e646ec45fbcca98b8241b">NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE</a> = &quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE&quot;</td></tr>
+<tr class="separator:ga1d4499d6cd8e646ec45fbcca98b8241b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafbeca026bffa80a6215e6121f864c65b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gafbeca026bffa80a6215e6121f864c65b">NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER</a> = &quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER&quot;</td></tr>
+<tr class="separator:gafbeca026bffa80a6215e6121f864c65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa6709965917ee340a59ccf7f7465c661"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa6709965917ee340a59ccf7f7465c661">NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE</a> = &quot;NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE&quot;</td></tr>
 <tr class="separator:gaa6709965917ee340a59ccf7f7465c661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf4f1b835e4a2b4f03fa788745a5013b9"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf4f1b835e4a2b4f03fa788745a5013b9">NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER</a> = &quot;NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER&quot;</td></tr>
@@ -2865,15 +2902,35 @@ Combat Attack of Opportunity Events</h2>
 <tr class="separator:ga50630f3f1cead24f4b3a6a5e016a795e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8c28f37260a5a12c0715876e7c34ac3f"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga8c28f37260a5a12c0715876e7c34ac3f">NWNX_EVENTS_DM_SET_VARIABLE_TYPE_OBJECT</a> = 3</td></tr>
 <tr class="separator:ga8c28f37260a5a12c0715876e7c34ac3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Events BroadcastSafeProjectile Constants</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_projtype"></a></p>
+</div></td></tr>
+<tr class="memitem:ga07663d9582ca6e9081430601a8103fb2"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga07663d9582ca6e9081430601a8103fb2">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_NONE</a> = 0</td></tr>
+<tr class="separator:ga07663d9582ca6e9081430601a8103fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3fe0e4c70c3359417a8d133e1b974b90"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga3fe0e4c70c3359417a8d133e1b974b90">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_ACID</a> = 1</td></tr>
+<tr class="separator:ga3fe0e4c70c3359417a8d133e1b974b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaacb9124900296472492c2c750306db89"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaacb9124900296472492c2c750306db89">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_COLD</a> = 2</td></tr>
+<tr class="separator:gaacb9124900296472492c2c750306db89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02576b221bfdbc577554046b2ac832a4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga02576b221bfdbc577554046b2ac832a4">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_ELECTRICAL</a> = 3</td></tr>
+<tr class="separator:ga02576b221bfdbc577554046b2ac832a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafd4af786cb705dedbf92bd00a9807a61"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gafd4af786cb705dedbf92bd00a9807a61">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_FIRE</a> = 4</td></tr>
+<tr class="separator:gafd4af786cb705dedbf92bd00a9807a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf704dc0305eec9e5220366872a239f34"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf704dc0305eec9e5220366872a239f34">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_SONIC</a> = 5</td></tr>
+<tr class="separator:gaf704dc0305eec9e5220366872a239f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf2969195d8ec56fd43963709dadc8d42"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf2969195d8ec56fd43963709dadc8d42">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_DEFAULT</a> = 6</td></tr>
+<tr class="separator:gaf2969195d8ec56fd43963709dadc8d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5a270899d06707e68db6c63f7bd34d75"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5a270899d06707e68db6c63f7bd34d75">NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH</a> = 7</td></tr>
+<tr class="separator:ga5a270899d06707e68db6c63f7bd34d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02290">nwnx_events.nss:2290</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sat Apr 15 2023 13:21:41 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Apr 15 2023 13:28:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

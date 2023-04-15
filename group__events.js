@@ -341,6 +341,8 @@ var group__events =
     [ "NWNX_ON_RUN_EVENT_SCRIPT_AFTER", "group__events.html#ga10999d939a258596078498a796b59f05", null ],
     [ "NWNX_ON_OBJECT_USE_BEFORE", "group__events.html#ga299f3034a258c43d0c40c51732ee638c", null ],
     [ "NWNX_ON_OBJECT_USE_AFTER", "group__events.html#ga1acdb7c210009a2cecabf69cfea93bbe", null ],
+    [ "NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE", "group__events.html#ga1d4499d6cd8e646ec45fbcca98b8241b", null ],
+    [ "NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER", "group__events.html#gafbeca026bffa80a6215e6121f864c65b", null ],
     [ "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE", "group__events.html#gaa6709965917ee340a59ccf7f7465c661", null ],
     [ "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER", "group__events.html#gaf4f1b835e4a2b4f03fa788745a5013b9", null ],
     [ "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE", "group__events.html#ga00c27044f510bb160b08c78812fc8953", null ],
@@ -364,5 +366,13 @@ var group__events =
     [ "NWNX_EVENTS_DM_SET_VARIABLE_TYPE_INT", "group__events.html#ga739787aeed5e5af5fab3f539d1b09198", null ],
     [ "NWNX_EVENTS_DM_SET_VARIABLE_TYPE_FLOAT", "group__events.html#ga449230a25db12114e307e64443251af8", null ],
     [ "NWNX_EVENTS_DM_SET_VARIABLE_TYPE_STRING", "group__events.html#ga50630f3f1cead24f4b3a6a5e016a795e", null ],
-    [ "NWNX_EVENTS_DM_SET_VARIABLE_TYPE_OBJECT", "group__events.html#ga8c28f37260a5a12c0715876e7c34ac3f", null ]
+    [ "NWNX_EVENTS_DM_SET_VARIABLE_TYPE_OBJECT", "group__events.html#ga8c28f37260a5a12c0715876e7c34ac3f", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_NONE", "group__events.html#ga07663d9582ca6e9081430601a8103fb2", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_ACID", "group__events.html#ga3fe0e4c70c3359417a8d133e1b974b90", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_COLD", "group__events.html#gaacb9124900296472492c2c750306db89", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_ELECTRICAL", "group__events.html#ga02576b221bfdbc577554046b2ac832a4", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_FIRE", "group__events.html#gafd4af786cb705dedbf92bd00a9807a61", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_SONIC", "group__events.html#gaf704dc0305eec9e5220366872a239f34", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_DEFAULT", "group__events.html#gaf2969195d8ec56fd43963709dadc8d42", null ],
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH", "group__events.html#ga5a270899d06707e68db6c63f7bd34d75", null ]
 ];
