@@ -25,6 +25,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 ### Changed
 - Events: Added event data `TARGET_OBJECT_ID`/`TARGET_POSITION_{X|Y|Z}`/`SPELL_DOMAIN`/`SPELL_SPONTANEOUS`/`SPELL_METAMAGIC`/`PROJECTILE_PATH_TYPE` to `NWNX_ON_BROADCAST_CAST_SPELL_*`
 - ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
+- ***ABI BREAKING:*** Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 
 ### Deprecated
 - N/A
