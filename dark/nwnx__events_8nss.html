@@ -1838,7 +1838,28 @@ Broadcast Spell Cast Events</h2>
 <td class="markdownTableBodyNone">MULTI_CLASS </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">FEAT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">65535 if a feat wasn't used, otherwise the feat ID  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_X </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_DOMAIN </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_SPONTANEOUS </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_METAMAGIC </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">METAMAGIC_*  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PROJECTILE_PATH_TYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">PROJECTILE_PATH_TYPE_*  </td></tr>
 </table>
+<dl class="section note"><dt>Note</dt><dd>TARGET_OBJECT_ID, TARGET_POSITION_*, SPELL_DOMAIN, SPELL_SPONTANEOUS, SPELL_METAMAGIC, and PROJECTILE_PATH_TYPE may be invalid if BroadcastCastSpell was called outside AIActionCastSpell. This can be tested for by checking if TARGET_OBJECT_ID is the caster's area and if all three TARGET_POSITION_* equal 0.0. <div class="fragment"><div class="line"><span class="keywordflow">if</span> (oTarget == GetArea(oCaster) &amp;&amp; Vector(vX, vY, fZ) == Vector())</div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// ...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --></dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md365"></a>
 RunScript Debug Event</h2>
@@ -2924,13 +2945,13 @@ Combat Attack of Opportunity Events</h2>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02290">nwnx_events.nss:2290</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02307">nwnx_events.nss:2307</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sat Apr 15 2023 13:28:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Apr 15 2023 13:43:44 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
