@@ -953,6 +953,11 @@ int NWNX_Creature_GetMaximumBonusAttacks(object oCreature);
 /// @note Persistence is enabled after a server reset by the first use of this function. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks, int bPersist = FALSE);
 
+/// @brief Inserts a cleave or great cleave attack into oCreature's current attack round against the nearest enemy within melee reach.
+/// @param oCreature The creature object.
+/// @note oCreature must have the cleave or great cleave feats, must be in combat, and must have available attacks remaining in their combat round to use for cleave attack.
+void NWNX_Creature_DoCleaveAttack(object oCreature);
+
 /// @brief Gets the current object oCreature's orientation is locked to.
 /// @param oCreature The creature object.
 /// @return The object oCreature's orientation is locked to, or OBJECT_INVALID if oCreature's orientation is not locked.
@@ -2479,6 +2484,14 @@ void NWNX_Creature_SetMaximumBonusAttacks(object oCreature, int nMaxBonusAttacks
 
     NWNX_PushArgumentInt(bPersist);
     NWNX_PushArgumentInt(nMaxBonusAttacks);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_DoCleaveAttack(object oCreature)
+{
+    string sFunc = "DoCleaveAttack";
+
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
