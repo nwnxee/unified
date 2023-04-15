@@ -151,10 +151,42 @@ void ClearMemorizedSpellSlotHook(CNWSCreatureStats* thisPtr, uint8_t nMultiClass
 
 void BroadcastSpellCastHook(CNWSCreature *thisPtr, uint32_t nSpellID, uint8_t nMultiClass, uint16_t nFeat)
 {
+    uint8_t nMetaType = Constants::MetaMagicType::Any;
+    uint8_t nProjectilePathType;
+    bool bSpontaneous;
+    auto oidTarget = Constants::OBJECT_INVALID;
+    uint32_t nDomainLevel;
+    Vector vTargetPosition;
+    
+    if (auto *pActionNode = thisPtr->m_pExecutingAIAction)
+    {
+        if ((uint32_t)pActionNode->m_nActionId == 15 /*ACTION_ID_CAST_SPELL*/)
+        {
+            nDomainLevel = (uint32_t)pActionNode->m_pParameter[2];
+            nMetaType = (uint8_t)(uint32_t)pActionNode->m_pParameter[3];
+            bSpontaneous = (int32_t)pActionNode->m_pParameter[4];
+            oidTarget = (uint32_t)pActionNode->m_pParameter[5];
+            auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
+            vTargetPosition = pTarget ? pTarget->m_vPosition : Vector((*(float*)&pActionNode->m_pParameter[6]), (*(float*)&pActionNode->m_pParameter[7]), (*(float*)&pActionNode->m_pParameter[8]));
+            nProjectilePathType = (uint8_t)((uint32_t)pActionNode->m_pParameter[9] & 0xFFu);
+        }
+    }
+
+    if (oidTarget == Constants::OBJECT_INVALID)
+        oidTarget = thisPtr->m_oidArea;
+
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("SPELL_ID", std::to_string(nSpellID));
         PushEventData("MULTI_CLASS", std::to_string(nMultiClass));
         PushEventData("FEAT", std::to_string(nFeat));
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+        PushEventData("TARGET_POSITION_X", std::to_string(vTargetPosition.x));
+        PushEventData("TARGET_POSITION_Y", std::to_string(vTargetPosition.y));
+        PushEventData("TARGET_POSITION_Z", std::to_string(vTargetPosition.z));
+        PushEventData("SPELL_DOMAIN", std::to_string(nDomainLevel));
+        PushEventData("SPELL_SPONTANEOUS", std::to_string(bSpontaneous));
+        PushEventData("SPELL_METAMAGIC", std::to_string(nMetaType));
+        PushEventData("PROJECTILE_PATH_TYPE", std::to_string(nProjectilePathType));
         return SignalEvent(ev, thisPtr->m_idSelf);
     };
 

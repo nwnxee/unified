@@ -238,6 +238,12 @@ string NWNX_Util_GetTTY();
 /// @param nEventID The ID of the event.
 void NWNX_Util_SetCurrentlyRunningEvent(int nEventID);
 
+/// @brief Calculate the levenshtein distance of two strings
+/// @param sString The string to compare with.
+/// @param sCompareTo The string to compare sString to.
+/// @return The number of characters different between the compared strings.
+int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -590,4 +596,14 @@ void NWNX_Util_SetCurrentlyRunningEvent(int nEventID)
 
     NWNX_PushArgumentInt(nEventID);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo)
+{
+    string sFunc = "LevenshteinDistance";
+
+    NWNX_PushArgumentString(sCompareTo);
+    NWNX_PushArgumentString(sString);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }

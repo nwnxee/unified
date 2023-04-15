@@ -8,15 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
-- N/A
+- Events: added skippable event `NWNX_ON_BROADCAST_SAFE_PROJECTILE_{BEFORE|AFTER}` which fires whenever a projectile VFX is created for ranged weapons and spells.
+- Events: added skippable event `NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows skipping a creature provoking attacks of opportunities from enemies.
+- Events: added skippable event `NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows stopping a creature from performing an attack of opportunity against a target.
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Object: OverrideSpellProjectileVFX()
+- Util: GetStringLevenshteinDistance()
+- Creature: DoCleaveAttack()
+- Creature: {Get|Set}LockOrientationToObject()
+- Creature: BroadcastAttackOfOpportunity()
 
 ### Changed
+- Events: Added event data `TARGET_OBJECT_ID`/`TARGET_POSITION_{X|Y|Z}`/`SPELL_DOMAIN`/`SPELL_SPONTANEOUS`/`SPELL_METAMAGIC`/`PROJECTILE_PATH_TYPE` to `NWNX_ON_BROADCAST_CAST_SPELL_*`
+- ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
 - ***ABI BREAKING:*** Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 
 ### Deprecated
