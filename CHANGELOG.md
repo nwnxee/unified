@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Object: OverrideSpellProjectileVFX()
 - Util: GetStringLevenshteinDistance()
 - Creature: DoCleaveAttack()
 - Creature: {Get|Set}LockOrientationToObject()
