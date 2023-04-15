@@ -3305,6 +3305,35 @@ NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack DoCleaveAttack(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto *pCombatRound = pCreature->m_pcCombatRound;
+
+        if (pCombatRound->GetTotalAttacks() < 50)
+        {
+            bool bHasGreatCleave = pCreature->m_pStats->HasFeat(Constants::Feat::GreatCleave);
+            if (bHasGreatCleave || (pCreature->m_pStats->HasFeat(Constants::Feat::Cleave) && pCombatRound->m_nCleaveAttacks > 0))
+            {
+                float fAttackRange = pCreature->MaxAttackRange(pCreature->m_idSelf, false, true);
+                auto oidNearestEnemy = pCreature->GetNearestEnemy(fAttackRange, pCreature->m_oidAttackTarget, true, false);
+                if (oidNearestEnemy != Constants::OBJECT_INVALID)
+                {
+                    pCombatRound->m_oidNewAttackTarget = oidNearestEnemy;
+                    pCombatRound->AddCleaveAttack(oidNearestEnemy, bHasGreatCleave);
+                    pCreature->m_bPassiveAttackBehaviour = 1;
+
+                    if (!bHasGreatCleave)
+                        pCombatRound->m_nCleaveAttacks--;
+                }
+            }
+        }
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetLockOrientationToObject(ArgumentStack&& args)
 {
     ObjectID retval = Constants::OBJECT_INVALID;
