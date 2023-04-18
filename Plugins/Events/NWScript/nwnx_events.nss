@@ -1622,6 +1622,8 @@ _______________________________________
 	Event Data Tag        | Type   | Notes
 	----------------------|--------|-------
 	TARGET_OBJECT_ID      | object | The target of the attack of opportunity. Convert to object with StringToObject() |
+
+    @note If the BEFORE event is skipped the broadcasting creature will still make a tumble skill roll if moving.
 _______________________________________
 */
 

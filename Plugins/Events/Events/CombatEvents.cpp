@@ -21,7 +21,10 @@ static Hooks::Hook s_SendServerToPlayerAmbientBattleMusicPlayHook;
 static Hooks::Hook s_SendFeedbackMessageHook;
 static Hooks::Hook s_SetCombatModeHook;
 static Hooks::Hook s_BroadcastAttackOfOpportunityHook;
+static Hooks::Hook s_BroadcastAttackOfOpportunityCombatEventHook;
+static Hooks::Hook s_AddAttackActionsHook;
 static Hooks::Hook s_AddAttackOfOpportunityHook;
+static Hooks::Hook s_SetBroadcastedAOOToHook;
 
 static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
 static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
@@ -29,7 +32,14 @@ static int32_t SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage*, Player
 static void SendFeedbackMessageHook(CNWSCreature*, uint16_t, CNWCCMessageData*, CNWSPlayer*);
 static void SetCombatModeHook(CNWSCreature*, uint8_t, int32_t);
 static void BroadcastAttackOfOpportunityHook(CNWSCreature*, ObjectID, BOOL);
+static void BroadcastAttackOfOpportunityCombatEventHook(CNWSCreature*, ObjectID, BOOL);
+static BOOL AddAttackActionsHook(CNWSCreature*, ObjectID, BOOL, BOOL, BOOL);
 static void AddAttackOfOpportunityHook(CNWSCombatRound*, ObjectID);
+static void SetBroadcastedAOOToHook(CNWSCreature*, BOOL);
+
+static bool s_InBroadcastAttackOfOpportunity;
+static bool s_SkipPushAndSignalCombatAttackOfOpportunityBefore;
+static bool s_OnCombatAttackOfOpportunityResult;
 
 void CombatEvents() __attribute__((constructor));
 void CombatEvents()
@@ -63,9 +73,18 @@ void CombatEvents()
                 (void*)&BroadcastAttackOfOpportunityHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_.*", []() {
+        s_BroadcastAttackOfOpportunityCombatEventHook = Hooks::HookFunction(
+                &CNWSCreature::BroadcastAttackOfOpportunity,
+                (void*)&BroadcastAttackOfOpportunityCombatEventHook, Hooks::Order::Earliest);
+        s_AddAttackActionsHook = Hooks::HookFunction(
+                &CNWSCreature::AddAttackActions,
+                (void*)&AddAttackActionsHook, Hooks::Order::Early);
         s_AddAttackOfOpportunityHook = Hooks::HookFunction(
                 &CNWSCombatRound::AddAttackOfOpportunity,
                 (void*)AddAttackOfOpportunityHook, Hooks::Order::Early);
+        s_SetBroadcastedAOOToHook = Hooks::HookFunction(
+                &CNWSCreature::SetBroadcastedAOOTo,
+                (void*)&SetBroadcastedAOOToHook, Hooks::Order::Early);
     });
 }
 
@@ -197,19 +216,67 @@ void BroadcastAttackOfOpportunityHook(CNWSCreature *thisPtr, ObjectID oidSingleT
     PushAndSignal("NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER");
 }
 
-void AddAttackOfOpportunityHook(CNWSCombatRound *thisPtr, ObjectID oidTarget)
+void BroadcastAttackOfOpportunityCombatEventHook(CNWSCreature *thisPtr, ObjectID oidSingleTarget, BOOL bMovement)
 {
+    s_InBroadcastAttackOfOpportunity = true;
+    s_BroadcastAttackOfOpportunityCombatEventHook->CallOriginal<void>(thisPtr, oidSingleTarget, bMovement);
+    s_InBroadcastAttackOfOpportunity = false;
+}
+
+BOOL PushAndSignalCombatAttackOfOpportunityBefore(ObjectID oidSelf, ObjectID oidTarget)
+{
+    // We are possibly called by AddAttackActions before AddAttackOfOpportunity, so only PushAndSignal once
+    if (s_SkipPushAndSignalCombatAttackOfOpportunityBefore)
+    {
+        return s_OnCombatAttackOfOpportunityResult;
+    }
+    s_SkipPushAndSignalCombatAttackOfOpportunityBefore = true;
+    
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-        return SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
+        return SignalEvent(ev, oidSelf);
     };
 
-    if (PushAndSignal("NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE"))
+    s_OnCombatAttackOfOpportunityResult = PushAndSignal("NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE");
+    return s_OnCombatAttackOfOpportunityResult;
+}
+
+BOOL AddAttackActionsHook(CNWSCreature *thisPtr, ObjectID oidTarget, BOOL bPassive, BOOL bClearAllActions, BOOL bAddToFront)
+{
+    if (s_InBroadcastAttackOfOpportunity)
+    {
+        if (!PushAndSignalCombatAttackOfOpportunityBefore(thisPtr->m_idSelf, oidTarget))
+        {
+            return false;
+        }
+    }
+
+    return s_AddAttackActionsHook->CallOriginal<BOOL>(thisPtr, oidTarget, bPassive, bClearAllActions, bAddToFront);
+}
+
+void AddAttackOfOpportunityHook(CNWSCombatRound *thisPtr, ObjectID oidTarget)
+{
+    if (PushAndSignalCombatAttackOfOpportunityBefore(thisPtr->m_pBaseCreature->m_idSelf, oidTarget))
     {
         s_AddAttackOfOpportunityHook->CallOriginal<void>(thisPtr, oidTarget);
     }
 
-    PushAndSignal("NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER");
+    PushEventData("TARGET_OBJECT_ID",  Utils::ObjectIDToString(oidTarget));
+    SignalEvent("NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
+}
+
+void SetBroadcastedAOOToHook(CNWSCreature *thisPtr, BOOL bValue)
+{
+    if (s_InBroadcastAttackOfOpportunity)
+    {
+        s_SkipPushAndSignalCombatAttackOfOpportunityBefore = false;
+        if (!s_OnCombatAttackOfOpportunityResult)
+        {
+            return;
+        }
+    }
+    
+    s_SetBroadcastedAOOToHook->CallOriginal<void>(thisPtr, bValue);
 }
 
 }
