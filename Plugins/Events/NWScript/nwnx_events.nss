@@ -1567,15 +1567,15 @@ _______________________________________
     ```
     @warning Toggling the Whitelist to be off for this event will degrade performance.
 _______________________________________
-	## Object Use Events (Placeables)
-	- NWNX_ON_OBJECT_USE_BEFORE
-	- NWNX_ON_OBJECT_USE_AFTER
+    ## Object Use Events (Placeables)
+    - NWNX_ON_OBJECT_USE_BEFORE
+    - NWNX_ON_OBJECT_USE_AFTER
 
-	`OBJECT_SELF` = The player using the object
+    `OBJECT_SELF` = The player using the object
 
-	Event Data Tag        | Type   | Notes
-	----------------------|--------|-------
-	OBJECT                | object | The Object being used |
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The Object being used |
 _______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
@@ -1602,28 +1602,38 @@ _______________________________________
           \endcode
           `TARGET_OBJECT_ID` will be `OBJECT_INVALID` if the projectile is cast at a location
 _______________________________________
-	## Broadcast Attack of Opportunity Events
-	- NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE
-	- NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER
+    ## Broadcast Attack of Opportunity Events
+    - NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE
+    - NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER
 
-	`OBJECT_SELF` = The creature broadcasting the Attack of Opportunity event
+    `OBJECT_SELF` = The creature broadcasting the Attack of Opportunity event
 
-	Event Data Tag        | Type   | Notes
-	----------------------|--------|-------
-	TARGET_OBJECT_ID      | object | A single object the attack of opportunity is being broadcast to. Convert to object with StringToObject() |
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_OBJECT_ID      | object | A single object the attack of opportunity is being broadcast to. Convert to object with StringToObject() |
     MOVEMENT              | int    | Whether this attack of opportunity is being triggered from movement |
 _______________________________________
-	## Combat Attack of Opportunity Events
-	- NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE
-	- NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER
+    ## Combat Attack of Opportunity Events
+    - NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE
+    - NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER
 
-	`OBJECT_SELF` = The creature performing the Attack of Opportunity against the broadcasting target.
+    `OBJECT_SELF` = The creature performing the Attack of Opportunity against the broadcasting target.
 
-	Event Data Tag        | Type   | Notes
-	----------------------|--------|-------
-	TARGET_OBJECT_ID      | object | The target of the attack of opportunity. Convert to object with StringToObject() |
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_OBJECT_ID      | object | The target of the attack of opportunity. Convert to object with StringToObject() |
 
     @note If the BEFORE event is skipped the broadcasting creature will still make a tumble skill roll if moving.
+_______________________________________
+    ## Area Play Battle Music Events
+    - NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE
+    - NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER
+
+    `OBJECT_SELF` = The area playing or stopping the battle music.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    PLAY                  | int | TRUE if the area is starting to play battle music, FALSE if stopping. |
 _______________________________________
 */
 
@@ -1957,6 +1967,8 @@ const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_BROADCAST
 const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_AFTER";
 const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE";
 const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER";
+const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE";
+const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2006,7 +2018,7 @@ const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_SONIC = 5;
 const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_DEFAULT = 6;
 const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH = 7;
 /// @}
-         
+
 /// @brief Scripts can subscribe to events.
 ///
 /// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
