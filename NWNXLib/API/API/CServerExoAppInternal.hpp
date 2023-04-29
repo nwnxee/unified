@@ -114,11 +114,12 @@ struct CServerExoAppInternal
     CExoArrayList<CExoString> m_lstBannedListPlayerName;
     C2DA * m_pOldServerVault2DA;
     C2DA * m_pKnownServerNames2DA;
-    uint16_t m_nBannedListsTimeStampSecond;
-    uint16_t m_nBannedListsTimeStampMinute;
-    uint16_t m_nBannedListsTimeStampHour;
     uint32_t m_nBannedListsTimeStamp;
     CExoLinkedListPosition m_posPCObject;
+    int m_nGameObjectUpdateIntervalTarget;
+    int m_nGameObjectUpdateIntervalTargetLoading;
+    int m_nGameObjectUpdateMessageLimit;
+    int m_nGameObjectUpdateMessageLimitLoading;
     uint64_t m_nAutoSaveTimer;
     CExoArrayList<SSubNetProfile *> m_acSubNetProfiles;
     uint64_t m_nTotalSubNetSent;
