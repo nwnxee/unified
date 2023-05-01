@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - Events: added skippable event `NWNX_ON_BROADCAST_SAFE_PROJECTILE_{BEFORE|AFTER}` which fires whenever a projectile VFX is created for ranged weapons and spells.
 - Events: added skippable event `NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows skipping a creature provoking attacks of opportunities from enemies.
 - Events: added skippable event `NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows stopping a creature from performing an attack of opportunity against a target.
+- Events: added skippable event `NWNX_ON_AREA_PLAY_BATTLE_MUSIC_{BEFORE|AFTER}` which allows skipping the starting/stopping of an area's battle music.
 
 ##### New Plugins
 - N/A

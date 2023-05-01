@@ -8,6 +8,8 @@
 #include "API/CNWCCMessageData.hpp"
 #include "API/CNWSEffectListHandler.hpp"
 #include "API/CNWSMessage.hpp"
+#include "API/CNWAmbientSound.hpp"
+#include "API/CNWSAmbientSound.hpp"
 
 namespace Events {
 
@@ -25,6 +27,7 @@ static Hooks::Hook s_BroadcastAttackOfOpportunityCombatEventHook;
 static Hooks::Hook s_AddAttackActionsHook;
 static Hooks::Hook s_AddAttackOfOpportunityHook;
 static Hooks::Hook s_SetBroadcastedAOOToHook;
+static Hooks::Hook s_PlayBattleMusicHook;
 
 static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
 static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
@@ -36,6 +39,7 @@ static void BroadcastAttackOfOpportunityCombatEventHook(CNWSCreature*, ObjectID,
 static BOOL AddAttackActionsHook(CNWSCreature*, ObjectID, BOOL, BOOL, BOOL);
 static void AddAttackOfOpportunityHook(CNWSCombatRound*, ObjectID);
 static void SetBroadcastedAOOToHook(CNWSCreature*, BOOL);
+static void PlayBattleMusicHook(CNWSAmbientSound*, BOOL);
 
 static bool s_InBroadcastAttackOfOpportunity;
 static bool s_SkipPushAndSignalCombatAttackOfOpportunityBefore;
@@ -85,6 +89,11 @@ void CombatEvents()
         s_SetBroadcastedAOOToHook = Hooks::HookFunction(
                 &CNWSCreature::SetBroadcastedAOOTo,
                 (void*)&SetBroadcastedAOOToHook, Hooks::Order::Early);
+    });
+    InitOnFirstSubscribe("NWNX_ON_AREA_PLAY_BATTLE_MUSIC_.*", []() {
+        s_PlayBattleMusicHook = Hooks::HookFunction(
+                API::Functions::_ZN16CNWSAmbientSound15PlayBattleMusicEi,
+                (void*)PlayBattleMusicHook, Hooks::Order::Early);
     });
 }
 
@@ -231,7 +240,7 @@ BOOL PushAndSignalCombatAttackOfOpportunityBefore(ObjectID oidSelf, ObjectID oid
         return s_OnCombatAttackOfOpportunityResult;
     }
     s_SkipPushAndSignalCombatAttackOfOpportunityBefore = true;
-    
+
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
         return SignalEvent(ev, oidSelf);
@@ -275,8 +284,30 @@ void SetBroadcastedAOOToHook(CNWSCreature *thisPtr, BOOL bValue)
             return;
         }
     }
-    
+
     s_SetBroadcastedAOOToHook->CallOriginal<void>(thisPtr, bValue);
+}
+
+void PlayBattleMusicHook(CNWSAmbientSound *pThis, BOOL bPlay)
+{
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("PLAY", std::to_string(bPlay));
+        return SignalEvent(ev, pThis->m_nArea);
+    };
+
+    if ((pThis->m_bBattlePlaying && !bPlay) || (!pThis->m_bBattlePlaying && bPlay))
+    {
+        if (PushAndSignal("NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE"))
+        {
+            s_PlayBattleMusicHook->CallOriginal<void>(pThis, bPlay);
+        }
+
+        PushAndSignal("NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER");
+    }
+    else
+    {
+        s_PlayBattleMusicHook->CallOriginal<void>(pThis, bPlay);
+    }
 }
 
 }
