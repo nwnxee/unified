@@ -2219,6 +2219,20 @@ Combat Attack of Opportunity Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>If the BEFORE event is skipped the broadcasting creature will still make a tumble skill roll if moving.</dd></dl>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md386"></a>
+Area Play Battle Music Events</h2>
+<ul>
+<li>NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE</li>
+<li>NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The area playing or stopping the battle music.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PLAY </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the area is starting to play battle music, FALSE if stopping.  </td></tr>
+</table>
+<hr  />
 <p><a class="anchor" id="events_events"></a></p>
 </div></td></tr>
 <tr class="memitem:gaa99b0924a97b2a6105f27058c435c510"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa99b0924a97b2a6105f27058c435c510">NWNX_ON_ADD_ASSOCIATE_BEFORE</a> = &quot;NWNX_ON_ADD_ASSOCIATE_BEFORE&quot;</td></tr>
@@ -2875,6 +2889,10 @@ Combat Attack of Opportunity Events</h2>
 <tr class="separator:ga00c27044f510bb160b08c78812fc8953"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5bafdbb857288296912b72b515e7fab9"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5bafdbb857288296912b72b515e7fab9">NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER</a> = &quot;NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER&quot;</td></tr>
 <tr class="separator:ga5bafdbb857288296912b72b515e7fab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeca3c0d553e9e536bd12cf38c30f4952"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaeca3c0d553e9e536bd12cf38c30f4952">NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE</a> = &quot;NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE&quot;</td></tr>
+<tr class="separator:gaeca3c0d553e9e536bd12cf38c30f4952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f2fa537afa0fee07859635991d4eeb9"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga0f2fa537afa0fee07859635991d4eeb9">NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER</a> = &quot;NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER&quot;</td></tr>
+<tr class="separator:ga0f2fa537afa0fee07859635991d4eeb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Events ObjectType Constants</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_objtype"></a></p>
 </div></td></tr>
@@ -2946,13 +2964,13 @@ Combat Attack of Opportunity Events</h2>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02309">nwnx_events.nss:2309</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02321">nwnx_events.nss:2321</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Tue Apr 18 2023 14:46:01 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon May 1 2023 13:56:07 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

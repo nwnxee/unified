@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['persist_3774',['PERSIST',['../nwnx__redis__short_8nss.html#aa69d78d2ff08d08f19e24b4dc68d4326',1,'nwnx_redis_short.nss']]],
-  ['pexpire_3775',['PEXPIRE',['../nwnx__redis__short_8nss.html#adde70c729765e95f861cdddb8193e3ed',1,'nwnx_redis_short.nss']]],
-  ['pexpireat_3776',['PEXPIREAT',['../nwnx__redis__short_8nss.html#aa3dc68f7e42419e4a1d7a3be741e5e26',1,'nwnx_redis_short.nss']]],
-  ['pfadd_3777',['PFADD',['../nwnx__redis__short_8nss.html#a8b3ac5d6eab8f72ee81f1924b90d22a0',1,'nwnx_redis_short.nss']]],
-  ['pfcount_3778',['PFCOUNT',['../nwnx__redis__short_8nss.html#ab90bdda2db7f4dc1e959dfa64ac91996',1,'nwnx_redis_short.nss']]],
-  ['pfmerge_3779',['PFMERGE',['../nwnx__redis__short_8nss.html#a57b7af86b501d3fb1bb921ac824cd95e',1,'nwnx_redis_short.nss']]],
-  ['ping_3780',['PING',['../nwnx__redis__short_8nss.html#ab3a28d39fa8cbe0ed44d2c802ff2797b',1,'nwnx_redis_short.nss']]],
-  ['psetex_3781',['PSETEX',['../nwnx__redis__short_8nss.html#a598092b0e6f3cebb07d749e4615e3da1',1,'nwnx_redis_short.nss']]],
-  ['pttl_3782',['PTTL',['../nwnx__redis__short_8nss.html#aeabea7dfe9a816b3699549a0da0d2b77',1,'nwnx_redis_short.nss']]],
-  ['publish_3783',['PUBLISH',['../nwnx__redis__short_8nss.html#a4d1850c0780722e2aa6e2b373f1f1e62',1,'nwnx_redis_short.nss']]],
-  ['pubsub_3784',['PUBSUB',['../nwnx__redis__short_8nss.html#af497f2f31bf361e09929e1e6399c4b72',1,'nwnx_redis_short.nss']]]
+  ['persist_3776',['PERSIST',['../nwnx__redis__short_8nss.html#aa69d78d2ff08d08f19e24b4dc68d4326',1,'nwnx_redis_short.nss']]],
+  ['pexpire_3777',['PEXPIRE',['../nwnx__redis__short_8nss.html#adde70c729765e95f861cdddb8193e3ed',1,'nwnx_redis_short.nss']]],
+  ['pexpireat_3778',['PEXPIREAT',['../nwnx__redis__short_8nss.html#aa3dc68f7e42419e4a1d7a3be741e5e26',1,'nwnx_redis_short.nss']]],
+  ['pfadd_3779',['PFADD',['../nwnx__redis__short_8nss.html#a8b3ac5d6eab8f72ee81f1924b90d22a0',1,'nwnx_redis_short.nss']]],
+  ['pfcount_3780',['PFCOUNT',['../nwnx__redis__short_8nss.html#ab90bdda2db7f4dc1e959dfa64ac91996',1,'nwnx_redis_short.nss']]],
+  ['pfmerge_3781',['PFMERGE',['../nwnx__redis__short_8nss.html#a57b7af86b501d3fb1bb921ac824cd95e',1,'nwnx_redis_short.nss']]],
+  ['ping_3782',['PING',['../nwnx__redis__short_8nss.html#ab3a28d39fa8cbe0ed44d2c802ff2797b',1,'nwnx_redis_short.nss']]],
+  ['psetex_3783',['PSETEX',['../nwnx__redis__short_8nss.html#a598092b0e6f3cebb07d749e4615e3da1',1,'nwnx_redis_short.nss']]],
+  ['pttl_3784',['PTTL',['../nwnx__redis__short_8nss.html#aeabea7dfe9a816b3699549a0da0d2b77',1,'nwnx_redis_short.nss']]],
+  ['publish_3785',['PUBLISH',['../nwnx__redis__short_8nss.html#a4d1850c0780722e2aa6e2b373f1f1e62',1,'nwnx_redis_short.nss']]],
+  ['pubsub_3786',['PUBSUB',['../nwnx__redis__short_8nss.html#af497f2f31bf361e09929e1e6399c4b72',1,'nwnx_redis_short.nss']]]
 ];
