@@ -13,6 +13,8 @@ namespace Experimental {
         if (!Config::Get<bool>("END_COMBATROUND_AFTER_SPELLCAST", false))
             return;
 
+        LOG_INFO("EXPERIMENTAL: Ending combat rounds after casting a spell.");
+
         static Hooks::Hook s_RemoveSpellAction_hook = Hooks::HookFunction(&CNWSCombatRound::RemoveSpellAction,
             +[](CNWSCombatRound* pThis) -> void
             {
