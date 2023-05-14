@@ -7,8 +7,6 @@ namespace Experimental {
     using namespace NWNXLib;
     using namespace NWNXLib::API;
 
-    uint32_t nCurrentSpellId;
-
     void EndCombatRoundAfterSpellcast() __attribute__((constructor));
     void EndCombatRoundAfterSpellcast()
     {
