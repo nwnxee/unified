@@ -4,4 +4,5 @@ add_plugin(Experimental
     "SuppressPlayerLoginInfo.cpp"
     "UnhardcodeRangerDualWield.cpp"
     "PlayerHitpointsAsPercentage.cpp"
-    "IgnoreModuleVersion.cpp")
+    "IgnoreModuleVersion.cpp"
+    "EndCombatRoundAfterSpellcast.cpp")
