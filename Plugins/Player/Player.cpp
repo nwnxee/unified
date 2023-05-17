@@ -1268,7 +1268,19 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
                         pCreature->UpdateVisibleList();
                     }
 
-                    Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+                    bool bRemoveFromTimeStopExclusionList = true;
+                    auto *pEffectList = &pPlayer->GetGameObject()->m_appliedEffects;
+                    for (int32_t i = 0; i < pEffectList->num && pEffectList->element[i]->m_nType <= Constants::EffectTrueType::TimeStopImmunity; i++)
+                    {
+                        if (pEffectList->element[i]->m_nType == Constants::EffectTrueType::TimeStopImmunity)
+                        {
+                            bRemoveFromTimeStopExclusionList = false;
+                            break;
+                        }
+                    }
+                    if (bRemoveFromTimeStopExclusionList)
+                        Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+
                     Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 2/*Pause*/);
                     uint8_t nActivePauseState = Globals::AppManager()->m_pServerExoApp->GetActivePauseState();
                     pMessage->SendServerToPlayerModule_SetPauseState(nActivePauseState, nActivePauseState > 0);
@@ -1885,7 +1897,7 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
                     pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, 1/*GUI_PANEL_PARTY_INVITE*/, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
                 }
             }
-        }    
+        }
     }
 
     return {};
