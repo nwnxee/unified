@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - Events: added skippable event `NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows skipping a creature provoking attacks of opportunities from enemies.
 - Events: added skippable event `NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows stopping a creature from performing an attack of opportunity against a target.
 - Events: added skippable event `NWNX_ON_AREA_PLAY_BATTLE_MUSIC_{BEFORE|AFTER}` which allows skipping the starting/stopping of an area's battle music.
+- Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
 - Experimental: Added `NWNX_EXPERIMENTAL_END_COMBATROUND_AFTER_SPELLCAST` to end combat rounds right after casting or canceling a spell so that a new spell can be cast immediately after
 
 ##### New Plugins
