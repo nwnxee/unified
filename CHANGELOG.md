@@ -5,23 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
+https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Added
-- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
-- Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
-- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
+- Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).
+- Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition).
+- Tweaks: added `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` which casts all On Hit: Cast Spell item properties on hit, instead of only the first property.
+- Events: added skippable event `NWNX_ON_BROADCAST_SAFE_PROJECTILE_{BEFORE|AFTER}` which fires whenever a projectile VFX is created for ranged weapons and spells.
+- Events: added skippable event `NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows skipping a creature provoking attacks of opportunities from enemies.
+- Events: added skippable event `NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_{BEFORE|AFTER}` which allows stopping a creature from performing an attack of opportunity against a target.
+- Events: added skippable event `NWNX_ON_AREA_PLAY_BATTLE_MUSIC_{BEFORE|AFTER}` which allows skipping the starting/stopping of an area's battle music.
+- Experimental: Added `NWNX_EXPERIMENTAL_END_COMBATROUND_AFTER_SPELLCAST` to end combat rounds right after casting or canceling a spell so that a new spell can be cast immediately after
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
-- Creature: {Get|Set}MaximumBonusAttacks()
-- Player: SendPartyInvite()
-- Item: MoveTo()
+- Object: GetInventoryItemCount()
+- Object: OverrideSpellProjectileVFX()
+- Util: GetStringLevenshteinDistance()
+- Creature: DoCleaveAttack()
+- Creature: {Get|Set}LockOrientationToObject()
+- Creature: BroadcastAttackOfOpportunity()
 
 ### Changed
-- Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first
+- Events: Added event data `TARGET_OBJECT_ID`/`TARGET_POSITION_{X|Y|Z}`/`SPELL_DOMAIN`/`SPELL_SPONTANEOUS`/`SPELL_METAMAGIC`/`PROJECTILE_PATH_TYPE` to `NWNX_ON_BROADCAST_CAST_SPELL_*`
+- ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
+- ***ABI BREAKING:*** Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 
 ### Deprecated
 - N/A
@@ -30,7 +40,24 @@ https://github.com/nwnxee/unified/compare/build8193.35.36...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Tweaks: FixResolveSpecialAttackDamage: fixed a crash involving ranged special attacks interacting oddly with Epic Dodge. 
+- Player: fixed ToggleDM() not working correctly with EffectTimeStopImmunity().
+
+## 8193.35.37
+https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37
+
+### Added
+- Events: added event data `TARGET_OBJECT_ID`, `TARGET_POSITION_X`, `TARGET_POSITION_Y` and `TARGET_POSITION_Z` to the `NWNX_ON_TRAP_SET_*` events
+- Events: added `NEEDS_TO_MOVE` event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable
+- Events: added event data `VERSION_POSTFIX` to event `NWNX_ON_CLIENT_CONNECT_*`
+
+##### New NWScript Functions
+- Creature: {Get|Set}MaximumBonusAttacks()
+- Player: SendPartyInvite()
+- Item: MoveTo()
+
+### Changed
+- Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first
 
 ## 8193.35.36
 https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36

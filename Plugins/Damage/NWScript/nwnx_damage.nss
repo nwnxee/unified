@@ -158,6 +158,7 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData();
 /// @brief Set Attack Event Data
 /// @param data A NWNX_Damage_AttackEventData struct.
 /// @note To use only in the Attack Event Script.
+/// @note Setting iSneakAttack will only change the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 
 /// @brief Deal damage to a target.
@@ -332,6 +333,7 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
 {
     string sFunc = "SetAttackEventData";
 
+    NWNX_PushArgumentInt(data.iSneakAttack);
     NWNX_PushArgumentInt(data.iAttackResult);
     NWNX_PushArgumentInt(data.iCustom19);
     NWNX_PushArgumentInt(data.iCustom18);

@@ -161,6 +161,7 @@ jobs:
         token: "${{ secrets.GITHUB_TOKEN }}"
         tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         prerelease: false
+        draft: false
         generate_release_notes: true
         name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         files: |
@@ -174,6 +175,7 @@ jobs:
         token: "${{ secrets.GITHUB_TOKEN }}"
         tag_name: "latest"
         prerelease: false
+        draft: false
         generate_release_notes: true
         name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
         files: |
