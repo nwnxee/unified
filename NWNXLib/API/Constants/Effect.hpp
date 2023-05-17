@@ -101,10 +101,12 @@ namespace EffectTrueType
         CutsceneImmobile              = 94,
         DefensiveStance               = 95,
         RunScript                     = 96,
+        Pacify                        = 97,
+        TimeStopImmunity              = 98,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 96;
-    static_assert(MAX == RunScript);
+    constexpr int32_t MAX   = 98;
+    static_assert(MAX == TimeStopImmunity);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -204,6 +206,8 @@ namespace EffectTrueType
             "Cutscene Immobile",
             "Defensive Stance",
             "Run Script",
+            "Pacify",
+            "TimeStop Immunity",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];

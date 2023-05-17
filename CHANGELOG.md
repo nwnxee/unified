@@ -41,6 +41,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 
 ### Fixed
 - Tweaks: FixResolveSpecialAttackDamage: fixed a crash involving ranged special attacks interacting oddly with Epic Dodge. 
+- Player: fixed ToggleDM() not working correctly with EffectTimeStopImmunity().
 
 ## 8193.35.37
 https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37
