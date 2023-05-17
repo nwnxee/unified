@@ -50,7 +50,6 @@ static void BroadcastSpellCastHook(CNWSCreature*, uint32_t, uint8_t, uint16_t);
 static int32_t OnEffectAppliedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
 static int32_t DecrementSpellReadyCountHook(CNWSCreature*, uint32_t, uint8_t, uint8_t, uint8_t, uint8_t);
 static BOOL ClearActionHook(CNWSCreature*, CNWSObjectActionNode*, BOOL);
-static BOOL ClearActionHook(CNWSCreature*, CNWSObjectActionNode*, BOOL);
 static uint32_t AIActionCastSpellHook(CNWSCreature*, CNWSObjectActionNode*);
 static void SendFeedbackMessageHook(CNWSCreature*, uint16_t, CNWCCMessageData*, CNWSPlayer*);
 static void BroadcastCounterSpellDataHook(CNWSObject*, CNWSpell*, CNWCCMessageData*);
