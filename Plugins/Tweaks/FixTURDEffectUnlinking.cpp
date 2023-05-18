@@ -67,17 +67,18 @@ void FixTURDEffectUnlinking()
         pCreature->SetOrientation(pTURD->m_vOrientation);
 
         pCreature->CopyScriptVars(&pTURD->m_ScriptVars);
+        pCreature->ReloadJournalEntries();
         pCreature->SetAutoMapData(pTURD->m_nNumAutomapAreas, pTURD->m_poidAutomapAreasList, pTURD->m_pAutoMapTileData);
 
         for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
         {
-            auto *pEffect = new CGameEffect(false);
-            pEffect->CopyEffect(pTURD->m_appliedEffects.element[i]);
-
+            auto *pEffect = pTURD->m_appliedEffects.element[i];
             if (!pEffect->m_bSkipOnLoad && pEffect->GetDurationType() != Constants::EffectDurationType::Equipped)
-                pCreature->ApplyEffect(pEffect, true);
-            else
-                delete pEffect;
+            {
+                auto *pNewEffect = new CGameEffect(false);
+                pNewEffect->CopyEffect(pEffect);
+                pCreature->ApplyEffect(pNewEffect, true);
+            }
         }
 
         while (!pCreature->m_lQueuedActions.IsEmpty())

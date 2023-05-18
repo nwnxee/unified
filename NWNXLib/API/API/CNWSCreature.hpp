@@ -544,6 +544,7 @@ struct CNWSCreature : CNWSObject
     void UpdatePersonalSpace();
     void UpdateAppearanceDependantInfo();
     CNWSJournal * GetJournal();
+    void ReloadJournalEntries();
     CNWSBarter * GetBarterInfo(BOOL bCreateIfNonExistant = true);
     BOOL StartBarter(OBJECT_ID oidTarget, OBJECT_ID oidItem, BOOL bFromActionQueue = false);
     void ClearHostileActionsVersus(CNWSCreature * pCreature);
