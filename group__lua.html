@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.35.37</span>
+								&#160;<span id="projectnumber">8193.35.40</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('group__lua.html',''); initResizable();
 <div class="contents">
 
 
-<h3><a id="lua"></a>Readme</h3><div class="textblock">Allows users to call Lua code with NWScript binding.<h2><a class="anchor" id="autotoc_md445"></a>
+<h3><a id="lua"></a>Readme</h3><div class="textblock">Allows users to call Lua code with NWScript binding.<h2><a class="anchor" id="autotoc_md450"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -121,9 +121,9 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">RUNSCRIPT_TABLE </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone"><em>none</em>  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md446"></a>
+<h2><a class="anchor" id="autotoc_md451"></a>
 Quick start</h2>
-<h3><a class="anchor" id="autotoc_md447"></a>
+<h3><a class="anchor" id="autotoc_md452"></a>
 Docker</h3>
 <ol type="1">
 <li>Include <code><a class="el" href="nwnx__lua_8nss.html">nwnx_lua.nss</a></code> in your module</li>
@@ -135,7 +135,7 @@ Docker</h3>
 </div><!-- fragment --></li>
 <li>Continue from step 6 in the list below.</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md448"></a>
+<h3><a class="anchor" id="autotoc_md453"></a>
 Native</h3>
 <ol type="1">
 <li>Install <b>LuaJIT</b>, i.e <code>sudo apt-get install luajit libluajit-5.1-dev</code></li>
@@ -151,7 +151,7 @@ Native</h3>
 <li><code>Have some fun with your chat command interpreter, every command you want evaled by Lua must start with</code>/c <code>, if you want a return value start with</code>/c =<code>or</code>/c return <code></code></li>
 <li><code>Look at the Lua scripts provided for some examples. The different ways to use this plugin are a lot, now you have NWScript binding in a interpred language, Lua, so you can do things like change a Lua script and hot reload it without even restart the module; for an example look at the</code>loadscript()` function in the preload script.</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md449"></a>
+<h2><a class="anchor" id="autotoc_md454"></a>
 Documentation</h2>
 <p>This plugin let you execute Lua code inside <em>NWscript</em> via two functions <a class="el" href="group__lua.html#ga1df329114c0aa0ee95ee8fb43c3de63b" title="Evaluate LUA code.">NWNX_Lua_EvalVoid()</a> and <a class="el" href="group__lua.html#ga18d5da03291e7b263d9e4c40f4093995" title="Evaluate LUA code and return the output.">NWNX_Lua_Eval()</a>, the second one returning (as string) the result of the Lua code execution. With the <a class="el" href="group__lua.html#ga5a16247c28d75f20ccdefbd517cf557b" title="Generate events in NWScript to receive on the Lua side.">NWNX_Lua_RunEvent()</a> function you can generate events in NWScript, receive them on the Lua side and executing all the Lua functions registered to listen to that event in order of priority. For details on events just look at the three <code>*Event()</code> functions in <code>preload.lua</code>. Lastly the <em>run script hook</em> permit to run a Lua function before a script is executed in the module, with returning values from the function having special effects: from skipping the script execution to being treated as a StartingConditional() result (for details see the configuration section).</p>
 <p>In the Lua space all the basics NWScript functions are already defined, that by simply requiring the file <code>nwn.lua</code>.</p>
@@ -175,7 +175,7 @@ Documentation</h2>
 <p><b>Important</b>: dont call <em>directly</em> <b>any</b> NWScript function in the preload script or any other directly required script, so avoid writing lines like SetLocalString(...), GetModule() etc, you can write them inside function definitions but, again, dont call these functions directly during preload. The preload script is loaded during the start of nwserver and before the module is even loaded. So any direct call to NWScript functions during preload time will crash the server.</p>
 <p>The trick is to load/require the others scripts in the module_load event, you can see how in the preload script.</p>
 <p>The entire system is configurable ad hoc, if you have time you can even change the name of any NWScript function, use OOP programming, i.e using Lua classes instead of numbers for objects; with LuaJIT and FFi you can even directly access C structures.</p>
-<h2><a class="anchor" id="autotoc_md450"></a>
+<h2><a class="anchor" id="autotoc_md455"></a>
 Installation and configuration</h2>
 <p>1) Just import in your module the two scripts in the NWScript directory. 2) Copy the <em>lua</em> directory inside your NWN user directory (usually <code>.local/share/Neverwinter Nights/</code>)</p>
 <p>Here is the complete list of the configuration environment variables:</p>
@@ -184,11 +184,11 @@ Installation and configuration</h2>
 <p><b>NWNX_LUA_EVENT_FUNCTION</b> mandatory: you can use the event system for generate events inside NWScript, via the function <code>NWNX_Lua_RunEvent</code> provided in <a class="el" href="nwnx__lua_8nss.html">nwnx_lua.nss</a>. These events can be consumend by a Lua function registered to observe the events, the default is <code>RunEvent()</code>, and it's already defined in the preload script. If you dont want to use the event system just dont call <code><a class="el" href="group__lua.html#ga5a16247c28d75f20ccdefbd517cf557b" title="Generate events in NWScript to receive on the Lua side.">NWNX_Lua_RunEvent()</a></code> on the NWScript side.</p>
 <p><b>NWNX_LUA_OBJSELF_FUNCTION</b> optional and advanced: in the Lua global namespace there is already a OBJECT_SELF global variable synced by the plugin at the right integer value following the context change. If you need to be more OOP and don't want to use integers for objects you have to change first the <code>RunEvent</code> function, because is accepting integers as objects. So you have to transform them in real objects inside the <code>RunEvent</code> function, just before the function call the observers callbacks. Second you have to set this configuration variable to the name of the function responsible for setting OBJECT_SELF to an object. The function will be called by the plugin with an integer value (the value of OBJECT_SELF) as argument when needed, i.e. when the context change. There is an example of <code>SetObjectSelf()</code> commented out in the preload script, note: it does not work by itself, you have to write oop code (i.e. a class for objects) before setting the configuration and uncommenting/modifying it. If this configuration is defined the function <b>must</b> be present in the preload script. Default: none.</p>
 <p><b>NWNX_LUA_RUNSCRIPT_TABLE</b> optional: this is the name of the <em>global</em> Lua <b>table</b> containing the functions called in the <em>run script hook</em>. A function with the same name of the script executed in the module will be run before the script itself. If the function returns something different from <code>nil</code> (i.e.: string, numbers or booleans) the script execution will be skipped, if the function returns a Lua boolean (<code>true</code> or <code>false</code>) it's treated like a return value from a StartingConditional(). For example if you have the script 'mod_on_chat.nss' in your module <em>onchat</em> event, if this configuration parameter is set to <code>Scripts</code>, when the <code>mod_on_chat</code> script is called the plugin search for a Lua function <code>Scripts.mod_on_chat()</code>. If the function is found it will be called before the 'mod_on_chat' script and the returned value determine if the original script is to be skipped. No argument is passed to the function, the context object is already represented by OBJECT_SELF. If this parameter is not defined no <em>run script hook</em> is set up. If this parameter is defined the basic table definition <b>must</b> be present in the preload script, a line like this one is enough: <code>Scripts = {}</code> all the other functions of the run script table could be defined after the preloading phase, obviously apart from the mod_load function if you want one. Default: none. <b>WARNING</b> dont set this config with any other <em>RunScript</em> hook in place, i.e. if you have the ENABLE_SCRIPTS of the Profiler plugin enabled dont set this config or you will have a server crash at startup. For the same reason enabling this setting makes this plugin not compatible with the Mono Plugin.</p>
-<h2><a class="anchor" id="autotoc_md451"></a>
+<h2><a class="anchor" id="autotoc_md456"></a>
 Notes on Compilation</h2>
 <p>NWNX_Lua is configured to compile first against <em>LuaJIT</em>, and only if LuaJIT (and its library) cannot be find search for a regular Lua library. So if you want to compile against LuaJIT just install it, otherwise install a regular Lua with liblua-dev provided by your distro; something like <code>sudo apt-get install luajit libluajit-5.1-dev</code> for luajit or <code>sudo apt-get install lua5.3 liblua5.3-dev</code> for regular Lua.</p>
 <p>I highly reccomend to use or try LuaJIT, it is really fast and has the FFI library for C bindings. There is a script provided ('compat.lua') that try to mantain compatibility with differents Lua versions, it's tested with LuaJIT and Lua 5.3 but should work with Lua 5.2 and Lua 5.1.</p>
-<h2><a class="anchor" id="autotoc_md452"></a>
+<h2><a class="anchor" id="autotoc_md457"></a>
 Note on LuaJIT and extensions</h2>
 <p>If you want to use extensions in <em>LuaJIT</em> I highly reccomend to use <em>luarocks</em> to install them. To install and compile <em>luarocks</em> for <em>LuaJIT</em> downlowd it and compile/install with this two commands: 1) <code>./configure --lua-suffix=jit --with-lua-include=/usr/include/luajit-2.0</code> 2) <code>make build &amp;&amp; sudo make install</code> </p>
 </div><table class="memberdecls">
@@ -312,7 +312,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed May 17 2023 15:59:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu May 18 2023 18:55:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

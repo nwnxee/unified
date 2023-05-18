@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.35.37</span>
+								&#160;<span id="projectnumber">8193.35.40</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('md_CONTRIBUTING.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Thank you for your interest in contributing to NWNX:EE, all contribution are welcome. If adding a new plugin or extending an existing one, feel free to send a PR and we can hash out any details in review. For changes to core, please discuss it with us first, either through discord or on an RFC issue.</p>
-<h2><a class="anchor" id="autotoc_md173"></a>
+<h2><a class="anchor" id="autotoc_md178"></a>
 Plugins</h2>
 <p>All of NWNX useful functionality comes from plugins. Plugins typically expose additional NWN engine functionality to nwscript, but also sometimes provide an interface to external tools (SQL, Redis, etc) or languages (Lua, DotNET), or simply expose various events to the developer. Adding a new plugin is no big deal, but please check first if your new functionality would be better suited in one of the existing plugins.</p>
 <p>Many plugins are structured as extension methods on a given object: Object, Creature, Player, Area, Item, etc. By convention, these functions will always take the object they are operating on as the first parameter. Try to follow this convention in other plugins as well, if it makes sense.</p>
@@ -111,7 +111,7 @@ Plugins</h2>
 <li>If you are adding a new backend for an existing plugin (e.g. alternative SpellChecker library), be sure there's no compile- or load-time dependencies unless someone explicitly opts in to use it. This usually means using <code>dlsym()</code> to get function pointers from the library.</li>
 <li>If you are exposing additional events in an existing plugin, do not hook them until the user has indicated they want to use them (either via an env. variable or nwscript call). See the Events plugin for examples.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md174"></a>
+<h2><a class="anchor" id="autotoc_md179"></a>
 C++ Guidelines</h2>
 <ol type="1">
 <li>Avoid unnecessary abstractions.</li>
@@ -141,7 +141,7 @@ C++ Guidelines</h2>
 <li>Newline at the end of file</li>
 <li>C++ header files have .hpp extension. Source files have .cpp extension.</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md175"></a>
+<h2><a class="anchor" id="autotoc_md180"></a>
 NWScript Guidelines</h2>
 <p>We use DoxyGen to automatically generate our documentation, please have a look at existing .nss files to familiarize yourself with the layout of the NWNX:EE NWScript files.</p>
 <p>When exposing a function to nwscript, name it as <code>NWNX_&lt;PluginName&gt;_&lt;FunctionName&gt;()</code>. If possible, the function should be implemented in <code>&lt;PluginName&gt;.cpp</code>, with the same <code>&lt;FunctionName&gt;</code> as specified in nwscript, and the function name string passed to core should match that as well.</p>
@@ -153,7 +153,7 @@ NWScript Guidelines</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed May 17 2023 15:59:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu May 18 2023 18:55:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

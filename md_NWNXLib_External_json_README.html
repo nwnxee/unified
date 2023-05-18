@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.35.37</span>
+								&#160;<span id="projectnumber">8193.35.40</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('md_NWNXLib_External_json_README.html',
 <li><a href="#notes">Notes</a></li>
 <li><a href="#execute-unit-tests">Execute unit tests</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md198"></a>
+<h2><a class="anchor" id="autotoc_md203"></a>
 Design goals</h2>
 <p>There are myriads of <a href="https://json.org">JSON</a> libraries out there, and each may even have its reason to exist. Our class had these design goals:</p>
 <ul>
@@ -147,10 +147,10 @@ Design goals</h2>
 <li><b>Speed</b>. There are certainly <a href="https://github.com/miloyip/nativejson-benchmark#parsing-time">faster JSON libraries</a> out there. However, if your goal is to speed up your development by adding JSON support with a single header, then this library is the way to go. If you know how to use a <code>std::vector</code> or <code>std::map</code>, you are already set.</li>
 </ul>
 <p>See the <a href="https://github.com/nlohmann/json/blob/master/.github/CONTRIBUTING.md#please-dont">contribution guidelines</a> for more information.</p>
-<h2><a class="anchor" id="autotoc_md199"></a>
+<h2><a class="anchor" id="autotoc_md204"></a>
 Sponsors</h2>
 <p>You can sponsor this library at <a href="https://github.com/sponsors/nlohmann">GitHub Sponsors</a>.</p>
-<h3><a class="anchor" id="autotoc_md200"></a>
+<h3><a class="anchor" id="autotoc_md205"></a>
 :label: Named Sponsors</h3>
 <ul>
 <li><a href="https://github.com/reFX-Mike">Michael Hartmann</a></li>
@@ -160,7 +160,7 @@ Sponsors</h2>
 <li><a href="https://github.com/ciroque">Steve Wagner</a></li>
 </ul>
 <p>Thanks everyone!</p>
-<h2><a class="anchor" id="autotoc_md201"></a>
+<h2><a class="anchor" id="autotoc_md206"></a>
 Integration</h2>
 <p><a href="https://github.com/nlohmann/json/blob/develop/single_include/nlohmann/json.hpp"><code>json.hpp</code></a> is the single required file in <code>single_include/nlohmann</code> or <a href="https://github.com/nlohmann/json/releases">released here</a>. You need to add</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;nlohmann/json.hpp&gt;</span></div>
@@ -169,10 +169,10 @@ Integration</h2>
 <div class="line"><span class="keyword">using</span> json = nlohmann::json;</div>
 </div><!-- fragment --><p>to the files you want to process JSON and set the necessary switches to enable C++11 (e.g., <code>-std=c++11</code> for GCC and Clang).</p>
 <p>You can further use file <a href="https://github.com/nlohmann/json/blob/develop/include/nlohmann/json_fwd.hpp"><code>include/nlohmann/json_fwd.hpp</code></a> for forward-declarations. The installation of json_fwd.hpp (as part of cmake's install step), can be achieved by setting <code>-DJSON_MultipleHeaders=ON</code>.</p>
-<h3><a class="anchor" id="autotoc_md202"></a>
+<h3><a class="anchor" id="autotoc_md207"></a>
 CMake</h3>
 <p>You can also use the <code>nlohmann_json::nlohmann_json</code> interface target in CMake. This target populates the appropriate usage requirements for <code>INTERFACE_INCLUDE_DIRECTORIES</code> to point to the appropriate include directories and <code>INTERFACE_COMPILE_FEATURES</code> for the necessary C++11 flags.</p>
-<h4><a class="anchor" id="autotoc_md203"></a>
+<h4><a class="anchor" id="autotoc_md208"></a>
 External</h4>
 <p>To use this library from a CMake project, you can locate it directly with <code>find_package()</code> and use the namespaced imported target from the generated package configuration:</p>
 <div class="fragment"><div class="line"># CMakeLists.txt</div>
@@ -182,7 +182,7 @@ External</h4>
 <div class="line">...</div>
 <div class="line">target_link_libraries(foo PRIVATE nlohmann_json::nlohmann_json)</div>
 </div><!-- fragment --><p>The package configuration file, <code>nlohmann_jsonConfig.cmake</code>, can be used either from an install tree or directly out of the build tree.</p>
-<h4><a class="anchor" id="autotoc_md204"></a>
+<h4><a class="anchor" id="autotoc_md209"></a>
 Embedded</h4>
 <p>To embed the library directly into an existing CMake project, place the entire source tree in a subdirectory and call <code>add_subdirectory()</code> in your <code>CMakeLists.txt</code> file:</p>
 <div class="fragment"><div class="line"># Typically you don&#39;t care so much for a third party library&#39;s tests to be</div>
@@ -202,7 +202,7 @@ Embedded</h4>
 <div class="line">add_library(foo ...)</div>
 <div class="line">...</div>
 <div class="line">target_link_libraries(foo PRIVATE nlohmann_json::nlohmann_json)</div>
-</div><!-- fragment --><p><a class="anchor" id="autotoc_md205"></a></p><h5>Embedded (FetchContent)</h5>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md210"></a></p><h5>Embedded (FetchContent)</h5>
 <p>Since CMake v3.11, <a href="https://cmake.org/cmake/help/v3.11/module/FetchContent.html">FetchContent</a> can be used to automatically download the repository as a dependency at configure type.</p>
 <p>Example: </p><div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line"> </div>
@@ -218,7 +218,7 @@ Embedded</h4>
 <div class="line"> </div>
 <div class="line">target_link_libraries(foo PRIVATE nlohmann_json::nlohmann_json)</div>
 </div><!-- fragment --><p><b>Note</b>: The repository <a href="https://github.com/nlohmann/json">https://github.com/nlohmann/json</a> download size is huge. It contains all the dataset used for the benchmarks. You might want to depend on a smaller repository. For instance, you might want to replace the URL above by <a href="https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent">https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent</a></p>
-<h4><a class="anchor" id="autotoc_md206"></a>
+<h4><a class="anchor" id="autotoc_md211"></a>
 Supporting Both</h4>
 <p>To allow your project to support either an externally supplied or an embedded JSON library, you can use a pattern akin to the following:</p>
 <div class="fragment"><div class="line"># Top level CMakeLists.txt</div>
@@ -243,7 +243,7 @@ Supporting Both</h4>
 <div class="line">endif()</div>
 <div class="line">...</div>
 </div><!-- fragment --><p><code>thirdparty/nlohmann_json</code> is then a complete copy of this source tree.</p>
-<h3><a class="anchor" id="autotoc_md207"></a>
+<h3><a class="anchor" id="autotoc_md212"></a>
 Package Managers</h3>
 <p>:beer: If you are using OS X and <a href="https://brew.sh">Homebrew</a>, just type <code>brew tap nlohmann/json</code> and <code>brew install nlohmann-json</code> and you're set. If you want the bleeding edge rather than the latest release, use <code>brew install nlohmann-json --HEAD</code>.</p>
 <p>If you are using the <a href="https://mesonbuild.com">Meson Build System</a>, add this source tree as a <a href="https://mesonbuild.com/Subprojects.html#using-a-subproject">meson subproject</a>. You may also use the <code>include.zip</code> published in this project's <a href="https://github.com/nlohmann/json/releases">Releases</a> to reduce the size of the vendored source tree. Alternatively, you can get a wrap file by downloading it from <a href="https://wrapdb.mesonbuild.com/nlohmann_json">Meson WrapDB</a>, or simply use <code>meson wrap install nlohmann_json</code>. Please see the meson project for any issues regarding the packaging.</p>
@@ -265,16 +265,16 @@ Package Managers</h3>
 <div class="line">    NAME nlohmann_json</div>
 <div class="line">    GITHUB_REPOSITORY nlohmann/json</div>
 <div class="line">    VERSION 3.9.1)</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md208"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md213"></a>
 Pkg-config</h3>
 <p>If you are using bare Makefiles, you can use <code>pkg-config</code> to generate the include flags that point to where the library is installed:</p>
 <div class="fragment"><div class="line">pkg-config nlohmann_json --cflags</div>
 </div><!-- fragment --><p>Users of the Meson build system will also be able to use a system wide library, which will be found by <code>pkg-config</code>:</p>
 <div class="fragment"><div class="line">json = dependency(&#39;nlohmann_json&#39;, required: true)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md214"></a>
 Examples</h2>
 <p>Beside the examples below, you may want to check the <a href="https://nlohmann.github.io/json/">documentation</a> where each function contains a separate code example (e.g., check out <a href="https://nlohmann.github.io/json/api/basic_json/emplace/"><code>emplace()</code></a>). All <a href="https://github.com/nlohmann/json/tree/develop/doc/examples">example files</a> can be compiled and executed on their own (e.g., file <a href="https://github.com/nlohmann/json/blob/develop/doc/examples/emplace.cpp">emplace.cpp</a>).</p>
-<h3><a class="anchor" id="autotoc_md210"></a>
+<h3><a class="anchor" id="autotoc_md215"></a>
 JSON as first-class data type</h3>
 <p>Here are some examples to give you an idea how to use the class.</p>
 <p>Assume you want to create the JSON object</p>
@@ -342,9 +342,9 @@ JSON as first-class data type</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// a way to express an _array_ of key/value pairs [[&quot;currency&quot;, &quot;USD&quot;], [&quot;value&quot;, 42.99]]</span></div>
 <div class="line">json array_not_object = json::array({ {<span class="stringliteral">&quot;currency&quot;</span>, <span class="stringliteral">&quot;USD&quot;</span>}, {<span class="stringliteral">&quot;value&quot;</span>, 42.99} });</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md211"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md216"></a>
 Serialization / Deserialization</h3>
-<h4><a class="anchor" id="autotoc_md212"></a>
+<h4><a class="anchor" id="autotoc_md217"></a>
 To/from strings</h4>
 <p>You can create a JSON value (deserialization) by appending <code>_json</code> to a string literal:</p>
 <div class="fragment"><div class="line"><span class="comment">// create object from string literal</span></div>
@@ -391,7 +391,7 @@ To/from strings</h4>
 <div class="line">std::cout &lt;&lt; j_string &lt;&lt; <span class="stringliteral">&quot; == &quot;</span> &lt;&lt; serialized_string &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p><a href="https://nlohmann.github.io/json/api/basic_json/dump/"><code>.dump()</code></a> returns the originally stored string value.</p>
 <p>Note the library only supports UTF-8. When you store strings with different encodings in the library, calling <a href="https://nlohmann.github.io/json/api/basic_json/dump/"><code>dump()</code></a> may throw an exception unless <code>json::error_handler_t::replace</code> or <code>json::error_handler_t::ignore</code> are used as error handlers.</p>
-<h4><a class="anchor" id="autotoc_md213"></a>
+<h4><a class="anchor" id="autotoc_md218"></a>
 To/from streams (e.g. files, string streams)</h4>
 <p>You can also use streams to serialize and deserialize:</p>
 <div class="fragment"><div class="line"><span class="comment">// deserialize from standard input</span></div>
@@ -413,7 +413,7 @@ To/from streams (e.g. files, string streams)</h4>
 <div class="line">std::ofstream o(<span class="stringliteral">&quot;pretty.json&quot;</span>);</div>
 <div class="line">o &lt;&lt; std::setw(4) &lt;&lt; j &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p>Please note that setting the exception bit for <code>failbit</code> is inappropriate for this use case. It will result in program termination due to the <code>noexcept</code> specifier in use.</p>
-<h4><a class="anchor" id="autotoc_md214"></a>
+<h4><a class="anchor" id="autotoc_md219"></a>
 Read from iterator range</h4>
 <p>You can also parse JSON from an iterator range; that is, from any container accessible by iterators whose <code>value_type</code> is an integral type of 1, 2 or 4 bytes, which will be interpreted as UTF-8, UTF-16 and UTF-32 respectively. For instance, a <code>std::vector&lt;std::uint8_t&gt;</code>, or a <code>std::list&lt;std::uint16_t&gt;</code>:</p>
 <div class="fragment"><div class="line">std::vector&lt;std::uint8_t&gt; v = {<span class="charliteral">&#39;t&#39;</span>, <span class="charliteral">&#39;r&#39;</span>, <span class="charliteral">&#39;u&#39;</span>, <span class="charliteral">&#39;e&#39;</span>};</div>
@@ -421,7 +421,7 @@ Read from iterator range</h4>
 </div><!-- fragment --><p>You may leave the iterators for the range [begin, end):</p>
 <div class="fragment"><div class="line">std::vector&lt;std::uint8_t&gt; v = {<span class="charliteral">&#39;t&#39;</span>, <span class="charliteral">&#39;r&#39;</span>, <span class="charliteral">&#39;u&#39;</span>, <span class="charliteral">&#39;e&#39;</span>};</div>
 <div class="line">json j = json::parse(v);</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md215"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md220"></a>
 Custom data source</h4>
 <p>Since the parse function accepts arbitrary iterator ranges, you can provide your own data sources by implementing the <code>LegacyInputIterator</code> concept.</p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>MyContainer {</div>
@@ -464,7 +464,7 @@ Custom data source</h4>
 <div class="line">    MyContainer c;</div>
 <div class="line">    json j = json::parse(c);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md216"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md221"></a>
 SAX interface</h4>
 <p>The library uses a SAX-like interface with the following functions:</p>
 <div class="fragment"><div class="line"><span class="comment">// called when null is parsed</span></div>
@@ -503,7 +503,7 @@ SAX interface</h4>
 <li>Call <code>bool json::sax_parse(input, &amp;my_sax)</code>; where the first parameter can be any input like a string or an input stream and the second parameter is a pointer to your SAX interface.</li>
 </ol>
 <p>Note the <code>sax_parse</code> function only returns a <code>bool</code> indicating the result of the last executed SAX event. It does not return a <code>json</code> value - it is up to you to decide what to do with the SAX events. Furthermore, no exceptions are thrown in case of a parse error - it is up to you what to do with the exception object passed to your <code>parse_error</code> implementation. Internally, the SAX interface is used for the DOM parser (class <code>json_sax_dom_parser</code>) as well as the acceptor (<code>json_sax_acceptor</code>), see file <a href="https://github.com/nlohmann/json/blob/develop/include/nlohmann/detail/input/json_sax.hpp"><code>json_sax.hpp</code></a>.</p>
-<h3><a class="anchor" id="autotoc_md217"></a>
+<h3><a class="anchor" id="autotoc_md222"></a>
 STL-like access</h3>
 <p>We designed the JSON class to behave just like an STL container. In fact, it satisfies the <a href="https://en.cppreference.com/w/cpp/named_req/ReversibleContainer"><b>ReversibleContainer</b></a> requirement.</p>
 <div class="fragment"><div class="line"><span class="comment">// create an array using push_back</span></div>
@@ -587,7 +587,7 @@ STL-like access</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// delete an entry</span></div>
 <div class="line">o.erase(<span class="stringliteral">&quot;foo&quot;</span>);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md218"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md223"></a>
 Conversion from STL containers</h3>
 <p>Any sequence container (<code>std::array</code>, <code>std::vector</code>, <code>std::deque</code>, <code>std::forward_list</code>, <code>std::list</code>) whose values can be used to construct JSON values (e.g., integers, floating point numbers, Booleans, string types, or again STL containers described in this section) can be used to create a JSON array. The same holds for similar associative containers (<code>std::set</code>, <code>std::multiset</code>, <code>std::unordered_set</code>, <code>std::unordered_multiset</code>), but in these cases the order of the elements of the array depends on how the elements are ordered in the respective STL container.</p>
 <div class="fragment"><div class="line">std::vector&lt;int&gt; c_vector {1, 2, 3, 4};</div>
@@ -641,7 +641,7 @@ Conversion from STL containers</h3>
 <div class="line">std::unordered_multimap&lt;std::string, bool&gt; c_ummap { {<span class="stringliteral">&quot;one&quot;</span>, <span class="keyword">true</span>}, {<span class="stringliteral">&quot;two&quot;</span>, <span class="keyword">true</span>}, {<span class="stringliteral">&quot;three&quot;</span>, <span class="keyword">false</span>}, {<span class="stringliteral">&quot;three&quot;</span>, <span class="keyword">true</span>} };</div>
 <div class="line">json j_ummap(c_ummap); <span class="comment">// only one entry for key &quot;three&quot; is used</span></div>
 <div class="line"><span class="comment">// maybe {&quot;one&quot;: true, &quot;two&quot;: true, &quot;three&quot;: true}</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md219"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md224"></a>
 JSON Pointer and JSON Patch</h3>
 <p>The library supports <b>JSON Pointer</b> (<a href="https://tools.ietf.org/html/rfc6901">RFC 6901</a>) as alternative means to address structured values. On top of this, <b>JSON Patch</b> (<a href="https://tools.ietf.org/html/rfc6902">RFC 6902</a>) allows to describe differences between two JSON values - effectively allowing patch and diff operations known from Unix.</p>
 <div class="fragment"><div class="line"><span class="comment">// a JSON value</span></div>
@@ -675,7 +675,7 @@ JSON Pointer and JSON Patch</h3>
 <div class="line"><span class="comment">//   { &quot;op&quot;: &quot;remove&quot;,&quot;path&quot;: &quot;/hello&quot; },</span></div>
 <div class="line"><span class="comment">//   { &quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/foo&quot;, &quot;value&quot;: &quot;bar&quot; }</span></div>
 <div class="line"><span class="comment">// ]</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md220"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md225"></a>
 JSON Merge Patch</h3>
 <p>The library supports <b>JSON Merge Patch</b> (<a href="https://tools.ietf.org/html/rfc7386">RFC 7386</a>) as a patch format. Instead of using JSON Pointer (see above) to specify values to be manipulated, it describes the changes using a syntax that closely mimics the document being modified.</p>
 <div class="fragment"><div class="line"><span class="comment">// a JSON value</span></div>
@@ -703,7 +703,7 @@ JSON Merge Patch</h3>
 <div class="line"><span class="comment">//    &quot;d&quot;: &quot;e&quot;</span></div>
 <div class="line"><span class="comment">//  }</span></div>
 <div class="line"><span class="comment">// }</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md221"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md226"></a>
 Implicit conversions</h3>
 <p>Supported types can be implicitly converted to JSON values.</p>
 <p>It is recommended to <b>NOT USE</b> implicit conversions <b>FROM</b> a JSON value. You can find more details about this recommendation <a href="https://www.github.com/nlohmann/json/issues/958">here</a>. You can switch off implicit conversions by defining <code>JSON_USE_IMPLICIT_CONVERSIONS</code> to <code>0</code> before including the <code>json.hpp</code> header. When using CMake, you can also achieve this by setting the option <code>JSON_ImplicitConversions</code> to <code>OFF</code>.</p>
@@ -739,7 +739,7 @@ Implicit conversions</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">char</span> ch = <span class="charliteral">&#39;A&#39;</span>;                       <span class="comment">// ASCII value 65</span></div>
 <div class="line">json j_default = ch;                 <span class="comment">// stores integer number 65</span></div>
 <div class="line">json j_string = std::string(1, ch);  <span class="comment">// stores string &quot;A&quot;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md222"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md227"></a>
 Arbitrary types conversions</h3>
 <p>Every type can be serialized in JSON, not just STL containers and scalar types. Usually, you would do something along those lines:</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>ns {</div>
@@ -782,7 +782,7 @@ Arbitrary types conversions</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// that&#39;s it</span></div>
 <div class="line">assert(p == p2);</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md223"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md228"></a>
 Basic usage</h4>
 <p>To make this work with one of your types, you only need to provide two functions:</p>
 <div class="fragment"><div class="line"><span class="keyword">using</span> nlohmann::json;</div>
@@ -807,7 +807,7 @@ Basic usage</h4>
 <li>In function <code>from_json</code>, use function <a href="https://nlohmann.github.io/json/api/basic_json/at/"><code>at()</code></a> to access the object values rather than <code>operator[]</code>. In case a key does not exist, <code>at</code> throws an exception that you can handle, whereas <code>operator[]</code> exhibits undefined behavior.</li>
 <li>You do not need to add serializers or deserializers for STL types like <code>std::vector</code>: the library already implements these.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md224"></a>
+<h4><a class="anchor" id="autotoc_md229"></a>
 Simplify your life with macros</h4>
 <p>If you just want to serialize/deserialize some structs, the <code>to_json</code>/<code>from_json</code> functions can be a lot of boilerplate.</p>
 <p>There are two macros to make your life easier as long as you (1) want to use a JSON object as serialization and (2) want to use the member variable names as object keys in that object:</p>
@@ -816,7 +816,7 @@ Simplify your life with macros</h4>
 <li><code>NLOHMANN_DEFINE_TYPE_INTRUSIVE(name, member1, member2, ...)</code> is to be defined inside of the class/struct to create code for. This macro can also access private members.</li>
 </ul>
 <p>In both macros, the first parameter is the name of the class/struct, and all remaining parameters name the members.</p>
-<p><a class="anchor" id="autotoc_md225"></a></p><h5>Examples</h5>
+<p><a class="anchor" id="autotoc_md230"></a></p><h5>Examples</h5>
 <p>The <code>to_json</code>/<code>from_json</code> functions for the <code>person</code> struct above can be created with:</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>ns {</div>
 <div class="line">    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(person, name, address, age)</div>
@@ -833,7 +833,7 @@ Simplify your life with macros</h4>
 <div class="line">        NLOHMANN_DEFINE_TYPE_INTRUSIVE(address, street, housenumber, postcode)</div>
 <div class="line">    };</div>
 <div class="line">}</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md226"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md231"></a>
 How do I convert third-party types?</h4>
 <p>This requires a bit more advanced technique. But first, let's see how this conversion mechanism works:</p>
 <p>The library uses <b>JSON Serializers</b> to convert types to json. The default serializer for <code>nlohmann::json</code> is <code>nlohmann::adl_serializer</code> (ADL means <a href="https://en.cppreference.com/w/cpp/language/adl">Argument-Dependent Lookup</a>).</p>
@@ -873,7 +873,7 @@ How do I convert third-party types?</h4>
 <div class="line">        }</div>
 <div class="line">    };</div>
 <div class="line">}</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md227"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md232"></a>
 How can I use &lt;tt&gt;get()&lt;/tt&gt; for non-default constructible/non-copyable types?</h4>
 <p>There is a way, if your type is <a href="https://en.cppreference.com/w/cpp/named_req/MoveConstructible">MoveConstructible</a>. You will need to specialize the <code>adl_serializer</code> as well, but with a special <code>from_json</code> overload:</p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>move_only_type {</div>
@@ -902,7 +902,7 @@ How can I use &lt;tt&gt;get()&lt;/tt&gt; for non-default constructible/non-copya
 <div class="line">        }</div>
 <div class="line">    };</div>
 <div class="line">}</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md228"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md233"></a>
 Can I write my own serializer? (Advanced use)</h4>
 <p>Yes. You might want to take a look at <a href="https://github.com/nlohmann/json/blob/develop/test/src/unit-udt.cpp"><code>unit-udt.cpp</code></a> in the test suite, to see a few examples.</p>
 <p>If you write your own serializer, you'll need to do a few things:</p>
@@ -949,7 +949,7 @@ Can I write my own serializer? (Advanced use)</h4>
 <div class="line">      value = j.template get&lt;T&gt;(); <span class="comment">// oops!</span></div>
 <div class="line">    }</div>
 <div class="line">};</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md229"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md234"></a>
 Specializing enum conversion</h3>
 <p>By default, enum values are serialized to JSON as integers. In some cases this could result in undesired behavior. If an enum is modified or re-ordered after data has been serialized to JSON, the later de-serialized JSON data may be undefined or a different enum value than was originally intended.</p>
 <p>It is possible to more precisely specify how a given enum is mapped to and from JSON as shown below:</p>
@@ -989,7 +989,7 @@ Specializing enum conversion</h3>
 <li>When using <code>get&lt;ENUM_TYPE&gt;()</code>, undefined JSON values will default to the first pair specified in your map. Select this default pair carefully.</li>
 <li>If an enum or JSON value is specified more than once in your map, the first matching occurrence from the top of the map will be returned when converting to or from JSON.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md230"></a>
+<h3><a class="anchor" id="autotoc_md235"></a>
 Binary formats (BSON, CBOR, MessagePack, and UBJSON)</h3>
 <p>Though JSON is a ubiquitous data format, it is not a very compact format suitable for data exchange, for instance over a network. Hence, the library supports&#160;<a href="http://bsonspec.org">BSON</a> (Binary JSON), <a href="https://cbor.io">CBOR</a> (Concise Binary Object Representation), <a href="https://msgpack.org">MessagePack</a>, and <a href="http://ubjson.org">UBJSON</a> (Universal Binary JSON Specification) to efficiently encode JSON values to byte vectors and to decode such vectors.</p>
 <div class="fragment"><div class="line"><span class="comment">// create a JSON value</span></div>
@@ -1052,7 +1052,7 @@ Binary formats (BSON, CBOR, MessagePack, and UBJSON)</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// serialize to MessagePack</span></div>
 <div class="line"><span class="keyword">auto</span> cbor = json::to_msgpack(j); <span class="comment">// 0xD5 (fixext2), 0x10, 0xCA, 0xFE</span></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md231"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md236"></a>
 Supported compilers</h2>
 <p>Though it's 2021 already, the support for C++11 is still a bit sparse. Currently, the following compilers are known to work:</p>
 <ul>
@@ -1134,7 +1134,7 @@ Supported compilers</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">MSVC 19.25.28614.0 (Build Engine version 16.5.0+d4cbfca49 for .NET Framework) with ClangCL 10.0.0 </td><td class="markdownTableBodyNone">Windows-10.0.17763 </td><td class="markdownTableBodyNone">GitHub Actions  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md232"></a>
+<h2><a class="anchor" id="autotoc_md237"></a>
 License</h2>
 <p><img src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png" alt="" align="right" class="inline"/></p>
 <p>The class is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a>:</p>
@@ -1146,14 +1146,14 @@ License</h2>
 <p>The class contains the UTF-8 Decoder from Bjoern Hoehrmann which is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a> (see above). Copyright &copy; 2008-2009 <a href="https://bjoern.hoehrmann.de/">Björn Hoehrmann</a> <a href="#" onclick="location.href='mai'+'lto:'+'bjo'+'er'+'n@h'+'oe'+'hrm'+'an'+'n.d'+'e'; return false;">bjoer<span style="display: none;">.nosp@m.</span>n@ho<span style="display: none;">.nosp@m.</span>ehrma<span style="display: none;">.nosp@m.</span>nn.d<span style="display: none;">.nosp@m.</span>e</a></p>
 <p>The class contains a slightly modified version of the Grisu2 algorithm from Florian Loitsch which is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a> (see above). Copyright &copy; 2009 <a href="https://florian.loitsch.com/">Florian Loitsch</a></p>
 <p>The class contains a copy of <a href="https://nemequ.github.io/hedley/">Hedley</a> from Evan Nemerson which is licensed as <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0-1.0</a>.</p>
-<h2><a class="anchor" id="autotoc_md233"></a>
+<h2><a class="anchor" id="autotoc_md238"></a>
 Contact</h2>
 <p>If you have questions regarding the library, I would like to invite you to <a href="https://github.com/nlohmann/json/issues/new/choose">open an issue at GitHub</a>. Please describe your request, problem, or question as detailed as possible, and also mention the version of the library you are using as well as the version of your compiler and operating system. Opening an issue at GitHub allows other users and contributors to this library to collaborate. For instance, I have little experience with MSVC, and most issues in this regard have been solved by a growing community. If you have a look at the <a href="https://github.com/nlohmann/json/issues?q=is%3Aissue+is%3Aclosed">closed issues</a>, you will see that we react quite timely in most cases.</p>
 <p>Only if your request would contain confidential information, please <a href="#" onclick="location.href='mai'+'lto:'+'mai'+'l@'+'nlo'+'hm'+'ann'+'.m'+'e'; return false;">send me an email</a>. For encrypted messages, please use <a href="https://keybase.io/nlohmann/pgp_keys.asc">this key</a>.</p>
-<h2><a class="anchor" id="autotoc_md234"></a>
+<h2><a class="anchor" id="autotoc_md239"></a>
 Security</h2>
 <p><a href="https://github.com/nlohmann/json/commits">Commits by Niels Lohmann</a> and <a href="https://github.com/nlohmann/json/releases">releases</a> are signed with this <a href="https://keybase.io/nlohmann/pgp_keys.asc?fingerprint=797167ae41c0a6d9232e48457f3cea63ae251b69">PGP Key</a>.</p>
-<h2><a class="anchor" id="autotoc_md235"></a>
+<h2><a class="anchor" id="autotoc_md240"></a>
 Thanks</h2>
 <p>I deeply appreciate the help of the following people.</p>
 <p><img src="https://raw.githubusercontent.com/nlohmann/json/develop/doc/avatars.png" alt="" align="right" class="inline"/></p>
@@ -1385,7 +1385,7 @@ Thanks</h2>
 <li><a href="https://github.com/alexreinking">Alex Reinking</a> improved CMake support for <code>FetchContent</code>.</li>
 </ul>
 <p>Thanks a lot for helping out! Please <a href="#" onclick="location.href='mai'+'lto:'+'mai'+'l@'+'nlo'+'hm'+'ann'+'.m'+'e'; return false;">let me know</a> if I forgot someone.</p>
-<h2><a class="anchor" id="autotoc_md236"></a>
+<h2><a class="anchor" id="autotoc_md241"></a>
 Used third-party tools</h2>
 <p>The library itself consists of a single header file licensed under the MIT license. However, it is built, tested, documented, and whatnot using a lot of third-party tools and services. Thanks a lot!</p>
 <ul>
@@ -1415,12 +1415,12 @@ Used third-party tools</h2>
 <li><a href="https://valgrind.org"><b>Valgrind</b></a> to check for correct memory management</li>
 <li><a href="https://wandbox.org"><b>Wandbox</b></a> for <a href="https://wandbox.org/permlink/3lCHrFUZANONKv7a">online examples</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md237"></a>
+<h2><a class="anchor" id="autotoc_md242"></a>
 Projects using JSON for Modern C++</h2>
 <p>The library is currently used in Apple macOS Sierra and iOS 10. I am not sure what they are using the library for, but I am happy that it runs on so many devices.</p>
-<h2><a class="anchor" id="autotoc_md238"></a>
+<h2><a class="anchor" id="autotoc_md243"></a>
 Notes</h2>
-<h3><a class="anchor" id="autotoc_md239"></a>
+<h3><a class="anchor" id="autotoc_md244"></a>
 Character encoding</h3>
 <p>The library supports <b>Unicode input</b> as follows:</p>
 <ul>
@@ -1432,7 +1432,7 @@ Character encoding</h3>
 <li>The strings stored in the library are UTF-8 encoded. When using the default string type (<code>std::string</code>), note that its length/size functions return the number of stored bytes rather than the number of characters or glyphs.</li>
 <li>When you store strings with different encodings in the library, calling <a href="https://nlohmann.github.io/json/api/basic_json/dump/"><code>dump()</code></a> may throw an exception unless <code>json::error_handler_t::replace</code> or <code>json::error_handler_t::ignore</code> are used as error handlers.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md240"></a>
+<h3><a class="anchor" id="autotoc_md245"></a>
 Comments in JSON</h3>
 <p>This library does not support comments by default. It does so for three reasons:</p>
 <ol type="1">
@@ -1444,16 +1444,16 @@ Comments in JSON</h3>
 <li>It is dangerous for interoperability if some libraries would add comment support while others don't. Please check <a href="https://tools.ietf.org/html/draft-iab-protocol-maintenance-01">The Harmful Consequences of the Robustness Principle</a> on this.</li>
 </ol>
 <p>However, you can pass set parameter <code>ignore_comments</code> to true in the <code>parse</code> function to ignore <code>//</code> or <code>/* *&zwj;/</code> comments. Comments will then be treated as whitespace.</p>
-<h3><a class="anchor" id="autotoc_md241"></a>
+<h3><a class="anchor" id="autotoc_md246"></a>
 Order of object keys</h3>
 <p>By default, the library does not preserve the <b>insertion order of object elements</b>. This is standards-compliant, as the <a href="https://tools.ietf.org/html/rfc8259.html">JSON standard</a> defines objects as "an unordered collection of zero or more name/value pairs".</p>
 <p>If you do want to preserve the insertion order, you can try the type <a href="https://github.com/nlohmann/json/issues/2179"><code>nlohmann::ordered_json</code></a>. Alternatively, you can use a more sophisticated ordered map like <a href="https://github.com/Tessil/ordered-map"><code>tsl::ordered_map</code></a> (<a href="https://github.com/nlohmann/json/issues/546#issuecomment-304447518">integration</a>) or <a href="https://github.com/nlohmann/fifo_map"><code>nlohmann::fifo_map</code></a> (<a href="https://github.com/nlohmann/json/issues/485#issuecomment-333652309">integration</a>).</p>
-<h3><a class="anchor" id="autotoc_md242"></a>
+<h3><a class="anchor" id="autotoc_md247"></a>
 Memory Release</h3>
 <p>We checked with Valgrind and the Address Sanitizer (ASAN) that there are no memory leaks.</p>
 <p>If you find that a parsing program with this library does not release memory, please consider the following case and it maybe unrelated to this library.</p>
 <p><b>Your program is compiled with glibc.</b> There is a tunable threshold that glibc uses to decide whether to actually return memory to the system or whether to cache it for later reuse. If in your program you make lots of small allocations and those small allocations are not a contiguous block and are presumably below the threshold, then they will not get returned to the OS. Here is a related issue <a href="https://github.com/nlohmann/json/issues/1924">#1924</a>.</p>
-<h3><a class="anchor" id="autotoc_md243"></a>
+<h3><a class="anchor" id="autotoc_md248"></a>
 Further notes</h3>
 <ul>
 <li>The code contains numerous debug <b>assertions</b> which can be switched off by defining the preprocessor macro <code>NDEBUG</code>, see the <a href="https://en.cppreference.com/w/cpp/error/assert">documentation of <code>assert</code></a>. In particular, note <a href="https://nlohmann.github.io/json/api/basic_json/operator%5B%5D/"><code>operator[]</code></a> implements <b>unchecked access</b> for const objects: If the given key is not present, the behavior is undefined (think of a dereferenced null pointer) and yields an <a href="https://github.com/nlohmann/json/issues/289">assertion failure</a> if assertions are switched on. If you are not sure whether an element in an object exists, use checked access with the <a href="https://nlohmann.github.io/json/api/basic_json/at/"><code>at()</code> function</a>. Furthermore, you can define <code>JSON_ASSERT(x)</code> to replace calls to <code>assert(x)</code>.</li>
@@ -1461,7 +1461,7 @@ Further notes</h3>
 <li>The code can be compiled without C++ <b>runtime type identification</b> features; that is, you can use the <code>-fno-rtti</code> compiler flag.</li>
 <li><b>Exceptions</b> are used widely within the library. They can, however, be switched off with either using the compiler flag <code>-fno-exceptions</code> or by defining the symbol <code>JSON_NOEXCEPTION</code>. In this case, exceptions are replaced by <code>abort()</code> calls. You can further control this behavior by defining <code>JSON_THROW_USER</code> (overriding <code>throw</code>), <code>JSON_TRY_USER</code> (overriding <code>try</code>), and <code>JSON_CATCH_USER</code> (overriding <code>catch</code>). Note that <code>JSON_THROW_USER</code> should leave the current scope (e.g., by throwing or aborting), as continuing after it may yield undefined behavior.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md244"></a>
+<h2><a class="anchor" id="autotoc_md249"></a>
 Execute unit tests</h2>
 <p>To compile and run the tests, you need to execute</p>
 <div class="fragment"><div class="line">$ mkdir build</div>
@@ -1480,7 +1480,7 @@ Execute unit tests</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed May 17 2023 15:59:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu May 18 2023 18:55:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
