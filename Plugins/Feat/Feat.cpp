@@ -321,7 +321,7 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     }
 
     // SPELLSAVEDC / SPELLSAVEDCFORSCHOOL / SPELLSAVEDCFORSPELL
-    if ((g_plugin->m_FeatSpellSaveDC[nFeat] != 0) || (g_plugin->m_FeatSpellSaveDCForSpellSchool[nFeat].second > 0) || (g_plugin->m_FeatSpellSaveDCForSpell[nFeat].second > 0))
+    if ((g_plugin->m_FeatSpellSaveDC[nFeat] != 0) || (g_plugin->m_FeatSpellSaveDCForSpellSchool[nFeat].second != 0) || (g_plugin->m_FeatSpellSaveDCForSpell[nFeat].second != 0))
     {
         static NWNXLib::Hooks::Hook pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
