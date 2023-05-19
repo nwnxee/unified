@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
+https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.35.40
+https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` which makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).
@@ -17,9 +41,6 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - Events: added skippable event `NWNX_ON_AREA_PLAY_BATTLE_MUSIC_{BEFORE|AFTER}` which allows skipping the starting/stopping of an area's battle music.
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
 - Experimental: Added `NWNX_EXPERIMENTAL_END_COMBATROUND_AFTER_SPELLCAST` to end combat rounds right after casting or canceling a spell so that a new spell can be cast immediately after
-
-##### New Plugins
-- N/A
 
 ##### New NWScript Functions
 - Object: GetInventoryItemCount()
@@ -34,14 +55,9 @@ https://github.com/nwnxee/unified/compare/build8193.35.37...HEAD
 - ***ABI BREAKING:*** Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().
 - ***ABI BREAKING:*** Damage: SetAttackEventData() can now set `AttackEventData.iSneakAttack`. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.
 
-### Deprecated
-- N/A
-
-### Removed
-- N/A
-
 ### Fixed
 - Tweaks: FixResolveSpecialAttackDamage: fixed a crash involving ranged special attacks interacting oddly with Epic Dodge. 
+- Player: fixed ToggleDM() not working correctly with EffectTimeStopImmunity().
 
 ## 8193.35.37
 https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37
