@@ -10,34 +10,36 @@ const string NWNX_Feat = "NWNX_Feat"; ///< @private
 /// @anchor feat_modifiers
 ///
 /// @{
-const int NWNX_FEAT_MODIFIER_INVALID            = 0;
-const int NWNX_FEAT_MODIFIER_AB                 = 1;
-const int NWNX_FEAT_MODIFIER_ABILITY            = 2;
-const int NWNX_FEAT_MODIFIER_ABVSRACE           = 3;
-const int NWNX_FEAT_MODIFIER_AC                 = 4;
-const int NWNX_FEAT_MODIFIER_ACVSRACE           = 5;
-const int NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE = 6;
-const int NWNX_FEAT_MODIFIER_CONCEALMENT        = 7;
-const int NWNX_FEAT_MODIFIER_DMGIMMUNITY        = 8;
-const int NWNX_FEAT_MODIFIER_DMGREDUCTION       = 9;
-const int NWNX_FEAT_MODIFIER_DMGRESIST          = 10;
-const int NWNX_FEAT_MODIFIER_IMMUNITY           = 11;
-const int NWNX_FEAT_MODIFIER_MOVEMENTSPEED      = 12;
-const int NWNX_FEAT_MODIFIER_REGENERATION       = 13;
-const int NWNX_FEAT_MODIFIER_SAVE               = 14;
-const int NWNX_FEAT_MODIFIER_SAVEVSRACE         = 15;
-const int NWNX_FEAT_MODIFIER_SAVEVSTYPE         = 16;
-const int NWNX_FEAT_MODIFIER_SAVEVSTYPERACE     = 17;
-const int NWNX_FEAT_MODIFIER_SPELLIMMUNITY      = 18;
-const int NWNX_FEAT_MODIFIER_SRCHARGEN          = 19;
-const int NWNX_FEAT_MODIFIER_SRINCLEVEL         = 20;
-const int NWNX_FEAT_MODIFIER_SPELLSAVEDC        = 21;
-const int NWNX_FEAT_MODIFIER_BONUSSPELL         = 22;
-const int NWNX_FEAT_MODIFIER_TRUESEEING         = 23;
-const int NWNX_FEAT_MODIFIER_SEEINVISIBLE       = 24;
-const int NWNX_FEAT_MODIFIER_ULTRAVISION        = 25;
-const int NWNX_FEAT_MODIFIER_HASTE              = 26;
-const int NWNX_FEAT_MODIFIER_VISUALEFFECT       = 27;
+const int NWNX_FEAT_MODIFIER_INVALID              = 0;
+const int NWNX_FEAT_MODIFIER_AB                   = 1;
+const int NWNX_FEAT_MODIFIER_ABILITY              = 2;
+const int NWNX_FEAT_MODIFIER_ABVSRACE             = 3;
+const int NWNX_FEAT_MODIFIER_AC                   = 4;
+const int NWNX_FEAT_MODIFIER_ACVSRACE             = 5;
+const int NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE   = 6;
+const int NWNX_FEAT_MODIFIER_CONCEALMENT          = 7;
+const int NWNX_FEAT_MODIFIER_DMGIMMUNITY          = 8;
+const int NWNX_FEAT_MODIFIER_DMGREDUCTION         = 9;
+const int NWNX_FEAT_MODIFIER_DMGRESIST            = 10;
+const int NWNX_FEAT_MODIFIER_IMMUNITY             = 11;
+const int NWNX_FEAT_MODIFIER_MOVEMENTSPEED        = 12;
+const int NWNX_FEAT_MODIFIER_REGENERATION         = 13;
+const int NWNX_FEAT_MODIFIER_SAVE                 = 14;
+const int NWNX_FEAT_MODIFIER_SAVEVSRACE           = 15;
+const int NWNX_FEAT_MODIFIER_SAVEVSTYPE           = 16;
+const int NWNX_FEAT_MODIFIER_SAVEVSTYPERACE       = 17;
+const int NWNX_FEAT_MODIFIER_SPELLIMMUNITY        = 18;
+const int NWNX_FEAT_MODIFIER_SRCHARGEN            = 19;
+const int NWNX_FEAT_MODIFIER_SRINCLEVEL           = 20;
+const int NWNX_FEAT_MODIFIER_SPELLSAVEDC          = 21;
+const int NWNX_FEAT_MODIFIER_BONUSSPELL           = 22;
+const int NWNX_FEAT_MODIFIER_TRUESEEING           = 23;
+const int NWNX_FEAT_MODIFIER_SEEINVISIBLE         = 24;
+const int NWNX_FEAT_MODIFIER_ULTRAVISION          = 25;
+const int NWNX_FEAT_MODIFIER_HASTE                = 26;
+const int NWNX_FEAT_MODIFIER_VISUALEFFECT         = 27;
+const int NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL = 28;
+const int NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL  = 29;
 ///@}
 
 /// @brief Sets a feat modifier.

@@ -39,9 +39,12 @@ int NWNX_Feat_GetModifierConstant(string featMod)
     else if (featMod == "SPELLIMMUNITY")        return NWNX_FEAT_MODIFIER_SPELLIMMUNITY;
     else if (featMod == "SRCHARGEN")            return NWNX_FEAT_MODIFIER_SRCHARGEN;
     else if (featMod == "SRINCLEVEL")           return NWNX_FEAT_MODIFIER_SRINCLEVEL;
+    else if (featMod == "SPELLSAVEDC")          return NWNX_FEAT_MODIFIER_SPELLSAVEDC;
     else if (featMod == "TRUESEEING")           return NWNX_FEAT_MODIFIER_TRUESEEING;
     else if (featMod == "ULTRAVISION")          return NWNX_FEAT_MODIFIER_ULTRAVISION;
     else if (featMod == "VISUALEFFECT")         return NWNX_FEAT_MODIFIER_VISUALEFFECT;
+    else if (featMod == "SPELLSAVEDCFORSCHOOL") return NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL;
+    else if (featMod == "SPELLSAVEDCFORSPELL")  return NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL;
     
     return NWNX_FEAT_MODIFIER_INVALID;
 }
