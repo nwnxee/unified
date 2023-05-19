@@ -30,7 +30,7 @@ struct SpellCastAction
     BOOL bFake;
 };
 
-static SpellCastAction LastSpellAction;
+static SpellCastAction s_LastSpellAction;
 
 static Hooks::Hook s_SpellCastAndImpactHook;
 static Hooks::Hook s_SetMemorizedSpellSlotHook;
@@ -288,21 +288,21 @@ int32_t DecrementSpellReadyCountHook(CNWSCreature *thisPtr, uint32_t nSpellID, u
 
 uint32_t AIActionCastSpellHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pNode)
 {
-    LastSpellAction.nSpellId = pNode->m_pParameter[0];
-    LastSpellAction.nMultiClass = pNode->m_pParameter[1] & 0xFF;
-    LastSpellAction.nDomainLevel = pNode->m_pParameter[2];
-    LastSpellAction.nMetaMagic = pNode->m_pParameter[3];
-    LastSpellAction.bSpontaneous = pNode->m_pParameter[4] != 0;
-    LastSpellAction.bDefensiveCast = (pNode->m_pParameter[1] & 0x0000FF00) >> 8;
-    LastSpellAction.oidTarget = pNode->m_pParameter[5];
-    LastSpellAction.fTargetX = *((float*)&pNode->m_pParameter[6]);
-    LastSpellAction.fTargetY = *((float*)&pNode->m_pParameter[7]);
-    LastSpellAction.fTargetZ = *((float*)&pNode->m_pParameter[8]);
-    LastSpellAction.bInstant = (pNode->m_pParameter[9] & 0x40000000) != 0;
-    LastSpellAction.nProjectilePathType = pNode->m_pParameter[9] & 0x3FFFFFFF;
-    LastSpellAction.nFeat = pNode->m_pParameter[10];
-    LastSpellAction.nCasterLevel = pNode->m_pParameter[11] & 0x000000FF;
-    LastSpellAction.bFake = (pNode->m_pParameter[9] & 0x80000000) != 0;
+    s_LastSpellAction.nSpellId = pNode->m_pParameter[0];
+    s_LastSpellAction.nMultiClass = pNode->m_pParameter[1] & 0xFF;
+    s_LastSpellAction.nDomainLevel = pNode->m_pParameter[2];
+    s_LastSpellAction.nMetaMagic = pNode->m_pParameter[3];
+    s_LastSpellAction.bSpontaneous = pNode->m_pParameter[4] != 0;
+    s_LastSpellAction.bDefensiveCast = (pNode->m_pParameter[1] & 0x0000FF00) >> 8;
+    s_LastSpellAction.oidTarget = pNode->m_pParameter[5];
+    s_LastSpellAction.fTargetX = *((float*)&pNode->m_pParameter[6]);
+    s_LastSpellAction.fTargetY = *((float*)&pNode->m_pParameter[7]);
+    s_LastSpellAction.fTargetZ = *((float*)&pNode->m_pParameter[8]);
+    s_LastSpellAction.bInstant = (pNode->m_pParameter[9] & 0x40000000) != 0;
+    s_LastSpellAction.nProjectilePathType = pNode->m_pParameter[9] & 0x3FFFFFFF;
+    s_LastSpellAction.nFeat = pNode->m_pParameter[10];
+    s_LastSpellAction.nCasterLevel = pNode->m_pParameter[11] & 0x000000FF;
+    s_LastSpellAction.bFake = (pNode->m_pParameter[9] & 0x80000000) != 0;
 
     return s_AIActionCastSpellHook->CallOriginal<uint32_t>(thisPtr, pNode);
 }
@@ -346,28 +346,28 @@ BOOL ClearActionHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pNode, BOOL bI
 
 void BroadcastCounterSpellDataHook(CNWSObject* thisPtr, CNWSpell* pSpell, CNWCCMessageData* pMessageData)
 {
-    if (!IsIDInWhitelist("NWNX_ON_SPELL_FAILED", LastSpellAction.nSpellId))
+    if (!IsIDInWhitelist("NWNX_ON_SPELL_FAILED", s_LastSpellAction.nSpellId))
     {
         s_BroadcastCounterSpellDataHook->CallOriginal<void>(thisPtr, pSpell, pMessageData);
         return;
     }
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        PushEventData("SPELL_ID", std::to_string(LastSpellAction.nSpellId));
-        PushEventData("MULTI_CLASS", std::to_string(LastSpellAction.nMultiClass));
-        PushEventData("DOMAIN", std::to_string(LastSpellAction.nDomainLevel));
-        PushEventData("METAMAGIC", std::to_string(LastSpellAction.nMetaMagic));
-        PushEventData("SPELL_SPONTANEOUS", std::to_string((uint32_t)LastSpellAction.bSpontaneous));
-        PushEventData("DEFENSIVELY_CAST", std::to_string((uint32_t)LastSpellAction.bDefensiveCast));
-        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(LastSpellAction.oidTarget));
-        PushEventData("TARGET_POSITION_X", std::to_string(LastSpellAction.fTargetX));
-        PushEventData("TARGET_POSITION_Y", std::to_string(LastSpellAction.fTargetY));
-        PushEventData("TARGET_POSITION_Z", std::to_string(LastSpellAction.fTargetZ));
-        PushEventData("IS_INSTANT_SPELL", std::to_string((uint32_t)LastSpellAction.bInstant));
-        PushEventData("PROJECTILE_PATH_TYPE", std::to_string(LastSpellAction.nProjectilePathType));
-        PushEventData("FEAT", std::to_string(LastSpellAction.nFeat));
-        PushEventData("CASTERLEVEL", std::to_string(LastSpellAction.nCasterLevel));
-        PushEventData("IS_FAKE", std::to_string((uint32_t)LastSpellAction.bFake));
+        PushEventData("SPELL_ID", std::to_string(s_LastSpellAction.nSpellId));
+        PushEventData("MULTI_CLASS", std::to_string(s_LastSpellAction.nMultiClass));
+        PushEventData("DOMAIN", std::to_string(s_LastSpellAction.nDomainLevel));
+        PushEventData("METAMAGIC", std::to_string(s_LastSpellAction.nMetaMagic));
+        PushEventData("SPELL_SPONTANEOUS", std::to_string((uint32_t)s_LastSpellAction.bSpontaneous));
+        PushEventData("DEFENSIVELY_CAST", std::to_string((uint32_t)s_LastSpellAction.bDefensiveCast));
+        PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(s_LastSpellAction.oidTarget));
+        PushEventData("TARGET_POSITION_X", std::to_string(s_LastSpellAction.fTargetX));
+        PushEventData("TARGET_POSITION_Y", std::to_string(s_LastSpellAction.fTargetY));
+        PushEventData("TARGET_POSITION_Z", std::to_string(s_LastSpellAction.fTargetZ));
+        PushEventData("IS_INSTANT_SPELL", std::to_string((uint32_t)s_LastSpellAction.bInstant));
+        PushEventData("PROJECTILE_PATH_TYPE", std::to_string(s_LastSpellAction.nProjectilePathType));
+        PushEventData("FEAT", std::to_string(s_LastSpellAction.nFeat));
+        PushEventData("CASTERLEVEL", std::to_string(s_LastSpellAction.nCasterLevel));
+        PushEventData("IS_FAKE", std::to_string((uint32_t)s_LastSpellAction.bFake));
         PushEventData("REASON", "1" /* NWNX_EVENTS_SPELLFAIL_REASON_COUNTERSPELL */);
         return SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -381,7 +381,7 @@ void BroadcastCounterSpellDataHook(CNWSObject* thisPtr, CNWSpell* pSpell, CNWCCM
 
 void SendFeedbackMessageHook(CNWSCreature* thisPtr, uint16_t nFeedbackID, CNWCCMessageData* pMessageData, CNWSPlayer* pFeedbackPlayer)
 {
-    if ((IsIDInWhitelist("NWNX_ON_SPELL_FAILED", LastSpellAction.nSpellId)) &&
+    if ((IsIDInWhitelist("NWNX_ON_SPELL_FAILED", s_LastSpellAction.nSpellId)) &&
         (
             (nFeedbackID == 61 /* NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE */) || 
             (nFeedbackID == 236 /* NWNX_FEEDBACK_CAST_EFFECT_SPELL_FAILURE */) || 
@@ -395,35 +395,37 @@ void SendFeedbackMessageHook(CNWSCreature* thisPtr, uint16_t nFeedbackID, CNWCCM
             (nFeedbackID == 210 /* NWNX_FEEDBACK_CAST_USE_HANDS */)
         ))
     {
-        std::unordered_map<uint16_t, uint32_t> feedback2Reason = {
-            {61 /* NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE */,           2  /* NWNX_EVENTS_SPELLFAIL_REASON_ASF */},
-            {236 /* NWNX_FEEDBACK_CAST_EFFECT_SPELL_FAILURE */,          3  /* NWNX_EVENTS_SPELLFAIL_REASON_SPELLFAILURE */}, 
-            {21 /* NWNX_FEEDBACK_CAST_LOST_TARGET */,                    4  /* NWNX_EVENTS_SPELLFAIL_REASON_LOST_TARGET */},
-            {211 /* NWNX_FEEDBACK_CAST_USE_MOUTH */,                     5  /* NWNX_EVENTS_SPELLFAIL_REASON_SILENCED */}, 
-            {233 /* NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_FAILURE */, 6  /* NWNX_EVENTS_SPELLFAIL_REASON_DEFCAST_CONCENTRATION */}, 
-            {65 /* NWNX_FEEDBACK_CAST_ENTANGLE_CONCENTRATION_FAILURE */, 7  /* NWNX_EVENTS_SPELLFAIL_REASON_ENTANGLE_CONCENTRATION */}, 
-            {107 /* NWNX_FEEDBACK_CAST_CANT_CAST_WHILE_POLYMORPHED */,   8  /* NWNX_EVENTS_SPELLFAIL_REASON_POLYMORPHED */}, 
-            {22 /* NWNX_FEEDBACK_CAST_CANT_CAST */,                      9  /* NWNX_EVENTS_SPELLFAIL_REASON_CANT_CAST */}, 
-            {210 /* NWNX_FEEDBACK_CAST_USE_HANDS */,                     10 /* NWNX_EVENTS_SPELLFAIL_REASON_CANT_USE_HANDS*/}, 
-        };  
+        int32_t nFailReason = -1;
+        switch (nFeedbackID)
+        {
+            case 61 /* NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE */:           nFailReason = 2; break; /* NWNX_EVENTS_SPELLFAIL_REASON_ASF */
+            case 236 /* NWNX_FEEDBACK_CAST_ARCANE_SPELL_FAILURE */:          nFailReason = 3; break; /* NWNX_EVENTS_SPELLFAIL_REASON_SPELLFAILURE */
+            case 21 /* NWNX_FEEDBACK_CAST_LOST_TARGET */:                    nFailReason = 4; break; /* NWNX_EVENTS_SPELLFAIL_REASON_LOST_TARGET */
+            case 211 /* NWNX_FEEDBACK_CAST_USE_MOUTH */:                     nFailReason = 5; break; /* NWNX_EVENTS_SPELLFAIL_REASON_SILENCED */
+            case 233 /* NWNX_FEEDBACK_CAST_DEFCAST_CONCENTRATION_FAILURE */: nFailReason = 6; break; /* NWNX_EVENTS_SPELLFAIL_REASON_DEFCAST_CONCENTRATION */
+            case 65 /* NWNX_FEEDBACK_CAST_ENTANGLE_CONCENTRATION_FAILURE */: nFailReason = 7; break; /* NWNX_EVENTS_SPELLFAIL_REASON_ENTANGLE_CONCENTRATION */
+            case 107 /* NWNX_FEEDBACK_CAST_CANT_CAST_WHILE_POLYMORPHED */:   nFailReason = 8; break; /* NWNX_EVENTS_SPELLFAIL_REASON_POLYMORPHED */
+            case 22 /* NWNX_FEEDBACK_CAST_CANT_CAST */:                      nFailReason = 9; break; /* NWNX_EVENTS_SPELLFAIL_REASON_CANT_CAST */
+            case 210 /* NWNX_FEEDBACK_CAST_USE_HANDS */:                     nFailReason = 10; break; /* NWNX_EVENTS_SPELLFAIL_REASON_CANT_USE_HANDS */
+        }
 
         auto PushAndSignal = [&](const std::string& ev) -> bool {
-            PushEventData("SPELL_ID", std::to_string(LastSpellAction.nSpellId));
-            PushEventData("MULTI_CLASS", std::to_string(LastSpellAction.nMultiClass));
-            PushEventData("DOMAIN", std::to_string(LastSpellAction.nDomainLevel));
-            PushEventData("METAMAGIC", std::to_string(LastSpellAction.nMetaMagic));
-            PushEventData("SPELL_SPONTANEOUS", std::to_string((uint32_t)LastSpellAction.bSpontaneous));
-            PushEventData("DEFENSIVELY_CAST", std::to_string((uint32_t)LastSpellAction.bDefensiveCast));
-            PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(LastSpellAction.oidTarget));
-            PushEventData("TARGET_POSITION_X", std::to_string(LastSpellAction.fTargetX));
-            PushEventData("TARGET_POSITION_Y", std::to_string(LastSpellAction.fTargetY));
-            PushEventData("TARGET_POSITION_Z", std::to_string(LastSpellAction.fTargetZ));
-            PushEventData("IS_INSTANT_SPELL", std::to_string((uint32_t)LastSpellAction.bInstant));
-            PushEventData("PROJECTILE_PATH_TYPE", std::to_string(LastSpellAction.nProjectilePathType));
-            PushEventData("FEAT", std::to_string(LastSpellAction.nFeat));
-            PushEventData("CASTERLEVEL", std::to_string(LastSpellAction.nCasterLevel));
-            PushEventData("IS_FAKE", std::to_string((uint32_t)LastSpellAction.bFake));
-            PushEventData("REASON", std::to_string(feedback2Reason[nFeedbackID]));
+            PushEventData("SPELL_ID", std::to_string(s_LastSpellAction.nSpellId));
+            PushEventData("MULTI_CLASS", std::to_string(s_LastSpellAction.nMultiClass));
+            PushEventData("DOMAIN", std::to_string(s_LastSpellAction.nDomainLevel));
+            PushEventData("METAMAGIC", std::to_string(s_LastSpellAction.nMetaMagic));
+            PushEventData("SPELL_SPONTANEOUS", std::to_string((uint32_t)s_LastSpellAction.bSpontaneous));
+            PushEventData("DEFENSIVELY_CAST", std::to_string((uint32_t)s_LastSpellAction.bDefensiveCast));
+            PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(s_LastSpellAction.oidTarget));
+            PushEventData("TARGET_POSITION_X", std::to_string(s_LastSpellAction.fTargetX));
+            PushEventData("TARGET_POSITION_Y", std::to_string(s_LastSpellAction.fTargetY));
+            PushEventData("TARGET_POSITION_Z", std::to_string(s_LastSpellAction.fTargetZ));
+            PushEventData("IS_INSTANT_SPELL", std::to_string((uint32_t)s_LastSpellAction.bInstant));
+            PushEventData("PROJECTILE_PATH_TYPE", std::to_string(s_LastSpellAction.nProjectilePathType));
+            PushEventData("FEAT", std::to_string(s_LastSpellAction.nFeat));
+            PushEventData("CASTERLEVEL", std::to_string(s_LastSpellAction.nCasterLevel));
+            PushEventData("IS_FAKE", std::to_string((uint32_t)s_LastSpellAction.bFake));
+            PushEventData("REASON", std::to_string(nFailReason));
             return SignalEvent(ev, thisPtr->m_idSelf);
         };
 

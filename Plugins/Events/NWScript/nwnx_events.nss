@@ -2198,6 +2198,7 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
 ///
 /// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
 /// - NWNX_ON_CAST_SPELL -> SpellID
+/// - NWNX_ON_SPELL_FAILED -> SpellID
 /// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
 /// - NWNX_ON_RUN_EVENT_SCRIPT -> EVENT_SCRIPT_* (default enabled)
 /// - NWNX_ON_BROADCAST_SAFE_PROJECTILE -> NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE for ProjectileType, NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL for SpellID
