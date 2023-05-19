@@ -330,8 +330,6 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                     &CNWSCreature::CalculateSpellSaveDC,
                     +[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
-                        auto pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID);
-
                         int iMods = 0;
                         for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
                         {
@@ -341,13 +339,17 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                             }
                         }
 
-                        for (auto &spellSaveDCSchoolMod : g_plugin->m_FeatSpellSaveDCForSpellSchool)
+                        auto* pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID);
+                        if (pSpell)
                         {
-                            if (pThis->m_pStats->HasFeat(spellSaveDCSchoolMod.first))
+                            for (auto &spellSaveDCSchoolMod : g_plugin->m_FeatSpellSaveDCForSpellSchool)
                             {
-                                auto pairSchoolSave = spellSaveDCSchoolMod.second;
-                                if (pairSchoolSave.first == pSpell->m_nSchool)
-                                    iMods += pairSchoolSave.second;
+                                if (pThis->m_pStats->HasFeat(spellSaveDCSchoolMod.first))
+                                {
+                                    auto pairSchoolSave = spellSaveDCSchoolMod.second;
+                                    if (pairSchoolSave.first == pSpell->m_nSchool)
+                                        iMods += pairSchoolSave.second;
+                                }
                             }
                         }
 
