@@ -58,6 +58,9 @@ These commands should be ran `on_module_load`.
 * [SPELLIMMUNITY](#spellimmunity)
 * [SRCHARGEN](#srchargen)
 * [SRINCLEVEL](#srinclevel)
+* [SPELLSAVEDC](#spellsavedc)
+* [SPELLSAVEDCFORSCHOOL](#spellsavedcforschool)
+* [SPELLSAVEDCFORSPELL](#spellsavedcforspell)
 * [TRUESEEING](#trueseeing)
 * [ULTRAVISION](#ultravision)
 * [VISUALEFFECT](#visualeffect)
@@ -313,6 +316,38 @@ The `SRINCLEVEL` entry is used to award a spell resistance racial bonus as the c
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SRINCLEVEL, 1, 1, 6);
+```
+***
+### SPELLSAVEDC
+The `SPELLSAVEDC` entry is used to modify a creature's spell DCs.
+
+* Param1 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDC, 1);
+```
+***
+### SPELLSAVEDCFORSCHOOL
+The `SPELLSAVEDCFORSCHOOL` entry is used to modify a creature's spell DCs for a spell school.
+
+* Param1 = A SPELL_SCHOOL_ constant
+* Param2 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL, SPELL_SCHOOL_ILLUSION, 1);
+```
+***
+### SPELLSAVEDCFORSPELL
+The `SPELLSAVEDCFORSPELL` entry is used to modify a creature's spell DCs for an individual spell.
+
+* Param1 = A SPELL_ constant
+* Param2 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL, SPELL_PHANTASMAL_KILLER, 1);
 ```
 ***
 ### TRUESEEING

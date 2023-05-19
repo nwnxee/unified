@@ -322,4 +322,40 @@ namespace MetaMagicType
     }
 }
 
+namespace SpellSchool
+{
+    enum TYPE
+    {
+        General            = 0,
+        Abjuration         = 1,
+        Conjuration        = 2,
+        Divination         = 3,
+        Enchantment        = 4,
+        Evocation          = 5,
+        Illusion           = 6,
+        Necromancy         = 7,
+        Transmutation      = 8,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 8;
+    static_assert(MAX == Transmutation);
+    
+    constexpr const char* ToString(const unsigned value)
+    {
+        switch (value)
+        {
+            case General:       return "General";
+            case Abjuration:    return "Abjuration";
+            case Conjuration:   return "Conjuration";
+            case Divination:    return "Divination";
+            case Enchantment:   return "Enchantment";
+            case Evocation:     return "Evocation";
+            case Illusion:      return "Illusion";
+            case Necromancy:    return "Necromancy";
+            case Transmutation: return "Transmutation";
+        }
+        return "(invalid)";
+    }
+}
+
 }
