@@ -167,6 +167,8 @@ var nwnx__events_8nss =
     [ "NWNX_ON_CLEAR_MEMORIZED_SPELL_SLOT_AFTER", "group__events.html#ga45c1cf3668cc50e2f43d6e8af2b80ae0", null ],
     [ "NWNX_ON_SPELL_INTERRUPTED_BEFORE", "group__events.html#ga6363cc6fff8f189f260570a663335e2b", null ],
     [ "NWNX_ON_SPELL_INTERRUPTED_AFTER", "group__events.html#ga057ecf730461b10c2569bbb319e43506", null ],
+    [ "NWNX_ON_SPELL_FAILED_BEFORE", "group__events.html#gaf59e4980cd0b36134e4efe027eeaf7ca", null ],
+    [ "NWNX_ON_SPELL_FAILED_AFTER", "group__events.html#ga86cbf2c5f16d5aa92f326d164188ac97", null ],
     [ "NWNX_ON_HEALER_KIT_BEFORE", "group__events.html#gaee3aefa4c9e7c948dcb76c41564c8f56", null ],
     [ "NWNX_ON_HEALER_KIT_AFTER", "group__events.html#ga8251eec71d69e3ea8c0ea02163861f80", null ],
     [ "NWNX_ON_HEAL_BEFORE", "group__events.html#ga4d27595acb9ffd46918a259c4fb689ae", null ],
@@ -375,5 +377,16 @@ var nwnx__events_8nss =
     [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_FIRE", "group__events.html#gafd4af786cb705dedbf92bd00a9807a61", null ],
     [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_SONIC", "group__events.html#gaf704dc0305eec9e5220366872a239f34", null ],
     [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_DEFAULT", "group__events.html#gaf2969195d8ec56fd43963709dadc8d42", null ],
-    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH", "group__events.html#ga5a270899d06707e68db6c63f7bd34d75", null ]
+    [ "NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH", "group__events.html#ga5a270899d06707e68db6c63f7bd34d75", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_CANCELED", "group__events.html#gaecc9a7f9fdb87d18f3dace37f04631b0", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_COUNTERSPELL", "group__events.html#gab9bbe35a4c07431ea498e75b28ff2388", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_ASF", "group__events.html#ga8c0549daedf6ab14751bcb0d7c2a20b6", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_SPELLFAILURE", "group__events.html#ga37d47cfcd53000e9cb9dca8a32cceae4", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_LOST_TARGET", "group__events.html#gafe72c53c9fe7813feddf2b6399d34e05", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_SILENCED", "group__events.html#gad068fdea16e2caa352345adf8bf5a868", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_DEFCAST_CONCENTRATION", "group__events.html#gab6fdc45fabbab23bd22239dead588a7a", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_ENTANGLE_CONCENTRATION", "group__events.html#ga8821291c11c6638421b491c19c94dd4d", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_POLYMORPHED", "group__events.html#ga48575544dc5d30fb3458607df8351e3c", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_CANT_CAST", "group__events.html#ga0afc70e141f79bcc3f775fde40437d3b", null ],
+    [ "NWNX_EVENTS_SPELLFAIL_REASON_CANT_USE_HANDS", "group__events.html#ga996414cdd286b05fca00c75794165b6c", null ]
 ];
