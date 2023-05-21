@@ -547,13 +547,11 @@ bool Rename::IsCreatureInLastUpdateObjectList(CNWSPlayer *player, ObjectID creat
     if (lastUpdateObj)
         return true;
 
-    auto *partyObjectsList = player->m_pActivePartyObjectsLastUpdate->m_pcExoLinkedListInternal;
-    if (!partyObjectsList)
-        return false;
+    auto *partyObjectsList = &player->m_lstActivePartyObjectsLastUpdate;
 
-    for (auto *head = partyObjectsList->pHead; head; head = head->pNext)
+    for (int i = 0; i < partyObjectsList->num; i++)
     {
-        auto *partyMember = static_cast<CLastUpdatePartyObject *>(head->pObject);
+        auto *partyMember = partyObjectsList->element[i];
         if (partyMember && partyMember->m_nPlayerId == creatureId)
             return true;
     }

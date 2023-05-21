@@ -55,7 +55,6 @@ struct CExoString
     CExoString RemoveAll(const char * c) const;
     CExoString RemoveAllExcept(const char * c) const;
     void Format(const char * format, ...);
-    int32_t GetLength() const;
     void Insert(const CExoString & string, int32_t position);
     BOOL IsEmpty() const;
     CExoString Left(int32_t count) const;
@@ -69,7 +68,15 @@ struct CExoString
     CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f") const;
     CExoString AsTAG() const;
     std::vector<CExoString> Split(const CExoString & delimiter) const;
+    int32_t GetHash() const;
 
+    inline int32_t GetLength() const { return m_sString ? (int32_t)strlen(m_sString) : 0; }
+    void Clear()
+    {
+        delete[] m_sString;
+        m_sString = nullptr;
+        m_nBufferLength = 0;
+    }
 
 #ifdef NWN_CLASS_EXTENSION_CExoString
     NWN_CLASS_EXTENSION_CExoString

@@ -1240,7 +1240,7 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
 
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
         {
-            if (!pPlayerInfo->SatisfiesBuild(8193, 14))
+            if (!pPlayerInfo->SatisfiesBuild(8193, 14, 0))
             {
                 LOG_WARNING("ToggleDM: Target player's client does not support PlayerDM functionality");
                 return {};

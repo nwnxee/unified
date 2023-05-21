@@ -78,12 +78,13 @@ struct CVirtualMachine
     BOOL StackPushVector(Vector vVector);
     BOOL StackPopString(CExoString * sString);
     BOOL StackPushString(const CExoString & sString);
+    BOOL StackPushString(CExoString &&sString);
     BOOL StackPopObject(OBJECT_ID * poidObjectId);
     BOOL StackPushObject(OBJECT_ID oidObjectId);
     BOOL StackPopEngineStructure(int32_t nEngineStructure, void * * ppEngineStructure);
     BOOL StackPushEngineStructure(int32_t nEngineStructure, void * pEngineStructure);
     void DeleteScriptSituation(void * pScript);
-    int32_t ExecuteCode(int32_t * nInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
+    int32_t ExecuteCode(int32_t * pInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
     void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData, DataBlockRef pDataNDB = nullptr);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);

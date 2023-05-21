@@ -64,10 +64,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CUUID m_cModUUID;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
-    CExoString m_sDDResourceName;
-    BOOL m_bIsDDModule;
-    BOOL m_bIsDDDemoModule;
-    BOOL m_bIsDDModuleLoaded;
     CExoLocString m_lsModuleName;
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
@@ -221,7 +217,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void TimeStopSanityCheck();
-    uint8_t * GetFullCipher(CExoString sModuleResourceName);
     int32_t FindTagPositionInTable(char * szTag);
 
 

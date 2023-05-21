@@ -106,7 +106,7 @@ static CLastUpdateObject *GetLastUpdateObject(CNWSPlayer* pThis, ObjectID oidLas
 static CLastUpdateObject *CreateNewLastUpdateObject(CNWSMessage* pThis, CNWSPlayer *pPlayer, CNWSObject *pAreaObject, uint32_t *nObjectUpdatesRequired, uint32_t *nObjectAppearanceUpdatesRequired)
 {
     auto* luo = s_CreateNewLastUpdateObject->CallOriginal<CLastUpdateObject*>(pThis, pPlayer, pAreaObject, nObjectUpdatesRequired, nObjectAppearanceUpdatesRequired);
-    pPlayer->m_pActiveObjectsLastUpdate->RemoveHead();
+    pPlayer->m_lstActiveObjectsLastUpdate.Remove(luo);
 
     GetLuoTable(pPlayer).Add(luo->m_nId, luo);
     return luo;
