@@ -52,8 +52,8 @@ struct CNWSPlayer : CNWSClient
         std::map<Nui::JSON::WindowIdentifier, WindowState*> m_by_id;
     };
 
-    CExoLinkedList<CLastUpdateObject> * m_pActiveObjectsLastUpdate;
-    CExoLinkedList<CLastUpdatePartyObject> * m_pActivePartyObjectsLastUpdate;
+    CExoArrayList<CLastUpdateObject*> m_lstActiveObjectsLastUpdate;
+    CExoArrayList<CLastUpdatePartyObject*> m_lstActivePartyObjectsLastUpdate;
     int32_t m_nAreaTransitionBMP;
     CExoString m_sAreaTransitionName;
     BOOL m_bFloatyEffects;
@@ -124,10 +124,9 @@ struct CNWSPlayer : CNWSClient
     CNWSPlayerLastUpdateObject * CreateNewPlayerLastUpdateObject();
     void ClearPlayerLastUpdateObject();
     BOOL PermittedToDisplayCharacterSheet(OBJECT_ID oidCreature);
-    BOOL HasExpansionPack(uint8_t nPack, BOOL bOrBetter = true);
     void StoreCameraSettings();
     void RestoreCameraSettings();
-    BOOL SatisfiesBuild(int32_t nBuild, int32_t nRevision);
+    BOOL SatisfiesBuild(int32_t nBuild, int32_t nRevision, int32_t nPostfix);
     BOOL GetIsDM();
     BOOL GetIsPlayerDM();
     void PossessCreature(OBJECT_ID oidTarget, uint8_t possessType);

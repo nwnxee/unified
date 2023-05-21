@@ -10,7 +10,7 @@ namespace Optimizations {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static std::unordered_map<std::string, std::pair<DataBlockRef, DataBlockRef>> s_CachedScriptChunks;
+static std::unordered_map<int32_t, std::pair<DataBlockRef, DataBlockRef>> s_CachedScriptChunks;
 
 void CacheScriptChunks() __attribute__((constructor));
 void CacheScriptChunks()
@@ -29,7 +29,9 @@ void CacheScriptChunks()
                 return -633;
             }
 
-            auto cachedScript = s_CachedScriptChunks.find(sScriptChunk.CStr());
+            int32_t nHash = sScriptChunk.GetHash();
+
+            auto cachedScript = s_CachedScriptChunks.find(nHash);
             if (cachedScript != s_CachedScriptChunks.end())
             {
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
@@ -72,7 +74,7 @@ void CacheScriptChunks()
 
                 auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
 
-                s_CachedScriptChunks[sScriptChunk.CStr()] = std::make_pair(pScriptDataBlock, pNDB);
+                s_CachedScriptChunks[nHash] = std::make_pair(pScriptDataBlock, pNDB);
 
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_sScriptName = "!Chunk";
                 pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel].m_nScriptEventID = 0;
@@ -97,7 +99,9 @@ extern "C" ArgumentStack FlushCachedChunks(ArgumentStack&& args)
     if (scriptChunk.empty())
         s_CachedScriptChunks.clear();
     else
-        s_CachedScriptChunks.erase(scriptChunk);
+    {
+        s_CachedScriptChunks.erase(CExoString(scriptChunk).GetHash());
+    }
 
     return {};
 }
@@ -110,7 +114,9 @@ extern "C" ArgumentStack CacheScriptChunk(ArgumentStack&& args)
     if (scriptChunk.empty())
         return "";
 
-    if (s_CachedScriptChunks.find(scriptChunk) != s_CachedScriptChunks.end())
+    int32_t nHash = CExoString(scriptChunk).GetHash();
+
+    if (s_CachedScriptChunks.find(nHash) != s_CachedScriptChunks.end())
         return "";
 
     int32_t nReturnValue = Globals::VirtualMachine()->m_pJitCompiler->CompileScriptChunk(scriptChunk, wrapIntoMain);
@@ -148,7 +154,7 @@ extern "C" ArgumentStack CacheScriptChunk(ArgumentStack&& args)
 
         auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
 
-        s_CachedScriptChunks[scriptChunk] = std::make_pair(pScriptDataBlock, pNDB);
+        s_CachedScriptChunks[nHash] = std::make_pair(pScriptDataBlock, pNDB);
     }
 
     return "";

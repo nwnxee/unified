@@ -55,11 +55,6 @@ struct CNWRules
     virtual ~CNWRules();
     CNWDomain * GetDomain(uint16_t nDomain);
     BOOL IsArcaneClass(uint8_t nClass);
-    uint8_t GetFeatExpansionLevel(uint16_t nFeat);
-    uint8_t GetSkillExpansionLevel(uint16_t nSkill);
-    uint8_t GetClassExpansionLevel(uint8_t nClass);
-    uint8_t GetSpellExpansionLevel(uint32_t nSpellId);
-    uint8_t GetFamiliarExpansionLevel(uint8_t nFamiliar, BOOL bAnimalCompanion);
     CNWFeat * GetFeat(uint16_t nFeat);
     CExoString GetMasterFeatNameText(char nMasterFeat);
     CExoString GetMasterFeatDescriptionText(char nMasterFeat);

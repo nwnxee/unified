@@ -120,6 +120,7 @@ struct CServerExoAppInternal
     int m_nGameObjectUpdateIntervalTargetLoading;
     int m_nGameObjectUpdateMessageLimit;
     int m_nGameObjectUpdateMessageLimitLoading;
+    uint64_t m_nLastGameObjectUpdateDuration = 0;
     uint64_t m_nAutoSaveTimer;
     CExoArrayList<SSubNetProfile *> m_acSubNetProfiles;
     uint64_t m_nTotalSubNetSent;
@@ -184,7 +185,6 @@ struct CServerExoAppInternal
     BOOL ExportAllPlayers();
     BOOL ExportPlayer(CNWSPlayer * pPlayer);
     void DealWithLoadGameError(uint32_t nLoadErr);
-    BOOL SetDDCipherForModule(CExoString moduleName);
     CNWSModule * GetModule();
     CExoString GetModuleName();
     CGameObject * GetGameObject(OBJECT_ID nObjectID);

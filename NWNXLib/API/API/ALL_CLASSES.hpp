@@ -178,7 +178,6 @@ struct CExoKeyTable;
 struct CExoPackedFile;
 struct CExoResFile;
 struct CExoEncapsulatedFile;
-struct CExoResourceImageFile;
 struct CNetLayerWindow;
 struct CNetLayerInternal;
 struct KXPacket;
