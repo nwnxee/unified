@@ -16,7 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Object: GetLastSpellInstant()
 
 ### Changed
 - N/A

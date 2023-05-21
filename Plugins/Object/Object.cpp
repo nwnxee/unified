@@ -26,6 +26,8 @@
 #include "API/CNWSUUID.hpp"
 #include "API/CLoopingVisualEffect.hpp"
 #include "API/CNWSpellArray.hpp"
+#include "API/CNWSSpellScriptData.hpp"
+#include "API/CVirtualMachine.hpp"
 #include <cstring>
 
 using namespace NWNXLib;
@@ -1051,7 +1053,7 @@ NWNX_EXPORT ArgumentStack OverrideSpellProjectileVFX(ArgumentStack&& args)
                     {
                         if (auto projectileVfxOverride = pOriginator->nwnxGet<int32_t>("OSPVFX_TYPE"))
                             nProjectileType = *projectileVfxOverride;
-                        
+
                         if (auto projectilePathOverride = pOriginator->nwnxGet<int32_t>("OSPVFX_PATH"))
                             nProjectilePathType = *projectilePathOverride;
 
@@ -1089,4 +1091,152 @@ NWNX_EXPORT ArgumentStack OverrideSpellProjectileVFX(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetLastSpellInstant(ArgumentStack&&)
+{
+    static bool s_LastSpellInstant = false;
+    static bool s_IsInstantSpell = false;
+
+    struct SpellScriptData
+    {
+        CNWSSpellScriptData *pSpellScriptData = nullptr;
+        bool bInstantSpell = false;
+        ~SpellScriptData() { delete pSpellScriptData; }
+    };
+
+    static Hooks::Hook pSpellCastAndImpactHook = Hooks::HookFunction(&CNWSObject::SpellCastAndImpact,
+    (void*)+[](CNWSObject *pThis, uint32_t nSpellId, Vector vTargetPosition, ObjectID oidTarget, uint8_t nMultiClass, ObjectID oidItem,
+               BOOL bSpellCountered, BOOL bCounteringSpell, uint8_t nProjectilePathType, BOOL bInstantSpell) -> void
+    {
+        s_IsInstantSpell = bInstantSpell;
+        pSpellCastAndImpactHook->CallOriginal<void>(pThis, nSpellId, vTargetPosition, oidTarget, nMultiClass, oidItem, bSpellCountered, bCounteringSpell, nProjectilePathType, bInstantSpell);
+        s_IsInstantSpell = false;
+    }, Hooks::Order::Earliest);
+
+    static Hooks::Hook pAddEventDeltaTimeHook = Hooks::HookFunction(&CServerAIMaster::AddEventDeltaTime,
+    (void*)+[](CServerAIMaster *pThis, uint32_t nDaysFromNow, uint32_t nTimeFromNow, ObjectID nCallerObjectId, ObjectID nObjectId, uint32_t nEventId, void *pEventData) -> BOOL
+    {
+        if (pEventData && (nEventId == Constants::AIMasterEvent::SpellImpact || nEventId == Constants::AIMasterEvent::ItemOnHitSpellImpact))
+        {
+            auto *pNewSpellScriptData = new SpellScriptData;
+            pNewSpellScriptData->pSpellScriptData = (CNWSSpellScriptData*)pEventData;
+            pNewSpellScriptData->bInstantSpell = s_IsInstantSpell;
+            return pAddEventDeltaTimeHook->CallOriginal<BOOL>(pThis, nDaysFromNow, nTimeFromNow, nCallerObjectId, nObjectId, nEventId, pNewSpellScriptData);
+        }
+        return pAddEventDeltaTimeHook->CallOriginal<BOOL>(pThis, nDaysFromNow, nTimeFromNow, nCallerObjectId, nObjectId, nEventId, pEventData);
+    }, Hooks::Order::Early);
+
+    static Hooks::Hook pCreatureEventHandlerHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12EventHandlerEjjPvjj,
+    (void*)+[](CNWSCreature *pThis, uint32_t nEventId, ObjectID nCallerObjectId, void *pEventData, uint32_t nCalendarDay, uint32_t nTimeOfDay) -> void
+    {
+        if (nEventId == Constants::AIMasterEvent::SpellImpact || nEventId == Constants::AIMasterEvent::ItemOnHitSpellImpact)
+        {
+            if (!pEventData) return;
+            auto *pSpellScriptData = (SpellScriptData*)pEventData;
+
+            if (pSpellScriptData->pSpellScriptData->m_oidCaster == nCallerObjectId)
+            {
+                uint32_t lastSpellId;
+                uint32_t lastSpellObjectTarget;
+                Vector lastSpellLocationTarget;
+                uint32_t lastSpellCastItem;
+                uint16_t lastSpellCastFeat;
+                BOOL lastItemCastSpell;
+                int32_t lastItemCastSpellLevel;
+                bool lastSpellInstant;
+
+                if (nEventId == Constants::AIMasterEvent::ItemOnHitSpellImpact)
+                {
+                    lastSpellId = pThis->m_nLastSpellId;
+                    lastSpellObjectTarget = pThis->m_oidLastSpellTarget;
+                    lastSpellLocationTarget = pThis->m_vLastSpellTarget;
+                    lastSpellCastItem = pThis->m_oidLastSpellCastItem;
+                    lastSpellCastFeat = pThis->m_nLastSpellCastFeat;
+                    lastItemCastSpell = pThis->m_bLastItemCastSpell;
+                    lastItemCastSpellLevel = pThis->m_nLastItemCastSpellLevel;
+                    lastSpellInstant = s_LastSpellInstant;
+                }
+
+                pThis->m_nLastSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                pThis->m_oidLastSpellTarget = pSpellScriptData->pSpellScriptData->m_oidTarget;
+                pThis->m_vLastSpellTarget = pSpellScriptData->pSpellScriptData->m_vTargetPosition;
+                pThis->m_oidLastSpellCastItem = pSpellScriptData->pSpellScriptData->m_oidItem;
+                pThis->m_nLastSpellCastFeat = pSpellScriptData->pSpellScriptData->m_nFeatId;
+                if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(pSpellScriptData->pSpellScriptData->m_oidTarget)))
+                {
+                    if (pThis->GetArea() == pTarget->GetArea())
+                        pThis->m_vLastSpellTarget = pTarget->m_vPosition;
+                }
+                pThis->m_nEffectSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                pThis->m_nSavingThrowSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                if (nEventId == Constants::AIMasterEvent::ItemOnHitSpellImpact)
+                {
+                    pThis->m_bLastItemCastSpell = true;
+                    pThis->m_nLastItemCastSpellLevel = pSpellScriptData->pSpellScriptData->m_nItemCastLevel;
+                    pThis->CalculateLastSpellProjectileTime();
+                }
+                s_LastSpellInstant = pSpellScriptData->bInstantSpell;
+
+                Globals::VirtualMachine()->RunScript(&pSpellScriptData->pSpellScriptData->m_sScript, pThis->m_idSelf, true);
+
+                pThis->m_nEffectSpellId = 0xFFFFFFFF;
+                pThis->m_nSavingThrowSpellId = 0xFFFFFFFF;
+                pThis->m_bLastItemCastSpell = false;
+                pThis->m_nLastItemCastSpellLevel = -1;
+                s_LastSpellInstant = false;
+                if (nEventId == Constants::AIMasterEvent::ItemOnHitSpellImpact)
+                {
+                    pThis->m_nLastSpellId = lastSpellId;
+                    pThis->m_oidLastSpellTarget = lastSpellObjectTarget;
+                    pThis->m_vLastSpellTarget = lastSpellLocationTarget;
+                    pThis->m_oidLastSpellCastItem = lastSpellCastItem;
+                    pThis->m_nLastSpellCastFeat = lastSpellCastFeat;
+                    pThis->m_bLastItemCastSpell = lastItemCastSpell;
+                    pThis->m_nLastItemCastSpellLevel = lastItemCastSpellLevel;
+                    s_LastSpellInstant = lastSpellInstant;
+                }
+            }
+
+            delete pSpellScriptData;
+        }
+        else
+            pCreatureEventHandlerHook->CallOriginal<void>(pThis, nEventId, nCallerObjectId, pEventData, nCalendarDay, nTimeOfDay);
+    }, Hooks::Order::Late);
+
+    static Hooks::Hook pPlaceableEventHandlerHook = Hooks::HookFunction(API::Functions::_ZN13CNWSPlaceable12EventHandlerEjjPvjj,
+    (void*)+[](CNWSPlaceable *pThis, uint32_t nEventId, ObjectID nCallerObjectId, void *pEventData, uint32_t nCalendarDay, uint32_t nTimeOfDay) -> void
+    {
+        if (nEventId == Constants::AIMasterEvent::SpellImpact)
+        {
+            if (!pEventData) return;
+            auto *pSpellScriptData = (SpellScriptData*)pEventData;
+
+            if (pSpellScriptData->pSpellScriptData->m_oidCaster == nCallerObjectId)
+            {
+                pThis->m_nLastSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                pThis->m_oidLastSpellTarget = pSpellScriptData->pSpellScriptData->m_oidTarget;
+                pThis->m_vLastSpellTarget = pSpellScriptData->pSpellScriptData->m_vTargetPosition;
+                if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(pSpellScriptData->pSpellScriptData->m_oidTarget)))
+                {
+                    if (pThis->GetArea() == pTarget->GetArea())
+                        pThis->m_vLastSpellTarget = pTarget->m_vPosition;
+                }
+                pThis->m_nEffectSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                pThis->m_nSavingThrowSpellId = pSpellScriptData->pSpellScriptData->m_nSpellId;
+                s_LastSpellInstant = pSpellScriptData->bInstantSpell;
+
+                Globals::VirtualMachine()->RunScript(&pSpellScriptData->pSpellScriptData->m_sScript, pThis->m_idSelf, true);
+
+                pThis->m_nEffectSpellId = 0xFFFFFFFF;
+                pThis->m_nSavingThrowSpellId = 0xFFFFFFFF;
+                s_LastSpellInstant = false;
+            }
+            delete pSpellScriptData;
+        }
+        else
+            pPlaceableEventHandlerHook->CallOriginal<void>(pThis, nEventId, nCallerObjectId, pEventData, nCalendarDay, nTimeOfDay);
+    }, Hooks::Order::Late);
+
+    return s_LastSpellInstant;
 }

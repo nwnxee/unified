@@ -407,6 +407,11 @@ int NWNX_Object_GetInventoryItemCount(object oObject);
 ///       This will override all spell projectile VFX from oCreature until the override is removed.
 void NWNX_Object_OverrideSpellProjectileVFX(object oCreature, int nProjectileType = -1, int nProjectilePathType = -1, int nSpellID = -1, int bPersist = FALSE);
 
+/// @brief Returns TRUE if the last spell was cast instantly. This function should only be called in a spell script.
+/// @note To initialize the hooks used by this function it is recommended to call this function once in your module load script.
+/// @return TRUE if the last spell was instant.
+int NWNX_Object_GetLastSpellInstant();
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -1009,4 +1014,11 @@ void NWNX_Object_OverrideSpellProjectileVFX(object oCreature, int nProjectileTyp
     NWNX_PushArgumentInt(nProjectileType);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetLastSpellInstant()
+{
+    string sFunc = "GetLastSpellInstant";
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt();
 }
