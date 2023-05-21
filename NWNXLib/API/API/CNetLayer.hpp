@@ -113,7 +113,7 @@ struct CNetLayer
     BOOL GetEnumerateSpecificOverRelay();
     void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken[6]);
     CExoString GetRouterPortMapDescription();
-    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
+    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision, int32_t nPostfix);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayer

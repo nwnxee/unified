@@ -49,7 +49,6 @@ struct CExoResMan
     ~CExoResMan();
     void SetupDefaultSearchPath();
     BOOL AddEncapsulatedResourceFile(const CExoString & sName, uint32_t nPriority);
-    BOOL AddResourceImageFile(const CExoString & sName, uint8_t * pCipher = nullptr, uint32_t nPriority = (60*1000000));
     BOOL AddFixedKeyTableFile(const CExoString & sName, uint32_t nPriority = (1*1000000));
     BOOL AddResourceDirectory(const CExoString & sName, uint32_t nPriority, BOOL bDetectChanges = false);
     BOOL AddManifest(const Hash::SHA1 & manifestHash, uint32_t nPriority);
@@ -66,7 +65,6 @@ struct CExoResMan
     int64_t GetTotalPhysicalMemory();
     int32_t ReleaseResObject(CRes * pRes, bool bDontCache = false);
     BOOL RemoveEncapsulatedResourceFile(const CExoString & sName, BOOL bEmitWarningOnFailure = true);
-    BOOL RemoveResourceImageFile(const CExoString & sName);
     BOOL RemoveFixedKeyTableFile(const CExoString & sName);
     BOOL RemoveResourceDirectory(const CExoString & sName);
     BOOL RemoveManifest(const Hash::SHA1 & sManifestHash);
@@ -93,7 +91,7 @@ struct CExoResMan
     int32_t GetTableCount(CRes * pRes, BOOL bCountStatic);
     BOOL GetIsStaticType(RESTYPE nType);
     void RemoveFromToBeFreedList(CRes * pRes);
-    BOOL AddKeyTable(uint32_t nPriority, const CExoString & sName, uint32_t nTableType, uint8_t * pCipher = nullptr, BOOL bDetectChanges = false);
+    BOOL AddKeyTable(uint32_t nPriority, const CExoString & sName, uint32_t nTableType, BOOL bDetectChanges = false);
     BOOL RemoveKeyTable(const CExoString & sName, uint32_t nTableType, BOOL bEmitWarningOnFailure = true);
     size_t CountKeyTablesOf(int32_t type, const CExoString & sName = "");
     void AddOverride(const CResRef & oldname, const CResRef & newname, RESTYPE restype);
@@ -107,13 +105,11 @@ struct CExoResMan
     BOOL ServiceFromDirectory(CRes * pRes);
     BOOL ServiceFromEncapsulated(CRes * pRes);
     BOOL ServiceFromResFile(CRes * pRes);
-    BOOL ServiceFromImage(CRes * pRes);
     BOOL ServiceFromManifest(CRes * pRes);
     BOOL UpdateKeyTable(const CExoString & sName, uint32_t nTableType);
     BOOL ServiceFromDirectoryRaw(CRes * pRes, int32_t nSize, char * pBuffer);
     BOOL ServiceFromEncapsulatedRaw(CRes * pRes, int32_t nSize, char * pBuffer);
     BOOL ServiceFromResFileRaw(CRes * pRes, int32_t nSize, char * pBuffer);
-    BOOL ServiceFromImageRaw(CRes * pRes, int32_t nSize, char * pBuffer);
     CResRef GetOverride(const CResRef & name, RESTYPE restype);
 
 

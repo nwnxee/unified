@@ -206,7 +206,6 @@ struct CServerExoApp : CBaseExoApp
     int32_t GetSkillBonusLimit();
     void SetSkillBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     CExoString GetHostedPublicInternetAddressAndPort();
-    BOOL SetDDCipherForModule(CExoString moduleName);
     AdvertLUT & GetNWSyncAdvertLUT();
     void SetGameObjectUpdateIntervalTarget(int target);
     void SetGameObjectUpdateIntervalTargetLoading(int target);

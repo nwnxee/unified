@@ -47,7 +47,7 @@ struct CGameEffect
     CGameEffect(CGameEffect * pParent, BOOL bCopyIconVisibility = false);
     ~CGameEffect();
     CGameEffect & operator=(const CGameEffect & effect);
-    int32_t GetScriptEffectType();
+    int32_t GetScriptEffectType(BOOL bAllTypes);
     void SetCreator(OBJECT_ID oidCreator);
     int32_t GetInteger(int32_t nStorageLocation);
     void SetInteger(int32_t nStorageLocation, int32_t nValue);
