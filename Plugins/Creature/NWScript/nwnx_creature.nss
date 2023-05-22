@@ -437,7 +437,7 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 /// @param count The amount of levels of class to add.
 /// @param package The class package to use for leveling up (-1 = starting package)
 /// @note This will not work on player characters.
-void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = -1);
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID);
 
 /// @brief Remove last levels from a creature.
 /// @param creature The creature object.
@@ -1596,7 +1596,7 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = -1)
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID)
 {
     string sFunc = "LevelUp";
     NWNX_PushArgumentInt(package);
