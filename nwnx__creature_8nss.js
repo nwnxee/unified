@@ -59,7 +59,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetCorpseDecayTime", "group__creature.html#ga9416ebcf6ecac41884242e6f40096100", null ],
     [ "NWNX_Creature_GetBaseSavingThrow", "group__creature.html#gaec44d5608a8adeb007c901425cfd92f8", null ],
     [ "NWNX_Creature_SetBaseSavingThrow", "group__creature.html#ga6a50f09f77b3dd53a49b2e68ebf75547", null ],
-    [ "NWNX_Creature_LevelUp", "group__creature.html#ga5d15b832ee6f67e78eb84896deef2fff", null ],
+    [ "NWNX_Creature_LevelUp", "group__creature.html#gad9c359948d6fca590e670986a7ed083d", null ],
     [ "NWNX_Creature_LevelDown", "group__creature.html#ga2789c514094503115b75d44a73c5122f", null ],
     [ "NWNX_Creature_SetChallengeRating", "group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100", null ],
     [ "NWNX_Creature_GetAttackBonus", "group__creature.html#ga8215cd4d9a5511c62d97d97952d92599", null ],

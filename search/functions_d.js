@@ -174,7 +174,7 @@ var searchData=
   ['nwnx_5fcreature_5fincrementremainingspellslots_3055',['NWNX_Creature_IncrementRemainingSpellSlots',['../group__creature.html#gac11415b7ba623c6ee2c8690463799f5d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fjumptolimbo_3056',['NWNX_Creature_JumpToLimbo',['../group__creature.html#ga1050f97a636758c1a4c74c058c688aa5',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fleveldown_3057',['NWNX_Creature_LevelDown',['../group__creature.html#ga2789c514094503115b75d44a73c5122f',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5flevelup_3058',['NWNX_Creature_LevelUp',['../group__creature.html#ga5d15b832ee6f67e78eb84896deef2fff',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5flevelup_3058',['NWNX_Creature_LevelUp',['../group__creature.html#gad9c359948d6fca590e670986a7ed083d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fmodifyrawabilityscore_3059',['NWNX_Creature_ModifyRawAbilityScore',['../group__creature.html#gac927f01d12df06dc070988e9f5fad3f1',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5foverridedamagelevel_3060',['NWNX_Creature_OverrideDamageLevel',['../group__creature.html#ga445a30a2f40834a69ab0771d084097de',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5foverriderangedprojectilevfx_3061',['NWNX_Creature_OverrideRangedProjectileVFX',['../group__creature.html#ga6063cad6d05f1a72409a618d284e45cc',1,'nwnx_creature.nss']]],

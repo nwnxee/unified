@@ -336,7 +336,7 @@ var searchData=
   ['nwnx_5fcreature_5fincrementremainingspellslots_639',['NWNX_Creature_IncrementRemainingSpellSlots',['../group__creature.html#gac11415b7ba623c6ee2c8690463799f5d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fjumptolimbo_640',['NWNX_Creature_JumpToLimbo',['../group__creature.html#ga1050f97a636758c1a4c74c058c688aa5',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fleveldown_641',['NWNX_Creature_LevelDown',['../group__creature.html#ga2789c514094503115b75d44a73c5122f',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5flevelup_642',['NWNX_Creature_LevelUp',['../group__creature.html#ga5d15b832ee6f67e78eb84896deef2fff',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5flevelup_642',['NWNX_Creature_LevelUp',['../group__creature.html#gad9c359948d6fca590e670986a7ed083d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fmemorisedspell_643',['NWNX_Creature_MemorisedSpell',['../structNWNX__Creature__MemorisedSpell.html',1,'']]],
   ['nwnx_5fcreature_5fmodifyrawabilityscore_644',['NWNX_Creature_ModifyRawAbilityScore',['../group__creature.html#gac927f01d12df06dc070988e9f5fad3f1',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fmovement_5frate_5fdefault_645',['NWNX_CREATURE_MOVEMENT_RATE_DEFAULT',['../group__creature.html#gab8a565245d8f2de0d44bb09f6002254a',1,'nwnx_creature.nss']]],
