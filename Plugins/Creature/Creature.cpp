@@ -1259,12 +1259,13 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 
         const auto cls = args.extract<int32_t>();
         const auto count = args.extract<int32_t>();
+        const auto package = args.extract<int32_t>();
 
         // Allow leveling outside of regular rules
         bSkipLevelUpValidation = true;
         for (int32_t i = 0; i < count; i++)
         {
-            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, Constants::ClassType::Invalid))
+            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, package))
             {
                 LOG_WARNING("Failed to add level of class %d, aborting", cls);
                 break;

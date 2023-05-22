@@ -19,7 +19,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Object: GetLastSpellInstant()
 
 ### Changed
-- N/A
+- Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()` 
 
 ### Deprecated
 - N/A
