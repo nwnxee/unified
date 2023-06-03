@@ -84,14 +84,6 @@ endfunction(add_subdirectory_pic)
 # capstone
 #
 if (DISASM_CAPSTONE)
-  configure_file(cmake/capstone.cmake.in capstone-download/CMakeLists.txt)
-  execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/capstone-download"
-  )
-  execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/capstone-download"
-  )
-
   string(TOUPPER ${FUNCHOOK_CPU} FUNCHOOK_CPU_UPPER)
 
   set(CAPSTONE_BUILD_SHARED OFF CACHE BOOL "")
@@ -100,7 +92,7 @@ if (DISASM_CAPSTONE)
   set(CAPSTONE_BUILD_CSTOOL OFF CACHE BOOL "")
   set(CAPSTONE_ARCHITECTURE_DEFAULT OFF CACHE BOOL "")
   set(CAPSTONE_${FUNCHOOK_CPU_UPPER}_SUPPORT ON CACHE BOOL "")
-  add_subdirectory_pic(${CMAKE_CURRENT_BINARY_DIR}/capstone-src ${CMAKE_CURRENT_BINARY_DIR}/capstone-build)
+  add_subdirectory_pic(capstone capstone)
 
   list(APPEND FUNCHOOK_DEPS capstone-static)
   set(DISASM capstone)
@@ -199,7 +191,7 @@ function (add_funchook_library target_name target_type)
   target_include_directories(${target_name} PUBLIC include)
   target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}) # to include config.h
   if (DISASM_CAPSTONE)
-    target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/capstone-src/include)
+    target_include_directories(${target_name} PRIVATE capstone/include)
   endif()
   target_link_libraries(${target_name} PRIVATE ${FUNCHOOK_DEPS})
   if (HAVE_FVISIBILITY_HIDDEN)
