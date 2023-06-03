@@ -5,6 +5,9 @@ build-nwnx/
 build/
 Documentation/
 
+cmake-build-*/
+.env
+
 # Visual Studio
 .vs/
 out/
