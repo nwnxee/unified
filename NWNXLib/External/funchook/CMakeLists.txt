@@ -24,10 +24,10 @@ else ()
   set(FUNCHOOK_DEFAULT_DISASM "distorm")
 endif ()
 
-option(FUNCHOOK_BUILD_SHARED "build shared library" ON)
+option(FUNCHOOK_BUILD_SHARED "build shared library" OFF)
 option(FUNCHOOK_BUILD_STATIC "build static library" ON)
-option(FUNCHOOK_BUILD_TESTS "Build tests" ON)
-option(FUNCHOOK_INSTALL "Install Funchook" ON)
+option(FUNCHOOK_BUILD_TESTS "Build tests" OFF)
+option(FUNCHOOK_INSTALL "Install Funchook" OFF)
 set(FUNCHOOK_DISASM ${FUNCHOOK_DEFAULT_DISASM} CACHE STRING "disassembler engine")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
