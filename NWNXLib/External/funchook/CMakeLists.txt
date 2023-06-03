@@ -1,9 +1,7 @@
 # GIT_SHALLOW requires cmake 3.6.
 cmake_minimum_required(VERSION 3.6)
 
-project(funchook LANGUAGES C ASM)
-set(PROJECT_VERSION 1.1.1)
-set(PROJECT_VERSION_MAJOR 1)
+project(funchook VERSION 2.0.0 LANGUAGES C ASM)
 
 include("GNUInstallDirs")
 
@@ -15,6 +13,9 @@ if(NOT FUNCHOOK_CPU)
   if (FUNCHOOK_CPU MATCHES "aarch64")
       set(FUNCHOOK_CPU arm64)
   endif ()
+  if (FUNCHOOK_CPU MATCHES "ARM64")
+      set(FUNCHOOK_CPU arm64)
+  endif ()
 endif ()
 
 if (FUNCHOOK_CPU MATCHES "arm64")
@@ -23,10 +24,10 @@ else ()
   set(FUNCHOOK_DEFAULT_DISASM "distorm")
 endif ()
 
-option(FUNCHOOK_BUILD_SHARED "build shared library" OFF)
+option(FUNCHOOK_BUILD_SHARED "build shared library" ON)
 option(FUNCHOOK_BUILD_STATIC "build static library" ON)
-option(FUNCHOOK_BUILD_TESTS "Build tests" OFF)
-option(FUNCHOOK_INSTALL "Install Funchook" OFF)
+option(FUNCHOOK_BUILD_TESTS "Build tests" ON)
+option(FUNCHOOK_INSTALL "Install Funchook" ON)
 set(FUNCHOOK_DISASM ${FUNCHOOK_DEFAULT_DISASM} CACHE STRING "disassembler engine")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -165,7 +166,21 @@ endif ()
 # funchook
 #
 
-set(FUNCHOOK_SOURCES src/funchook.c src/funchook_${FUNCHOOK_CPU}.c src/funchook_${FUNCHOOK_OS}.c src/disasm_${DISASM}.c)
+set(FUNCHOOK_SOURCES src/funchook.c src/arch_${FUNCHOOK_CPU}.c src/os_${FUNCHOOK_OS}.c src/disasm_${DISASM}.c)
+
+if ((FUNCHOOK_CPU STREQUAL x86) AND (CMAKE_SIZEOF_VOID_P EQUAL "8"))
+  if (MSVC)
+    # Microsoft x64 calling convention (Microsoft Visual C++)
+    enable_language(ASM_MASM)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-ms.asm)
+  elseif (WIN32)
+    # Microsoft x64 calling convention (Mingw-w64)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-ms.S)
+  else ()
+    # System V ABI (Linux, macOS)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-sysv.S)
+  endif ()
+endif ()
 
 set(FUNCHOOK_PROPERTIES
     OUTPUT_NAME funchook
