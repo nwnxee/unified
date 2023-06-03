@@ -2,7 +2,7 @@
 # build dependencies change. This docker image created is pushed to Dockerhub and GHCR and is the base
 # image when users build their own docker images for NWNX:EE.
 
-FROM debian:buster-slim
+FROM ubuntu:18.04
 
 RUN buildDeps="build-essential \
     git \
