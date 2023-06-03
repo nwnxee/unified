@@ -31,6 +31,9 @@
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
+#if defined(_MSC_VER) && !defined(_CRT_NONSTDC_NO_WARNINGS)
+#define _CRT_NONSTDC_NO_WARNINGS
+#endif
 #include "config.h"
 #include <stdio.h>
 #include <stdarg.h>
@@ -67,7 +70,8 @@ static size_t num_entries_in_page;
 static void funchook_logv(funchook_t *funchook, int set_error, const char *fmt, va_list ap);
 static void funchook_log_end(funchook_t *funchook, const char *fmt, ...);
 static funchook_t *funchook_create_internal(void);
-static int funchook_prepare_internal(funchook_t *funchook, void **target_func, void *hook_func);
+static int funchook_prepare_internal(funchook_t *funchook, void **target_func,
+                                     const funchook_params_t *params);
 static void funchook_log_trampoline(funchook_t *funchook, const insn_t *trampoline, size_t trampoline_size);
 static int funchook_install_internal(funchook_t *funchook, int flags);
 static int funchook_uninstall_internal(funchook_t *funchook, int flags);
@@ -99,11 +103,27 @@ int funchook_prepare(funchook_t *funchook, void **target_func, void *hook_func)
 {
     int rv;
     void *orig_func;
+    funchook_params_t params = { .hook_func = hook_func, };
 
     funchook_log(funchook, "Enter funchook_prepare(%p, %p, %p)\n", funchook, target_func, hook_func);
     orig_func = *target_func;
-    rv = funchook_prepare_internal(funchook, target_func, hook_func);
+    rv = funchook_prepare_internal(funchook, target_func, &params);
     funchook_log_end(funchook, "Leave funchook_prepare(..., [%p->%p],...) => %d\n", orig_func, *target_func, rv);
+    return rv;
+}
+
+int funchook_prepare_with_params(funchook_t *funchook,
+                               void **target_func, const funchook_params_t *params)
+{
+    int rv;
+    void *orig_func;
+
+    funchook_log(funchook, "Enter funchook_prepare_with_params(%p, %p, {%p, %p, %p, %s})\n",
+                 funchook, target_func, params->hook_func, params->prehook, params->user_data,
+                 params->arg_types ? params->arg_types : "(null)");
+    orig_func = *target_func;
+    rv = funchook_prepare_internal(funchook, target_func, params);
+    funchook_log_end(funchook, "Leave funchook_prepare_with_prehook(..., [%p->%p],...) => %d\n", orig_func, *target_func, rv);
     return rv;
 }
 
@@ -153,6 +173,44 @@ int funchook_set_debug_file(const char *name)
     return 0;
 }
 
+int funchook_get_arg(const funchook_arg_handle_t *handle, int pos, void *out)
+{
+    if (handle == NULL || pos <= 0) {
+        return -1;
+    }
+    int offset = funchook_get_arg_offset(handle->arg_types, pos, handle->flags);
+    if (offset == INT_MIN) {
+        return -1;
+    }
+    const size_t *addr = handle->base_pointer + offset;
+    switch (handle->arg_types[pos]) {
+    case 'b':
+        *(int8_t*)out = *(int8_t*)addr;
+        break;
+    case 'h':
+        *(int16_t*)out = *(int16_t*)addr;
+        break;
+    case 'i':
+    case 'f':
+        *(int32_t*)out = *(int32_t*)addr;
+        break;
+    case 'l':
+        *(long*)out = *(long*)addr;
+        break;
+    case 'L':
+    case 'd':
+        *(int64_t*)out = *(int64_t*)addr;
+        break;
+    case 'p':
+    case 'S':
+        *(size_t*)out = *(size_t*)addr;
+        break;
+    default:
+        return -1;
+    }
+    return 0;
+}
+
 void funchook_log(funchook_t *funchook, const char *fmt, ...)
 {
     va_list ap;
@@ -171,6 +229,26 @@ void funchook_set_error_message(funchook_t *funchook, const char *fmt, ...)
     va_start(ap, fmt);
     funchook_logv(funchook, 1, fmt, ap);
     va_end(ap);
+}
+
+void *funchook_hook_caller(size_t transit_addr, const size_t *base_pointer)
+{
+    funchook_entry_t *entry = (funchook_entry_t *)(transit_addr - offsetof(funchook_entry_t, transit));
+    funchook_arg_handle_t arg_handle = {
+        .base_pointer = base_pointer,
+        .arg_types = entry->arg_types,
+        .flags = entry->flags,
+    };
+    funchook_info_t info = {
+        .original_target_func = entry->original_target_func,
+        .target_func = entry->target_func,
+        .trampoline_func = entry->trampoline,
+        .hook_func = entry->hook_func,
+        .user_data = entry->user_data,
+        .arg_handle = entry->arg_types ? &arg_handle : NULL,
+    };
+    entry->prehook(&info);
+    return entry->hook_func ? entry->hook_func : entry->trampoline;
 }
 
 static void funchook_logv(funchook_t *funchook, int set_error, const char *fmt, va_list ap)
@@ -243,7 +321,8 @@ static funchook_t *funchook_create_internal(void)
     return funchook;
 }
 
-static int funchook_prepare_internal(funchook_t *funchook, void **target_func, void *hook_func)
+static int funchook_prepare_internal(funchook_t *funchook, void **target_func,
+                                     const funchook_params_t *params)
 {
     void *func = *target_func;
     insn_t trampoline[TRAMPOLINE_SIZE];
@@ -270,8 +349,13 @@ static int funchook_prepare_internal(funchook_t *funchook, void **target_func, v
     }
     entry = &page->entries[page->used];
     /* fill members */
+    entry->original_target_func = *target_func;
     entry->target_func = func;
-    entry->hook_func = hook_func;
+    entry->hook_func = params->hook_func;
+    entry->prehook = params->prehook;
+    entry->user_data = params->user_data;
+    entry->arg_types = params->arg_types ? strdup(params->arg_types) : NULL;
+    entry->flags = params->flags;
     memcpy(entry->trampoline, trampoline, TRAMPOLINE_BYTE_SIZE);
     memcpy(entry->old_code, func, JUMP32_BYTE_SIZE);
 
@@ -282,7 +366,7 @@ static int funchook_prepare_internal(funchook_t *funchook, void **target_func, v
     for (i = 0; i < LITERAL_POOL_NUM; i++) {
         size_t *addr = (size_t*)(entry->trampoline + LITERAL_POOL_OFFSET + i * 2);
         if (*addr != 0) {
-            funchook_log(funchook, "    %016lx : 0x%lx\n", (size_t)addr, *addr);
+            funchook_log(funchook, "    "ADDR_FMT" : 0x%"PRIxPTR"\n", (size_t)addr, *addr);
         }
     }
 #endif
@@ -402,6 +486,10 @@ static int funchook_destroy_internal(funchook_t *funchook)
         return FUNCHOOK_ERROR_ALREADY_INSTALLED;
     }
     for (page = funchook->page_list; page != NULL; page = page_next) {
+       uint16_t i;
+       for (i = 0; i < page->used; i++) {
+           free(page->entries[i].arg_types);
+       }
         page_next = page->next;
         funchook_page_free(funchook, page);
     }
