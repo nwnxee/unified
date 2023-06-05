@@ -32,6 +32,7 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSpell.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSStore.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CNWSEffectListHandler.hpp"
@@ -3389,6 +3390,95 @@ NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
         bool bMovement = !!args.extract<int32_t>();
 
         pCreature->BroadcastAttackOfOpportunity(oidSingleTarget, bMovement);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf)))
+            {
+                return maxBuyPriceOverride.value();
+            }
+        }
+    }
+
+    return -2;
+}
+
+NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    static Hooks::Hook pCalculateItemBuyPrice_hook = Hooks::HookFunction(&CNWSStore::CalculateItemBuyPrice,
+    +[](CNWSStore *pThis, CNWSItem *pItem, OBJECT_ID oidSeller) -> int32_t
+    {
+        if (auto *pSeller = Utils::AsNWSCreature(Utils::GetGameObject(oidSeller)))
+        {
+            if (auto maxBuyPriceOverride = pSeller->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pThis->m_idSelf)))
+            {
+                if (pItem->m_bPlotObject)
+                    return 0;
+
+                if (auto nCost = pItem->GetCost(true, true, false, false))
+                {
+                    auto nMaxBuyPriceOverride = maxBuyPriceOverride.value();
+                    auto nBuyRate = pThis->GetCustomerBuyRate(oidSeller, pThis->m_bBlackMarket);
+                    auto nBuyPrice = nCost * nBuyRate / 100.0;
+
+                    if (nMaxBuyPriceOverride != -1 && nMaxBuyPriceOverride < nBuyPrice)
+                        nBuyPrice = nMaxBuyPriceOverride;
+
+                    if (nBuyPrice < 1)
+                        nBuyPrice = 1;
+
+                    return nBuyPrice;
+                }
+                
+                return 0;
+            }
+        }
+
+        return pCalculateItemBuyPrice_hook->CallOriginal<int32_t>(pThis, pItem, oidSeller);
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook pSendServerToPlayerOpenStoreInventory_hook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerOpenStoreInventory,
+    +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidStore, uint8_t nPanel) -> bool
+    {
+        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+        {
+            if (auto *pStore = Utils::AsNWSStore(Utils::GetGameObject(oidStore)))
+            {
+                if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(oidStore)))
+                {
+                    auto nMaxBuyPrice = pStore->m_iMaxBuyPrice;
+
+                    pStore->m_iMaxBuyPrice = maxBuyPriceOverride.value();
+                    auto retVal = pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+                    pStore->m_iMaxBuyPrice = nMaxBuyPrice;
+
+                    return retVal;
+                }
+            }
+        }
+
+        return pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+    }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            const auto nMaxBuyPrice = args.extract<int32_t>();
+
+            if (nMaxBuyPrice == -2)
+                pCreature->nwnxRemove("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf));
+            else
+                pCreature->nwnxSet("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf), nMaxBuyPrice, false);
+        }
     }
 
     return {};
