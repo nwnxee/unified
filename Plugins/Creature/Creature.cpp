@@ -3423,10 +3423,10 @@ NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
                 if (pItem->m_bPlotObject)
                     return 0;
 
-                if (auto nCost = pItem->GetCost(true, true, false, false))
+                if (auto nCost = pItem->GetCost(true, false, false, false))
                 {
                     auto nMaxBuyPriceOverride = maxBuyPriceOverride.value();
-                    auto nBuyRate = pThis->GetCustomerBuyRate(oidSeller, pThis->m_bBlackMarket);
+                    auto nBuyRate = pThis->GetCustomerBuyRate(oidSeller, pItem->m_bStolen);
                     auto nBuyPrice = nCost * nBuyRate / 100.0;
 
                     if (nMaxBuyPriceOverride != -1 && nMaxBuyPriceOverride < nBuyPrice)
