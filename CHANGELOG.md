@@ -17,6 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
+- String: NWNX_Util_GetModuleFile()
 
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()` 
