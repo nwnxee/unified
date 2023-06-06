@@ -127,11 +127,6 @@ NWNX_EXPORT ArgumentStack GetModuleMtime(ArgumentStack&&)
 NWNX_EXPORT ArgumentStack GetModuleFile(ArgumentStack&&)
 {
     CNWSModule *pMod = Utils::GetModule();
-    if (pMod->m_bIsSaveGame)
-    {
-        LOG_DEBUG("GetModuleFile() module is a save game, returning 0");
-        return "";
-    }
     return pMod->m_sModuleResourceName.SubString(12); // discard "CURRENTGAME:"
 }
 
