@@ -62,6 +62,10 @@ int NWNX_Util_Hash(string str);
 /// @return The mtime of the module file.
 int NWNX_Util_GetModuleMtime();
 
+/// @brief Gets the module short file name.
+/// @return The module file as a string.
+string NWNX_Util_GetModuleFile();
+
 /// @brief Gets the value of customTokenNumber.
 /// @param customTokenNumber The token number to query.
 /// @return The string representation of the token value.
@@ -273,6 +277,12 @@ int NWNX_Util_GetModuleMtime()
 {
     NWNX_CallFunction(NWNX_Util, "GetModuleMtime");
     return NWNX_GetReturnValueInt();
+}
+
+string NWNX_Util_GetModuleFile()
+{
+    NWNX_CallFunction(NWNX_Util, "GetModuleFile");
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Util_GetCustomToken(int customTokenNumber)
