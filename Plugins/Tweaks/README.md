@@ -48,6 +48,11 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Casts all On Hit: Cast Spell item properties on hit, instead of only the first property. |
+| `NWNX_TWEAKS_USE_CUSTOM_HAK_LIST` | true or false | If the reference module haks should be ignored and not loaded, instead using the list specified in `NWNX_TWEAKS_CUSTOM_HAK_LIST` |
+| `NWNX_TWEAKS_CUSTOM_HAK_LIST` | Comma separated list or undefined | The hak files to load when `NWNX_TWEAKS_USE_CUSTOM_HAK_LIST` is enabled. An empty list means no hak files are loaded. |
+| `NWNX_TWEAKS_LOAD_NWSYNC_MANIFEST` | true or false | Causes the server to synchronise to a standard nwsync repository, and load the referenced content. |
+| `NWNX_TWEAKS_NWSYNC_HOST` | URL | The base host of the nwsync repository when `NWNX_TWEAKS_LOAD_NWSYNC_MANIFEST` is enabled. |
+| `NWNX_TWEAKS_NWSYNC_MANIFEST` | Hash | The nwsync manifest hash to load when `NWNX_TWEAKS_LOAD_NWSYNC_MANIFEST` is enabled. Does not support `latest`. |
 
 ## Environment variable values
 
