@@ -152,6 +152,8 @@ var group__creature =
     [ "NWNX_Creature_GetLockOrientationToObject", "group__creature.html#gadae179f00dc664572de797fb99e1d9b9", null ],
     [ "NWNX_Creature_SetLockOrientationToObject", "group__creature.html#gae248e97e200f68b22baac808e89a6ecf", null ],
     [ "NWNX_Creature_BroadcastAttackOfOpportunity", "group__creature.html#gae049e21bae9c132cf1072e29e014c725", null ],
+    [ "NWNX_Creature_GetMaxSellToStorePriceOverride", "group__creature.html#ga87f30656ca7386ec744ee374ea3bb696", null ],
+    [ "NWNX_Creature_SetMaxSellToStorePriceOverride", "group__creature.html#gaec47c93e8f9ded43743192bc3aa2659f", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
