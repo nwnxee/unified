@@ -975,6 +975,18 @@ void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget);
 /// @param bMovement Whether the Attack of Opportunity was caused by movement.
 void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE);
 
+/// @brief Returns the maximum price oStore will buy items from oCreature for.
+/// @param oCreature The creature object.
+/// @param oStore The store object.
+/// @return The max buy price override. -1 = No maximum buy price, -2 = No override set.
+int NWNX_Creature_GetMaxSellToStorePriceOverride(object oCreature, object oStore);
+
+/// @brief Overrides the maximum price oStore will buy items from oCreature for.
+/// @param oCreature The creature object.
+/// @param oStore The store object.
+/// @param nMaxSellToPrice The maximum buy price override. -1 = No maximum buy price, -2 = Remove the override.
+void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStore, int nMaxSellToPrice);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2523,6 +2535,27 @@ void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingle
 
     NWNX_PushArgumentInt(bMovement);
     NWNX_PushArgumentObject(oSingleCreature);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetMaxSellToStorePriceOverride(object oCreature, object oStore)
+{
+    string sFunc = "GetMaxSellToStorePriceOverride";
+
+    NWNX_PushArgumentObject(oStore);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStore, int nMaxSellToPrice)
+{
+    string sFunc = "SetMaxSellToStorePriceOverride";
+
+    NWNX_PushArgumentInt(nMaxSellToPrice);
+    NWNX_PushArgumentObject(oStore);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

@@ -17,7 +17,8 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
-- String: NWNX_Util_GetModuleFile()
+- Creature: {Get|Set}MaxSellToStorePriceOverride()
+- Util: GetModuleFile()
 
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()` 
