@@ -3,6 +3,7 @@
 
 #include "SHA1.hpp"
 
+namespace NWSync {
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(NWSyncAdvertisementManifest)
@@ -12,9 +13,9 @@ NWN_API_PROLOGUE(NWSyncAdvertisementManifest)
 
 
 
-struct NWSyncAdvertisementManifest
+struct AdvertisementManifest
 {
-    SHA1 m_hash;
+    Hash::SHA1 m_hash;
     uint8_t m_flags;
     uint8_t m_languageId;
 
@@ -30,3 +31,4 @@ struct NWSyncAdvertisementManifest
 NWN_API_EPILOGUE(NWSyncAdvertisementManifest)
 #endif
 
+}
