@@ -10,6 +10,7 @@
 #include "CResRef.hpp"
 #include "RESID.hpp"
 #include "CNWSync.hpp"
+#include "SHA1.hpp"
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResMan)
