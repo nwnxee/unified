@@ -38,5 +38,5 @@ add_plugin(Tweaks
     "RangedWeaponsUseOnHitEffectItemProperties.cpp"
     "RangedWeaponsUseOnHitCastSpellItemProperties.cpp"
     "CastAllOnHitCastSpellItemProperties.cpp"
-    "CustomHakList.cpp"
+    "UseCustomHakList.cpp"
     "LoadNwSyncManifest.cpp")

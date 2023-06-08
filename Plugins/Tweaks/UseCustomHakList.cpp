@@ -16,8 +16,8 @@ using namespace NWNXLib::API;
 const int RESMAN_PRIORITY_USER_HAK = 31000000;
 const int LOADMODULE_ERROR_COULDNOTLOADHAK = 2;
 
-void CustomHakList() __attribute__((constructor));
-void CustomHakList()
+void UseCustomHakList() __attribute__((constructor));
+void UseCustomHakList()
 {
     if (!Config::Get<bool>("USE_CUSTOM_HAK_LIST", false))
         return;
@@ -43,7 +43,7 @@ void CustomHakList()
 
         if (hakList.empty())
         {
-            LOG_INFO("Skipping load of hak files.");
+            LOG_INFO("Skipping load of hak files");
         }
 
         for (const std::string &hakName: hakList)
@@ -61,7 +61,7 @@ void CustomHakList()
 
         Globals::Rules()->ReloadAll();
 
-        return loadModuleStartHook->CallOriginal<uint32_t>(pModule, param_1, param_2, param_3, param_4);
+        return loadModuleStartHook->CallOriginal<uint32_t>(pModule, param_1, param_2, param_3, &param_4);
     }, Hooks::Order::Early);
 }
 
