@@ -8,6 +8,7 @@
 #include "API/SHA1.hpp"
 #include "API/HttpConnection.hpp"
 #include "API/NWSyncAdvertisement.hpp"
+#include "API/CExoStringList.hpp"
 
 #include <unistd.h>
 
@@ -42,11 +43,10 @@ const int NWSYNC_STATE_DONE = 800; // Done! Go ahead.
 const int NWSYNC_STATE_FAILED = 801; // We aborted. Error will be in currentStateMessage.
 
 void ShowScreenUpdate(const NWSync::CNWCSync::Progress &progress, bool force);
-
+CExoString* FindNwSyncTlk();
 const char *NWSyncStateToStr(const int state);
 
 void LoadNwSyncManifest() __attribute__((constructor));
-
 void LoadNwSyncManifest()
 {
     if (!Config::Get<bool>("LOAD_NWSYNC_MANIFEST", false))
@@ -103,6 +103,36 @@ void LoadNwSyncManifest()
 
         return loadModuleStartHook->CallOriginal<uint32_t>(pModule, param_1, param_2, param_3, param_4);
     }, Hooks::Order::Early);
+
+    static Hooks::Hook readFieldCExoStringHook = Hooks::HookFunction(&CResGFF::ReadFieldCExoString,
+    +[](CResGFF *pGff, CResStruct *pStructure, char *szFieldID, BOOL &bSuccess, const CExoString &sDefault = "") -> CExoString
+    {
+        if (strncmp(pGff->m_pFileType, "IFO", 3) == 0 && strcmp(szFieldID, "Mod_CustomTlk") == 0)
+        {
+            if (auto tlk = FindNwSyncTlk())
+            {
+                LOG_INFO("Using TLK file %s from nwsync", tlk->CStr());
+                bSuccess = true;
+                return {*tlk};
+            }
+        }
+
+        return readFieldCExoStringHook->CallOriginal<CExoString>(pGff, pStructure, szFieldID, &bSuccess, &sDefault);
+    }, Hooks::Order::Late);
+}
+
+CExoString* FindNwSyncTlk()
+{
+    if (auto *pList = Globals::ExoResMan()->GetResOfType(Constants::ResRefType::TLK, false))
+    {
+        if (pList->m_nCount > 0)
+        {
+            // We can only load 1 custom tlk, so just use the first one we find.
+            return pList->m_pStrings[0];
+        }
+    }
+
+    return nullptr;
 }
 
 void ShowScreenUpdate(const NWSync::CNWCSync::Progress &progress, bool force)
