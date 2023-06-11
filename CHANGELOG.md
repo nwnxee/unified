@@ -11,11 +11,9 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL` to modify a creature's spell DC for a spell school
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL` to modify a creature's spell DC for an individual spell
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
-- Tweaks: added `NWNX_TWEAKS_USE_CUSTOM_HAK_LIST`, `NWNX_TWEAKS_CUSTOM_HAK_LIST` for specifying a custom hak list when loading a module.
-- Tweaks: added `NWNX_TWEAKS_LOAD_NWSYNC_MANIFEST`, `NWNX_TWEAKS_NWSYNC_HOST`, `NWNX_TWEAKS_NWSYNC_MANIFEST` for syncing the server to a hosted nwsync repository.
 
 ##### New Plugins
-- N/A
+- Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
