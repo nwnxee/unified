@@ -37,6 +37,4 @@ add_plugin(Tweaks
     "PreventAttackBonusBypassingReductions.cpp"
     "RangedWeaponsUseOnHitEffectItemProperties.cpp"
     "RangedWeaponsUseOnHitCastSpellItemProperties.cpp"
-    "CastAllOnHitCastSpellItemProperties.cpp"
-    "UseCustomHakList.cpp"
-    "LoadNwSyncManifest.cpp")
+    "CastAllOnHitCastSpellItemProperties.cpp")
