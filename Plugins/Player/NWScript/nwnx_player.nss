@@ -138,7 +138,7 @@ string NWNX_Player_GetBicFileName(object player);
 /// @param scale The scale of the effect
 /// @param translate A translation vector to offset the position of the effect
 /// @param rotate A rotation vector to rotate the effect
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0, vector translate=[0.0,0.0,0.0], vector rotate=[0.0,0.0,0.0]);
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[0.0f, 0.0f, 0.0f], vector rotate=[0.0f, 0.0f, 0.0f]);
 
 /// @brief Changes the daytime music track for the given player only
 /// @param player The player object.
@@ -197,7 +197,7 @@ void NWNX_Player_SetRestDuration(object player, int duration);
 /// @param translate A translation vector to offset the position of the effect
 /// @param rotate A rotation vector to rotate the effect
 /// @note Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0, vector translate=[0.0,0.0,0.0], vector rotate=[0.0,0.0,0.0]);
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[0.0f, 0.0f, 0.0f], vector rotate=[0.0f, 0.0f, 0.0f]);
 
 /// @brief Refreshes the players character sheet
 /// @param player The player object.
@@ -577,7 +577,7 @@ string NWNX_Player_GetBicFileName(object player)
     return NWNX_GetReturnValueString();
 }
 
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0, vector translate=[0.0,0.0,0.0], vector rotate=[0.0,0.0,0.0])
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[0.0f, 0.0f, 0.0f], vector rotate=[0.0f, 0.0f, 0.0f])
 {
     string sFunc = "ShowVisualEffect";
 
@@ -701,7 +701,7 @@ void NWNX_Player_SetRestDuration(object player, int duration)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0, vector translate=[0.0,0.0,0.0], vector rotate=[0.0,0.0,0.0])
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[0.0f, 0.0f, 0.0f], vector rotate=[0.0f, 0.0f, 0.0f])
 {
     string sFunc = "ApplyInstantVisualEffectToObject";
 
