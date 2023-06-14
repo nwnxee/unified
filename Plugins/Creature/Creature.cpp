@@ -3483,3 +3483,93 @@ NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            return pLevelStats->m_nAbilityGain;
+        }
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        const auto ability = args.extract<int32_t>();
+          ASSERT_OR_THROW(ability >= Constants::Ability::MIN);
+          ASSERT_OR_THROW(ability <= Constants::Ability::MAX);
+        
+        if ((level > 0) && (level <= pCreature->m_pStats->m_lstLevelStats.num))
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            if (pLevelStats->m_nAbilityGain != ability)
+            {
+                switch (pLevelStats->m_nAbilityGain)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase - 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase - 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase - 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase - 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase - 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase - 1);
+                        break;
+                }
+
+                switch (ability)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase + 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase + 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase + 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase + 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase + 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase + 1);
+                        break;
+                }
+
+                pLevelStats->m_nAbilityGain = ability;
+            }
+        }
+    }
+
+    return {};
+}
