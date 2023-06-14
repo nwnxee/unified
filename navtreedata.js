@@ -54,7 +54,7 @@ var NAVTREEINDEX =
 "group__feedback.html#ga8318f519f481f01645becd45e1770419",
 "group__feedback.html#gaf3f60ea9370e4bfc7965646e97c20b7a",
 "group__object.html#ga8a8f56702f7212d7f2de699e50ed2232",
-"group__player.html#gaae0cb6974be651bf04a86c71143944cc",
+"group__player.html#gaaacb3c57cd5fd2c4d7e23cf39aab4fe1",
 "group__skillranks.html#ga1db13e2848c6df316ce2e4ac31b5e07a",
 "group__util.html#gab4fc4476bb4eb5f7d67e67b4f6f4b904",
 "nwnx__redis_8nss.html",

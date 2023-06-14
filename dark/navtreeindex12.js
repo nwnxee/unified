@@ -124,8 +124,6 @@ var NAVTREEINDEX12 =
 "group__player.html#ga205d11b56a93e6516d18abeb38a61ba9":[4,0,3,25,0,0,33],
 "group__player.html#ga21d587709818c38216b5788d652111d7":[0,28,99],
 "group__player.html#ga21d587709818c38216b5788d652111d7":[4,0,3,25,0,0,80],
-"group__player.html#ga237db89fac702f2b9f404a33c63e7b93":[0,28,13],
-"group__player.html#ga237db89fac702f2b9f404a33c63e7b93":[4,0,3,25,0,0,8],
 "group__player.html#ga24e0da78fc6d24ff26f3a53f8630f0bd":[0,28,101],
 "group__player.html#ga24e0da78fc6d24ff26f3a53f8630f0bd":[4,0,3,25,0,1,16],
 "group__player.html#ga279986e6859e86d4e0e8997f9448b583":[0,28,105],
@@ -220,6 +218,8 @@ var NAVTREEINDEX12 =
 "group__player.html#ga7c31b1a2759034e5b4518c7c5b3cc704":[4,0,3,25,0,0,59],
 "group__player.html#ga7cbeae3cfad8bad466171c1aa62ed592":[4,0,3,25,0,0,66],
 "group__player.html#ga7cbeae3cfad8bad466171c1aa62ed592":[0,28,85],
+"group__player.html#ga7dbffb81ef377eb430f50011b675573d":[0,28,13],
+"group__player.html#ga7dbffb81ef377eb430f50011b675573d":[4,0,3,25,0,0,8],
 "group__player.html#ga80bfea76a93c1de52cb4c0e5bbc23978":[0,28,37],
 "group__player.html#ga80bfea76a93c1de52cb4c0e5bbc23978":[4,0,3,25,0,0,32],
 "group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035":[4,0,3,25,0,0,44],
@@ -240,6 +240,8 @@ var NAVTREEINDEX12 =
 "group__player.html#ga94fef51c2bc9006b20e0323c67a08dbe":[4,0,3,25,0,1,21],
 "group__player.html#ga9858c43c6d7bcb4c6fd2484eb87a85c0":[0,28,5],
 "group__player.html#ga9858c43c6d7bcb4c6fd2484eb87a85c0":[4,0,3,25,0,0,0],
+"group__player.html#ga9c984ffe634a7d8d57464c758f6cc6aa":[4,0,3,25,0,0,19],
+"group__player.html#ga9c984ffe634a7d8d57464c758f6cc6aa":[0,28,24],
 "group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a":[4,0,3,25,0,0,42],
 "group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a":[0,28,47],
 "group__player.html#gaa77e5bcabd874733f5ccd0c11715fce9":[0,28,79],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "group__player.html#gaa989317580c869b0f1788bc9b982b78c":[0,28,41],
 "group__player.html#gaa989317580c869b0f1788bc9b982b78c":[4,0,3,25,0,0,36],
 "group__player.html#gaa9cda6c9e2572f4854a96502b8c11aec":[4,0,3,25,0,0,50],
-"group__player.html#gaa9cda6c9e2572f4854a96502b8c11aec":[0,28,55],
-"group__player.html#gaaacb3c57cd5fd2c4d7e23cf39aab4fe1":[4,0,3,25,0,0,38],
-"group__player.html#gaaacb3c57cd5fd2c4d7e23cf39aab4fe1":[0,28,43]
+"group__player.html#gaa9cda6c9e2572f4854a96502b8c11aec":[0,28,55]
 };
