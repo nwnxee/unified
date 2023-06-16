@@ -1,5 +1,11 @@
 var NAVTREEINDEX18 =
 {
+"structNWNX__Area__TileInfo.html#a2272f4e3492d04d21fd90b15fe1db78d":[0,5,2,0],
+"structNWNX__Area__TileInfo.html#a3d62c52ed6d20acdfd5468396e6d62a1":[0,5,2,2],
+"structNWNX__Area__TileInfo.html#a8f251dcba2c20218ca755ad14ac30bf6":[0,5,2,3],
+"structNWNX__Area__TileInfo.html#a9401d512230306a66f9896d24847f2f2":[0,5,2,4],
+"structNWNX__Area__TileInfo.html#af58eb65e41d9b1cec04ba3af9ff11025":[0,5,2,1],
+"structNWNX__Creature__MemorisedSpell.html":[3,2],
 "structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[3,2,2],
 "structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[3,2,0],
 "structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b":[3,2,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Tileset__TileEdgesAndCorners.html#a0a674c8e88796ed53f38fd71de9f1fff":[0,40,4,5],
 "structNWNX__Tileset__TileEdgesAndCorners.html#a4b3593031bb6088c4e772c565efb23b5":[0,40,4,3],
 "structNWNX__Tileset__TileEdgesAndCorners.html#a50b40ab9a4231e2b4c26624d02f2debc":[0,40,4,0],
-"structNWNX__Tileset__TileEdgesAndCorners.html#a565fa43dc398344172a3168be6184bbd":[0,40,4,2],
-"structNWNX__Tileset__TileEdgesAndCorners.html#aa985b5db2627da932f350d7d5a0138c3":[0,40,4,4],
-"structNWNX__Tileset__TileEdgesAndCorners.html#ae49ce3f6be1e4a5afbb34fe31d48c354":[0,40,4,7],
-"structNWNX__Tileset__TileEdgesAndCorners.html#aeca0c8be1795dafc4f6cfc34acbc60a6":[0,40,4,1],
-"structNWNX__Tileset__TileEdgesAndCorners.html#afdf284cd807a36ca64ade8a549f43b92":[0,40,4,6],
-"structNWNX__Tileset__TilesetData.html":[0,40,2],
-"structNWNX__Tileset__TilesetData.html#a010d411b92f707702a3a40cebcb37f67":[0,40,2,4]
+"structNWNX__Tileset__TileEdgesAndCorners.html#a565fa43dc398344172a3168be6184bbd":[0,40,4,2]
 };

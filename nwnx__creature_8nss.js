@@ -147,6 +147,8 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_BroadcastAttackOfOpportunity", "group__creature.html#gae049e21bae9c132cf1072e29e014c725", null ],
     [ "NWNX_Creature_GetMaxSellToStorePriceOverride", "group__creature.html#ga87f30656ca7386ec744ee374ea3bb696", null ],
     [ "NWNX_Creature_SetMaxSellToStorePriceOverride", "group__creature.html#gaec47c93e8f9ded43743192bc3aa2659f", null ],
+    [ "NWNX_Creature_GetAbilityIncreaseByLevel", "group__creature.html#ga140b8f9919c0e619f5141d3df07dcfb2", null ],
+    [ "NWNX_Creature_SetAbilityIncreaseByLevel", "group__creature.html#ga00f4501dd691fe86a3264f158db3c88b", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
@@ -174,5 +176,6 @@ var nwnx__creature_8nss =
     [ "NWNX_CREATURE_PROJECTILE_VFX_ELECTRICAL", "group__creature.html#ga9a77d6aceb1470cfc40427f3cedb608c", null ],
     [ "NWNX_CREATURE_PROJECTILE_VFX_FIRE", "group__creature.html#gaef302436809eebedcba2b0a682b8e71a", null ],
     [ "NWNX_CREATURE_PROJECTILE_VFX_SONIC", "group__creature.html#ga023cb65acd8f802b1157068187054f26", null ],
-    [ "NWNX_CREATURE_PROJECTILE_VFX_RANDOM", "group__creature.html#ga2059460faa68d5eff02713348851845f", null ]
+    [ "NWNX_CREATURE_PROJECTILE_VFX_RANDOM", "group__creature.html#ga2059460faa68d5eff02713348851845f", null ],
+    [ "NWNX_CREATURE_ABILITY_NONE", "group__creature.html#ga7298a8793120c4bd6adb362ee7ad6412", null ]
 ];

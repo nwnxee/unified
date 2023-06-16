@@ -1,5 +1,11 @@
 var NAVTREEINDEX17 =
 {
+"nwnx__redis__short_8nss.html#a165b5882ccd88192902783f3a41bc739":[4,0,3,28,0,3,23],
+"nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326":[4,0,3,28,0,3,3],
+"nwnx__redis__short_8nss.html#a174c161c43361ee07e4c62c38e584bc3":[4,0,3,28,0,3,100],
+"nwnx__redis__short_8nss.html#a17b9dfcc5cb7170f358f2156f090434c":[4,0,3,28,0,3,83],
+"nwnx__redis__short_8nss.html#a17db5fc0aa1b751f6b500ac6d2e25c4c":[4,0,3,28,0,3,28],
+"nwnx__redis__short_8nss.html#a19d6271f016a58f991089ab8d5a87860":[4,0,3,28,0,3,82],
 "nwnx__redis__short_8nss.html#a1a338ff0373d858aafa3ef2e44fc9457":[4,0,3,28,0,3,221],
 "nwnx__redis__short_8nss.html#a1aaf78e5d191a48bed74f7394ef2bca2":[4,0,3,28,0,3,57],
 "nwnx__redis__short_8nss.html#a1af006c9794f2b37aedafc9143635fca":[4,0,3,28,0,3,46],
@@ -243,11 +249,5 @@ var NAVTREEINDEX17 =
 "structNWNX__Area__AreaWind.html#a95e64a6c93e72aaf96cd4cdd4706fc23":[0,5,3,2],
 "structNWNX__Area__AreaWind.html#aae39cd5f7fec88ca3b99388667d5c906":[0,5,3,1],
 "structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef":[0,5,3,0],
-"structNWNX__Area__TileInfo.html":[0,5,2],
-"structNWNX__Area__TileInfo.html#a2272f4e3492d04d21fd90b15fe1db78d":[0,5,2,0],
-"structNWNX__Area__TileInfo.html#a3d62c52ed6d20acdfd5468396e6d62a1":[0,5,2,2],
-"structNWNX__Area__TileInfo.html#a8f251dcba2c20218ca755ad14ac30bf6":[0,5,2,3],
-"structNWNX__Area__TileInfo.html#a9401d512230306a66f9896d24847f2f2":[0,5,2,4],
-"structNWNX__Area__TileInfo.html#af58eb65e41d9b1cec04ba3af9ff11025":[0,5,2,1],
-"structNWNX__Creature__MemorisedSpell.html":[3,2]
+"structNWNX__Area__TileInfo.html":[0,5,2]
 };
