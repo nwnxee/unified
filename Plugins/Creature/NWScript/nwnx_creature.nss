@@ -61,7 +61,7 @@ const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
 const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
 /// @}
 
-const int ABILITY_NONE = 6;
+const int NWNX_CREATURE_ABILITY_NONE = 6;
 
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
@@ -992,13 +992,13 @@ void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStor
 /// @brief Returns the creature's ability increase for nLevel.
 /// @param oCreature The creature object.
 /// @param nLevel The level.
-/// @return An ABILITY_* constant or -1 on error
+/// @return An ABILITY_* constant, NWNX_CREATURE_ABILITY_NONE or -1 on error
 int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel);
 
 /// @brief Sets the creature's ability increase for nLevel.
 /// @param oCreature The creature object.
 /// @param nLevel The level.
-/// @param nAbility ABILITY_* constant
+/// @param nAbility ABILITY_* constant or NWNX_CREATURE_ABILITY_NONE
 void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility);
 
 /// @}

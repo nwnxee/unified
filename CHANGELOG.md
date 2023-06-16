@@ -11,7 +11,6 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL` to modify a creature's spell DC for a spell school
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL` to modify a creature's spell DC for an individual spell
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
-- Creature: added constant `ABILITY_NONE`
 
 ##### New Plugins
 - N/A
