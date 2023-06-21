@@ -31,7 +31,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook
 
 ## 8193.35.40
 https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40
