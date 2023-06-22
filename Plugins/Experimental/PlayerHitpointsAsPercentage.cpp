@@ -117,10 +117,10 @@ void PlayerHitpointsAsPercentage()
 
     s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook = Hooks::HookFunction(
         &CNWSMessage::SendServerToPlayerGameObjUpdate,
-        +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate) -> BOOL
+        +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate, int nMessageLimit) -> BOOL
         {
             s_current_player = pPlayer;
-            BOOL ret = s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook->CallOriginal<int16_t>(pThis, pPlayer, oidObjectToUpdate);
+            BOOL ret = s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook->CallOriginal<int16_t>(pThis, pPlayer, oidObjectToUpdate, nMessageLimit);
             s_current_player = nullptr;
             return ret;
         },
