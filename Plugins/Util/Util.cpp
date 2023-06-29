@@ -763,3 +763,16 @@ NWNX_EXPORT ArgumentStack GetStringLevenshteinDistance(ArgumentStack&& args)
 
     return (int32_t)costs[n];
 }
+
+NWNX_EXPORT ArgumentStack UpdateClientObject(ArgumentStack&& args)
+{
+    OBJECT_ID oidObject = args.extract<OBJECT_ID>();
+        ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    if (auto* pPlayer = Utils::PopPlayer(args))
+        Utils::UpdateClientObjectForPlayer(oidObject, pPlayer);
+    else
+        Utils::UpdateClientObject(oidObject);
+
+    return {};
+}
