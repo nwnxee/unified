@@ -27,6 +27,8 @@
 #include "API/CExoString.hpp"
 #include "API/CExoArrayList.hpp"
 #include "../Core/NWNXCore.hpp"
+#include "API/CNWSClient.hpp"
+#include "API/CNWSPlayer.hpp"
 
 #include <cmath>
 #include <sstream>
@@ -535,5 +537,27 @@ int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType)
     }
 }
 
+void UpdateClientObjectForPlayer(ObjectID oidObject, CNWSPlayer* pPlayer)
+{
+    for (auto* pLuo : pPlayer->m_lstActiveObjectsLastUpdate)
+    {
+        if (pLuo->m_nId == oidObject) 
+        {
+            pPlayer->m_lstActiveObjectsLastUpdate.Remove(pLuo);
+            delete pLuo;
+            break;
+        }
+    }
+}
+
+void UpdateClientObject(ObjectID oidObject)
+{
+    auto* pPlayerList = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
+    for (auto* pHead = pPlayerList->pHead; pHead; pHead = pHead->pNext)
+    {
+        auto* pPlayer = static_cast<CNWSPlayer*>(static_cast<CNWSClient*>(pHead->pObject));
+        UpdateClientObjectForPlayer(oidObject, pPlayer);
+    }
+}
 
 }
