@@ -413,7 +413,7 @@ void NWNX_Object_OverrideSpellProjectileVFX(object oCreature, int nProjectileTyp
 int NWNX_Object_GetLastSpellInstant();
 
 /// @brief Sets the creator of a trap on door, placeable, or trigger. Also changes trap Faction to that of the new Creator.
-/// @note Triggers (ground traps) will instantly update colour (Green/Red). Placeable/doors will not change if client has already seen them. NWNX_Util_UpdateClientObject(), coming to nwnx in .36, can fix this.
+/// @note Triggers (ground traps) will instantly update colour (Green/Red). Placeable/doors will not change if client has already seen them.
 /// @param oObject Door, placeable or trigger (trap) object
 /// @param oCreator The new creator of the trap. Any non-creature creator will assign OBJECT_INVALID (similar to toolset-laid traps)
 void NWNX_Object_SetTrapCreator(object oObject, object oCreator);
