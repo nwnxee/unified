@@ -69,6 +69,8 @@ struct CExoString
     CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f") const;
     CExoString AsTAG() const;
     std::vector<CExoString> Split(const CExoString & delimiter) const;
+    static CExoString FormatBytes(uint64_t param_1);
+    static CExoString FormatDuration(uint64_t param_1, int param_2 = 0, int param_3 = 0, bool param_4 = false, const char* param_5 = "");
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoString
