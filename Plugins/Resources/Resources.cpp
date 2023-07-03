@@ -123,6 +123,7 @@ static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, c
             LOG_INFO("Skipping load of custom TLK file");
         }
 
+        s_readFieldCExoStringHook.reset();
         bSuccess = true;
 
         return {tlk.c_str()};
@@ -135,6 +136,7 @@ static int32_t OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStructure,
 {
     if (strncmp(pGff->m_pFileType, "IFO ", 4) == 0 && strcmp(szFieldID, "Mod_HakList") == 0)
     {
+        s_GetListHook.reset();
         return false;
     }
 
@@ -214,7 +216,7 @@ static uint32_t LoadCustomHakResources()
         LOG_INFO("Skipping load of all hak files");
     }
 
-    for (const std::string &hakName: hakList)
+    for (const std::string &hakName : hakList)
     {
         // Notify the watchdog that we are still doing stuff, so the server is not killed.
         MessageBus::Broadcast("NWNX_THREADWATCHDOG_GRACE", {s_threadWatchdogGrace});
