@@ -108,7 +108,7 @@ static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, B
 
 static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, char *szFieldID, BOOL &bSuccess, const CExoString &sDefault)
 {
-    if (strncmp(pGff->m_pFileType, "IFO", 3) == 0 && strcmp(szFieldID, "Mod_CustomTlk") == 0)
+    if (strncmp(pGff->m_pFileType, "IFO ", 4) == 0 && strcmp(szFieldID, "Mod_CustomTlk") == 0)
     {
         if (auto tlk = FindNwSyncTlk())
         {
@@ -123,7 +123,7 @@ static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, c
 
 static int32_t OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStructure, char *szFieldID)
 {
-    if (strncmp(pGff->m_pFileType, "IFO", 3) == 0 && strcmp(szFieldID, "Mod_HakList") == 0)
+    if (strncmp(pGff->m_pFileType, "IFO ", 4) == 0 && strcmp(szFieldID, "Mod_HakList") == 0)
     {
         return false;
     }
