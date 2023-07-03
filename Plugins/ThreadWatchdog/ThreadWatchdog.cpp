@@ -1,5 +1,4 @@
 #include "ThreadWatchdog.hpp"
-#include "API/CNWSModule.hpp"
 #include "API/Functions.hpp"
 #include "API/CServerExoAppInternal.hpp"
 
@@ -25,18 +24,12 @@ static Hooks::Hook s_MainLoopHook;
 ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
+    s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                                  &MainLoopUpdate, Hooks::Order::Earliest);
+
     s_watchdogPeriod = Config::Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite
     s_watchdogKillThreshold = Config::Get<uint32_t>("KILL_THRESHOLD", ~0);
-
-    static Hooks::Hook loadModuleStartHook = Hooks::HookFunction(&CNWSModule::LoadModuleStart,
-    +[](CNWSModule *pModule, CExoString param_1, int param_2, int param_3, const NWSync::Advertisement &param_4) -> uint32_t
-    {
-        s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
-        &MainLoopUpdate, Hooks::Order::Earliest);
-
-        return loadModuleStartHook->CallOriginal<uint32_t>(pModule, param_1, param_2, param_3, param_4);
-    }, Hooks::Order::Late);
 }
 
 ThreadWatchdog::~ThreadWatchdog()
