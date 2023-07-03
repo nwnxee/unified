@@ -55,9 +55,9 @@ uint32_t Resources::OnLoadModuleStart(CNWSModule *pModule, CExoString param_1, i
     bool reloadRequired = false;
     uint32_t retVal = 0;
 
-    if (Config::Get<bool>("USE_CUSTOM_HAK_LIST"))
+    if (Config::Get<bool>("USE_CUSTOM_HAK_LIST", false))
     {
-        retVal = g_plugin->LoadCustomHakResources();
+        retVal = LoadCustomHakResources();
         if (retVal != 0)
         {
             return retVal;
@@ -67,9 +67,9 @@ uint32_t Resources::OnLoadModuleStart(CNWSModule *pModule, CExoString param_1, i
         reloadRequired = true;
     }
 
-    if (Config::Get<bool>("USE_NWSYNC"))
+    if (Config::Get<bool>("USE_NWSYNC", false))
     {
-        retVal = g_plugin->LoadNwSyncResources();
+        retVal = LoadNwSyncResources();
         if (retVal != 0)
         {
             return retVal;
