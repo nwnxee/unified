@@ -206,6 +206,7 @@ static uint32_t LoadCustomHakResources()
 {
     auto hakListStr = Config::Get<std::string>("CUSTOM_HAK_LIST", "");
     std::vector<std::string> hakList = String::Split(hakListStr, ',');
+    std::reverse(hakList.begin(), hakList.end());
 
     if (!hakList.empty())
     {

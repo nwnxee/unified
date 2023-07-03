@@ -25,9 +25,9 @@ The following environment variables are required if `NWNX_RESOURCES_USE_NWSYNC` 
 
 The following environment variables are configurable if `NWNX_RESOURCES_USE_CUSTOM_HAK_LIST` is set to `true`.
 
-| Variable Name                    | Value  | Default | Notes                                                                                                                                                                         |
-|----------------------------------|:------:|:-------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `NWNX_RESOURCES_CUSTOM_HAK_LIST` | string |  none   | A comma (,) separated list of hak files to load. Replaces the list defined in the module properties.<br/>If left empty, this will cause the module to not load any hak files. |
+| Variable Name                    | Value  | Default | Notes                                                                                                                                                                                                                                                                                                                |
+|----------------------------------|:------:|:-------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `NWNX_RESOURCES_CUSTOM_HAK_LIST` | string |  none   | A comma (,) separated list of hak files to load. Replaces the list defined in the module properties.<br/>If left empty, this will cause the module to not load any hak files.<br/>Haks are prioritized in order - the first hak will override resources from the hak files after it, similar to the module hak list. |
 
 ## Custom TLK
 
