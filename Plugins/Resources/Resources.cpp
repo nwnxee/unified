@@ -5,32 +5,32 @@ using namespace NWNXLib::API;
 
 static Resources::Resources* g_plugin;
 
-const int RESMAN_PRIORITY_USER_HAK = 31000000;
-const int RESMAN_PRIORITY_NWSYNC = 40000000;
+constexpr int RESMAN_PRIORITY_USER_HAK = 31000000;
+constexpr int RESMAN_PRIORITY_NWSYNC = 40000000;
 
-const uint32_t LOADMODULE_ERROR_COULDNOTLOADHAK = 2;
+constexpr uint32_t LOADMODULE_ERROR_COULDNOTLOADHAK = 2;
 
-const int NWSYNC_STATE_DISCOVERY = 0;   // Currently trying to figure out if we need to do something.
+constexpr int NWSYNC_STATE_DISCOVERY = 0;   // Currently trying to figure out if we need to do something.
 
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_REQUEST = 5;   // We sent the manifest meta request.
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_PROGRESS = 6;   // Waiting for response/downloading.
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_PARSE = 7;   // Parsing and configuring metadata.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_REQUEST = 5;   // We sent the manifest meta request.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_PROGRESS = 6;   // Waiting for response/downloading.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_META_PARSE = 7;   // Parsing and configuring metadata.
 
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_REQUEST = 10;  // We sent the manifest request.
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_PROGRESS = 11;  // Downloading the manifest.
-const int NWSYNC_STATE_DOWNLOAD_MANIFEST_PARSE = 12;  // Parsing the manifest in-memory.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_REQUEST = 10;  // We sent the manifest request.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_PROGRESS = 11;  // Downloading the manifest.
+constexpr int NWSYNC_STATE_DOWNLOAD_MANIFEST_PARSE = 12;  // Parsing the manifest in-memory.
 
-const int NWSYNC_STATE_WAIT_PERMISSION_TO_SYNC = 20;  // We're waiting for you/the user to give the go-ahead. Call SetSyncPermission(true) to advance.
+constexpr int NWSYNC_STATE_WAIT_PERMISSION_TO_SYNC = 20;  // We're waiting for you/the user to give the go-ahead. Call SetSyncPermission(true) to advance.
 
-const int NWSYNC_STATE_GOT_PERMISSION_TO_SYNC = 21;  // Internal state.
+constexpr int NWSYNC_STATE_GOT_PERMISSION_TO_SYNC = 21;  // Internal state.
 
-const int NWSYNC_STATE_SYNC_IN_PROGRESS = 100; // We're currently syncing.
-const int NWSYNC_STATE_SYNC_IN_PROGRESS_FLUSH = 101; // We're currently flushing to disk.
+constexpr int NWSYNC_STATE_SYNC_IN_PROGRESS = 100; // We're currently syncing.
+constexpr int NWSYNC_STATE_SYNC_IN_PROGRESS_FLUSH = 101; // We're currently flushing to disk.
 
-const int NWSYNC_STATE_HOUSEKEEPING_IN_PROGRESS = 200; // Do some post-transfer cleanup.
+constexpr int NWSYNC_STATE_HOUSEKEEPING_IN_PROGRESS = 200; // Do some post-transfer cleanup.
 
-const int NWSYNC_STATE_DONE = 800; // Done! Go ahead.
-const int NWSYNC_STATE_FAILED = 801; // We aborted. Error will be in currentStateMessage.
+constexpr int NWSYNC_STATE_DONE = 800; // Done! Go ahead.
+constexpr int NWSYNC_STATE_FAILED = 801; // We aborted. Error will be in currentStateMessage.
 
 static Hooks::Hook s_loadModuleStartHook;
 static Hooks::Hook s_readFieldCExoStringHook;
