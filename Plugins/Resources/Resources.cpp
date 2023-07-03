@@ -52,7 +52,6 @@ static uint32_t LoadNwSyncResources();
 static uint32_t LoadCustomHakResources();
 
 static void ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progress, bool force);
-static CExoString* FindNwSyncTlk();
 static const char *NWSyncStateToStr(int state);
 
 static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
@@ -91,8 +90,12 @@ static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, B
             return retVal;
         }
 
-        s_readFieldCExoStringHook = Hooks::HookFunction(&CResGFF::ReadFieldCExoString, &OnReadFieldCExoString, Hooks::Order::Late);
         reloadRequired = true;
+    }
+
+    if (Config::Get<bool>("USE_CUSTOM_TLK", false))
+    {
+        s_readFieldCExoStringHook = Hooks::HookFunction(&CResGFF::ReadFieldCExoString, &OnReadFieldCExoString, Hooks::Order::Late);
     }
 
     if (reloadRequired)
@@ -110,12 +113,19 @@ static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, c
 {
     if (strncmp(pGff->m_pFileType, "IFO ", 4) == 0 && strcmp(szFieldID, "Mod_CustomTlk") == 0)
     {
-        if (auto tlk = FindNwSyncTlk())
+        auto tlk = Config::Get<std::string>("CUSTOM_TLK", "");
+        if (!tlk.empty())
         {
-            LOG_INFO("Using TLK file '%s' from NWSync", tlk->CStr());
-            bSuccess = true;
-            return {*tlk};
+            LOG_INFO("Using custom TLK file: %s", tlk.c_str());
         }
+        else
+        {
+            LOG_INFO("Skipping load of custom TLK file");
+        }
+
+        bSuccess = true;
+
+        return {tlk.c_str()};
     }
 
     return s_readFieldCExoStringHook->CallOriginal<CExoString>(pGff, pStructure, szFieldID, &bSuccess, &sDefault);
@@ -221,20 +231,6 @@ static uint32_t LoadCustomHakResources()
     }
 
     return 0;
-}
-
-static CExoString* FindNwSyncTlk()
-{
-    if (auto *pList = Globals::ExoResMan()->GetResOfType(Constants::ResRefType::TLK, false))
-    {
-        if (pList->m_nCount > 0)
-        {
-            // We can only load 1 custom tlk, so just use the first one we find.
-            return pList->m_pStrings[0];
-        }
-    }
-
-    return nullptr;
 }
 
 static void ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progress, bool force)
