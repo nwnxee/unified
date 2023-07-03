@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"nwnx__redis__short_8nss.html#a1227844f9e9ec05b98972733836c9b32":[4,0,3,28,0,3,84],
+"nwnx__redis__short_8nss.html#a15c40ca88434e8b341c23377a90ad6b0":[4,0,3,28,0,3,208],
 "nwnx__redis__short_8nss.html#a165b5882ccd88192902783f3a41bc739":[4,0,3,28,0,3,23],
 "nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326":[4,0,3,28,0,3,3],
 "nwnx__redis__short_8nss.html#a174c161c43361ee07e4c62c38e584bc3":[4,0,3,28,0,3,100],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "structNWNX__Area__AreaWind.html":[0,5,3],
 "structNWNX__Area__AreaWind.html#a744389d2f740e111f565e55d52f65a80":[0,5,3,3],
 "structNWNX__Area__AreaWind.html#a95e64a6c93e72aaf96cd4cdd4706fc23":[0,5,3,2],
-"structNWNX__Area__AreaWind.html#aae39cd5f7fec88ca3b99388667d5c906":[0,5,3,1],
-"structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef":[0,5,3,0],
-"structNWNX__Area__TileInfo.html":[0,5,2]
+"structNWNX__Area__AreaWind.html#aae39cd5f7fec88ca3b99388667d5c906":[0,5,3,1]
 };

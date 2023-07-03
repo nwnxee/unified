@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Tileset__TileEdgesAndCorners.html#a50b40ab9a4231e2b4c26624d02f2debc":[0,40,4,0],
+"structNWNX__Tileset__TileEdgesAndCorners.html#a565fa43dc398344172a3168be6184bbd":[0,40,4,2],
 "structNWNX__Tileset__TileEdgesAndCorners.html#aa985b5db2627da932f350d7d5a0138c3":[0,40,4,4],
 "structNWNX__Tileset__TileEdgesAndCorners.html#ae49ce3f6be1e4a5afbb34fe31d48c354":[0,40,4,7],
 "structNWNX__Tileset__TileEdgesAndCorners.html#aeca0c8be1795dafc4f6cfc34acbc60a6":[0,40,4,1],

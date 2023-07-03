@@ -54,13 +54,13 @@ var NAVTREEINDEX =
 "group__feedback.html#ga7fb1145d49d73b2bc7a472c0bd314391",
 "group__feedback.html#gaef62b283840b51026738684c5ad4fe36",
 "group__object.html#ga8080b55bcc436a65737e4ad781328b0d",
-"group__player.html#gaa77e5bcabd874733f5ccd0c11715fce9",
-"group__skillranks.html#autotoc_md566",
-"group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b",
-"nwnx__profiler_8nss.html",
-"nwnx__redis__short_8nss.html#a165b5882ccd88192902783f3a41bc739",
-"structNWNX__Area__TileInfo.html#a2272f4e3492d04d21fd90b15fe1db78d",
-"structNWNX__Tileset__TileEdgesAndCorners.html#aa985b5db2627da932f350d7d5a0138c3"
+"group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a",
+"group__skillranks.html#autotoc_md564",
+"group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a",
+"nwnx__player__qbs_8nss.html",
+"nwnx__redis__short_8nss.html#a1227844f9e9ec05b98972733836c9b32",
+"structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef",
+"structNWNX__Tileset__TileEdgesAndCorners.html#a50b40ab9a4231e2b4c26624d02f2debc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

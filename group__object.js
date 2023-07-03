@@ -65,6 +65,7 @@ var group__object =
     [ "NWNX_Object_GetInventoryItemCount", "group__object.html#gad7eb3bf209f3637c8b3c5b28e7010d51", null ],
     [ "NWNX_Object_OverrideSpellProjectileVFX", "group__object.html#gab9ade3b58934c2d91d6df894cbcf4cbb", null ],
     [ "NWNX_Object_GetLastSpellInstant", "group__object.html#gaa7bd95e05561a86c7e99e890854f30e7", null ],
+    [ "NWNX_Object_SetTrapCreator", "group__object.html#gae0190fed3e5cc051a1f19e651a417784", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
