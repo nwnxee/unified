@@ -43,6 +43,7 @@ constexpr int NWSYNC_STATE_HOUSEKEEPING_IN_PROGRESS = 200; // Do some post-trans
 constexpr int NWSYNC_STATE_DONE = 800; // Done! Go ahead.
 constexpr int NWSYNC_STATE_FAILED = 801; // We aborted. Error will be in currentStateMessage.
 
+static std::string s_threadWatchdogGrace = std::to_string(Config::Get<int32_t>("THREADWATCHDOG_GRACE", 2));
 static Hooks::Hook s_loadModuleStartHook;
 static Hooks::Hook s_readFieldCExoStringHook;
 static Hooks::Hook s_GetListHook;
@@ -99,6 +100,9 @@ static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, B
         Globals::Rules()->ReloadAll();
     }
 
+    // Reset the watchdog grace counter.
+    MessageBus::Broadcast("NWNX_THREADWATCHDOG_GRACE", {std::to_string(0)});
+
     return s_loadModuleStartHook->CallOriginal<uint32_t>(pModule, sModuleName, bIsSaveGame, nSourceType, nwsyncModuleSourceAdvert);
 }
 
@@ -151,6 +155,9 @@ static uint32_t LoadNwSyncResources()
         HttpConnection::UpdateAll();
         cli.Update();
 
+        // Notify the watchdog that we are still doing stuff, so the server is not killed.
+        MessageBus::Broadcast("NWNX_THREADWATCHDOG_GRACE", {s_threadWatchdogGrace});
+
         if (status.m_currentState == NWSYNC_STATE_WAIT_PERMISSION_TO_SYNC)
         {
             cli.SetSyncPermission(true);
@@ -199,6 +206,9 @@ static uint32_t LoadCustomHakResources()
 
     for (const std::string &hakName: hakList)
     {
+        // Notify the watchdog that we are still doing stuff, so the server is not killed.
+        MessageBus::Broadcast("NWNX_THREADWATCHDOG_GRACE", {s_threadWatchdogGrace});
+
         if (Globals::ExoResMan()->AddEncapsulatedResourceFile(CExoString("HAK:") + hakName, RESMAN_PRIORITY_USER_HAK))
         {
             LOG_INFO("Loaded hak '%s'", hakName);
