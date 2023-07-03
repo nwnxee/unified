@@ -61,6 +61,8 @@ const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
 const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
 /// @}
 
+const int NWNX_CREATURE_ABILITY_NONE = 6;
+
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility
@@ -986,6 +988,18 @@ int NWNX_Creature_GetMaxSellToStorePriceOverride(object oCreature, object oStore
 /// @param oStore The store object.
 /// @param nMaxSellToPrice The maximum buy price override. -1 = No maximum buy price, -2 = Remove the override.
 void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStore, int nMaxSellToPrice);
+
+/// @brief Returns the creature's ability increase for nLevel.
+/// @param oCreature The creature object.
+/// @param nLevel The level.
+/// @return An ABILITY_* constant, NWNX_CREATURE_ABILITY_NONE or -1 on error
+int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel);
+
+/// @brief Sets the creature's ability increase for nLevel.
+/// @param oCreature The creature object.
+/// @param nLevel The level.
+/// @param nAbility ABILITY_* constant or NWNX_CREATURE_ABILITY_NONE
+void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility);
 
 /// @}
 
@@ -2556,6 +2570,27 @@ void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStor
 
     NWNX_PushArgumentInt(nMaxSellToPrice);
     NWNX_PushArgumentObject(oStore);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel)
+{
+    string sFunc = "GetAbilityIncreaseByLevel";
+
+    NWNX_PushArgumentInt(nLevel);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility)
+{
+    string sFunc = "SetAbilityIncreaseByLevel";
+
+    NWNX_PushArgumentInt(nAbility);
+    NWNX_PushArgumentInt(nLevel);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

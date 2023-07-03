@@ -142,7 +142,7 @@ struct CServerExoAppInternal
     int32_t m_AbilityBonusLimitModule;
     int32_t m_AbilityPenaltyLimitModule;
     int32_t m_SkillBonusLimitModule;
-    NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
+    NWSync::Advertisement m_nwsyncModuleSourceAdvert;
     AdvertLUT m_nwsyncAdvertLUT;
 
     CServerExoAppInternal();

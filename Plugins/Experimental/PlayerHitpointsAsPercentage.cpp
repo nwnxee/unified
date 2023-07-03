@@ -71,7 +71,7 @@ void PlayerHitpointsAsPercentage()
     s_damage_level = false;
 
     s_CNWSObject_GetCurrentHitPoints_Hook = Hooks::HookFunction(
-        &CNWSObject::GetCurrentHitPoints,
+        Functions::_ZN10CNWSObject19GetCurrentHitPointsEi,
         +[](CNWSObject *pThis, BOOL bExcludeTemporaryHits) -> int16_t
         {
             const int16_t cur = s_CNWSObject_GetCurrentHitPoints_Hook->CallOriginal<int16_t>(pThis, bExcludeTemporaryHits);
@@ -101,7 +101,7 @@ void PlayerHitpointsAsPercentage()
         Hooks::Order::Late);
 
     s_CNWSCreature_GetMaxHitPoints_Hook = Hooks::HookFunction(
-        &CNWSCreature::GetMaxHitPoints,
+        Functions::_ZN12CNWSCreature15GetMaxHitPointsEi,
         +[](CNWSCreature *pThis, BOOL bIncludeToughness) -> int16_t
         {
             int16_t ret = s_CNWSCreature_GetMaxHitPoints_Hook->CallOriginal<int16_t>(pThis, bIncludeToughness);
@@ -117,10 +117,10 @@ void PlayerHitpointsAsPercentage()
 
     s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook = Hooks::HookFunction(
         &CNWSMessage::SendServerToPlayerGameObjUpdate,
-        +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate) -> BOOL
+        +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidObjectToUpdate, int nMessageLimit) -> BOOL
         {
             s_current_player = pPlayer;
-            BOOL ret = s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook->CallOriginal<int16_t>(pThis, pPlayer, oidObjectToUpdate);
+            BOOL ret = s_CNWSMessage_SendServerToPlayerGameObjUpdate_Hook->CallOriginal<BOOL>(pThis, pPlayer, oidObjectToUpdate, nMessageLimit);
             s_current_player = nullptr;
             return ret;
         },

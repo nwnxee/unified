@@ -325,8 +325,4 @@ struct CResGFFStruct;
 struct CResGFFField;
 struct CResGFFLabel;
 struct CResGFF;
-struct SHA1;
-struct CNWSync;
-struct NWSyncAdvertisementManifest;
-struct NWSyncAdvertisement;
 struct NWVMachineUtils;

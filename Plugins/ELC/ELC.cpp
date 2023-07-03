@@ -520,7 +520,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             {
                 uint8_t nAbilityGain = pCreatureStats->GetLevelStats(nLevel - 1)->m_nAbilityGain;
 
-                if (nAbilityGain <= Ability::MAX)
+                if (nAbilityGain < Ability::MAX)
                     nAbility[nAbilityGain]--;
             }
 
@@ -528,7 +528,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
 
             // Check if >18 in an ability
-            for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+            for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
             {
                 if (nAbility[nAbilityIndex] > charGenBaseAbilityMax)
                 {
@@ -551,7 +551,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT3",
                                                                                         16);
 
-            for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+            for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
             {
                 nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
 
@@ -725,7 +725,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                 CNWSCreatureStats::GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, false);
 
                 // Update our ability values
-                for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                 {
                     nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
                 }
@@ -737,7 +737,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
 
                     if (pClass)
                     {
-                        for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                        for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                         {
                             nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForSingleLevel(nAbilityIndex,
                                                                                                    nMultiClassLevel[nMultiClassLeveledUpIn]);
@@ -782,7 +782,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                 };
 
                 auto numSkillPoints =
-                        pRace->m_nSkillPointModifierAbility >= 0 && pRace->m_nSkillPointModifierAbility <= Ability::MAX ?
+                        pRace->m_nSkillPointModifierAbility >= 0 && pRace->m_nSkillPointModifierAbility < Ability::MAX ?
                         pCreatureStats->CalcStatModifier(
                                 nAbilityAtLevel[pRace->m_nSkillPointModifierAbility] + GetSkillPointAbilityAdjust()) : 0;
 
