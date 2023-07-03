@@ -27,6 +27,7 @@
 #include "API/CLoopingVisualEffect.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSSpellScriptData.hpp"
+#include "API/CNWSFaction.hpp"
 #include "API/CVirtualMachine.hpp"
 #include <cstring>
 
@@ -1239,4 +1240,37 @@ NWNX_EXPORT ArgumentStack GetLastSpellInstant(ArgumentStack&&)
     }, Hooks::Order::Late);
 
     return s_LastSpellInstant;
+}
+
+NWNX_EXPORT ArgumentStack SetTrapCreator(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        auto newCreator = Constants::OBJECT_INVALID;
+        auto newFaction = 1; //STANDARD_FACTION_HOSTILE
+
+        if(auto *pCreator = Utils::PopCreature(args))
+        {
+            newCreator = pCreator->m_idSelf;
+            if (auto *pFaction = pCreator->GetFaction())
+                newFaction = pFaction->m_nFactionId;
+        }
+
+        if (auto *pDoor = Utils::AsNWSDoor(pObject))
+        {
+            pDoor->m_oidTrapCreator = newCreator;
+            pDoor->m_nTrapFactionId = newFaction;
+        }
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        {
+            pPlaceable->m_oidTrapCreator = newCreator;
+            pPlaceable->m_nTrapFaction = newFaction;
+        }
+        else if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        {
+            pTrigger->m_oidCreator = newCreator;
+            pTrigger->m_nFactionId = newFaction;
+        }
+    }
+    return {};
 }
