@@ -1,9 +1,20 @@
-#include "Resources.hpp"
+#include "nwnx.hpp"
+#include "API/CExoResMan.hpp"
+#include "API/CExoString.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWCSync.hpp"
+#include "API/CNWRules.hpp"
+#include "API/SHA1.hpp"
+#include "API/HttpConnection.hpp"
+#include "API/NWSyncAdvertisement.hpp"
+#include "API/CExoStringList.hpp"
 
+#include <unistd.h>
+
+namespace Resources
+{
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-
-static Resources::Resources* g_plugin;
 
 constexpr int RESMAN_PRIORITY_USER_HAK = 31000000;
 constexpr int RESMAN_PRIORITY_NWSYNC = 40000000;
@@ -36,21 +47,25 @@ static Hooks::Hook s_loadModuleStartHook;
 static Hooks::Hook s_readFieldCExoStringHook;
 static Hooks::Hook s_GetListHook;
 
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
-{
-    g_plugin = new Resources::Resources(services);
-    return g_plugin;
-}
+static uint32_t LoadNwSyncResources();
+static uint32_t LoadCustomHakResources();
 
-namespace Resources {
+static void ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progress, bool force);
+static CExoString* FindNwSyncTlk();
+static const char *NWSyncStateToStr(int state);
 
-Resources::Resources(Services::ProxyServiceList* services)
-: Plugin(services)
+static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
+static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, char *szFieldID, BOOL &bSuccess, const CExoString &sDefault = "");
+static int32_t OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStructure, char *szFieldID);
+
+void Resources() __attribute__((constructor));
+
+void Resources()
 {
     s_loadModuleStartHook = Hooks::HookFunction(&CNWSModule::LoadModuleStart, &OnLoadModuleStart, Hooks::Order::Late);
 }
 
-uint32_t Resources::OnLoadModuleStart(CNWSModule *pModule, CExoString param_1, int param_2, int param_3, const NWSync::Advertisement &param_4)
+static uint32_t OnLoadModuleStart(CNWSModule *pModule, CExoString sModuleName, BOOL bIsSaveGame, int32_t nSourceType, const NWSync::Advertisement & nwsyncModuleSourceAdvert)
 {
     bool reloadRequired = false;
     uint32_t retVal = 0;
@@ -84,14 +99,14 @@ uint32_t Resources::OnLoadModuleStart(CNWSModule *pModule, CExoString param_1, i
         Globals::Rules()->ReloadAll();
     }
 
-    return s_loadModuleStartHook->CallOriginal<uint32_t>(pModule, param_1, param_2, param_3, param_4);
+    return s_loadModuleStartHook->CallOriginal<uint32_t>(pModule, sModuleName, bIsSaveGame, nSourceType, nwsyncModuleSourceAdvert);
 }
 
-CExoString Resources::OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, char *szFieldID, BOOL &bSuccess, const CExoString &sDefault)
+static CExoString OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructure, char *szFieldID, BOOL &bSuccess, const CExoString &sDefault)
 {
     if (strncmp(pGff->m_pFileType, "IFO", 3) == 0 && strcmp(szFieldID, "Mod_CustomTlk") == 0)
     {
-        if (auto tlk = g_plugin->FindNwSyncTlk())
+        if (auto tlk = FindNwSyncTlk())
         {
             LOG_INFO("Using TLK file '%s' from NWSync", tlk->CStr());
             bSuccess = true;
@@ -102,7 +117,7 @@ CExoString Resources::OnReadFieldCExoString(CResGFF *pGff, CResStruct *pStructur
     return s_readFieldCExoStringHook->CallOriginal<CExoString>(pGff, pStructure, szFieldID, &bSuccess, &sDefault);
 }
 
-int32_t Resources::OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStructure, char *szFieldID)
+static int32_t OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStructure, char *szFieldID)
 {
     if (strncmp(pGff->m_pFileType, "IFO", 3) == 0 && strcmp(szFieldID, "Mod_HakList") == 0)
     {
@@ -112,7 +127,7 @@ int32_t Resources::OnGetList(CResGFF *pGff, CResList *pList, CResStruct *pStruct
     return s_GetListHook->CallOriginal<int32_t>(pGff, pList, pStructure, szFieldID);
 }
 
-uint32_t Resources::LoadNwSyncResources()
+static uint32_t LoadNwSyncResources()
 {
     auto host = Config::Get<std::string>("NWSYNC_HOST");
     auto manifest = Config::Get<std::string>("NWSYNC_MANIFEST");
@@ -168,7 +183,7 @@ uint32_t Resources::LoadNwSyncResources()
     return 0;
 }
 
-uint32_t Resources::LoadCustomHakResources()
+static uint32_t LoadCustomHakResources()
 {
     auto hakListStr = Config::Get<std::string>("CUSTOM_HAK_LIST", "");
     std::vector<std::string> hakList = String::Split(hakListStr, ',');
@@ -198,7 +213,7 @@ uint32_t Resources::LoadCustomHakResources()
     return 0;
 }
 
-CExoString* Resources::FindNwSyncTlk()
+static CExoString* FindNwSyncTlk()
 {
     if (auto *pList = Globals::ExoResMan()->GetResOfType(Constants::ResRefType::TLK, false))
     {
@@ -212,7 +227,7 @@ CExoString* Resources::FindNwSyncTlk()
     return nullptr;
 }
 
-void Resources::ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progress, bool force)
+static void ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progress, bool force)
 {
     if (progress.m_currentState == NWSYNC_STATE_SYNC_IN_PROGRESS_FLUSH)
         return;
@@ -263,7 +278,7 @@ void Resources::ShowNWSyncProgressUpdate(const NWSync::CNWCSync::Progress &progr
     lastState = progress.m_currentState;
 }
 
-const char* Resources::NWSyncStateToStr(const int state)
+static const char* NWSyncStateToStr(const int state)
 {
     if (state == NWSYNC_STATE_DISCOVERY) return "Discovery";
     else if (state == NWSYNC_STATE_DOWNLOAD_MANIFEST_REQUEST) return "Requesting Manifest";
