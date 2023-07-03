@@ -13,8 +13,20 @@ struct SHA1 {
     uint8_t m_data[20];
     char m_hex[41];
 
-    SHA1(const CExoString& param_1 = "");
-    SHA1(const unsigned char* param_1);
+    SHA1(const SHA1& other)
+    {
+        *this = other;
+    }
+
+    SHA1()
+    {
+        Clear();
+    }
+
+    explicit SHA1(const uint8_t ptr[20]); // SHA1_DIGEST_SIZE
+    explicit SHA1(const CExoString& hex);
+
+    SHA1 operator=(Hash::SHA1 const& other);
 
     void Clear();
 
