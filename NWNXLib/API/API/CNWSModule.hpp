@@ -169,7 +169,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CNWSArea * GetAreaByTag(CExoString & sAreaTag);
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
-    uint32_t LoadModuleStart(CExoString param_1, int param_2, int param_3, const NWSync::Advertisement &param_4);
+    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
     uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
     uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
