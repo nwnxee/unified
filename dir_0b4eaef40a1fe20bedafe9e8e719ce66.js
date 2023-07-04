@@ -30,6 +30,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Race", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a.html", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a" ],
     [ "Redis", "dir_872591aa012bd12d901a16e34de85f03.html", "dir_872591aa012bd12d901a16e34de85f03" ],
     [ "Rename", "dir_c96403ecabd325e52498389c4003b46e.html", "dir_c96403ecabd325e52498389c4003b46e" ],
+    [ "Resources", "dir_95abc49e524929519d2202385b13a333.html", null ],
     [ "Reveal", "dir_2dd1f4b35de9e27d2bf14be9b6b1c8dd.html", "dir_2dd1f4b35de9e27d2bf14be9b6b1c8dd" ],
     [ "Ruby", "dir_96ade152febc262a31be38f7a77ed436.html", "dir_96ade152febc262a31be38f7a77ed436" ],
     [ "ServerLogRedirector", "dir_d6ed0c3876e51729ec6331db8b63c59e.html", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"group__events.html#ga43444c0d57c66ceee9aab985feda9ada":[4,0,3,13,0,0,338],
 "group__events.html#ga43e2a8c15d4bc72f7403d5f27b7efe42":[0,16,275],
 "group__events.html#ga43e2a8c15d4bc72f7403d5f27b7efe42":[4,0,3,13,0,0,274],
 "group__events.html#ga43e3a14392c0205af1d26aeb732fd41f":[0,16,328],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "group__events.html#ga87af1c6491e1eba95ea68f87bfb43e66":[0,16,26],
 "group__events.html#ga87c29f8a5a1fef7f956c44002eef9bde":[4,0,3,13,0,0,110],
 "group__events.html#ga87c29f8a5a1fef7f956c44002eef9bde":[0,16,111],
-"group__events.html#ga88092e726d5ab70b3a68a9f04d71849e":[0,16,325],
-"group__events.html#ga88092e726d5ab70b3a68a9f04d71849e":[4,0,3,13,0,0,324]
+"group__events.html#ga88092e726d5ab70b3a68a9f04d71849e":[0,16,325]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"structNWNX__Area__AreaWind.html#a744389d2f740e111f565e55d52f65a80":[0,5,3,3],
 "structNWNX__Area__AreaWind.html#a95e64a6c93e72aaf96cd4cdd4706fc23":[0,5,3,2],
 "structNWNX__Area__AreaWind.html#aae39cd5f7fec88ca3b99388667d5c906":[0,5,3,1],
 "structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef":[0,5,3,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Tileset__TileDoorData.html#a63e63fe2cc264b297f8eec33a4972977":[0,40,5,4],
 "structNWNX__Tileset__TileDoorData.html#a93698bc6f87a876bfc65d9c9b617ec30":[0,40,5,0],
 "structNWNX__Tileset__TileDoorData.html#afc94ab09db9ffb667788d7366c7f7849":[0,40,5,3],
-"structNWNX__Tileset__TileDoorData.html#afe7d809a6de5f72329bde4cc8c3e331d":[0,40,5,2],
-"structNWNX__Tileset__TileEdgesAndCorners.html":[0,40,4]
+"structNWNX__Tileset__TileDoorData.html#afe7d809a6de5f72329bde4cc8c3e331d":[0,40,5,2]
 };
