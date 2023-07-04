@@ -13,7 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
 
 ##### New Plugins
-- N/A
+- Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
