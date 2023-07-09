@@ -21,6 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Creature: {Get|Set}MaxSellToStorePriceOverride()
 - Creature: {Get|Set}AbilityIncreaseByLevel()
 - Util: GetModuleFile()
+- Creature: NWNX_Creature_GetMaxAttackRange()
 
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()`
