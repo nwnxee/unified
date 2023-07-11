@@ -1,2 +1,5 @@
-nwnxlib_add(
-    "Debug.cpp")
+if(MSVC)
+    nwnxlib_add("PlatformWindows.cpp")
+else()
+    nwnxlib_add("PlatformLinux.cpp")
+endif()
