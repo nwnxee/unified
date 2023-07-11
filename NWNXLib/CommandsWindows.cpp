@@ -1,9 +1,6 @@
 #include "nwnx.hpp"
-#include <stdio.h>
-#include <dlfcn.h>
 #include <unordered_map>
 #include <deque>
-#include <set>
 #include <mutex>
 
 namespace NWNXLib::Commands
@@ -83,24 +80,4 @@ void RunScheduled()
     s_commandQueue.clear();
 }
 
-}
-
-
-extern "C" char *fgets(char * str, int num, FILE *stream)
-{
-    using Type = char*(*)(char*,int,FILE*);
-    static Type real;
-    if (!real)
-        real = (Type)dlsym(RTLD_NEXT, "fgets");
-
-    char *ret = real(str, num, stream);
-    if (ret && stream == stdin && num == 1024)
-    {
-        if (NWNXLib::Commands::Schedule(std::string(str)))
-        {
-            // Clear command line so server doesn't run it.
-            str[0] = '\0';
-        }
-    }
-    return ret;
 }

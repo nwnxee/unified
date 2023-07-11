@@ -23,13 +23,18 @@ nwnxlib_add(
     "Utils.cpp"
     "Encoding.cpp"
     "Plugin.cpp"
-    "Commands.cpp"
     "ScriptAPI.cpp"
     "MessageBus.cpp"
     "Hooks.cpp"
     "Tasks.cpp"
     "POS.cpp"
 )
+
+if(MSVC)
+nwnxlib_add("CommandsWindows.cpp")
+else()
+nwnxlib_add("CommandsLinux.cpp")
+endif()
 
 add_subdirectory(API)
 add_subdirectory(External)
