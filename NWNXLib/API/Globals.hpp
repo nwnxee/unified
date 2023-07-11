@@ -39,6 +39,10 @@ inline int32_t* EnableCombatDebugging()         { return &g_bEnableCombatDebuggi
 inline int32_t* EnableSavingThrowDebugging()    { return &g_bEnableSavingThrowDebugging; }
 inline int32_t* EnableMovementSpeedDebugging()  { return &g_bEnableMovementSpeedDebugging; }
 inline int32_t* EnableHitDieDebugging()         { return &g_bEnableHitDieDebugging; }
+#ifdef WIN32
+inline int32_t* ExitProgram()                   { return NULL; }
+#else
 inline int32_t* ExitProgram()                   { return &g_bExitProgram; }
+#endif
 
 }
