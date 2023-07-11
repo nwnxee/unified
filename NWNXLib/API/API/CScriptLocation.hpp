@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CScriptLocation)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CScriptLocation
+class CScriptLocation
 {
     Vector m_vPosition;
     Vector m_vOrientation;

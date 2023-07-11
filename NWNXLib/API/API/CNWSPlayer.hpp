@@ -17,15 +17,15 @@
 NWN_API_PROLOGUE(CNWSPlayer)
 #endif
 
-struct CNWSCreature;
-struct CNWSItem;
-struct CNWSObject;
-struct CNWSPlayerCharSheetGUI;
-struct CNWSPlayerInventoryGUI;
-struct CNWSPlayerJournalQuest;
-struct CNWSPlayerLastUpdateObject;
-struct CNWSPlayerStoreGUI;
-struct CNWSPlayerTURD;
+class CNWSCreature;
+class CNWSItem;
+class CNWSObject;
+class CNWSPlayerCharSheetGUI;
+class CNWSPlayerInventoryGUI;
+class CNWSPlayerJournalQuest;
+class CNWSPlayerLastUpdateObject;
+class CNWSPlayerStoreGUI;
+class CNWSPlayerTURD;
 
 
 typedef int BOOL;
@@ -33,11 +33,11 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-struct CNWSPlayer : CNWSClient
+class CNWSPlayer : CNWSClient
 {
-    struct NuiState
+    class NuiState
     {
-        struct WindowState
+        class WindowState
         {
             Nui::JSON::WindowToken m_token;
             Nui::JSON::WindowIdentifier m_id;

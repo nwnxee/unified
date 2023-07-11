@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(CNWSQuickbarButton)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSQuickbarButton
+class CNWSQuickbarButton
 {
     OBJECT_ID m_oidItem;
     OBJECT_ID m_oidSecondaryItem;

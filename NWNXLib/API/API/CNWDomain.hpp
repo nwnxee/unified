@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(CNWDomain)
 typedef int BOOL;
 
 
-struct CNWDomain
+class CNWDomain
 {
     int32_t m_nNameStrref;
     int32_t m_nDescriptionStrref;

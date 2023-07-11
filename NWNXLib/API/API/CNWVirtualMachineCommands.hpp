@@ -9,9 +9,9 @@
 NWN_API_PROLOGUE(CNWVirtualMachineCommands)
 #endif
 
-struct C2DA;
-struct CResGFF;
-struct CResStruct;
+class C2DA;
+class CResGFF;
+class CResStruct;
 typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
@@ -19,7 +19,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
+class CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
 {
     pfCVMCommands * m_pVirtualMachineCommands;
 

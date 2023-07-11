@@ -13,7 +13,7 @@ typedef uint8_t RESREF[16];
 typedef uint16_t RESTYPE;
 
 
-struct KEYFILE_KEYENTRY
+class KEYFILE_KEYENTRY
 {
     RESREF resRef;
     RESTYPE nType;

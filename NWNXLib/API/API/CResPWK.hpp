@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CResPWK)
 typedef int BOOL;
 
 
-struct CResPWK : CRes
+class CResPWK : CRes
 {
     BOOL m_bLoaded;
     uint32_t m_nPWKNormalSize;

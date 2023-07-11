@@ -7,12 +7,12 @@
 NWN_API_PROLOGUE(CScriptCompilerStackEntry)
 #endif
 
-struct CScriptParseTreeNode;
+class CScriptParseTreeNode;
 
 
 
 
-struct CScriptCompilerStackEntry
+class CScriptCompilerStackEntry
 {
     int32_t nState;
     int32_t nRule;

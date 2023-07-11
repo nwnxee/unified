@@ -14,21 +14,21 @@
 NWN_API_PROLOGUE(CVirtualMachine)
 #endif
 
-struct CResGFF;
-struct CResStruct;
-struct CScriptCompiler;
-struct CScriptLog;
-struct CScriptLog;
-struct CVirtualMachineCmdImplementer;
-struct CVirtualMachineDebuggingContext;
-struct CVirtualMachineDebuggerInstance;
+class CResGFF;
+class CResStruct;
+class CScriptCompiler;
+class CScriptLog;
+class CScriptLog;
+class CVirtualMachineCmdImplementer;
+class CVirtualMachineDebuggingContext;
+class CVirtualMachineDebuggerInstance;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CVirtualMachine
+class CVirtualMachine
 {
     CScriptCompiler * m_pJitCompiler;
     int32_t m_nReturnValueParameterType;

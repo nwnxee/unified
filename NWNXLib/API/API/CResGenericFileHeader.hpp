@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResGenericFileHeader)
 
 
 
-struct CResGenericFileHeader
+class CResGenericFileHeader
 {
     uint32_t m_nFileType;
     uint32_t m_nVersion;

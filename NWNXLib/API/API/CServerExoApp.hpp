@@ -13,39 +13,39 @@
 NWN_API_PROLOGUE(CServerExoApp)
 #endif
 
-struct AdvertLUT;
-struct CCampaignDB;
-struct CConnectionLib;
-struct CGameObject;
-struct CGameObjectArray;
-struct CNWSArea;
-struct CNWSAreaOfEffectObject;
-struct CNWSClient;
-struct CNWSCreature;
-struct CNWSDoor;
-struct CNWSEncounter;
-struct CNWSItem;
-struct CNWSModule;
-struct CNWSPlaceable;
-struct CNWSPlayer;
-struct CNWSSoundObject;
-struct CNWSStore;
-struct CNWSTrigger;
-struct CNWSWaypoint;
-struct CNetLayer;
-struct CServerAIMaster;
-struct CServerExoAppInternal;
-struct CWorldTimer;
+class AdvertLUT;
+class CCampaignDB;
+class CConnectionLib;
+class CGameObject;
+class CGameObjectArray;
+class CNWSArea;
+class CNWSAreaOfEffectObject;
+class CNWSClient;
+class CNWSCreature;
+class CNWSDoor;
+class CNWSEncounter;
+class CNWSItem;
+class CNWSModule;
+class CNWSPlaceable;
+class CNWSPlayer;
+class CNWSSoundObject;
+class CNWSStore;
+class CNWSTrigger;
+class CNWSWaypoint;
+class CNetLayer;
+class CServerAIMaster;
+class CServerExoAppInternal;
+class CWorldTimer;
 
 namespace NWSync {
-struct Advertisement; // NWSyncAdvertisement
+class Advertisement; // NWSyncAdvertisement
 }
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CServerExoApp : CBaseExoApp
+class CServerExoApp : CBaseExoApp
 {
     CServerExoAppInternal * m_pcExoAppInternal;
 

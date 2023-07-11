@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CNWLevelStats)
 typedef int BOOL;
 
 
-struct CNWLevelStats
+class CNWLevelStats
 {
     CExoArrayList<uint32_t> m_pAddedKnownSpellList[10];
     CExoArrayList<uint32_t> m_pRemovedKnownSpellList[10];

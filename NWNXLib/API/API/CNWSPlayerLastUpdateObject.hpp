@@ -10,19 +10,19 @@
 NWN_API_PROLOGUE(CNWSPlayerLastUpdateObject)
 #endif
 
-struct CEffectIconObject;
-struct CFeatUseListEntry;
-struct CNWSStats_Spell;
-struct CNWVisibilityNode;
-struct CSpell_Add;
-struct CSpell_Delete;
+class CEffectIconObject;
+class CFeatUseListEntry;
+class CNWSStats_Spell;
+class CNWVisibilityNode;
+class CSpell_Add;
+class CSpell_Delete;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerLastUpdateObject
+class CNWSPlayerLastUpdateObject
 {
     uint32_t m_nGold;
     int16_t m_nArmorClass;

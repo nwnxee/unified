@@ -8,13 +8,13 @@
 NWN_API_PROLOGUE(CExoDebugInternal)
 #endif
 
-struct CExoFile;
+class CExoFile;
 
 
 typedef int BOOL;
 
 
-struct CExoDebugInternal
+class CExoDebugInternal
 {
     BOOL m_bFilesOpen;
     CExoFile * m_pLogFile;

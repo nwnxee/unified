@@ -8,14 +8,14 @@
 NWN_API_PROLOGUE(CExoLocString)
 #endif
 
-struct CExoLocStringInternal;
+class CExoLocStringInternal;
 
 
 typedef int BOOL;
 typedef uint32_t STRREF;
 
 
-struct CExoLocString
+class CExoLocString
 {
     CExoLocStringInternal * m_pExoLocStringInternal;
     STRREF m_dwStringRef;

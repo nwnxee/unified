@@ -7,12 +7,12 @@
 NWN_API_PROLOGUE(CNWSClient)
 #endif
 
-struct CNWSPlayer;
+class CNWSPlayer;
 
 
 
 
-struct CNWSClient
+class CNWSClient
 {
     uint32_t m_nPlayerID;
     int32_t m_nLanguage;

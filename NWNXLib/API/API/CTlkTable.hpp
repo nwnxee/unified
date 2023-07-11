@@ -9,17 +9,17 @@
 NWN_API_PROLOGUE(CTlkTable)
 #endif
 
-struct CTlkFile;
-struct CTlkTableToken;
-struct CTlkTableTokenCustom;
-struct STR_RES;
+class CTlkFile;
+class CTlkTableToken;
+class CTlkTableTokenCustom;
+class STR_RES;
 
 
 typedef int BOOL;
 typedef uint32_t STRREF;
 
 
-struct CTlkTable
+class CTlkTable
 {
     CTlkFile * m_pTlkFile[2];
     CTlkFile * m_pTlkFileAlternate[2];

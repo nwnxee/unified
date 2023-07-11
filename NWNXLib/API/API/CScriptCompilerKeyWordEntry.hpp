@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CScriptCompilerKeyWordEntry)
 
 
 
-struct CScriptCompilerKeyWordEntry
+class CScriptCompilerKeyWordEntry
 {
     CExoString m_sAlphanumericName;
     uint32_t m_nHashValue;

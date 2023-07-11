@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSInvitationDetails)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSInvitationDetails
+class CNWSInvitationDetails
 {
     OBJECT_ID m_oidCreature;
     uint32_t m_nCalenderDay;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResGFFLabel)
 
 
 
-struct CResGFFLabel
+class CResGFFLabel
 {
     char m_pLabel[16];
 

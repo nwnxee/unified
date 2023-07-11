@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWVisibilityNode)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWVisibilityNode
+class CNWVisibilityNode
 {
     OBJECT_ID m_oidCreature;
     uint8_t m_bSeen : 1;

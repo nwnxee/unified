@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CNWSForcedAction)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSForcedAction
+class CNWSForcedAction
 {
     uint32_t m_nActionId;
     uint16_t m_nGroupId;

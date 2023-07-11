@@ -13,7 +13,7 @@ typedef uint8_t RESREF[16];
 typedef uint16_t RESTYPE;
 
 
-struct ENCAPSULATED_KEYLISTENTRY_E1
+class ENCAPSULATED_KEYLISTENTRY_E1
 {
     RESREF resRef;
     uint32_t nID;

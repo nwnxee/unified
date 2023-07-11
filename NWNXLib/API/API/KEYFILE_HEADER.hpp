@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(KEYFILE_HEADER)
 
 
 
-struct KEYFILE_HEADER
+class KEYFILE_HEADER
 {
     uint32_t nFileType;
     uint32_t nFileVersion;

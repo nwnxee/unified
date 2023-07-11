@@ -14,7 +14,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerLUOAppearanceInfo
+class CNWSPlayerLUOAppearanceInfo
 {
     OBJECT_ID m_oidLeftHandItem;
     OBJECT_ID m_oidRightHandItem;

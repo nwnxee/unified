@@ -10,13 +10,13 @@
 NWN_API_PROLOGUE(CNWSJournal)
 #endif
 
-struct CNWSCreature;
+class CNWSCreature;
 
 
 typedef int BOOL;
 
 
-struct CNWSJournal
+class CNWSJournal
 {
     CExoArrayList<SJournalEntry> m_lstEntries;
     CNWSCreature * m_pCreature;

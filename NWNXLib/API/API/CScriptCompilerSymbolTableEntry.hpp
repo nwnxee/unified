@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CScriptCompilerSymbolTableEntry)
 
 
 
-struct CScriptCompilerSymbolTableEntry
+class CScriptCompilerSymbolTableEntry
 {
     uint32_t m_nSymbolType;
     uint32_t m_nSymbolSubType1;

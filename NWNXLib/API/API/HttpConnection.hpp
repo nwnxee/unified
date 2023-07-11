@@ -4,7 +4,7 @@
 NWN_API_PROLOGUE(HttpConnection)
 #endif
 
-struct HttpConnection {
+class HttpConnection {
     static void UpdateAll();
 };
 

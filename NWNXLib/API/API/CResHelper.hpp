@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CResHelper)
 typedef int BOOL;
 
 
-template<class T,RESTYPE nType> struct CResHelper
+template<class T,RESTYPE nType> class CResHelper
 {
     T * m_pRes;
     CResRef m_cResRef;

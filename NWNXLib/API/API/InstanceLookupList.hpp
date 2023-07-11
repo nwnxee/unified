@@ -3,7 +3,7 @@
 namespace InstanceLookup {
 
 template<typename V>
-struct List {
+class List {
     V *m_pthis;
 };
 

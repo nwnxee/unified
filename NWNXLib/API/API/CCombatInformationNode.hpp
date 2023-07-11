@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CCombatInformationNode)
 typedef int BOOL;
 
 
-struct CCombatInformationNode
+class CCombatInformationNode
 {
     char m_nModifier;
     uint8_t m_nModifierType;

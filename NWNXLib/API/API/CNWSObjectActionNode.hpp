@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSObjectActionNode)
 typedef int BOOL;
 
 
-struct CNWSObjectActionNode
+class CNWSObjectActionNode
 {
     uint32_t m_nActionId;
     uint32_t m_nParamType[12];

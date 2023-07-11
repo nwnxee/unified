@@ -12,23 +12,23 @@
 NWN_API_PROLOGUE(CServerAIMaster)
 #endif
 
-struct CGameEffect;
-struct CGameEffectApplierRemover;
-struct CItemPropertyApplierRemover;
-struct CNWItemProperty;
-struct CNWSCreature;
-struct CNWSItem;
-struct CNWSObject;
-struct CResGFF;
-struct CResStruct;
-struct CServerExoAppInternal;
+class CGameEffect;
+class CGameEffectApplierRemover;
+class CItemPropertyApplierRemover;
+class CNWItemProperty;
+class CNWSCreature;
+class CNWSItem;
+class CNWSObject;
+class CResGFF;
+class CResStruct;
+class CServerExoAppInternal;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CServerAIMaster
+class CServerAIMaster
 {
     CServerExoAppInternal * m_pExoAppInternal;
     CServerAIList m_apGameAIList[5];

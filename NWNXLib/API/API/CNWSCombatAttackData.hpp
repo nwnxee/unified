@@ -10,18 +10,18 @@
 NWN_API_PROLOGUE(CNWSCombatAttackData)
 #endif
 
-struct CGameEffect;
-struct CNWCCMessageData;
-struct CNWSSpellScriptData;
-struct CResGFF;
-struct CResStruct;
+class CGameEffect;
+class CNWCCMessageData;
+class CNWSSpellScriptData;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSCombatAttackData
+class CNWSCombatAttackData
 {
     uint8_t m_nAttackGroup;
     uint16_t m_nAnimationLength;

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CScriptCompilerStructureEntry)
 
 
 
-struct CScriptCompilerStructureEntry
+class CScriptCompilerStructureEntry
 {
     CExoString m_psName;
     int32_t m_nFieldStart;

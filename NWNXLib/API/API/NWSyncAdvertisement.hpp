@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(NWSyncAdvertisement)
 #endif
 
 
-struct Advertisement {
+class Advertisement {
     Hash::SHA1 m_primary_manifest;
     std::vector<NWSync::AdvertisementManifest> m_additional_manifests;
     CExoString m_url;

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(NWMODULECUTSCENE)
 
 
 
-struct NWMODULECUTSCENE
+class NWMODULECUTSCENE
 {
     CResRef refName;
     uint32_t nID;

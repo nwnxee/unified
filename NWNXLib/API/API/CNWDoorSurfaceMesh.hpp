@@ -16,7 +16,7 @@ NWN_API_PROLOGUE(CNWDoorSurfaceMesh)
 typedef int BOOL;
 
 
-struct CNWDoorSurfaceMesh : CResHelper<CResDWK, 2052>
+class CNWDoorSurfaceMesh : CResHelper<CResDWK, 2052>
 {
     int32_t m_pnVertices[3];
     float * m_ppfVertices[3];

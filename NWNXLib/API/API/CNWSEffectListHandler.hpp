@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWSEffectListHandler)
 #endif
 
-struct CGameEffect;
-struct CNWSObject;
+class CGameEffect;
+class CNWSObject;
 typedef int32_t (*pfAECommands)(CNWSObject *, CGameEffect *, BOOL);
 typedef int32_t (*pfRECommands)(CNWSObject *, CGameEffect *);
 
@@ -18,7 +18,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSEffectListHandler : CGameEffectApplierRemover
+class CNWSEffectListHandler : CGameEffectApplierRemover
 {
     pfAECommands * m_pApplyEffectCommands;
     pfRECommands * m_pRemoveEffectCommands;

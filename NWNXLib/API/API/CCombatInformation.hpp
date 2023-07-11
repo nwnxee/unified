@@ -9,16 +9,16 @@
 NWN_API_PROLOGUE(CCombatInformation)
 #endif
 
-struct CCombatInformationNode;
-struct CResGFF;
-struct CResStruct;
+class CCombatInformationNode;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CCombatInformation
+class CCombatInformation
 {
     uint8_t m_nNumAttacks;
     char m_nOnHandAttackModifier;

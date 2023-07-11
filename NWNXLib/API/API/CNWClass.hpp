@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CNWClass)
 #endif
 
-struct CNWClass_Feat;
-struct CNWClass_Skill;
-struct CNWRules;
+class CNWClass_Feat;
+class CNWClass_Skill;
+class CNWRules;
 
 
 typedef int BOOL;
 
 
-struct CNWClass
+class CNWClass
 {
     uint32_t m_nName;
     uint32_t m_nShort;

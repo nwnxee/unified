@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResGFFField)
 
 
 
-struct CResGFFField
+class CResGFFField
 {
     uint32_t m_nType;
     uint32_t m_nLabelIndex;

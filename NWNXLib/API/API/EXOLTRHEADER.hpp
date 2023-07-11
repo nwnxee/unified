@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(EXOLTRHEADER)
 
 
 
-struct EXOLTRHEADER
+class EXOLTRHEADER
 {
     uint32_t m_nType;
     uint32_t m_nVersion;

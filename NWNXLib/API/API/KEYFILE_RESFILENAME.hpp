@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(KEYFILE_RESFILENAME)
 
 
 
-struct KEYFILE_RESFILENAME
+class KEYFILE_RESFILENAME
 {
     uint32_t nFileSize;
     uint32_t nFileNameOffset;

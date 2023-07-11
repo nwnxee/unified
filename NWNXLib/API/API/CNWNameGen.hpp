@@ -15,7 +15,7 @@ NWN_API_PROLOGUE(CNWNameGen)
 typedef int BOOL;
 
 
-struct CNWNameGen : CResHelper<CResLTR, 2036>
+class CNWNameGen : CResHelper<CResLTR, 2036>
 {
     BOOL m_bLoaded;
     uint16_t m_nTableRace;

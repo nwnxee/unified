@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CNetLayerPlayerCDKeyInfo)
 typedef int BOOL;
 
 
-struct CNetLayerPlayerCDKeyInfo
+class CNetLayerPlayerCDKeyInfo
 {
     CExoString sPublic;
     CExoString sResponse;

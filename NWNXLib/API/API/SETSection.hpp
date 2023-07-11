@@ -8,12 +8,12 @@
 NWN_API_PROLOGUE(SETSection)
 #endif
 
-struct SETEntry;
+class SETEntry;
 
 
 
 
-struct SETSection
+class SETSection
 {
     CExoString m_sSection;
     SETEntry * m_pEntry;

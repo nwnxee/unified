@@ -10,17 +10,17 @@
 NWN_API_PROLOGUE(CNWSWaypoint)
 #endif
 
-struct CExoString;
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
+class CExoString;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSWaypoint : CNWSObject
+class CNWSWaypoint : CNWSObject
 {
     BOOL m_bMapNote;
     BOOL m_bMapNoteEnabled;

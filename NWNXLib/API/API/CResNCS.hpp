@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CResNCS)
 typedef int BOOL;
 
 
-struct CResNCS : CRes
+class CResNCS : CRes
 {
     BOOL m_bLoaded;
     uint32_t m_nNCSNormalSize;

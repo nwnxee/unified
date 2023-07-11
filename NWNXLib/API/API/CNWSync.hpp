@@ -11,12 +11,12 @@ NWN_API_PROLOGUE(CNWSync)
 
 namespace NWSync {
 
-struct CNWSync {
+class CNWSync {
     void *m_internal;
     char *m_tmp1;
     uint32_t m_tmp2;
 
-    struct ManifestMetaData {
+    class ManifestMetaData {
         Hash::SHA1 m_sha1;
         uint32_t m_hashTreeDepth;
         CExoString m_moduleName;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(KXPacket)
 
 
 
-struct KXPacket
+class KXPacket
 {
 
 

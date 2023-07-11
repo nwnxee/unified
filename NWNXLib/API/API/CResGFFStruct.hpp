@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResGFFStruct)
 
 
 
-struct CResGFFStruct
+class CResGFFStruct
 {
     uint32_t m_nType;
     uint32_t m_nDataOrDataOffset;

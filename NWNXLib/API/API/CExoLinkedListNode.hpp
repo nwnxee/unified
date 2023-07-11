@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CExoLinkedListNode)
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 
-struct CExoLinkedListNode
+class CExoLinkedListNode
 {
     CExoLinkedListPosition pPrev;
     CExoLinkedListPosition pNext;

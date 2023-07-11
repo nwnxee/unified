@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CScriptCompilerIncludeFileStackEntry)
 
 
 
-struct CScriptCompilerIncludeFileStackEntry
+class CScriptCompilerIncludeFileStackEntry
 {
     CExoString m_sCompiledScriptName;
     CScriptSourceFile m_cSourceScript;

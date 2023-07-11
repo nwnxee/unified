@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CNWSAreaGridPoint)
 
 
 
-struct CNWSAreaGridPoint
+class CNWSAreaGridPoint
 {
     int32_t nX;
     int32_t nY;

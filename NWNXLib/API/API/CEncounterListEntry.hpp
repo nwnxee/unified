@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CEncounterListEntry)
 typedef int BOOL;
 
 
-struct CEncounterListEntry
+class CEncounterListEntry
 {
     CResRef m_cCreatureResRef;
     float m_fCR;

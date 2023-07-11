@@ -15,7 +15,7 @@ NWN_API_PROLOGUE(NWPlayerCharacterList_st)
 
 
 
-struct NWPlayerCharacterList_st
+class NWPlayerCharacterList_st
 {
     CExoLocString sLocFirstName;
     CExoLocString sLocLastName;

@@ -7,12 +7,12 @@
 NWN_API_PROLOGUE(CScriptParseTreeNode)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 
 
-struct CScriptParseTreeNode
+class CScriptParseTreeNode
 {
     int32_t nOperation;
     CExoString * m_psStringData;

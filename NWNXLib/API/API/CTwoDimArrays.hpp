@@ -15,7 +15,7 @@ NWN_API_PROLOGUE(CTwoDimArrays)
 typedef int BOOL;
 
 
-struct CTwoDimArrays
+class CTwoDimArrays
 {
     C2DA * * m_paIPRPCostTables;
     uint8_t m_nNumIPRPCostTables;

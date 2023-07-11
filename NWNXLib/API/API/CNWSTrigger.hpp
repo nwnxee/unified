@@ -13,17 +13,17 @@
 NWN_API_PROLOGUE(CNWSTrigger)
 #endif
 
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
-struct CScriptLocation;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
+class CScriptLocation;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSTrigger : CNWSObject
+class CNWSTrigger : CNWSObject
 {
     CExoLocString m_sLocalizedName;
     CExoString m_sDescriptionOverride;

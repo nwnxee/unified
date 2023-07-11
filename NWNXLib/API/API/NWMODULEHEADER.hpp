@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(NWMODULEHEADER)
 
 
 
-struct NWMODULEHEADER
+class NWMODULEHEADER
 {
     char pModuleID[32];
     int32_t nModuleCreatorID;

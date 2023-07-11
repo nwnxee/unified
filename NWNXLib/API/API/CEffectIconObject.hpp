@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CEffectIconObject)
 typedef int BOOL;
 
 
-struct CEffectIconObject
+class CEffectIconObject
 {
     uint8_t m_nIcon;
     BOOL m_bFlashing;

@@ -11,12 +11,12 @@
 NWN_API_PROLOGUE(CNWSDialogEntry)
 #endif
 
-struct CNWSDialogLinkReply;
+class CNWSDialogLinkReply;
 
 
 
 
-struct CNWSDialogEntry
+class CNWSDialogEntry
 {
     CExoString m_sSpeaker;
     uint32_t m_nAnimation;

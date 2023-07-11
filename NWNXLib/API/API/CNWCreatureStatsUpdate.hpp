@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CNWCreatureStatsUpdate)
 #endif
 
-struct CCombatInformation;
-struct CEffectIconObject;
+class CCombatInformation;
+class CEffectIconObject;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWCreatureStatsUpdate
+class CNWCreatureStatsUpdate
 {
     CExoArrayList<uint16_t> m_lstFeats;
     CExoArrayList<uint16_t> m_lstBonusFeats;

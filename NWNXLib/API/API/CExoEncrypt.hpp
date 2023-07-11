@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CExoEncrypt)
 
 
 
-struct CExoEncrypt
+class CExoEncrypt
 {
     uint32_t m_anI[2];
     uint32_t m_aBuf[4];

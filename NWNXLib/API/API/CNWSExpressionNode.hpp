@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSExpressionNode)
 
 
 
-struct CNWSExpressionNode
+class CNWSExpressionNode
 {
     int32_t nTimesVisited;
     int32_t m_nType;

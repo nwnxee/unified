@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CPathfindInfoIntraTileSuccessors)
 
 
 
-struct CPathfindInfoIntraTileSuccessors
+class CPathfindInfoIntraTileSuccessors
 {
     float fXTransit;
     float fYTransit;

@@ -21,7 +21,7 @@ NWN_API_PROLOGUE(CServerInfo)
 typedef int BOOL;
 
 
-struct CServerInfo
+class CServerInfo
 {
     int32_t m_nDataChangedFlags;
     int16_t m_nServerMode;

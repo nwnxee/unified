@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(NWAREAHEADER)
 
 
 
-struct NWAREAHEADER
+class NWAREAHEADER
 {
     int32_t nAreaID;
     int32_t nCreatorID;

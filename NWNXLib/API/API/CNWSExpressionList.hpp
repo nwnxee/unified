@@ -7,12 +7,12 @@
 NWN_API_PROLOGUE(CNWSExpressionList)
 #endif
 
-struct CNWSExpressionNode;
+class CNWSExpressionNode;
 
 
 
 
-struct CNWSExpressionList
+class CNWSExpressionList
 {
     CNWSExpressionNode *m_pHead, *m_pAfter, *m_pTail;
 

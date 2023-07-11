@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CServerNetOptions)
 typedef int BOOL;
 
 
-struct CServerNetOptions
+class CServerNetOptions
 {
     int32_t m_nGameRegion;
     CExoString m_szGameDetails;

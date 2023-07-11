@@ -7,15 +7,15 @@
 NWN_API_PROLOGUE(CNWSPlayerCharSheetGUI)
 #endif
 
-struct CNWCreatureStatsUpdate;
-struct CNWSPlayer;
+class CNWCreatureStatsUpdate;
+class CNWSPlayer;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerCharSheetGUI
+class CNWSPlayerCharSheetGUI
 {
     OBJECT_ID m_oidCreatureDisplayed;
     char m_nActivePanel;

@@ -10,14 +10,14 @@
 NWN_API_PROLOGUE(CExoEncapsulatedFile)
 #endif
 
-struct ENCAPSULATED_HEADER;
-struct ENCAPSULATED_RESLISTENTRY_E1;
+class ENCAPSULATED_HEADER;
+class ENCAPSULATED_RESLISTENTRY_E1;
 
 
 typedef int BOOL;
 
 
-struct CExoEncapsulatedFile : CExoPackedFile
+class CExoEncapsulatedFile : CExoPackedFile
 {
     CExoLocString m_lsDescription;
     ENCAPSULATED_HEADER * m_pEncapsulatedHeader;

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CResIFO)
 
 
 
-struct CResIFO : CResGFF
+class CResIFO : CResGFF
 {
 
 

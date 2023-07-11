@@ -15,7 +15,7 @@ typedef int BOOL;
 typedef uint32_t STRREF;
 
 
-struct CNWBaseItem
+class CNWBaseItem
 {
     uint32_t m_nName;
     uint32_t m_nEquipableSlots;

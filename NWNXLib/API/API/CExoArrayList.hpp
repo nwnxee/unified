@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CExoArrayList)
 typedef int BOOL;
 
 // NOTE: Manually implemented for now..
-template <class T> struct CExoArrayList
+template <class T> class CExoArrayList
 {
     T * element;
     int32_t num;

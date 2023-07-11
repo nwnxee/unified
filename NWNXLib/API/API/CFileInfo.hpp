@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CFileInfo)
 
 
 
-struct CFileInfo
+class CFileInfo
 {
     CExoString sFileName;
     uint16_t nYear;

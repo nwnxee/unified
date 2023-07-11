@@ -11,20 +11,20 @@
 NWN_API_PROLOGUE(CResGFF)
 #endif
 
-struct CExoFile;
-struct CResGFFField;
-struct CResGFFFileHeader;
-struct CResGFFLabel;
-struct CResGFFStruct;
-struct CResList;
-struct CResStruct;
+class CExoFile;
+class CResGFFField;
+class CResGFFFileHeader;
+class CResGFFLabel;
+class CResGFFStruct;
+class CResList;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-struct CResGFF : CRes
+class CResGFF : CRes
 {
     uint32_t STRUCT_GROWSIZE;
     uint32_t FIELD_GROWSIZE;

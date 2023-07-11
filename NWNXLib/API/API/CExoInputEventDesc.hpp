@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CExoInputEventDesc)
 
 
 
-struct CExoInputEventDesc
+class CExoInputEventDesc
 {
     CExoString m_Label;
     uint32_t m_nID;

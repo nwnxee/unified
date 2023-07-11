@@ -11,16 +11,16 @@
 NWN_API_PROLOGUE(CNWSTile)
 #endif
 
-struct CNWArea;
-struct CNWTileData;
-struct CPathfindInformation;
+class CNWArea;
+class CNWTileData;
+class CPathfindInformation;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSTile : CNWTile
+class CNWSTile : CNWTile
 {
     CNWTileData * m_pTileData;
     int32_t m_nTriggers;

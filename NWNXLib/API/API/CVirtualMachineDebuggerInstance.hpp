@@ -10,13 +10,13 @@
 NWN_API_PROLOGUE(CVirtualMachineDebuggerInstance)
 #endif
 
-struct CVirtualMachine;
+class CVirtualMachine;
 
 
 typedef int BOOL;
 
 
-struct CVirtualMachineDebuggerInstance
+class CVirtualMachineDebuggerInstance
 {
     CVirtualMachine * m_pVMachine;
     int32_t * m_pnInstructionPointer;

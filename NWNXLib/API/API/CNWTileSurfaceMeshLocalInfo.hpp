@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshLocalInfo)
 
 
 
-struct CNWTileSurfaceMeshLocalInfo
+class CNWTileSurfaceMeshLocalInfo
 {
     int32_t pnEdgeUsed[12];
     Vector pfVertex[3];

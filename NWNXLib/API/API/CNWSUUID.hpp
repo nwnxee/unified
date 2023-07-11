@@ -8,14 +8,14 @@
 NWN_API_PROLOGUE(CNWSUUID)
 #endif
 
-struct CGameObject;
-struct CResGFF;
-struct CResStruct;
+class CGameObject;
+class CResGFF;
+class CResStruct;
 
 
 
 
-struct CNWSUUID
+class CNWSUUID
 {
     CGameObject * m_parent;
     CExoString m_uuid;

@@ -14,7 +14,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CScriptCompilerIdListEntry
+class CScriptCompilerIdListEntry
 {
     CExoString m_psIdentifier;
     uint32_t m_nIdentifierLength;

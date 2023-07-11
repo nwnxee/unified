@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(CNWFeat)
 typedef int BOOL;
 
 
-struct CNWFeat
+class CNWFeat
 {
     int32_t m_nNameStrref;
     int32_t m_nDescriptionStrref;

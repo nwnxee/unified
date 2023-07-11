@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(CExoInputClass)
 
 
 
-struct CExoInputClass
+class CExoInputClass
 {
     CExoString m_Label;
     CExoLinkedList<CExoInputEventDesc> * m_pUnassignedInputEventDescList;

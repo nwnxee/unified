@@ -9,7 +9,7 @@ NWN_API_PROLOGUE(CResList)
 #endif
 
 
-struct CResList : CResStruct
+class CResList : CResStruct
 {
     char m_pLabel[16];
 

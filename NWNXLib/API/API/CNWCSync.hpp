@@ -12,10 +12,10 @@ namespace NWSync {
 NWN_API_PROLOGUE(CNWCSync)
 #endif
 
-struct CNWCSyncInternal;
+class CNWCSyncInternal;
 
-struct CNWCSync : InstanceLookup::List<CNWCSync> {
-    struct Progress {
+class CNWCSync : InstanceLookup::List<CNWCSync> {
+    class Progress {
         int m_currentState;
         CExoString m_currentStateMessage;
         int m_currentStatePercentage;

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(EXOLOCSTRING)
 
 
 
-struct EXOLOCSTRING
+class EXOLOCSTRING
 {
     int32_t nID;
     CExoString sString;

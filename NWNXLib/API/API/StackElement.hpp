@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(StackElement)
 typedef uint32_t OBJECT_ID;
 
 
-struct StackElement
+class StackElement
 {
     OBJECT_ID m_nStackObjectID;
     int32_t m_nStackInt;

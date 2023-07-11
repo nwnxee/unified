@@ -12,17 +12,17 @@
 NWN_API_PROLOGUE(CNWSPlayerTURD)
 #endif
 
-struct CGameEffect;
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
+class CGameEffect;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerTURD : CNWSObject
+class CNWSPlayerTURD : CNWSObject
 {
     CExoString m_sCommunityName;
     CExoLocString m_lsFirstName;

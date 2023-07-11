@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CVirtualMachineCmdImplementer)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CVirtualMachineCmdImplementer
+class CVirtualMachineCmdImplementer
 {
     BOOL m_bValidObjectRunScript;
     OBJECT_ID m_oidObjectRunScript;

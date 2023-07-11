@@ -9,14 +9,14 @@
 NWN_API_PROLOGUE(CNWSFaction)
 #endif
 
-struct CFactionManager;
+class CFactionManager;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSFaction
+class CNWSFaction
 {
     CExoArrayList<OBJECT_ID> m_listFactionMembers;
     int32_t m_nFactionId;

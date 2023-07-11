@@ -16,17 +16,17 @@
 NWN_API_PROLOGUE(CExoResMan)
 #endif
 
-struct CExoFile;
-struct CExoKeyTable;
-struct CExoKeyTable;
-struct CExoStringList;
-struct CKeyTableEntry;
+class CExoFile;
+class CExoKeyTable;
+class CExoKeyTable;
+class CExoStringList;
+class CKeyTableEntry;
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-struct CExoResMan
+class CExoResMan
 {
     int64_t m_nTotalPhysicalMemory;
     int64_t m_nTotalAvailableMemory;

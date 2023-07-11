@@ -12,13 +12,13 @@
 NWN_API_PROLOGUE(CNWTileSet)
 #endif
 
-struct CNWTileData;
+class CNWTileData;
 
 
 typedef int BOOL;
 
 
-struct CNWTileSet : CResHelper<CResSET, 2013>
+class CNWTileSet : CResHelper<CResSET, 2013>
 {
     CResRef m_resrefName;
     CResRef m_cEnvMap;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CServerOptionLookup)
 
 
 
-struct CServerOptionLookup
+class CServerOptionLookup
 {
     int * pData;
     int nType;

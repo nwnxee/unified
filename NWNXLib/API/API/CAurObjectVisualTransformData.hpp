@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CAurObjectVisualTransformData)
 
 
 
-struct CAurObjectVisualTransformData
+class CAurObjectVisualTransformData
 {
     LerpVector m_scale;
     LerpVector m_rotate;

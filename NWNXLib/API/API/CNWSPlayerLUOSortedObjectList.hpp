@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSPlayerLUOSortedObjectList)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerLUOSortedObjectList
+class CNWSPlayerLUOSortedObjectList
 {
     OBJECT_ID oidObject;
     float fDistanceToPlayer;

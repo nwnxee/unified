@@ -8,13 +8,13 @@
 NWN_API_PROLOGUE(CExoAliasList)
 #endif
 
-struct CExoAliasListInternal;
+class CExoAliasListInternal;
 
 
 typedef uint16_t RESTYPE;
 
 
-struct CExoAliasList
+class CExoAliasList
 {
     CExoAliasListInternal * m_pcExoAliasListInternal;
 

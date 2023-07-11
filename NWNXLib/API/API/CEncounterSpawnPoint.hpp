@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CEncounterSpawnPoint)
 
 
 
-struct CEncounterSpawnPoint
+class CEncounterSpawnPoint
 {
     Vector m_vPosition;
     float m_fOrientation;

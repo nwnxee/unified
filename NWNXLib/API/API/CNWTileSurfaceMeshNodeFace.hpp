@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshNodeFace)
 
 
 
-struct CNWTileSurfaceMeshNodeFace
+class CNWTileSurfaceMeshNodeFace
 {
     int32_t * pnUselessPointer1;
     int32_t * pnUselessPointer2;

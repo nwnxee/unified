@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CExoLinkedListInternal)
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 
-struct CExoLinkedListInternal
+class CExoLinkedListInternal
 {
     CExoLinkedListPosition pHead;
     CExoLinkedListPosition pTail;

@@ -13,7 +13,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPVPEntry
+class CNWSPVPEntry
 {
     OBJECT_ID m_oidPC;
     BOOL m_bILikePlayer;

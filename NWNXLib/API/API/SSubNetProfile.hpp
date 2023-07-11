@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(SSubNetProfile)
 
 
 
-struct SSubNetProfile
+class SSubNetProfile
 {
     uint32_t nPlayerID;
     CExoString sPlayerName;

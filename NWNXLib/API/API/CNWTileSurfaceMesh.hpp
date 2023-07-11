@@ -12,18 +12,18 @@
 NWN_API_PROLOGUE(CNWTileSurfaceMesh)
 #endif
 
-struct CNWArea;
-struct CNWTile;
-struct CNWTileSurfaceMeshAABBNode;
-struct CNWTileSurfaceMeshHashTableEntry;
-struct CPathfindInfoIntraTileSuccessors;
-struct CPathfindInformation;
+class CNWArea;
+class CNWTile;
+class CNWTileSurfaceMeshAABBNode;
+class CNWTileSurfaceMeshHashTableEntry;
+class CPathfindInfoIntraTileSuccessors;
+class CPathfindInformation;
 
 
 typedef int BOOL;
 
 
-struct CNWTileSurfaceMesh : CResHelper<CResWOK, 2016>
+class CNWTileSurfaceMesh : CResHelper<CResWOK, 2016>
 {
     CResRef m_cWalkMesh;
     uint8_t m_nPathNode;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResStructHeader)
 
 
 
-struct CResStructHeader
+class CResStructHeader
 {
     uint32_t m_nType;
     uint32_t m_nFields;

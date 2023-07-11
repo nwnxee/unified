@@ -9,13 +9,13 @@
 NWN_API_PROLOGUE(CNetLayerSessionInfo)
 #endif
 
-struct CExtendedServerInfo;
+class CExtendedServerInfo;
 
 
 typedef int BOOL;
 
 
-struct CNetLayerSessionInfo
+class CNetLayerSessionInfo
 {
     uint32_t m_nConnectionId;
     CExoString m_sSessionName;

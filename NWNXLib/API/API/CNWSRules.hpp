@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSRules)
 
 
 
-struct CNWSRules : CNWRules
+class CNWSRules : CNWRules
 {
 
     CNWSRules();

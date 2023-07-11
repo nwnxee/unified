@@ -8,15 +8,15 @@
 NWN_API_PROLOGUE(CServerAIBodyBagInfo)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CServerAIBodyBagInfo
+class CServerAIBodyBagInfo
 {
     OBJECT_ID m_oidBodyBag;
     Vector m_vPosition;

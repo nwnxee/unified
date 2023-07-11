@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CResetOption)
 typedef int BOOL;
 
 
-struct CResetOption
+class CResetOption
 {
     BOOL bOnVacant;
     BOOL bOnVictory;

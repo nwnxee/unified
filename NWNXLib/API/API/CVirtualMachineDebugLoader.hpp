@@ -9,13 +9,13 @@
 NWN_API_PROLOGUE(CVirtualMachineDebugLoader)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 typedef int BOOL;
 
 
-struct CVirtualMachineDebugLoader : CResHelper<CResNDB, 2064>
+class CVirtualMachineDebugLoader : CResHelper<CResNDB, 2064>
 {
     BOOL m_bLoaded;
     DataBlockRef m_pNDB;

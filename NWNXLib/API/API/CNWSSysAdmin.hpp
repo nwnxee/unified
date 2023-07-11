@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSSysAdmin)
 
 
 
-struct CNWSSysAdmin : CNWSClient
+class CNWSSysAdmin : CNWSClient
 {
 
     CNWSSysAdmin(uint32_t nPlayerID);

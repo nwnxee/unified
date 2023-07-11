@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSTagNode)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSTagNode
+class CNWSTagNode
 {
     char m_szTag[64+1];
     OBJECT_ID m_oidObjectId;

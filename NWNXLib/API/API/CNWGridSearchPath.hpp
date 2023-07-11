@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CNWGridSearchPath)
 
 
 
-struct CNWGridSearchPath
+class CNWGridSearchPath
 {
     int32_t nDistance;
     int32_t nSteps;

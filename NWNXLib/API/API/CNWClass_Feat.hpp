@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWClass_Feat)
 typedef int BOOL;
 
 
-struct CNWClass_Feat
+class CNWClass_Feat
 {
     uint16_t nFeat;
     uint8_t nLevelGranted;

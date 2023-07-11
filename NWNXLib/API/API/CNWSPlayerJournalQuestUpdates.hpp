@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSPlayerJournalQuestUpdates)
 
 
 
-struct CNWSPlayerJournalQuestUpdates
+class CNWSPlayerJournalQuestUpdates
 {
     uint16_t flags;
     CExoString szPlot_Id;

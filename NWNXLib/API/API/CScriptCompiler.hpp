@@ -10,23 +10,23 @@
 NWN_API_PROLOGUE(CScriptCompiler)
 #endif
 
-struct CExoStringList;
-struct CScriptCompilerIdListEntry;
-struct CScriptCompilerIdentifierHashTableEntry;
-struct CScriptCompilerKeyWordEntry;
-struct CScriptCompilerStackEntry;
-struct CScriptCompilerStructureEntry;
-struct CScriptCompilerStructureFieldEntry;
-struct CScriptCompilerSymbolTableEntry;
-struct CScriptCompilerVarStackEntry;
-struct CScriptParseTreeNode;
-struct CScriptParseTreeNodeBlock;
+class CExoStringList;
+class CScriptCompilerIdListEntry;
+class CScriptCompilerIdentifierHashTableEntry;
+class CScriptCompilerKeyWordEntry;
+class CScriptCompilerStackEntry;
+class CScriptCompilerStructureEntry;
+class CScriptCompilerStructureFieldEntry;
+class CScriptCompilerSymbolTableEntry;
+class CScriptCompilerVarStackEntry;
+class CScriptParseTreeNode;
+class CScriptParseTreeNodeBlock;
 
 
 typedef int BOOL;
 
 
-struct CScriptCompiler
+class CScriptCompiler
 {
     int32_t m_nKeyWords;
     CScriptCompilerKeyWordEntry * m_pcKeyWords;

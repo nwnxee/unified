@@ -9,13 +9,13 @@
 NWN_API_PROLOGUE(CKeyTableInfo)
 #endif
 
-struct CExoFile;
-struct KEYFILE_RESFILENAME;
+class CExoFile;
+class KEYFILE_RESFILENAME;
 
 
 
 
-struct CKeyTableInfo
+class CKeyTableInfo
 {
     CExoString m_sName;
     CExoFile * m_pFile;

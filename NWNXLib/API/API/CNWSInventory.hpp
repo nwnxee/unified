@@ -7,14 +7,14 @@
 NWN_API_PROLOGUE(CNWSInventory)
 #endif
 
-struct CNWSItem;
+class CNWSItem;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSInventory
+class CNWSInventory
 {
     OBJECT_ID m_pEquipSlot[18];
 

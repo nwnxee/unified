@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWSStats_Spell)
 typedef int BOOL;
 
 
-struct CNWSStats_Spell
+class CNWSStats_Spell
 {
     uint32_t m_nSpellId;
     BOOL m_bReadied;

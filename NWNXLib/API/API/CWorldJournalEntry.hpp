@@ -14,7 +14,7 @@ typedef int BOOL;
 typedef uint32_t STRREF;
 
 
-struct CWorldJournalEntry
+class CWorldJournalEntry
 {
     CExoString szText;
     CExoString szName;

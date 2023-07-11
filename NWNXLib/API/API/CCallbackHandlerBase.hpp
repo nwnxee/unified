@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CCallbackHandlerBase)
 
 
 
-struct CCallbackHandlerBase
+class CCallbackHandlerBase
 {
 
 

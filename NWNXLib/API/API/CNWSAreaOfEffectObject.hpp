@@ -10,16 +10,16 @@
 NWN_API_PROLOGUE(CNWSAreaOfEffectObject)
 #endif
 
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSAreaOfEffectObject : CNWSObject
+class CNWSAreaOfEffectObject : CNWSObject
 {
     uint16_t m_nObjectArrayIndex;
     int32_t m_nAreaEffectId;

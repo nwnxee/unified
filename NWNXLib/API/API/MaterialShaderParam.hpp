@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(MaterialShaderParam)
 
 
 
-struct MaterialShaderParam
+class MaterialShaderParam
 {
     int m_nType;
     char m_sMaterialName[16+1];

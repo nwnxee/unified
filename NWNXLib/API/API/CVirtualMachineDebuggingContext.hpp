@@ -7,13 +7,13 @@
 NWN_API_PROLOGUE(CVirtualMachineDebuggingContext)
 #endif
 
-struct CVirtualMachineDebuggerInstance;
+class CVirtualMachineDebuggerInstance;
 
 
 typedef int BOOL;
 
 
-struct CVirtualMachineDebuggingContext
+class CVirtualMachineDebuggingContext
 {
     BOOL m_bStepInto;
     BOOL m_bStepOver;

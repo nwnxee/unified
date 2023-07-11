@@ -14,7 +14,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CLoopingVisualEffect
+class CLoopingVisualEffect
 {
     uint16_t m_nId;
     OBJECT_ID m_oOriginator;

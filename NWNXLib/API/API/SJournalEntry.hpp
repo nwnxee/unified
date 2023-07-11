@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(SJournalEntry)
 typedef int BOOL;
 
 
-struct SJournalEntry
+class SJournalEntry
 {
     CExoLocString szName;
     CExoLocString szText;

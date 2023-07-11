@@ -17,7 +17,7 @@ inline Vector operator*(const Vector& v, float s);
 inline Vector operator*(float s, const Vector& v);
 inline Vector operator/(const Vector& v, float s);
 
-struct Vector
+class Vector
 {
     float x;
     float y;

@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CItemRepository)
 #endif
 
-struct CExoString;
-struct CNWSItem;
+class CExoString;
+class CNWSItem;
 
 
 typedef int BOOL;
@@ -17,7 +17,7 @@ typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
 
 
-struct CItemRepository
+class CItemRepository
 {
     uint8_t m_nWidth;
     uint8_t m_nHeight;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(TLK_FILE_HEADER)
 
 
 
-struct TLK_FILE_HEADER
+class TLK_FILE_HEADER
 {
     uint32_t fileType;
     uint32_t versionNum;

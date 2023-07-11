@@ -13,19 +13,19 @@
 NWN_API_PROLOGUE(CNWSPlaceable)
 #endif
 
-struct CItemRepository;
-struct CNWSArea;
-struct CNWSItem;
-struct CNWSObjectActionNode;
-struct CResGFF;
-struct CResStruct;
+class CItemRepository;
+class CNWSArea;
+class CNWSItem;
+class CNWSObjectActionNode;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlaceable : CNWSObject
+class CNWSPlaceable : CNWSObject
 {
     CExoLocString m_sLocName;
     CExoString m_sDisplayName;

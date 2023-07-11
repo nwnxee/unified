@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshSortSuccessors)
 
 
 
-struct CNWTileSurfaceMeshSortSuccessors
+class CNWTileSurfaceMeshSortSuccessors
 {
     int32_t nPathLevel;
     float fEstimateDistance;

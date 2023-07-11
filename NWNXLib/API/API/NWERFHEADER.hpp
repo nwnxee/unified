@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(NWERFHEADER)
 
 
 
-struct NWERFHEADER
+class NWERFHEADER
 {
     char sVersion[8];
     uint32_t nStringCount;

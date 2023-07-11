@@ -9,13 +9,13 @@
 NWN_API_PROLOGUE(CExoString)
 #endif
 
-struct CResRef;
+class CResRef;
 
 
 typedef int BOOL;
 
 
-struct CExoString
+class CExoString
 {
     char * m_sString;
     uint32_t m_nBufferLength;
@@ -84,7 +84,7 @@ NWN_API_EPILOGUE(CExoString)
 #endif
 
 namespace std {
-template <> struct hash<CExoString>
+template <> class hash<CExoString>
 {
     std::size_t operator()(const CExoString& k) const
     {

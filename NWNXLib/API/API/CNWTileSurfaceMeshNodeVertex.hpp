@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshNodeVertex)
 
 
 
-struct CNWTileSurfaceMeshNodeVertex
+class CNWTileSurfaceMeshNodeVertex
 {
     float fVirtualWasteOfSpace;
     Vector vCoord;

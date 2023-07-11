@@ -8,13 +8,13 @@
 NWN_API_PROLOGUE(CResSET)
 #endif
 
-struct SETSection;
+class SETSection;
 
 
 typedef int BOOL;
 
 
-struct CResSET : CRes
+class CResSET : CRes
 {
     BOOL m_bLoaded;
     uint32_t m_nSETNormalSize;

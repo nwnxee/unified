@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CExoRandInternal)
 typedef int BOOL;
 
 
-struct CExoRandInternal
+class CExoRandInternal
 {
     uint32_t m_s1;
     uint32_t m_s2;

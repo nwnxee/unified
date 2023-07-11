@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshAABBNode)
 
 
 
-struct CNWTileSurfaceMeshAABBNode
+class CNWTileSurfaceMeshAABBNode
 {
     Vector vBoundBoxMin;
     Vector vBoundBoxMax;

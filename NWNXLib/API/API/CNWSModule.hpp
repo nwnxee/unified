@@ -26,19 +26,19 @@
 NWN_API_PROLOGUE(CNWSModule)
 #endif
 
-struct CERFFile;
-struct CGameEffect;
-struct CNWSArea;
-struct CNWSPlayer;
-struct CPathfindInformation;
-struct CResGFF;
-struct CResStruct;
-struct NWMODULEENTRYINFO;
-struct NWMODULEHEADER;
-struct NWPLAYERCHARACTERLISTITEM;
+class CERFFile;
+class CGameEffect;
+class CNWSArea;
+class CNWSPlayer;
+class CPathfindInformation;
+class CResGFF;
+class CResStruct;
+class NWMODULEENTRYINFO;
+class NWMODULEHEADER;
+class NWPLAYERCHARACTERLISTITEM;
 
 namespace NWSync {
-struct Advertisement; // NWSyncAdvertisement
+class Advertisement; // NWSyncAdvertisement
 }
 
 typedef int BOOL;
@@ -47,7 +47,7 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
+class CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
 {
     CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
     CExoLinkedList<NWMODULECUTSCENE> m_lstModuleCutScene;

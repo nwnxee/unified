@@ -8,13 +8,13 @@
 NWN_API_PROLOGUE(CResLTR)
 #endif
 
-struct EXOLTRHEADER;
+class EXOLTRHEADER;
 
 
 typedef int BOOL;
 
 
-struct CResLTR : CRes
+class CResLTR : CRes
 {
     float * * * m_pStartTripleLetterProb;
     float * * * m_pMiddleTripleLetterProb;

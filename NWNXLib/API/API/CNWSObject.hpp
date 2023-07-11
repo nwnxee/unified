@@ -23,21 +23,21 @@
 NWN_API_PROLOGUE(CNWSObject)
 #endif
 
-struct CExoString;
-struct CGameEffect;
-struct CGameEffect;
-struct CLoopingVisualEffect;
-struct CNWCCMessageData;
-struct CNWSAnimBase;
-struct CNWSArea;
-struct CNWSAreaOfEffectObject;
-struct CNWSCreature;
-struct CNWSDialog;
-struct CNWSExpression;
-struct CNWSPlayer;
-struct CNWSpell;
-struct CResGFF;
-struct CResStruct;
+class CExoString;
+class CGameEffect;
+class CGameEffect;
+class CLoopingVisualEffect;
+class CNWCCMessageData;
+class CNWSAnimBase;
+class CNWSArea;
+class CNWSAreaOfEffectObject;
+class CNWSCreature;
+class CNWSDialog;
+class CNWSExpression;
+class CNWSPlayer;
+class CNWSpell;
+class CResGFF;
+class CResStruct;
 
 
 typedef TextureReplaceInfo AnimationReplaceInfo;
@@ -47,7 +47,7 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-struct CNWSObject : CGameObject
+class CNWSObject : CGameObject
 {
     CExoLocString m_sForGCC;
     uint16_t m_nGroupID;

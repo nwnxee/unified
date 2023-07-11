@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(CNWSPlayerJournalQuest)
 typedef int BOOL;
 
 
-struct CNWSPlayerJournalQuest
+class CNWSPlayerJournalQuest
 {
     BOOL m_bOpen;
     CExoArrayList<CNWSPlayerJournalQuestUpdates> m_lstModifications;

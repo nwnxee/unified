@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(STR_RES)
 
 
 
-struct STR_RES
+class STR_RES
 {
     CExoString szText;
     CResRef cSoundResRef;

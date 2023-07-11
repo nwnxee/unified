@@ -7,14 +7,14 @@
 NWN_API_PROLOGUE(CNWSPlayerContainerGUI)
 #endif
 
-struct CNWSPlayer;
+class CNWSPlayer;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerContainerGUI
+class CNWSPlayerContainerGUI
 {
     OBJECT_ID m_oidOpen;
     BOOL m_bOpenedTheInventory;

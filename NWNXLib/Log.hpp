@@ -132,8 +132,8 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 
 }
 
-struct CExoString;
-struct CResRef;
+class CExoString;
+class CResRef;
 
 std::ostream& operator<<(std::ostream& out, const CExoString& str);
 std::ostream& operator<<(std::ostream& out, const CResRef& str);

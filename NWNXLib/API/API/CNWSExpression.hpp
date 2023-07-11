@@ -9,15 +9,15 @@
 NWN_API_PROLOGUE(CNWSExpression)
 #endif
 
-struct CExoString;
-struct CNWSExpressionList;
-struct CNWSExpressionNode;
+class CExoString;
+class CNWSExpressionList;
+class CNWSExpressionNode;
 
 
 typedef int BOOL;
 
 
-struct CNWSExpression
+class CNWSExpression
 {
     int32_t m_nExpressionId;
     CExoArrayList<CExoString *> m_aStored;

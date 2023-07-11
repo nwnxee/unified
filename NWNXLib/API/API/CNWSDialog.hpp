@@ -13,21 +13,21 @@
 NWN_API_PROLOGUE(CNWSDialog)
 #endif
 
-struct CExoString;
-struct CNWSDialogEntry;
-struct CNWSDialogLinkEntry;
-struct CNWSDialogReply;
-struct CNWSDialogSpeaker;
-struct CNWSObject;
-struct CResGFF;
-struct CResStruct;
+class CExoString;
+class CNWSDialogEntry;
+class CNWSDialogLinkEntry;
+class CNWSDialogReply;
+class CNWSDialogSpeaker;
+class CNWSObject;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSDialog
+class CNWSDialog
 {
     uint32_t m_nEntries;
     CNWSDialogEntry * m_pEntries;

@@ -7,13 +7,13 @@
 NWN_API_PROLOGUE(CExoTimers)
 #endif
 
-struct CExoTimersInternal;
+class CExoTimersInternal;
 
 
 typedef int BOOL;
 
 
-struct CExoTimers
+class CExoTimers
 {
     CExoTimersInternal * m_pcExoTimersInternal;
 

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CResTLK)
 
 
 
-struct CResTLK : CRes
+class CResTLK : CRes
 {
 
     CResTLK();

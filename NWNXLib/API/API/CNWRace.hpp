@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CNWRace)
 typedef int BOOL;
 
 
-struct CNWRace
+class CNWRace
 {
     int32_t m_nNameStrref;
     int32_t m_nConverNameStrref;

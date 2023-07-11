@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(BIFFFILE_HEADER)
 
 
 
-struct BIFFFILE_HEADER
+class BIFFFILE_HEADER
 {
     uint32_t nFileType;
     uint32_t nFileVersion;

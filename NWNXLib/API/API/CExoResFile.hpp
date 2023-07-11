@@ -9,8 +9,8 @@
 NWN_API_PROLOGUE(CExoResFile)
 #endif
 
-struct BIFFFILE_HEADER;
-struct BIFFFILE_VARRESENTRY_E1;
+class BIFFFILE_HEADER;
+class BIFFFILE_VARRESENTRY_E1;
 
 
 typedef int BOOL;
@@ -21,7 +21,7 @@ enum BIFFFILE_Version
     BIFFFILE_V1,
     BIFFFILE_E1
 };
-struct CExoResFile : CExoPackedFile
+class CExoResFile : CExoPackedFile
 {
     BIFFFILE_Version m_nVersion;
     BIFFFILE_HEADER * m_pBiffHeader;

@@ -9,15 +9,15 @@
 NWN_API_PROLOGUE(CNWSSpellScriptData)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSSpellScriptData
+class CNWSSpellScriptData
 {
     int32_t m_nSpellId;
     uint16_t m_nFeatId;

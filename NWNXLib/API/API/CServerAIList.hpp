@@ -8,14 +8,14 @@
 NWN_API_PROLOGUE(CServerAIList)
 #endif
 
-struct CNWSObject;
+class CNWSObject;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CServerAIList
+class CServerAIList
 {
     CExoArrayList<OBJECT_ID> m_aoGameObjects;
     int32_t m_nPosition;

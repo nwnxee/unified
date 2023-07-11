@@ -20,27 +20,27 @@
 NWN_API_PROLOGUE(CNWSArea)
 #endif
 
-struct CERFFile;
-struct CGameEffect;
-struct CGameObject;
-struct CNWSAmbientSound;
-struct CNWSAreaGridPoint;
-struct CNWSAreaInterTileSuccessors;
-struct CNWSCreature;
-struct CNWSPlayer;
-struct CNWSTile;
-struct CNWTileSet;
-struct CPathfindInformation;
-struct CResGFF;
-struct CResStruct;
-struct NWAREAHEADER;
+class CERFFile;
+class CGameEffect;
+class CGameObject;
+class CNWSAmbientSound;
+class CNWSAreaGridPoint;
+class CNWSAreaInterTileSuccessors;
+class CNWSCreature;
+class CNWSPlayer;
+class CNWSTile;
+class CNWTileSet;
+class CPathfindInformation;
+class CResGFF;
+class CResStruct;
+class NWAREAHEADER;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
+class CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
 {
     int32_t m_nPlayersInArea;
     CExoArrayList<OBJECT_ID> m_pTrapList;

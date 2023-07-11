@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(RESID)
 
 
 
-struct RESID
+class RESID
 {
     uint32_t m_resFileSource;
     uint32_t m_resFileId;

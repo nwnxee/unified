@@ -16,7 +16,7 @@ NWN_API_PROLOGUE(CNWSScriptVar)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSScriptVar
+class CNWSScriptVar
 {
     int32_t m_int;
     float m_float;

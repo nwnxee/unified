@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(NWPLAYERLISTITEM)
 typedef int BOOL;
 
 
-struct NWPLAYERLISTITEM
+class NWPLAYERLISTITEM
 {
     CExoString sCommunityName;
     CExoLocString sLocFirstName;

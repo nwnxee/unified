@@ -9,14 +9,14 @@
 NWN_API_PROLOGUE(CNWSPlayerLUOInventory)
 #endif
 
-struct CNWSItem;
+class CNWSItem;
 
 
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerLUOInventory
+class CNWSPlayerLUOInventory
 {
     OBJECT_ID m_oidInventorySlots[18];
     int32_t m_nStackSizes[18];

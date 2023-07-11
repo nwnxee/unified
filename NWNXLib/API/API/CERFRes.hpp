@@ -7,13 +7,13 @@
 NWN_API_PROLOGUE(CERFRes)
 #endif
 
-struct CExoFile;
+class CExoFile;
 
 
 typedef int BOOL;
 
 
-struct CERFRes
+class CERFRes
 {
     uint32_t m_nOffset;
     uint32_t m_nSize;

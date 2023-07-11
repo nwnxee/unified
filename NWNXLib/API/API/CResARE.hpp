@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(CResARE)
 
 
 
-struct CResARE : CResGFF
+class CResARE : CResGFF
 {
 
 

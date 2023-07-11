@@ -10,12 +10,12 @@
 NWN_API_PROLOGUE(CTlkResFile)
 #endif
 
-struct CResRef;
+class CResRef;
 
 
 
 
-struct CTlkResFile : CResHelper<CResTLK, 2018>, CTlkFile
+class CTlkResFile : CResHelper<CResTLK, 2018>, CTlkFile
 {
 
     CTlkResFile(const CResRef & pResRef);

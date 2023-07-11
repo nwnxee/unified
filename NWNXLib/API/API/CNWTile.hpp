@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CNWTile)
 
 
 
-struct CNWTile : CCallbackHandlerBase
+class CNWTile : CCallbackHandlerBase
 {
     Vector m_vModelPosition;
     int32_t m_nID;

@@ -12,7 +12,7 @@ NWN_API_PROLOGUE(STR_RES_HEADER_OLD)
 typedef uint8_t RESREF[16];
 
 
-struct STR_RES_HEADER_OLD
+class STR_RES_HEADER_OLD
 {
     uint32_t wFlags;
     RESREF sndResRef;

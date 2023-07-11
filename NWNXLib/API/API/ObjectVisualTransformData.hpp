@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(ObjectVisualTransformData)
 
 
 
-struct ObjectVisualTransformData
+class ObjectVisualTransformData
 {
     std::map<int32_t, CAurObjectVisualTransformData> m_scopes;
     ObjectVisualTransformData() {}

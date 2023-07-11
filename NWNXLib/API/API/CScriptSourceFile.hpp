@@ -9,12 +9,12 @@
 NWN_API_PROLOGUE(CScriptSourceFile)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 
 
-struct CScriptSourceFile : CResHelper<CResNSS, 2009>
+class CScriptSourceFile : CResHelper<CResNSS, 2009>
 {
 
     CScriptSourceFile();

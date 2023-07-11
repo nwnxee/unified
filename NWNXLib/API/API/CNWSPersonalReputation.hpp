@@ -13,7 +13,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPersonalReputation
+class CNWSPersonalReputation
 {
     uint32_t m_nDay;
     uint32_t m_nTime;

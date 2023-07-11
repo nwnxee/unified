@@ -7,16 +7,16 @@
 NWN_API_PROLOGUE(CNWSPlayerInventoryGUI)
 #endif
 
-struct CNWSPlayer;
-struct CNWSPlayerContainerGUI;
-struct CNWSPlayerLUOInventory;
+class CNWSPlayer;
+class CNWSPlayerContainerGUI;
+class CNWSPlayerLUOInventory;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerInventoryGUI
+class CNWSPlayerInventoryGUI
 {
     CNWSPlayerLUOInventory * m_pcLastUpdateInventory;
     BOOL m_bGuiInventoryOpen;

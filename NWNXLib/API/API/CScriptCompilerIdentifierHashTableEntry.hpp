@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CScriptCompilerIdentifierHashTableEntry)
 
 
 
-struct CScriptCompilerIdentifierHashTableEntry
+class CScriptCompilerIdentifierHashTableEntry
 {
     uint32_t m_nHashValue;
     uint32_t m_nIdentifierType;

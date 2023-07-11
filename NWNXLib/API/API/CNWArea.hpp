@@ -9,15 +9,15 @@
 NWN_API_PROLOGUE(CNWArea)
 #endif
 
-struct CGameObject;
-struct CPathfindInformation;
+class CGameObject;
+class CPathfindInformation;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWArea
+class CNWArea
 {
     uint32_t m_nFlags;
     int32_t m_nWidth;

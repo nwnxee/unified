@@ -7,12 +7,12 @@
 NWN_API_PROLOGUE(LerpFloat)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 
-template<typename T> struct totally_ordered
+template<typename T> class totally_ordered
 {
     friend bool operator<=(const T& a, const T& b) { return a < b || a == b; }
     friend bool operator>(const T& a, const T& b) { return !(a <= b); }
@@ -26,7 +26,7 @@ enum class LerpTimerType {
 };
 
 
-struct LerpFloat
+class LerpFloat
 {
     LerpTimerType m_timer_type;
     mutable float m_value_to;
@@ -37,9 +37,9 @@ struct LerpFloat
     int m_behavior_flags;
     mutable int m_repeats_remaining;
 
-    struct TimeType
+    class TimeType
     {
-        struct World : public totally_ordered<World>
+        class World : public totally_ordered<World>
         {
             uint32_t m_day;
             uint32_t m_time;

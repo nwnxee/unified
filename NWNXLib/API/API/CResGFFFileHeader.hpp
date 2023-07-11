@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CResGFFFileHeader)
 
 
 
-struct CResGFFFileHeader
+class CResGFFFileHeader
 {
     uint32_t m_nFileType;
     uint32_t m_nFileVersion;

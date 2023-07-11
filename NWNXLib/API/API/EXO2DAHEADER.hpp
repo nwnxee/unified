@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(EXO2DAHEADER)
 
 
 
-struct EXO2DAHEADER
+class EXO2DAHEADER
 {
     uint32_t nType;
     uint32_t nVersion;

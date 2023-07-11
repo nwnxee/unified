@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(Vector2)
 
 
 
-struct Vector2
+class Vector2
 {
     float x;
     float y;

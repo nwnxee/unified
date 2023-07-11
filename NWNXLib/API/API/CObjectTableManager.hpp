@@ -7,14 +7,14 @@
 NWN_API_PROLOGUE(CObjectTableManager)
 #endif
 
-struct CObjectLookupTable;
+class CObjectLookupTable;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CObjectTableManager
+class CObjectTableManager
 {
     CObjectLookupTable * m_pObjectTableArray[0xff];
     uint32_t m_dwMaxPlayerID;

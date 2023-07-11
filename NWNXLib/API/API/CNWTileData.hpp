@@ -10,13 +10,13 @@
 NWN_API_PROLOGUE(CNWTileData)
 #endif
 
-struct CNWTileSurfaceMesh;
+class CNWTileSurfaceMesh;
 
 
 typedef int BOOL;
 
 
-struct CNWTileData
+class CNWTileData
 {
     CExoLinkedList<CExoString> * m_pMethodStringList;
     CNWTileSurfaceMesh * m_pSurfaceMesh;

@@ -11,7 +11,7 @@ NWN_API_PROLOGUE(CNWSAreaGridTransTableEntry)
 
 
 
-struct CNWSAreaGridTransTableEntry
+class CNWSAreaGridTransTableEntry
 {
     int32_t nX;
     int32_t nY;

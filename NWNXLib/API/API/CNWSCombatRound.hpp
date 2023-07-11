@@ -11,17 +11,17 @@
 NWN_API_PROLOGUE(CNWSCombatRound)
 #endif
 
-struct CNWSCreature;
-struct CNWSItem;
-struct CResGFF;
-struct CResStruct;
+class CNWSCreature;
+class CNWSItem;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSCombatRound
+class CNWSCombatRound
 {
     CNWSCombatAttackData m_pcLastAttack[50];
     CExoArrayList<uint16_t> m_nSpecialAttacks;

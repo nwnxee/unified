@@ -13,7 +13,7 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CObjectLookupTable
+class CObjectLookupTable
 {
     OBJECT_ID * m_pdwObjectTable;
     uint32_t m_dwStart;

@@ -15,7 +15,7 @@ NWN_API_PROLOGUE(CNWSDialogLinkReply)
 typedef int BOOL;
 
 
-struct CNWSDialogLinkReply
+class CNWSDialogLinkReply
 {
     CResRef m_sActive;
     CExoArrayList<ScriptParam> m_lConditionParams;
