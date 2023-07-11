@@ -1,4 +1,8 @@
+if(MSVC)
+nwnxlib_add("FunctionsWindows.cpp")
+else()
 nwnxlib_add("FunctionsLinux.cpp")
+endif()
 
 set(NWN_API_INCLUDE "ApiExtensions.hpp")
 
