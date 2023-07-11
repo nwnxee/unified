@@ -89,7 +89,7 @@ const char* GetError()
 
 std::string PluginExtension()
 {
-    return "dll";
+    return ".dll";
 }
 
 std::string PathSeparator()

@@ -97,7 +97,7 @@ const char* GetError()
 
 std::string PluginExtension()
 {
-    return "so";
+    return ".so";
 }
 
 std::string PathSeparator()
