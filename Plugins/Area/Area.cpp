@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "nwnx.hpp"
 
 #include "API/CNWSArea.hpp"
@@ -27,7 +30,6 @@
 #include "API/CNWTileSurfaceMesh.hpp"
 #include "API/CGameObjectArray.hpp"
 
-#include <cmath>
 #include <set>
 
 using namespace NWNXLib;
@@ -574,6 +576,8 @@ NWNX_EXPORT ArgumentStack RemoveObjectFromExclusionList(ArgumentStack&& args)
     return {};
 }
 
+// pArea->SaveXXX member functions are protected and cannot be called externally on windows.
+#if !WIN32
 NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
 {
     int32_t retVal = false;
@@ -696,6 +700,7 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
 
     return retVal;
 }
+#endif
 
 NWNX_EXPORT ArgumentStack GetTileInfo(ArgumentStack&& args)
 {
@@ -1382,7 +1387,7 @@ NWNX_EXPORT ArgumentStack SetDefaultObjectUiDiscoveryMask(ArgumentStack&& args)
         }
     };
 
-    static Hooks::Hook pAddObjectToAreaHook = Hooks::HookFunction(&CNWSArea::AddObjectToArea,
+    static Hooks::Hook pAddObjectToAreaHook = Hooks::HookFunction(Functions::_ZN8CNWSArea15AddObjectToAreaEji,
     +[](CNWSArea *pThis, ObjectID id, BOOL bRunScripts) -> BOOL
     {
         auto retVal = pAddObjectToAreaHook->CallOriginal<BOOL>(pThis, id, bRunScripts);

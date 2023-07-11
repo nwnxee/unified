@@ -6,7 +6,7 @@ namespace NWNXLib::API::Functions {
     void Initialize();
 
 #define NWNXLIB_FUNCTION(symgcc, symmsvc) \
-    extern void* symgcc;
+   __declspec(dllimport) extern void* symgcc;
 
 #include "FunctionsList.hpp"
 
