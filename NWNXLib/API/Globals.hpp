@@ -2,24 +2,24 @@
 
 #include <cstdint>
 
-extern CExoString                g_sBuildNumber;
-extern CExoString                g_sBuildRevision;
-extern CExoString                g_sBuildPostfix;
-extern class CExoBase           *g_pExoBase;
-extern class CExoResMan         *g_pExoResMan;
-extern class CVirtualMachine    *g_pVirtualMachine;
-extern class CScriptCompiler    *g_pScriptCompiler;
-extern class CAppManager        *g_pAppManager;
-extern class CTlkTable          *g_pTlkTable;
-extern class CNWRules           *g_pRules;
+__declspec(dllimport) extern CExoString                g_sBuildNumber;
+__declspec(dllimport) extern CExoString                g_sBuildRevision;
+__declspec(dllimport) extern CExoString                g_sBuildPostfix;
+__declspec(dllimport) extern class CExoBase           *g_pExoBase;
+__declspec(dllimport) extern class CExoResMan         *g_pExoResMan;
+__declspec(dllimport) extern class CVirtualMachine    *g_pVirtualMachine;
+__declspec(dllimport) extern class CScriptCompiler    *g_pScriptCompiler;
+__declspec(dllimport) extern class CAppManager        *g_pAppManager;
+__declspec(dllimport) extern class CTlkTable          *g_pTlkTable;
+__declspec(dllimport) extern class CNWRules           *g_pRules;
 namespace Task {
-extern class CExoTaskManager    *g_pExoTaskManager;
+__declspec(dllimport) extern class CExoTaskManager    *g_pExoTaskManager;
 }
-extern int32_t                   g_bEnableCombatDebugging;
-extern int32_t                   g_bEnableSavingThrowDebugging;
-extern int32_t                   g_bEnableMovementSpeedDebugging;
-extern int32_t                   g_bEnableHitDieDebugging;
-extern int32_t                   g_bExitProgram;
+__declspec(dllimport) extern int32_t                   g_bEnableCombatDebugging;
+__declspec(dllimport) extern int32_t                   g_bEnableSavingThrowDebugging;
+__declspec(dllimport) extern int32_t                   g_bEnableMovementSpeedDebugging;
+__declspec(dllimport) extern int32_t                   g_bEnableHitDieDebugging;
+__declspec(dllimport) extern int32_t                   g_bExitProgram;
 
 namespace NWNXLib::API::Globals {
 
@@ -39,10 +39,6 @@ inline int32_t* EnableCombatDebugging()         { return &g_bEnableCombatDebuggi
 inline int32_t* EnableSavingThrowDebugging()    { return &g_bEnableSavingThrowDebugging; }
 inline int32_t* EnableMovementSpeedDebugging()  { return &g_bEnableMovementSpeedDebugging; }
 inline int32_t* EnableHitDieDebugging()         { return &g_bEnableHitDieDebugging; }
-#ifdef WIN32
-inline int32_t* ExitProgram()                   { return NULL; }
-#else
 inline int32_t* ExitProgram()                   { return &g_bExitProgram; }
-#endif
 
 }
