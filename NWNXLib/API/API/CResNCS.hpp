@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CResNCS)
 typedef int BOOL;
 
 
-class CResNCS : CRes
+class CResNCS : public CRes
 {
+public:
     BOOL m_bLoaded;
     uint32_t m_nNCSNormalSize;
     uint8_t * m_pNCSData;

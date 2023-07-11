@@ -30,6 +30,7 @@ typedef uint32_t OBJECT_ID;
 
 class CVirtualMachine
 {
+public:
     CScriptCompiler * m_pJitCompiler;
     int32_t m_nReturnValueParameterType;
     void * m_pReturnValue;

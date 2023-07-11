@@ -15,6 +15,7 @@ NWN_API_PROLOGUE(STR_RES)
 
 class STR_RES
 {
+public:
     CExoString szText;
     CResRef cSoundResRef;
     float fSoundLength;

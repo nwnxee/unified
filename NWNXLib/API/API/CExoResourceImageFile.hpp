@@ -17,8 +17,9 @@ class ENCAPSULATED_RESLISTENTRY;
 typedef int BOOL;
 
 
-class CExoResourceImageFile : CExoPackedFile
+class CExoResourceImageFile : public CExoPackedFile
 {
+public:
     uint8_t * m_pResourceImage;
 
     CExoResourceImageFile();

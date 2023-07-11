@@ -20,8 +20,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSTile : CNWTile
+class CNWSTile : public CNWTile
 {
+public:
     CNWTileData * m_pTileData;
     int32_t m_nTriggers;
     int32_t m_nTriggerSize;

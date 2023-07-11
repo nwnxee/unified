@@ -15,6 +15,7 @@ typedef uint16_t RESTYPE;
 
 class KEYFILE_KEYENTRY
 {
+public:
     RESREF resRef;
     RESTYPE nType;
     uint32_t nID;

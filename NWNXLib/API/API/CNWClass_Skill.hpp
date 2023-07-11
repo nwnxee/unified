@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CNWClass_Skill
 {
+public:
     uint16_t nSkill;
     BOOL bClassSkill;
 

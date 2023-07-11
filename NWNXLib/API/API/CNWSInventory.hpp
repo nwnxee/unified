@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSInventory
 {
+public:
     OBJECT_ID m_pEquipSlot[18];
 
     CNWSInventory();

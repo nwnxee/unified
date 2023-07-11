@@ -35,6 +35,7 @@ typedef uint32_t STRREF;
 
 class CNWSCreatureStats
 {
+public:
     CExoArrayList<uint16_t> m_lstFeats;
     CExoArrayList<CFeatUseListEntry *> m_lstFeatUses;
     CExoArrayList<uint16_t> m_lstBonusFeats;

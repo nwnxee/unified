@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CResGFFField)
 
 class CResGFFField
 {
+public:
     uint32_t m_nType;
     uint32_t m_nLabelIndex;
     uint32_t m_nDataOrDataOffset;

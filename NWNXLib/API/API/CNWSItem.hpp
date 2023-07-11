@@ -25,8 +25,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSItem : CNWItem, CNWSObject
+class CNWSItem : public CNWItem, public CNWSObject
 {
+public:
     uint8_t m_nLastUsedActiveProperties;
     uint8_t m_pLastUsedActivePropertyUsesLeft[8];
     int32_t m_nArmorValue;

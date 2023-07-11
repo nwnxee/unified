@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CVirtualMachineDebuggerInstance
 {
+public:
     CVirtualMachine * m_pVMachine;
     int32_t * m_pnInstructionPointer;
     char * m_pDebugInputMessageBuffer;

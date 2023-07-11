@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(Vector4)
 
 class Vector4
 {
+public:
     float x;
     float y;
     float z;

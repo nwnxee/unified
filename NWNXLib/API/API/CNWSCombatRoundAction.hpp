@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSCombatRoundAction
 {
+public:
     int32_t m_nActionTimer;
     uint16_t m_nAnimation;
     int32_t m_nAnimationTime;

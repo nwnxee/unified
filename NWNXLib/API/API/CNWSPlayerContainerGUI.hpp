@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerContainerGUI
 {
+public:
     OBJECT_ID m_oidOpen;
     BOOL m_bOpenedTheInventory;
     uint8_t m_nSelectedPanel;

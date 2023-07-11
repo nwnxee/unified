@@ -19,6 +19,7 @@ inline Vector operator/(const Vector& v, float s);
 
 class Vector
 {
+public:
     float x;
     float y;
     float z;

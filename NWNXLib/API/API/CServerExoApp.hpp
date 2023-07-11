@@ -45,8 +45,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CServerExoApp : CBaseExoApp
+class CServerExoApp : public CBaseExoApp
 {
+public:
     CServerExoAppInternal * m_pcExoAppInternal;
 
     CServerExoApp(void );

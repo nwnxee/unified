@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CExoTimersInternal
 {
+public:
     BOOL m_bQPCActive;
     BOOL m_bQPCAlgorithm2;
     uint64_t m_nQPFrequency;

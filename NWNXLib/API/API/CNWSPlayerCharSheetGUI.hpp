@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerCharSheetGUI
 {
+public:
     OBJECT_ID m_oidCreatureDisplayed;
     char m_nActivePanel;
     CNWCreatureStatsUpdate * m_pLastStatsUpdate;

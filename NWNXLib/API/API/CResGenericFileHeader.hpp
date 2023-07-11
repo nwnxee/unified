@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CResGenericFileHeader)
 
 class CResGenericFileHeader
 {
+public:
     uint32_t m_nFileType;
     uint32_t m_nVersion;
 

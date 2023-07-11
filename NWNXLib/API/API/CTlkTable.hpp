@@ -21,6 +21,7 @@ typedef uint32_t STRREF;
 
 class CTlkTable
 {
+public:
     CTlkFile * m_pTlkFile[2];
     CTlkFile * m_pTlkFileAlternate[2];
     uint8_t m_currentGender;

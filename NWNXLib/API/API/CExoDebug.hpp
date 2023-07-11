@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CExoDebug
 {
+public:
     CExoString m_sLogString;
     CExoDebugInternal * m_pcExoDebugInternal;
 

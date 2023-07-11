@@ -22,8 +22,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSPlayerTURD : CNWSObject
+class CNWSPlayerTURD : public CNWSObject
 {
+public:
     CExoString m_sCommunityName;
     CExoLocString m_lsFirstName;
     CExoLocString m_lsLastName;

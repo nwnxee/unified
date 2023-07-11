@@ -14,8 +14,9 @@ class EXOLTRHEADER;
 typedef int BOOL;
 
 
-class CResLTR : CRes
+class CResLTR : public CRes
 {
+public:
     float * * * m_pStartTripleLetterProb;
     float * * * m_pMiddleTripleLetterProb;
     float * * * m_pEndTripleLetterProb;

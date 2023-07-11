@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CEncounterListEntry
 {
+public:
     CResRef m_cCreatureResRef;
     float m_fCR;
     float m_fCreaturePoints;

@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CExoLocStringInternal
 {
+public:
     CExoLinkedList<EXOLOCSTRING> m_lstString;
     uint32_t m_nStringCount;
 

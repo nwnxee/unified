@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class NWPLAYERLISTITEM
 {
+public:
     CExoString sCommunityName;
     CExoLocString sLocFirstName;
     CExoLocString sLocLastName;

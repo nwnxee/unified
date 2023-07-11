@@ -16,8 +16,9 @@ NWN_API_PROLOGUE(C2DA)
 typedef int BOOL;
 
 
-class C2DA : CResHelper<CRes2DA, 2017>
+class C2DA : public CResHelper<CRes2DA, 2017>
 {
+public:
     CExoString m_sDefaultValue;
     CExoString * m_pRowLabel;
     CExoString * m_pColumnLabel;

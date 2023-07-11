@@ -47,8 +47,9 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-class CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
+class CNWSModule : public CResHelper<CResIFO, 2014>, public CGameObject
 {
+public:
     CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
     CExoLinkedList<NWMODULECUTSCENE> m_lstModuleCutScene;
     CExoLinkedList<CResRef> m_lstModuleArea;

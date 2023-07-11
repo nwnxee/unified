@@ -14,6 +14,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSTagNode
 {
+public:
     char m_szTag[64+1];
     OBJECT_ID m_oidObjectId;
 

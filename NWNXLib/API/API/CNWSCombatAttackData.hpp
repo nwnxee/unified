@@ -23,6 +23,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSCombatAttackData
 {
+public:
     uint8_t m_nAttackGroup;
     uint16_t m_nAnimationLength;
     OBJECT_ID m_oidReactObject;

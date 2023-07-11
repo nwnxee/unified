@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CResNDB)
 typedef int BOOL;
 
 
-class CResNDB : CRes
+class CResNDB : public CRes
 {
+public:
     BOOL m_bLoaded;
     uint32_t m_nNDBNormalSize;
     uint8_t * m_pNDBData;

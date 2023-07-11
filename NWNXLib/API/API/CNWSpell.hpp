@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CNWSpell
 {
+public:
     CExoString m_sLabel;
     int32_t m_strrefName;
     uint32_t m_strrefDesc;

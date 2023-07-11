@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CResStruct
 {
+public:
     CResStructHeader m_cHeader;
     CResStructLookUp * m_pLookUp;
     void * m_pData;

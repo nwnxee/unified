@@ -21,8 +21,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSSoundObject : CNWSObject
+class CNWSSoundObject : public CNWSObject
 {
+public:
     BOOL m_bIsActive;
     BOOL m_bPositional;
     BOOL m_bLooping;

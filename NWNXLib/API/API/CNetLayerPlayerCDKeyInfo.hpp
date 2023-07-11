@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CNetLayerPlayerCDKeyInfo
 {
+public:
     CExoString sPublic;
     CExoString sResponse;
     BOOL bValidated;

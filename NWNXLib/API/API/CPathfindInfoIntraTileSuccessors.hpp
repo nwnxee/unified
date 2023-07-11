@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CPathfindInfoIntraTileSuccessors)
 
 class CPathfindInfoIntraTileSuccessors
 {
+public:
     float fXTransit;
     float fYTransit;
     float fNewX;

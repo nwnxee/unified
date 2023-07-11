@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CNWSStats_Spell
 {
+public:
     uint32_t m_nSpellId;
     BOOL m_bReadied;
     uint8_t m_nMetaType;

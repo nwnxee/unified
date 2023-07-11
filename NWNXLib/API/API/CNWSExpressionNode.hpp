@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CNWSExpressionNode)
 
 class CNWSExpressionNode
 {
+public:
     int32_t nTimesVisited;
     int32_t m_nType;
     int32_t m_nPosition;

@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CItemRepository
 {
+public:
     uint8_t m_nWidth;
     uint8_t m_nHeight;
     uint32_t m_nBoundary;

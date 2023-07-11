@@ -58,6 +58,7 @@ typedef uint32_t STRREF;
 
 class CServerExoAppInternal
 {
+public:
     uint8_t ScratchMessageBuffer[65536];
     BOOL m_bMultiplayerEnabled;
     BOOL m_bGameSpyEnabled;

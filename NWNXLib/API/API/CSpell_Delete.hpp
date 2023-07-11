@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CSpell_Delete)
 
 class CSpell_Delete
 {
+public:
     uint8_t m_nSpellLevel;
     uint8_t m_nSpellSlot;
 

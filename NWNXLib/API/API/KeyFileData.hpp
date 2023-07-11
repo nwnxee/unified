@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(KeyFileData)
 
 class KeyFileData
 {
+public:
     int month;
     int day;
     int year;

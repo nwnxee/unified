@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(KEYFILE_RESFILENAME)
 
 class KEYFILE_RESFILENAME
 {
+public:
     uint32_t nFileSize;
     uint32_t nFileNameOffset;
     uint16_t nFileNameSize;

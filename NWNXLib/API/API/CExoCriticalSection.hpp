@@ -14,6 +14,7 @@ class CExoCriticalSectionInternal;
 
 class CExoCriticalSection
 {
+public:
     CExoCriticalSectionInternal * m_pcExoCriticalSectionInternal;
 
     CExoCriticalSection();

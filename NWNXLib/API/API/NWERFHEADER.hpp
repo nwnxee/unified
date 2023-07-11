@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(NWERFHEADER)
 
 class NWERFHEADER
 {
+public:
     char sVersion[8];
     uint32_t nStringCount;
     uint32_t nTotalStringSize;

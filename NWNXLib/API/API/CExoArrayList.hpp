@@ -15,6 +15,7 @@ typedef int BOOL;
 // NOTE: Manually implemented for now..
 template <class T> class CExoArrayList
 {
+public:
     T * element;
     int32_t num;
     int32_t array_size;

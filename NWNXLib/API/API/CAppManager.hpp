@@ -21,6 +21,7 @@ typedef int BOOL;
 
 class CAppManager
 {
+public:
     CClientExoApp * m_pClientExoApp;
     CServerExoApp * m_pServerExoApp;
     CNWTileSetManager * m_pNWTileSetManager;

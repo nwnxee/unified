@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CAutoSave
 {
+public:
     BOOL bAtIntervals;
     BOOL bAtSavePoints;
     BOOL bOnPlayerChange;

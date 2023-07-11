@@ -23,8 +23,9 @@ class CPathfindInformation;
 typedef int BOOL;
 
 
-class CNWTileSurfaceMesh : CResHelper<CResWOK, 2016>
+class CNWTileSurfaceMesh : public CResHelper<CResWOK, 2016>
 {
+public:
     CResRef m_cWalkMesh;
     uint8_t m_nPathNode;
     int32_t m_nPathNodeOrientation;

@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CExoTimers
 {
+public:
     CExoTimersInternal * m_pcExoTimersInternal;
 
     CExoTimers();

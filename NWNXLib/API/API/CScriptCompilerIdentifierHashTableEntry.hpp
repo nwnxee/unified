@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CScriptCompilerIdentifierHashTableEntry)
 
 class CScriptCompilerIdentifierHashTableEntry
 {
+public:
     uint32_t m_nHashValue;
     uint32_t m_nIdentifierType;
     uint32_t m_nIdentifierIndex;

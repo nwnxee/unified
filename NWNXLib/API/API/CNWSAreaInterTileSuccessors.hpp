@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CNWSAreaInterTileSuccessors)
 
 class CNWSAreaInterTileSuccessors
 {
+public:
     int32_t nTileGridX;
     int32_t nTileGridY;
     int32_t nTileRegion;

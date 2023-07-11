@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CResetOption
 {
+public:
     BOOL bOnVacant;
     BOOL bOnVictory;
     BOOL bOnFailure;

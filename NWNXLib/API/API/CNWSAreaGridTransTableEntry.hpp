@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CNWSAreaGridTransTableEntry)
 
 class CNWSAreaGridTransTableEntry
 {
+public:
     int32_t nX;
     int32_t nY;
     int32_t nShortestPath;

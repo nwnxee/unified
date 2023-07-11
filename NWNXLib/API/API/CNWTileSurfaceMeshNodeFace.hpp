@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshNodeFace)
 
 class CNWTileSurfaceMeshNodeFace
 {
+public:
     int32_t * pnUselessPointer1;
     int32_t * pnUselessPointer2;
     int32_t * pnUselessPointer3;

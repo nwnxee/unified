@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class SJournalEntry
 {
+public:
     CExoLocString szName;
     CExoLocString szText;
     uint32_t nCalendarDay;

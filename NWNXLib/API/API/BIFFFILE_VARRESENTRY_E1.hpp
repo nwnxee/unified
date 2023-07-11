@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(BIFFFILE_VARRESENTRY_E1)
 
 class BIFFFILE_VARRESENTRY_E1
 {
+public:
     uint32_t nID;
     uint32_t nOffset;
     uint32_t nSize;

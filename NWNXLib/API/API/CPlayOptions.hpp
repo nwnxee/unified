@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CPlayOptions
 {
+public:
     BOOL bAllKillable;
     BOOL bNonPartyKillable;
     BOOL bRequireResurrection;

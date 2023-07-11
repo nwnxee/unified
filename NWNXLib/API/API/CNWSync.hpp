@@ -12,6 +12,7 @@ NWN_API_PROLOGUE(CNWSync)
 namespace NWSync {
 
 class CNWSync {
+public:
     void *m_internal;
     char *m_tmp1;
     uint32_t m_tmp2;

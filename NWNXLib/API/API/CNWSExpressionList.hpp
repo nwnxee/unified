@@ -14,6 +14,7 @@ class CNWSExpressionNode;
 
 class CNWSExpressionList
 {
+public:
     CNWSExpressionNode *m_pHead, *m_pAfter, *m_pTail;
 
     CNWSExpressionList();

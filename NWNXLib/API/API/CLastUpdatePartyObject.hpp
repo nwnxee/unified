@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CLastUpdatePartyObject
 {
+public:
     CResRef m_cPortrait;
     uint16_t m_nPortraitId;
     BOOL m_bActive;

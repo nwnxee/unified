@@ -15,9 +15,9 @@ class CResRef;
 
 
 
-class CTlkResFile : CResHelper<CResTLK, 2018>, CTlkFile
+class CTlkResFile : public CResHelper<CResTLK, 2018>, public CTlkFile
 {
-
+public:
     CTlkResFile(const CResRef & pResRef);
     virtual ~CTlkResFile();
 

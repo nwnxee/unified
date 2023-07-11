@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CExoRandInternal
 {
+public:
     uint32_t m_s1;
     uint32_t m_s2;
     uint32_t m_s3;

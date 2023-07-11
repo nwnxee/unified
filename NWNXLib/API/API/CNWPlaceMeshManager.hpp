@@ -14,6 +14,7 @@ class CNWPlaceableSurfaceMesh;
 
 class CNWPlaceMeshManager
 {
+public:
     int32_t m_nArraySize;
     CNWPlaceableSurfaceMesh * * m_pSurfaceMeshLoaded;
 

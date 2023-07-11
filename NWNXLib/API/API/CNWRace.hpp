@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CNWRace
 {
+public:
     int32_t m_nNameStrref;
     int32_t m_nConverNameStrref;
     int32_t m_nConverNameLowerStrref;

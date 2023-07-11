@@ -14,9 +14,9 @@ class CExoString;
 
 
 
-class CScriptSourceFile : CResHelper<CResNSS, 2009>
+class CScriptSourceFile : public CResHelper<CResNSS, 2009>
 {
-
+public:
     CScriptSourceFile();
     int32_t LoadScript(const CExoString & sFileName, char * * pScript, uint32_t * nScriptLength);
     void UnloadScript();

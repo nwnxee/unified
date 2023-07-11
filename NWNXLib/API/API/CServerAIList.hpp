@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CServerAIList
 {
+public:
     CExoArrayList<OBJECT_ID> m_aoGameObjects;
     int32_t m_nPosition;
 

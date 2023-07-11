@@ -14,6 +14,7 @@ typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 class CExoLinkedListNode
 {
+public:
     CExoLinkedListPosition pPrev;
     CExoLinkedListPosition pNext;
     void * pObject;

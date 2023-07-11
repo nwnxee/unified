@@ -14,6 +14,7 @@ class CGameObject;
 
 class CGameObjectArrayNode
 {
+public:
     uint32_t m_objectId;
     CGameObject * m_objectPtr;
     CGameObjectArrayNode * m_nextNode;

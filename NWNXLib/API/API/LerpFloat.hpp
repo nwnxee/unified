@@ -14,6 +14,7 @@ class CResStruct;
 
 template<typename T> class totally_ordered
 {
+public:
     friend bool operator<=(const T& a, const T& b) { return a < b || a == b; }
     friend bool operator>(const T& a, const T& b) { return !(a <= b); }
     friend bool operator!=(const T& a, const T& b) { return !(a == b); }
@@ -28,6 +29,7 @@ enum class LerpTimerType {
 
 class LerpFloat
 {
+public:
     LerpTimerType m_timer_type;
     mutable float m_value_to;
     mutable float m_value_from;
@@ -41,6 +43,7 @@ class LerpFloat
     {
         class World : public totally_ordered<World>
         {
+        public:
             uint32_t m_day;
             uint32_t m_time;
 

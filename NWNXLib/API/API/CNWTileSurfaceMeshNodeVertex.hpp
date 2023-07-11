@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshNodeVertex)
 
 class CNWTileSurfaceMeshNodeVertex
 {
+public:
     float fVirtualWasteOfSpace;
     Vector vCoord;
     Vector vTexCoord;

@@ -14,8 +14,11 @@ NWN_API_PROLOGUE(CNWCSync)
 
 class CNWCSyncInternal;
 
-class CNWCSync : InstanceLookup::List<CNWCSync> {
+class CNWCSync : public InstanceLookup::List<CNWCSync>
+{
+public:
     class Progress {
+    public:
         int m_currentState;
         CExoString m_currentStateMessage;
         int m_currentStatePercentage;

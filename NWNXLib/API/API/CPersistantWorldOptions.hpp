@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CPersistantWorldOptions
 {
+public:
     BOOL bVaultCharsOnly;
     BOOL bSaveCharsInSaveGame;
     BOOL bSuppressBaseServerVault;

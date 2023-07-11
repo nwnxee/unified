@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CExoString
 {
+public:
     char * m_sString;
     uint32_t m_nBufferLength;
 

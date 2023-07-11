@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CServerNetOptions
 {
+public:
     int32_t m_nGameRegion;
     CExoString m_szGameDetails;
     int16_t m_GameType;

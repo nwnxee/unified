@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(Vector2)
 
 class Vector2
 {
+public:
     float x;
     float y;
 

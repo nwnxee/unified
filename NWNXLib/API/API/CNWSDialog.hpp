@@ -29,6 +29,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSDialog
 {
+public:
     uint32_t m_nEntries;
     CNWSDialogEntry * m_pEntries;
     uint32_t m_nReplies;

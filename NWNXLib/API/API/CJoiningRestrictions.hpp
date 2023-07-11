@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CJoiningRestrictions
 {
+public:
     BOOL bAllowLocal;
     BOOL bAllowServer;
     BOOL bAllowVault;

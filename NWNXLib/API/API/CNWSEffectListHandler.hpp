@@ -18,8 +18,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSEffectListHandler : CGameEffectApplierRemover
+class CNWSEffectListHandler : public CGameEffectApplierRemover
 {
+public:
     pfAECommands * m_pApplyEffectCommands;
     pfRECommands * m_pRemoveEffectCommands;
 

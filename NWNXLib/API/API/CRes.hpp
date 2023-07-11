@@ -17,6 +17,7 @@ typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 class CRes
 {
+public:
     uint16_t m_nDemands;
     RESID m_nID;
     uint32_t m_status;

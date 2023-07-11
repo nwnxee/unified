@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerInventoryGUI
 {
+public:
     CNWSPlayerLUOInventory * m_pcLastUpdateInventory;
     BOOL m_bGuiInventoryOpen;
     uint8_t m_nSelectedInventoryPanel;

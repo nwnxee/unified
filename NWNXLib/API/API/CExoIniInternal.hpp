@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CExoIniInternal
 {
+public:
     CExoString * m_pFileNames;
 
     CExoIniInternal(CExoString sUserDirectory);

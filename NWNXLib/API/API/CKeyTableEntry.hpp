@@ -17,6 +17,7 @@ typedef uint16_t RESTYPE;
 
 class CKeyTableEntry
 {
+public:
     CResRef m_cResRef;
     CRes * m_pRes;
     RESID m_nID;

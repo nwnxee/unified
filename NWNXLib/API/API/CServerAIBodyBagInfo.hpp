@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CServerAIBodyBagInfo
 {
+public:
     OBJECT_ID m_oidBodyBag;
     Vector m_vPosition;
 

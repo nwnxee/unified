@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CNetLayerSessionInfo
 {
+public:
     uint32_t m_nConnectionId;
     CExoString m_sSessionName;
     uint32_t m_nProtocol;

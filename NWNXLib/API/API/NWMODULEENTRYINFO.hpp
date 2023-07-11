@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(NWMODULEENTRYINFO)
 
 class NWMODULEENTRYINFO
 {
+public:
     CResRef refArea;
     float nX;
     float nY;

@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CNWSAreaGridSuccessors)
 
 class CNWSAreaGridSuccessors
 {
+public:
     int32_t nStepSize;
     int32_t nX;
     int32_t nY;

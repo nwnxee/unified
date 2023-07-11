@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(KXPacket)
 
 class KXPacket
 {
+public:
 
 
 

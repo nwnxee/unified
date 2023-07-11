@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CScriptCompilerStructureFieldEntry)
 
 class CScriptCompilerStructureFieldEntry
 {
+public:
     uint8_t m_pchType;
     CExoString m_psStructureName;
     CExoString m_psVarName;

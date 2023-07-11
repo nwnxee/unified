@@ -16,6 +16,7 @@ NWN_API_PROLOGUE(CNWSDialogLinkEntry)
 
 class CNWSDialogLinkEntry
 {
+public:
     CResRef m_sActive;
     CExoArrayList<ScriptParam> m_lConditionParams;
     uint32_t m_nIndex;

@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CNetLayerPlayerInfo
 {
+public:
     BOOL m_bPlayerInUse;
     CExoString m_sPlayerName;
     int32_t m_nPlayerLanguage;

@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(ScriptParam)
 
 class ScriptParam
 {
+public:
     CExoString key;
     CExoString value;
 

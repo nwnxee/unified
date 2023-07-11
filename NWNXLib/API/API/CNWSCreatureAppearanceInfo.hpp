@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSCreatureAppearanceInfo
 {
+public:
     OBJECT_ID m_oidLeftHandItem;
     OBJECT_ID m_oidRightHandItem;
     uint8_t m_nRightHandItemVFX;

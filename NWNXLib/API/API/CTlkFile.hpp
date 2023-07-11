@@ -17,8 +17,9 @@ NWN_API_PROLOGUE(CTlkFile)
 typedef int BOOL;
 
 
-class CTlkFile : CExoFile
+class CTlkFile : public CExoFile
 {
+public:
     TLK_FILE_HEADER m_header;
     std::unordered_map<STRREF, STR_RES> m_cache;
 

@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSForcedAction
 {
+public:
     uint32_t m_nActionId;
     uint16_t m_nGroupId;
     OBJECT_ID m_oidArea;

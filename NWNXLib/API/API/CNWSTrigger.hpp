@@ -23,8 +23,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSTrigger : CNWSObject
+class CNWSTrigger : public CNWSObject
 {
+public:
     CExoLocString m_sLocalizedName;
     CExoString m_sDescriptionOverride;
     CExoString m_sScripts[7];

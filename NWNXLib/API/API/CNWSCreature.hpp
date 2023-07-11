@@ -49,8 +49,9 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-class CNWSCreature : CNWSObject
+class CNWSCreature : public CNWSObject
 {
+public:
     BOOL m_bPonyRide;
     uint16_t m_nEquipArrayIndex;
     OBJECT_ID m_poidCntrSpellObjects[10];

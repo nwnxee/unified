@@ -17,6 +17,7 @@ class KEYFILE_RESFILENAME;
 
 class CKeyTableInfo
 {
+public:
     CExoString m_sName;
     CExoFile * m_pFile;
     KEYFILE_HEADER m_header;

@@ -23,8 +23,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSDoor : CNWSObject
+class CNWSDoor : public CNWSObject
 {
+public:
     CExoString m_sScripts[15];
     uint32_t m_nAppearanceType;
     uint32_t m_nGenericType;

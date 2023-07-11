@@ -14,8 +14,9 @@ class EXO2DAHEADER;
 typedef int BOOL;
 
 
-class CRes2DA : CRes
+class CRes2DA : public CRes
 {
+public:
     BOOL m_bLoaded;
     uint32_t m_n2DANormalSize;
     uint8_t * m_p2DAData;

@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(EXOLOCSTRING)
 
 class EXOLOCSTRING
 {
+public:
     int32_t nID;
     CExoString sString;
 

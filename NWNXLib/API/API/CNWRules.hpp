@@ -27,6 +27,7 @@ typedef int BOOL;
 
 class CNWRules
 {
+public:
     float m_fRangeTypes[5];
     CNWBaseItemArray * m_pBaseItemArray;
     uint32_t m_nExperienceTable[40+1];

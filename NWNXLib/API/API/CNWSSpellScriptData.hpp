@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSSpellScriptData
 {
+public:
     int32_t m_nSpellId;
     uint16_t m_nFeatId;
     OBJECT_ID m_oidCaster;

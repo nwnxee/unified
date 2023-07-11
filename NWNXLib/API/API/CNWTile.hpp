@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CNWTile)
 
 
 
-class CNWTile : CCallbackHandlerBase
+class CNWTile : public CCallbackHandlerBase
 {
+public:
     Vector m_vModelPosition;
     int32_t m_nID;
     int32_t m_nHeight;

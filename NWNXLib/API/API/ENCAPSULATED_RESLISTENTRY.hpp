@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(ENCAPSULATED_RESLISTENTRY)
 
 class ENCAPSULATED_RESLISTENTRY
 {
+public:
     uint32_t nOffsetToResource;
     uint32_t nResourceSize;
 

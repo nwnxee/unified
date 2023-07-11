@@ -14,6 +14,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerLUOQuickbarItemButton
 {
+public:
     OBJECT_ID m_oidItem;
     uint8_t m_nObjectType;
     int32_t m_nINTParam1;

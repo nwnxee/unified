@@ -18,6 +18,7 @@ typedef uint16_t RESTYPE;
 
 class CExoBaseInternal
 {
+public:
     int32_t m_nResTypes;
     RESTYPE * m_pnResTypes;
     CExoString * m_psResTypeNames;

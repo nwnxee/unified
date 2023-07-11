@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CERFString
 {
+public:
     uint32_t m_nLanguageID;
     uint32_t m_nSize;
     char * m_pText;

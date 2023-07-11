@@ -13,7 +13,7 @@ NWN_API_PROLOGUE(CCallbackHandlerBase)
 
 class CCallbackHandlerBase
 {
-
+public:
 
 
 #ifdef NWN_CLASS_EXTENSION_CCallbackHandlerBase

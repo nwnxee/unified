@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CNWSCreatureStats_ClassInfo
 {
+public:
     CExoArrayList<uint32_t> m_pKnownSpellList[10];
     CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[10];
     uint32_t m_nBonusSpellsList[10];

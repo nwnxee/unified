@@ -17,8 +17,9 @@ class ENCAPSULATED_RESLISTENTRY_E1;
 typedef int BOOL;
 
 
-class CExoEncapsulatedFile : CExoPackedFile
+class CExoEncapsulatedFile : public CExoPackedFile
 {
+public:
     CExoLocString m_lsDescription;
     ENCAPSULATED_HEADER * m_pEncapsulatedHeader;
     ENCAPSULATED_RESLISTENTRY_E1 * m_pResListEntry;

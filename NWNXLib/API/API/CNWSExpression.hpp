@@ -19,6 +19,7 @@ typedef int BOOL;
 
 class CNWSExpression
 {
+public:
     int32_t m_nExpressionId;
     CExoArrayList<CExoString *> m_aStored;
     BOOL m_bCaseSensitive;

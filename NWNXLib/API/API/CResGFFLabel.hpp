@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CResGFFLabel)
 
 class CResGFFLabel
 {
+public:
     char m_pLabel[16];
 
 

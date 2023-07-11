@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CNWClass
 {
+public:
     uint32_t m_nName;
     uint32_t m_nShort;
     uint32_t m_nNameLower;

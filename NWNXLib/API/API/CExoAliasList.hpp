@@ -16,6 +16,7 @@ typedef uint16_t RESTYPE;
 
 class CExoAliasList
 {
+public:
     CExoAliasListInternal * m_pcExoAliasListInternal;
 
     CExoAliasList();

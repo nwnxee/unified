@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CVirtualMachineDebuggingContext
 {
+public:
     BOOL m_bStepInto;
     BOOL m_bStepOver;
     BOOL m_bRunToLineNumber;

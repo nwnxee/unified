@@ -17,6 +17,7 @@ typedef uint32_t STRREF;
 
 class CNWBaseItem
 {
+public:
     uint32_t m_nName;
     uint32_t m_nEquipableSlots;
     uint8_t m_nWeaponWield;

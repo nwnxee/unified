@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CNWSPlayerJournalQuest
 {
+public:
     BOOL m_bOpen;
     CExoArrayList<CNWSPlayerJournalQuestUpdates> m_lstModifications;
     BOOL m_bFullUpdateNeeded;

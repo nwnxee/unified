@@ -14,6 +14,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWVisibilityNode
 {
+public:
     OBJECT_ID m_oidCreature;
     uint8_t m_bSeen : 1;
     uint8_t m_bHeard : 1;

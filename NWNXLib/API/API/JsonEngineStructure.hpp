@@ -8,12 +8,13 @@ NWN_API_PROLOGUE(JsonEngineStructure)
 
 class JsonEngineStructureShared
 {
+public:
     const uint64_t m_id;
     json m_json;
     CExoString m_error;
 };
 
-class JsonEngineStructure : public SharedPtrEngineStructure<JsonEngineStructureShared>
+struct JsonEngineStructure : SharedPtrEngineStructure<JsonEngineStructureShared>
 {
     JsonEngineStructure();
     JsonEngineStructure(const json& j, const CExoString& err);

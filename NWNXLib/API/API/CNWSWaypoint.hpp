@@ -20,8 +20,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSWaypoint : CNWSObject
+class CNWSWaypoint : public CNWSObject
 {
+public:
     BOOL m_bMapNote;
     BOOL m_bMapNoteEnabled;
     CExoLocString m_szMapNote;

@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CScriptEvent
 {
+public:
     uint16_t m_nType;
     CExoArrayList<int32_t> m_nParamInteger;
     CExoArrayList<float> m_fParamFloat;

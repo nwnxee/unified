@@ -24,6 +24,7 @@ typedef uint16_t RESTYPE;
 
 class CExoKeyTable
 {
+public:
     BOOL m_bLoaded;
     BOOL m_bExcludeFromSearches;
     uint32_t m_nTableEntries;

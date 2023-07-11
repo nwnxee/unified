@@ -23,6 +23,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSCombatRound
 {
+public:
     CNWSCombatAttackData m_pcLastAttack[50];
     CExoArrayList<uint16_t> m_nSpecialAttacks;
     CExoArrayList<uint16_t> m_nSpecialAttackIDs;

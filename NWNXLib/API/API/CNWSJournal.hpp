@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CNWSJournal
 {
+public:
     CExoArrayList<SJournalEntry> m_lstEntries;
     CNWSCreature * m_pCreature;
 

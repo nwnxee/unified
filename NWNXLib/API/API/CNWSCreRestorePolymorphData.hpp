@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CNWSCreRestorePolymorphData
 {
+public:
     int32_t nCurrentHitPoints;
     int32_t nTemporaryHitPoints;
     CGameEffect * effect;

@@ -15,6 +15,7 @@ class CVirtualMachineStack;
 
 class CVirtualMachineScript
 {
+public:
     CVirtualMachineStack * m_pStack;
     int32_t m_nStackSize;
     int32_t m_nInstructPtr;

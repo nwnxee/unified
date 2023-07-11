@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWActionNode
 {
+public:
     uint16_t nGroupId;
     uint16_t nActionId;
     uint16_t nSpecialAttackId;

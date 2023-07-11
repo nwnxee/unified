@@ -5,6 +5,7 @@ NWN_API_PROLOGUE(HttpConnection)
 #endif
 
 class HttpConnection {
+public:
     static void UpdateAll();
 };
 

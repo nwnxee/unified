@@ -27,8 +27,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSStore : CNWSObject
+class CNWSStore : public CNWSObject
 {
+public:
     CExoString m_sScripts[2];
     CItemRepository * m_aInventory[5];
     CExoArrayList<CStoreCustomer *> m_aCurrentCustomers;

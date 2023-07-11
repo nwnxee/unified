@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CObjectTableManager
 {
+public:
     CObjectLookupTable * m_pObjectTableArray[0xff];
     uint32_t m_dwMaxPlayerID;
 

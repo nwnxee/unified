@@ -14,6 +14,7 @@ typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 class CExoLinkedListInternal
 {
+public:
     CExoLinkedListPosition pHead;
     CExoLinkedListPosition pTail;
     uint32_t m_nCount;

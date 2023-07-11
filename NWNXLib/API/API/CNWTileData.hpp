@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CNWTileData
 {
+public:
     CExoLinkedList<CExoString> * m_pMethodStringList;
     CNWTileSurfaceMesh * m_pSurfaceMesh;
     CResRef m_refModel;

@@ -14,6 +14,7 @@ class CExoInputEventDesc;
 
 class CExoInputEvent
 {
+public:
     uint32_t m_nValue;
     uint32_t m_nTimeStamp;
     uint32_t m_nSequenceNumber;

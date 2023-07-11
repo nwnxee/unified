@@ -15,6 +15,7 @@ typedef uint16_t RESTYPE;
 
 class ENCAPSULATED_KEYLISTENTRY
 {
+public:
     RESREF resRef;
     uint32_t nID;
     RESTYPE nType;

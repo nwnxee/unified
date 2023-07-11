@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(EXO2DAHEADER)
 
 class EXO2DAHEADER
 {
+public:
     uint32_t nType;
     uint32_t nVersion;
 

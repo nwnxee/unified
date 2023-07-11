@@ -15,8 +15,9 @@ class CExoString;
 typedef int BOOL;
 
 
-class CVirtualMachineFile : CResHelper<CResNCS, 2010>
+class CVirtualMachineFile : public CResHelper<CResNCS, 2010>
 {
+public:
 
     CVirtualMachineFile();
     ~CVirtualMachineFile();

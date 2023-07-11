@@ -14,6 +14,7 @@ typedef uint32_t OBJECT_ID;
 
 class StackElement
 {
+public:
     OBJECT_ID m_nStackObjectID;
     int32_t m_nStackInt;
     float m_fStackFloat;

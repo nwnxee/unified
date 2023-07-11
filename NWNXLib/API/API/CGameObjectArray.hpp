@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CGameObjectArray
 {
+public:
     CGameObjectArrayNode * * m_pArray;
     uint32_t m_nNextObjectArrayID[2];
     uint32_t m_nNextCharArrayID[2];

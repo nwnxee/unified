@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CScriptCompilerIdListEntry
 {
+public:
     CExoString m_psIdentifier;
     uint32_t m_nIdentifierLength;
     uint32_t m_nIdentifierHash;

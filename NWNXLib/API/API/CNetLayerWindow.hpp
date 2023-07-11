@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CNetLayerWindow
 {
+public:
     BOOL m_bInitialized;
     CNetLayerInternal * m_pNetLayer;
     BOOL m_bWindowInUse;

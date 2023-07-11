@@ -30,6 +30,7 @@ typedef uint32_t OBJECT_ID;
 
 class CServerAIMaster
 {
+public:
     CServerExoAppInternal * m_pExoAppInternal;
     CServerAIList m_apGameAIList[5];
     CExoLinkedList<CServerAIEventNode> m_lEventQueue;

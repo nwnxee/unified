@@ -28,6 +28,7 @@ typedef uint32_t OBJECT_ID;
 
 class CLastUpdateObject
 {
+public:
     CNWSPlayerLUOAppearanceInfo m_cAppearance;
     BOOL m_bActive;
     uint8_t m_nObjectType;

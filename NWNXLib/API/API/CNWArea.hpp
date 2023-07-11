@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWArea
 {
+public:
     uint32_t m_nFlags;
     int32_t m_nWidth;
     int32_t m_nHeight;

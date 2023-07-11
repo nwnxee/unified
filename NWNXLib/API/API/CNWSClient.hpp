@@ -14,6 +14,7 @@ class CNWSPlayer;
 
 class CNWSClient
 {
+public:
     uint32_t m_nPlayerID;
     int32_t m_nLanguage;
 

@@ -18,8 +18,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSAmbientSound : CNWAmbientSound
+class CNWSAmbientSound : public CNWAmbientSound
 {
+public:
     OBJECT_ID m_nArea;
 
     CNWSAmbientSound(OBJECT_ID nArea);

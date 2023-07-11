@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CGameEffect
 {
+public:
     uint64_t m_nID;
     uint16_t m_nType;
     uint16_t m_nSubType;

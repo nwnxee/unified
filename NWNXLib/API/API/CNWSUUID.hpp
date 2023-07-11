@@ -17,6 +17,7 @@ class CResStruct;
 
 class CNWSUUID
 {
+public:
     CGameObject * m_parent;
     CExoString m_uuid;
 

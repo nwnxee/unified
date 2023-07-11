@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerLUOInventory
 {
+public:
     OBJECT_ID m_oidInventorySlots[18];
     int32_t m_nStackSizes[18];
     CExoLinkedList<CNWSPlayerLUOInventoryItem> m_pOldRepositoryItems;

@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CEffectIconObject
 {
+public:
     uint8_t m_nIcon;
     BOOL m_bFlashing;
     BOOL m_nPlayerBar;

@@ -33,12 +33,15 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-class CNWSPlayer : CNWSClient
+class CNWSPlayer : public CNWSClient
 {
+public:
     class NuiState
     {
+    public:
         class WindowState
         {
+        public:
             Nui::JSON::WindowToken m_token;
             Nui::JSON::WindowIdentifier m_id;
             std::vector<Nui::JSON::BindName> m_bind_list;

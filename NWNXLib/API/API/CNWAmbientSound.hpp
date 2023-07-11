@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CNWAmbientSound
 {
+public:
     BOOL m_bMusicPlaying;
     int32_t m_nMusicDelay;
     int32_t m_nMusicDayTrack;

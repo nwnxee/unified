@@ -9,6 +9,7 @@ NWN_API_PROLOGUE(SHA1)
 
 
 class SHA1 {
+public:
     bool m_empty;
     uint8_t m_data[20];
     char m_hex[41];

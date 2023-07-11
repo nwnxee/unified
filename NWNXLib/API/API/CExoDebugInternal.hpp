@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CExoDebugInternal
 {
+public:
     BOOL m_bFilesOpen;
     CExoFile * m_pLogFile;
     CExoFile * m_pErrorFile;

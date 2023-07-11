@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(LerpVector)
 
 class LerpVector
 {
+public:
     LerpFloat x;
     LerpFloat y;
     LerpFloat z;

@@ -14,6 +14,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerLUOSortedObjectList
 {
+public:
     OBJECT_ID oidObject;
     float fDistanceToPlayer;
     uint32_t nCategory;

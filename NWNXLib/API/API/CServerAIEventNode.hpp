@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CServerAIEventNode
 {
+public:
     uint32_t m_nCalendarDay;
     uint32_t m_nTimeOfDay;
     OBJECT_ID m_nCallerObjectId;

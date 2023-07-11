@@ -28,6 +28,7 @@ typedef int BOOL;
 
 class CScriptCompiler
 {
+public:
     int32_t m_nKeyWords;
     CScriptCompilerKeyWordEntry * m_pcKeyWords;
     int32_t m_nParseTreeNodeBlockEmptyNodes;

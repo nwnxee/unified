@@ -19,8 +19,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
+class CNWVirtualMachineCommands : public CVirtualMachineCmdImplementer
 {
+public:
     pfCVMCommands * m_pVirtualMachineCommands;
 
     ~CNWVirtualMachineCommands();

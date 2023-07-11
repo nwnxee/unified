@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CResGFFStruct)
 
 class CResGFFStruct
 {
+public:
     uint32_t m_nType;
     uint32_t m_nDataOrDataOffset;
     uint32_t m_nFieldCount;

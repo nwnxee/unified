@@ -16,6 +16,7 @@ typedef uint32_t STRREF;
 
 class CWorldJournalEntry
 {
+public:
     CExoString szText;
     CExoString szName;
     uint32_t nCalendarDay;

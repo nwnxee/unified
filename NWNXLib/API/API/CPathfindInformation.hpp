@@ -20,6 +20,7 @@ typedef uint32_t OBJECT_ID;
 
 class CPathfindInformation
 {
+public:
     BOOL m_bClientMoving;
     float m_fPersonalSpace;
     float m_fCreaturePersonalSpace;

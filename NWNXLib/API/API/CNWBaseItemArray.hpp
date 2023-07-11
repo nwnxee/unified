@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CNWBaseItemArray
 {
+public:
     int32_t m_nNumBaseItems;
     CNWBaseItem * m_pBaseItems;
 

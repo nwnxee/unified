@@ -19,6 +19,7 @@ typedef int BOOL;
 
 class CNetLayer
 {
+public:
     CNetLayerInternal * m_pcNetLayerInternal;
 
     CNetLayer();

@@ -15,8 +15,9 @@ class CExoString;
 typedef int BOOL;
 
 
-class CVirtualMachineDebugLoader : CResHelper<CResNDB, 2064>
+class CVirtualMachineDebugLoader : public CResHelper<CResNDB, 2064>
 {
+public:
     BOOL m_bLoaded;
     DataBlockRef m_pNDB;
 

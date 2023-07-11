@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CNWDomain
 {
+public:
     int32_t m_nNameStrref;
     int32_t m_nDescriptionStrref;
     CResRef m_cIcon;

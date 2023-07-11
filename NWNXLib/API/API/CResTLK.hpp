@@ -12,9 +12,9 @@ NWN_API_PROLOGUE(CResTLK)
 
 
 
-class CResTLK : CRes
+class CResTLK : public CRes
 {
-
+public:
     CResTLK();
     virtual ~CResTLK();
 

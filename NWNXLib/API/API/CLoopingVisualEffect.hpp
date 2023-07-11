@@ -16,6 +16,7 @@ typedef uint32_t OBJECT_ID;
 
 class CLoopingVisualEffect
 {
+public:
     uint16_t m_nId;
     OBJECT_ID m_oOriginator;
     uint8_t m_nBodyPart;

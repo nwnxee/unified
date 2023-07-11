@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CERFKey
 {
+public:
     char m_sName[16];
     uint32_t m_nID;
     uint16_t m_nType;

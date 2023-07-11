@@ -16,6 +16,7 @@ typedef int BOOL;
 
 class CNWFeat
 {
+public:
     int32_t m_nNameStrref;
     int32_t m_nDescriptionStrref;
     int32_t m_nTalentCategory;

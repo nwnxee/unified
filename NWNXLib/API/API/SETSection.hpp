@@ -15,6 +15,7 @@ class SETEntry;
 
 class SETSection
 {
+public:
     CExoString m_sSection;
     SETEntry * m_pEntry;
     uint32_t m_nNumEntries;

@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CScriptTalent
 {
+public:
     int32_t m_nType;
     int32_t m_nID;
     uint8_t m_nMultiClass;

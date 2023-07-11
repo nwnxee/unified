@@ -25,8 +25,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSPlaceable : CNWSObject
+class CNWSPlaceable : public CNWSObject
 {
+public:
     CExoLocString m_sLocName;
     CExoString m_sDisplayName;
     int32_t m_nUpdateDisplayNameSeq;

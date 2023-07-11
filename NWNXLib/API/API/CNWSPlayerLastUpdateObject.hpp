@@ -24,6 +24,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerLastUpdateObject
 {
+public:
     uint32_t m_nGold;
     int16_t m_nArmorClass;
     int16_t m_nHenchmanArmorClass;

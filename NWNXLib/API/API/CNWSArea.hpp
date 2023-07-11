@@ -40,8 +40,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
+class CNWSArea : public CNWArea, public CResHelper<CResARE, 2012>, public CGameObject
 {
+public:
     int32_t m_nPlayersInArea;
     CExoArrayList<OBJECT_ID> m_pTrapList;
     int32_t m_nObjectByNameIndex;

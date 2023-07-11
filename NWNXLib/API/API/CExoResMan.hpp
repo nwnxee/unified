@@ -28,6 +28,7 @@ typedef uint16_t RESTYPE;
 
 class CExoResMan
 {
+public:
     int64_t m_nTotalPhysicalMemory;
     int64_t m_nTotalAvailableMemory;
     int64_t m_nAvailableMemory;

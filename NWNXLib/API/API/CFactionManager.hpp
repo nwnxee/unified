@@ -20,6 +20,7 @@ typedef int BOOL;
 
 class CFactionManager
 {
+public:
     CNWSFaction * m_pDefaultFactionDefender;
     CNWSFaction * m_pDefaultFactionCommoner;
     CNWSFaction * m_pDefaultFactionMerchant;

@@ -14,6 +14,7 @@ class CExoString;
 
 class CExoStringList
 {
+public:
     CExoString * * m_pStrings;
     int32_t m_nCount;
     int32_t m_nDuplicates;

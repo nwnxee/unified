@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CNWItem)
 
 class CNWItem
 {
+public:
     uint8_t m_nLayeredTextureColors[6];
     uint8_t * m_pLayeredTextureColorsPerPart[6];
     uint32_t m_nBaseItem;

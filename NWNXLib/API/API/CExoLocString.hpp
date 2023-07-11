@@ -17,6 +17,7 @@ typedef uint32_t STRREF;
 
 class CExoLocString
 {
+public:
     CExoLocStringInternal * m_pExoLocStringInternal;
     STRREF m_dwStringRef;
 

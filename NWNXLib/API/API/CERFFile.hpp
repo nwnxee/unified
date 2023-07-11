@@ -23,6 +23,7 @@ typedef uint16_t RESTYPE;
 
 class CERFFile
 {
+public:
     NWERFHEADER m_stHeader;
     CExoLinkedList<CERFString> m_lstStringList;
     CExoLinkedList<CERFKey> m_lstKeyList;

@@ -15,6 +15,7 @@ typedef int BOOL;
 
 template<class T,RESTYPE nType> class CResHelper
 {
+public:
     T * m_pRes;
     CResRef m_cResRef;
 

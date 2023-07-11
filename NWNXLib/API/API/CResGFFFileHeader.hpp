@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(CResGFFFileHeader)
 
 class CResGFFFileHeader
 {
+public:
     uint32_t m_nFileType;
     uint32_t m_nFileVersion;
     uint32_t m_nStructOffset;

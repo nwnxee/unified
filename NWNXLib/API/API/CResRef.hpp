@@ -16,6 +16,7 @@ typedef uint8_t RESREF[16];
 
 class CResRef
 {
+public:
     RESREF m_resRefLowerCase;
     RESREF m_resRef;
 

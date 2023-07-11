@@ -21,8 +21,9 @@ enum BIFFFILE_Version
     BIFFFILE_V1,
     BIFFFILE_E1
 };
-class CExoResFile : CExoPackedFile
+class CExoResFile : public CExoPackedFile
 {
+public:
     BIFFFILE_Version m_nVersion;
     BIFFFILE_HEADER * m_pBiffHeader;
     BIFFFILE_VARRESENTRY_E1 * m_pBiffVarResEntry;

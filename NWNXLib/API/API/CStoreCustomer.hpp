@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CStoreCustomer
 {
+public:
     OBJECT_ID m_oidObject;
     uint8_t m_nPage;
     uint8_t m_nPanel;

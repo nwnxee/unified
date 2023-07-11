@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CScriptLocation
 {
+public:
     Vector m_vPosition;
     Vector m_vOrientation;
     OBJECT_ID m_oArea;

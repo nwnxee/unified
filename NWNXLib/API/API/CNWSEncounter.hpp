@@ -24,8 +24,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-class CNWSEncounter : CNWSObject
+class CNWSEncounter : public CNWSObject
 {
+public:
     uint16_t m_nActivateObjectArrayIndex;
     int32_t m_nFactionId;
     CExoLocString m_sLocalizedName;

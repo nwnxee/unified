@@ -15,6 +15,7 @@ class CExoRandInternal;
 
 class CExoRand
 {
+public:
     CExoRandInternal * m_pcExoRandInternal;
 
     CExoRand();

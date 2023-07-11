@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSDialogSpeaker
 {
+public:
     CExoString m_sSpeaker;
     OBJECT_ID m_id;
 

@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWCreatureStatsUpdate
 {
+public:
     CExoArrayList<uint16_t> m_lstFeats;
     CExoArrayList<uint16_t> m_lstBonusFeats;
     OBJECT_ID m_oidFeatUpdated;

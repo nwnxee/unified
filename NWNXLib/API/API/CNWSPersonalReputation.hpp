@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPersonalReputation
 {
+public:
     uint32_t m_nDay;
     uint32_t m_nTime;
     BOOL m_bValueDecays;

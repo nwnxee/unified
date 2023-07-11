@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CNWItemProperty
 {
+public:
     uint16_t m_nPropertyName;
     uint16_t m_nSubType;
     uint8_t m_nCostTable;

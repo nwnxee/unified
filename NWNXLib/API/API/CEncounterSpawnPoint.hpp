@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CEncounterSpawnPoint)
 
 class CEncounterSpawnPoint
 {
+public:
     Vector m_vPosition;
     float m_fOrientation;
 

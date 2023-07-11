@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CassowarySolverEngineStructure)
 #endif
 
-class CassowarySolverEngineStructureShared;
-class CassowarySolverEngineStructure : public SharedPtrEngineStructure<CassowarySolverEngineStructureShared>
+struct CassowarySolverEngineStructureShared;
+struct CassowarySolverEngineStructure : SharedPtrEngineStructure<CassowarySolverEngineStructureShared>
 {
     virtual ~CassowarySolverEngineStructure() {}
 

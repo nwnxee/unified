@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(SETEntry)
 
 class SETEntry
 {
+public:
     CExoString m_sEntry;
     CExoString m_sValue;
 

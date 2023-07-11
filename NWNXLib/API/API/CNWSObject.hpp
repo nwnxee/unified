@@ -47,8 +47,9 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-class CNWSObject : CGameObject
+class CNWSObject : public CGameObject
 {
+public:
     CExoLocString m_sForGCC;
     uint16_t m_nGroupID;
     uint16_t m_nLastGroupID;

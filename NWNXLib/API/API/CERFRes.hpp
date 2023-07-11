@@ -15,6 +15,7 @@ typedef int BOOL;
 
 class CERFRes
 {
+public:
     uint32_t m_nOffset;
     uint32_t m_nSize;
     uint8_t * m_pData;

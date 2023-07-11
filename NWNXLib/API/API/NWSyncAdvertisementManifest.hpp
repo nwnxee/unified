@@ -15,6 +15,7 @@ NWN_API_PROLOGUE(NWSyncAdvertisementManifest)
 
 class AdvertisementManifest
 {
+public:
     Hash::SHA1 m_hash;
     uint8_t m_flags;
     uint8_t m_languageId;

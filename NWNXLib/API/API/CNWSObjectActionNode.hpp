@@ -14,6 +14,7 @@ typedef int BOOL;
 
 class CNWSObjectActionNode
 {
+public:
     uint32_t m_nActionId;
     uint32_t m_nParamType[12];
     intptr_t m_pParameter[12];

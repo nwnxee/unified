@@ -14,8 +14,9 @@ class SETSection;
 typedef int BOOL;
 
 
-class CResSET : CRes
+class CResSET : public CRes
 {
+public:
     BOOL m_bLoaded;
     uint32_t m_nSETNormalSize;
     SETSection * m_pSection;

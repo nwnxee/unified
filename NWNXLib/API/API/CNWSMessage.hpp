@@ -51,9 +51,9 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-class CNWSMessage : CNWMessage
+class CNWSMessage : public CNWMessage
 {
-
+public:
     CNWSMessage();
     ~CNWSMessage();
     OBJECT_ID ReadOBJECTIDServer();

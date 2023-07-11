@@ -18,8 +18,9 @@ class CNWTileData;
 typedef int BOOL;
 
 
-class CNWTileSet : CResHelper<CResSET, 2013>
+class CNWTileSet : public CResHelper<CResSET, 2013>
 {
+public:
     CResRef m_resrefName;
     CResRef m_cEnvMap;
     float m_fHeightTransition;

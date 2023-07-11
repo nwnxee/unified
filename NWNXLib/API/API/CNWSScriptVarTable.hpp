@@ -25,6 +25,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSScriptVarTable
 {
+public:
     std::unordered_map<CExoString, CNWSScriptVar> m_vars;
     CNWSCreature * m_pCreature;
 

@@ -19,6 +19,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSTransition
 {
+public:
     CExoString m_sTransitionTarget;
     OBJECT_ID m_oidCachedTransitionTarget;
 

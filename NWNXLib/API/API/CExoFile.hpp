@@ -17,6 +17,7 @@ typedef uint16_t RESTYPE;
 
 class CExoFile
 {
+public:
     CExoFileInternal * m_pcExoFileInternal;
 
     CExoFile(const CExoString & fileName, const CExoString & mode);

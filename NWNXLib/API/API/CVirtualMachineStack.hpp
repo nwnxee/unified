@@ -18,6 +18,7 @@ typedef int BOOL;
 
 class CVirtualMachineStack
 {
+public:
     int32_t m_nStackPointer;
     int32_t m_nBasePointer;
     int32_t m_nTotalSize;

@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(TLK_FILE_HEADER)
 
 class TLK_FILE_HEADER
 {
+public:
     uint32_t fileType;
     uint32_t versionNum;
     uint32_t LanguageType;

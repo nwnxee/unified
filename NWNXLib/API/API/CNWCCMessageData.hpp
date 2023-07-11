@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWCCMessageData
 {
+public:
     uint8_t m_nType;
     CExoArrayList<int32_t> m_nParamInteger;
     CExoArrayList<float> m_nParamFloat;

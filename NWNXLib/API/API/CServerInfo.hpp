@@ -23,6 +23,7 @@ typedef int BOOL;
 
 class CServerInfo
 {
+public:
     int32_t m_nDataChangedFlags;
     int16_t m_nServerMode;
     CExoString m_sModuleName;

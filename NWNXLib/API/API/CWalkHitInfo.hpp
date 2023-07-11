@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CWalkHitInfo)
 
 class CWalkHitInfo
 {
+public:
     int32_t m_nFailureReason;
     Vector m_vIntersectedAt;
     Vector m_vNormalOfIntersectedLine;

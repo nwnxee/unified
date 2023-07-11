@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(RESID)
 
 class RESID
 {
+public:
     uint32_t m_resFileSource;
     uint32_t m_resFileId;
     uint32_t m_resTableId;

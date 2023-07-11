@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CObjectLookupTable
 {
+public:
     OBJECT_ID * m_pdwObjectTable;
     uint32_t m_dwStart;
     uint32_t m_dwEnd;

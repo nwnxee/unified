@@ -18,6 +18,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSBarter
 {
+public:
     CItemRepository * m_pBarterList;
     CNWSPlayerLUOInventory * m_pLastUpdate;
     CNWSPlayerLUOInventory * m_pOtherLastUpdate;

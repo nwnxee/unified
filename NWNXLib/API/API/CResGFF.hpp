@@ -24,8 +24,9 @@ typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-class CResGFF : CRes
+class CResGFF : public CRes
 {
+public:
     uint32_t STRUCT_GROWSIZE;
     uint32_t FIELD_GROWSIZE;
     uint32_t LABEL_GROWSIZE;

@@ -17,6 +17,7 @@ typedef int BOOL;
 
 class CTwoDimArrays
 {
+public:
     C2DA * * m_paIPRPCostTables;
     uint8_t m_nNumIPRPCostTables;
     uint8_t m_lstEpicBaseAttackBonus[60];

@@ -15,6 +15,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPVPEntry
 {
+public:
     OBJECT_ID m_oidPC;
     BOOL m_bILikePlayer;
     BOOL m_bPlayerLikesMe;

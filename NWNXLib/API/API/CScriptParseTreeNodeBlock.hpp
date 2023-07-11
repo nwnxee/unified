@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CScriptParseTreeNodeBlock)
 
 class CScriptParseTreeNodeBlock
 {
+public:
     CScriptParseTreeNode m_pNodes[4096];
     CScriptParseTreeNodeBlock * m_pNextBlock;
 

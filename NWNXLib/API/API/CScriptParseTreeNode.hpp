@@ -14,6 +14,7 @@ class CExoString;
 
 class CScriptParseTreeNode
 {
+public:
     int32_t nOperation;
     CExoString * m_psStringData;
     int32_t nIntegerData;

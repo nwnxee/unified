@@ -20,6 +20,7 @@ typedef uint32_t OBJECT_ID;
 
 class CCombatInformation
 {
+public:
     uint8_t m_nNumAttacks;
     char m_nOnHandAttackModifier;
     char m_nOnHandDamageModifier;

@@ -13,6 +13,7 @@ NWN_API_PROLOGUE(KEYFILE_HEADER)
 
 class KEYFILE_HEADER
 {
+public:
     uint32_t nFileType;
     uint32_t nFileVersion;
     uint32_t nResFiles;

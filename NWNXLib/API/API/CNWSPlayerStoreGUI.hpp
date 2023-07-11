@@ -17,6 +17,7 @@ typedef uint32_t OBJECT_ID;
 
 class CNWSPlayerStoreGUI
 {
+public:
     OBJECT_ID m_oidOpen;
     uint8_t m_nSelectedPanel;
     uint8_t m_nSelectedPage;

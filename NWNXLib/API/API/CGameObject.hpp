@@ -44,8 +44,9 @@ class CNWSWaypoint;
 typedef uint32_t OBJECT_ID;
 
 
-class CGameObject : CCallbackHandlerBase
+class CGameObject : public CCallbackHandlerBase
 {
+public:
     OBJECT_ID m_idSelf;
     uint8_t m_nObjectType;
     void * m_pNwnxData;

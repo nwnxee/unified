@@ -14,6 +14,7 @@ NWN_API_PROLOGUE(CExoEncrypt)
 
 class CExoEncrypt
 {
+public:
     uint32_t m_anI[2];
     uint32_t m_aBuf[4];
     uint8_t m_aIn[128];

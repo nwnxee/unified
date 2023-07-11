@@ -19,6 +19,7 @@ class CNWSDialogLinkEntry;
 
 class CNWSDialogReply
 {
+public:
     uint32_t m_nAnimation;
     uint8_t m_bAnimationLoop;
     CExoLocString m_sText;
