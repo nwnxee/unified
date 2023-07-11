@@ -5,6 +5,7 @@
 #include <cstring>
 #include <sstream>
 #include <ctime>
+#include "nwnx.hpp"
 
 namespace NWNXLib::Log {
 
@@ -97,7 +98,7 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
     // Get filename without the full path.
     const char* filename = file;
     const char* filenameTemp = filename;
-    while ((filenameTemp = std::strstr(filename, "/")))
+    while ((filenameTemp = std::strstr(filename, Platform::PathSeparator().c_str())))
     {
         filename = filenameTemp + 1;
     }

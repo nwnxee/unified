@@ -1,5 +1,4 @@
 #include "nwnx.hpp"
-#include <dlfcn.h>
 
 namespace NWNXLib
 {
@@ -10,7 +9,7 @@ void* Plugin::GetExportedSymbol(const std::string& symbolName)
 {
     if (symbolName[0] == '_')
         return nullptr;
-    return dlsym(m_handle, symbolName.c_str());
+    return Platform::GetSymbol(m_handle, symbolName.c_str());
 }
 
 Plugin::Plugin(Services::ProxyServiceList* services) :
@@ -21,7 +20,7 @@ Plugin* Plugin::Find(const std::string& pluginName)
 {
     for (auto* plugin : s_plugins)
     {
-        if (!strcasecmp(pluginName.c_str(), plugin->m_name.c_str()))
+        if (!String::CompareIgnoreCase(pluginName.c_str(), plugin->m_name.c_str()))
             return plugin;
     }
     return nullptr;
@@ -38,22 +37,22 @@ Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxySer
         return nullptr;
     }
 
-    void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_NODELETE);
+    void* handle = Platform::OpenLibrary(path.c_str(), Platform::RTLD_NOW | Platform::RTLD_NODELETE);
     if (!handle)
     {
-        LOG_ERROR("Unable to load plugin '%s': %s", path, dlerror());
+        LOG_ERROR("Unable to load plugin '%s': %s", path, Platform::GetError());
         return nullptr;
     }
 
     Plugin* plugin;
-    if (auto entry = (EntryFunction) dlsym(handle, PluginEntryName))
+    if (auto entry = (EntryFunction) Platform::GetSymbol(handle, PluginEntryName))
     {
         LOG_DEBUG("Plugin '%s' exposed entry function %s()", path, PluginEntryName);
         plugin = entry(services.get());
         if (plugin == nullptr)
         {
             LOG_ERROR("Plugin '%s' entry function returned nullptr", path);
-            dlclose(handle);
+            Platform::CloseLibrary(handle);
             return nullptr;
         }
     }
@@ -82,7 +81,7 @@ void Plugin::UnloadAll()
 
         auto handle = plugin->m_handle;
         delete plugin;
-        dlclose(handle);
+        Platform::CloseLibrary(handle);
     }
 }
 

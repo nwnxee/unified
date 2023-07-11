@@ -1,11 +1,10 @@
 #include "nwnx.hpp"
 
-#include <cstdlib>
 #include <cstring>
 
-
-#include <execinfo.h>
+#if !WIN32
 #include <signal.h>
+#endif
 
 namespace NWNXLib::Assert {
 
@@ -36,10 +35,12 @@ void FailInternal(const char* condition, const char* file, int line, const char*
     std::fflush(stdout);
     NWNXLib::Log::WriteToLogFile(buffer);
 
+#if !WIN32
     if (Platform::IsDebuggerPresent())
     {
         raise(SIGTRAP);
     }
+#endif
 }
 
 }
