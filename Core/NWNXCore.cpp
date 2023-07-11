@@ -6,7 +6,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListNode.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
@@ -16,11 +15,10 @@
 
 #include <csignal>
 #include <regex>
-#include <dirent.h>
-#include <unistd.h>
 #include <cstdio>
-#include <sstream>
-#include <dlfcn.h>
+#include <filesystem>
+#include <string>
+#include <iostream>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -69,27 +67,6 @@ extern "C" void nwnx_signal_handler(int sig)
     }
 }
 
-// Don't allow the -quite flag to close stdout/stderr, we print important info there.
-extern "C" FILE *freopen64(const char *filename, const char *mode, FILE *stream)
-{
-    if ((stream == stdout || stream == stderr) && !strcmp(filename, "/dev/null"))
-    {
-        if (stream == stdout)
-        {
-            std::puts("NWNX overriding -quiet flag. Always keep an eye on stdout.\n"
-                      "Server will continue in non-interactive mode, but with full output.\n");
-        }
-        return stream;
-    }
-
-    using Type = FILE*(*)(const char*,const char*,FILE*);
-    static Type real;
-    if (!real)
-        real = (Type)dlsym(RTLD_NEXT, "freopen64");
-    return real(filename, mode, stream);
-}
-
-
 namespace {
 
 void InitCrashHandlers()
@@ -123,10 +100,20 @@ static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 bool g_CoreShuttingDown = false;
 
+#if WIN32
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+{
+    return TRUE;
+}
+#endif
+
 NWNXCore::NWNXCore()
     : m_ScriptChunkRecursion(0)
 {
     g_core = this;
+
+    // Initialize platform specific stuff (e.g. create windows console window).
+    Platform::Initialize();
 
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
@@ -137,7 +124,7 @@ NWNXCore::NWNXCore()
     // for hook naming, but these might help if you want to target a overloaded function.
     NWNXLib::API::Functions::Initialize();
 
-    m_createServerHook = Hooks::HookFunction(&CAppManager::CreateServer, &CreateServerHandler);
+    m_createServerHook = Hooks::HookFunction(Functions::_ZN11CAppManager12CreateServerEv, &CreateServerHandler);
 }
 
 NWNXCore::~NWNXCore()
@@ -186,19 +173,19 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandSetVar, &SetVarHandler, Hooks::Order::Final);
-    m_vmGetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetVar, &GetVarHandler, Hooks::Order::Final);
-    m_vmTagEffectHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagEffect, &TagEffectHandler, Hooks::Order::Final);
-    m_vmTagItemProperyHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagItemProperty, &TagItemPropertyHandler, Hooks::Order::Final);
-    m_vmPlaySoundHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
+    m_vmSetVarHook         = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, &SetVarHandler, Hooks::Order::Final);
+    m_vmGetVarHook         = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, &GetVarHandler, Hooks::Order::Final);
+    m_vmTagEffectHook      = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, &TagEffectHandler, Hooks::Order::Final);
+    m_vmTagItemProperyHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, &TagItemPropertyHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook      = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, &PlaySoundHandler, Hooks::Order::Final);
 
 
-    m_destroyServerHook    = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
-    m_mainLoopInternalHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
+    m_destroyServerHook    = Hooks::HookFunction(Functions::_ZN11CAppManager13DestroyServerEv, &DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv, &MainLoopInternalHandler, Hooks::Order::Final);
 
     POS::InitializeHooks();
 
-    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(&CNWSModule::LoadModuleInProgress,
+    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
             +[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
             {
                 int index = nAreasLoaded;
@@ -219,7 +206,7 @@ void NWNXCore::InitialSetupHooks()
             }, Hooks::Order::Earliest);
 
     static Hooks::Hook loadModuleFinishHook = Hooks::HookFunction(
-            &CNWSModule::LoadModuleFinish,
+            Functions::_ZN10CNWSModule16LoadModuleFinishEv,
             +[](CNWSModule *pModule) -> uint32_t
             {
                 MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
@@ -229,7 +216,7 @@ void NWNXCore::InitialSetupHooks()
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
-                &CVirtualMachine::RunScriptChunk,
+                Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
                 +[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
                 {
                     g_core->m_ScriptChunkRecursion += 1;
@@ -239,7 +226,7 @@ void NWNXCore::InitialSetupHooks()
                 }, Hooks::Order::VeryEarly);
 
         static Hooks::Hook runScriptSituationHook = Hooks::HookFunction(
-                &CVirtualMachine::RunScriptSituation,
+                Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
                 +[](CVirtualMachine *pVirtualMachine, void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid) -> BOOL
                 {
                     auto *pVirtualMachineScript = (CVirtualMachineScript*)pScriptSituation;
@@ -300,59 +287,47 @@ void NWNXCore::InitialSetupPlugins()
     constexpr static const char* pluginPrefix = NWNX_PLUGIN_PREFIX;
     const std::string prefix = pluginPrefix;
 
-    char cwd[PATH_MAX];
-    ASSERT(getcwd(cwd, sizeof(cwd)) != nullptr);
-
-    const auto pluginDir = Config::Get<std::string>("LOAD_PATH", cwd);
+    const auto pluginDir = Config::Get<std::string>("LOAD_PATH", std::filesystem::current_path().string());
     const bool skipAllPlugins = Config::Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir);
 
-    std::vector<std::string> files;
-    if (auto dir = opendir(pluginDir.c_str()))
+    std::vector<std::filesystem::path> files;
+
+    for (const auto& entry : std::filesystem::directory_iterator(pluginDir))
     {
-        while (auto entry = readdir(dir))
+        if (entry.is_regular_file() || entry.is_symlink() || entry.is_other())
         {
-            if (entry->d_type == DT_UNKNOWN || entry->d_type == DT_REG || entry->d_type == DT_LNK)
-            {
-                files.emplace_back(entry->d_name);
-            }
+            files.emplace_back(entry.path());
         }
-        closedir(dir);
     }
+
     // Sort by file name, so at least plugins are loaded in deterministic order.
     std::sort(std::begin(files), std::end(files));
 
-    for (auto& dynamicLibrary : files)
+    for (auto& libraryPath : files)
     {
-        const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = String::Basename(pluginName);
+        const std::string& extension = libraryPath.extension().string();
+        const std::string& pluginName = libraryPath.stem().string();
 
-        if (pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
+        if (pluginName.compare(0, prefix.size(), prefix) != 0 || pluginName == "NWNX_Launcher" || (extension != Platform::PluginExtension()))
         {
             continue; // Not a plugin.
         }
 
-        if (pluginNameWithoutExtension == "NWNX_Experimental" && !Config::Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
+        if (pluginName == "NWNX_Experimental" && !Config::Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
         {
             continue;
         }
 
-        auto services = ConstructProxyServices(pluginNameWithoutExtension);
-
-        // Always load core.
-        if (pluginNameWithoutExtension != NWNX_CORE_PLUGIN_NAME && Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
-        {
-            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
-            continue;
-        }
-        Plugin::Load(pluginDir + "/" + pluginName, std::move(services));
+        auto services = ConstructProxyServices(pluginName);
+        Plugin::Load(pluginDir + Platform::PathSeparator() + pluginName, std::move(services));
     }
 }
 
 void NWNXCore::InitialSetupResourceDirectories()
 {
-    auto nwnxResDirPath = Config::Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
+    auto nwnxResDirPath = Config::Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string(Platform::PathSeparator() + "nwnx"));
     auto nwnxResDirPriority = Config::Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
 
     std::unordered_map<std::string, std::pair<std::string, int32_t>> resourceDirectories;
