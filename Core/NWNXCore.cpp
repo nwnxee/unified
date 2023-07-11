@@ -101,7 +101,7 @@ NWNXCore* g_core = nullptr; // Used to access the core class in hook or event ha
 bool g_CoreShuttingDown = false;
 
 #if WIN32
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+extern "C" __declspec(dllexport) BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
     return TRUE;
 }

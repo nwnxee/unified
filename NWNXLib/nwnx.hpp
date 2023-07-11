@@ -47,7 +47,7 @@ namespace NWNXLib
 #if WIN32
 #define PluginEntryPoint(name) \
 void name();                         \
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved) \
+extern "C" __declspec(dllexport) BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved) \
 { \
 if(dwReason == DLL_PROCESS_ATTACH) { \
 name(); \
