@@ -191,6 +191,63 @@ public:
     BOOL LoadProperties(CResGFF * pRes, CResStruct * pStruct);
     void IncreaseAILevelPriority();
     void DecreaseAILevelPriority();
+
+    inline void PublicSaveCreatures(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aCreatures, BOOL bSaveOIDs)
+    {
+        SaveCreatures(pRes, pTopLevelStruct, aCreatures, bSaveOIDs);
+    }
+
+    inline void PublicSaveItems(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aItems, BOOL bSaveOIDs)
+    {
+        SaveItems(pRes, pTopLevelStruct, aItems, bSaveOIDs);
+    }
+
+    inline void PublicSaveDoors(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aDoors, BOOL bSaveOIDs)
+    {
+        SaveDoors(pRes, pTopLevelStruct, aDoors, bSaveOIDs);
+    }
+
+    inline void PublicSaveTriggers(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aTriggers, BOOL bSaveOIDs)
+    {
+        SaveTriggers(pRes, pTopLevelStruct, aTriggers, bSaveOIDs);
+    }
+
+    inline void PublicSaveEncounters(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aEncounters, BOOL bSaveOIDs)
+    {
+        SaveEncounters(pRes, pTopLevelStruct, aEncounters, bSaveOIDs);
+    }
+
+    inline void PublicSaveWaypoints(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aWaypoints, BOOL bSaveOIDs)
+    {
+        SaveWaypoints(pRes, pTopLevelStruct, aWaypoints, bSaveOIDs);
+    }
+
+    inline void PublicSaveSounds(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aSounds, BOOL bSaveOIDs)
+    {
+        SaveSounds(pRes, pTopLevelStruct, aSounds, bSaveOIDs);
+    }
+
+    inline void PublicSavePlaceables(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aPlaceables, BOOL bSaveOIDs)
+    {
+        SavePlaceables(pRes, pTopLevelStruct, aPlaceables, bSaveOIDs);
+    }
+
+    inline void PublicSaveStores(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aStores, BOOL bSaveOIDs)
+    {
+        SaveStores(pRes, pTopLevelStruct, aStores, bSaveOIDs);
+    }
+
+    inline void PublicSaveAreaEffects(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aStores, BOOL bSaveOIDs)
+    {
+        SaveAreaEffects(pRes, pTopLevelStruct, aStores, bSaveOIDs);
+    }
+
+    inline void PublicSaveProperties(CResGFF * pRes, CResStruct * pTopLevelStruct)
+    {
+        SaveProperties(pRes, pTopLevelStruct);
+    }
+
+protected:
     void SaveCreatures(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aCreatures, BOOL bSaveOIDs);
     void SaveItems(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aItems, BOOL bSaveOIDs);
     void SaveDoors(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aDoors, BOOL bSaveOIDs);
