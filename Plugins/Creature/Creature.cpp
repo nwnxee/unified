@@ -3576,9 +3576,11 @@ NWNX_EXPORT ArgumentStack SetAbilityIncreaseByLevel(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetMaxAttackRange(ArgumentStack&& args)
 {
-    auto* pCreature = Utils::PopCreature(args);
-    ASSERT_OR_THROW(pCreature);
-    auto oidTarget = args.extract<OBJECT_ID>();
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<OBJECT_ID>();
+        return pCreature->MaxAttackRange(oidTarget);
+    }
 
-    return pCreature->MaxAttackRange(oidTarget);
+    return 0.0f;
 }
