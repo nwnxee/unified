@@ -1001,6 +1001,12 @@ int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel);
 /// @param nAbility ABILITY_* constant or NWNX_CREATURE_ABILITY_NONE
 void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility);
 
+/// @brief Returns the creature's maximum attack range to a target
+/// @param oCreature The creature object.
+/// @param oTarget The target to get the maximum attack range to
+/// @return The maximum attack range for oCreature to oTarget
+float NWNX_Creature_GetMaxAttackRange(object oCreature, object oTarget);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2593,4 +2599,15 @@ void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int n
     NWNX_PushArgumentInt(nLevel);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMaxAttackRange(object oCreature, object oTarget)
+{
+    string sFunc = "GetMaxAttackRange";
+
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat();
 }
