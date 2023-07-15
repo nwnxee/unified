@@ -175,6 +175,7 @@ namespace String
 namespace Utils
 {
     std::string ObjectIDToString(const ObjectID id);
+    ObjectID StringToObjectID(const std::string idStr);
 
     std::string GetCurrentScript();
     void ExecuteScript(const std::string& script, ObjectID oidOwner);

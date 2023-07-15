@@ -48,6 +48,17 @@ std::string ObjectIDToString(const ObjectID id)
     return ss.str();
 }
 
+ObjectID StringToObjectID(const std::string idStr)
+{
+    ObjectID oidResult;
+
+    std::stringstream ss;
+    ss << std::hex << idStr;
+    ss >> oidResult;
+
+    return oidResult;
+}
+
 std::string GetCurrentScript()
 {
     auto *pVM = API::Globals::VirtualMachine();
