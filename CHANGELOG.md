@@ -13,7 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
 - Tweaks: added `NWNX_TWEAKS_FIX_AUTOMAP_CRASH` which fixes a server crash that happens when automap data is outdated for a player.
 - Tweaks: added `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` which makes the module OnPlayerEquipItem and OnPlayerUnEquipItem events fire for all creatures.
-- Tweaks: added `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` which fixes Unequip/Equip events being out of sync if an item is equiped/unequiped multiple times per server tick.
+- Tweaks: added `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` which fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick.
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
