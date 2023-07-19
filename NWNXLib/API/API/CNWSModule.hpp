@@ -171,8 +171,8 @@ public:
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
     uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
-    uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
-    uint32_t LoadModuleFinish();
+    NWNX_IMPORT uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
+    NWNX_IMPORT uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
     void PackModuleIntoMessage(uint32_t nPlayerId);
     uint32_t PlotPath(CPathfindInformation * pcPathfindInformation, uint32_t nTimeSlice);

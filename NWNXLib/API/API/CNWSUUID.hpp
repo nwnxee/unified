@@ -32,8 +32,8 @@ public:
     bool TryAssign(const CExoString & uuid);
     void AssignRandom();
     CExoString GetOrAssignRandom();
-    bool LoadFromGff(CResGFF * pRes, CResStruct * pStruct);
-    void SaveToGff(CResGFF * pRes, CResStruct * pStruct);
+    NWNX_IMPORT bool LoadFromGff(CResGFF * pRes, CResStruct * pStruct);
+    NWNX_IMPORT void SaveToGff(CResGFF * pRes, CResStruct * pStruct);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSUUID

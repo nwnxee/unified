@@ -43,8 +43,8 @@ public:
     CObjectTableManager * GetObjectTableManager(uint32_t dwClientServer);
     void DoSaveGameScreenShot(CExoString & sFile);
     void ShowServerMem();
-    void CreateServer(void );
-    void DestroyServer();
+    NWNX_IMPORT void CreateServer(void );
+    NWNX_IMPORT void DestroyServer();
     void SetDungeonMasterEXERunning(BOOL bDM);
     BOOL GetDungeonMasterEXERunning();
     void DisplayScriptDebuggerPopup();

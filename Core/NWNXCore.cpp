@@ -124,7 +124,7 @@ NWNXCore::NWNXCore()
     // for hook naming, but these might help if you want to target a overloaded function.
     NWNXLib::API::Functions::Initialize();
 
-    m_createServerHook = Hooks::HookFunction(Functions::_ZN11CAppManager12CreateServerEv, &CreateServerHandler);
+    m_createServerHook = Hooks::HookFunction(&CAppManager::CreateServer, &CreateServerHandler);
 }
 
 NWNXCore::~NWNXCore()
@@ -173,19 +173,19 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii, &SetVarHandler, Hooks::Order::Final);
-    m_vmGetVarHook         = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii, &GetVarHandler, Hooks::Order::Final);
-    m_vmTagEffectHook      = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii, &TagEffectHandler, Hooks::Order::Final);
-    m_vmTagItemProperyHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii, &TagItemPropertyHandler, Hooks::Order::Final);
-    m_vmPlaySoundHook      = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii, &PlaySoundHandler, Hooks::Order::Final);
+    m_vmSetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandSetVar, &SetVarHandler, Hooks::Order::Final);
+    m_vmGetVarHook         = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetVar, &GetVarHandler, Hooks::Order::Final);
+    m_vmTagEffectHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagEffect, &TagEffectHandler, Hooks::Order::Final);
+    m_vmTagItemProperyHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagItemProperty, &TagItemPropertyHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
 
 
-    m_destroyServerHook    = Hooks::HookFunction(Functions::_ZN11CAppManager13DestroyServerEv, &DestroyServerHandler, Hooks::Order::Final);
-    m_mainLoopInternalHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv, &MainLoopInternalHandler, Hooks::Order::Final);
+    m_destroyServerHook    = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
 
     POS::InitializeHooks();
 
-    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
+    static Hooks::Hook loadModuleInProgressHook = Hooks::HookFunction(&CNWSModule::LoadModuleInProgress,
             +[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
             {
                 int index = nAreasLoaded;
@@ -206,7 +206,7 @@ void NWNXCore::InitialSetupHooks()
             }, Hooks::Order::Earliest);
 
     static Hooks::Hook loadModuleFinishHook = Hooks::HookFunction(
-            Functions::_ZN10CNWSModule16LoadModuleFinishEv,
+            &CNWSModule::LoadModuleFinish,
             +[](CNWSModule *pModule) -> uint32_t
             {
                 MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
@@ -216,7 +216,7 @@ void NWNXCore::InitialSetupHooks()
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
-                Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
+                &CVirtualMachine::RunScriptChunk,
                 +[](CVirtualMachine *pVirtualMachine, const CExoString& sScriptChunk, ObjectID oid, int32_t bOidValid, int32_t bWrapIntoMain) -> int32_t
                 {
                     g_core->m_ScriptChunkRecursion += 1;
@@ -226,7 +226,7 @@ void NWNXCore::InitialSetupHooks()
                 }, Hooks::Order::VeryEarly);
 
         static Hooks::Hook runScriptSituationHook = Hooks::HookFunction(
-                Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+                &CVirtualMachine::RunScriptSituation,
                 +[](CVirtualMachine *pVirtualMachine, void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid) -> BOOL
                 {
                     auto *pVirtualMachineScript = (CVirtualMachineScript*)pScriptSituation;

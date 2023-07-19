@@ -398,7 +398,7 @@ void InitializeHooks()
             DestroyObjectStorage(static_cast<CGameObject*>(pThis));
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD,
+    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(&CNWSPlayer::EatTURD,
         +[](CNWSPlayer* pThis, CNWSPlayerTURD* pTURD)
         {
             auto pObjThis = Utils::GetGameObject(pThis->m_oidNWSObject);
@@ -406,7 +406,7 @@ void InitializeHooks()
             s_EatTURDHook->CallOriginal<void>(pThis, pTURD);
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_DropTURDHook        = Hooks::HookFunction(Functions::_ZN10CNWSPlayer8DropTURDEv,
+    static Hooks::Hook s_DropTURDHook        = Hooks::HookFunction(&CNWSPlayer::DropTURD,
         +[](CNWSPlayer* pThis)
         {
             s_DropTURDHook->CallOriginal<void>(pThis);
@@ -427,14 +427,14 @@ void InitializeHooks()
             }
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_UUIDSaveToGffHook   = Hooks::HookFunction(Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct,
+    static Hooks::Hook s_UUIDSaveToGffHook   = Hooks::HookFunction(&CNWSUUID::SaveToGff,
         +[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
         {
             pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis->m_parent)->Serialize(), GffFieldName);
             s_UUIDSaveToGffHook->CallOriginal<void>(pThis, pRes, pStruct);
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_UUIDLoadFromGffHook = Hooks::HookFunction(Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct,
+    static Hooks::Hook s_UUIDLoadFromGffHook = Hooks::HookFunction(&CNWSUUID::LoadFromGff,
         +[](CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct) -> bool
         {
             int32_t success;

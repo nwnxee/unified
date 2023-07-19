@@ -121,8 +121,8 @@ public:
     void AllocateAreas(int32_t nAreas);
     BOOL AddArea(OBJECT_ID oidArea);
     BOOL GetIsAllowedToSave();
-    void DropTURD();
-    void EatTURD(CNWSPlayerTURD * pTURD);
+    NWNX_IMPORT void DropTURD();
+    NWNX_IMPORT void EatTURD(CNWSPlayerTURD * pTURD);
     void CleanMyTURDs();
     CNWSPlayerLastUpdateObject * CreateNewPlayerLastUpdateObject();
     void ClearPlayerLastUpdateObject();

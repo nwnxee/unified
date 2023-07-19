@@ -63,8 +63,8 @@ public:
     CVirtualMachine();
     ~CVirtualMachine();
     BOOL RunScript(CExoString * psFileName, OBJECT_ID oid, BOOL bOidValid = true, int32_t nScriptEventID = 0);
-    int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);
-    BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
+    NWNX_IMPORT int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);
+    NWNX_IMPORT BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
     BOOL GetRunScriptReturnValue(int32_t * nParameterType, void * * pParameter);
     void SetDebugGUIFlag(BOOL bValue);
     void SetScriptParameters(const CExoArrayList<ScriptParam> & lParameters);

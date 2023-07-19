@@ -150,7 +150,7 @@ public:
     CServerExoAppInternal();
     ~CServerExoAppInternal();
     BOOL Initialize();
-    BOOL MainLoop();
+    NWNX_IMPORT BOOL MainLoop();
     void StartServices();
     void StopServices();
     void ShutdownNetLayer();
