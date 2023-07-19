@@ -85,7 +85,7 @@ NWN_API_EPILOGUE(CExoString)
 #endif
 
 namespace std {
-template <> class hash<CExoString>
+template <> struct hash<CExoString>
 {
     std::size_t operator()(const CExoString& k) const
     {
