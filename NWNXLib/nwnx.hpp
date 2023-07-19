@@ -141,6 +141,7 @@ namespace Hooks
         return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
     }
 
+#if WIN32
     template <typename T1, typename T2, typename T3>
     [[nodiscard]] Hook HookFunction(T2 T1::* original, T3 replacement, int32_t order = Order::Default)
     {
@@ -154,6 +155,7 @@ namespace Hooks
         pMember = original;
         return std::make_unique<FunctionHook>(pVoid, (void *)replacement, order);
     }
+#endif
 }
 
 namespace MessageBus
@@ -170,6 +172,9 @@ namespace Platform
 {
     constexpr int RTLD_LAZY = 0x00001;
     constexpr int RTLD_NOW = 0x00002;
+
+    constexpr int RTLD_NOLOAD = 0x00004;
+    constexpr int RTLD_DEEPBIND = 0x00008;
 
     constexpr int RTLD_GLOBAL = 0x00100;
     constexpr int RTLD_LOCAL = 0;
