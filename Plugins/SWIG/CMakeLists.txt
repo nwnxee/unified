@@ -1,3 +1,4 @@
+if(!MSVC)
 find_package(SWIG 4.0 COMPONENTS csharp)
 
 function(add_swig_plugin target language interfaces)
@@ -43,3 +44,4 @@ if(SWIG_FOUND)
         "${CMAKE_CURRENT_SOURCE_DIR}/SWIG_DotNET/API_NWNXLib.i"
         -DSWIGWORDSIZE64 -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
 endif(SWIG_FOUND)
+endif()
