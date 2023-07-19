@@ -1,25 +1,26 @@
 #pragma once
 
+#include "nwn_api.hpp"
 #include <cstdint>
 
-__declspec(dllimport) extern CExoString                g_sBuildNumber;
-__declspec(dllimport) extern CExoString                g_sBuildRevision;
-__declspec(dllimport) extern CExoString                g_sBuildPostfix;
-__declspec(dllimport) extern class CExoBase           *g_pExoBase;
-__declspec(dllimport) extern class CExoResMan         *g_pExoResMan;
-__declspec(dllimport) extern class CVirtualMachine    *g_pVirtualMachine;
-__declspec(dllimport) extern class CScriptCompiler    *g_pScriptCompiler;
-__declspec(dllimport) extern class CAppManager        *g_pAppManager;
-__declspec(dllimport) extern class CTlkTable          *g_pTlkTable;
-__declspec(dllimport) extern class CNWRules           *g_pRules;
+NWNX_IMPORT extern CExoString                g_sBuildNumber;
+NWNX_IMPORT extern CExoString                g_sBuildRevision;
+NWNX_IMPORT extern CExoString                g_sBuildPostfix;
+NWNX_IMPORT extern class CExoBase           *g_pExoBase;
+NWNX_IMPORT extern class CExoResMan         *g_pExoResMan;
+NWNX_IMPORT extern class CVirtualMachine    *g_pVirtualMachine;
+NWNX_IMPORT extern class CScriptCompiler    *g_pScriptCompiler;
+NWNX_IMPORT extern class CAppManager        *g_pAppManager;
+NWNX_IMPORT extern class CTlkTable          *g_pTlkTable;
+NWNX_IMPORT extern class CNWRules           *g_pRules;
 namespace Task {
-__declspec(dllimport) extern class CExoTaskManager    *g_pExoTaskManager;
+NWNX_IMPORT extern class CExoTaskManager    *g_pExoTaskManager;
 }
-__declspec(dllimport) extern int32_t                   g_bEnableCombatDebugging;
-__declspec(dllimport) extern int32_t                   g_bEnableSavingThrowDebugging;
-__declspec(dllimport) extern int32_t                   g_bEnableMovementSpeedDebugging;
-__declspec(dllimport) extern int32_t                   g_bEnableHitDieDebugging;
-__declspec(dllimport) extern int32_t                   g_bExitProgram;
+NWNX_IMPORT extern int32_t                   g_bEnableCombatDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableSavingThrowDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableMovementSpeedDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableHitDieDebugging;
+NWNX_IMPORT extern int32_t                   g_bExitProgram;
 
 namespace NWNXLib::API::Globals {
 

@@ -14,6 +14,7 @@
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 #define NWNX_SWIG_PARSING
+#define NWNX_IMPORT
 
 // Mark module class as static
 %pragma(csharp) moduleclassmodifiers="public static unsafe class"
