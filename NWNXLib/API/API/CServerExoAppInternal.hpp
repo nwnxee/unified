@@ -46,6 +46,7 @@ namespace NWSync {
 class Advertisement; // NWSyncAdvertisement
 }
 class AdvertLUT {
+public:
     std::unordered_map<CExoString, std::vector<void*>> m_map;
 };
 
