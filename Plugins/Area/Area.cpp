@@ -1385,7 +1385,7 @@ NWNX_EXPORT ArgumentStack SetDefaultObjectUiDiscoveryMask(ArgumentStack&& args)
         }
     };
 
-    static Hooks::Hook pAddObjectToAreaHook = Hooks::HookFunction(Functions::_ZN8CNWSArea15AddObjectToAreaEji,
+    static Hooks::Hook pAddObjectToAreaHook = Hooks::HookFunction(&CNWSArea::AddObjectToArea,
     +[](CNWSArea *pThis, ObjectID id, BOOL bRunScripts) -> BOOL
     {
         auto retVal = pAddObjectToAreaHook->CallOriginal<BOOL>(pThis, id, bRunScripts);

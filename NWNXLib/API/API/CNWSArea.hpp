@@ -108,7 +108,7 @@ public:
     ~CNWSArea();
     virtual CNWSArea * AsNWSArea();
     virtual CNWSArea * NWAreaAsNWSArea();
-    BOOL AddObjectToArea(OBJECT_ID id, BOOL bRunScripts = true);
+    NWNX_IMPORT BOOL AddObjectToArea(OBJECT_ID id, BOOL bRunScripts = true);
     BOOL AIUpdate();
     Vector ComputeAwayVector(Vector vCurrentPosition, Vector vPositionToMoveAwayFrom, float fMoveAwayRange, CPathfindInformation * pPathInfo);
     int32_t ComputeBestCorner(float fX1, float fY1, float fX2, float fY2, float fX3, float fY3, float fPersonalSpace, float fCreatureHeight, float * fNewX1, float * fNewY1, float * fNewX2, float * fNewY2);

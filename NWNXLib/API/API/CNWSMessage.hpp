@@ -183,7 +183,7 @@ public:
     void ComputeGameObjectUpdateForYourselfToo(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     void ComputeGameObjectUpdateForYourself(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     CNWSPlayerLUOSortedObjectList * SortObjectsForGameObjectUpdate(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, int32_t * nMembersInSortedList);
-    void ComputeGameObjectUpdateForObject(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
+    NWNX_IMPORT void ComputeGameObjectUpdateForObject(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     BOOL ComputeGameObjectUpdateForCategory(uint32_t nCategory, uint32_t nMessageLimit, CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, CNWSPlayerLUOSortedObjectList * pSortedList, int32_t nSortedListSize);
     void TestPartyObjectUpdateDifferences(CNWSPlayer * pPlayer, CNWSCreature * pPartyCreature, CLastUpdatePartyObject * * pLastUpdatePartyObject, uint32_t * nObjectUpdatesRequired);
     void StoreValuesInLastUpdatePartyObject(CNWSCreature * pPlayerCreature, CLastUpdatePartyObject * pLastUpdatePartyObject, CNWSCreature * pPartyCreature, uint32_t nObjectUpdatesRequired);
