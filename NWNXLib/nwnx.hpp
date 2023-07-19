@@ -26,7 +26,13 @@
 namespace NWNXLib
 {
 
+#if WIN32
+#define NWNX_EXPORT       __declspec(dllexport) extern "C"
+#define NWNX_IMPORT       __declspec(dllimport)
+#else
 #define NWNX_EXPORT       extern "C"
+#define NWNX_IMPORT
+#endif
 
 #define LOG_DEBUG(format, ...)   LOG_IMPL(SEV_DEBUG,   format, ##__VA_ARGS__)
 #define LOG_INFO(format, ...)    LOG_IMPL(SEV_INFO,    format, ##__VA_ARGS__)

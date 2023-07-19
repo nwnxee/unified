@@ -22,6 +22,12 @@ NWNX_INTERNAL_STRINGIFY(NWNX_TARGET_NWN_BUILD)  \
 #define NWN_API_PROLOGUE(...)
 #define NWN_API_EPILOGUE(...)
 
+#if WIN32
+#define NWNX_IMPORT       __declspec(dllimport)
+#else
+#define NWNX_IMPORT
+#endif
+
 class CExoLinkedListNode;
 typedef uint16_t RESTYPE;
 typedef uint32_t ObjectID;
