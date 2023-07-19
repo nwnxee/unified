@@ -134,6 +134,19 @@ namespace Hooks
     {
         return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
     }
+
+    template <typename T1, typename T2, typename T3>
+    [[nodiscard]] Hook HookFunction(T2 T1::* original, T3 replacement, int32_t order = Order::Default)
+    {
+        union
+        {
+            T2 T1::*pMember;
+            void* pVoid;
+        };
+
+        pMember = original;
+        return std::make_unique<FunctionHook>(pVoid, (void *)replacement, order);
+    }
 }
 
 namespace MessageBus
