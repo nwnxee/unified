@@ -1,6 +1,6 @@
 @echo off
 
-dumpbin /exports nwserver.exe > nwserver.exports
+dumpbin /exports %1 > nwserver.exports
 
 echo LIBRARY nwserver.exe > nwserver.def
 echo EXPORTS >> nwserver.def
