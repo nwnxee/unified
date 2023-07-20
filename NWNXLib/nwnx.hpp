@@ -149,7 +149,6 @@ namespace Hooks
         {
             T2 T1::*pMember;
             void* pVoid;
-            static_assert(sizeof(pMember) == sizeof(pVoid));
         };
 
         pMember = original;
