@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('inc__array_8nss_source.html',''); init
 <div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87">  148</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87">GetTableCreateString</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">object</span> obj=OBJECT_INVALID) {</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">// for simplicity sake, everything is turned into a string.  Possible enhancement</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">// to create specific tables for int/float/whatever.</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;CREATE TABLE IF NOT EXISTS &quot;</span> + <a class="code" href="inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676">GetTableName</a>(tag, obj) + <span class="stringliteral">&quot; ( ind INTEGER PRIMARY KEY, value TEXT )&quot;</span>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;CREATE TABLE IF NOT EXISTS &quot;</span> + <a class="code" href="inc__array_8nss.html#ad89c0b03be278903e3ce680ee4f6f676">GetTableName</a>(tag, obj) + <span class="stringliteral">&quot; ( ind INTEGER, value TEXT )&quot;</span>;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;}</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
 <div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="inc__array_8nss.html#a4fb1b9230cabb43ee06a8a4a6e6a6786">  154</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="inc__array_8nss.html#a4fb1b9230cabb43ee06a8a4a6e6a6786">TableExists</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">object</span> obj=OBJECT_INVALID) {</div>
@@ -575,7 +575,7 @@ $(document).ready(function(){initNavTree('inc__array_8nss_source.html',''); init
 			<ul>
 				<li class="navelem"><a class="el" href="dir_33ced2517ceb955d6eee44ee24d0d423.html">Compatibility</a></li><li class="navelem"><a class="el" href="inc__array_8nss.html">inc_array.nss</a></li>
 				<li class="footer">
-					Generated on Thu Jul 13 2023 08:25:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Jul 25 2023 07:40:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
