@@ -327,17 +327,17 @@ static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGro
     uint32_t nParamType8, void* pParameter8, uint32_t nParamType9, void* pParameter9, uint32_t nParamType10, void* pParameter10, 
     uint32_t nParamType11, void* pParameter11, uint32_t nParamType12, void* pParameter12)
 {
-    auto bOriginalCalled = false;
+    bool bOriginalCalled = false;
     if ((pObject->m_nObjectType == Constants::ObjectType::Creature) && 
         ((nActionId == 12 /* Attack */) || (nActionId == 1 /* MoveToPoint */) || (nActionId == 51 /* Drivemode */)))
     {
         auto* pCreature = Utils::AsNWSCreature(pObject);
 
-        auto oidLastAttackTarget = Constants::OBJECT_INVALID;
+        OBJECT_ID oidLastAttackTarget = Constants::OBJECT_INVALID;
         if (auto oidLastAttackTargetOpt = pCreature->nwnxGet<int32_t>("LAST_ATTACK_TARGET"))
             oidLastAttackTarget = oidLastAttackTargetOpt.value();
 
-        auto oidNewTarget = (nActionId == 12) ? *(OBJECT_ID*)pParameter1 : Constants::OBJECT_INVALID;
+        OBJECT_ID oidNewTarget = (nActionId == 12) ? *(OBJECT_ID*)pParameter1 : Constants::OBJECT_INVALID;
         if (oidNewTarget != oidLastAttackTarget)
         {
             std::string sResult = "";
@@ -381,11 +381,11 @@ static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGro
 
 static void ChangeAttackTargetHook(CNWSCreature* pCreature, CNWSObjectActionNode* pNode, const OBJECT_ID oidAttackTarget)
 {
-    auto oidLastAttackTarget = Constants::OBJECT_INVALID;
+    OBJECT_ID oidLastAttackTarget = Constants::OBJECT_INVALID;
     if (auto oidLastAttackTargetOpt = pCreature->nwnxGet<int32_t>("LAST_ATTACK_TARGET"))
         oidLastAttackTarget = oidLastAttackTargetOpt.value();
 
-    auto oidNewAttackTarget = oidAttackTarget;
+    OBJECT_ID oidNewAttackTarget = oidAttackTarget;
     if (oidNewAttackTarget != oidLastAttackTarget)
     {
         std::string sResult = "";
