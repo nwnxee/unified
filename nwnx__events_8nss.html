@@ -2277,6 +2277,26 @@ Area Play Battle Music Events</h2>
 <td class="markdownTableBodyNone">PLAY </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the area is starting to play battle music, FALSE if stopping.  </td></tr>
 </table>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md393"></a>
+Combat Attack Target Change Events</h2>
+<ul>
+<li>NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE</li>
+<li>NWNX_ON_ATTACK_TARGET_CHANGE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature changing the target its attacking.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OLD_TARGET_OBJECT_ID </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The old attack target. OBJECT_INVALID if there was no old target. Old target may be dead/invalid. Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NEW_TARGET_OBJECT_ID </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The new attack target. OBJECT_INVALID if there is no new target. Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AUTOMATIC_CHANGE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the game automatically decided on the new target, FALSE if explicitly chosen  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">RETARGETABLE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the new target can be changed using <a class="el" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult()</a> (Only in BEFORE)  </td></tr>
+</table>
+<hr  />
 <p><a class="anchor" id="events_events"></a></p>
 </div></td></tr>
 <tr class="memitem:gaa99b0924a97b2a6105f27058c435c510"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa99b0924a97b2a6105f27058c435c510">NWNX_ON_ADD_ASSOCIATE_BEFORE</a> = &quot;NWNX_ON_ADD_ASSOCIATE_BEFORE&quot;</td></tr>
@@ -2941,6 +2961,10 @@ Area Play Battle Music Events</h2>
 <tr class="separator:gaeca3c0d553e9e536bd12cf38c30f4952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0f2fa537afa0fee07859635991d4eeb9"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga0f2fa537afa0fee07859635991d4eeb9">NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER</a> = &quot;NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER&quot;</td></tr>
 <tr class="separator:ga0f2fa537afa0fee07859635991d4eeb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac52634814a6d261dc9054ff5d0b20fa4"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gac52634814a6d261dc9054ff5d0b20fa4">NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE</a> = &quot;NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE&quot;</td></tr>
+<tr class="separator:gac52634814a6d261dc9054ff5d0b20fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10c8d72ac9fc858a2248c63ad20fca17"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga10c8d72ac9fc858a2248c63ad20fca17">NWNX_ON_ATTACK_TARGET_CHANGE_AFTER</a> = &quot;NWNX_ON_ATTACK_TARGET_CHANGE_AFTER&quot;</td></tr>
+<tr class="separator:ga10c8d72ac9fc858a2248c63ad20fca17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Events ObjectType Constants</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_objtype"></a></p>
 </div></td></tr>
@@ -3037,13 +3061,13 @@ Area Play Battle Music Events</h2>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02366">nwnx_events.nss:2366</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02382">nwnx_events.nss:2382</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Tue Jul 25 2023 07:40:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Jul 26 2023 12:27:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

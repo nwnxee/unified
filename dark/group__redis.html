@@ -114,20 +114,20 @@ $(document).ready(function(){initNavTree('group__redis.html',''); initResizable(
 TODO:<ul>
 <li>SCO/RCO, so resman can automatically load resources from redis without user intervention. This requires a more generic interface/hook in core.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md551"></a>
+<h2><a class="anchor" id="autotoc_md552"></a>
 Hints</h2>
 <ul>
 <li>There are two includes, <code>nwnx_redis</code> and <code>nwnx_redis_short</code>. They do the same, but <code>_short</code> is not prefixed with <code>NWNX_Redis</code>.</li>
 <li><code><a class="el" href="nwnx__redis__ps_8nss.html" title="Interface to Redis PUBSUB.">nwnx_redis_ps.nss</a></code> and <code><a class="el" href="on__pubsub_8nss.html" title="Script to handle PubSub event.">on_pubsub.nss</a></code> are not needed if PubSub functionality is not being used.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md552"></a>
+<h2><a class="anchor" id="autotoc_md553"></a>
 Setup</h2>
 <ul>
 <li>Set up redis-server. Start it. This should be as simple as apt-get install redis. There's also a docker image.</li>
 <li>Configure <code>NWNX_REDIS_HOST</code> and <code>NWNX_REDIS_PORT</code> for nwnx. <code>NWNX_REDIS_PORT</code> is not necessary if the default redis port is used.</li>
 <li>Include the .nss files in NWScript/ into your module.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md553"></a>
+<h2><a class="anchor" id="autotoc_md554"></a>
 Accessing Redis from nwscript</h2>
 <p>To use Redis commands in nwscript include <code>nwnx_redis</code> and <code>nwnx_redis_lib</code>. The nwnx_redis include contains the redis commands like, for example, <code>int <a class="el" href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET(string key)</a></code>. All of the nwnx redis comands return an int which is the resultId. The nwnx_redis_lib include contains functions to get the data (and type) you can work with for this resultId. Three of these functions are:</p><ul>
 <li>int <a class="el" href="group__redis.html#ga1348f79753eb3dd2208edf7e63d84553" title="Gets the given result as an integer.">NWNX_Redis_GetResultAsInt(int resultId)</a></li>
@@ -144,7 +144,7 @@ Accessing Redis from nwscript</h2>
 <div class="line">  <span class="keywordtype">string</span> sValue = <a class="code" href="group__redis.html#ga54287d82441086cf187b5768af08490d">NWNX_Redis_GetResultAsString</a>(<a class="code" href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET</a>(<span class="stringliteral">&quot;examples:examplekey&quot;</span>));</div>
 <div class="line">  WriteTimestampedLogEntry(<span class="stringliteral">&quot;Value of redis key &#39;examples:examplekey&#39;: &quot;</span> + sValue);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md554"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md555"></a>
 Getting started with PubSub</h2>
 <ul>
 <li>Create a script called "on_pubsub" (or rename it through <code>NWNX_REDIS_PUBSUB_SCRIPT</code>). An example is included in NWScript/.</li>
@@ -155,7 +155,7 @@ Getting started with PubSub</h2>
 <li>Hint: <code>redis-cli monitor</code> in a separate shell is a great way to figure out what's going on.</li>
 <li>Your script should trigger with the payload available through <code><a class="el" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c" title="Get a PUBSUB message.">NWNX_Redis_GetPubSubMessageData()</a></code>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md555"></a>
+<h3><a class="anchor" id="autotoc_md556"></a>
 Moving on</h3>
 <ul>
 <li>Now think of a good naming scheme for your various pubsub channels. Keep traffic as low as feasible, since each incoming message will trigger a script run. There is no batching yet.</li>
@@ -163,7 +163,7 @@ Moving on</h3>
 <li>Example: <code>NWNX_Redis_PUBLISH("nwserver.players.join", GetPCPlayerName(..));</code></li>
 <li>Hint: A good pattern is to store data in a redis key named after the channel and object identifier (i.e. <code>HSET nwserver:players:PlayerName:.lastSeen 1234</code>) and then trigger a PubSub message with the same subject (<code>PUBLISH nwserver.players.joins PlayerName</code>). This cuts down on wire overhead.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md556"></a>
+<h2><a class="anchor" id="autotoc_md557"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -498,7 +498,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Jul 25 2023 07:40:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Jul 26 2023 12:27:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
