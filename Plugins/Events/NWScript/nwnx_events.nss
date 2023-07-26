@@ -1661,6 +1661,19 @@ _______________________________________
     ----------------------|--------|-------
     PLAY                  | int | TRUE if the area is starting to play battle music, FALSE if stopping. |
 _______________________________________
+    ## Combat Attack Target Change Events
+    - NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE
+    - NWNX_ON_ATTACK_TARGET_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature changing the target its attacking.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD_TARGET_OBJECT_ID  | object | The old attack target. OBJECT_INVALID if there was no old target. Old target may be dead/invalid. Convert to object with StringToObject() |
+    NEW_TARGET_OBJECT_ID  | object | The new attack target. OBJECT_INVALID if there is no new target. Convert to object with StringToObject() |
+    AUTOMATIC_CHANGE      | int    | TRUE if the game automatically decided on the new target, FALSE if explicitly chosen |
+    RETARGETABLE          | int    | TRUE if the new target can be changed using NWNX_Events_SetEventResult() (Only in BEFORE) |
+_______________________________________
 */
 
 /// @name Events Event Constants
@@ -1997,6 +2010,8 @@ const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_COMBAT_ATTAC
 const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER";
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE";
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER";
+const string NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE = "NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE";
+const string NWNX_ON_ATTACK_TARGET_CHANGE_AFTER = "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2176,6 +2191,7 @@ void NWNX_Events_SkipEvent();
 /// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
 /// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
 /// - CharacterSheetPermitted event -> "1" allow the player to view the character sheet or "0" to disallow
+/// - Attack target change event -> The new target object. Convert to string with ObjectToString()
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
