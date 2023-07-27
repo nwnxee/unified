@@ -37,6 +37,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 
 ### Fixed
 - Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook
+- Damage: Fixed the damage event not firing for doors
 
 ## 8193.35.40
 https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40

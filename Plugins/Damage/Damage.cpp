@@ -46,8 +46,6 @@ static AttackData s_AttackData;
 static std::string GetEventScript(CNWSObject*, const std::string&);
 static void HandleSignalDamage(CNWSCreature*, CNWSObject*, int32_t);
 
-
-
 static Hooks::Hook s_OnApplyDamageHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDamage,
     +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> BOOL
     {
@@ -55,7 +53,7 @@ static Hooks::Hook s_OnApplyDamageHook = Hooks::HookFunction(&CNWSEffectListHand
 
         if (!sScript.empty())
         {
-            if (Utils::AsNWSCreature(pObject) || Utils::AsNWSPlaceable(pObject))
+            if (Utils::AsNWSCreature(pObject) || Utils::AsNWSPlaceable(pObject) || Utils::AsNWSDoor(pObject))
             {
                 s_DamageData.oidDamager = pEffect->m_oidCreator;
                 std::memcpy(s_DamageData.vDamage, pEffect->m_nParamInteger, MAX_DAMAGE_TYPES * sizeof(int32_t));
@@ -80,8 +78,6 @@ static Hooks::Hook s_SignalRangedDamageHook = Hooks::HookFunction(&CNWSCreature:
         HandleSignalDamage(pThis, pTarget, nAttacks);
         s_SignalRangedDamageHook->CallOriginal<void>(pThis, pTarget, nAttacks);
     }, Hooks::Order::Late);
-
-
 
 static std::string GetEventScript(CNWSObject *pObject, const std::string& sEventType)
 {
@@ -127,8 +123,6 @@ static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t
     }
 }
 
-
-
 NWNX_EXPORT ArgumentStack SetEventScript(ArgumentStack&& args)
 {
     const auto sEvent = args.extract<std::string>();
@@ -160,7 +154,6 @@ NWNX_EXPORT ArgumentStack SetEventScript(ArgumentStack&& args)
     return {};
 }
 
-
 NWNX_EXPORT ArgumentStack GetDamageEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
@@ -183,7 +176,6 @@ NWNX_EXPORT ArgumentStack SetDamageEventData(ArgumentStack&& args)
 
     return {};
 }
-
 
 NWNX_EXPORT ArgumentStack GetAttackEventData(ArgumentStack&&)
 {
@@ -217,7 +209,6 @@ NWNX_EXPORT ArgumentStack SetAttackEventData(ArgumentStack&& args)
 
     return {};
 }
-
 
 NWNX_EXPORT ArgumentStack DealDamage(ArgumentStack&& args)
 {
