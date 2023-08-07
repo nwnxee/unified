@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()`
 - Player: Added arguments for passing transform data (scale, translation, rotation) to `NWNX_Player_ShowVisualEffect()` and `NWNX_Player_ApplyInstantVisualEffectToObject()`
+- Damage: The damage event now also fires for doors
 
 ### Deprecated
 - N/A
