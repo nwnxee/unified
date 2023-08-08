@@ -1958,11 +1958,14 @@ NWNX_EXPORT ArgumentStack GetTURD(ArgumentStack&& args)
     const auto oidPlayer = args.extract<OBJECT_ID>();
 
     CExoLinkedListInternal* pTURDS = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-    for (CExoLinkedListPosition pNode = pTURDS->pHead; pNode; pNode = pNode->pNext)
+    if (pTURDS)
     {
-        auto* pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
-        if (pTURD->m_oidPlayer == oidPlayer)
-            return pTURD->m_idSelf; 
+        for (CExoLinkedListPosition pNode = pTURDS->pHead; pNode; pNode = pNode->pNext)
+        {
+            auto* pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+            if ((pTURD) && (pTURD->m_oidPlayer == oidPlayer))
+                return pTURD->m_idSelf; 
+        }
     }
 
     return Constants::OBJECT_INVALID;
