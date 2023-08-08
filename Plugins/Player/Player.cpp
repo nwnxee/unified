@@ -1956,9 +1956,8 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetTURD(ArgumentStack&& args)
 {
     const auto oidPlayer = args.extract<OBJECT_ID>();
-
-    CExoLinkedListInternal* pTURDS = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-    if (pTURDS)
+    
+    if (CExoLinkedListInternal* pTURDS = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
     {
         for (CExoLinkedListPosition pNode = pTURDS->pHead; pNode; pNode = pNode->pNext)
         {
