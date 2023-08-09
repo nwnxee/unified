@@ -1603,6 +1603,16 @@ _______________________________________
     ----------------------|--------|-------
     OBJECT                | object | The Object being used |
 _______________________________________
+    ## Object Use Events (Placeables)
+    - NWNX_ON_OBJECT_OPEN_BEFORE
+    - NWNX_ON_OBJECT_OPEN_AFTER
+
+    `OBJECT_SELF` = The player using the object
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The Object being used |
+_______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER
@@ -2002,6 +2012,8 @@ const string NWNX_ON_RUN_EVENT_SCRIPT_BEFORE = "NWNX_ON_RUN_EVENT_SCRIPT_BEFORE"
 const string NWNX_ON_RUN_EVENT_SCRIPT_AFTER = "NWNX_ON_RUN_EVENT_SCRIPT_AFTER";
 const string NWNX_ON_OBJECT_USE_BEFORE = "NWNX_ON_OBJECT_USE_BEFORE";
 const string NWNX_ON_OBJECT_USE_AFTER = "NWNX_ON_OBJECT_USE_AFTER";
+const string NWNX_ON_OBJECT_OPEN_BEFORE = "NWNX_ON_OBJECT_OPEN_BEFORE";
+const string NWNX_ON_OBJECT_OPEN_AFTER = "NWNX_ON_OBJECT_OPEN_AFTER";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER";
 const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE";

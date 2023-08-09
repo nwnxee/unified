@@ -1,5 +1,6 @@
 #include "Events.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CNWSPlaceable.hpp"
 
 namespace Events {
 
@@ -32,6 +33,11 @@ void ObjectEvents()
 
     InitOnFirstSubscribe("NWNX_ON_OBJECT_USE_.*", []() {
         s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUseObjectAction,
+                                                   (void*)&AddUseObjectActionHook, Hooks::Order::Early);
+    });
+    
+    InitOnFirstSubscribe("NWNX_ON_OBJECT_OPEN_.*", []() {
+        s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
                                                    (void*)&AddUseObjectActionHook, Hooks::Order::Early);
     });
 
@@ -110,9 +116,19 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
     {
         retVal = false;
     }
+    if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
+    {
+        retVal = s_AddUseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToUse);
+    }
+    else
+    {
+        retVal = false;
+    }
+
 
     PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_USE_AFTER");
+    PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
 
     return retVal;
 }
