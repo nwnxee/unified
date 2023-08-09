@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Tweaks: added `NWNX_TWEAKS_FIX_AUTOMAP_CRASH` which fixes a server crash that happens when automap data is outdated for a player.
 - Events: added event `NWNX_ON_ATTACK_TARGET_CHANGE_{BEFORE|AFTER}` which fires when a creature changes its attack target.
 - Events: added `NWNX_ON_OBJECT_OPEN_{BEFORE|AFTER}` which fires when player opens a placeable.
+- Events: added `NWNX_ON_OBJECT_CLOSE_{BEFORE|AFTER}` which fires when player closes a placeable.
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
