@@ -125,18 +125,20 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
     return retVal;
 }
 
-int32_t AddOpenObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
+int32_t AddOpenObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToOpen)
 {
     int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        PushEventData("OBJECT", Utils::ObjectIDToString(oidObjectToUse));
-        return SignalEvent(ev, thisPtr->m_idSelf);
+        //PushEventData("OBJECT", Utils::ObjectIDToString(oidObjectToUse));
+        //return SignalEvent(ev, thisPtr->m_idSelf);
+        PushEventData("OBJECT", Utils::ObjectIDToString(thisPtr->m_idSelf));
+        return SignalEvent(ev, oidObjectToOpen);
     };
 
     if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
     {
-        retVal = s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToUse);
+        retVal = s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToOpen);
     }
     else
     {
