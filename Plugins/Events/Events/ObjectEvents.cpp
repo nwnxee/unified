@@ -11,11 +11,13 @@ using namespace NWNXLib::API::Constants;
 static NWNXLib::Hooks::Hook s_AddLockObjectActionHook;
 static NWNXLib::Hooks::Hook s_AddUnlockObjectActionHook;
 static NWNXLib::Hooks::Hook s_AddUseObjectActionHook;
+static NWNXLib::Hooks::Hook s_AddOpenObjectActionHook;
 static NWNXLib::Hooks::Hook s_BroadcastSafeProjectileHook;
 
 static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
 static int32_t AddUseObjectActionHook(CNWSObject*, ObjectID);
+static int32_t AddOpenObjectActionHook(CNWSObject*, ObjectID);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
 
 void ObjectEvents() __attribute__((constructor));
@@ -37,8 +39,8 @@ void ObjectEvents()
     });
     
     InitOnFirstSubscribe("NWNX_ON_OBJECT_OPEN_.*", []() {
-        s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
-                                                   (void*)&AddUseObjectActionHook, Hooks::Order::Early);
+        s_AddOpenObjectActionHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
+                                                   (void*)&AddOpenObjectActionHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_BROADCAST_SAFE_PROJECTILE_.*", []() {
@@ -116,9 +118,25 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
     {
         retVal = false;
     }
+
+    PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushAndSignal("NWNX_ON_OBJECT_USE_AFTER");
+
+    return retVal;
+}
+
+int32_t AddOpenObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("OBJECT", Utils::ObjectIDToString(oidObjectToUse));
+        return SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
     if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
     {
-        retVal = s_AddUseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToUse);
+        retVal = s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToUse);
     }
     else
     {
@@ -127,11 +145,13 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
 
 
     PushEventData("ACTION_RESULT", std::to_string(retVal));
-    PushAndSignal("NWNX_ON_OBJECT_USE_AFTER");
     PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
 
     return retVal;
 }
+
+
+
 
 void BroadcastSafeProjectileHook(CNWSObject *thisPtr, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
                                     uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType)

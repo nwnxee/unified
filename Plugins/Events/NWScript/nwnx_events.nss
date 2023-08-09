@@ -1607,11 +1607,11 @@ _______________________________________
     - NWNX_ON_OBJECT_OPEN_BEFORE
     - NWNX_ON_OBJECT_OPEN_AFTER
 
-    `OBJECT_SELF` = The player using the object
+    `OBJECT_SELF` = The container being opened.
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    OBJECT                | object | The Object being used |
+    OBJECT                | object | The player opening the container |
 _______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
