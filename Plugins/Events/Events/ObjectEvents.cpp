@@ -18,8 +18,8 @@ static NWNXLib::Hooks::Hook s_BroadcastSafeProjectileHook;
 static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
 static int32_t AddUseObjectActionHook(CNWSObject*, ObjectID);
-static int32_t AddOpenObjectActionHook(CNWSObject*, ObjectID);
-static int32_t AddCloseObjectActionHook(CNWSObject*, ObjectID);
+static void AddOpenObjectActionHook(CNWSPlaceable*, ObjectID);
+static void AddCloseObjectActionHook(CNWSPlaceable*, ObjectID);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
 
 void ObjectEvents() __attribute__((constructor));
@@ -132,54 +132,38 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
     return retVal;
 }
 
-int32_t AddOpenObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToOpen)
+void AddOpenObjectActionHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
 {
-    int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("OBJECT", Utils::ObjectIDToString(thisPtr->m_idSelf));
-        return SignalEvent(ev, oidObjectToOpen);
+        return SignalEvent(ev, oidOpener);
     };
 
     if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
     {
-        retVal = s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToOpen);
-    }
-    else
-    {
-        retVal = false;
+	s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidOpener);
     }
 
-
-    PushEventData("ACTION_RESULT", std::to_string(retVal));
+    //PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
-
-    return retVal;
 }
 
-int32_t AddCloseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToClose)
+void AddCloseObjectActionHook(CNWSPlaceable *thisPtr, ObjectID oidCloser)
 {
-    int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("OBJECT", Utils::ObjectIDToString(thisPtr->m_idSelf));
-        return SignalEvent(ev, oidObjectToClose);
+        return SignalEvent(ev, oidCloser);
     };
 
     if (PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE"))
     {
-        retVal = s_AddCloseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidObjectToClose);
-    }
-    else
-    {
-        retVal = false;
+	s_AddCloseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidCloser);
     }
 
-
-    PushEventData("ACTION_RESULT", std::to_string(retVal));
+    //PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_CLOSE_AFTER");
-
-    return retVal;
 }
 
 
