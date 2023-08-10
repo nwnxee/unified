@@ -1623,7 +1623,8 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     OBJECT                | object | The Object being closed |
-    BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
+
+    @note Skipping event is not allowed (since otherwise client UI will hang and be glitchy)
 _______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE

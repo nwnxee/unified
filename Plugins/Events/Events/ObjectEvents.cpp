@@ -160,15 +160,10 @@ void AddCloseObjectActionHook(CNWSPlaceable *thisPtr, ObjectID oidCloser)
         return SignalEvent(ev, oidCloser);
     };
 
-    bool skipped = false;
-    if (PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE"))
-    {
-	s_AddCloseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidCloser);
-    } else {
-	    skipped = true;
-    }
+    // don't allow SkipEvent on close event, otherwise it hangs client ui.
+    PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE");
+    s_AddCloseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidCloser);
 
-    PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
     PushAndSignal("NWNX_ON_OBJECT_CLOSE_AFTER");
 }
 
