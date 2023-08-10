@@ -19,7 +19,7 @@ static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
 static int32_t AddUseObjectActionHook(CNWSObject*, ObjectID);
 static void OpenInventoryHook(CNWSPlaceable*, ObjectID);
-static void CloseInventoryHook(CNWSPlaceable*, ObjectID);
+static void CloseInventoryHook(CNWSPlaceable*, ObjectID, BOOL);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
 
 void ObjectEvents() __attribute__((constructor));
@@ -152,7 +152,7 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
     PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
 }
 
-void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser)
+void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser, BOOL bUpdatePlayer = true)
 {
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
@@ -162,7 +162,7 @@ void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser)
 
     // don't allow SkipEvent on close event, otherwise it hangs client ui.
     PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE");
-    s_CloseInventoryHook->CallOriginal<int32_t>(thisPtr, oidCloser);
+    s_CloseInventoryHook->CallOriginal<int32_t>(thisPtr, oidCloser, bUpdatePlayer);
 
     PushAndSignal("NWNX_ON_OBJECT_CLOSE_AFTER");
 }
