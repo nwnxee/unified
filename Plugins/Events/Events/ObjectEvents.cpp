@@ -140,12 +140,15 @@ void AddOpenObjectActionHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
         return SignalEvent(ev, oidOpener);
     };
 
+    bool skipped = false;
     if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
     {
 	s_AddOpenObjectActionHook->CallOriginal<int32_t>(thisPtr, oidOpener);
+    } else {
+	    skipped = true;
     }
 
-    //PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
     PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
 }
 
@@ -157,12 +160,15 @@ void AddCloseObjectActionHook(CNWSPlaceable *thisPtr, ObjectID oidCloser)
         return SignalEvent(ev, oidCloser);
     };
 
+    bool skipped = false;
     if (PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE"))
     {
 	s_AddCloseObjectActionHook->CallOriginal<int32_t>(thisPtr, oidCloser);
+    } else {
+	    skipped = true;
     }
 
-    //PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
     PushAndSignal("NWNX_ON_OBJECT_CLOSE_AFTER");
 }
 

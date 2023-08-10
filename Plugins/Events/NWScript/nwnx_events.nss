@@ -1612,6 +1612,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     OBJECT                | object | The Object being opened |
+    BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
 _______________________________________
     ## Object Close Events (Placeables)
     - NWNX_ON_OBJECT_CLOSE_BEFORE
@@ -1622,6 +1623,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     OBJECT                | object | The Object being closed |
+    BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
 _______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
