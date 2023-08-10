@@ -1603,7 +1603,7 @@ _______________________________________
     ----------------------|--------|-------
     OBJECT                | object | The Object being used |
 _______________________________________
-    ## Object Open Events (Placeables)
+    ## Object Open Events (Placeables with inventory)
     - NWNX_ON_OBJECT_OPEN_BEFORE
     - NWNX_ON_OBJECT_OPEN_AFTER
 
@@ -1614,7 +1614,7 @@ _______________________________________
     OBJECT                | object | The Object being opened |
     BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
 _______________________________________
-    ## Object Close Events (Placeables)
+    ## Object Close Events (Placeables with inventory)
     - NWNX_ON_OBJECT_CLOSE_BEFORE
     - NWNX_ON_OBJECT_CLOSE_AFTER
 
