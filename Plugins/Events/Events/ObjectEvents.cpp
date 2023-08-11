@@ -143,9 +143,9 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
     bool skipped = false;
     if (PushAndSignal("NWNX_ON_PLACEABLE_OPEN_BEFORE"))
     {
-	s_OpenInventoryHook->CallOriginal<int32_t>(thisPtr, oidOpener);
+        s_OpenInventoryHook->CallOriginal<int32_t>(thisPtr, oidOpener);
     } else {
-	    skipped = true;
+        skipped = true;
     }
 
     PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
