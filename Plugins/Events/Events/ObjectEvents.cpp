@@ -40,12 +40,12 @@ void ObjectEvents()
                                                    (void*)&AddUseObjectActionHook, Hooks::Order::Early);
     });
     
-    InitOnFirstSubscribe("NWNX_ON_OBJECT_OPEN_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_PLACEABLE_OPEN_.*", []() {
         s_OpenInventoryHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
                                                    (void*)&OpenInventoryHook, Hooks::Order::Early);
     });
     
-    InitOnFirstSubscribe("NWNX_ON_OBJECT_CLOSE_.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_PLACEABLE_CLOSE_.*", []() {
         s_CloseInventoryHook = Hooks::HookFunction(&CNWSPlaceable::CloseInventory,
                                                    (void*)&CloseInventoryHook, Hooks::Order::Early);
     });
@@ -141,7 +141,7 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
     };
 
     bool skipped = false;
-    if (PushAndSignal("NWNX_ON_OBJECT_OPEN_BEFORE"))
+    if (PushAndSignal("NWNX_ON_PLACEABLE_OPEN_BEFORE"))
     {
 	s_OpenInventoryHook->CallOriginal<int32_t>(thisPtr, oidOpener);
     } else {
@@ -149,7 +149,7 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
     }
 
     PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
-    PushAndSignal("NWNX_ON_OBJECT_OPEN_AFTER");
+    PushAndSignal("NWNX_ON_PLACEABLE_OPEN_AFTER");
 }
 
 void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser, BOOL bUpdatePlayer = true)
@@ -161,10 +161,10 @@ void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser, BOOL bUpdate
     };
 
     // don't allow SkipEvent on close event, otherwise it hangs client ui.
-    PushAndSignal("NWNX_ON_OBJECT_CLOSE_BEFORE");
+    PushAndSignal("NWNX_ON_PLACEABLE_CLOSE_BEFORE");
     s_CloseInventoryHook->CallOriginal<int32_t>(thisPtr, oidCloser, bUpdatePlayer);
 
-    PushAndSignal("NWNX_ON_OBJECT_CLOSE_AFTER");
+    PushAndSignal("NWNX_ON_PLACEABLE_CLOSE_AFTER");
 }
 
 
