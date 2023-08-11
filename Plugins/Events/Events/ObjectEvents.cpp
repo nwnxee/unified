@@ -136,8 +136,8 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
 {
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        PushEventData("OBJECT", Utils::ObjectIDToString(thisPtr->m_idSelf));
-        return SignalEvent(ev, oidOpener);
+        PushEventData("OBJECT", Utils::ObjectIDToString(oidOpener));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     bool skipped = false;
@@ -156,8 +156,8 @@ void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser, BOOL bUpdate
 {
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        PushEventData("OBJECT", Utils::ObjectIDToString(thisPtr->m_idSelf));
-        return SignalEvent(ev, oidCloser);
+        PushEventData("OBJECT", Utils::ObjectIDToString(oidCloser));
+        return SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     // don't allow SkipEvent on close event, otherwise it hangs client ui.

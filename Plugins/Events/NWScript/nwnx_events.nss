@@ -1603,26 +1603,26 @@ _______________________________________
     ----------------------|--------|-------
     OBJECT                | object | The Object being used |
 _______________________________________
-    ## Object Open Events (Placeables with inventory)
+    ## Placeable Open Events (Placeables with inventory)
     - NWNX_ON_PLACEABLE_OPEN_BEFORE
     - NWNX_ON_PLACEABLE_OPEN_AFTER
 
-    `OBJECT_SELF` = The player using the object
+    `OBJECT_SELF` = The placeable being openeed.
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    OBJECT                | object | The Object being opened |
+    OBJECT                | object | The player opening. |
     BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
 _______________________________________
-    ## Object Close Events (Placeables with inventory)
+    ## Placeable Close Events (Placeables with inventory)
     - NWNX_ON_PLACEABLE_CLOSE_BEFORE
     - NWNX_ON_PLACEABLE_CLOSE_AFTER
 
-    `OBJECT_SELF` = The player using the object
+    `OBJECT_SELF` = The placeable being closed.
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    OBJECT                | object | The Object being closed |
+    OBJECT                | object | The player closing. |
 
     @note Skipping event is not allowed (since otherwise client UI will hang and be glitchy)
 _______________________________________
