@@ -4,6 +4,7 @@ Binaries/
 build-nwnx/
 build/
 Documentation/
+_BuildReadme.txt
 
 # Visual Studio
 .vs/
