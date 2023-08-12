@@ -155,32 +155,30 @@ jobs:
         delete_release: true
 
     - name: Tag With Version and Release
-      uses: "softprops/action-gh-release@v1"
+      uses: "ncipollo/release-action@v1"
       if: github.event_name == 'push'
       with:
         token: "${{ secrets.GITHUB_TOKEN }}"
-        tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        tag: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        commit: "master"
         prerelease: false
         draft: false
-        generate_release_notes: true
+        generateReleaseNotes: true
         name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-        files: |
-          ./NWNX-EE.zip
-          ./NWScript.zip
+        artifacts: "NWNX-EE.zip,NWScript.zip"
 
     - name: Tag With Latest and Release
-      uses: "softprops/action-gh-release@v1"
+      uses: "ncipollo/release-action@v1"
       if: github.event_name == 'push'
       with:
         token: "${{ secrets.GITHUB_TOKEN }}"
-        tag_name: "latest"
+        tag: "latest"
+        commit: "master"
         prerelease: false
         draft: false
-        generate_release_notes: true
+        generateReleaseNotes: true
         name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-        files: |
-           ./NWNX-EE.zip
-           ./NWScript.zip
+        artifacts: "NWNX-EE.zip,NWScript.zip"
 
   docker:
     runs-on: ubuntu-20.04

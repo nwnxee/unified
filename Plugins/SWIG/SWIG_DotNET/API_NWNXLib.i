@@ -133,13 +133,13 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %nodefaultctor CResARE;
 %nodefaultctor CResIFO;
 %nodefaultctor JsonEngineStructureShared;
+%nodefaultctor Hash::SHA1;
 
 // Ignore ambigious types.
 %ignore MIN;
 %ignore MAX;
 %ignore MASK;
 %ignore ToString;
-%ignore NWSync::CNWSync;
 %ignore NWN_CLASS_EXTENSION_CGameObject;
 
 // Interfaces for multi-inheritance types.
@@ -329,7 +329,7 @@ DefineArrayPtr(CNWClass_Feat, CNWClass_Feat, CNWClass_FeatArray);
 DefineArrayPtr(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 
 // Std templates
-%template(VectorNWSyncAdvertisementManifest) std::vector<NWSyncAdvertisementManifest>;
+%template(VectorNWSyncAdvertisementManifest) std::vector<NWSync::AdvertisementManifest>;
 %template(VectorCExoString) std::vector<CExoString>;
 %template(UnorderedMapCExoStringCNWSScriptVar) std::unordered_map<CExoString, CNWSScriptVar>;
 %template(UnorderedMapUInt32CExoString) std::unordered_map<unsigned int, CExoString>;

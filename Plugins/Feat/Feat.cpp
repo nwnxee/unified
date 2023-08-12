@@ -320,8 +320,8 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         g_plugin->DoEffect(pCreature, nFeat, SeeInvisible);
     }
 
-    // SPELLSAVEDC
-    if (g_plugin->m_FeatSpellSaveDC[nFeat] != 0)
+    // SPELLSAVEDC / SPELLSAVEDCFORSCHOOL / SPELLSAVEDCFORSPELL
+    if ((g_plugin->m_FeatSpellSaveDC[nFeat] != 0) || (g_plugin->m_FeatSpellSaveDCForSpellSchool[nFeat].second != 0) || (g_plugin->m_FeatSpellSaveDCForSpell[nFeat].second != 0))
     {
         static NWNXLib::Hooks::Hook pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
@@ -338,6 +338,31 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                                 iMods += spellSaveDCMod.second;
                             }
                         }
+
+                        auto* pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID);
+                        if (pSpell)
+                        {
+                            for (auto &spellSaveDCSchoolMod : g_plugin->m_FeatSpellSaveDCForSpellSchool)
+                            {
+                                if (pThis->m_pStats->HasFeat(spellSaveDCSchoolMod.first))
+                                {
+                                    auto pairSchoolSave = spellSaveDCSchoolMod.second;
+                                    if (pairSchoolSave.first == pSpell->m_nSchool)
+                                        iMods += pairSchoolSave.second;
+                                }
+                            }
+                        }
+
+                        for (auto &spellSaveDCSpellMod : g_plugin->m_FeatSpellSaveDCForSpell)
+                        {
+                            if (pThis->m_pStats->HasFeat(spellSaveDCSpellMod.first))
+                            {
+                                auto pairSpellSave = spellSaveDCSpellMod.second;
+                                if (pairSpellSave.first == nSpellID)
+                                    iMods += pairSpellSave.second;
+                            }
+                        }
+
                         return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
                     }, Hooks::Order::Late);
         }
@@ -853,6 +878,34 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
         {
             g_plugin->m_FeatSpellSaveDC[featId] = param1;
             LOG_INFO("%s: Caster's Spell Save DC will be modified by %d.", featName, param1);
+            break;
+        }
+        case SPELLSAVEDCFORSCHOOL:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Spell Save DC for school modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+
+            g_plugin->m_FeatSpellSaveDCForSpellSchool[featId] = std::make_pair(param1, param2);
+            LOG_INFO("%s: Caster's Spell Save DC for school %s will be modified by %d.", featName, Constants::SpellSchool::ToString(param1), param2);
+            break;
+        }
+        case SPELLSAVEDCFORSPELL:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Spell Save DC for spell modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+
+            g_plugin->m_FeatSpellSaveDCForSpell[featId] = std::make_pair(param1, param2);
+
+            auto spellName = Globals::Rules()->m_pSpellArray[0].GetSpell(param1)->GetSpellNameText();
+            LOG_INFO("%s: Caster's Spell Save DC for spell %s will be modified by %d.", featName, spellName, param2);
             break;
         }
         case SRCHARGEN:

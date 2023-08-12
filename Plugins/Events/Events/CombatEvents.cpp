@@ -28,6 +28,8 @@ static Hooks::Hook s_AddAttackActionsHook;
 static Hooks::Hook s_AddAttackOfOpportunityHook;
 static Hooks::Hook s_SetBroadcastedAOOToHook;
 static Hooks::Hook s_PlayBattleMusicHook;
+static Hooks::Hook s_AddActionHook;
+static Hooks::Hook s_ChangeAttackTargetHook;
 
 static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
 static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
@@ -40,6 +42,11 @@ static BOOL AddAttackActionsHook(CNWSCreature*, ObjectID, BOOL, BOOL, BOOL);
 static void AddAttackOfOpportunityHook(CNWSCombatRound*, ObjectID);
 static void SetBroadcastedAOOToHook(CNWSCreature*, BOOL);
 static void PlayBattleMusicHook(CNWSAmbientSound*, BOOL);
+static void AddActionHook(CNWSObject*, uint32_t, uint16_t, 
+    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*, 
+    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*, 
+    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*);
+static void ChangeAttackTargetHook(CNWSCreature*, CNWSObjectActionNode*, const OBJECT_ID);
 
 static bool s_InBroadcastAttackOfOpportunity;
 static bool s_SkipPushAndSignalCombatAttackOfOpportunityBefore;
@@ -94,6 +101,10 @@ void CombatEvents()
         s_PlayBattleMusicHook = Hooks::HookFunction(
                 API::Functions::_ZN16CNWSAmbientSound15PlayBattleMusicEi,
                 (void*)PlayBattleMusicHook, Hooks::Order::Early);
+    });
+    InitOnFirstSubscribe("NWNX_ON_ATTACK_TARGET_CHANGE_.*", []() {
+        s_AddActionHook = Hooks::HookFunction(&CNWSObject::AddAction, &AddActionHook, Hooks::Order::Early);
+        s_ChangeAttackTargetHook = Hooks::HookFunction(&CNWSCreature::ChangeAttackTarget, &ChangeAttackTargetHook, Hooks::Order::Early);
     });
 }
 
@@ -307,6 +318,98 @@ void PlayBattleMusicHook(CNWSAmbientSound *pThis, BOOL bPlay)
     else
     {
         s_PlayBattleMusicHook->CallOriginal<void>(pThis, bPlay);
+    }
+}
+
+static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGroupId, uint32_t nParamType1, void* pParameter1, 
+    uint32_t nParamType2, void* pParameter2, uint32_t nParamType3, void* pParameter3, uint32_t nParamType4, void* pParameter4, 
+    uint32_t nParamType5, void* pParameter5, uint32_t nParamType6, void* pParameter6, uint32_t nParamType7, void* pParameter7, 
+    uint32_t nParamType8, void* pParameter8, uint32_t nParamType9, void* pParameter9, uint32_t nParamType10, void* pParameter10, 
+    uint32_t nParamType11, void* pParameter11, uint32_t nParamType12, void* pParameter12)
+{
+    bool bOriginalCalled = false;
+    if ((pObject->m_nObjectType == Constants::ObjectType::Creature) && 
+        ((nActionId == 12 /* Attack */) || (nActionId == 1 /* MoveToPoint */) || (nActionId == 51 /* Drivemode */)))
+    {
+        auto* pCreature = Utils::AsNWSCreature(pObject);
+
+        OBJECT_ID oidLastAttackTarget = Constants::OBJECT_INVALID;
+        if (auto oidLastAttackTargetOpt = pCreature->nwnxGet<int32_t>("LAST_ATTACK_TARGET"))
+            oidLastAttackTarget = oidLastAttackTargetOpt.value();
+
+        OBJECT_ID oidNewTarget = (nActionId == 12) ? *(OBJECT_ID*)pParameter1 : Constants::OBJECT_INVALID;
+        if (oidNewTarget != oidLastAttackTarget)
+        {
+            std::string sResult = "";
+            auto PushAndSignal = [&](const std::string& event, OBJECT_ID oidNewTargetParam, bool retargetable, std::string* result = nullptr) -> void {
+                PushEventData("OLD_TARGET_OBJECT_ID", Utils::ObjectIDToString(oidLastAttackTarget));
+                PushEventData("NEW_TARGET_OBJECT_ID", Utils::ObjectIDToString(oidNewTargetParam));
+                PushEventData("AUTOMATIC_CHANGE", std::to_string(false));
+                PushEventData("RETARGETABLE", std::to_string(retargetable));
+                SignalEvent(event, pCreature->m_idSelf, result);
+            };
+
+            PushAndSignal("NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE", oidNewTarget, nActionId == 12, &sResult);
+            if ((nActionId == 12) && (sResult != ""))
+            {
+                oidNewTarget = Utils::StringToObjectID(sResult);
+                *(OBJECT_ID*)pParameter1 = oidNewTarget;
+            }
+
+            s_AddActionHook->CallOriginal<void>(pObject, nActionId, nGroupId, nParamType1, pParameter1,
+                nParamType2, pParameter2, nParamType3, pParameter3, nParamType4, pParameter4,
+                nParamType5, pParameter5, nParamType6, pParameter6, nParamType7, pParameter7,
+                nParamType8, pParameter8, nParamType9, pParameter9, nParamType10, pParameter10,
+                nParamType11, pParameter11, nParamType12, pParameter12);
+            bOriginalCalled = true;
+
+            PushAndSignal("NWNX_ON_ATTACK_TARGET_CHANGE_AFTER", oidNewTarget, false);
+          
+            pCreature->nwnxSet("LAST_ATTACK_TARGET", (int32_t)oidNewTarget);
+        }
+    }
+    
+    if (!bOriginalCalled)
+    {
+        s_AddActionHook->CallOriginal<void>(pObject, nActionId, nGroupId, nParamType1, pParameter1,
+            nParamType2, pParameter2, nParamType3, pParameter3, nParamType4, pParameter4,
+            nParamType5, pParameter5, nParamType6, pParameter6, nParamType7, pParameter7,
+            nParamType8, pParameter8, nParamType9, pParameter9, nParamType10, pParameter10,
+            nParamType11, pParameter11, nParamType12, pParameter12);
+    }
+}
+
+static void ChangeAttackTargetHook(CNWSCreature* pCreature, CNWSObjectActionNode* pNode, const OBJECT_ID oidAttackTarget)
+{
+    OBJECT_ID oidLastAttackTarget = Constants::OBJECT_INVALID;
+    if (auto oidLastAttackTargetOpt = pCreature->nwnxGet<int32_t>("LAST_ATTACK_TARGET"))
+        oidLastAttackTarget = oidLastAttackTargetOpt.value();
+
+    OBJECT_ID oidNewAttackTarget = oidAttackTarget;
+    if (oidNewAttackTarget != oidLastAttackTarget)
+    {
+        std::string sResult = "";
+        auto PushAndSignal = [&](const std::string& event, OBJECT_ID oidNewTargetParam, bool retargetable, std::string* result = nullptr) -> void {
+            PushEventData("OLD_TARGET_OBJECT_ID", Utils::ObjectIDToString(oidLastAttackTarget));
+            PushEventData("NEW_TARGET_OBJECT_ID", Utils::ObjectIDToString(oidNewTargetParam));
+            PushEventData("AUTOMATIC_CHANGE", std::to_string(true));
+            PushEventData("RETARGETABLE", std::to_string(retargetable));
+            SignalEvent(event, pCreature->m_idSelf, result);
+        };
+
+        PushAndSignal("NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE", oidNewAttackTarget, true, &sResult);
+        if (sResult != "")
+            oidNewAttackTarget = Utils::StringToObjectID(sResult);
+
+        s_ChangeAttackTargetHook->CallOriginal<void>(pCreature, pNode, oidNewAttackTarget);
+
+        PushAndSignal("NWNX_ON_ATTACK_TARGET_CHANGE_AFTER", oidNewAttackTarget, false);
+
+        pCreature->nwnxSet("LAST_ATTACK_TARGET", (int32_t)oidNewAttackTarget);
+    }
+    else
+    {
+        s_ChangeAttackTargetHook->CallOriginal<void>(pCreature, pNode, oidNewAttackTarget);
     }
 }
 

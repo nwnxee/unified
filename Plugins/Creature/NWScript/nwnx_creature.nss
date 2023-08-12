@@ -61,6 +61,8 @@ const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
 const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
 /// @}
 
+const int NWNX_CREATURE_ABILITY_NONE = 6;
+
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility
@@ -435,8 +437,9 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 /// @param creature The creature object.
 /// @param class The class id.
 /// @param count The amount of levels of class to add.
+/// @param package The class package to use for leveling up (PACKAGE_INVALID = starting package)
 /// @note This will not work on player characters.
-void NWNX_Creature_LevelUp(object creature, int class, int count=1);
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID);
 
 /// @brief Remove last levels from a creature.
 /// @param creature The creature object.
@@ -973,6 +976,36 @@ void NWNX_Creature_SetLockOrientationToObject(object oCreature, object oTarget);
 /// @param oSingleCreature A single creature to broadcast the Attack of Opporunity to. Use OBJECT_INVALID to broadcast to all nearby enemies.
 /// @param bMovement Whether the Attack of Opportunity was caused by movement.
 void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingleCreature = OBJECT_INVALID, int bMovement = FALSE);
+
+/// @brief Returns the maximum price oStore will buy items from oCreature for.
+/// @param oCreature The creature object.
+/// @param oStore The store object.
+/// @return The max buy price override. -1 = No maximum buy price, -2 = No override set.
+int NWNX_Creature_GetMaxSellToStorePriceOverride(object oCreature, object oStore);
+
+/// @brief Overrides the maximum price oStore will buy items from oCreature for.
+/// @param oCreature The creature object.
+/// @param oStore The store object.
+/// @param nMaxSellToPrice The maximum buy price override. -1 = No maximum buy price, -2 = Remove the override.
+void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStore, int nMaxSellToPrice);
+
+/// @brief Returns the creature's ability increase for nLevel.
+/// @param oCreature The creature object.
+/// @param nLevel The level.
+/// @return An ABILITY_* constant, NWNX_CREATURE_ABILITY_NONE or -1 on error
+int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel);
+
+/// @brief Sets the creature's ability increase for nLevel.
+/// @param oCreature The creature object.
+/// @param nLevel The level.
+/// @param nAbility ABILITY_* constant or NWNX_CREATURE_ABILITY_NONE
+void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility);
+
+/// @brief Returns the creature's maximum attack range to a target
+/// @param oCreature The creature object.
+/// @param oTarget The target to get the maximum attack range to
+/// @return The maximum attack range for oCreature to oTarget
+float NWNX_Creature_GetMaxAttackRange(object oCreature, object oTarget);
 
 /// @}
 
@@ -1595,9 +1628,10 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_LevelUp(object creature, int class, int count=1)
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID)
 {
     string sFunc = "LevelUp";
+    NWNX_PushArgumentInt(package);
     NWNX_PushArgumentInt(count);
     NWNX_PushArgumentInt(class);
     NWNX_PushArgumentObject(creature);
@@ -2523,4 +2557,57 @@ void NWNX_Creature_BroadcastAttackOfOpportunity(object oCreature, object oSingle
     NWNX_PushArgumentObject(oSingleCreature);
     NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetMaxSellToStorePriceOverride(object oCreature, object oStore)
+{
+    string sFunc = "GetMaxSellToStorePriceOverride";
+
+    NWNX_PushArgumentObject(oStore);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetMaxSellToStorePriceOverride(object oCreature, object oStore, int nMaxSellToPrice)
+{
+    string sFunc = "SetMaxSellToStorePriceOverride";
+
+    NWNX_PushArgumentInt(nMaxSellToPrice);
+    NWNX_PushArgumentObject(oStore);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetAbilityIncreaseByLevel(object oCreature, int nLevel)
+{
+    string sFunc = "GetAbilityIncreaseByLevel";
+
+    NWNX_PushArgumentInt(nLevel);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Creature_SetAbilityIncreaseByLevel(object oCreature, int nLevel, int nAbility)
+{
+    string sFunc = "SetAbilityIncreaseByLevel";
+
+    NWNX_PushArgumentInt(nAbility);
+    NWNX_PushArgumentInt(nLevel);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMaxAttackRange(object oCreature, object oTarget)
+{
+    string sFunc = "GetMaxAttackRange";
+
+    NWNX_PushArgumentObject(oTarget);
+    NWNX_PushArgumentObject(oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat();
 }

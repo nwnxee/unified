@@ -135,7 +135,10 @@ string NWNX_Player_GetBicFileName(object player);
 /// @param player The player object.
 /// @param effectId The effect id.
 /// @param position The position to play the visual effect.
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
+/// @param scale The scale of the effect
+/// @param translate A translation vector to offset the position of the effect
+/// @param rotate A rotation vector to rotate the effect
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[]);
 
 /// @brief Changes the daytime music track for the given player only
 /// @param player The player object.
@@ -190,8 +193,11 @@ void NWNX_Player_SetRestDuration(object player, int duration);
 /// @param player The player object.
 /// @param target The target object to play the effect upon.
 /// @param visualeffect The visual effect id.
+/// @param scale The scale of the effect
+/// @param translate A translation vector to offset the position of the effect
+/// @param rotate A rotation vector to rotate the effect
 /// @note Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect);
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[]);
 
 /// @brief Refreshes the players character sheet
 /// @param player The player object.
@@ -434,6 +440,11 @@ void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject
 /// @param bHideDialog TRUE: Does not show the party invitation dialog
 void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE);
 
+/// @brief Get the TURD for oPlayer
+/// @param oPlayer The offline player to get the TURD from
+/// @return the TURD object of oPlayer, or OBJECT_INVALID if no TURD exists
+object NWNX_Player_GetTURD(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -571,10 +582,17 @@ string NWNX_Player_GetBicFileName(object player)
     return NWNX_GetReturnValueString();
 }
 
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[])
 {
     string sFunc = "ShowVisualEffect";
 
+    NWNX_PushArgumentFloat(rotate.x);
+    NWNX_PushArgumentFloat(rotate.y);
+    NWNX_PushArgumentFloat(rotate.z);
+    NWNX_PushArgumentFloat(translate.x);
+    NWNX_PushArgumentFloat(translate.y);
+    NWNX_PushArgumentFloat(translate.z);
+    NWNX_PushArgumentFloat(scale);
     NWNX_PushArgumentFloat(position.x);
     NWNX_PushArgumentFloat(position.y);
     NWNX_PushArgumentFloat(position.z);
@@ -688,10 +706,17 @@ void NWNX_Player_SetRestDuration(object player, int duration)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect)
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[])
 {
     string sFunc = "ApplyInstantVisualEffectToObject";
 
+    NWNX_PushArgumentFloat(rotate.z);
+    NWNX_PushArgumentFloat(rotate.y);
+    NWNX_PushArgumentFloat(rotate.x);
+    NWNX_PushArgumentFloat(translate.z);
+    NWNX_PushArgumentFloat(translate.y);
+    NWNX_PushArgumentFloat(translate.x);
+    NWNX_PushArgumentFloat(scale);
     NWNX_PushArgumentInt(visualeffect);
     NWNX_PushArgumentObject(target);
     NWNX_PushArgumentObject(player);
@@ -1098,4 +1123,14 @@ void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvi
     NWNX_PushArgumentObject(oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+object NWNX_Player_GetTURD(object oPlayer)
+{
+    string sFunc = "GetTURD";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    
+    return NWNX_GetReturnValueObject();
 }

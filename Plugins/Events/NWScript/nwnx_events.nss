@@ -691,6 +691,32 @@ _______________________________________
     SPELL_SPONTANEOUS     | int | |
 
 _______________________________________
+    ## Spell Failed Events
+    - NWNX_ON_SPELL_FAILED_BEFORE
+    - NWNX_ON_SPELL_FAILED_AFTER
+
+    `OBJECT_SELF` = The creature whose spell failed
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SPELL_ID              | int    | |
+    MULTI_CLASS           | int    | Index of the spell casting class (0-7) |
+    DOMAIN                | int    | |
+    METAMAGIC             | int    | |
+    FEAT                  | int    | |
+    SPELL_SPONTANEOUS     | int    | |
+    DEFENSIVELY_CAST      | int    | |
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    TARGET_POSITION_X     | float  | |
+    TARGET_POSITION_Y     | float  | |
+    TARGET_POSITION_Z     | float  | |
+    IS_INSTANT_SPELL      | int    | |
+    PROJECTILE_PATH_TYPE  | int    | |
+    CASTERLEVEL           | int    | |
+    IS_FAKE               | int    | |
+    REASON                | int    | @ref events_spellfailreason "NWNX_EVENTS_SPELLFAIL_REASON_*" |
+
+_______________________________________
     ## Healer Kit Use Events
     - NWNX_ON_HEALER_KIT_BEFORE
     - NWNX_ON_HEALER_KIT_AFTER
@@ -1635,6 +1661,19 @@ _______________________________________
     ----------------------|--------|-------
     PLAY                  | int | TRUE if the area is starting to play battle music, FALSE if stopping. |
 _______________________________________
+    ## Combat Attack Target Change Events
+    - NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE
+    - NWNX_ON_ATTACK_TARGET_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature changing the target its attacking.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD_TARGET_OBJECT_ID  | object | The old attack target. OBJECT_INVALID if there was no old target. Old target may be dead/invalid. Convert to object with StringToObject() |
+    NEW_TARGET_OBJECT_ID  | object | The new attack target. OBJECT_INVALID if there is no new target. Convert to object with StringToObject() |
+    AUTOMATIC_CHANGE      | int    | TRUE if the game automatically decided on the new target, FALSE if explicitly chosen |
+    RETARGETABLE          | int    | TRUE if the new target can be changed using NWNX_Events_SetEventResult() (Only in BEFORE) |
+_______________________________________
 */
 
 /// @name Events Event Constants
@@ -1788,6 +1827,8 @@ const string NWNX_ON_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE = "NWNX_CLEAR_MEMORIZED_S
 const string NWNX_ON_CLEAR_MEMORIZED_SPELL_SLOT_AFTER = "NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER";
 const string NWNX_ON_SPELL_INTERRUPTED_BEFORE = "NWNX_ON_SPELL_INTERRUPTED_BEFORE";
 const string NWNX_ON_SPELL_INTERRUPTED_AFTER = "NWNX_ON_SPELL_INTERRUPTED_AFTER";
+const string NWNX_ON_SPELL_FAILED_BEFORE = "NWNX_ON_SPELL_FAILED_BEFORE";
+const string NWNX_ON_SPELL_FAILED_AFTER = "NWNX_ON_SPELL_FAILED_AFTER";
 const string NWNX_ON_HEALER_KIT_BEFORE = "NWNX_ON_HEALER_KIT_BEFORE";
 const string NWNX_ON_HEALER_KIT_AFTER = "NWNX_ON_HEALER_KIT_AFTER";
 const string NWNX_ON_HEAL_BEFORE = "NWNX_ON_HEAL_BEFORE";
@@ -1969,6 +2010,8 @@ const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_COMBAT_ATTAC
 const string NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER = "NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_AFTER";
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE";
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER";
+const string NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE = "NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE";
+const string NWNX_ON_ATTACK_TARGET_CHANGE_AFTER = "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2017,6 +2060,22 @@ const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_FIRE = 4;
 const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_WEAPON_VFX_SONIC = 5;
 const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_DEFAULT = 6;
 const int NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_SPELL_USE_PATH = 7;
+/// @}
+
+/// @name Spell failed event reasons
+/// @anchor events_spellfailreason
+/// @{
+const int NWNX_EVENTS_SPELLFAIL_REASON_CANCELED               = 0;
+const int NWNX_EVENTS_SPELLFAIL_REASON_COUNTERSPELL           = 1;
+const int NWNX_EVENTS_SPELLFAIL_REASON_ASF                    = 2;
+const int NWNX_EVENTS_SPELLFAIL_REASON_SPELLFAILURE           = 3;
+const int NWNX_EVENTS_SPELLFAIL_REASON_LOST_TARGET            = 4;
+const int NWNX_EVENTS_SPELLFAIL_REASON_SILENCED               = 5;
+const int NWNX_EVENTS_SPELLFAIL_REASON_DEFCAST_CONCENTRATION  = 6;
+const int NWNX_EVENTS_SPELLFAIL_REASON_ENTANGLE_CONCENTRATION = 7;
+const int NWNX_EVENTS_SPELLFAIL_REASON_POLYMORPHED            = 8;
+const int NWNX_EVENTS_SPELLFAIL_REASON_CANT_CAST              = 9;
+const int NWNX_EVENTS_SPELLFAIL_REASON_CANT_USE_HANDS         = 10;
 /// @}
 
 /// @brief Scripts can subscribe to events.
@@ -2086,7 +2145,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - DMAction events
 /// - Client connect event
 /// - Client Export Character event
-/// - Spell events
+/// - Spell events (except SPELL_FAILED)
 /// - QuickChat events
 /// - Barter event (START/ADD_ITEM only)
 /// - Trap events
@@ -2132,6 +2191,7 @@ void NWNX_Events_SkipEvent();
 /// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
 /// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
 /// - CharacterSheetPermitted event -> "1" allow the player to view the character sheet or "0" to disallow
+/// - Attack target change event -> The new target object. Convert to string with ObjectToString()
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
@@ -2154,6 +2214,7 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
 ///
 /// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
 /// - NWNX_ON_CAST_SPELL -> SpellID
+/// - NWNX_ON_SPELL_FAILED -> SpellID
 /// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
 /// - NWNX_ON_RUN_EVENT_SCRIPT -> EVENT_SCRIPT_* (default enabled)
 /// - NWNX_ON_BROADCAST_SAFE_PROJECTILE -> NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE for ProjectileType, NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL for SpellID

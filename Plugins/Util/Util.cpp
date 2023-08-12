@@ -124,6 +124,12 @@ NWNX_EXPORT ArgumentStack GetModuleMtime(ArgumentStack&&)
     return 0;
 }
 
+NWNX_EXPORT ArgumentStack GetModuleFile(ArgumentStack&&)
+{
+    CNWSModule *pMod = Utils::GetModule();
+    return pMod->m_sModuleResourceName.SubString(12); // discard "CURRENTGAME:"
+}
+
 NWNX_EXPORT ArgumentStack GetCustomToken(ArgumentStack&& args)
 {
     std::string retVal;

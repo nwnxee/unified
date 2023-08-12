@@ -272,9 +272,33 @@ NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
         pos.y = args.extract<float>();
         pos.x = args.extract<float>();
 
+        float fScale = 1.0;
+        Vector vTranslate = { 0.0, 0.0, 0.0 };
+        Vector vRotation = { 0.0, 0.0, 0.0 };
+        try
+        {
+            fScale = args.extract<float>();
+
+            vTranslate.z = args.extract<float>();
+            vTranslate.y = args.extract<float>();
+            vTranslate.x = args.extract<float>();
+
+            vRotation.z = args.extract<float>();
+            vRotation.y = args.extract<float>();
+            vRotation.x = args.extract<float>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Player_ShowVisualEffect: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
+        }
+
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             ObjectVisualTransformData ovtd;
+            ovtd.m_scopes[0].m_scale = Vector{fScale, fScale, fScale};
+            ovtd.m_scopes[0].m_rotate = vRotation;
+            ovtd.m_scopes[0].m_translate = vTranslate;
+            ovtd.m_scopes[0].m_animationSpeed = 1.0f;
             pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos, ovtd);
         }
     }
@@ -448,12 +472,38 @@ NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = args.extract<int32_t>();
           ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
 
+        float fScale = 1.0;
+        Vector vTranslate = { 0.0, 0.0, 0.0 };
+        Vector vRotation = { 0.0, 0.0, 0.0 };
+        try
+        {
+            fScale = args.extract<float>();
+            
+            vTranslate.x = args.extract<float>();
+            vTranslate.y = args.extract<float>();
+            vTranslate.z = args.extract<float>();
+            
+            vRotation.x = args.extract<float>();
+            vRotation.y = args.extract<float>();
+            vRotation.z = args.extract<float>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Player_ApplyInstantVisualEffectToObject: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
+        }
+
         Vector vTargetPosition {};
 
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
+            ObjectVisualTransformData ovtd;
+            ovtd.m_scopes[0].m_scale = Vector{fScale, fScale, fScale};
+            ovtd.m_scopes[0].m_rotate = vRotation;
+            ovtd.m_scopes[0].m_translate = vTranslate;
+            ovtd.m_scopes[0].m_animationSpeed = 1.0f;
+
             pMessage->SendServerToPlayerGameObjUpdateVisEffect(pPlayer, visualEffect, oidTarget, Utils::GetModule()->m_idSelf,
-                                                               0, 0, vTargetPosition, 0.0f);
+                                                               0, 0, vTargetPosition, 0.0f, ovtd);
         }
     }
     return {};
@@ -1901,4 +1951,21 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetTURD(ArgumentStack&& args)
+{
+    const auto oidPlayer = args.extract<OBJECT_ID>();
+    
+    if (CExoLinkedListInternal* pTURDS = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
+    {
+        for (CExoLinkedListPosition pNode = pTURDS->pHead; pNode; pNode = pNode->pNext)
+        {
+            auto* pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+            if ((pTURD) && (pTURD->m_oidPlayer == oidPlayer))
+                return pTURD->m_idSelf; 
+        }
+    }
+
+    return Constants::OBJECT_INVALID;
 }

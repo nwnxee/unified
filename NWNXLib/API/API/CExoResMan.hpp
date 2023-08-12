@@ -9,6 +9,8 @@
 #include "CRes.hpp"
 #include "CResRef.hpp"
 #include "RESID.hpp"
+#include "CNWSync.hpp"
+#include "SHA1.hpp"
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResMan)
@@ -19,10 +21,6 @@ struct CExoKeyTable;
 struct CExoKeyTable;
 struct CExoStringList;
 struct CKeyTableEntry;
-struct SHA1;
-namespace Hash {
-    struct SHA1;
-}
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
@@ -44,7 +42,7 @@ struct CExoResMan
     CResRef m_cLastFailedLookup;
     RESTYPE m_nLastFailedLookupType;
     BOOL m_bOverrideAll;
-    CNWSync m_pNWSync;
+    NWSync::CNWSync m_pNWSync;
     void * m_pResourceOverrideMap;
 
     CExoResMan();

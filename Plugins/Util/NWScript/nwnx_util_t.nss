@@ -61,6 +61,9 @@ void main()
                              "t2.seconds: " + IntToString(t2.seconds) + "; " +
                              "t2.microseconds: " + IntToString(t2.microseconds) + "; ");
     NWNX_Tests_Report("NWNX_Util", "GetHighResTimeStamp", t1.microseconds != t2.microseconds);
+    
+    string sModMame = NWNX_Util_GetModuleFile();
+    NWNX_Tests_Report("NWNX_Util", "GetModuleFile", sModMame != "");
 
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

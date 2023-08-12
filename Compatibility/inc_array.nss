@@ -148,7 +148,7 @@ string GetTableName(string tag, object obj=OBJECT_INVALID, int bare=FALSE) {
 string GetTableCreateString(string tag, object obj=OBJECT_INVALID) {
     // for simplicity sake, everything is turned into a string.  Possible enhancement
     // to create specific tables for int/float/whatever.
-    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER PRIMARY KEY, value TEXT )";
+    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER, value TEXT )";
 }
 
 int TableExists(string tag, object obj=OBJECT_INVALID) {

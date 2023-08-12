@@ -33,7 +33,7 @@ struct CNetLayerSessionInfo
     BOOL m_bRecievedBNXR;
     uint32_t m_nLastUpdate;
     CExoString m_sVisibleAddress;
-    NWSyncAdvertisement m_nwsyncData;
+    NWSync::Advertisement m_nwsyncData;
 
     CNetLayerSessionInfo();
     ~CNetLayerSessionInfo();

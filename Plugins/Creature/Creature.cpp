@@ -32,6 +32,7 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSpell.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSStore.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CNWSEffectListHandler.hpp"
@@ -1259,12 +1260,21 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 
         const auto cls = args.extract<int32_t>();
         const auto count = args.extract<int32_t>();
+        int32_t package = 255;
+        try
+        {
+            package = args.extract<int32_t>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Creature_LevelUp: Missing argument \"package\". Continuing with \"package\" = PACKAGE_INVALID. Please update nwnx_creature.nss and recompile your module!");
+        }
 
         // Allow leveling outside of regular rules
         bSkipLevelUpValidation = true;
         for (int32_t i = 0; i < count; i++)
         {
-            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, Constants::ClassType::Invalid))
+            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, package))
             {
                 LOG_WARNING("Failed to add level of class %d, aborting", cls);
                 break;
@@ -3383,4 +3393,194 @@ NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf)))
+            {
+                return maxBuyPriceOverride.value();
+            }
+        }
+    }
+
+    return -2;
+}
+
+NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    static Hooks::Hook pCalculateItemBuyPrice_hook = Hooks::HookFunction(&CNWSStore::CalculateItemBuyPrice,
+    +[](CNWSStore *pThis, CNWSItem *pItem, OBJECT_ID oidSeller) -> int32_t
+    {
+        if (auto *pSeller = Utils::AsNWSCreature(Utils::GetGameObject(oidSeller)))
+        {
+            if (auto maxBuyPriceOverride = pSeller->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pThis->m_idSelf)))
+            {
+                if (pItem->m_bPlotObject)
+                    return 0;
+
+                if (auto nCost = pItem->GetCost(true, false, false, false))
+                {
+                    auto nMaxBuyPriceOverride = maxBuyPriceOverride.value();
+                    auto nBuyRate = pThis->GetCustomerBuyRate(oidSeller, pItem->m_bStolen);
+                    auto nBuyPrice = nCost * nBuyRate / 100.0;
+
+                    if (nMaxBuyPriceOverride != -1 && nMaxBuyPriceOverride < nBuyPrice)
+                        nBuyPrice = nMaxBuyPriceOverride;
+
+                    if (nBuyPrice < 1)
+                        nBuyPrice = 1;
+
+                    return nBuyPrice;
+                }
+                
+                return 0;
+            }
+        }
+
+        return pCalculateItemBuyPrice_hook->CallOriginal<int32_t>(pThis, pItem, oidSeller);
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook pSendServerToPlayerOpenStoreInventory_hook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerOpenStoreInventory,
+    +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidStore, uint8_t nPanel) -> bool
+    {
+        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+        {
+            if (auto *pStore = Utils::AsNWSStore(Utils::GetGameObject(oidStore)))
+            {
+                if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(oidStore)))
+                {
+                    auto nMaxBuyPrice = pStore->m_iMaxBuyPrice;
+
+                    pStore->m_iMaxBuyPrice = maxBuyPriceOverride.value();
+                    auto retVal = pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+                    pStore->m_iMaxBuyPrice = nMaxBuyPrice;
+
+                    return retVal;
+                }
+            }
+        }
+
+        return pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+    }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            const auto nMaxBuyPrice = args.extract<int32_t>();
+
+            if (nMaxBuyPrice == -2)
+                pCreature->nwnxRemove("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf));
+            else
+                pCreature->nwnxSet("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf), nMaxBuyPrice, false);
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            return pLevelStats->m_nAbilityGain;
+        }
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        const auto ability = args.extract<int32_t>();
+          ASSERT_OR_THROW(ability >= Constants::Ability::MIN);
+          ASSERT_OR_THROW(ability <= Constants::Ability::MAX);
+        
+        if ((level > 0) && (level <= pCreature->m_pStats->m_lstLevelStats.num))
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            if (pLevelStats->m_nAbilityGain != ability)
+            {
+                switch (pLevelStats->m_nAbilityGain)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase - 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase - 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase - 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase - 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase - 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase - 1);
+                        break;
+                }
+
+                switch (ability)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase + 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase + 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase + 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase + 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase + 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase + 1);
+                        break;
+                }
+
+                pLevelStats->m_nAbilityGain = ability;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxAttackRange(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<OBJECT_ID>();
+        return pCreature->MaxAttackRange(oidTarget);
+    }
+
+    return 0.0f;
 }
