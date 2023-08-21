@@ -1674,6 +1674,21 @@ _______________________________________
     AUTOMATIC_CHANGE      | int    | TRUE if the game automatically decided on the new target, FALSE if explicitly chosen |
     RETARGETABLE          | int    | TRUE if the new target can be changed using NWNX_Events_SetEventResult() (Only in BEFORE) |
 _______________________________________
+    ## Creature Tile Change Events
+    - NWNX_ON_CREATURE_TILE_CHANGE_BEFORE
+    - NWNX_ON_CREATURE_TILE_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature changing tile positions.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD_TILE_INDEX        | int    | The index of the old tile. |
+    OLD_TILE_X            | int    | The tile grid x position of the old tile. |
+    OLD_TILE_Y            | int    | The tile grid y position of the old tile. |
+    NEW_TILE_INDEX        | int    | The index of the new tile. |
+    NEW_TILE_X            | int    | The tile grid x position of the new tile. |
+    NEW_TILE_Y            | int    | The tile grid y position of the new tile. |
+_______________________________________
 */
 
 /// @name Events Event Constants
@@ -2012,6 +2027,8 @@ const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE = "NWNX_ON_AREA_PLAY_BATTLE_M
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER";
 const string NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE = "NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE";
 const string NWNX_ON_ATTACK_TARGET_CHANGE_AFTER = "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER";
+const string NWNX_ON_CREATURE_TILE_CHANGE_BEFORE = "NWNX_ON_CREATURE_TILE_CHANGE_BEFORE";
+const string NWNX_ON_CREATURE_TILE_CHANGE_AFTER = "NWNX_ON_CREATURE_TILE_CHANGE_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
