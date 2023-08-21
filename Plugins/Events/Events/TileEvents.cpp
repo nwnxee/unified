@@ -13,8 +13,8 @@ static Hooks::Hook s_SetPositionHook;
 
 static void SetPositionHook(CNWSObject*, Vector, int32_t);
 
-void MaterialChangeEvents() __attribute__((constructor));
-void MaterialChangeEvents()
+void TileEvents() __attribute__((constructor));
+void TileEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", []() {
         s_SetPositionHook = Hooks::HookFunction(&CNWSObject::SetPosition,

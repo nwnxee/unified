@@ -19,7 +19,7 @@ add_plugin(Events
     "Events/JournalEvents.cpp"
     "Events/LevelEvents.cpp"
     "Events/MapEvents.cpp"
-    "Events/MaterialChangeEvents.cpp"
+    "Events/TileEvents.cpp"
     "Events/ObjectEvents.cpp"
     "Events/PartyEvents.cpp"
     "Events/PolymorphEvents.cpp"
