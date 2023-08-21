@@ -49,6 +49,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Casts all On Hit: Cast Spell item properties on hit, instead of only the first property. |
 | `NWNX_TWEAKS_FIX_AUTOMAP_CRASH` | true or false | Fixes a server crash that happens when automap data is outdated for a player. |
+| `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` | true or false | If enabled, a creature getting added to an area will fire the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events. |
 
 ## Environment variable values
 

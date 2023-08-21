@@ -38,4 +38,5 @@ add_plugin(Tweaks
     "RangedWeaponsUseOnHitEffectItemProperties.cpp"
     "RangedWeaponsUseOnHitCastSpellItemProperties.cpp"
     "CastAllOnHitCastSpellItemProperties.cpp"
-    "FixAutoMapCrash.cpp")
+    "FixAutoMapCrash.cpp"
+    "SetAreaCallsSetPosition.cpp")
