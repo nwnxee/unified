@@ -1603,6 +1603,29 @@ _______________________________________
     ----------------------|--------|-------
     OBJECT                | object | The Object being used |
 _______________________________________
+    ## Placeable Open Events (Placeables with inventory)
+    - NWNX_ON_PLACEABLE_OPEN_BEFORE
+    - NWNX_ON_PLACEABLE_OPEN_AFTER
+
+    `OBJECT_SELF` = The placeable being openeed.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The player opening. |
+    BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
+_______________________________________
+    ## Placeable Close Events (Placeables with inventory)
+    - NWNX_ON_PLACEABLE_CLOSE_BEFORE
+    - NWNX_ON_PLACEABLE_CLOSE_AFTER
+
+    `OBJECT_SELF` = The placeable being closed.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The player closing. |
+
+    @note Skipping event is not allowed (since otherwise client UI will hang and be glitchy)
+_______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER
@@ -2002,6 +2025,10 @@ const string NWNX_ON_RUN_EVENT_SCRIPT_BEFORE = "NWNX_ON_RUN_EVENT_SCRIPT_BEFORE"
 const string NWNX_ON_RUN_EVENT_SCRIPT_AFTER = "NWNX_ON_RUN_EVENT_SCRIPT_AFTER";
 const string NWNX_ON_OBJECT_USE_BEFORE = "NWNX_ON_OBJECT_USE_BEFORE";
 const string NWNX_ON_OBJECT_USE_AFTER = "NWNX_ON_OBJECT_USE_AFTER";
+const string NWNX_ON_PLACEABLE_OPEN_BEFORE = "NWNX_ON_PLACEABLE_OPEN_BEFORE";
+const string NWNX_ON_PLACEABLE_OPEN_AFTER = "NWNX_ON_PLACEABLE_OPEN_AFTER";
+const string NWNX_ON_PLACEABLE_CLOSE_BEFORE = "NWNX_ON_PLACEABLE_CLOSE_BEFORE";
+const string NWNX_ON_PLACEABLE_CLOSE_AFTER = "NWNX_ON_PLACEABLE_CLOSE_AFTER";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER";
 const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE";
