@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__util_8nss.html":[4,0,3,42,0,0],
+"nwnx__util_8nss_source.html":[4,0,3,42,0,0],
+"nwnx__visibility_8nss.html":[4,0,3,43,0,0],
+"nwnx__visibility_8nss_source.html":[4,0,3,43,0,0],
+"nwnx__weapon_8nss.html":[4,0,3,44,0,0],
+"nwnx__weapon_8nss_source.html":[4,0,3,44,0,0],
+"nwnx__webhook_8nss.html":[4,0,3,45,0,0],
+"nwnx__webhook_8nss_source.html":[4,0,3,45,0,0],
 "nwnx__webhook__rch_8nss.html":[4,0,3,45,0,1],
 "nwnx__webhook__rch_8nss.html#ad2b8a8163359a3d236d704a29d454103":[4,0,3,45,0,1,0],
 "nwnx__webhook__rch_8nss_source.html":[4,0,3,45,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742":[0,36,2,2],
 "structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3":[0,36,2,8],
 "structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7":[0,36,2,6],
-"structNWNX__Tileset__CustomTileData.html":[0,40,6],
-"structNWNX__Tileset__CustomTileData.html#a031372788579109aea15190cc9f669e1":[0,40,6,3],
-"structNWNX__Tileset__CustomTileData.html#a03d7816f7820a8a5ce99e487c490da55":[0,40,6,2],
-"structNWNX__Tileset__CustomTileData.html#a1aed6d385d1dabe3ebd93d34db2b471b":[0,40,6,4],
-"structNWNX__Tileset__CustomTileData.html#a1bee0e1c334d3b979be6aca7649c7151":[0,40,6,0],
-"structNWNX__Tileset__CustomTileData.html#a30505568a8b8de5ae31632768738ff65":[0,40,6,1],
-"structNWNX__Tileset__CustomTileData.html#a72f43f39bfe435c2271885f34db1478d":[0,40,6,9],
-"structNWNX__Tileset__CustomTileData.html#a800fec1c59fd92234fa6d7cf4e4b3964":[0,40,6,8],
-"structNWNX__Tileset__CustomTileData.html#a92470763dfd5aa5b8fe4c094ef62f9b9":[0,40,6,6]
+"structNWNX__Tileset__CustomTileData.html":[0,40,6]
 };

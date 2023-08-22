@@ -109,12 +109,12 @@ $(document).ready(function(){initNavTree('group__webhook.html',''); initResizabl
 <h3><a id="webhook"></a>Readme</h3><div class="textblock">Allows the sending of WebHooks. At the moment, only slack application/json format is supported. See <a href="https://api.slack.com/incoming-webhooks">https://api.slack.com/incoming-webhooks</a>.Events exist for SUCCESS or FAILURE.<ul>
 <li>Top tip: Append <code>/slack</code> to the end of a Discord webhook url for it to work.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md603"></a>
+<h2><a class="anchor" id="autotoc_md605"></a>
 Limitations</h2>
 <p>For added security, it is highly recommended to set your webhook path as an environment variable and use <a class="el" href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b" title="Retrieves an environment variable.">NWNX_Util_GetEnvironmentVariable()</a> to construct your path.</p>
-<h2><a class="anchor" id="autotoc_md604"></a>
+<h2><a class="anchor" id="autotoc_md606"></a>
 Example usage</h2>
-<h4><a class="anchor" id="autotoc_md605"></a>
+<h4><a class="anchor" id="autotoc_md607"></a>
 Example 1</h4>
 <p>The builder wants to be notified with a simple message when the module has completed start up</p><ul>
 <li>At the end of the <code>on_module_load</code> script, add the following: <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_webhook&quot;</span></div>
@@ -123,7 +123,7 @@ Example 1</h4>
 <div class="line">...</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md606"></a>
+<h4><a class="anchor" id="autotoc_md608"></a>
 Example 2</h4>
 <p>The builder wishes to create a function to post a bug report to the Discord developer channel.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_time&quot;</span></div>
@@ -158,7 +158,7 @@ Example 2</h4>
 <div class="line">    <span class="keywordtype">string</span> sConstructedMsg = <a class="code" href="group__webhook.html#gaa00d5470aa2ba99e649e08770ac86bb6">NWNX_WebHook_BuildMessageForWebHook</a>(<span class="stringliteral">&quot;discordapp.com&quot;</span>, <a class="code" href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a>(<span class="stringliteral">&quot;NWNX_WEBHOOK_DEVELOPER_CHANNEL&quot;</span>), stMessage);</div>
 <div class="line">    <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(<span class="stringliteral">&quot;discordapp.com&quot;</span>, <a class="code" href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a>(<span class="stringliteral">&quot;NWNX_WEBHOOK_DEVELOPER_CHANNEL&quot;</span>), sConstructedMsg);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md607"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md609"></a>
 Example 3</h4>
 <p>The builder wishes to resend a WebHook when one is disallowed due to rate limitations.</p><ul>
 <li>In module <code>OnModuleLoad</code> add: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="stringliteral">&quot;NWNX_ON_WEBHOOK_FAILED&quot;</span>, <span class="stringliteral">&quot;event_webhook&quot;</span>);</div>
@@ -188,7 +188,7 @@ Example 3</h4>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md608"></a>
+<h4><a class="anchor" id="autotoc_md610"></a>
 Example 4</h4>
 <p>The builder wishes to notify the general discord channel when a PC reaches a new level.</p><ul>
 <li>In module <code>OnModuleLoad</code> add: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="stringliteral">&quot;NWNX_ON_LEVEL_UP_AFTER&quot;</span>, <span class="stringliteral">&quot;event_level&quot;</span>);</div>
@@ -221,7 +221,7 @@ Example 4</h4>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 </ul>
-<p><a class="anchor" id="autotoc_md609"></a></p><h5>Note on Portraits as Images</h5>
+<p><a class="anchor" id="autotoc_md611"></a></p><h5>Note on Portraits as Images</h5>
 <p>You may have noticed in this example how portraits are being used in the WebHooks as images. If you want to know how I converted portraits to images to use for this, here were the commands used: </p><div class="fragment"><div class="line">mkdir /tmp/tga</div>
 <div class="line"># From the top level you wish to search for your portraits</div>
 <div class="line"># Don&#39;t forget to include the stock portraits here as well!</div>
@@ -434,10 +434,10 @@ Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02335">nwnx_events.nss:2335</a></div></div>
+<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02362">nwnx_events.nss:2362</a></div></div>
 <div class="ttc" id="aarray__example_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="array__example_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="array__example_8nss_source.html#l00133">array_example.nss:133</a></div></div>
-<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02311">nwnx_events.nss:2311</a></div></div>
-<div class="ttc" id="agroup__events_html_ga1f7aeeb1c0a8f4166b8d1dbefa521294"><div class="ttname"><a href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_SubscribeEvent(string evt, string script)</div><div class="ttdoc">Scripts can subscribe to events.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02246">nwnx_events.nss:2246</a></div></div>
+<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02338">nwnx_events.nss:2338</a></div></div>
+<div class="ttc" id="agroup__events_html_ga1f7aeeb1c0a8f4166b8d1dbefa521294"><div class="ttname"><a href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_SubscribeEvent(string evt, string script)</div><div class="ttdoc">Scripts can subscribe to events.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02273">nwnx_events.nss:2273</a></div></div>
 <div class="ttc" id="astructNWNX__WebHook__Message_html_a8ac91259adbe62020d5da36142876618"><div class="ttname"><a href="structNWNX__WebHook__Message.html#a8ac91259adbe62020d5da36142876618">NWNX_WebHook_Message::sUsername</a></div><div class="ttdeci">string sUsername</div><div class="ttdoc">https://birdie0.github.io/discord-webhooks-guide/structure/username.html</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook__rch_8nss_source.html#l00010">nwnx_webhook_rch.nss:10</a></div></div>
 <div class="ttc" id="astructNWNX__WebHook__Message_html"><div class="ttname"><a href="structNWNX__WebHook__Message.html">NWNX_WebHook_Message</a></div><div class="ttdoc">For more information on these fields see https://birdie0.github.io/discord-webhooks-guide/.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook__rch_8nss_source.html#l00009">nwnx_webhook_rch.nss:9</a></div></div>
 <div class="ttc" id="agroup__webhook_html_ga8030e0fe61e40060c60246dd1cc2f5cc"><div class="ttname"><a href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a></div><div class="ttdeci">void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, float delay=0.0f)</div><div class="ttdoc">Resends a webhook message after a defined delay.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook_8nss_source.html#l00040">nwnx_webhook.nss:40</a></div></div>
@@ -450,7 +450,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Aug 8 2023 22:37:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Aug 22 2023 11:30:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

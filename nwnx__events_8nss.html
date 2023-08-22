@@ -2200,6 +2200,37 @@ Object Use Events (Placeables)</h2>
 </table>
 <hr  />
  <h2><a class="anchor" id="autotoc_md389"></a>
+Placeable Open Events (Placeables with inventory)</h2>
+<ul>
+<li>NWNX_ON_PLACEABLE_OPEN_BEFORE</li>
+<li>NWNX_ON_PLACEABLE_OPEN_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The placeable being openeed.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OBJECT </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The player opening.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">BEFORE_SKIPPED </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events  </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md390"></a>
+Placeable Close Events (Placeables with inventory)</h2>
+<ul>
+<li>NWNX_ON_PLACEABLE_CLOSE_BEFORE</li>
+<li>NWNX_ON_PLACEABLE_CLOSE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The placeable being closed.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OBJECT </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The player closing.  </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Skipping event is not allowed (since otherwise client UI will hang and be glitchy)</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md391"></a>
 Broadcast Safe Projectile Events</h2>
 <ul>
 <li>NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE</li>
@@ -2232,7 +2263,7 @@ Broadcast Safe Projectile Events</h2>
 <div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md390"></a>
+ <h2><a class="anchor" id="autotoc_md392"></a>
 Broadcast Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2248,7 +2279,7 @@ Broadcast Attack of Opportunity Events</h2>
 <td class="markdownTableBodyNone">MOVEMENT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Whether this attack of opportunity is being triggered from movement  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md391"></a>
+ <h2><a class="anchor" id="autotoc_md393"></a>
 Combat Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2263,7 +2294,7 @@ Combat Attack of Opportunity Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>If the BEFORE event is skipped the broadcasting creature will still make a tumble skill roll if moving.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md392"></a>
+ <h2><a class="anchor" id="autotoc_md394"></a>
 Area Play Battle Music Events</h2>
 <ul>
 <li>NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE</li>
@@ -2277,7 +2308,7 @@ Area Play Battle Music Events</h2>
 <td class="markdownTableBodyNone">PLAY </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the area is starting to play battle music, FALSE if stopping.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md393"></a>
+ <h2><a class="anchor" id="autotoc_md395"></a>
 Combat Attack Target Change Events</h2>
 <ul>
 <li>NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE</li>
@@ -2945,6 +2976,14 @@ Combat Attack Target Change Events</h2>
 <tr class="separator:ga299f3034a258c43d0c40c51732ee638c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1acdb7c210009a2cecabf69cfea93bbe"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1acdb7c210009a2cecabf69cfea93bbe">NWNX_ON_OBJECT_USE_AFTER</a> = &quot;NWNX_ON_OBJECT_USE_AFTER&quot;</td></tr>
 <tr class="separator:ga1acdb7c210009a2cecabf69cfea93bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a9298dec9034b075153d7a6b1bbb712"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1a9298dec9034b075153d7a6b1bbb712">NWNX_ON_PLACEABLE_OPEN_BEFORE</a> = &quot;NWNX_ON_PLACEABLE_OPEN_BEFORE&quot;</td></tr>
+<tr class="separator:ga1a9298dec9034b075153d7a6b1bbb712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e73f9de7a8c5baea31880c28d387b76"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga4e73f9de7a8c5baea31880c28d387b76">NWNX_ON_PLACEABLE_OPEN_AFTER</a> = &quot;NWNX_ON_PLACEABLE_OPEN_AFTER&quot;</td></tr>
+<tr class="separator:ga4e73f9de7a8c5baea31880c28d387b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa062f9f63eb1f6af24095f366ba6b3f9"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa062f9f63eb1f6af24095f366ba6b3f9">NWNX_ON_PLACEABLE_CLOSE_BEFORE</a> = &quot;NWNX_ON_PLACEABLE_CLOSE_BEFORE&quot;</td></tr>
+<tr class="separator:gaa062f9f63eb1f6af24095f366ba6b3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad1d1672115cd9265550ddd10631e1f1b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gad1d1672115cd9265550ddd10631e1f1b">NWNX_ON_PLACEABLE_CLOSE_AFTER</a> = &quot;NWNX_ON_PLACEABLE_CLOSE_AFTER&quot;</td></tr>
+<tr class="separator:gad1d1672115cd9265550ddd10631e1f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1d4499d6cd8e646ec45fbcca98b8241b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1d4499d6cd8e646ec45fbcca98b8241b">NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE</a> = &quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE&quot;</td></tr>
 <tr class="separator:ga1d4499d6cd8e646ec45fbcca98b8241b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafbeca026bffa80a6215e6121f864c65b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gafbeca026bffa80a6215e6121f864c65b">NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER</a> = &quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER&quot;</td></tr>
@@ -3061,13 +3100,13 @@ Combat Attack Target Change Events</h2>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02382">nwnx_events.nss:2382</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02409">nwnx_events.nss:2409</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Tue Aug 8 2023 22:37:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Aug 22 2023 11:30:07 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
