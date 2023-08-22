@@ -357,6 +357,8 @@ var group__events =
     [ "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER", "group__events.html#ga0f2fa537afa0fee07859635991d4eeb9", null ],
     [ "NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE", "group__events.html#gac52634814a6d261dc9054ff5d0b20fa4", null ],
     [ "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER", "group__events.html#ga10c8d72ac9fc858a2248c63ad20fca17", null ],
+    [ "NWNX_ON_CREATURE_TILE_CHANGE_BEFORE", "group__events.html#ga176e59c33a65f9838ec02abe53545559", null ],
+    [ "NWNX_ON_CREATURE_TILE_CHANGE_AFTER", "group__events.html#gaa4cd069b89fa9315224302b8d33624f3", null ],
     [ "NWNX_EVENTS_OBJECT_TYPE_CREATURE", "group__events.html#ga0ab14e7f0fe557cf8af8bae4266971b3", null ],
     [ "NWNX_EVENTS_OBJECT_TYPE_ITEM", "group__events.html#ga3ed1bf698389f0bbf6f5ac321491bff9", null ],
     [ "NWNX_EVENTS_OBJECT_TYPE_TRIGGER", "group__events.html#gab88574e76f3a9a4881cde9b601a13844", null ],
