@@ -15,6 +15,8 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Events: added event `NWNX_ON_ATTACK_TARGET_CHANGE_{BEFORE|AFTER}` which fires when a creature changes its attack target.
 - Events: added `NWNX_ON_PLACEABLE_OPEN_{BEFORE|AFTER}` which fires when player opens a placeable.
 - Events: added `NWNX_ON_PLACEABLE_CLOSE_{BEFORE|AFTER}` which fires when player closes a placeable.
+- Events: added event `NWNX_ON_CREATURE_TILE_CHANGE_{BEFORE|AFTER}` which fires when a creature changes the tile it's on.
+- Tweaks: added `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` which will enable firing of the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events when a creature is first added to an area.
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
