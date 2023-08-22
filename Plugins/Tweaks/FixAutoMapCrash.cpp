@@ -17,9 +17,9 @@ void FixAutoMapCrash()
     LOG_INFO("Fixing a server crash that happens when automap data is outdated for a player.");
 
     static Hooks::Hook s_SetAutoMapDataHook = Hooks::HookFunction(&CNWSCreature::SetAutoMapData,
-    +[](CNWSCreature *pThis, OBJECT_ID *pAreaList, uint8_t **pMapTileData) -> void
+    +[](CNWSCreature *pThis, int32_t nNumAreas, OBJECT_ID *pAreaList, uint8_t **pMapTileData) -> void
     {
-        s_SetAutoMapDataHook->CallOriginal<void>(pThis, pAreaList, pMapTileData);
+        s_SetAutoMapDataHook->CallOriginal<void>(pThis, nNumAreas, pAreaList, pMapTileData);
         pThis->ReconcileAutoMapData();
     }, Hooks::Order::Early);
 }
