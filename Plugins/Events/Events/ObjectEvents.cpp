@@ -1,5 +1,6 @@
 #include "Events.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CNWSPlaceable.hpp"
 
 namespace Events {
 
@@ -10,11 +11,15 @@ using namespace NWNXLib::API::Constants;
 static NWNXLib::Hooks::Hook s_AddLockObjectActionHook;
 static NWNXLib::Hooks::Hook s_AddUnlockObjectActionHook;
 static NWNXLib::Hooks::Hook s_AddUseObjectActionHook;
+static NWNXLib::Hooks::Hook s_OpenInventoryHook;
+static NWNXLib::Hooks::Hook s_CloseInventoryHook;
 static NWNXLib::Hooks::Hook s_BroadcastSafeProjectileHook;
 
 static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
 static int32_t AddUseObjectActionHook(CNWSObject*, ObjectID);
+static void OpenInventoryHook(CNWSPlaceable*, ObjectID);
+static void CloseInventoryHook(CNWSPlaceable*, ObjectID, BOOL);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
 
 void ObjectEvents() __attribute__((constructor));
@@ -33,6 +38,16 @@ void ObjectEvents()
     InitOnFirstSubscribe("NWNX_ON_OBJECT_USE_.*", []() {
         s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUseObjectAction,
                                                    (void*)&AddUseObjectActionHook, Hooks::Order::Early);
+    });
+    
+    InitOnFirstSubscribe("NWNX_ON_PLACEABLE_OPEN_.*", []() {
+        s_OpenInventoryHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
+                                                   (void*)&OpenInventoryHook, Hooks::Order::Early);
+    });
+    
+    InitOnFirstSubscribe("NWNX_ON_PLACEABLE_CLOSE_.*", []() {
+        s_CloseInventoryHook = Hooks::HookFunction(&CNWSPlaceable::CloseInventory,
+                                                   (void*)&CloseInventoryHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_BROADCAST_SAFE_PROJECTILE_.*", []() {
@@ -115,6 +130,40 @@ int32_t AddUseObjectActionHook(CNWSObject *thisPtr, ObjectID oidObjectToUse)
     PushAndSignal("NWNX_ON_OBJECT_USE_AFTER");
 
     return retVal;
+}
+
+void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
+{
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("OBJECT", Utils::ObjectIDToString(oidOpener));
+        return SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    bool skipped = false;
+    if (PushAndSignal("NWNX_ON_PLACEABLE_OPEN_BEFORE"))
+    {
+        s_OpenInventoryHook->CallOriginal<int32_t>(thisPtr, oidOpener);
+    } 
+    else 
+    {
+        skipped = true;
+    }
+
+    PushEventData("BEFORE_SKIPPED", std::to_string(skipped));
+    PushAndSignal("NWNX_ON_PLACEABLE_OPEN_AFTER");
+}
+
+void CloseInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidCloser, BOOL bUpdatePlayer = true)
+{
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("OBJECT", Utils::ObjectIDToString(oidCloser));
+        return SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    // don't allow SkipEvent on close event, otherwise it hangs client ui.
+    PushAndSignal("NWNX_ON_PLACEABLE_CLOSE_BEFORE");
+    s_CloseInventoryHook->CallOriginal<int32_t>(thisPtr, oidCloser, bUpdatePlayer);
+    PushAndSignal("NWNX_ON_PLACEABLE_CLOSE_AFTER");
 }
 
 void BroadcastSafeProjectileHook(CNWSObject *thisPtr, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
