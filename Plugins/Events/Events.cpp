@@ -65,7 +65,7 @@ std::string GetEventData(const std::string& tag)
 
     if (data == std::end(eventData.m_EventDataMap))
     {
-        LOG_ERROR("Tried to access event data with invalid tag.");
+        LOG_ERROR("Tried to access event data with invalid tag: '%s'.", tag);
         return retVal;
     }
 
