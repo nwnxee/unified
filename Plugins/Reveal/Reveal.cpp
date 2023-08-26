@@ -60,6 +60,9 @@ BOOL Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreature*
                     auto detectionVector = pHidingCreature->nwnxGet<int>(detectionKey + "PARTY");
                     if (detectionVector && *detectionVector)
                         *bSeen = *detectionVector;
+                    else
+                        *bSeen = false;
+
                     *bHeard = true;
                     return true;
                 }
@@ -73,6 +76,8 @@ BOOL Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreature*
                 auto detectionVector = pHidingCreature->nwnxGet<int>(detectionKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf));
                 if (detectionVector && *detectionVector)
                     *bSeen = *detectionVector;
+                else
+                    *bSeen = false;
 
                 *bHeard = true;
                 return true;
