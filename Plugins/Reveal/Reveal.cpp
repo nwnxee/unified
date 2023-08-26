@@ -57,10 +57,9 @@ BOOL Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreature*
             {
                 if (pObserverCreature->GetFaction()->GetLeader() == pHidingCreature->GetFaction()->GetLeader())
                 {
-                    if(pHidingCreature->nwnxGet<int>(detectionKey + "PARTY"))
-                    {
-                        *bSeen = true;
-                    }
+                    auto detectionVector = pHidingCreature->nwnxGet<int>(detectionKey + "PARTY");
+                    if (detectionVector && *detectionVector)
+                        *bSeen = *detectionVector;
                     *bHeard = true;
                     return true;
                 }
@@ -70,10 +69,11 @@ BOOL Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreature*
             if (reveal && *reveal)
             {
                 pHidingCreature->nwnxRemove(revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)); //remove mapping after first check
-                if (pHidingCreature->nwnxGet<int>(detectionKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)))
-                {
-                    *bSeen = true;
-                }
+                
+                auto detectionVector = pHidingCreature->nwnxGet<int>(detectionKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf));
+                if (detectionVector && *detectionVector)
+                    *bSeen = *detectionVector;
+
                 *bHeard = true;
                 return true;
             }
