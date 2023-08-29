@@ -34,28 +34,29 @@ private:
         ACVSRACE             = 5,
         ARCANESPELLFAILURE   = 6,
         CONCEALMENT          = 7,
-        DMGIMMUNITY          = 8,
-        DMGREDUCTION         = 9,
-        DMGRESIST            = 10,
-        IMMUNITY             = 11,
-        MOVEMENTSPEED        = 12,
-        REGENERATION         = 13,
-        SAVE                 = 14,
-        SAVEVSRACE           = 15,
-        SAVEVSTYPE           = 16,
-        SAVEVSTYPERACE       = 17,
-        SPELLIMMUNITY        = 18,
-        SRCHARGEN            = 19,
-        SRINCLEVEL           = 20,
-        SPELLSAVEDC          = 21,
-        BONUSSPELL           = 22,
-        TRUESEEING           = 23,
-        SEEINVISIBLE         = 24,
-        ULTRAVISION          = 25,
-        HASTE                = 26,
-        VISUALEFFECT         = 27,
-        SPELLSAVEDCFORSCHOOL = 28,
-        SPELLSAVEDCFORSPELL  = 29,
+        DAMAGE               = 8,
+        DMGIMMUNITY          = 9,
+        DMGREDUCTION         = 10,
+        DMGRESIST            = 11,
+        IMMUNITY             = 12,
+        MOVEMENTSPEED        = 13,
+        REGENERATION         = 14,
+        SAVE                 = 15,
+        SAVEVSRACE           = 16,
+        SAVEVSTYPE           = 17,
+        SAVEVSTYPERACE       = 18,
+        SPELLIMMUNITY        = 19,
+        SRCHARGEN            = 20,
+        SRINCLEVEL           = 21,
+        SPELLSAVEDC          = 22,
+        BONUSSPELL           = 23,
+        TRUESEEING           = 24,
+        SEEINVISIBLE         = 25,
+        ULTRAVISION          = 26,
+        HASTE                = 27,
+        VISUALEFFECT         = 28,
+        SPELLSAVEDCFORSCHOOL = 29,
+        SPELLSAVEDCFORSPELL  = 30,
     };
 
     set<uint16_t> m_Feats;
@@ -67,6 +68,7 @@ private:
     unordered_map<uint16_t, int8_t>                                                   m_FeatArcaneSpellFailure;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint8_t, uint8_t>>>  m_FeatBonusSpell;
     unordered_map<uint16_t, uint8_t>                                                  m_FeatConcealment;
+    unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDamage;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgResist;
