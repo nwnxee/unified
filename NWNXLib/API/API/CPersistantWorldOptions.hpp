@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CPersistantWorldOptions)
 typedef int BOOL;
 
 
-struct CPersistantWorldOptions
+class CPersistantWorldOptions
 {
+public:
     BOOL bVaultCharsOnly;
     BOOL bSaveCharsInSaveGame;
     BOOL bSuppressBaseServerVault;

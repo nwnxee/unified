@@ -9,14 +9,15 @@
 NWN_API_PROLOGUE(CKeyTableInfo)
 #endif
 
-struct CExoFile;
-struct KEYFILE_RESFILENAME;
+class CExoFile;
+class KEYFILE_RESFILENAME;
 
 
 
 
-struct CKeyTableInfo
+class CKeyTableInfo
 {
+public:
     CExoString m_sName;
     CExoFile * m_pFile;
     KEYFILE_HEADER m_header;

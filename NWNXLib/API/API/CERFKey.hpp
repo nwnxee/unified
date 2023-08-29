@@ -7,15 +7,16 @@
 NWN_API_PROLOGUE(CERFKey)
 #endif
 
-struct CExoFile;
-struct CExoString;
+class CExoFile;
+class CExoString;
 
 
 typedef int BOOL;
 
 
-struct CERFKey
+class CERFKey
 {
+public:
     char m_sName[16];
     uint32_t m_nID;
     uint16_t m_nType;

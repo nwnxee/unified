@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CAutoSave)
 typedef int BOOL;
 
 
-struct CAutoSave
+class CAutoSave
 {
+public:
     BOOL bAtIntervals;
     BOOL bAtSavePoints;
     BOOL bOnPlayerChange;

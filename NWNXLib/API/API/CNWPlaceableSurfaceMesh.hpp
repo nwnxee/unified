@@ -16,8 +16,9 @@ NWN_API_PROLOGUE(CNWPlaceableSurfaceMesh)
 typedef int BOOL;
 
 
-struct CNWPlaceableSurfaceMesh : CResHelper<CResPWK, 2053>
+class CNWPlaceableSurfaceMesh : public CResHelper<CResPWK, 2053>
 {
+public:
     Vector * m_pvVertices;
     int32_t * m_pnTriangles;
     int32_t m_nTriangles;

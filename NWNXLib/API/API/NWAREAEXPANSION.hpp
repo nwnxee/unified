@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(NWAREAEXPANSION)
 
 
 
-struct NWAREAEXPANSION
+class NWAREAEXPANSION
 {
+public:
     CExoLocString lsName;
     int32_t nID;
 

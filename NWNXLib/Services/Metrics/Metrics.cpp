@@ -41,7 +41,9 @@ void Metrics::Push(std::string&& name, MetricData::Fields&& fields, MetricData::
     if (resampler == std::end(m_resamplers))
     {
         using namespace std::chrono;
+#if !WIN32
         data.m_timestamp = std::chrono::system_clock::now();
+#endif
         m_data.emplace_back(std::forward<MetricData>(data));
     }
     else
@@ -145,14 +147,18 @@ void Metrics::Update()
                         // With a target interval of 1000ms, if we pushed at 1200ms, this would set the last flush to be 1000ms.
                         const auto lastFlushAsNs = duration_cast<nanoseconds>(now.time_since_epoch());
                         const auto targetTimestamp = (lastFlushAsNs / data->m_interval) * data->m_interval;
+#if !WIN32
                         targetTimepoint -= lastFlushAsNs - targetTimestamp;
+#endif
                     }
 
                     auto resampledData = data->m_resampler(std::move(data->m_processing));
 
                     for (auto& entry : resampledData)
                     {
+#if !WIN32
                         entry.m_timestamp = targetTimepoint;
+#endif
                     }
 
                     data->m_lastFlush = targetTimepoint;

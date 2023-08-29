@@ -15,8 +15,9 @@ typedef int BOOL;
 typedef uint32_t STRREF;
 
 
-struct CNWBaseItem
+class CNWBaseItem
 {
+public:
     uint32_t m_nName;
     uint32_t m_nEquipableSlots;
     uint8_t m_nWeaponWield;

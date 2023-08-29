@@ -9,9 +9,9 @@
 NWN_API_PROLOGUE(CNWVirtualMachineCommands)
 #endif
 
-struct C2DA;
-struct CResGFF;
-struct CResStruct;
+class C2DA;
+class CResGFF;
+class CResStruct;
 typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
@@ -19,8 +19,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
+class CNWVirtualMachineCommands : public CVirtualMachineCmdImplementer
 {
+public:
     pfCVMCommands * m_pVirtualMachineCommands;
 
     ~CNWVirtualMachineCommands();
@@ -469,7 +470,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetTurnResistanceHD(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetUseableFlag(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetUserDefinedEventNumber(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetVar(int32_t nCommandId, int32_t nParameters);
+    NWNX_IMPORT int32_t ExecuteCommandGetVar(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetWaypointByTag(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetTransitionTarget(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSurfaceMaterial(int32_t nCommandId, int32_t nParameters);
@@ -525,7 +526,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandPersonalReputationAccess(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPickUpItem(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPlayAnimation(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandPlaySound(int32_t nCommandId, int32_t nParameters);
+    NWNX_IMPORT int32_t ExecuteCommandPlaySound(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPlaySoundByStrRef(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPopUpGUIPanel(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPostString(int32_t nCommandId, int32_t nParameters);
@@ -652,7 +653,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandSetTransitionTarget(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTrapInfo(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetUseableFlag(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandSetVar(int32_t nCommandId, int32_t nParameters);
+    NWNX_IMPORT int32_t ExecuteCommandSetVar(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetWeather(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetXP(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetXPScale(int32_t nCommandId, int32_t nParameters);
@@ -683,8 +684,8 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandStringToObject(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSummonAssociate(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSurrenderToEnemies(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandTagEffect(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandTagItemProperty(int32_t nCommandId, int32_t nParameters);
+    NWNX_IMPORT int32_t ExecuteCommandTagEffect(int32_t nCommandId, int32_t nParameters);
+    NWNX_IMPORT int32_t ExecuteCommandTagItemProperty(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTakeGoldFromCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTalent(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTalentAccess(int32_t nCommandId, int32_t nParameters);

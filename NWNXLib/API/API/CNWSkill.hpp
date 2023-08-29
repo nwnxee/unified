@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CNWSkill)
 typedef int BOOL;
 
 
-struct CNWSkill
+class CNWSkill
 {
+public:
     int32_t m_nNameStrref;
     int32_t m_nDescriptionStrref;
     int32_t m_nTalentCategory;

@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CNWItemProperty)
 typedef int BOOL;
 
 
-struct CNWItemProperty
+class CNWItemProperty
 {
+public:
     uint16_t m_nPropertyName;
     uint16_t m_nSubType;
     uint8_t m_nCostTable;

@@ -16,31 +16,31 @@
 NWN_API_PROLOGUE(CNWSMessage)
 #endif
 
-struct CEffectIconObject;
-struct CGameObject;
-struct CGameObjectArray;
-struct CItemRepository;
-struct CLastUpdateObject;
-struct CLastUpdatePartyObject;
-struct CLoopingVisualEffect;
-struct CNWCCMessageData;
-struct CNWSArea;
-struct CNWSAreaOfEffectObject;
-struct CNWSCombatAttackData;
-struct CNWSCreature;
-struct CNWSDoor;
-struct CNWSItem;
-struct CNWSObject;
-struct CNWSPlaceable;
-struct CNWSPlayer;
-struct CNWSPlayerInventoryGUI;
-struct CNWSPlayerLUOInventory;
-struct CNWSPlayerLUOSortedObjectList;
-struct CNWSPlayerLastUpdateObject;
-struct CNWSStore;
-struct CNWSTrigger;
+class CEffectIconObject;
+class CGameObject;
+class CGameObjectArray;
+class CItemRepository;
+class CLastUpdateObject;
+class CLastUpdatePartyObject;
+class CLoopingVisualEffect;
+class CNWCCMessageData;
+class CNWSArea;
+class CNWSAreaOfEffectObject;
+class CNWSCombatAttackData;
+class CNWSCreature;
+class CNWSDoor;
+class CNWSItem;
+class CNWSObject;
+class CNWSPlaceable;
+class CNWSPlayer;
+class CNWSPlayerInventoryGUI;
+class CNWSPlayerLUOInventory;
+class CNWSPlayerLUOSortedObjectList;
+class CNWSPlayerLastUpdateObject;
+class CNWSStore;
+class CNWSTrigger;
 namespace Hash {
-    struct SHA1;
+    class SHA1;
 }
 
 
@@ -51,9 +51,9 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-struct CNWSMessage : CNWMessage
+class CNWSMessage : public CNWMessage
 {
-
+public:
     CNWSMessage();
     ~CNWSMessage();
     OBJECT_ID ReadOBJECTIDServer();
@@ -183,7 +183,7 @@ struct CNWSMessage : CNWMessage
     void ComputeGameObjectUpdateForYourselfToo(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     void ComputeGameObjectUpdateForYourself(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     CNWSPlayerLUOSortedObjectList * SortObjectsForGameObjectUpdate(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, int32_t * nMembersInSortedList);
-    void ComputeGameObjectUpdateForObject(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
+    NWNX_IMPORT void ComputeGameObjectUpdateForObject(CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, OBJECT_ID oidObjectToUpdate);
     BOOL ComputeGameObjectUpdateForCategory(uint32_t nCategory, uint32_t nMessageLimit, CNWSPlayer * pPlayer, CNWSObject * pPlayerGameObject, CGameObjectArray * pGameObjectArray, CNWSPlayerLUOSortedObjectList * pSortedList, int32_t nSortedListSize);
     void TestPartyObjectUpdateDifferences(CNWSPlayer * pPlayer, CNWSCreature * pPartyCreature, CLastUpdatePartyObject * * pLastUpdatePartyObject, uint32_t * nObjectUpdatesRequired);
     void StoreValuesInLastUpdatePartyObject(CNWSCreature * pPlayerCreature, CLastUpdatePartyObject * pLastUpdatePartyObject, CNWSCreature * pPartyCreature, uint32_t nObjectUpdatesRequired);

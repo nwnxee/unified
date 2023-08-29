@@ -9,14 +9,15 @@
 NWN_API_PROLOGUE(CVirtualMachineFile)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 typedef int BOOL;
 
 
-struct CVirtualMachineFile : CResHelper<CResNCS, 2010>
+class CVirtualMachineFile : public CResHelper<CResNCS, 2010>
 {
+public:
 
     CVirtualMachineFile();
     ~CVirtualMachineFile();

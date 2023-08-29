@@ -7,13 +7,14 @@
 NWN_API_PROLOGUE(CGameObjectArrayNode)
 #endif
 
-struct CGameObject;
+class CGameObject;
 
 
 
 
-struct CGameObjectArrayNode
+class CGameObjectArrayNode
 {
+public:
     uint32_t m_objectId;
     CGameObject * m_objectPtr;
     CGameObjectArrayNode * m_nextNode;

@@ -15,8 +15,9 @@ NWN_API_PROLOGUE(CNetLayerPlayerInfo)
 typedef int BOOL;
 
 
-struct CNetLayerPlayerInfo
+class CNetLayerPlayerInfo
 {
+public:
     BOOL m_bPlayerInUse;
     CExoString m_sPlayerName;
     int32_t m_nPlayerLanguage;

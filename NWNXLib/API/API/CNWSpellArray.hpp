@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWSpellArray)
 
 
 
-struct CNWSpellArray
+class CNWSpellArray
 {
+public:
     int32_t m_nNumSpells;
     CNWSpell * m_pSpells;
 

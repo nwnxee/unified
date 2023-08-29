@@ -9,18 +9,19 @@
 NWN_API_PROLOGUE(CAppManager)
 #endif
 
-struct CClientExoApp;
-struct CNWReentrantServerStats;
-struct CNWTileSetManager;
-struct CObjectTableManager;
-struct CServerExoApp;
+class CClientExoApp;
+class CNWReentrantServerStats;
+class CNWTileSetManager;
+class CObjectTableManager;
+class CServerExoApp;
 
 
 typedef int BOOL;
 
 
-struct CAppManager
+class CAppManager
 {
+public:
     CClientExoApp * m_pClientExoApp;
     CServerExoApp * m_pServerExoApp;
     CNWTileSetManager * m_pNWTileSetManager;
@@ -42,8 +43,8 @@ struct CAppManager
     CObjectTableManager * GetObjectTableManager(uint32_t dwClientServer);
     void DoSaveGameScreenShot(CExoString & sFile);
     void ShowServerMem();
-    void CreateServer(void );
-    void DestroyServer();
+    NWNX_IMPORT void CreateServer(void );
+    NWNX_IMPORT void DestroyServer();
     void SetDungeonMasterEXERunning(BOOL bDM);
     BOOL GetDungeonMasterEXERunning();
     void DisplayScriptDebuggerPopup();

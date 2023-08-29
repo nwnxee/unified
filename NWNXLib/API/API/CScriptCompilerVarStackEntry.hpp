@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CScriptCompilerVarStackEntry)
 
 
 
-struct CScriptCompilerVarStackEntry
+class CScriptCompilerVarStackEntry
 {
+public:
     CExoString m_psVarName;
     int32_t m_nVarType;
     int32_t m_nVarLevel;

@@ -7,15 +7,16 @@
 NWN_API_PROLOGUE(CNWSCreRestorePolymorphData)
 #endif
 
-struct CGameEffect;
-struct CNWSItem;
+class CGameEffect;
+class CNWSItem;
 
 
 typedef int BOOL;
 
 
-struct CNWSCreRestorePolymorphData
+class CNWSCreRestorePolymorphData
 {
+public:
     int32_t nCurrentHitPoints;
     int32_t nTemporaryHitPoints;
     CGameEffect * effect;

@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(CNWTileSurfaceMeshHashTableEntry)
 
 
 
-struct CNWTileSurfaceMeshHashTableEntry
+class CNWTileSurfaceMeshHashTableEntry
 {
+public:
     int32_t m_nBestTriangle;
     int32_t m_nRecentTriangle;
     float m_fBestAttemptedDepth;

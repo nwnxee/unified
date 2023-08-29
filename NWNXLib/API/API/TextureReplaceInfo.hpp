@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(TextureReplaceInfo)
 
 
 
-struct TextureReplaceInfo
+class TextureReplaceInfo
 {
+public:
     char m_sOldName[16+1];
     char m_sNewName[16+1];
 

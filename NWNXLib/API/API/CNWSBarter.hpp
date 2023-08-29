@@ -7,17 +7,18 @@
 NWN_API_PROLOGUE(CNWSBarter)
 #endif
 
-struct CItemRepository;
-struct CNWSCreature;
-struct CNWSPlayerLUOInventory;
+class CItemRepository;
+class CNWSCreature;
+class CNWSPlayerLUOInventory;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSBarter
+class CNWSBarter
 {
+public:
     CItemRepository * m_pBarterList;
     CNWSPlayerLUOInventory * m_pLastUpdate;
     CNWSPlayerLUOInventory * m_pOtherLastUpdate;

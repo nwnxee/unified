@@ -7,13 +7,14 @@
 NWN_API_PROLOGUE(CNWPlaceMeshManager)
 #endif
 
-struct CNWPlaceableSurfaceMesh;
+class CNWPlaceableSurfaceMesh;
 
 
 
 
-struct CNWPlaceMeshManager
+class CNWPlaceMeshManager
 {
+public:
     int32_t m_nArraySize;
     CNWPlaceableSurfaceMesh * * m_pSurfaceMeshLoaded;
 

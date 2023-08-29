@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CWorldTimer)
 typedef int BOOL;
 
 
-struct CWorldTimer
+class CWorldTimer
 {
+public:
     BOOL m_bFixedSnapshotRate;
     int32_t m_nFixedSnapshotsPerSecond;
     uint64_t m_nTimeSnapshot;

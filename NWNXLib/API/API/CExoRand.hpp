@@ -8,13 +8,14 @@
 NWN_API_PROLOGUE(CExoRand)
 #endif
 
-struct CExoRandInternal;
+class CExoRandInternal;
 
 
 
 
-struct CExoRand
+class CExoRand
 {
+public:
     CExoRandInternal * m_pcExoRandInternal;
 
     CExoRand();

@@ -7,16 +7,17 @@
 NWN_API_PROLOGUE(CServerAIEventNode)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CServerAIEventNode
+class CServerAIEventNode
 {
+public:
     uint32_t m_nCalendarDay;
     uint32_t m_nTimeOfDay;
     OBJECT_ID m_nCallerObjectId;

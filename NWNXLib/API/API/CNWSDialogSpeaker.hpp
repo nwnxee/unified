@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CNWSDialogSpeaker)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSDialogSpeaker
+class CNWSDialogSpeaker
 {
+public:
     CExoString m_sSpeaker;
     OBJECT_ID m_id;
 

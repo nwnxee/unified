@@ -7,14 +7,15 @@
 NWN_API_PROLOGUE(CNWBaseItemArray)
 #endif
 
-struct CNWBaseItem;
+class CNWBaseItem;
 
 
 typedef int BOOL;
 
 
-struct CNWBaseItemArray
+class CNWBaseItemArray
 {
+public:
     int32_t m_nNumBaseItems;
     CNWBaseItem * m_pBaseItems;
 

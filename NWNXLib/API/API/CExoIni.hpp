@@ -8,14 +8,15 @@
 NWN_API_PROLOGUE(CExoIni)
 #endif
 
-struct CExoIniInternal;
+class CExoIniInternal;
 
 
 typedef int BOOL;
 
 
-struct CExoIni
+class CExoIni
 {
+public:
     CExoIniInternal * m_pcExoIniInternal;
 
     CExoIni(CExoString sUserDirectory);

@@ -14,8 +14,9 @@ NWN_API_PROLOGUE(CNWSpell)
 typedef int BOOL;
 
 
-struct CNWSpell
+class CNWSpell
 {
+public:
     CExoString m_sLabel;
     int32_t m_strrefName;
     uint32_t m_strrefDesc;

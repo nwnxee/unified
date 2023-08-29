@@ -8,15 +8,16 @@
 NWN_API_PROLOGUE(CRes)
 #endif
 
-struct CKeyTableEntry;
+class CKeyTableEntry;
 
 
 typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 
-struct CRes
+class CRes
 {
+public:
     uint16_t m_nDemands;
     RESID m_nID;
     uint32_t m_status;

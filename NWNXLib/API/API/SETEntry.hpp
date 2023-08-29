@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(SETEntry)
 
 
 
-struct SETEntry
+class SETEntry
 {
+public:
     CExoString m_sEntry;
     CExoString m_sValue;
 

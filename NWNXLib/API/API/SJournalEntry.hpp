@@ -14,8 +14,9 @@ NWN_API_PROLOGUE(SJournalEntry)
 typedef int BOOL;
 
 
-struct SJournalEntry
+class SJournalEntry
 {
+public:
     CExoLocString szName;
     CExoLocString szText;
     uint32_t nCalendarDay;

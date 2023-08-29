@@ -12,17 +12,18 @@
 NWN_API_PROLOGUE(CERFFile)
 #endif
 
-struct CExoFile;
-struct CExoString;
-struct CRes;
+class CExoFile;
+class CExoString;
+class CRes;
 
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-struct CERFFile
+class CERFFile
 {
+public:
     NWERFHEADER m_stHeader;
     CExoLinkedList<CERFString> m_lstStringList;
     CExoLinkedList<CERFKey> m_lstKeyList;

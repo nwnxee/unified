@@ -23,7 +23,6 @@ nwnxlib_add(
     "Utils.cpp"
     "Encoding.cpp"
     "Plugin.cpp"
-    "Commands.cpp"
     "ScriptAPI.cpp"
     "MessageBus.cpp"
     "Hooks.cpp"
@@ -31,13 +30,19 @@ nwnxlib_add(
     "POS.cpp"
 )
 
+if(MSVC)
+nwnxlib_add("CommandsWindows.cpp")
+else()
+nwnxlib_add("CommandsLinux.cpp")
+endif()
+
 add_subdirectory(API)
 add_subdirectory(External)
 add_subdirectory(Platform)
 add_subdirectory(Services)
 add_subdirectory(Utils)
 
-add_library(NWNXLib STATIC "${NWNXLIB_SOURCE}")
+add_library(NWNXLib OBJECT "${NWNXLIB_SOURCE}")
 add_sanitizers(NWNXLib)
 
 target_compile_definitions(NWNXLib PRIVATE "-DPLUGIN_NAME=\"NWNXLib\"")

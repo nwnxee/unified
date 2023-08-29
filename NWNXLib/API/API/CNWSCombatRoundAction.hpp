@@ -7,16 +7,17 @@
 NWN_API_PROLOGUE(CNWSCombatRoundAction)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSCombatRoundAction
+class CNWSCombatRoundAction
 {
+public:
     int32_t m_nActionTimer;
     uint16_t m_nAnimation;
     int32_t m_nAnimationTime;

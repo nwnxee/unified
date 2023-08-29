@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWSObjectEventHandler)
 
 
 
-struct CNWSObjectEventHandler
+class CNWSObjectEventHandler
 {
+public:
     uint32_t m_nEventId;
     CExoString m_sScriptName;
 

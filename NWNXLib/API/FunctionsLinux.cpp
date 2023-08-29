@@ -5,20 +5,20 @@
 
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 
-#define NWNXLIB_FUNCTION(name) \
-    void* NWNXLib::API::Functions::name;
-#include "FunctionsLinux.hpp"
+#define NWNXLIB_FUNCTION(symgcc, symmsvc) \
+    void* NWNXLib::API::Functions::symgcc;
+#include "FunctionsList.hpp"
 #undef NWNXLIB_FUNCTION
 
 void NWNXLib::API::Functions::Initialize()
 {
-#define NWNXLIB_FUNCTION(name)                             \
-    name = const_cast<void*>(dlsym(RTLD_DEFAULT, #name )); \
-    if (!name)                                             \
+#define NWNXLIB_FUNCTION(symgcc, symmsvc)              \
+    symgcc = const_cast<void*>(dlsym(RTLD_DEFAULT, #symgcc )); \
+    if (!symgcc)                                             \
     {                                                      \
-        printf("dlsym(%s) = null\n", #name);               \
+        printf("dlsym(%s) = null\n", #symgcc);             \
     }
 
-#include "FunctionsLinux.hpp"
+#include "FunctionsList.hpp"
 #undef NWNXLIB_FUNCTION
 }

@@ -9,14 +9,15 @@
 NWN_API_PROLOGUE(CExoString)
 #endif
 
-struct CResRef;
+class CResRef;
 
 
 typedef int BOOL;
 
 
-struct CExoString
+class CExoString
 {
+public:
     char * m_sString;
     uint32_t m_nBufferLength;
 

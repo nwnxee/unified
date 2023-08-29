@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(STR_RES_HEADER)
 
 
 
-struct STR_RES_HEADER : STR_RES_HEADER_OLD
+class STR_RES_HEADER : public STR_RES_HEADER_OLD
 {
+public:
     float fSoundLength;
 
 

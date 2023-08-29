@@ -8,13 +8,14 @@
 NWN_API_PROLOGUE(CVirtualMachineScript)
 #endif
 
-struct CVirtualMachineStack;
+class CVirtualMachineStack;
 
 
 
 
-struct CVirtualMachineScript
+class CVirtualMachineScript
 {
+public:
     CVirtualMachineStack * m_pStack;
     int32_t m_nStackSize;
     int32_t m_nInstructPtr;
@@ -24,9 +25,9 @@ struct CVirtualMachineScript
     DataBlockRef m_pNDB;
     int32_t m_nScriptEventID;
 
-    struct JmpData
+    class JmpData
     {
-        struct Target
+        class Target
         {
             int32_t nVMInstPtr;
             int32_t nInstPtr;

@@ -13,18 +13,19 @@
 NWN_API_PROLOGUE(CNWSDoor)
 #endif
 
-struct CNWDoorSurfaceMesh;
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
+class CNWDoorSurfaceMesh;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSDoor : CNWSObject
+class CNWSDoor : public CNWSObject
 {
+public:
     CExoString m_sScripts[15];
     uint32_t m_nAppearanceType;
     uint32_t m_nGenericType;

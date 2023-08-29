@@ -9,17 +9,18 @@
 NWN_API_PROLOGUE(CNWSAmbientSound)
 #endif
 
-struct CNWSMessage;
-struct CResGFF;
-struct CResStruct;
+class CNWSMessage;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSAmbientSound : CNWAmbientSound
+class CNWSAmbientSound : public CNWAmbientSound
 {
+public:
     OBJECT_ID m_nArea;
 
     CNWSAmbientSound(OBJECT_ID nArea);

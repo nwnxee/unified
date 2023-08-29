@@ -10,14 +10,15 @@
 NWN_API_PROLOGUE(CExoLocStringInternal)
 #endif
 
-struct CExoLocString;
+class CExoLocString;
 
 
 typedef int BOOL;
 
 
-struct CExoLocStringInternal
+class CExoLocStringInternal
 {
+public:
     CExoLinkedList<EXOLOCSTRING> m_lstString;
     uint32_t m_nStringCount;
 

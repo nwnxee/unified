@@ -10,15 +10,16 @@
 NWN_API_PROLOGUE(CExoResourceImageFile)
 #endif
 
-struct ENCAPSULATED_HEADER;
-struct ENCAPSULATED_RESLISTENTRY;
+class ENCAPSULATED_HEADER;
+class ENCAPSULATED_RESLISTENTRY;
 
 
 typedef int BOOL;
 
 
-struct CExoResourceImageFile : CExoPackedFile
+class CExoResourceImageFile : public CExoPackedFile
 {
+public:
     uint8_t * m_pResourceImage;
 
     CExoResourceImageFile();

@@ -7,13 +7,14 @@
 NWN_API_PROLOGUE(CExoInputEvent)
 #endif
 
-struct CExoInputEventDesc;
+class CExoInputEventDesc;
 
 
 
 
-struct CExoInputEvent
+class CExoInputEvent
 {
+public:
     uint32_t m_nValue;
     uint32_t m_nTimeStamp;
     uint32_t m_nSequenceNumber;

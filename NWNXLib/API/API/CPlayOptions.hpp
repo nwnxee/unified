@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CPlayOptions)
 typedef int BOOL;
 
 
-struct CPlayOptions
+class CPlayOptions
 {
+public:
     BOOL bAllKillable;
     BOOL bNonPartyKillable;
     BOOL bRequireResurrection;

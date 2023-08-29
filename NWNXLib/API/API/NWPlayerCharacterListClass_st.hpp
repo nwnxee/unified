@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(NWPlayerCharacterListClass_st)
 
 
 
-struct NWPlayerCharacterListClass_st
+class NWPlayerCharacterListClass_st
 {
+public:
     int32_t nClass;
     uint8_t nClassLevel;
 

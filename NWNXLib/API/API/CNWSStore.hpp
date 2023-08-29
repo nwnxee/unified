@@ -12,23 +12,24 @@
 NWN_API_PROLOGUE(CNWSStore)
 #endif
 
-struct CItemRepository;
-struct CNWSArea;
-struct CNWSCreature;
-struct CNWSItem;
-struct CNWSPlayer;
-struct CResGFF;
-struct CResStruct;
-struct CStoreCustomer;
-struct CStoreCustomer;
+class CItemRepository;
+class CNWSArea;
+class CNWSCreature;
+class CNWSItem;
+class CNWSPlayer;
+class CResGFF;
+class CResStruct;
+class CStoreCustomer;
+class CStoreCustomer;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSStore : CNWSObject
+class CNWSStore : public CNWSObject
 {
+public:
     CExoString m_sScripts[2];
     CItemRepository * m_aInventory[5];
     CExoArrayList<CStoreCustomer *> m_aCurrentCustomers;

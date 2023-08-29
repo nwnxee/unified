@@ -8,14 +8,15 @@
 NWN_API_PROLOGUE(CNWTileSetManager)
 #endif
 
-struct CNWTilePathNode;
-struct CNWTileSet;
+class CNWTilePathNode;
+class CNWTileSet;
 
 
 
 
-struct CNWTileSetManager
+class CNWTileSetManager
 {
+public:
     CNWTileSet * m_apTileSets[100];
     int32_t m_anTileSetRegistered[100];
     CNWTilePathNode * m_apTileNodes[50][4];

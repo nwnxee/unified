@@ -1,25 +1,26 @@
 #pragma once
 
+#include "nwn_api.hpp"
 #include <cstdint>
 
-extern CExoString                g_sBuildNumber;
-extern CExoString                g_sBuildRevision;
-extern CExoString                g_sBuildPostfix;
-extern class CExoBase           *g_pExoBase;
-extern class CExoResMan         *g_pExoResMan;
-extern class CVirtualMachine    *g_pVirtualMachine;
-extern class CScriptCompiler    *g_pScriptCompiler;
-extern class CAppManager        *g_pAppManager;
-extern class CTlkTable          *g_pTlkTable;
-extern class CNWRules           *g_pRules;
+NWNX_IMPORT extern CExoString                g_sBuildNumber;
+NWNX_IMPORT extern CExoString                g_sBuildRevision;
+NWNX_IMPORT extern CExoString                g_sBuildPostfix;
+NWNX_IMPORT extern class CExoBase           *g_pExoBase;
+NWNX_IMPORT extern class CExoResMan         *g_pExoResMan;
+NWNX_IMPORT extern class CVirtualMachine    *g_pVirtualMachine;
+NWNX_IMPORT extern class CScriptCompiler    *g_pScriptCompiler;
+NWNX_IMPORT extern class CAppManager        *g_pAppManager;
+NWNX_IMPORT extern class CTlkTable          *g_pTlkTable;
+NWNX_IMPORT extern class CNWRules           *g_pRules;
 namespace Task {
-extern class CExoTaskManager    *g_pExoTaskManager;
+NWNX_IMPORT extern class CExoTaskManager    *g_pExoTaskManager;
 }
-extern int32_t                   g_bEnableCombatDebugging;
-extern int32_t                   g_bEnableSavingThrowDebugging;
-extern int32_t                   g_bEnableMovementSpeedDebugging;
-extern int32_t                   g_bEnableHitDieDebugging;
-extern int32_t                   g_bExitProgram;
+NWNX_IMPORT extern int32_t                   g_bEnableCombatDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableSavingThrowDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableMovementSpeedDebugging;
+NWNX_IMPORT extern int32_t                   g_bEnableHitDieDebugging;
+NWNX_IMPORT extern int32_t                   g_bExitProgram;
 
 namespace NWNXLib::API::Globals {
 

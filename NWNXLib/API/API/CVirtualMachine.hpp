@@ -14,22 +14,23 @@
 NWN_API_PROLOGUE(CVirtualMachine)
 #endif
 
-struct CResGFF;
-struct CResStruct;
-struct CScriptCompiler;
-struct CScriptLog;
-struct CScriptLog;
-struct CVirtualMachineCmdImplementer;
-struct CVirtualMachineDebuggingContext;
-struct CVirtualMachineDebuggerInstance;
+class CResGFF;
+class CResStruct;
+class CScriptCompiler;
+class CScriptLog;
+class CScriptLog;
+class CVirtualMachineCmdImplementer;
+class CVirtualMachineDebuggingContext;
+class CVirtualMachineDebuggerInstance;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CVirtualMachine
+class CVirtualMachine
 {
+public:
     CScriptCompiler * m_pJitCompiler;
     int32_t m_nReturnValueParameterType;
     void * m_pReturnValue;
@@ -62,8 +63,8 @@ struct CVirtualMachine
     CVirtualMachine();
     ~CVirtualMachine();
     BOOL RunScript(CExoString * psFileName, OBJECT_ID oid, BOOL bOidValid = true, int32_t nScriptEventID = 0);
-    int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);
-    BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
+    NWNX_IMPORT int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);
+    NWNX_IMPORT BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
     BOOL GetRunScriptReturnValue(int32_t * nParameterType, void * * pParameter);
     void SetDebugGUIFlag(BOOL bValue);
     void SetScriptParameters(const CExoArrayList<ScriptParam> & lParameters);

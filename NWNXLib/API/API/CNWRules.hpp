@@ -12,21 +12,22 @@
 NWN_API_PROLOGUE(CNWRules)
 #endif
 
-struct CNWBaseItemArray;
-struct CNWClass;
-struct CNWDomain;
-struct CNWFeat;
-struct CNWRace;
-struct CNWSkill;
-struct CNWSpellArray;
-struct CTwoDimArrays;
+class CNWBaseItemArray;
+class CNWClass;
+class CNWDomain;
+class CNWFeat;
+class CNWRace;
+class CNWSkill;
+class CNWSpellArray;
+class CTwoDimArrays;
 
 
 typedef int BOOL;
 
 
-struct CNWRules
+class CNWRules
 {
+public:
     float m_fRangeTypes[5];
     CNWBaseItemArray * m_pBaseItemArray;
     uint32_t m_nExperienceTable[40+1];

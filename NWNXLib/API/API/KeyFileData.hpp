@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(KeyFileData)
 
 
 
-struct KeyFileData
+class KeyFileData
 {
+public:
     int month;
     int day;
     int year;

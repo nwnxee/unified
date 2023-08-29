@@ -9,14 +9,15 @@
 NWN_API_PROLOGUE(CExoPackedFile)
 #endif
 
-struct CExoFile;
+class CExoFile;
 
 
 typedef int BOOL;
 
 
-struct CExoPackedFile
+class CExoPackedFile
 {
+public:
     CExoString m_sFileName;
     uint16_t m_wDrives;
     uint32_t m_nFileSize;

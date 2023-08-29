@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CResDWK)
 typedef int BOOL;
 
 
-struct CResDWK : CRes
+class CResDWK : public CRes
 {
+public:
     BOOL m_bLoaded;
     uint32_t m_nDWKNormalSize;
     uint8_t * m_pDWKData;

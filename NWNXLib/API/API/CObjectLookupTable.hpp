@@ -13,8 +13,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CObjectLookupTable
+class CObjectLookupTable
 {
+public:
     OBJECT_ID * m_pdwObjectTable;
     uint32_t m_dwStart;
     uint32_t m_dwEnd;

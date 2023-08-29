@@ -15,8 +15,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CLastUpdatePartyObject
+class CLastUpdatePartyObject
 {
+public:
     CResRef m_cPortrait;
     uint16_t m_nPortraitId;
     BOOL m_bActive;

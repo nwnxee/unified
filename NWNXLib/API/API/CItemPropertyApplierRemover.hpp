@@ -7,17 +7,17 @@
 NWN_API_PROLOGUE(CItemPropertyApplierRemover)
 #endif
 
-struct CNWItemProperty;
-struct CNWSCreature;
-struct CNWSItem;
+class CNWItemProperty;
+class CNWSCreature;
+class CNWSItem;
 
 
 typedef int BOOL;
 
 
-struct CItemPropertyApplierRemover
+class CItemPropertyApplierRemover
 {
-
+public:
     virtual ~CItemPropertyApplierRemover();
     virtual void InitializeItemProperties();
     virtual int32_t OnItemPropertyApplied(CNWSItem * pItem, CNWItemProperty * pItemProperty, CNWSCreature * pTargetCreature, uint32_t nTargetInventorySlot, BOOL bLoadingGame);

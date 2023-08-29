@@ -9,14 +9,15 @@
 NWN_API_PROLOGUE(CKeyTableEntry)
 #endif
 
-struct CRes;
+class CRes;
 
 
 typedef uint16_t RESTYPE;
 
 
-struct CKeyTableEntry
+class CKeyTableEntry
 {
+public:
     CResRef m_cResRef;
     CRes * m_pRes;
     RESID m_nID;

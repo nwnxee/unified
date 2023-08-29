@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "nwnx.hpp"
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
@@ -28,7 +31,6 @@
 #include "API/CExoArrayList.hpp"
 #include "../Core/NWNXCore.hpp"
 
-#include <cmath>
 #include <sstream>
 
 namespace Core {

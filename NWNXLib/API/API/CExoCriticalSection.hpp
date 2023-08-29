@@ -7,13 +7,14 @@
 NWN_API_PROLOGUE(CExoCriticalSection)
 #endif
 
-struct CExoCriticalSectionInternal;
+class CExoCriticalSectionInternal;
 
 
 
 
-struct CExoCriticalSection
+class CExoCriticalSection
 {
+public:
     CExoCriticalSectionInternal * m_pcExoCriticalSectionInternal;
 
     CExoCriticalSection();

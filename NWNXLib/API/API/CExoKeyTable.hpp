@@ -11,19 +11,20 @@
 NWN_API_PROLOGUE(CExoKeyTable)
 #endif
 
-struct CExoPackedFile;
-struct CExoStringList;
-struct CKeyTableEntry;
-struct CRes;
-struct CResRef;
+class CExoPackedFile;
+class CExoStringList;
+class CKeyTableEntry;
+class CRes;
+class CResRef;
 
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-struct CExoKeyTable
+class CExoKeyTable
 {
+public:
     BOOL m_bLoaded;
     BOOL m_bExcludeFromSearches;
     uint32_t m_nTableEntries;

@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWClass_Skill)
 typedef int BOOL;
 
 
-struct CNWClass_Skill
+class CNWClass_Skill
 {
+public:
     uint16_t nSkill;
     BOOL bClassSkill;
 

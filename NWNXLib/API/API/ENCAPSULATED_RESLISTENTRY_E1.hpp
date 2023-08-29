@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(ENCAPSULATED_RESLISTENTRY_E1)
 
 
 
-struct ENCAPSULATED_RESLISTENTRY_E1
+class ENCAPSULATED_RESLISTENTRY_E1
 {
+public:
     uint32_t nOffsetToResource;
     uint32_t nResourceSize;
     uint32_t nCompressionType;

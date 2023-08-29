@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(RES_FIXED_HEADER)
 
 
 
-struct RES_FIXED_HEADER
+class RES_FIXED_HEADER
 {
+public:
     uint32_t nFileType;
     uint32_t nFileVersion;
     uint32_t nNumber;

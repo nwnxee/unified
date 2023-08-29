@@ -7,16 +7,17 @@
 NWN_API_PROLOGUE(CGameObjectArray)
 #endif
 
-struct CGameObject;
-struct CGameObjectArrayNode;
+class CGameObject;
+class CGameObjectArrayNode;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CGameObjectArray
+class CGameObjectArray
 {
+public:
     CGameObjectArrayNode * * m_pArray;
     uint32_t m_nNextObjectArrayID[2];
     uint32_t m_nNextCharArrayID[2];

@@ -13,19 +13,19 @@
 NWN_API_PROLOGUE(CNWSCreatureStats)
 #endif
 
-struct CCombatInformation;
-struct CFeatUseListEntry;
-struct CNWClass;
-struct CNWCreatureStatsUpdate;
-struct CNWLevelStats;
-struct CNWLevelStats;
-struct CNWSCreature;
-struct CNWSCreatureAppearanceInfo;
-struct CNWSItem;
-struct CNWSObject;
-struct CNWSpell;
-struct CResGFF;
-struct CResStruct;
+class CCombatInformation;
+class CFeatUseListEntry;
+class CNWClass;
+class CNWCreatureStatsUpdate;
+class CNWLevelStats;
+class CNWLevelStats;
+class CNWSCreature;
+class CNWSCreatureAppearanceInfo;
+class CNWSItem;
+class CNWSObject;
+class CNWSpell;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
@@ -33,8 +33,9 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-struct CNWSCreatureStats
+class CNWSCreatureStats
 {
+public:
     CExoArrayList<uint16_t> m_lstFeats;
     CExoArrayList<CFeatUseListEntry *> m_lstFeatUses;
     CExoArrayList<uint16_t> m_lstBonusFeats;

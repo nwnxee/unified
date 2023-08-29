@@ -9,16 +9,17 @@
 NWN_API_PROLOGUE(CScriptEvent)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CScriptEvent
+class CScriptEvent
 {
+public:
     uint16_t m_nType;
     CExoArrayList<int32_t> m_nParamInteger;
     CExoArrayList<float> m_fParamFloat;

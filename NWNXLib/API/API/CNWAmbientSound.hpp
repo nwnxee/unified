@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWAmbientSound)
 typedef int BOOL;
 
 
-struct CNWAmbientSound
+class CNWAmbientSound
 {
+public:
     BOOL m_bMusicPlaying;
     int32_t m_nMusicDelay;
     int32_t m_nMusicDayTrack;

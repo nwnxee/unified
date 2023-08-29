@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CachedRulesetEntry)
 
 
 
-struct CachedRulesetEntry
+class CachedRulesetEntry
 {
+public:
     CExoString s;
     int32_t i;
     float f;

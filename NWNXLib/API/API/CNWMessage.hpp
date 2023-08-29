@@ -14,8 +14,9 @@ NWN_API_PROLOGUE(CNWMessage)
 typedef int BOOL;
 
 
-struct CNWMessage
+class CNWMessage
 {
+public:
     uint8_t * m_pnWriteBuffer;
     uint32_t m_nWriteBufferSize;
     uint32_t m_nWriteBufferPtr;

@@ -17,15 +17,15 @@
 NWN_API_PROLOGUE(CNWSPlayer)
 #endif
 
-struct CNWSCreature;
-struct CNWSItem;
-struct CNWSObject;
-struct CNWSPlayerCharSheetGUI;
-struct CNWSPlayerInventoryGUI;
-struct CNWSPlayerJournalQuest;
-struct CNWSPlayerLastUpdateObject;
-struct CNWSPlayerStoreGUI;
-struct CNWSPlayerTURD;
+class CNWSCreature;
+class CNWSItem;
+class CNWSObject;
+class CNWSPlayerCharSheetGUI;
+class CNWSPlayerInventoryGUI;
+class CNWSPlayerJournalQuest;
+class CNWSPlayerLastUpdateObject;
+class CNWSPlayerStoreGUI;
+class CNWSPlayerTURD;
 
 
 typedef int BOOL;
@@ -33,12 +33,15 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-struct CNWSPlayer : CNWSClient
+class CNWSPlayer : public CNWSClient
 {
-    struct NuiState
+public:
+    class NuiState
     {
-        struct WindowState
+    public:
+        class WindowState
         {
+        public:
             Nui::JSON::WindowToken m_token;
             Nui::JSON::WindowIdentifier m_id;
             std::vector<Nui::JSON::BindName> m_bind_list;
@@ -118,8 +121,8 @@ struct CNWSPlayer : CNWSClient
     void AllocateAreas(int32_t nAreas);
     BOOL AddArea(OBJECT_ID oidArea);
     BOOL GetIsAllowedToSave();
-    void DropTURD();
-    void EatTURD(CNWSPlayerTURD * pTURD);
+    NWNX_IMPORT void DropTURD();
+    NWNX_IMPORT void EatTURD(CNWSPlayerTURD * pTURD);
     void CleanMyTURDs();
     CNWSPlayerLastUpdateObject * CreateNewPlayerLastUpdateObject();
     void ClearPlayerLastUpdateObject();

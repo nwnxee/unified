@@ -15,9 +15,9 @@ NWN_API_PROLOGUE(CBaseExoApp)
 typedef int BOOL;
 
 
-struct CBaseExoApp
+class CBaseExoApp
 {
-
+public:
     virtual BOOL AdmitNetworkAddress(uint32_t nProtocol, CExoString sAddress);
     virtual BOOL AdmitPlayerName(CExoString sPlayerName);
     virtual BOOL SetNetworkAddressBan(uint32_t nProtocol, CExoString sAddress, BOOL bBanPlayer);

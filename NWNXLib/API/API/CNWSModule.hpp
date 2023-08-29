@@ -26,19 +26,19 @@
 NWN_API_PROLOGUE(CNWSModule)
 #endif
 
-struct CERFFile;
-struct CGameEffect;
-struct CNWSArea;
-struct CNWSPlayer;
-struct CPathfindInformation;
-struct CResGFF;
-struct CResStruct;
-struct NWMODULEENTRYINFO;
-struct NWMODULEHEADER;
-struct NWPLAYERCHARACTERLISTITEM;
+class CERFFile;
+class CGameEffect;
+class CNWSArea;
+class CNWSPlayer;
+class CPathfindInformation;
+class CResGFF;
+class CResStruct;
+class NWMODULEENTRYINFO;
+class NWMODULEHEADER;
+class NWPLAYERCHARACTERLISTITEM;
 
 namespace NWSync {
-struct Advertisement; // NWSyncAdvertisement
+class Advertisement; // NWSyncAdvertisement
 }
 
 typedef int BOOL;
@@ -47,8 +47,9 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
+class CNWSModule : public CResHelper<CResIFO, 2014>, public CGameObject
 {
+public:
     CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
     CExoLinkedList<NWMODULECUTSCENE> m_lstModuleCutScene;
     CExoLinkedList<CResRef> m_lstModuleArea;
@@ -170,8 +171,8 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
     uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
-    uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
-    uint32_t LoadModuleFinish();
+    NWNX_IMPORT uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
+    NWNX_IMPORT uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
     void PackModuleIntoMessage(uint32_t nPlayerId);
     uint32_t PlotPath(CPathfindInformation * pcPathfindInformation, uint32_t nTimeSlice);

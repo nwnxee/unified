@@ -8,17 +8,18 @@
 NWN_API_PROLOGUE(CNWSTransition)
 #endif
 
-struct CNWSObject;
-struct CResGFF;
-struct CResStruct;
+class CNWSObject;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSTransition
+class CNWSTransition
 {
+public:
     CExoString m_sTransitionTarget;
     OBJECT_ID m_oidCachedTransitionTarget;
 

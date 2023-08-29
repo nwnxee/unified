@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWSDialogPlayer)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSDialogPlayer
+class CNWSDialogPlayer
 {
+public:
     uint32_t m_playerId;
     OBJECT_ID m_oidObject;
     uint8_t m_gender;

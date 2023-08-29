@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWClass_Feat)
 typedef int BOOL;
 
 
-struct CNWClass_Feat
+class CNWClass_Feat
 {
+public:
     uint16_t nFeat;
     uint8_t nLevelGranted;
     uint8_t nListType;

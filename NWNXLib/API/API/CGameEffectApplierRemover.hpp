@@ -7,16 +7,16 @@
 NWN_API_PROLOGUE(CGameEffectApplierRemover)
 #endif
 
-struct CGameEffect;
-struct CNWSObject;
+class CGameEffect;
+class CNWSObject;
 
 
 typedef int BOOL;
 
 
-struct CGameEffectApplierRemover
+class CGameEffectApplierRemover
 {
-
+public:
     virtual ~CGameEffectApplierRemover();
     virtual void InitializeEffects();
     virtual int32_t OnEffectApplied(CNWSObject * object, CGameEffect * effect, BOOL bLoadingGame = false);

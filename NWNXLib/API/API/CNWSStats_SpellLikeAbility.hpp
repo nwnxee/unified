@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWSStats_SpellLikeAbility)
 typedef int BOOL;
 
 
-struct CNWSStats_SpellLikeAbility
+class CNWSStats_SpellLikeAbility
 {
+public:
     uint32_t m_nSpellId;
     BOOL m_bReadied;
     uint8_t m_nCasterLevel;

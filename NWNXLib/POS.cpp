@@ -12,10 +12,9 @@
 #include <unordered_map>
 #include <sstream>
 
-extern "C" void _ZN10CNWSObjectD1Ev(CNWSObject*);
-extern "C" void _ZN8CNWSAreaD1Ev(CNWSArea*);
-
 using namespace NWNXLib;
+using namespace NWNXLib::API;
+
 namespace NWNXLib::POS
 {
 static char GffFieldName[] = "NWNX_POS";
@@ -385,21 +384,21 @@ void RemoveRegex(CGameObject *pGameObject, const std::string& prefix, const std:
 
 void InitializeHooks()
 {
-    static Hooks::Hook s_ObjectDtorHook      = Hooks::HookFunction(&_ZN10CNWSObjectD1Ev, 
+    static Hooks::Hook s_ObjectDtorHook      = Hooks::HookFunction(Functions::_ZN10CNWSObjectD1Ev,
         +[](CNWSObject* pThis)
         {
             s_ObjectDtorHook->CallOriginal<void>(pThis);
             DestroyObjectStorage(static_cast<CGameObject*>(pThis));
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_AreaDtorHook        = Hooks::HookFunction(&_ZN8CNWSAreaD1Ev,
+    static Hooks::Hook s_AreaDtorHook        = Hooks::HookFunction(Functions::_ZN8CNWSAreaD1Ev,
         +[](CNWSArea* pThis)
         {
             s_AreaDtorHook->CallOriginal<void>(pThis);
             DestroyObjectStorage(static_cast<CGameObject*>(pThis));
         }, Hooks::Order::VeryEarly);
 
-    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(&CNWSPlayer::EatTURD, 
+    static Hooks::Hook s_EatTURDHook         = Hooks::HookFunction(&CNWSPlayer::EatTURD,
         +[](CNWSPlayer* pThis, CNWSPlayerTURD* pTURD)
         {
             auto pObjThis = Utils::GetGameObject(pThis->m_oidNWSObject);

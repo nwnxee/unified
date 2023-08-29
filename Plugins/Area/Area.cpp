@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "nwnx.hpp"
 
 #include "API/CNWSArea.hpp"
@@ -27,7 +30,6 @@
 #include "API/CNWTileSurfaceMesh.hpp"
 #include "API/CGameObjectArray.hpp"
 
-#include <cmath>
 #include <set>
 
 using namespace NWNXLib;
@@ -574,6 +576,7 @@ NWNX_EXPORT ArgumentStack RemoveObjectFromExclusionList(ArgumentStack&& args)
     return {};
 }
 
+// pArea->SaveXXX member functions are protected and cannot be called externally on windows.
 NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
 {
     int32_t retVal = false;
@@ -654,29 +657,29 @@ NWNX_EXPORT ArgumentStack ExportGIT(ArgumentStack&& args)
             if (objectFilter != 32767)
             {
                 if (!(objectFilter & 1))
-                    pArea->SaveCreatures(&resGff, &resStruct, creatures, false);
+                    pArea->PublicSaveCreatures(&resGff, &resStruct, creatures, false);
                 if (!(objectFilter & 2))
-                    pArea->SaveItems(&resGff, &resStruct, items, false);
+                    pArea->PublicSaveItems(&resGff, &resStruct, items, false);
                 if (!(objectFilter & 4))
-                    pArea->SaveTriggers(&resGff, &resStruct, triggers, false);
+                    pArea->PublicSaveTriggers(&resGff, &resStruct, triggers, false);
                 if (!(objectFilter & 8))
-                    pArea->SaveDoors(&resGff, &resStruct, doors, false);
+                    pArea->PublicSaveDoors(&resGff, &resStruct, doors, false);
                 if (!(objectFilter & 16))
-                    pArea->SaveAreaEffects(&resGff, &resStruct, aoes, false);
+                    pArea->PublicSaveAreaEffects(&resGff, &resStruct, aoes, false);
                 if (!(objectFilter & 32))
-                    pArea->SaveWaypoints(&resGff, &resStruct, waypoints, false);
+                    pArea->PublicSaveWaypoints(&resGff, &resStruct, waypoints, false);
                 if (!(objectFilter & 64))
-                    pArea->SavePlaceables(&resGff, &resStruct, placeables, false);
+                    pArea->PublicSavePlaceables(&resGff, &resStruct, placeables, false);
                 if (!(objectFilter & 128))
-                    pArea->SaveStores(&resGff, &resStruct, stores, false);
+                    pArea->PublicSaveStores(&resGff, &resStruct, stores, false);
                 if (!(objectFilter & 256))
-                    pArea->SaveEncounters(&resGff, &resStruct, encounters, false);
+                    pArea->PublicSaveEncounters(&resGff, &resStruct, encounters, false);
 
                 // No NWScript OBJECT_TYPE_* constant for Sound Objects
-                pArea->SaveSounds(&resGff, &resStruct, sounds, false);
+                pArea->PublicSaveSounds(&resGff, &resStruct, sounds, false);
             }
 
-            pArea->SaveProperties(&resGff, &resStruct);
+            pArea->PublicSaveProperties(&resGff, &resStruct);
 
             if (exportVarTable)
                 pArea->m_ScriptVars.SaveVarTable(&resGff, &resStruct);

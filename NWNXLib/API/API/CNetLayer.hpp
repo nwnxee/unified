@@ -9,16 +9,17 @@
 NWN_API_PROLOGUE(CNetLayer)
 #endif
 
-struct CBaseExoApp;
-struct CNetLayerInternal;
-struct CNetLayerPlayerInfo;
-struct CNetLayerSessionInfo;
+class CBaseExoApp;
+class CNetLayerInternal;
+class CNetLayerPlayerInfo;
+class CNetLayerSessionInfo;
 
 typedef int BOOL;
 
 
-struct CNetLayer
+class CNetLayer
 {
+public:
     CNetLayerInternal * m_pcNetLayerInternal;
 
     CNetLayer();

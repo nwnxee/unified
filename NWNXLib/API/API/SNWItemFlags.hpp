@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(SNWItemFlags)
 
 
 
-struct SNWItemFlags
+class SNWItemFlags
 {
+public:
     uint8_t m_nDropable;
     uint8_t m_nPickpocketable;
 

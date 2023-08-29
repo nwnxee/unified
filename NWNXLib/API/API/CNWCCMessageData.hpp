@@ -9,15 +9,16 @@
 NWN_API_PROLOGUE(CNWCCMessageData)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWCCMessageData
+class CNWCCMessageData
 {
+public:
     uint8_t m_nType;
     CExoArrayList<int32_t> m_nParamInteger;
     CExoArrayList<float> m_nParamFloat;

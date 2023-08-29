@@ -12,9 +12,9 @@ NWN_API_PROLOGUE(CNWSSysAdmin)
 
 
 
-struct CNWSSysAdmin : CNWSClient
+class CNWSSysAdmin : public CNWSClient
 {
-
+public:
     CNWSSysAdmin(uint32_t nPlayerID);
     ~CNWSSysAdmin();
     virtual CNWSSysAdmin * AsNWSSysAdmin();

@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CTlkTableTokenCustom)
 
 
 
-struct CTlkTableTokenCustom
+class CTlkTableTokenCustom
 {
+public:
     uint32_t m_nNumber;
     CExoString m_sValue;
 

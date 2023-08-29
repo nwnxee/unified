@@ -6,17 +6,33 @@
 #include "API/Globals.hpp"
 
 #include <string>
+#include <iostream>
 #include <optional>
 #include <vector>
 #include <functional>
 #include <memory>
 
-
+#if WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef SendMessage
+#undef GetMessage
+#undef min
+#undef max
+#undef CreateDirectory
+#undef GetObject
+#endif
 
 namespace NWNXLib
 {
 
+#if WIN32
+#define NWNX_EXPORT       __declspec(dllexport) extern "C"
+#define NWNX_IMPORT       __declspec(dllimport)
+#else
 #define NWNX_EXPORT       extern "C"
+#define NWNX_IMPORT
+#endif
 
 #define LOG_DEBUG(format, ...)   LOG_IMPL(SEV_DEBUG,   format, ##__VA_ARGS__)
 #define LOG_INFO(format, ...)    LOG_IMPL(SEV_INFO,    format, ##__VA_ARGS__)
@@ -33,6 +49,21 @@ namespace NWNXLib
 #define ASSERT_OR_RETURN(condition, retval) ASSERT_OR_RETURN_IMPL(condition, retval)
 
 #define SCOPEGUARD(x) SCOPEGUARD_IMPL(x)
+
+#if WIN32
+#define PluginEntryPoint(name) \
+void name();                         \
+extern "C" __declspec(dllexport) BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved) \
+{ \
+if(dwReason == DLL_PROCESS_ATTACH) { \
+name(); \
+} \
+return TRUE; \
+}
+#else
+#define PluginEntryPoint(name) \
+void name() __attribute__((constructor));
+#endif
 
 namespace Config
 {
@@ -109,6 +140,21 @@ namespace Hooks
     {
         return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
     }
+
+#if WIN32
+    template <typename T1, typename T2, typename T3>
+    [[nodiscard]] Hook HookFunction(T2 T1::* original, T3 replacement, int32_t order = Order::Default)
+    {
+        union
+        {
+            T2 T1::*pMember;
+            void* pVoid;
+        };
+
+        pMember = original;
+        return std::make_unique<FunctionHook>(pVoid, (void *)replacement, order);
+    }
+#endif
 }
 
 namespace MessageBus
@@ -123,8 +169,27 @@ namespace MessageBus
 
 namespace Platform
 {
+    constexpr int RTLD_LAZY = 0x00001;
+    constexpr int RTLD_NOW = 0x00002;
+
+    constexpr int RTLD_NOLOAD = 0x00004;
+    constexpr int RTLD_DEEPBIND = 0x00008;
+
+    constexpr int RTLD_GLOBAL = 0x00100;
+    constexpr int RTLD_LOCAL = 0;
+
+    constexpr int RTLD_NODELETE = 0x01000;
+
+    std::string PluginExtension();
+    std::string PathSeparator();
+
+    void Initialize();
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);
+    void* OpenLibrary(const char* fileName, int flags);
+    int CloseLibrary(void* handle);
+    void* GetSymbol(void* handle, const char* name);
+    const char* GetError();
 }
 
 namespace Commands
@@ -170,6 +235,8 @@ namespace String
 
     std::string Basename(const std::string& path);
     bool EndsWith(const std::string& str, const std::string& suffix);
+
+    int CompareIgnoreCase(const char* str1, const char* str2);
 }
 
 namespace Utils

@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CTlkTableToken)
 
 
 
-struct CTlkTableToken
+class CTlkTableToken
 {
+public:
     uint32_t m_nHash;
     CExoString m_sToken;
     uint32_t m_nActionCode;

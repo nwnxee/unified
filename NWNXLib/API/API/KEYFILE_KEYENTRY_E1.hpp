@@ -13,8 +13,9 @@ typedef uint8_t RESREF[16];
 typedef uint16_t RESTYPE;
 
 
-struct KEYFILE_KEYENTRY_E1
+class KEYFILE_KEYENTRY_E1
 {
+public:
     RESREF resRef;
     RESTYPE nType;
     uint32_t nID;

@@ -7,15 +7,16 @@
 NWN_API_PROLOGUE(CResRef)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 typedef int BOOL;
 typedef uint8_t RESREF[16];
 
 
-struct CResRef
+class CResRef
 {
+public:
     RESREF m_resRefLowerCase;
     RESREF m_resRef;
 

@@ -14,18 +14,19 @@
 NWN_API_PROLOGUE(CNWSEncounter)
 #endif
 
-struct CEncounterSpawnPoint;
-struct CNWSArea;
-struct CResGFF;
-struct CResStruct;
+class CEncounterSpawnPoint;
+class CNWSArea;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSEncounter : CNWSObject
+class CNWSEncounter : public CNWSObject
 {
+public:
     uint16_t m_nActivateObjectArrayIndex;
     int32_t m_nFactionId;
     CExoLocString m_sLocalizedName;

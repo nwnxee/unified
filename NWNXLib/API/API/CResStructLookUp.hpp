@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(CResStructLookUp)
 
 
 
-struct CResStructLookUp
+class CResStructLookUp
 {
+public:
     uint32_t m_nType;
     uint32_t m_nSize;
     uint32_t m_nOffset;

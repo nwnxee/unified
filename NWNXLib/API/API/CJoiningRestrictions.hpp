@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CJoiningRestrictions)
 typedef int BOOL;
 
 
-struct CJoiningRestrictions
+class CJoiningRestrictions
 {
+public:
     BOOL bAllowLocal;
     BOOL bAllowServer;
     BOOL bAllowVault;

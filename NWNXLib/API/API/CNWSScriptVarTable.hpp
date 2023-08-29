@@ -13,18 +13,19 @@
 NWN_API_PROLOGUE(CNWSScriptVarTable)
 #endif
 
-struct CNWSCreature;
-struct CNWSScriptVar;
-struct CResGFF;
-struct CResStruct;
+class CNWSCreature;
+class CNWSScriptVar;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSScriptVarTable
+class CNWSScriptVarTable
 {
+public:
     std::unordered_map<CExoString, CNWSScriptVar> m_vars;
     CNWSCreature * m_pCreature;
 

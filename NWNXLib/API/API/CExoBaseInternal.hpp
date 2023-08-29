@@ -16,8 +16,9 @@ typedef int BOOL;
 typedef uint16_t RESTYPE;
 
 
-struct CExoBaseInternal
+class CExoBaseInternal
 {
+public:
     int32_t m_nResTypes;
     RESTYPE * m_pnResTypes;
     CExoString * m_psResTypeNames;

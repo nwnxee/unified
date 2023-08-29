@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(CNWTilePathNode)
 
 
 
-struct CNWTilePathNode
+class CNWTilePathNode
 {
+public:
     int32_t m_nRegionNodes;
     int32_t m_nTileExits;
     float * m_pfRegionNodes;

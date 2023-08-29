@@ -16,8 +16,9 @@ NWN_API_PROLOGUE(NWVMachineUtils)
 
 typedef int BOOL;
 
-struct NWVMachineUtils
+class NWVMachineUtils
 {
+public:
     static DataBlockRef SerializeToGff(CGameObject* o, BOOL bSaveObjectState);
     static CGameObject* DeserializeFromGff(DataViewRef d, BOOL bLoadObjectState, const CScriptLocation& loc, OBJECT_ID owner, const CExoString& sNewTag, BOOL bObjectCopy = false);
     static JsonEngineStructure SerializeToJson(CGameObject* o, BOOL bSaveObjectState);

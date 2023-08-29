@@ -13,39 +13,40 @@
 NWN_API_PROLOGUE(CGameObject)
 #endif
 
-struct CNWCArea;
-struct CNWCAreaOfEffectObject;
-struct CNWCCreature;
-struct CNWCDoor;
-struct CNWCItem;
-struct CNWCModule;
-struct CNWCObject;
-struct CNWCPlaceable;
-struct CNWCProjectile;
-struct CNWCSoundObject;
-struct CNWCStore;
-struct CNWCTrigger;
-struct CNWSArea;
-struct CNWSAreaOfEffectObject;
-struct CNWSCreature;
-struct CNWSDoor;
-struct CNWSEncounter;
-struct CNWSItem;
-struct CNWSModule;
-struct CNWSObject;
-struct CNWSPlaceable;
-struct CNWSPlayerTURD;
-struct CNWSSoundObject;
-struct CNWSStore;
-struct CNWSTrigger;
-struct CNWSWaypoint;
+class CNWCArea;
+class CNWCAreaOfEffectObject;
+class CNWCCreature;
+class CNWCDoor;
+class CNWCItem;
+class CNWCModule;
+class CNWCObject;
+class CNWCPlaceable;
+class CNWCProjectile;
+class CNWCSoundObject;
+class CNWCStore;
+class CNWCTrigger;
+class CNWSArea;
+class CNWSAreaOfEffectObject;
+class CNWSCreature;
+class CNWSDoor;
+class CNWSEncounter;
+class CNWSItem;
+class CNWSModule;
+class CNWSObject;
+class CNWSPlaceable;
+class CNWSPlayerTURD;
+class CNWSSoundObject;
+class CNWSStore;
+class CNWSTrigger;
+class CNWSWaypoint;
 
 
 typedef uint32_t OBJECT_ID;
 
 
-struct CGameObject : CCallbackHandlerBase
+class CGameObject : public CCallbackHandlerBase
 {
+public:
     OBJECT_ID m_idSelf;
     uint8_t m_nObjectType;
     void * m_pNwnxData;

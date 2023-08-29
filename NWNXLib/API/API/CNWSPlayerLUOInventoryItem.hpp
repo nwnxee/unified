@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CNWSPlayerLUOInventoryItem)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSPlayerLUOInventoryItem
+class CNWSPlayerLUOInventoryItem
 {
+public:
     OBJECT_ID oidObject;
     uint8_t xPos;
     uint8_t yPos;

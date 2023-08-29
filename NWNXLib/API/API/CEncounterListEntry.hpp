@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CEncounterListEntry)
 typedef int BOOL;
 
 
-struct CEncounterListEntry
+class CEncounterListEntry
 {
+public:
     CResRef m_cCreatureResRef;
     float m_fCR;
     float m_fCreaturePoints;

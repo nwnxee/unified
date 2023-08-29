@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(CStringFieldIDType)
 
 
 
-struct CStringFieldIDType
+class CStringFieldIDType
 {
+public:
     char sz[16];
 
 

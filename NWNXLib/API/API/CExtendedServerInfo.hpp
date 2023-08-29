@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CExtendedServerInfo)
 typedef int BOOL;
 
 
-struct CExtendedServerInfo
+class CExtendedServerInfo
 {
+public:
     BOOL m_bPasswordRequired;
     uint8_t m_nMinLevel;
     uint8_t m_nMaxLevel;

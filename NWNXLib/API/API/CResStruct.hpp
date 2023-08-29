@@ -8,16 +8,17 @@
 NWN_API_PROLOGUE(CResStruct)
 #endif
 
-struct CResStructInternal;
-struct CResStructLookUp;
-struct CStringFieldIDType;
+class CResStructInternal;
+class CResStructLookUp;
+class CStringFieldIDType;
 
 
 typedef int BOOL;
 
 
-struct CResStruct
+class CResStruct
 {
+public:
     CResStructHeader m_cHeader;
     CResStructLookUp * m_pLookUp;
     void * m_pData;

@@ -1,7 +1,5 @@
 #include "nwnx.hpp"
 #include <sstream>
-#include <stdlib.h>
-#include <string.h>
 
 namespace NWNXLib::String
 {
@@ -13,7 +11,7 @@ template<> std::optional<bool> FromString(const std::string& str)
 
     for (const char* t : truesies)
     {
-        if (strcasecmp(t, str.c_str()) == 0)
+        if (CompareIgnoreCase(t, str.c_str()) == 0)
         {
             return std::make_optional<bool>(true);
         }
@@ -21,7 +19,7 @@ template<> std::optional<bool> FromString(const std::string& str)
 
     for (const char* f : falsies)
     {
-        if (strcasecmp(f, str.c_str()) == 0)
+        if (CompareIgnoreCase(f, str.c_str()) == 0)
         {
             return std::make_optional<bool>(false);
         }
@@ -162,5 +160,17 @@ bool EndsWith(const std::string& str, const std::string& suffix)
 {
     return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
 }
+
+#if WIN32
+int CompareIgnoreCase(const char* str1, const char* str2)
+{
+    return _stricmp(str1, str2);
+}
+#else
+int CompareIgnoreCase(const char* str1, const char* str2)
+{
+    return strcasecmp(str1, str2);
+}
+#endif
 
 }

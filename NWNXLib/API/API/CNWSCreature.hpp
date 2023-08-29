@@ -17,31 +17,31 @@
 NWN_API_PROLOGUE(CNWSCreature)
 #endif
 
-struct CEffectIconObject;
-struct CGameEffect;
-struct CGameEffect;
-struct CItemRepository;
-struct CNWCCMessageData;
-struct CNWItemProperty;
-struct CNWSArea;
-struct CNWSBarter;
-struct CNWSCombatAttackData;
-struct CNWSCombatRound;
-struct CNWSCreRestorePolymorphData;
-struct CNWSCreatureStats;
-struct CNWSFaction;
-struct CNWSForcedAction;
-struct CNWSInventory;
-struct CNWSItem;
-struct CNWSJournal;
-struct CNWSObjectActionNode;
-struct CNWSPlayer;
-struct CNWSQuickbarButton;
-struct CNWVisibilityNode;
-struct CNWVisibilityNode;
-struct CPathfindInformation;
-struct CResGFF;
-struct CResStruct;
+class CEffectIconObject;
+class CGameEffect;
+class CGameEffect;
+class CItemRepository;
+class CNWCCMessageData;
+class CNWItemProperty;
+class CNWSArea;
+class CNWSBarter;
+class CNWSCombatAttackData;
+class CNWSCombatRound;
+class CNWSCreRestorePolymorphData;
+class CNWSCreatureStats;
+class CNWSFaction;
+class CNWSForcedAction;
+class CNWSInventory;
+class CNWSItem;
+class CNWSJournal;
+class CNWSObjectActionNode;
+class CNWSPlayer;
+class CNWSQuickbarButton;
+class CNWVisibilityNode;
+class CNWVisibilityNode;
+class CPathfindInformation;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
@@ -49,8 +49,9 @@ typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
 
-struct CNWSCreature : CNWSObject
+class CNWSCreature : public CNWSObject
 {
+public:
     BOOL m_bPonyRide;
     uint16_t m_nEquipArrayIndex;
     OBJECT_ID m_poidCntrSpellObjects[10];

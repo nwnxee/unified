@@ -7,13 +7,14 @@
 NWN_API_PROLOGUE(CExoStringList)
 #endif
 
-struct CExoString;
+class CExoString;
 
 
 
 
-struct CExoStringList
+class CExoStringList
 {
+public:
     CExoString * * m_pStrings;
     int32_t m_nCount;
     int32_t m_nDuplicates;

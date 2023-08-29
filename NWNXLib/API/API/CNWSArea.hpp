@@ -20,28 +20,29 @@
 NWN_API_PROLOGUE(CNWSArea)
 #endif
 
-struct CERFFile;
-struct CGameEffect;
-struct CGameObject;
-struct CNWSAmbientSound;
-struct CNWSAreaGridPoint;
-struct CNWSAreaInterTileSuccessors;
-struct CNWSCreature;
-struct CNWSPlayer;
-struct CNWSTile;
-struct CNWTileSet;
-struct CPathfindInformation;
-struct CResGFF;
-struct CResStruct;
-struct NWAREAHEADER;
+class CERFFile;
+class CGameEffect;
+class CGameObject;
+class CNWSAmbientSound;
+class CNWSAreaGridPoint;
+class CNWSAreaInterTileSuccessors;
+class CNWSCreature;
+class CNWSPlayer;
+class CNWSTile;
+class CNWTileSet;
+class CPathfindInformation;
+class CResGFF;
+class CResStruct;
+class NWAREAHEADER;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
+class CNWSArea : public CNWArea, public CResHelper<CResARE, 2012>, public CGameObject
 {
+public:
     int32_t m_nPlayersInArea;
     CExoArrayList<OBJECT_ID> m_pTrapList;
     int32_t m_nObjectByNameIndex;
@@ -107,7 +108,7 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     ~CNWSArea();
     virtual CNWSArea * AsNWSArea();
     virtual CNWSArea * NWAreaAsNWSArea();
-    BOOL AddObjectToArea(OBJECT_ID id, BOOL bRunScripts = true);
+    NWNX_IMPORT BOOL AddObjectToArea(OBJECT_ID id, BOOL bRunScripts = true);
     BOOL AIUpdate();
     Vector ComputeAwayVector(Vector vCurrentPosition, Vector vPositionToMoveAwayFrom, float fMoveAwayRange, CPathfindInformation * pPathInfo);
     int32_t ComputeBestCorner(float fX1, float fY1, float fX2, float fY2, float fX3, float fY3, float fPersonalSpace, float fCreatureHeight, float * fNewX1, float * fNewY1, float * fNewX2, float * fNewY2);
@@ -190,6 +191,63 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     BOOL LoadProperties(CResGFF * pRes, CResStruct * pStruct);
     void IncreaseAILevelPriority();
     void DecreaseAILevelPriority();
+
+    inline void PublicSaveCreatures(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aCreatures, BOOL bSaveOIDs)
+    {
+        SaveCreatures(pRes, pTopLevelStruct, aCreatures, bSaveOIDs);
+    }
+
+    inline void PublicSaveItems(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aItems, BOOL bSaveOIDs)
+    {
+        SaveItems(pRes, pTopLevelStruct, aItems, bSaveOIDs);
+    }
+
+    inline void PublicSaveDoors(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aDoors, BOOL bSaveOIDs)
+    {
+        SaveDoors(pRes, pTopLevelStruct, aDoors, bSaveOIDs);
+    }
+
+    inline void PublicSaveTriggers(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aTriggers, BOOL bSaveOIDs)
+    {
+        SaveTriggers(pRes, pTopLevelStruct, aTriggers, bSaveOIDs);
+    }
+
+    inline void PublicSaveEncounters(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aEncounters, BOOL bSaveOIDs)
+    {
+        SaveEncounters(pRes, pTopLevelStruct, aEncounters, bSaveOIDs);
+    }
+
+    inline void PublicSaveWaypoints(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aWaypoints, BOOL bSaveOIDs)
+    {
+        SaveWaypoints(pRes, pTopLevelStruct, aWaypoints, bSaveOIDs);
+    }
+
+    inline void PublicSaveSounds(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aSounds, BOOL bSaveOIDs)
+    {
+        SaveSounds(pRes, pTopLevelStruct, aSounds, bSaveOIDs);
+    }
+
+    inline void PublicSavePlaceables(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aPlaceables, BOOL bSaveOIDs)
+    {
+        SavePlaceables(pRes, pTopLevelStruct, aPlaceables, bSaveOIDs);
+    }
+
+    inline void PublicSaveStores(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aStores, BOOL bSaveOIDs)
+    {
+        SaveStores(pRes, pTopLevelStruct, aStores, bSaveOIDs);
+    }
+
+    inline void PublicSaveAreaEffects(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aStores, BOOL bSaveOIDs)
+    {
+        SaveAreaEffects(pRes, pTopLevelStruct, aStores, bSaveOIDs);
+    }
+
+    inline void PublicSaveProperties(CResGFF * pRes, CResStruct * pTopLevelStruct)
+    {
+        SaveProperties(pRes, pTopLevelStruct);
+    }
+
+protected:
     void SaveCreatures(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aCreatures, BOOL bSaveOIDs);
     void SaveItems(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aItems, BOOL bSaveOIDs);
     void SaveDoors(CResGFF * pRes, CResStruct * pTopLevelStruct, CExoArrayList<OBJECT_ID> & aDoors, BOOL bSaveOIDs);

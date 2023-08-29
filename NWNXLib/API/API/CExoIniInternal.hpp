@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CExoIniInternal)
 typedef int BOOL;
 
 
-struct CExoIniInternal
+class CExoIniInternal
 {
+public:
     CExoString * m_pFileNames;
 
     CExoIniInternal(CExoString sUserDirectory);

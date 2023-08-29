@@ -9,16 +9,17 @@
 NWN_API_PROLOGUE(CGameEffect)
 #endif
 
-struct CResGFF;
-struct CResStruct;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CGameEffect
+class CGameEffect
 {
+public:
     uint64_t m_nID;
     uint16_t m_nType;
     uint16_t m_nSubType;

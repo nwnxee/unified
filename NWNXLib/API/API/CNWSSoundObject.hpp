@@ -11,18 +11,19 @@
 NWN_API_PROLOGUE(CNWSSoundObject)
 #endif
 
-struct CNWSArea;
-struct CNWSMessage;
-struct CResGFF;
-struct CResStruct;
+class CNWSArea;
+class CNWSMessage;
+class CResGFF;
+class CResStruct;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWSSoundObject : CNWSObject
+class CNWSSoundObject : public CNWSObject
 {
+public:
     BOOL m_bIsActive;
     BOOL m_bPositional;
     BOOL m_bLooping;

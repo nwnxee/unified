@@ -5,17 +5,14 @@
 #include "API/CExoBase.hpp"
 #include "API/CExoResMan.hpp"
 
-#include <dirent.h>
 #include <fstream>
-#include <unistd.h>
-#include <sys/stat.h>
+#include <filesystem>
 
 namespace Compiler
 {
 using namespace NWNXLib;
 using namespace API;
 
-static bool DirectoryExists(const std::string& path);
 static bool CompiledOutputIsNewer(const std::string& sourceFile, const std::string& outputFile);
 static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension);
 static void CleanOutput(const std::string& outputPath);
@@ -23,7 +20,7 @@ static void CreateResourceDirectory(const CExoString& alias, const std::string& 
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString&);
 static int Compile(const std::string& sourcePath, const std::string& outputPath, std::unique_ptr<CScriptCompiler> scriptCompiler);
 
-void Compiler() __attribute__((constructor));
+PluginEntryPoint(Compiler)
 
 void Compiler()
 {
@@ -45,16 +42,16 @@ void Compiler()
         return;
     }
 
-    if (!DirectoryExists(sourcePath))
+    if (!std::filesystem::exists(sourcePath))
     {
         LOG_INFO("Skipping compilation. Cannot find or access source directory %s.", source.value());
         return;
     }
 
-    if (!DirectoryExists(outputPath))
+    if (!std::filesystem::exists(outputPath))
     {
-        mkdir(outputPath.c_str(), 0);
-        if (!DirectoryExists(outputPath))
+        std::filesystem::create_directories(outputPath);
+        if (!std::filesystem::exists(outputPath))
         {
             LOG_INFO("Skipping compilation. Cannot write to output directory %s.", source.value());
             return;
@@ -95,38 +92,23 @@ void Compiler()
     });
 }
 
-static bool DirectoryExists(const std::string& path)
-{
-    return access(path.c_str(), F_OK) == 0;
-}
-
 static bool CompiledOutputIsNewer(const std::string& sourceFile, const std::string& outputFile)
 {
-    struct stat sourceInfo{};
-    struct stat outputInfo{};
-
-    stat(sourceFile.c_str(), &sourceInfo);
-
-    return stat(outputFile.c_str(), &outputInfo) == 0 && outputInfo.st_mtim.tv_sec > sourceInfo.st_mtim.tv_sec;
+    return !std::filesystem::exists(outputFile) || std::filesystem::last_write_time(sourceFile) > std::filesystem::last_write_time(outputFile);
 }
 
 static std::vector<std::string> GetFiles(const std::string& path, const std::string& extension)
 {
     std::vector<std::string> files;
-    if (auto* dir = opendir(path.c_str()))
+    for (const auto& entry : std::filesystem::directory_iterator(path))
     {
-        while (auto* entry = readdir(dir))
+        if ((entry.is_regular_file() || entry.is_symlink() || entry.is_other()) && entry.path().extension() == extension)
         {
-            if ((entry->d_type == DT_UNKNOWN || entry->d_type == DT_REG || entry->d_type == DT_LNK) && String::EndsWith(entry->d_name, extension))
-            {
-                files.emplace_back(entry->d_name);
-            }
+            files.emplace_back(entry.path().string());
         }
-        closedir(dir);
     }
 
     std::sort(std::begin(files), std::end(files));
-
     return files;
 }
 
@@ -182,10 +164,10 @@ static int Compile(const std::string& sourcePath, const std::string& outputPath,
         auto scriptName = String::Basename(sourceFile);
 
         auto sourceFilePath = sourcePath;
-        sourceFilePath.append("/").append(sourceFile);
+        sourceFilePath.append(Platform::PathSeparator()).append(sourceFile);
 
         auto outFilePath = outputPath;
-        outFilePath.append("/").append(scriptName).append(".ncs");
+        outFilePath.append(Platform::PathSeparator()).append(scriptName).append(".ncs");
 
         if (CompiledOutputIsNewer(sourceFilePath, outFilePath))
         {

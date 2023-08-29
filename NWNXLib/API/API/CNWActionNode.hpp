@@ -13,8 +13,9 @@ NWN_API_PROLOGUE(CNWActionNode)
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWActionNode
+class CNWActionNode
 {
+public:
     uint16_t nGroupId;
     uint16_t nActionId;
     uint16_t nSpecialAttackId;

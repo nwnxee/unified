@@ -3,7 +3,8 @@
 namespace InstanceLookup {
 
 template<typename V>
-struct List {
+class List {
+public:
     V *m_pthis;
 };
 

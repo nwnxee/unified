@@ -13,39 +13,40 @@
 NWN_API_PROLOGUE(CServerExoAppInternal)
 #endif
 
-struct C2DA;
-struct CCampaignDB;
-struct CConnectionLib;
-struct CFactionManager;
-struct CGameObject;
-struct CGameObjectArray;
-struct CNWPlaceMeshManager;
-struct CNWSArea;
-struct CNWSAreaOfEffectObject;
-struct CNWSCreature;
-struct CNWSDoor;
-struct CNWSEncounter;
-struct CNWSItem;
-struct CNWSMessage;
-struct CNWSModule;
-struct CNWSObject;
-struct CNWSPlaceable;
-struct CNWSPlayer;
-struct CNWSSoundObject;
-struct CNWSStore;
-struct CNWSTrigger;
-struct CNWSWaypoint;
-struct CNWVirtualMachineCommands;
-struct CNetLayer;
-struct CServerAIMaster;
-struct CServerInfo;
-struct CWorldTimer;
-struct SSubNetProfile;
+class C2DA;
+class CCampaignDB;
+class CConnectionLib;
+class CFactionManager;
+class CGameObject;
+class CGameObjectArray;
+class CNWPlaceMeshManager;
+class CNWSArea;
+class CNWSAreaOfEffectObject;
+class CNWSCreature;
+class CNWSDoor;
+class CNWSEncounter;
+class CNWSItem;
+class CNWSMessage;
+class CNWSModule;
+class CNWSObject;
+class CNWSPlaceable;
+class CNWSPlayer;
+class CNWSSoundObject;
+class CNWSStore;
+class CNWSTrigger;
+class CNWSWaypoint;
+class CNWVirtualMachineCommands;
+class CNetLayer;
+class CServerAIMaster;
+class CServerInfo;
+class CWorldTimer;
+class SSubNetProfile;
 
 namespace NWSync {
-struct Advertisement; // NWSyncAdvertisement
+class Advertisement; // NWSyncAdvertisement
 }
-struct AdvertLUT {
+class AdvertLUT {
+public:
     std::unordered_map<CExoString, std::vector<void*>> m_map;
 };
 
@@ -56,8 +57,9 @@ typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
-struct CServerExoAppInternal
+class CServerExoAppInternal
 {
+public:
     uint8_t ScratchMessageBuffer[65536];
     BOOL m_bMultiplayerEnabled;
     BOOL m_bGameSpyEnabled;
@@ -148,7 +150,7 @@ struct CServerExoAppInternal
     CServerExoAppInternal();
     ~CServerExoAppInternal();
     BOOL Initialize();
-    BOOL MainLoop();
+    NWNX_IMPORT BOOL MainLoop();
     void StartServices();
     void StopServices();
     void ShutdownNetLayer();

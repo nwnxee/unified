@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CScriptLog)
 
 
 
-struct CScriptLog
+class CScriptLog
 {
+public:
     CExoString m_sScriptName;
     int32_t m_nTimesRun;
     uint32_t m_nTotalTime;

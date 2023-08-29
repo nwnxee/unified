@@ -16,9 +16,9 @@
 NWN_API_PROLOGUE(CLastUpdateObject)
 #endif
 
-struct CLoopingVisualEffect;
-struct CNWSPlayerLUOQuickbarItemButton;
-struct ObjectVisualTransformData;
+class CLoopingVisualEffect;
+class CNWSPlayerLUOQuickbarItemButton;
+class ObjectVisualTransformData;
 
 
 typedef TextureReplaceInfo AnimationReplaceInfo;
@@ -26,8 +26,9 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CLastUpdateObject
+class CLastUpdateObject
 {
+public:
     CNWSPlayerLUOAppearanceInfo m_cAppearance;
     BOOL m_bActive;
     uint8_t m_nObjectType;

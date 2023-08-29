@@ -11,8 +11,9 @@ NWN_API_PROLOGUE(LerpVector)
 
 
 
-struct LerpVector
+class LerpVector
 {
+public:
     LerpFloat x;
     LerpFloat y;
     LerpFloat z;

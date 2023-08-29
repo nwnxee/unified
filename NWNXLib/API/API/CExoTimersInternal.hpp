@@ -12,8 +12,9 @@ NWN_API_PROLOGUE(CExoTimersInternal)
 typedef int BOOL;
 
 
-struct CExoTimersInternal
+class CExoTimersInternal
 {
+public:
     BOOL m_bQPCActive;
     BOOL m_bQPCAlgorithm2;
     uint64_t m_nQPFrequency;

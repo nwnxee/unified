@@ -14,8 +14,9 @@ typedef CExoLinkedListNode * CExoLinkedListPosition;
 
 
 // NOTE: Manually implemented for now..
-template<class T> struct CExoLinkedList
+template<class T> class CExoLinkedList
 {
+public:
     CExoLinkedListInternal * m_pcExoLinkedListInternal;
 
     CExoLinkedList()

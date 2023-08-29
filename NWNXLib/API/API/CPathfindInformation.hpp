@@ -10,16 +10,17 @@
 NWN_API_PROLOGUE(CPathfindInformation)
 #endif
 
-struct CNWTileSurfaceMeshHashTableEntry;
-struct CPathfindInfoIntraTileSuccessors;
+class CNWTileSurfaceMeshHashTableEntry;
+class CPathfindInfoIntraTileSuccessors;
 
 
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CPathfindInformation
+class CPathfindInformation
 {
+public:
     BOOL m_bClientMoving;
     float m_fPersonalSpace;
     float m_fCreaturePersonalSpace;

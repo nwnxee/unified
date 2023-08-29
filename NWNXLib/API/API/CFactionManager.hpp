@@ -8,18 +8,19 @@
 NWN_API_PROLOGUE(CFactionManager)
 #endif
 
-struct CExoString;
-struct CNWSFaction;
-struct CNWSFaction;
-struct CResGFF;
-struct CResList;
+class CExoString;
+class CNWSFaction;
+class CNWSFaction;
+class CResGFF;
+class CResList;
 
 
 typedef int BOOL;
 
 
-struct CFactionManager
+class CFactionManager
 {
+public:
     CNWSFaction * m_pDefaultFactionDefender;
     CNWSFaction * m_pDefaultFactionCommoner;
     CNWSFaction * m_pDefaultFactionMerchant;

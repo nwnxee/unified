@@ -8,14 +8,15 @@
 NWN_API_PROLOGUE(CERFString)
 #endif
 
-struct CExoFile;
+class CExoFile;
 
 
 typedef int BOOL;
 
 
-struct CERFString
+class CERFString
 {
+public:
     uint32_t m_nLanguageID;
     uint32_t m_nSize;
     char * m_pText;

@@ -8,15 +8,16 @@
 NWN_API_PROLOGUE(CNWSUUID)
 #endif
 
-struct CGameObject;
-struct CResGFF;
-struct CResStruct;
+class CGameObject;
+class CResGFF;
+class CResStruct;
 
 
 
 
-struct CNWSUUID
+class CNWSUUID
 {
+public:
     CGameObject * m_parent;
     CExoString m_uuid;
 
@@ -31,8 +32,8 @@ struct CNWSUUID
     bool TryAssign(const CExoString & uuid);
     void AssignRandom();
     CExoString GetOrAssignRandom();
-    bool LoadFromGff(CResGFF * pRes, CResStruct * pStruct);
-    void SaveToGff(CResGFF * pRes, CResStruct * pStruct);
+    NWNX_IMPORT bool LoadFromGff(CResGFF * pRes, CResStruct * pStruct);
+    NWNX_IMPORT void SaveToGff(CResGFF * pRes, CResStruct * pStruct);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSUUID
