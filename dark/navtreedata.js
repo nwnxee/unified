@@ -50,17 +50,17 @@ var NAVTREEINDEX =
 "group__events.html#ga3fe0e4c70c3359417a8d133e1b974b90",
 "group__events.html#ga87056cafe875e4b9ef7c901446a36309",
 "group__events.html#gae3b23ce9fdf5b93b67203a4537c74ab9",
-"group__feedback.html#ga0b18942f54b5939acebfdf017344f1d9",
-"group__feedback.html#ga76a698a06a03bb5da8a02128092618db",
-"group__feedback.html#gae307e908a20649770344f0e944d9169c",
-"group__object.html#ga697b5d0c5512a4446b23d2eef6f577e4",
-"group__player.html#ga80bfea76a93c1de52cb4c0e5bbc23978",
-"group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8",
-"group__util.html#ga783bcf722cf620148b07dc9bb2900f53",
-"nwnx__encounter_8nss.html",
-"nwnx__redis_8nss.html#afc640f1f6e675ab5372174be68836957",
-"nwnx__tileset_8nss.html",
-"structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742"
+"group__feedback.html#ga0a28d819ba063538e3ef111e1300076a",
+"group__feedback.html#ga75bf48bd50f2def68e19b5f1d508a544",
+"group__feedback.html#gae18d97ada84a6fe773d08b198372910c",
+"group__object.html#ga55f50560994dfdeb3a45fe8cf457a5b3",
+"group__player.html#ga7dbffb81ef377eb430f50011b675573d",
+"group__reveal.html",
+"group__util.html#ga763a6401a1bb17dc61c3cca95c5cb343",
+"nwnx__effect_8nss_source.html",
+"nwnx__redis_8nss.html#afb12836448527843893cea9aa66a718b",
+"nwnx__sql_8nss_source.html",
+"structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

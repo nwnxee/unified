@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"nwnx__redis_8nss.html#afb12836448527843893cea9aa66a718b":[4,0,3,28,0,0,191],
+"nwnx__redis_8nss.html#afb9f4c4230ffd293a803cdcb93c24432":[4,0,3,28,0,0,124],
+"nwnx__redis_8nss.html#afbddebbcf6d3934ed197f72cf651f565":[4,0,3,28,0,0,37],
 "nwnx__redis_8nss.html#afc640f1f6e675ab5372174be68836957":[4,0,3,28,0,0,101],
 "nwnx__redis_8nss.html#afcccc0cb0c9c94931ee3dc291cd38f89":[4,0,3,28,0,0,152],
 "nwnx__redis_8nss.html#afd098f298bdd45109ae41a5f6df86c9b":[4,0,3,28,0,0,162],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "nwnx__skillranks_8nss_source.html":[4,0,3,34,0,0],
 "nwnx__spellcheck_8nss.html":[4,0,3,35,0,0],
 "nwnx__spellcheck_8nss_source.html":[4,0,3,35,0,0],
-"nwnx__sql_8nss.html":[4,0,3,36,0,0],
-"nwnx__sql_8nss_source.html":[4,0,3,36,0,0],
-"nwnx__tests_8nss.html":[4,0,1,0,2],
-"nwnx__tests_8nss_source.html":[4,0,1,0,2]
+"nwnx__sql_8nss.html":[4,0,3,36,0,0]
 };

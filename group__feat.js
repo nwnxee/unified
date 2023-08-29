@@ -35,5 +35,6 @@ var group__feat =
     [ "NWNX_FEAT_MODIFIER_HASTE", "group__feat.html#gac912c96649b21da8f4a9a25bffe3cdb6", null ],
     [ "NWNX_FEAT_MODIFIER_VISUALEFFECT", "group__feat.html#ga874747e1595f185ee027e4dd7ed6eb87", null ],
     [ "NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL", "group__feat.html#ga179f6a354a9753bcf70f0c20894ae82e", null ],
-    [ "NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL", "group__feat.html#gae56723de98fa8920d489fdb4c5cf7e67", null ]
+    [ "NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL", "group__feat.html#gae56723de98fa8920d489fdb4c5cf7e67", null ],
+    [ "NWNX_FEAT_MODIFIER_DAMAGE", "group__feat.html#gac4304aba0b53c25cafb717b97b58a23a", null ]
 ];
