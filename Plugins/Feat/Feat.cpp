@@ -183,6 +183,19 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         g_plugin->DoEffect(pCreature, nFeat,Concealment, modConceal, Constants::RacialType::Invalid);
     }
 
+    // DAMAGE
+    for (auto &damageMod : g_plugin->m_FeatDamage[nFeat])
+    {
+        auto modDamageType = damageMod.first;
+        auto modDamageValue = damageMod.second;
+        if (modDamageValue != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               modDamageValue > 0 ? DamageIncrease : DamageDecrease,
+                               abs(modDamageValue), modDamageType, 28, 0, 0);
+        }
+    }
+
     // DMGIMMUNITY
     for (auto &dmgImmunityMod : g_plugin->m_FeatDmgImmunity[nFeat])
     {
@@ -735,6 +748,21 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
             }
             g_plugin->m_FeatConcealment[featId] = param1;
             LOG_INFO("%s: Setting Natural Concealment modifier to %d.", featName, param1);
+            break;
+        }
+        case DAMAGE:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Damage modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+            g_plugin->m_FeatDamage[featId][param1] = param2;
+            if (param2 > 0)
+                LOG_INFO("%s: Setting Damage Increase %s to DAMAGE_BONUS_* constant %d.", featName, Constants::DamageType::ToString(param1), param2);
+            else
+                LOG_INFO("%s: Setting Damage Decrease %s DAMAGE_BONUS_* constant  %d.", featName, Constants::DamageType::ToString(param1), param2);
             break;
         }
         case DMGIMMUNITY:
