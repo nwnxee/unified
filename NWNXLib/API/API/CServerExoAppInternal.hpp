@@ -35,7 +35,7 @@ struct CNWSSoundObject;
 struct CNWSStore;
 struct CNWSTrigger;
 struct CNWSWaypoint;
-struct CNWVirtualMachineCommands;
+struct CNWSVirtualMachineCommands;
 struct CNetLayer;
 struct CServerAIMaster;
 struct CServerInfo;
@@ -64,7 +64,7 @@ struct CServerExoAppInternal
     BOOL m_bCDResponseReceived;
     CServerInfo * m_pServerInfo;
     int16_t m_nServerMode;
-    CNWVirtualMachineCommands * m_pVirtualMachineCommandImplementer;
+    CNWSVirtualMachineCommands * m_pVirtualMachineCommandImplementer;
     CNWSMessage * m_pMessage;
     BOOL m_bForceUpdate;
     uint32_t * m_pPendingAuthorization;

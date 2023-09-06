@@ -4,7 +4,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CGameEffect.hpp"
 
@@ -39,8 +39,8 @@ static void ExtendDurationType()
         }, Hooks::Order::VeryEarly);
 
     static Hooks::Hook pExecuteCommandApplyEffectOnObjectHook = Hooks::HookFunction(
-        &CNWVirtualMachineCommands::ExecuteCommandApplyEffectOnObject,
-        +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
+        &CNWSVirtualMachineCommands::ExecuteCommandApplyEffectOnObject,
+        +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
         {
             // At this point in the original game code, this is the comment pasted here verbatim:
             //

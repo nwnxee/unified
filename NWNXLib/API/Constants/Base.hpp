@@ -197,6 +197,11 @@ namespace ResRefType
         TML    = 2076,
         SQ3    = 2077,
         LOD    = 2078,
+        GIF    = 2079,
+        PNG    = 2080,
+        JPG    = 2081,
+        CAF    = 2082,
+        JUI    = 2083,
         IDS    = 9996,
         ERF    = 9997,
         BIF    = 9998,
@@ -292,6 +297,11 @@ namespace ResRefType
             case TML:    return "TML";
             case SQ3:    return "SQ3";
             case LOD:    return "LOD";
+            case GIF:    return "GIF";
+            case PNG:    return "PNG";
+            case JPG:    return "JPG";
+            case CAF:    return "CAF";
+            case JUI:    return "JUI";
             case IDS:    return "IDS";
             case ERF:    return "ERF";
             case BIF:    return "BIF";

@@ -3,7 +3,7 @@
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 #include "API/Functions.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 //for objectself
 #include "API/CVirtualMachine.hpp"
 // for dlopen

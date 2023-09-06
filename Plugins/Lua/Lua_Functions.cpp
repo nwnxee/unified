@@ -1,7 +1,7 @@
 #include "nwnx.hpp"
 #include "Lua_Functions.hpp"
 #include "API/CAppManager.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Globals.hpp"

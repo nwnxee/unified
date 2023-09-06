@@ -4,7 +4,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
@@ -404,7 +404,7 @@ void AddDestroyObjectEvent(ObjectID oid)
 int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 {
     auto vm = API::Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(vm->m_pCmdImplementer);
 
     if (vm->m_nRecursionLevel++ == -1)
     {
@@ -425,7 +425,7 @@ int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 int PopScriptContext()
 {
     auto vm = API::Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(vm->m_pCmdImplementer);
 
     if (--vm->m_nRecursionLevel != -1)
     {

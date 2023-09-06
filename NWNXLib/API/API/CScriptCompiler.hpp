@@ -26,8 +26,22 @@ struct CScriptParseTreeNodeBlock;
 typedef int BOOL;
 
 
+struct CScriptCompilerAPI
+{
+    CScriptCompilerAPI() { memset(this, 0, sizeof(CScriptCompilerAPI)); }
+    BOOL (*ResManUpdateResourceDirectory)(const char* sAlias);
+    int32_t (*ResManWriteToFile)(const char* sFileName, RESTYPE nResType, const uint8_t* pData, size_t nSize, bool bBinary);
+    const char* (*ResManLoadScriptSourceFile)(const char* sFileName, RESTYPE nResType);
+    const char* (*TlkResolve)(STRREF strRef);
+};
+
 struct CScriptCompiler
 {
+    static CScriptCompilerAPI MakeDefaultAPI();
+    CScriptCompilerAPI m_cAPI;
+    RESTYPE m_nResTypeSource;
+    RESTYPE m_nResTypeCompiled;
+    RESTYPE m_nResTypeDebug;
     int32_t m_nKeyWords;
     CScriptCompilerKeyWordEntry * m_pcKeyWords;
     int32_t m_nParseTreeNodeBlockEmptyNodes;
@@ -46,23 +60,22 @@ struct CScriptCompiler
     CExoString m_psTableFileNames[512];
     int32_t m_nLineNumberEntries;
     int32_t m_nFinalLineNumberEntries;
-    CExoArrayList<int32_t> m_pnTableInstructionFileReference;
-    CExoArrayList<int32_t> m_pnTableInstructionLineNumber;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryStart;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryEnd;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryFinal;
-    CExoArrayList<int32_t> m_pnTableInstructionBinarySortedOrder;
+    std::vector<int32_t> m_pnTableInstructionFileReference;
+    std::vector<int32_t> m_pnTableInstructionLineNumber;
+    std::vector<int32_t> m_pnTableInstructionBinaryStart;
+    std::vector<int32_t> m_pnTableInstructionBinaryEnd;
+    std::vector<int32_t> m_pnTableInstructionBinaryFinal;
+    std::vector<int32_t> m_pnTableInstructionBinarySortedOrder;
     int32_t m_nSymbolTableVariables;
     int32_t m_nFinalSymbolTableVariables;
-    CExoArrayList<int32_t> m_pnSymbolTableVarType;
-    CExoArrayList<CExoString> m_psSymbolTableVarName;
-    CExoArrayList<CExoString> m_psSymbolTableVarStructureName;
-    CExoArrayList<int32_t> m_pnSymbolTableVarStackLoc;
-    CExoArrayList<int32_t> m_pnSymbolTableVarBegin;
-    CExoArrayList<int32_t> m_pnSymbolTableVarEnd;
-    CExoArrayList<int32_t> m_pnSymbolTableBinaryFinal;
-    CExoArrayList<int32_t> m_pnSymbolTableBinarySortedOrder;
-    int32_t m_nDebugStatus;
+    std::vector<int32_t> m_pnSymbolTableVarType;
+    std::vector<CExoString> m_psSymbolTableVarName;
+    std::vector<CExoString> m_psSymbolTableVarStructureName;
+    std::vector<int32_t> m_pnSymbolTableVarStackLoc;
+    std::vector<int32_t> m_pnSymbolTableVarBegin;
+    std::vector<int32_t> m_pnSymbolTableVarEnd;
+    std::vector<int32_t> m_pnSymbolTableBinaryFinal;
+    std::vector<int32_t> m_pnSymbolTableBinarySortedOrder;
     BOOL m_bCompileConditionalFile;
     BOOL m_bOldCompileConditionalFile;
     BOOL m_bCompileConditionalOrMain;
@@ -160,11 +173,10 @@ struct CScriptCompiler
     int32_t m_nFinalBinarySize;
     CExoString m_sCapturedError;
 
-    CScriptCompiler();
+    explicit CScriptCompiler(RESTYPE nSource, RESTYPE nCompiled, RESTYPE nDebug, CScriptCompilerAPI api = MakeDefaultAPI());
     ~CScriptCompiler();
     void SetIdentifierSpecification(const CExoString & sLanguageSource);
     void SetOutputAlias(const CExoString & sAlias);
-    void SetCompileDebugLevel(int32_t nValue);
     void SetCompileSymbolicOutput(int32_t nValue);
     void SetGenerateDebuggerOutput(int32_t nValue);
     void SetOptimizeBinaryCodeLength(BOOL nValue);

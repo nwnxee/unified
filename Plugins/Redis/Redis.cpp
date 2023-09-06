@@ -2,7 +2,7 @@
 #include "Internal.hpp"
 
 #include "API/Functions.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

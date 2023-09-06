@@ -3,7 +3,6 @@
 
 #include "CExoArrayList.hpp"
 #include "CExoString.hpp"
-#include "CVirtualMachineFile.hpp"
 #include "CVirtualMachineScript.hpp"
 #include "CVirtualMachineStack.hpp"
 #include "ScriptParam.hpp"
@@ -30,6 +29,9 @@ typedef uint32_t OBJECT_ID;
 
 struct CVirtualMachine
 {
+    RESTYPE m_nResTypeSource;
+    RESTYPE m_nResTypeCompiled;
+    RESTYPE m_nResTypeDebug;
     CScriptCompiler * m_pJitCompiler;
     int32_t m_nReturnValueParameterType;
     void * m_pReturnValue;
@@ -49,7 +51,6 @@ struct CVirtualMachine
     CVirtualMachineCmdImplementer * m_pCmdImplementer;
     BOOL m_bDebugGUIRequired;
     BOOL m_bDebuggerSpawned;
-    CVirtualMachineFile m_cVMFile;
     CScriptLog * m_pLog;
     CExoArrayList<CScriptLog *> m_aScriptLog;
     BOOL m_bEnableScriptLogging;
@@ -59,7 +60,7 @@ struct CVirtualMachine
     uint32_t m_nInstructionLimit;
     CExoString m_sAbortCustomError;
 
-    CVirtualMachine();
+    explicit CVirtualMachine(const char* sLanguageSource, const char* sOutputAlias, RESTYPE nSource, RESTYPE nCompiled, RESTYPE nDebug);
     ~CVirtualMachine();
     BOOL RunScript(CExoString * psFileName, OBJECT_ID oid, BOOL bOidValid = true, int32_t nScriptEventID = 0);
     int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);

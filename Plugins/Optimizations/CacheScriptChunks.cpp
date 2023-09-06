@@ -72,7 +72,7 @@ void CacheScriptChunks()
                 DataBlockRef pScriptDataBlock = std::make_shared<DataBlock>();
                 pScriptDataBlock->Append(pScriptData, nScriptDataSize);
 
-                auto pNDB = Globals::ExoResMan()->Get("!Chunk", Constants::ResRefType::NDB);
+                auto pNDB = Globals::ExoResMan()->Get("!Chunk", pVirtualMachine->m_nResTypeDebug);
 
                 s_CachedScriptChunks[nHash] = std::make_pair(pScriptDataBlock, pNDB);
 
