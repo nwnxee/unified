@@ -150,9 +150,8 @@ static void CreateResourceDirectory(const CExoString& alias, const std::string& 
 
 static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoString& outputAlias)
 {
-    auto scriptCompiler = std::make_unique<CScriptCompiler>();
+    auto scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
 
-    scriptCompiler->SetCompileDebugLevel(Config::Get<int>("DEBUG_LEVEL", 0));
     scriptCompiler->SetCompileSymbolicOutput(Config::Get<int>("SYMBOLIC_OUTPUT", 0));
     scriptCompiler->SetGenerateDebuggerOutput(Config::Get<int>("GENERATE_DEBUGGER_OUTPUT", 0));
     scriptCompiler->SetOptimizeBinaryCodeLength(Config::Get<bool>("OPTIMIZE_BINARY_CODE_LENGTH", true));

@@ -6,7 +6,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
 
 #include <dlfcn.h>
@@ -207,7 +207,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
 
     int pushedCount = s_pushedCount;
     s_pushedCount = 0;
@@ -458,7 +458,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+        auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
         LOG_DEBUG("Freeing game structure at 0x%x", ptr);
         cmd->DestroyGameDefinedStructure(structId, ptr);
     }

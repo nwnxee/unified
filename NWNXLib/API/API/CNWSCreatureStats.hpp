@@ -195,7 +195,7 @@ struct CNWSCreatureStats
     void SetExperience(uint32_t nValue, BOOL bDoLevel = true);
     void AddExperience(uint32_t nValue);
     CExoString GetClassString(uint8_t nMultiClass);
-    uint8_t GetClassLevel(uint8_t nMultiClass, BOOL bUseNegativeLevel = false);
+    uint8_t GetClassLevel(uint8_t nMultiClass, BOOL bUseNegativeLevel = false, BOOL bIncludeCasterMultiplier = false);
     uint8_t GetClassNegativeLevels(uint8_t nMultiClass);
     uint8_t GetClass(uint8_t nMultiClass);
     CNWSCreatureStats_ClassInfo * GetClassInfo(uint8_t nMultiClass);

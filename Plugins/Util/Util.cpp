@@ -337,8 +337,7 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
 
     if (!s_scriptCompiler)
     {
-        s_scriptCompiler = std::make_unique<CScriptCompiler>();
-        s_scriptCompiler->SetCompileDebugLevel(0);
+        s_scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
         s_scriptCompiler->SetCompileSymbolicOutput(0);
         s_scriptCompiler->SetGenerateDebuggerOutput(0);
         s_scriptCompiler->SetOptimizeBinaryCodeLength(true);
@@ -734,16 +733,16 @@ NWNX_EXPORT ArgumentStack GetStringLevenshteinDistance(ArgumentStack&& args)
     // https://rosettacode.org/wiki/Levenshtein_distance#C++
     auto s1 = args.extract<std::string>();
     auto s2 = args.extract<std::string>();
-    
+
 	const size_t m = s1.size();
     const size_t n = s2.size();
-	
+
     if (m == 0)
         return (int32_t)n;
-	
+
     if (n == 0)
         return (int32_t)m;
-	
+
     std::vector<size_t> costs(n + 1);
     std::iota(costs.begin(), costs.end(), 0);
     size_t i = 0;

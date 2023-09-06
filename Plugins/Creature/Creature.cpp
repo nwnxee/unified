@@ -34,7 +34,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSStore.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CNWSEffectListHandler.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -1725,8 +1725,8 @@ static void InitCasterLevelHooks()
                                        &CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ExecuteCommandGetCasterLevelHook =
-            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetCasterLevel,
-                +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandGetCasterLevel,
+                +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -1734,8 +1734,8 @@ static void InitCasterLevelHooks()
                     return retVal;
                 }, Hooks::Order::Early);
     static Hooks::Hook s_ExecuteCommandResistSpellHook =
-            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandResistSpell,
-                +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandResistSpell,
+                +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -3217,8 +3217,8 @@ NWNX_EXPORT ArgumentStack GetMaximumBonusAttacks(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
 {
-    static Hooks::Hook s_ExecuteCommandEffectModifyAttacksHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandEffectModifyAttacks,
-    +[](CNWVirtualMachineCommands *pThis, int32_t, int32_t) -> int32_t
+    static Hooks::Hook s_ExecuteCommandEffectModifyAttacksHook = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandEffectModifyAttacks,
+    +[](CNWSVirtualMachineCommands *pThis, int32_t, int32_t) -> int32_t
     {
         int32_t nNumAttacks;
 
@@ -3383,7 +3383,7 @@ NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
     if (auto *pCreature = Utils::PopCreature(args))
     {
         auto oidSingleTarget = Constants::OBJECT_INVALID;
-        
+
         if (auto *pTarget = Utils::PopCreature(args))
             oidSingleTarget = pTarget->m_idSelf;
 

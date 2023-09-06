@@ -6,7 +6,7 @@
 
 
 #ifdef NWN_API_PROLOGUE
-NWN_API_PROLOGUE(CNWVirtualMachineCommands)
+NWN_API_PROLOGUE(CNWSVirtualMachineCommands)
 #endif
 
 struct C2DA;
@@ -19,11 +19,12 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
-struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
+struct CNWSVirtualMachineCommands : CVirtualMachineCmdImplementer
 {
     pfCVMCommands * m_pVirtualMachineCommands;
 
-    ~CNWVirtualMachineCommands();
+    CNWSVirtualMachineCommands(CVirtualMachine* vm) : CVirtualMachineCmdImplementer(vm, VMContext::SERVER) {}
+    ~CNWSVirtualMachineCommands();
     void InitializeCommands();
     int32_t ExecuteCommand(int32_t nCommandId, int32_t nParameters);
     void ReportError(const CExoString & sFileName, int32_t nError, const CExoString & customMsg = "");
@@ -85,7 +86,6 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandBeginConversation(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandBlackScreen(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandBootPC(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandCassowary(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandCastSpell(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandChangeFaction(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandClearAllActions(int32_t nCommandId, int32_t nParameters);
@@ -185,10 +185,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandExploreAreaForPlayer(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExportAllCharacters(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExportSingleCharacter(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandFindSubString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandFloatingText(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandFloatToInt(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandFloatToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandForceRest(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGet2DA(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetAbilityScore(int32_t nCommandId, int32_t nParameters);
@@ -450,14 +447,8 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetStat(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetStolenFlag(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetStrByStrRef(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetStringLeft(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetStringLength(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetStringLowerCase(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetStringRight(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetStringUpperCase(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetStrRefSoundDuration(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSubRace(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandGetSubString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetTag(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetTileLightColor(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetTimeHour(int32_t nCommandId, int32_t nParameters);
@@ -486,10 +477,6 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandHideEffectIcon(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIgnoreEffectImmunity(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIncrementRemainingFeatUses(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandInsertString(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandIntToFloat(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandIntToHexString(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandIntToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIsAIState(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIsDM(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandIsEffectValid(int32_t nCommandId, int32_t nParameters);
@@ -507,7 +494,6 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandLocationAccess(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandLockCamera(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMaterialShaderUniforms(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandMath(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMemorizedSpellManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandModuleAccess(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMoveAwayFromObject(int32_t nCommandId, int32_t nParameters);
@@ -529,14 +515,9 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandPlaySoundByStrRef(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPopUpGUIPanel(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPostString(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandPrintFloat(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandPrintInteger(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPrintLogEntry(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandPrintString(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandPrintObject(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPrintVector(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPutDownItem(int32_t nCommandId, int32_t nParameters);
-    int32_t ExecuteCommandRandom(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandRandomName(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandReadySpellLevel(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandRecomputeStaticLighting(int32_t nCommandId, int32_t nParameters);
@@ -707,13 +688,13 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandWait(int32_t nCommandId, int32_t nParameters);
 
 
-#ifdef NWN_CLASS_EXTENSION_CNWVirtualMachineCommands
-    NWN_CLASS_EXTENSION_CNWVirtualMachineCommands
+#ifdef NWN_CLASS_EXTENSION_CNWSVirtualMachineCommands
+    NWN_CLASS_EXTENSION_CNWSVirtualMachineCommands
 #endif
 };
 
 
 #ifdef NWN_API_EPILOGUE
-NWN_API_EPILOGUE(CNWVirtualMachineCommands)
+NWN_API_EPILOGUE(CNWSVirtualMachineCommands)
 #endif
 
