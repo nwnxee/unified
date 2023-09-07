@@ -1263,6 +1263,15 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         auto text = args.extract<std::string>();
           ASSERT_OR_THROW(!text.empty());
+        int32_t showInChat = 1;
+        try
+        {
+            showInChat = args.extract<int32_t>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Player_FloatingTextStringOnCreature: Missing bChatWindow arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
+        }
 
         if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
         {
@@ -1270,6 +1279,7 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
             {
                 CNWCCMessageData messageData;
                 messageData.SetObjectID(0, pCreature->m_idSelf);
+                messageData.SetInteger(0, showInChat);
                 messageData.SetInteger(9, 94);
                 messageData.SetString(0, text);
 

@@ -329,7 +329,8 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
 /// @param oPlayer The player to display the text to.
 /// @param oCreature The creature to display the text above.
 /// @param sText The text to display.
-void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
+/// @param bChatWindow If TRUE, sText will be displayed in oPlayer's chat window.
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText, int bChatWindow = TRUE);
 
 /// @brief Toggle oPlayer's PlayerDM status.
 /// @note This function does nothing for actual DMClient DMs or players with a client version < 8193.14
@@ -910,10 +911,11 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText)
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText, int bChatWindow = TRUE)
 {
     string sFunc = "FloatingTextStringOnCreature";
 
+    NWNX_PushArgumentInt(bChatWindow);
     NWNX_PushArgumentString(sText);
     NWNX_PushArgumentObject(oCreature);
     NWNX_PushArgumentObject(oPlayer);
