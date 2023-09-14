@@ -35,9 +35,9 @@ CVirtualMachine* GetVm()
 }
 
 
-CNWVirtualMachineCommands* GetVmCommands()
+CNWSVirtualMachineCommands* GetVmCommands()
 {
-    return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
+    return static_cast<CNWSVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
 CVirtualMachineScript* CreateScriptForClosure(const char* token)
