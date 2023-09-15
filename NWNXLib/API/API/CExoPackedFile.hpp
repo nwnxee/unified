@@ -30,14 +30,11 @@ struct CExoPackedFile
     virtual void AddRefCount();
     virtual BOOL CloseFile();
     virtual void DeleteRefCount();
-    virtual void DeleteAsyncRefCount();
     virtual CExoFile * GetFile();
     virtual uint32_t GetResourceSize(RESID nID);
     virtual BOOL Initialize();
     virtual BOOL OpenFile();
-    virtual BOOL OpenFile(uint8_t * pCipher);
     virtual uint32_t ReadResource(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
-    virtual void ReadResourceAsync(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
     virtual BOOL LoadHeader(const char * expectOid, uint8_t nType = 0);
     virtual BOOL UnloadHeader();
     uint32_t ReadNWCompressedBuffer(void * outBuffer, uint32_t outBufSize, uint32_t readLength);

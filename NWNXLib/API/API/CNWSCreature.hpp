@@ -38,7 +38,6 @@ struct CNWSObjectActionNode;
 struct CNWSPlayer;
 struct CNWSQuickbarButton;
 struct CNWVisibilityNode;
-struct CNWVisibilityNode;
 struct CPathfindInformation;
 struct CResGFF;
 struct CResStruct;
@@ -553,6 +552,7 @@ struct CNWSCreature : CNWSObject
     void ClearAutoMapData();
     void SetAutoMapData(int32_t nNumAreas, OBJECT_ID * pAreaList, uint8_t * * pMapTileData);
     void ReconcileAutoMapData();
+    int RetrieveAreaAutoMapDataIndex(OBJECT_ID oidArea);
     void SetAllTilesExplored(OBJECT_ID oidArea, BOOL bExplored = true);
     void SetTileExplored(OBJECT_ID oidArea, int32_t nXPos, int32_t nYPos, BOOL newState = true);
     BOOL GetTileExplored(OBJECT_ID oidArea, int32_t nXPos, int32_t nYPos);

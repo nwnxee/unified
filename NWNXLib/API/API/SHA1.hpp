@@ -20,7 +20,7 @@ struct SHA1 {
 
     SHA1()
     {
-        Clear();
+        //Clear();
     }
 
     explicit SHA1(const uint8_t ptr[20]); // SHA1_DIGEST_SIZE
@@ -28,7 +28,8 @@ struct SHA1 {
 
     SHA1 operator=(Hash::SHA1 const& other);
 
-    void Clear();
+    // This is implemented in the header, so it's always inlined, can't do a manual impl either since it uses a crypto lib that's not exposed
+    //void Clear();
 
 #ifdef NWN_CLASS_EXTENSION_SHA1
     NWN_CLASS_EXTENSION_SHA1

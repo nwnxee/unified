@@ -369,6 +369,11 @@ struct CNWSCreatureStats
     void ResetSpellLikeAbilities();
     BOOL GetIsInSpellLikeAbilityList(uint32_t nSpellId);
     uint8_t GetSpellLikeAbilityCasterLevel(uint32_t nSpellId);
+    int32_t GetSpellLikeAbilityCount();
+    uint32_t GetSpellLikeAbilitySlotSpellId(uint32_t nSlot);
+    uint8_t GetSpellLikeAbilitySlotCasterLevel(uint32_t nSlot);
+    BOOL GetSpellLikeAbilitySlotReady(uint32_t nSlot);
+    void SetSpellLikeAbilitySlotReady(uint32_t nSlot, BOOL bReady);
     float GetStatById(int32_t nId);
     void SetStatById(int32_t nId, float nStat);
     BOOL GetIsWeaponOfChoice(uint32_t nBaseItemType);

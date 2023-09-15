@@ -46,8 +46,6 @@ struct CAppManager
     void DisplayScriptDebuggerPopup();
     void DestroyScriptDebuggerPopup();
     uint8_t ReadProgressFromINI(uint8_t m_nCampaign);
-    // CExoLocString GetHostedModuleDescription();
-    // CExoString GetHostedPublicInternetAddressAndPort();
     void ConnectToServer(CExoString sAddress, BOOL bPasswordRequired);
     class CWorldTimer * GetWorldTimer();
     CExoString GetCryptoKxPublicKeyBase64();

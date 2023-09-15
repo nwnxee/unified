@@ -80,6 +80,7 @@ struct CNWRules
     void InitLegacyClassDefaults(uint8_t nClass);
     void InitLegacyRaceDefaults(uint8_t nRace);
     void LoadDifficultyInfo();
+    void LoadEncodingInfo();
     void LoadRulesetInfo();
 
 

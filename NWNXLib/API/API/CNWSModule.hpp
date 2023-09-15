@@ -207,6 +207,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     uint8_t IsOfficialCampaign(void );
     void DestroyModuleSqliteDatabase();
     BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
+    BOOL GetPlayerPartyControl();
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);

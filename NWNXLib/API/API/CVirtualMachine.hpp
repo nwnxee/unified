@@ -87,7 +87,7 @@ struct CVirtualMachine
     void DeleteScriptSituation(void * pScript);
     int32_t ExecuteCode(int32_t * pInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
-    void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData, DataBlockRef pDataNDB = nullptr);
+    void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pDataNCS, DataBlockRef pDataNDB = nullptr);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);
     BOOL PushInstructionPtr(int32_t nInstructionPointer);
     int32_t ReadScriptFile(CExoString * sFileName, int32_t nScriptEvent = 0);

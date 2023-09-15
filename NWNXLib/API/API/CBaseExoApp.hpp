@@ -44,7 +44,7 @@ struct CBaseExoApp
     virtual BOOL CheckStickyPlayerNameReserved(CExoString sClientCDKey, CExoString sClientLegacyCDKey, CExoString sPlayerName, int32_t nConnectionType);
     virtual void PushMessageOverWall(uint8_t * pData, uint32_t nMsgLength);
     virtual BOOL GetIsMultiPlayer();
-    virtual BOOL GetCDKeys(CExoArrayList<CExoString> * * lstKeys);
+    virtual CExoString GetCDKey();
     virtual void SetWeGotDisconnected();
 
 
