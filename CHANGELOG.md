@@ -35,6 +35,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Player: Added arguments for passing transform data (scale, translation, rotation) to `NWNX_Player_ShowVisualEffect()` and `NWNX_Player_ApplyInstantVisualEffectToObject()`
 - Damage: The damage event now also fires for doors
 - Feat: Added the 'Damage'(Increase/Decrease) as an option
+- Object: GetInventoryItemCount() will also work on stores.
 
 ### Deprecated
 - N/A
