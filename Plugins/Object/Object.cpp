@@ -1039,19 +1039,19 @@ NWNX_EXPORT ArgumentStack GetInventoryItemCount(ArgumentStack&& args)
         else if (auto *pItem = Utils::AsNWSItem(pObject))
             pRepo = pItem->m_pItemRepository;
         else if (auto *pStore = Utils::AsNWSStore(pObject))
-	{
-		auto nItems = 0;
-		for (int n=0; n<5; n++)
-		{
-		    pRepo = pStore->m_aInventory[n];
-		    nItems += GetItemRepositoryCount (pRepo);
-		}
-		return nItems;
-	}
+        {
+            auto nItems = 0;
+                for (int n=0; n<5; n++)
+                {
+                    pRepo = pStore->m_aInventory[n];
+                    nItems += GetItemRepositoryCount (pRepo);
+                }
+            return nItems;
+        }
         else
             return 0;
 
-	auto nItems = GetItemRepositoryCount (pRepo);
+    auto nItems = GetItemRepositoryCount (pRepo);
         return nItems;
     }
 
