@@ -167,7 +167,7 @@ int32_t ActionJumpToObjectHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pAct
 
     if (PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE"))
     {
-        retVal = s_JumpToPointHook->CallOriginal<int32_t>(thisPtr, pActionNode);
+        retVal = s_JumpToObjectHook->CallOriginal<int32_t>(thisPtr, pActionNode);
     }
     else
     {
