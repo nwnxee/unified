@@ -1721,9 +1721,9 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     TARGET_AREA           | object | The target area. Convert to object with StringToObject() |
-    POS_X                 | int    | The tile grid x position of the old tile. |
-    POS_Y                 | int    | The tile grid y position of the old tile. |
-    POS_Z                 | int    | The index of the new tile. |
+    POS_X                 | float  | The x position the target is being moved to |
+    POS_Y                 | float  | The y position the target is being moved to |
+    POS_Z                 | float  | The z position the target is being moved to |
 _______________________________________
     ## Creature Jump To Object Events
     - NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE
