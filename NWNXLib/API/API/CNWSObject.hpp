@@ -16,6 +16,7 @@
 #include "ObjectVisualTransformData.hpp"
 #include "TextureReplaceInfo.hpp"
 #include "Vector.hpp"
+#include "Database.hpp"
 #include <memory>
 
 
@@ -143,7 +144,7 @@ struct CNWSObject : CGameObject
     int32_t m_nTextBubbleOverrideType;
     CExoString m_sTextBubbleOverrideText;
     CNWSTransition m_pTransition;
-    std::shared_ptr<void*> m_sqlite_db;
+    std::shared_ptr<NWSQLite::Database> m_sqlite_db;
     ObjectVisualTransformData * m_pVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
     CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
@@ -265,7 +266,7 @@ struct CNWSObject : CGameObject
     void CalculateLastSpellProjectileTime(uint8_t nProjectilePathType = 0);
     void SpawnBodyBag();
     void ReportOverflow(int32_t nOverflowFeedbackType, int32_t nTotal, int32_t nError, BOOL bCritical = false);
-    std::shared_ptr<void*> GetObjectSqlDatabase();
+    std::shared_ptr<NWSQLite::Database> GetObjectSqlDatabase();
     virtual bool GetCanCarrySqlDatabase();
     void DestroyObjectSqlDatabase();
     void SaveVisualTransform(CResGFF * pRes, CResStruct * pStruct);

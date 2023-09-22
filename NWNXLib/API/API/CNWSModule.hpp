@@ -19,6 +19,7 @@
 #include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
+#include "Database.hpp"
 #include <memory>
 
 

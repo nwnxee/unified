@@ -80,6 +80,14 @@ struct CExoString
         m_nBufferLength = 0;
     }
 
+    template<typename ... T>
+    static CExoString F(const char* fmt, T&& ... args)
+    {
+        CExoString f;
+        f.Format(fmt, args...);
+        return f;
+    }
+
 #ifdef NWN_CLASS_EXTENSION_CExoString
     NWN_CLASS_EXTENSION_CExoString
 #endif

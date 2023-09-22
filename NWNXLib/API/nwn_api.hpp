@@ -170,10 +170,6 @@ namespace Nui::JSON {
     //using EventQueue = std::queue<Event>;
 }
 
-namespace NWSQLite {
-    using Database = void*;
-}
-
 template<typename T>
 struct SharedPtrEngineStructure
 {
