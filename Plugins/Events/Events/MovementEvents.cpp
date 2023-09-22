@@ -12,12 +12,16 @@ using namespace NWNXLib;
 
 static Hooks::Hook s_SetPositionMaterialChangeHook;
 static Hooks::Hook s_SetPositionTileChangeHook;
+static Hooks::Hook s_JumpToPointHook;
+static Hooks::Hook s_JumpToObjectHook;
 
 static void SetPositionMaterialChangeHook(CNWSObject*, Vector, int32_t);
 static void SetPositionTileChangeHook(CNWSObject*, Vector, int32_t);
+static int32_t ActionJumpToPointHook(CNWSCreature*, CNWSObjectActionNode*);
+static int32_t ActionJumpToObjectHook(CNWSCreature*, CNWSObjectActionNode*);
 
-void TileEvents() __attribute__((constructor));
-void TileEvents()
+void MovementEvents() __attribute__((constructor));
+void MovementEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", []() {
         s_SetPositionMaterialChangeHook = Hooks::HookFunction(&CNWSObject::SetPosition,
@@ -27,6 +31,16 @@ void TileEvents()
     InitOnFirstSubscribe("NWNX_ON_CREATURE_TILE_CHANGE_.*", []() {
         s_SetPositionTileChangeHook = Hooks::HookFunction(&CNWSObject::SetPosition,
             &SetPositionTileChangeHook, Hooks::Order::Earliest);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_CREATURE_JUMP_TO_POINT_.*", []() {
+        s_JumpToPointHook = Hooks::HookFunction(&CNWSCreature::AIActionJumpToPoint,
+            &ActionJumpToPointHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_CREATURE_JUMP_TO_OBJECT_.*", []() {
+        s_JumpToObjectHook = Hooks::HookFunction(&CNWSCreature::AIActionJumpToObject,
+            &ActionJumpToObjectHook, Hooks::Order::Early);
     });
 }
 
@@ -112,6 +126,57 @@ void SetPositionTileChangeHook(CNWSObject* thisPtr, Vector vPosition, BOOL bDoin
     }
 
     s_SetPositionTileChangeHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
+}
+
+int32_t ActionJumpToPointHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pActionNode)
+{
+    int32_t retVal;
+    std::string result;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("TARGET_AREA", Utils::ObjectIDToString((uint32_t)pActionNode->m_pParameter[3]));
+        PushEventData("POS_X", std::to_string((float)pActionNode->m_pParameter[0]));
+        PushEventData("POS_Y", std::to_string((float)pActionNode->m_pParameter[1]));
+        PushEventData("POS_Z", std::to_string((float)pActionNode->m_pParameter[2]));
+        return SignalEvent(ev, thisPtr->m_idSelf, &result);
+    };
+
+    if (PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE"))
+    {
+        retVal = s_JumpToPointHook->CallOriginal<int32_t>(thisPtr, pActionNode);
+    }
+    else
+    {
+        retVal = atoi(result.c_str()) == 1;
+    }
+
+    PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER");
+
+    return retVal;
+}
+
+int32_t ActionJumpToObjectHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pActionNode)
+{
+    int32_t retVal;
+    std::string result;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("OBJECT", Utils::ObjectIDToString((uint32_t)pActionNode->m_pParameter[0]));
+        return SignalEvent(ev, thisPtr->m_idSelf, &result);
+    };
+
+    if (PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE"))
+    {
+        retVal = s_JumpToPointHook->CallOriginal<int32_t>(thisPtr, pActionNode);
+    }
+    else
+    {
+        retVal = atoi(result.c_str()) == 1;
+    }
+
+    PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER");
+
+    return retVal;
 }
 
 }
