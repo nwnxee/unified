@@ -1010,8 +1010,8 @@ NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
     return {};
 }
 
-uint32_t GetItemRepositoryCount(CItemRepository *pRepo) {
-
+uint32_t GetItemRepositoryCount(CItemRepository *pRepo) 
+{
     auto nItems = 0;
     for (auto *pNode = pRepo->m_oidItems.m_pcExoLinkedListInternal->pHead; pNode; pNode = pNode->pNext)
     {
@@ -1041,17 +1041,17 @@ NWNX_EXPORT ArgumentStack GetInventoryItemCount(ArgumentStack&& args)
         else if (auto *pStore = Utils::AsNWSStore(pObject))
         {
             auto nItems = 0;
-                for (int n=0; n<5; n++)
-                {
-                    pRepo = pStore->m_aInventory[n];
-                    nItems += GetItemRepositoryCount (pRepo);
-                }
+            for (int n = 0; n < 5; n++)
+            {
+                pRepo = pStore->m_aInventory[n];
+                nItems += GetItemRepositoryCount (pRepo);
+            }
             return nItems;
         }
         else
             return 0;
 
-    auto nItems = GetItemRepositoryCount (pRepo);
+        auto nItems = GetItemRepositoryCount (pRepo);
         return nItems;
     }
 
