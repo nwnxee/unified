@@ -20,7 +20,8 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Events: added `NWNX_ON_CREATURE_JUMP_TO_POSITION_{BEFORE|AFTER}` which fires when a creature is being jumped to a new location (area + x/y/z coordinates).
 - Events: added `NWNX_ON_CREATURE_JUMP_TO_OBJECT_{BEFORE|AFTER}` which fires when a creature is being jumped to a new location (to an object).
 - Events: added skippable events `NWNX_ON_ITEMPROPERTY_EFFECT_(APPLIED|REMOVED)_*` which fire when the game applies or removes the effects from an itemproperty.
-
+- Tweaks: added `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` which makes the module OnPlayerEquipItem and OnPlayerUnEquipItem events fire for all creatures.
+- Tweaks: added `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` which fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick.
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
