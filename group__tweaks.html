@@ -191,6 +191,10 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_AUTOMAP_CRASH</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes a server crash that happens when automap data is outdated for a player.  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">If enabled, a creature getting added to an area will fire the <code>NWNX_ON_MATERIALCHANGE_*</code> and <code>NWNX_ON_CREATURE_TILE_CHANGE_*</code> events.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT</code> </td><td class="markdownTableBodyNone">true or false </td><td class="markdownTableBodyNone">Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick  </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md603"></a>
 Environment variable values</h2>
@@ -307,7 +311,7 @@ NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Sep 23 2023 10:46:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Sep 23 2023 10:53:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
