@@ -1051,7 +1051,7 @@ NWNX_EXPORT ArgumentStack GetInventoryItemCount(ArgumentStack&& args)
         else
             return 0;
 
-        auto nItems = GetItemRepositoryCount (pRepo);
+        auto nItems = GetItemRepositoryCount(pRepo);
         return nItems;
     }
 
