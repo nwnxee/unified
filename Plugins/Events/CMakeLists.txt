@@ -16,6 +16,7 @@ add_plugin(Events
     "Events/InputEvents.cpp"
     "Events/InventoryEvents.cpp"
     "Events/ItemEvents.cpp"
+    "Events/ItemPropertyEvents.cpp"
     "Events/JournalEvents.cpp"
     "Events/LevelEvents.cpp"
     "Events/MapEvents.cpp"
