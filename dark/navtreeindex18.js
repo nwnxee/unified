@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__reveal_8nss_source.html":[4,0,3,31,0,0],
+"nwnx__ruby_8nss.html":[4,0,3,32,0,0],
+"nwnx__ruby_8nss_source.html":[4,0,3,32,0,0],
+"nwnx__skillranks_8nss.html":[4,0,3,34,0,0],
+"nwnx__skillranks_8nss_source.html":[4,0,3,34,0,0],
+"nwnx__spellcheck_8nss.html":[4,0,3,35,0,0],
+"nwnx__spellcheck_8nss_source.html":[4,0,3,35,0,0],
+"nwnx__sql_8nss.html":[4,0,3,36,0,0],
 "nwnx__sql_8nss_source.html":[4,0,3,36,0,0],
 "nwnx__tests_8nss.html":[4,0,1,0,2],
 "nwnx__tests_8nss_source.html":[4,0,1,0,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,28,3,11],
 "structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,28,3,10],
 "structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,28,3,0],
-"structNWNX__Redis__PubSubMessageData.html":[3,13],
-"structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,13,1],
-"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,13,0],
-"structNWNX__SkillRanks__SkillFeat.html":[0,36,2],
-"structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,36,2,1],
-"structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d":[0,36,2,10],
-"structNWNX__SkillRanks__SkillFeat.html#a22471ab7b2b7e7d3ea8b9b3a2c14fd07":[0,36,2,3],
-"structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2":[0,36,2,5],
-"structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369":[0,36,2,7]
+"structNWNX__Redis__PubSubMessageData.html":[3,13]
 };
