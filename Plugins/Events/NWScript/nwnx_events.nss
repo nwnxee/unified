@@ -1712,6 +1712,29 @@ _______________________________________
     NEW_TILE_X            | int    | The tile grid x position of the new tile. |
     NEW_TILE_Y            | int    | The tile grid y position of the new tile. |
 _______________________________________
+    ## Creature Jump To Point Events
+    - NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER
+
+    `OBJECT_SELF` = The creature jumping.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_AREA           | object | The target area. Convert to object with StringToObject() |
+    POS_X                 | float  | The x position the target is being moved to |
+    POS_Y                 | float  | The y position the target is being moved to |
+    POS_Z                 | float  | The z position the target is being moved to |
+_______________________________________
+    ## Creature Jump To Object Events
+    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER
+
+    `OBJECT_SELF` = The creature jumping.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | The object the creature is jumping to. Convert to object with StringToObject() |
+_______________________________________
 */
 
 /// @name Events Event Constants
@@ -2056,6 +2079,10 @@ const string NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE = "NWNX_ON_ATTACK_TARGET_CHANGE
 const string NWNX_ON_ATTACK_TARGET_CHANGE_AFTER = "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER";
 const string NWNX_ON_CREATURE_TILE_CHANGE_BEFORE = "NWNX_ON_CREATURE_TILE_CHANGE_BEFORE";
 const string NWNX_ON_CREATURE_TILE_CHANGE_AFTER = "NWNX_ON_CREATURE_TILE_CHANGE_AFTER";
+const string NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE = "NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE";
+const string NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER = "NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER";
+const string NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE = "NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE";
+const string NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER = "NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2216,6 +2243,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - EventScript event
 /// - Broadcast Safe Projectile event
 /// - Attack of Opportunity events
+/// - Creature Jump events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
