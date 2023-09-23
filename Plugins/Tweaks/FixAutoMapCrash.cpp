@@ -16,12 +16,11 @@ void FixAutoMapCrash()
 
     LOG_INFO("Fixing a server crash that happens when automap data is outdated for a player.");
 
-    static Hooks::Hook s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD,
-    +[](CNWSPlayer *pThis, CNWSPlayerTURD *pTURD) -> void
+    static Hooks::Hook s_SetAutoMapDataHook = Hooks::HookFunction(&CNWSCreature::SetAutoMapData,
+    +[](CNWSCreature *pThis, int32_t nNumAreas, OBJECT_ID *pAreaList, uint8_t **pMapTileData) -> void
     {
-        s_EatTURDHook->CallOriginal<void>(pThis, pTURD);
-        if (auto *pCreature = Utils::AsNWSCreature(pThis->GetGameObject()))
-            pCreature->ReconcileAutoMapData();
+        s_SetAutoMapDataHook->CallOriginal<void>(pThis, nNumAreas, pAreaList, pMapTileData);
+        pThis->ReconcileAutoMapData();
     }, Hooks::Order::Early);
 }
 

@@ -40,6 +40,7 @@ const int NWNX_FEAT_MODIFIER_HASTE                = 26;
 const int NWNX_FEAT_MODIFIER_VISUALEFFECT         = 27;
 const int NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL = 28;
 const int NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL  = 29;
+const int NWNX_FEAT_MODIFIER_DAMAGE               = 30;
 ///@}
 
 /// @brief Sets a feat modifier.

@@ -56,6 +56,7 @@ private:
         VISUALEFFECT         = 27,
         SPELLSAVEDCFORSCHOOL = 28,
         SPELLSAVEDCFORSPELL  = 29,
+        DAMAGE               = 30,
     };
 
     set<uint16_t> m_Feats;
@@ -67,6 +68,7 @@ private:
     unordered_map<uint16_t, int8_t>                                                   m_FeatArcaneSpellFailure;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint8_t, uint8_t>>>  m_FeatBonusSpell;
     unordered_map<uint16_t, uint8_t>                                                  m_FeatConcealment;
+    unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDamage;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgResist;

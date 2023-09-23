@@ -440,6 +440,11 @@ void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject
 /// @param bHideDialog TRUE: Does not show the party invitation dialog
 void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE);
 
+/// @brief Get the TURD for oPlayer
+/// @param oPlayer The offline player to get the TURD from
+/// @return the TURD object of oPlayer, or OBJECT_INVALID if no TURD exists
+object NWNX_Player_GetTURD(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -1118,4 +1123,14 @@ void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvi
     NWNX_PushArgumentObject(oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+object NWNX_Player_GetTURD(object oPlayer)
+{
+    string sFunc = "GetTURD";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    
+    return NWNX_GetReturnValueObject();
 }

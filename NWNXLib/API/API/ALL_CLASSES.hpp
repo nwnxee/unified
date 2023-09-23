@@ -326,3 +326,4 @@ struct CResGFFField;
 struct CResGFFLabel;
 struct CResGFF;
 struct NWVMachineUtils;
+struct CNWSItemPropertyHandler;
