@@ -393,7 +393,7 @@ int NWNX_Object_GetLastSpellCastDomainLevel(object oObject);
 void NWNX_Object_ForceAssignUUID(object oObject, string sUUID);
 
 /// @brief Returns how many items are in oObject's inventory.
-/// @param oObject A creature, placeable, or item.
+/// @param oObject A creature, placeable, item or store.
 /// @return Returns a count of how many items are in oObject's inventory.
 int NWNX_Object_GetInventoryItemCount(object oObject);
 
