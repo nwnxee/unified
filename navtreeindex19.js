@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Player__QuickBarSlot.html#a4816df98ce85830f382648ad536f1e59":[0,28,3,8],
+"structNWNX__Player__QuickBarSlot.html#a5585423c0ef44fe9baa1d6e256b16250":[0,28,3,5],
+"structNWNX__Player__QuickBarSlot.html#a56dcb644edf9084c265a2d701e59362a":[0,28,3,4],
+"structNWNX__Player__QuickBarSlot.html#a6a017ab874ff47027808370fbc0b571e":[0,28,3,12],
+"structNWNX__Player__QuickBarSlot.html#ac2d3d25a10df51071e634dbe68aa3cfe":[0,28,3,3],
+"structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,28,3,11],
+"structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,28,3,10],
+"structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,28,3,0],
+"structNWNX__Redis__PubSubMessageData.html":[3,13],
 "structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,13,1],
 "structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,13,0],
 "structNWNX__SkillRanks__SkillFeat.html":[0,36,2],

@@ -1,5 +1,14 @@
 var NAVTREEINDEX16 =
 {
+"nwnx__deprecated_8nss.html#acd7efbcb70bffacb0f8bb08fcc5f2f04":[4,0,0,4,37],
+"nwnx__deprecated_8nss.html#ada4e6d07ef4da5e3c1dd58a16ed0b52f":[4,0,0,4,22],
+"nwnx__deprecated_8nss.html#add73aca4c6cac5a116638f7148fc6985":[4,0,0,4,38],
+"nwnx__deprecated_8nss.html#ae1e40c17b9c6ccd5650c2344b9b9ff30":[4,0,0,4,12],
+"nwnx__deprecated_8nss.html#aea7f7cd07d9f5738f25bbd6775fdcc09":[4,0,0,4,44],
+"nwnx__deprecated_8nss.html#aed488173b6e22ef52c888d8fe542440f":[4,0,0,4,30],
+"nwnx__deprecated_8nss.html#af07c406fb73c689a11506a3b4dacdb4b":[4,0,0,4,27],
+"nwnx__deprecated_8nss.html#af399bc4df45965ec3ebe46d64346dd11":[4,0,0,4,10],
+"nwnx__deprecated_8nss.html#af3bdb3b79ca470444368a552b9931825":[4,0,0,4,20],
 "nwnx__deprecated_8nss.html#afc737bc3878fa25f216d2758653d1e93":[4,0,0,4,25],
 "nwnx__deprecated_8nss.html#afea1002c0334de7fe9e98b874f6bd214":[4,0,0,4,51],
 "nwnx__deprecated_8nss_source.html":[4,0,0,4],
@@ -240,14 +249,5 @@ var NAVTREEINDEX16 =
 "nwnx__redis_8nss.html#ae512fc1e30673be1fe678400e5e212a1":[4,0,3,28,0,0,55],
 "nwnx__redis_8nss.html#ae5f9347fa086ee278ab0dd8eb4866ed7":[4,0,3,28,0,0,222],
 "nwnx__redis_8nss.html#ae65858ca77ea763159ac2a7f355a6680":[4,0,3,28,0,0,148],
-"nwnx__redis_8nss.html#ae7cbd7411609799424da085469877eeb":[4,0,3,28,0,0,95],
-"nwnx__redis_8nss.html#ae902d9436dacd6eb7aca030494b1dca8":[4,0,3,28,0,0,20],
-"nwnx__redis_8nss.html#ae94508aa30f4b34f358937c20363a91a":[4,0,3,28,0,0,183],
-"nwnx__redis_8nss.html#ae961a303393a7202baa714759ca35c48":[4,0,3,28,0,0,81],
-"nwnx__redis_8nss.html#ae9a6bcd3f3149a2e9135db70cd5c6055":[4,0,3,28,0,0,73],
-"nwnx__redis_8nss.html#ae9d8fa446cf880969d99d6970c469401":[4,0,3,28,0,0,102],
-"nwnx__redis_8nss.html#aea1a2654f73630b0935bb5865e838ab5":[4,0,3,28,0,0,46],
-"nwnx__redis_8nss.html#aec15375343a042771baa20c940d7a85a":[4,0,3,28,0,0,72],
-"nwnx__redis_8nss.html#aee27091fbc303769e69b6ae5d89bd464":[4,0,3,28,0,0,79],
-"nwnx__redis_8nss.html#aeead79002a803b8d2a03628238c6b9e1":[4,0,3,28,0,0,121]
+"nwnx__redis_8nss.html#ae7cbd7411609799424da085469877eeb":[4,0,3,28,0,0,95]
 };

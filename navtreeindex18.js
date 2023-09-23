@@ -1,5 +1,14 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__redis__short_8nss.html#af89de605c6eecc1614b0b0d699a88092":[4,0,3,28,0,3,140],
+"nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b":[4,0,3,28,0,3,51],
+"nwnx__redis__short_8nss.html#afb22eed5de78e64a6dbd4b6cf983ab35":[4,0,3,28,0,3,189],
+"nwnx__redis__short_8nss.html#afb3937256478125b9a0a5afcbacedd73":[4,0,3,28,0,3,60],
+"nwnx__redis__short_8nss.html#affe5b552f1dd6710fe6eeec022c71955":[4,0,3,28,0,3,144],
+"nwnx__redis__short_8nss_source.html":[4,0,3,28,0,3],
+"nwnx__rename_8nss.html":[4,0,3,29,0,0],
+"nwnx__rename_8nss_source.html":[4,0,3,29,0,0],
+"nwnx__reveal_8nss.html":[4,0,3,31,0,0],
 "nwnx__reveal_8nss_source.html":[4,0,3,31,0,0],
 "nwnx__ruby_8nss.html":[4,0,3,32,0,0],
 "nwnx__ruby_8nss_source.html":[4,0,3,32,0,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Player__QuickBarSlot.html#a16178af44fbc703b996ee7d42d73980b":[0,28,3,9],
 "structNWNX__Player__QuickBarSlot.html#a31a5b37e0c667832ae3fa57c97314b4e":[0,28,3,7],
 "structNWNX__Player__QuickBarSlot.html#a3b862612c9ef99a31327bc4eff325f60":[0,28,3,6],
-"structNWNX__Player__QuickBarSlot.html#a3d5171dd8c13dae789950a3e988619a5":[0,28,3,1],
-"structNWNX__Player__QuickBarSlot.html#a4816df98ce85830f382648ad536f1e59":[0,28,3,8],
-"structNWNX__Player__QuickBarSlot.html#a5585423c0ef44fe9baa1d6e256b16250":[0,28,3,5],
-"structNWNX__Player__QuickBarSlot.html#a56dcb644edf9084c265a2d701e59362a":[0,28,3,4],
-"structNWNX__Player__QuickBarSlot.html#a6a017ab874ff47027808370fbc0b571e":[0,28,3,12],
-"structNWNX__Player__QuickBarSlot.html#ac2d3d25a10df51071e634dbe68aa3cfe":[0,28,3,3],
-"structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,28,3,11],
-"structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,28,3,10],
-"structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,28,3,0],
-"structNWNX__Redis__PubSubMessageData.html":[3,13]
+"structNWNX__Player__QuickBarSlot.html#a3d5171dd8c13dae789950a3e988619a5":[0,28,3,1]
 };

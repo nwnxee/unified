@@ -2386,6 +2386,47 @@ Creature Jump To Object Events</h2>
 <td class="markdownTableBodyNone">TARGET </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The object the creature is jumping to. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md399"></a>
+Item Property Effect Apply/Remove Events</h2>
+<ul>
+<li>NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE</li>
+<li>NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER</li>
+<li>NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE</li>
+<li>NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The item source of the item property.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CREATURE </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The creature to which Convert to object with StringToObject()  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">LOADING_GAME </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the itemproperty is being applied when loading into the game and not due to equipping the item.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">INVENTORY_SLOT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The INVENTORY_SLOT_* the item is (un)equipped to/from.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PROPERTY </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The ITEM_PROPERTY_* type.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SUBTYPE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The subtype of the itemproperty.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TAG </td><td class="markdownTableBodyNone">string </td><td class="markdownTableBodyNone">The optional tag set by TagItemProperty()  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">COST_TABLE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The index into iprp_costtable.2da  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">COST_TABLE_VALUE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The index into the 2da pointed at by COST_TABLE  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PARAM1 </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The index into iprp_paramtable.2da  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PARAM1_VALUE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The index into the 2da pointed at by PARAM1  </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>These events fire when the game applies or removes the effects from an itemproperty. Skipping NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE will stop the basegame effects for that itemproperty to not be applied. If you skip the application of ITEM_PROPERTY_BONUS_SPELL_SLOT_OF_LEVEL_N or ITEM_PROPERTY_UNLIMITED_AMMUNITION you must also skip its removal event.</dd>
+<dd>
+Any non-DURATION_TYPE_INSTANT effects applied to the creature in NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE <b>must</b> be of type DURATION_TYPE_EQUIPPED See the <code>NWNX_EFFECT_EXTEND_DURATION_TYPE</code> environment variable in NWNX_Effect on how to enable this duration type.</dd>
+<dd>
+See the NWNX_Events README.md for an example script!</dd>
+<dd>
+The whitelist is enabled by default for these events, to whitelist a particular itemproperty, do the following: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_ITEMPROPERTY_EFFECT&quot;</span>, ITEM_PROPERTY_*);</div>
+</div><!-- fragment --></dd></dl>
 <p><a class="anchor" id="events_events"></a></p>
 </div></td></tr>
 <tr class="memitem:gaa99b0924a97b2a6105f27058c435c510"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa99b0924a97b2a6105f27058c435c510">NWNX_ON_ADD_ASSOCIATE_BEFORE</a> = &quot;NWNX_ON_ADD_ASSOCIATE_BEFORE&quot;</td></tr>
@@ -3074,6 +3115,14 @@ Creature Jump To Object Events</h2>
 <tr class="separator:ga85c1e7f300a5ebf6ee8d7d1925025b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga26e88be5bb05502a6025ab51c5ce0218"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga26e88be5bb05502a6025ab51c5ce0218">NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER</a> = &quot;NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER&quot;</td></tr>
 <tr class="separator:ga26e88be5bb05502a6025ab51c5ce0218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga716efb52a7477fa144fb64a7ffbc63d7"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga716efb52a7477fa144fb64a7ffbc63d7">NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE</a> = &quot;NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE&quot;</td></tr>
+<tr class="separator:ga716efb52a7477fa144fb64a7ffbc63d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9675bc1d78ca0af42ad16c52b6ea63c0"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga9675bc1d78ca0af42ad16c52b6ea63c0">NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER</a> = &quot;NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER&quot;</td></tr>
+<tr class="separator:ga9675bc1d78ca0af42ad16c52b6ea63c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02649d6f4f80c8a95c1e9933eac12eaa"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga02649d6f4f80c8a95c1e9933eac12eaa">NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE</a> = &quot;NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE&quot;</td></tr>
+<tr class="separator:ga02649d6f4f80c8a95c1e9933eac12eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gababa73c2b852bed5edb966abff7c0b98"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gababa73c2b852bed5edb966abff7c0b98">NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER</a> = &quot;NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER&quot;</td></tr>
+<tr class="separator:gababa73c2b852bed5edb966abff7c0b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Events ObjectType Constants</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_objtype"></a></p>
 </div></td></tr>
@@ -3170,13 +3219,13 @@ Creature Jump To Object Events</h2>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02454">nwnx_events.nss:2454</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02492">nwnx_events.nss:2492</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sat Sep 23 2023 09:57:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Sep 23 2023 10:28:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

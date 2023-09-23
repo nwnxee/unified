@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['wait_2624',['WAIT',['../nwnx__redis__short_8nss.html#a3d2504c4499e2661f9fef80f41df198e',1,'nwnx_redis_short.nss']]],
-  ['watch_2625',['WATCH',['../nwnx__redis__short_8nss.html#a814bb7f9a1d72b334cf6c1efb19c8f33',1,'nwnx_redis_short.nss']]],
-  ['weapon_2626',['Weapon',['../group__weapon.html',1,'']]],
-  ['webhook_2627',['Webhook',['../group__webhook.html',1,'']]]
+  ['wait_2628',['WAIT',['../nwnx__redis__short_8nss.html#a3d2504c4499e2661f9fef80f41df198e',1,'nwnx_redis_short.nss']]],
+  ['watch_2629',['WATCH',['../nwnx__redis__short_8nss.html#a814bb7f9a1d72b334cf6c1efb19c8f33',1,'nwnx_redis_short.nss']]],
+  ['weapon_2630',['Weapon',['../group__weapon.html',1,'']]],
+  ['webhook_2631',['Webhook',['../group__webhook.html',1,'']]]
 ];
