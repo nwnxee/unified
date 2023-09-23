@@ -26,6 +26,10 @@ struct CScriptLocation
     BOOL SaveLocation(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadLocation(CResGFF * pRes, CResStruct * pStruct);
 
+    BOOL IsEmpty() const {
+        return m_oArea == NWNXLib::API::Constants::OBJECT_INVALID &&
+               m_vPosition.IsZero() &&
+               m_vOrientation.IsZero(); }
 
 #ifdef NWN_CLASS_EXTENSION_CScriptLocation
     NWN_CLASS_EXTENSION_CScriptLocation

@@ -4,6 +4,10 @@
 namespace NWNXLib::API::Constants {
 
 constexpr uint32_t OBJECT_INVALID = 0x7F000000;
+constexpr uint32_t MINCHAROBJID   = 0x7F000001;
+constexpr uint32_t MAXCHAROBJID   = 0x7FFFFFFF;
+constexpr uint32_t MINOBJECTID    = 0x00000000;
+constexpr uint32_t MAXOBJECTID    = 0x7EFFFFFF;
 
 constexpr uint32_t PLAYERID_ALL_SERVERADMINS =                0x0FFFFFFF5;
 constexpr uint32_t PLAYERID_ALL_GAMEMASTERS =                 0x0FFFFFFF6;
@@ -308,6 +312,40 @@ namespace ResRefType
             case KEY:    return "KEY";
         }
         return "(invalid)";
+    }
+}
+
+namespace ScriptVarTableVarType
+{
+    enum TYPE
+    {
+        Integer         = 1,
+        Float           = 2,
+        String          = 3,
+        Object          = 4,
+        Location        = 5,
+        Cassowary       = 6,
+        Json            = 7,
+    };
+    constexpr int32_t MIN   = 1;
+    constexpr int32_t MAX   = 7;
+    static_assert(MAX == Json);
+
+    constexpr const char* ToString(const unsigned scriptVarTableVarType)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+        "(unknown)",
+        "Integer",
+        "Float",
+        "String",
+        "Object",
+        "Location",
+        "Cassowary",
+        "Json",
+        };
+
+        return (scriptVarTableVarType > MAX) ? "(invalid)" : TYPE_STRINGS[scriptVarTableVarType];
     }
 }
 

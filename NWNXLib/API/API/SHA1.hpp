@@ -139,7 +139,7 @@ struct SHA1
 
         if (strspn(hex.CStr(), "0123456789abcdefABCDEF") != BinaryLength() * 2)
         {
-            ASSERT(!"Invalid hex passed in. Dropping.");
+            //ASSERT(!"Invalid hex passed in. Dropping.");
             return;
         }
 
@@ -168,7 +168,7 @@ struct SHA1
 
     bool operator<(const SHA1& other) const
     {
-        ASSERT(!m_empty && !other.m_empty);
+        //ASSERT(!m_empty && !other.m_empty);
         return strcmp(m_hex, other.m_hex) < 0;
     }
 

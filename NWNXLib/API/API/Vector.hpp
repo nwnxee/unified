@@ -26,6 +26,13 @@ struct Vector
     Vector() : x(0.0f), y(0.0f), z(0.0f) { }
     Vector(float xx, float yy, float zz) : x(xx), y(yy), z(zz) { }
 
+    int IsZero() const
+    {
+        if (x == 0 && y == 0 && z == 0)
+            return 1;
+        return 0;
+    }
+
     bool operator==(Vector& v) const
     {
         return x == v.x && y == v.y && z == v.z;
