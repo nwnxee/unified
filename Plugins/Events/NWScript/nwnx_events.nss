@@ -1714,7 +1714,7 @@ _______________________________________
 _______________________________________
     ## Creature Jump To Point Events
     - NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE
-    - NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER
 
     `OBJECT_SELF` = The creature jumping.
 
@@ -1727,7 +1727,7 @@ _______________________________________
 _______________________________________
     ## Creature Jump To Object Events
     - NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE
-    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER
 
     `OBJECT_SELF` = The creature jumping.
 
