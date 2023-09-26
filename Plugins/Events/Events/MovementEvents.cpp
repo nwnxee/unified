@@ -135,9 +135,9 @@ int32_t ActionJumpToPointHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pActi
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         PushEventData("TARGET_AREA", Utils::ObjectIDToString((uint32_t)pActionNode->m_pParameter[3]));
-        PushEventData("POS_X", std::to_string((float)pActionNode->m_pParameter[0]));
-        PushEventData("POS_Y", std::to_string((float)pActionNode->m_pParameter[1]));
-        PushEventData("POS_Z", std::to_string((float)pActionNode->m_pParameter[2]));
+        PushEventData("POS_X", std::to_string(*(float*)&pActionNode->m_pParameter[0]));
+        PushEventData("POS_Y", std::to_string(*(float*)&pActionNode->m_pParameter[1]));
+        PushEventData("POS_Z", std::to_string(*(float*)&pActionNode->m_pParameter[2]));
         return SignalEvent(ev, thisPtr->m_idSelf, &result);
     };
 
