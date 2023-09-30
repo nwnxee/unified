@@ -86,8 +86,6 @@ void CacheScriptChunks()
             --pVirtualMachine->m_nRecursionLevel;
             return -635;
         }, Hooks::Order::Final);
-
-        Tasks::QueueOnMainThread([](){ Globals::VirtualMachine()->m_pJitCompiler->SetOptimizeBinaryCodeLength(true); });
     }
 }
 

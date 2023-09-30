@@ -338,9 +338,8 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
     if (!s_scriptCompiler)
     {
         s_scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
-        s_scriptCompiler->SetCompileSymbolicOutput(0);
         s_scriptCompiler->SetGenerateDebuggerOutput(0);
-        s_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        s_scriptCompiler->SetOptimizationFlags(CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING);
         s_scriptCompiler->SetCompileConditionalOrMain(true);
         s_scriptCompiler->SetIdentifierSpecification("nwscript");
     }
