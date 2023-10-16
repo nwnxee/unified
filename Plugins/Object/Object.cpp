@@ -1010,7 +1010,7 @@ NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
     return {};
 }
 
-uint32_t GetItemRepositoryCount(CItemRepository *pRepo) 
+int32_t GetItemRepositoryCount(CItemRepository *pRepo) 
 {
     auto nItems = 0;
     for (auto *pNode = pRepo->m_oidItems.m_pcExoLinkedListInternal->pHead; pNode; pNode = pNode->pNext)
