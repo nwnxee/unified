@@ -46,7 +46,7 @@ void CastAllOnHitCastSpellItemProperties()
                     if (pItemProperty->m_nPropertyName == Constants::ItemProperty::OnHitCastSpell)
                     {
                         int32_t nSpellID;
-                        if (Globals::Rules()->m_p2DArrays->m_pOnHitSpellTable->GetINTEntry(pItemProperty->m_nSubType, CExoString("SpellIndex"), &nSpellID))
+                        if (Globals::Rules()->m_p2DArrays->GetOnHitSpellTable()->GetINTEntry(pItemProperty->m_nSubType, CExoString("SpellIndex"), &nSpellID))
                         {
                             if (auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID))
                             {

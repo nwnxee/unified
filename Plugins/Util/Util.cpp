@@ -553,10 +553,10 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
             {
                 pDoor->m_nAppearanceType = appearance;
                 int32_t bVisibleModel = true;
-                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
+                Globals::Rules()->m_p2DArrays->GetDoorTypesTable()->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
                 pDoor->m_bVisibleModel = bVisibleModel;
                 CExoString sWalkMeshTemplate;
-                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
+                Globals::Rules()->m_p2DArrays->GetDoorTypesTable()->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
                 delete pDoor->m_pWalkMesh;
                 pDoor->m_pWalkMesh = new CNWDoorSurfaceMesh;
                 pDoor->m_pWalkMesh->LoadWalkMesh(sWalkMeshTemplate);

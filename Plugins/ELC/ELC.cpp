@@ -1573,8 +1573,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                             if (nSchool != 0)
                             {
                                 int32_t nOppositionSchool;
-                                if (pRules->m_p2DArrays->m_pSpellSchoolTable->GetINTEntry(nSchool, "Opposition",
-                                                                                          &nOppositionSchool))
+                                if (pRules->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSchool, "Opposition", &nOppositionSchool))
                                 {
                                     if (pSpell->m_nSchool == (uint8_t) nOppositionSchool)
                                     {

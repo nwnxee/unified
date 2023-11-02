@@ -33,7 +33,7 @@ void FixArmorDexBonusUnderOne()
             int nTempValue = 0;
             if (pArmor && (nTempValue = pArmor->ComputeArmorClass()) > 0)
             {
-                Globals::Rules()->m_p2DArrays->m_pArmorTable->GetINTEntry(nTempValue, CExoString("DEXBONUS"), &nTempValue);
+                Globals::Rules()->m_p2DArrays->GetArmorTable()->GetINTEntry(nTempValue, CExoString("DEXBONUS"), &nTempValue);
                 if (nTempValue < nDexAC)
                     nDexAC = static_cast<char>(nTempValue);
             }

@@ -63,12 +63,12 @@ void CanUseItemCheckILRForHenchmen()
                     if (auto *pProperty = pItem->GetActiveProperty(0))
                     {
                         int32_t nSpellID;
-                        Globals::Rules()->m_p2DArrays->m_pIPRPSpells->GetINTEntry(pProperty->m_nSubType, "SpellIndex", &nSpellID);
+                        Globals::Rules()->m_p2DArrays->GetIPRPSpells()->GetINTEntry(pProperty->m_nSubType, "SpellIndex", &nSpellID);
 
                         if (auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID))
                         {
                             int32_t nOppositionSchool;
-                            Globals::Rules()->m_p2DArrays->m_pSpellSchoolTable->GetINTEntry(nSpellSchool, "Opposition", &nOppositionSchool);
+                            Globals::Rules()->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSpellSchool, "Opposition", &nOppositionSchool);
 
                             if (pSpell->m_nSchool == nOppositionSchool)
                             {
