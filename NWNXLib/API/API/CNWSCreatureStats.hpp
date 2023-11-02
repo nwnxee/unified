@@ -59,7 +59,7 @@ struct CNWSCreatureStats
     int32_t m_nOriginalFactionId;
     int32_t m_nPreDominationFactionId;
     float m_fChallengeRating;
-    uint8_t m_nStartingPackage;
+    uint32_t m_nStartingPackage;
     uint8_t m_nNumMultiClasses;
     CNWSCreatureStats_ClassInfo m_ClassInfo[8];
     uint16_t m_nRace;
@@ -174,7 +174,7 @@ struct CNWSCreatureStats
     BOOL CanLevelUp();
     void LevelUp(CNWLevelStats * pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool, BOOL bAddStatsToList);
     void LevelDown(CNWLevelStats * pLevelUpStats);
-    BOOL LevelUpAutomatic(uint8_t nClass, BOOL bReadyAllSpells, uint8_t nPackage);
+    BOOL LevelUpAutomatic(uint8_t nClass, BOOL bReadyAllSpells, uint32_t nPackage);
     BOOL CanChooseFeat(uint16_t nFeatID, uint8_t nNumberNormalFeats, uint8_t nNumberBonusFeats, CExoArrayList<uint16_t> * pChosenFeats);
     BOOL FeatRequirementsMet(uint16_t nFeatID, CExoArrayList<uint16_t> * pChosenFeats);
     void SetNormalBonusFlags(uint16_t nFeatID, BOOL & bNormalListFeat, BOOL & bBonusListFeat);

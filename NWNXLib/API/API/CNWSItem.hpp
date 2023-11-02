@@ -41,7 +41,6 @@ struct CNWSItem : CNWItem, CNWSObject
     BOOL m_bRecalculateCost;
     uint16_t m_nModelPart[3];
     uint16_t m_nArmorModelPart[19];
-    uint16_t m_nUnalteredArmorModelPart[19];
     OBJECT_ID m_oidPossessor;
     CItemRepository * m_pItemRepository;
     uint8_t m_nRepositoryPositionX;

@@ -33,7 +33,6 @@ struct CNWSPlayerLUOAppearanceInfo
     uint16_t m_nHeadVariation;
     uint32_t m_nTailVariation;
     uint32_t m_nWingVariation;
-    BOOL m_bForceArmorAppearanceUpdate;
     OBJECT_ID m_oidCloakItem;
     ObjectVisualTransformData m_pRightHandItemVisualTransform;
     ObjectVisualTransformData m_pLeftHandItemVisualTransform;
@@ -61,7 +60,6 @@ struct CNWSPlayerLUOAppearanceInfo
         m_nHeadVariation = 0;
         m_nTailVariation = 0;
         m_nWingVariation = 0;
-        m_bForceArmorAppearanceUpdate = false;
         m_oidCloakItem = NWNXLib::API::Constants::OBJECT_INVALID;
 
         m_pRightHandItemVisualTransform.Clear();

@@ -430,7 +430,7 @@ struct CNWSCreature : CNWSObject
     void DMResetClearedScripts(BOOL override = false);
     BOOL GetIsAbleToPossessFamiliar();
     BOOL GetIsPossessedFamiliar();
-    OBJECT_ID GetDominatedCreatureId();
+    OBJECT_ID GetDominatedCreatureId(int32_t nAssociateIndex = 1);
     BOOL GetTakesCommandsFromPlayer(CNWSPlayer * pPlayer);
     CNWSFaction * GetFaction();
     OBJECT_ID GetNearestEnemy(float fRange, OBJECT_ID oidToExclude = 0x7f000000, BOOL bVisible = true, BOOL bAttackClearLineToTarget = false);
