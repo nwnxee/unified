@@ -730,7 +730,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
                 }
 
-                for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                 {
                     nAbilityAtLevel[nAbilityIndex] += pClassLeveledUpIn->GetAbilityGainForSingleLevel(nAbilityIndex, nMultiClassLevel[nMultiClassLeveledUpIn]);
                 }
