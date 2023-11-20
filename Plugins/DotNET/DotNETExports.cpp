@@ -9,6 +9,7 @@
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
 
+#include <csignal>
 #include <dlfcn.h>
 
 using namespace NWNXLib;
@@ -22,14 +23,16 @@ using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
 using AssertHandlerType = void (*)(const char*, const char*);
+using CrashHandlerType = void (*)(int, const char*);
 
 struct AllHandlers
 {
-    MainLoopHandlerType  MainLoop;
-    RunScriptHandlerType RunScript;
-    ClosureHandlerType   Closure;
-    SignalHandlerType    SignalHandler;
-    AssertHandlerType    AssertHandler;
+    MainLoopHandlerType      MainLoop;
+    RunScriptHandlerType     RunScript;
+    ClosureHandlerType       Closure;
+    SignalHandlerType        SignalHandler;
+    AssertHandlerType        AssertHandler;
+    CrashHandlerType         CrashHandler;
 };
 static AllHandlers s_handlers;
 
@@ -53,6 +56,14 @@ static uintptr_t GetFunctionPointer(const char* name)
         LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
     dlclose(core);
     return ret;
+}
+
+void CrashHandler(int sig)
+{
+    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
+    s_handlers.CrashHandler(sig, stackTrace.c_str());
+    std::signal(SIGABRT, NULL);
+    std::abort();
 }
 
 static void RegisterHandlers(AllHandlers* handlers, unsigned size)
@@ -185,6 +196,15 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
                     s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
                 }
             });
+    }
+
+    if (s_handlers.CrashHandler)
+    {
+        LOG_DEBUG("Registered managed crash handler: %p", s_handlers.CrashHandler);
+        std::signal(SIGABRT, CrashHandler);
+        std::signal(SIGFPE, CrashHandler);
+        std::signal(SIGSEGV, CrashHandler);
+        std::signal(SIGILL, CrashHandler);
     }
 }
 
