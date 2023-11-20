@@ -149,6 +149,18 @@ Functions</h2></td></tr>
 <tr class="memitem:gaaa1fb482a60f6b04cf2751653eee24e6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__item.html#gaaa1fb482a60f6b04cf2751653eee24e6">NWNX_Item_MoveTo</a> (object oItem, object oTarget, int bHideAllFeedback=FALSE)</td></tr>
 <tr class="memdesc:gaaa1fb482a60f6b04cf2751653eee24e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move oItem to oTarget.  <a href="group__item.html#gaaa1fb482a60f6b04cf2751653eee24e6">More...</a><br /></td></tr>
 <tr class="separator:gaaa1fb482a60f6b04cf2751653eee24e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacca0831113a52a693aaba0e3ba87a443"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__item.html#gacca0831113a52a693aaba0e3ba87a443">NWNX_Item_SetMinEquipLevelModifier</a> (object oItem, int nModifier, int bPersist=TRUE)</td></tr>
+<tr class="memdesc:gacca0831113a52a693aaba0e3ba87a443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a modifier to the Minimum Level to Equip (Item Level Restriction).  <a href="group__item.html#gacca0831113a52a693aaba0e3ba87a443">More...</a><br /></td></tr>
+<tr class="separator:gacca0831113a52a693aaba0e3ba87a443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b4f55969e0d549e48614af7e429e2ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__item.html#ga5b4f55969e0d549e48614af7e429e2ba">NWNX_Item_GetMinEquipLevelModifier</a> (object oItem)</td></tr>
+<tr class="memdesc:ga5b4f55969e0d549e48614af7e429e2ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the applied modifier to the Minimum Level to Equip (Item Level Restriction).  <a href="group__item.html#ga5b4f55969e0d549e48614af7e429e2ba">More...</a><br /></td></tr>
+<tr class="separator:ga5b4f55969e0d549e48614af7e429e2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8efd8d37305d3226837d977f081043ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__item.html#ga8efd8d37305d3226837d977f081043ea">NWNX_Item_SetMinEquipLevelOverride</a> (object oItem, int nOverride, int bPersist=TRUE)</td></tr>
+<tr class="memdesc:ga8efd8d37305d3226837d977f081043ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an override to the Minimum Level to Equip (Item Level Restriction).  <a href="group__item.html#ga8efd8d37305d3226837d977f081043ea">More...</a><br /></td></tr>
+<tr class="separator:ga8efd8d37305d3226837d977f081043ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b59387de39625b53c1c99f56c427eeb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__item.html#ga7b59387de39625b53c1c99f56c427eeb">NWNX_Item_GetMinEquipLevelOverride</a> (object oItem)</td></tr>
+<tr class="memdesc:ga7b59387de39625b53c1c99f56c427eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the applied override to the Minimum Level to Equip (Item Level Restriction).  <a href="group__item.html#ga7b59387de39625b53c1c99f56c427eeb">More...</a><br /></td></tr>
+<tr class="separator:ga7b59387de39625b53c1c99f56c427eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga9464b3a05fa000e593e9b5780c16c13e"></a>
@@ -187,7 +199,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00105">105</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00130">130</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -232,7 +244,7 @@ This value will also revert if item is identified or player relogs into server. 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00115">115</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00140">140</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -273,7 +285,7 @@ This value will also revert if item is identified or player relogs into server. 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00125">125</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00150">150</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -302,7 +314,7 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The base gold piece value for the item. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00135">135</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00160">160</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -331,7 +343,7 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The additional gold piece value for the item. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00145">145</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00170">170</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -371,7 +383,7 @@ This value will also revert if item is identified or player relogs into server. 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00155">155</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00180">180</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -426,7 +438,7 @@ This value will also revert if item is identified or player relogs into server. 
 <p>For example, to change the CLOTH1 channel of the torso, nIndex would be: </p><pre class="fragment">6 + (7 * 6) + 2 = 50
 </pre><p>[1] When specifying per-part coloring, the value 255 corresponds with the logical function 'clear colour override', which clears the per-part override for that part. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00165">165</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00190">190</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -456,7 +468,7 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A string representing the item's appearance. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00178">178</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00203">203</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -495,7 +507,7 @@ This value will also revert if item is identified or player relogs into server. 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00188">188</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00213">213</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -524,7 +536,7 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The base armor class. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00198">198</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00223">223</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -553,7 +565,7 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The minimum level required to equip the item. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00208">208</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -601,7 +613,159 @@ This value will also revert if item is identified or player relogs into server. 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the item was successfully moved to the target, otherwise FALSE </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00218">218</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00243">243</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacca0831113a52a693aaba0e3ba87a443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacca0831113a52a693aaba0e3ba87a443">&#9670;&nbsp;</a></span>NWNX_Item_SetMinEquipLevelModifier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Item_SetMinEquipLevelModifier </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nModifier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bPersist</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a modifier to the Minimum Level to Equip (Item Level Restriction). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oItem</td><td>The item object. </td></tr>
+    <tr><td class="paramname">nModifier</td><td>the modifier to apply (After any Override) </td></tr>
+    <tr><td class="paramname">bPersist</td><td>Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function (or override partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00256">256</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5b4f55969e0d549e48614af7e429e2ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b4f55969e0d549e48614af7e429e2ba">&#9670;&nbsp;</a></span>NWNX_Item_GetMinEquipLevelModifier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Item_GetMinEquipLevelModifier </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the applied modifier to the Minimum Level to Equip (Item Level Restriction). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oItem</td><td>The item object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00267">267</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga8efd8d37305d3226837d977f081043ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8efd8d37305d3226837d977f081043ea">&#9670;&nbsp;</a></span>NWNX_Item_SetMinEquipLevelOverride()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Item_SetMinEquipLevelOverride </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nOverride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bPersist</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set an override to the Minimum Level to Equip (Item Level Restriction). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oItem</td><td>The item object. </td></tr>
+    <tr><td class="paramname">nOverride</td><td>the nOverride to apply (Before any Modifier) </td></tr>
+    <tr><td class="paramname">bPersist</td><td>Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function (or modifier partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00277">277</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7b59387de39625b53c1c99f56c427eeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b59387de39625b53c1c99f56c427eeb">&#9670;&nbsp;</a></span>NWNX_Item_GetMinEquipLevelOverride()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Item_GetMinEquipLevelOverride </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the applied override to the Minimum Level to Equip (Item Level Restriction). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oItem</td><td>The item object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__item_8nss_source.html#l00288">288</a> of file <a class="el" href="nwnx__item_8nss_source.html">nwnx_item.nss</a>.</p>
 
 </div>
 </div>
@@ -611,7 +775,7 @@ This value will also revert if item is identified or player relogs into server. 
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Sep 26 2023 11:17:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Nov 20 2023 17:25:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

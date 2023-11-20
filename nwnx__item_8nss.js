@@ -12,5 +12,9 @@ var nwnx__item_8nss =
     [ "NWNX_Item_GetBaseArmorClass", "group__item.html#ga8a874145d6373bf0df9050db4614fce5", null ],
     [ "NWNX_Item_GetMinEquipLevel", "group__item.html#ga4fddf862386c3c71adf2bea037b239f7", null ],
     [ "NWNX_Item_MoveTo", "group__item.html#gaaa1fb482a60f6b04cf2751653eee24e6", null ],
+    [ "NWNX_Item_SetMinEquipLevelModifier", "group__item.html#gacca0831113a52a693aaba0e3ba87a443", null ],
+    [ "NWNX_Item_GetMinEquipLevelModifier", "group__item.html#ga5b4f55969e0d549e48614af7e429e2ba", null ],
+    [ "NWNX_Item_SetMinEquipLevelOverride", "group__item.html#ga8efd8d37305d3226837d977f081043ea", null ],
+    [ "NWNX_Item_GetMinEquipLevelOverride", "group__item.html#ga7b59387de39625b53c1c99f56c427eeb", null ],
     [ "NWNX_Item", "group__item.html#gaa15c6ec4520120324a167cf7eaecf3d7", null ]
 ];

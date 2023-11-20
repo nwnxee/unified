@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Player__JournalEntry.html#af3e36f4de033d6498448b90746774144":[0,28,4,5],
+"structNWNX__Player__JournalEntry.html#af5d0d937f35c5cd9b5e869aad9f241db":[0,28,4,7],
+"structNWNX__Player__QuickBarSlot.html":[0,28,3],
+"structNWNX__Player__QuickBarSlot.html#a0600666ebc53dcf8978fdc705307a4b1":[0,28,3,2],
+"structNWNX__Player__QuickBarSlot.html#a16178af44fbc703b996ee7d42d73980b":[0,28,3,9],
+"structNWNX__Player__QuickBarSlot.html#a31a5b37e0c667832ae3fa57c97314b4e":[0,28,3,7],
+"structNWNX__Player__QuickBarSlot.html#a3b862612c9ef99a31327bc4eff325f60":[0,28,3,6],
+"structNWNX__Player__QuickBarSlot.html#a3d5171dd8c13dae789950a3e988619a5":[0,28,3,1],
 "structNWNX__Player__QuickBarSlot.html#a4816df98ce85830f382648ad536f1e59":[0,28,3,8],
 "structNWNX__Player__QuickBarSlot.html#a5585423c0ef44fe9baa1d6e256b16250":[0,28,3,5],
 "structNWNX__Player__QuickBarSlot.html#a56dcb644edf9084c265a2d701e59362a":[0,28,3,4],

@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__redis__short_8nss.html#aefb1fe0e85b177ae6c1400f8d964d18e":[4,0,3,28,0,3,35],
+"nwnx__redis__short_8nss.html#af115823d095e003d6c42e931106698f4":[4,0,3,28,0,3,166],
+"nwnx__redis__short_8nss.html#af12666ce4befe1fa83fc09de1e84f1f3":[4,0,3,28,0,3,185],
+"nwnx__redis__short_8nss.html#af15545f2b874e9ee02b6d3cc37434fa8":[4,0,3,28,0,3,30],
+"nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4":[4,0,3,28,0,3,49],
+"nwnx__redis__short_8nss.html#af450c0c8bdbfdd4b3b1e75b1d1240eb7":[4,0,3,28,0,3,174],
+"nwnx__redis__short_8nss.html#af497f2f31bf361e09929e1e6399c4b72":[4,0,3,28,0,3,127],
+"nwnx__redis__short_8nss.html#af628aa6c7cd81d264a9e22be1ab2d0c9":[4,0,3,28,0,3,196],
 "nwnx__redis__short_8nss.html#af89de605c6eecc1614b0b0d699a88092":[4,0,3,28,0,3,140],
 "nwnx__redis__short_8nss.html#af98804c25dbb680a54e50c62b06fa05b":[4,0,3,28,0,3,51],
 "nwnx__redis__short_8nss.html#afb22eed5de78e64a6dbd4b6cf983ab35":[4,0,3,28,0,3,189],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Player__JournalEntry.html#a21245184bdc23b4469d0174628d55aef":[0,28,4,1],
 "structNWNX__Player__JournalEntry.html#a2dfe9a66ca7502de58ff6249a7d679d5":[0,28,4,9],
 "structNWNX__Player__JournalEntry.html#a726f979fe2fb1b4421837e7b03ca50e2":[0,28,4,2],
-"structNWNX__Player__JournalEntry.html#a8025516fc1028c7636de3d13ac825378":[0,28,4,4],
-"structNWNX__Player__JournalEntry.html#af3e36f4de033d6498448b90746774144":[0,28,4,5],
-"structNWNX__Player__JournalEntry.html#af5d0d937f35c5cd9b5e869aad9f241db":[0,28,4,7],
-"structNWNX__Player__QuickBarSlot.html":[0,28,3],
-"structNWNX__Player__QuickBarSlot.html#a0600666ebc53dcf8978fdc705307a4b1":[0,28,3,2],
-"structNWNX__Player__QuickBarSlot.html#a16178af44fbc703b996ee7d42d73980b":[0,28,3,9],
-"structNWNX__Player__QuickBarSlot.html#a31a5b37e0c667832ae3fa57c97314b4e":[0,28,3,7],
-"structNWNX__Player__QuickBarSlot.html#a3b862612c9ef99a31327bc4eff325f60":[0,28,3,6],
-"structNWNX__Player__QuickBarSlot.html#a3d5171dd8c13dae789950a3e988619a5":[0,28,3,1]
+"structNWNX__Player__JournalEntry.html#a8025516fc1028c7636de3d13ac825378":[0,28,4,4]
 };
