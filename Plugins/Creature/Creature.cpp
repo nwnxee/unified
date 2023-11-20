@@ -2418,7 +2418,7 @@ static void DoResolveAttackHook(CNWSCreature* pThis, CNWSObject* pTarget)
         if (nParryCheck >= 0)
         {
             pAttackData->m_nAttackResult = 2;
-            if (nParryCheck >= Globals::Rules()->GetRulesetIntEntry("PARRY_RIPOSTE_DIFFERENCE", 10))
+            if (nParryCheck >= Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("PARRY_RIPOSTE_DIFFERENCE"), 10))
                 pTargetCreature->m_pcCombatRound->AddParryAttack(pThis->m_idSelf);
             return;
         }
@@ -3008,13 +3008,13 @@ static void InitInitiativeRollHook()
             auto diceRoll = Globals::Rules()->RollDice(1, 20);
             auto mod = pStats->GetDEXMod(0);
             if (pStats->HasFeat(Constants::Feat::EpicSuperiorInitiative))
-                mod += Globals::Rules()->GetRulesetIntEntry("EPIC_SUPERIOR_INITIATIVE_BONUS", 8);
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("EPIC_SUPERIOR_INITIATIVE_BONUS"), 8);
             else if (pStats->HasFeat(Constants::Feat::ImprovedInitiative))
-                mod += Globals::Rules()->GetRulesetIntEntry("IMPROVED_INITIATIVE_BONUS", 4);
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("IMPROVED_INITIATIVE_BONUS"), 4);
             if (pStats->HasFeat(Constants::Feat::Blooded))
-                mod += Globals::Rules()->GetRulesetIntEntry("BLOODED_INITIATIVE_BONUS", 2);
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("BLOODED_INITIATIVE_BONUS"), 2);
             if (pStats->HasFeat(Constants::Feat::Thug))
-                mod += Globals::Rules()->GetRulesetIntEntry("THUG_INITIATIVE_BONUS", 2);
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("THUG_INITIATIVE_BONUS"), 2);
 
             // Add creature bonus
             mod += initMod;
@@ -3437,7 +3437,7 @@ NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
 
                     return nBuyPrice;
                 }
-                
+
                 return 0;
             }
         }
@@ -3491,7 +3491,7 @@ NWNX_EXPORT ArgumentStack GetAbilityIncreaseByLevel(ArgumentStack&& args)
         const auto level = args.extract<int32_t>();
           ASSERT_OR_THROW(level >= 1);
           ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
-        
+
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
@@ -3514,7 +3514,7 @@ NWNX_EXPORT ArgumentStack SetAbilityIncreaseByLevel(ArgumentStack&& args)
         const auto ability = args.extract<int32_t>();
           ASSERT_OR_THROW(ability >= Constants::Ability::MIN);
           ASSERT_OR_THROW(ability <= Constants::Ability::MAX);
-        
+
         if ((level > 0) && (level <= pCreature->m_pStats->m_lstLevelStats.num))
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
