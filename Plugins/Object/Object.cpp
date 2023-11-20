@@ -383,19 +383,13 @@ NWNX_EXPORT ArgumentStack SetTriggerGeometry(ArgumentStack&& args)
 
                 if (pTrigger->m_pvVertices)
                     delete[] pTrigger->m_pvVertices;
-                if (pTrigger->m_pnOutlineVertices)
-                    delete[] pTrigger->m_pnOutlineVertices;
 
                 pTrigger->m_nVertices = vecVerts.size();
-                pTrigger->m_nOutlineVertices = vecVerts.size();
-
                 pTrigger->m_pvVertices = new Vector[pTrigger->m_nVertices];
-                pTrigger->m_pnOutlineVertices = new int32_t[pTrigger->m_nVertices];
 
                 for(int i = 0; i < pTrigger->m_nVertices; i++)
                 {
                     pTrigger->m_pvVertices[i] = vecVerts[i];
-                    pTrigger->m_pnOutlineVertices[i] = i;
                 }
 
                 Utils::AddToArea(pTrigger, pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z);
@@ -1010,7 +1004,7 @@ NWNX_EXPORT ArgumentStack ForceAssignUUID(ArgumentStack&& args)
     return {};
 }
 
-int32_t GetItemRepositoryCount(CItemRepository *pRepo) 
+int32_t GetItemRepositoryCount(CItemRepository *pRepo)
 {
     auto nItems = 0;
     for (auto *pNode = pRepo->m_oidItems.m_pcExoLinkedListInternal->pHead; pNode; pNode = pNode->pNext)

@@ -256,18 +256,14 @@ NWNX_EXPORT ArgumentStack SetGeometry(ArgumentStack&& args)
             pEncounter->RemoveFromArea();
 
             delete[] pEncounter->m_pvActivateVertices;
-            delete[] pEncounter->m_pnOutlineVertices;
-            
+
             pEncounter->m_nNumActivateVertices = vecVerts.size();
-            pEncounter->m_nNumOutlineVertices = vecVerts.size();
 
             pEncounter->m_pvActivateVertices = new Vector[pEncounter->m_nNumActivateVertices];
-            pEncounter->m_pnOutlineVertices = new int32_t[pEncounter->m_nNumActivateVertices];
 
             for(int i = 0; i < pEncounter->m_nNumActivateVertices; i++)
             {
                 pEncounter->m_pvActivateVertices[i] = vecVerts[i];
-                pEncounter->m_pnOutlineVertices[i] = i;
             }
 
             Utils::AddToArea(pEncounter, pArea, pEncounter->m_pvActivateVertices[0].x, pEncounter->m_pvActivateVertices[0].y, pEncounter->m_pvActivateVertices[0].z);
