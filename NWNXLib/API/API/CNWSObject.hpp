@@ -50,7 +50,7 @@ typedef uint32_t STRREF;
 
 struct CNWSObject : CGameObject
 {
-    CExoLocString m_sForGCC;
+    static CExoLocString m_sForGCC;
     uint16_t m_nGroupID;
     uint16_t m_nLastGroupID;
     CExoString m_sTag;

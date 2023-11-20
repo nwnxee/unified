@@ -19,8 +19,8 @@ struct CExoTimers
 
     CExoTimers();
     ~CExoTimers();
-    uint32_t GetLowResolutionTimer(BOOL bForceSyncTimer = false);
-    uint64_t GetHighResolutionTimer(BOOL bForceSyncTimer = false);
+    uint32_t GetMillisecondTimer(BOOL bForceSyncTimer = false);
+    uint64_t GetMicrosecondTimer(BOOL bForceSyncTimer = false);
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoTimers

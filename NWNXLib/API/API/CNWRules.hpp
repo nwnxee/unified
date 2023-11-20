@@ -49,7 +49,7 @@ struct CNWRules
     CNWDomain * m_lstDomains;
     CTwoDimArrays * m_p2DArrays;
     uint8_t m_nDifficultyOptions[5][7];
-    std::unordered_map<std::string, CachedRulesetEntry> m_ruleset_2da_cache;
+    std::unordered_map<uint64_t, CachedRulesetEntry> m_ruleset_2da_cache;
 
     CNWRules();
     virtual ~CNWRules();
@@ -69,9 +69,9 @@ struct CNWRules
     void ReloadAll();
     void UnloadAll();
     uint32_t GetHighestDamageTypeFlag();
-    CExoString GetRulesetStringEntry(const CExoString & label, CExoString whenMissing);
-    int32_t GetRulesetIntEntry(const CExoString & label, int32_t whenMissing);
-    float GetRulesetFloatEntry(const CExoString & label, float whenMissing);
+    CExoString GetRulesetStringEntry(uint64_t hashedLabel, const char* whenMissing);
+    int32_t GetRulesetIntEntry(uint64_t hashedLabel, int32_t whenMissing);
+    float GetRulesetFloatEntry(uint64_t hashedLabel, float whenMissing);
     void LoadFeatInfo();
     void LoadClassInfo();
     void LoadRaceInfo();
@@ -83,6 +83,12 @@ struct CNWRules
     void LoadEncodingInfo();
     void LoadRulesetInfo();
 
+
+    #define CRULES_HASHEDSTR(lbl) CNWRules::fnv1a(lbl, sizeof(lbl)-1)
+    inline static constexpr uint64_t fnv1a(const char *s, size_t l, uint64_t partial = 14695981039346656037ull) noexcept
+    {
+        return l == 0 ? partial : fnv1a(s+1, l-1, (partial^s[0])*1099511628211ull);
+    }
 
 #ifdef NWN_CLASS_EXTENSION_CNWRules
     NWN_CLASS_EXTENSION_CNWRules

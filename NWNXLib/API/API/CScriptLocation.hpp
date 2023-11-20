@@ -22,6 +22,7 @@ struct CScriptLocation
     Vector m_vOrientation;
     OBJECT_ID m_oArea;
 
+    CScriptLocation() { m_oArea = NWNXLib::API::Constants::OBJECT_INVALID; }
     void CopyScriptLocation(CScriptLocation * pLocation);
     BOOL SaveLocation(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadLocation(CResGFF * pRes, CResStruct * pStruct);

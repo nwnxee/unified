@@ -361,7 +361,7 @@ struct CNWSCreature : CNWSObject
     CExoArrayList<CGameEffect *> GetFilteredEffectList(uint8_t nEffectListType);
     int32_t GetWeaponPower(CNWSObject * pObject, BOOL bOffHand);
     void SendFeedbackMessage(uint16_t nFeedbackID, CNWCCMessageData * pMessageData = nullptr, CNWSPlayer * pFeedbackPlayer = nullptr);
-    void SendFeedbackString(CExoString sFeedbackMessage, CNWSPlayer * pFeedbackPlayer = nullptr);
+    void SendFeedbackString(const CExoString & sFeedbackMessage, CNWSPlayer * pFeedbackPlayer = nullptr);
     BOOL EquipItem(uint32_t nInventorySlot, CNWSItem * pItem, BOOL bApplyPropertyEffects = true, BOOL bLoadingItem = false);
     BOOL UnequipItem(CNWSItem * pItem, BOOL bUnequipWhilePolymorphed = false);
     void DestroyEquippedItems();

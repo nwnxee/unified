@@ -32,16 +32,10 @@ struct Definition
 struct Database : sqlite::database, InstanceLookup::List<Database>
 {
     using TableAccessAuthorizer = std::function<bool(const std::string& table, bool write_or_read)>;
-    struct FilePathUnlinker
-    {
-        bool m_do;
-        CExoString m_path;
-    };
-
     const std::string m_label;
     const std::string m_path;
     const bool m_writeable;
-    FilePathUnlinker m_delete_after_close;
+    bool m_delete_after_close;
     bool m_authorizer_enabled;
     TableAccessAuthorizer m_table_access_authorizer;
     bool m_transaction;
@@ -49,7 +43,14 @@ struct Database : sqlite::database, InstanceLookup::List<Database>
     Database(const Database& other) = delete;
     Database& operator=(const Database&) = delete;
     Database(const std::string & identifier, const std::string & path, DataViewRef copyAtomically = nullptr, const Migrations::Definition & source = NWSQLite::Migrations::Definition());
-    virtual ~Database();
+    virtual ~Database()
+    {
+        if (m_delete_after_close && m_path != "" && m_path != ":memory:")
+        {
+            _db = nullptr;
+            (void)remove(m_path.c_str());
+        }
+    }
     void Setup();
 
 
