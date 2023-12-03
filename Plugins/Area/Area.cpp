@@ -1044,7 +1044,7 @@ NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
                 case 1:
                 {
                     vOrientation.x = (std::cos(std::acos(vOrientation.x) - (M_PI/2)));//less half-radian
-                    vOrientation.y = (std::sin(std::asin(vOrientation.y) - (M_PI/2)));
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + (M_PI/2)));
                     break;
                 }
                 case 2:
@@ -1056,7 +1056,7 @@ NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
                 case 3:
                 {
                     vOrientation.x = (std::cos(std::acos(vOrientation.x) + (M_PI/2)));//Add half-radian
-                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + (M_PI/2)));
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) - (M_PI/2)));
                     break;
                 }
             }

@@ -52,6 +52,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 ### Fixed
 - Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook
 - Reveal: Fixed Reveal plugin always revealing all PCs regardless of plugin usage.
+- Area: RotateArea's 'NewOrientation' corrected for NWN bearings, correcting direction of objects within the area after 90 or 270 degree rotation.
 
 ## 8193.35.40
 https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40
