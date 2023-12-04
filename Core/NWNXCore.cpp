@@ -127,6 +127,7 @@ NWNXCore::NWNXCore()
     : m_ScriptChunkRecursion(0)
 {
     g_core = this;
+    CleanupPreload();
 
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
@@ -143,6 +144,20 @@ NWNXCore::NWNXCore()
 NWNXCore::~NWNXCore()
 {
     Shutdown();
+}
+
+void NWNXCore::CleanupPreload()
+{
+    const auto* preload = std::getenv("LD_PRELOAD");
+    const std::regex regex("(([^: ]+)?NWNX_[^: ]+)");
+
+    std::string newPreload = preload;
+    while (std::regex_search(newPreload, regex))
+    {
+        newPreload = std::regex_replace(newPreload, regex, "");
+    }
+
+    setenv("LD_PRELOAD", newPreload.c_str(), true);
 }
 
 std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
