@@ -42,6 +42,7 @@ private:
     std::unique_ptr<NWNXLib::Services::ServiceList> ConstructCoreServices();
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> ConstructProxyServices(const std::string& plugin);
 
+    void CleanupPreload();
     void ConfigureLogLevel(const std::string& plugin);
 
     void InitialSetupHooks();
