@@ -15,7 +15,7 @@ static Hooks::Hook s_LevelDownHook;
 static Hooks::Hook s_HandlePlayerToServerLevelUpMessageHook;
 
 static void LevelUpHook(CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t);
-static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
+static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint32_t);
 static void LevelDownHook(CNWSCreatureStats*, CNWLevelStats*);
 static int32_t HandlePlayerToServerLevelUpMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
 
@@ -48,7 +48,7 @@ void LevelUpHook(CNWSCreatureStats *thisPtr, CNWLevelStats *pLevelUpStats, uint8
     SignalEvent("NWNX_ON_LEVEL_UP_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
 }
 
-int32_t LevelUpAutomaticHook(CNWSCreatureStats *thisPtr, uint8_t nClass, int32_t bReadyAllSpells, uint8_t nPackage)
+int32_t LevelUpAutomaticHook(CNWSCreatureStats *thisPtr, uint8_t nClass, int32_t bReadyAllSpells, uint32_t nPackage)
 {
     SignalEvent("NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
     auto retVal = s_LevelUpAutomaticHook->CallOriginal<int32_t>(thisPtr, nClass, bReadyAllSpells, nPackage);

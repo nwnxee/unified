@@ -92,7 +92,7 @@ private:
     static int32_t ValidateCharacterHook(CNWSPlayer*, int32_t*);
 
     static int32_t SendServerToPlayerLevelUp_ConfirmationHook(CNWSMessage*, PlayerID, int32_t);
-    static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
+    static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint32_t);
     static int32_t GetMeetsPrestigeClassRequirementsHook(CNWSCreatureStats*, CNWClass*);
     static int32_t GetTotalEffectBonusHook(CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
     static void ApplyEffectHook(CNWSObject*, CGameEffect*);

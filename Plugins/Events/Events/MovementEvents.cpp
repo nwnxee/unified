@@ -14,11 +14,13 @@ static Hooks::Hook s_SetPositionMaterialChangeHook;
 static Hooks::Hook s_SetPositionTileChangeHook;
 static Hooks::Hook s_JumpToPointHook;
 static Hooks::Hook s_JumpToObjectHook;
+static Hooks::Hook s_SetPositionAreaEdgeHook;
 
 static void SetPositionMaterialChangeHook(CNWSObject*, Vector, int32_t);
 static void SetPositionTileChangeHook(CNWSObject*, Vector, int32_t);
 static int32_t ActionJumpToPointHook(CNWSCreature*, CNWSObjectActionNode*);
 static int32_t ActionJumpToObjectHook(CNWSCreature*, CNWSObjectActionNode*);
+static void SetPositionAreaEdgeHook(CNWSObject*, Vector, int32_t);
 
 void MovementEvents() __attribute__((constructor));
 void MovementEvents()
@@ -41,6 +43,11 @@ void MovementEvents()
     InitOnFirstSubscribe("NWNX_ON_CREATURE_JUMP_TO_OBJECT_.*", []() {
         s_JumpToObjectHook = Hooks::HookFunction(&CNWSCreature::AIActionJumpToObject,
             &ActionJumpToObjectHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_CREATURE_ON_AREA_EDGE_ENTER", []() {
+        s_SetPositionAreaEdgeHook = Hooks::HookFunction(&CNWSObject::SetPosition,
+            &SetPositionAreaEdgeHook, Hooks::Order::Earliest);
     });
 }
 
@@ -177,6 +184,56 @@ int32_t ActionJumpToObjectHook(CNWSCreature* thisPtr, CNWSObjectActionNode* pAct
     PushAndSignal("NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER");
 
     return retVal;
+}
+
+void SetPositionAreaEdgeHook(CNWSObject* thisPtr, Vector vPosition, BOOL bDoingCharacterCopy)
+{
+    if (thisPtr->m_nObjectType != API::Constants::ObjectType::Creature)
+    {
+        s_SetPositionAreaEdgeHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
+        return;
+    }
+
+    if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
+    {
+        CNWSArea *pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(pCreature->m_oidArea);
+        if (!pArea)
+            pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(pCreature->m_oidDesiredArea);
+
+        if (pArea)
+        {
+            constexpr float fTileSize = 10.0f;
+            constexpr float fOffset = 0.5f;
+            const bool bTopPrevious = thisPtr->m_vPosition.y >= (pArea->m_nHeight * fTileSize) - fOffset;
+            const bool bRightPrevious= thisPtr->m_vPosition.x >= (pArea->m_nWidth * fTileSize) - fOffset;
+            const bool bBottomPrevious = thisPtr->m_vPosition.y <= fOffset;
+            const bool bLeftPrevious = thisPtr->m_vPosition.x <= fOffset;
+
+            s_SetPositionAreaEdgeHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
+
+            const bool bTopNow = thisPtr->m_vPosition.y >= (pArea->m_nHeight * fTileSize) - fOffset;
+            const bool bRightNow = thisPtr->m_vPosition.x >= (pArea->m_nWidth * fTileSize) - fOffset;
+            const bool bBottomNow = thisPtr->m_vPosition.y <= fOffset;
+            const bool bLeftNow = thisPtr->m_vPosition.x <= fOffset;
+
+            if ((bTopPrevious != bTopNow) ||
+                (bRightPrevious != bRightNow) ||
+                (bBottomPrevious != bBottomNow) ||
+                (bLeftPrevious != bLeftNow))
+            {
+                PushEventData("TOP", bTopNow ? "1" : "0");
+                PushEventData("RIGHT", bRightNow ? "1" : "0");
+                PushEventData("BOTTOM", bBottomNow ? "1" : "0");
+                PushEventData("LEFT", bLeftNow ? "1" : "0");
+                PushEventData("AREA", Utils::ObjectIDToString(pArea->m_idSelf));
+                SignalEvent("NWNX_ON_CREATURE_ON_AREA_EDGE_ENTER", pCreature->m_idSelf);
+            }
+
+            return;
+        }
+    }
+
+    s_SetPositionAreaEdgeHook->CallOriginal<void>(thisPtr, vPosition, bDoingCharacterCopy);
 }
 
 }
