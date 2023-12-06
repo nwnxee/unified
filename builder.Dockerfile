@@ -26,6 +26,7 @@ RUN buildDeps="build-essential \
     automake \
     bison \
     ccache" \
+    && apt-get update \
     && apt-get install software-properties-common \
     && add-apt-repository ppa:git-core/ppa \
     && apt-get update \
