@@ -2,7 +2,7 @@
 # build dependencies change. This docker image created is pushed to Dockerhub and GHCR and is the base
 # image when users build their own docker images for NWNX:EE.
 
-FROM ubuntu:18.04
+FROM debian:buster-slim
 
 RUN buildDeps="build-essential \
     git \
@@ -26,9 +26,6 @@ RUN buildDeps="build-essential \
     automake \
     bison \
     ccache" \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends software-properties-common \
-    && add-apt-repository ppa:git-core/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
