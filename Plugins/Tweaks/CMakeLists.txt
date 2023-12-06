@@ -16,7 +16,6 @@ add_plugin(Tweaks
     "FixItemNullptrInCItemRepository.cpp"
     "FixResolveSpecialAttackDamage.cpp"
     "FixTriggerEnterDetection.cpp"
-    "FixTURDEffectUnlinking.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
@@ -38,6 +37,5 @@ add_plugin(Tweaks
     "RangedWeaponsUseOnHitEffectItemProperties.cpp"
     "RangedWeaponsUseOnHitCastSpellItemProperties.cpp"
     "CastAllOnHitCastSpellItemProperties.cpp"
-    "FixAutoMapCrash.cpp"
     "SetAreaCallsSetPosition.cpp"
     "EquipUnequipEventTweaks.cpp")

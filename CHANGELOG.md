@@ -73,7 +73,8 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7
 - N/A
 
 ### Removed
-- N/A
+- Tweaks: `NWNX_TWEAKS_FIX_AUTOMAP_CRASH`, fixed in basegame.
+- Tweaks: `NWNX_TWEAKS_FIX_TURD_EFFECT_UNLINKING`, fixed in basegame.
 
 ### Fixed
 - Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook

@@ -44,11 +44,9 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
 | `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
 | `NWNX_TWEAKS_FIX_RESOLVE_SPECIAL_ATTACK_DAMAGE` | true or false | Stops damage from being resolved when a special attack misses. |
-| `NWNX_TWEAKS_FIX_TURD_EFFECT_UNLINKING` | true or false | Stops effects from unlinking when restored from a TURD due to their effect ID changing. |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Casts all On Hit: Cast Spell item properties on hit, instead of only the first property. |
-| `NWNX_TWEAKS_FIX_AUTOMAP_CRASH` | true or false | Fixes a server crash that happens when automap data is outdated for a player. |
 | `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` | true or false | If enabled, a creature getting added to an area will fire the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events. |
 | `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` | true or false | The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures |
 | `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
