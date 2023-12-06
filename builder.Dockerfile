@@ -27,7 +27,7 @@ RUN buildDeps="build-essential \
     bison \
     ccache" \
     && apt-get update \
-    && apt-get install software-properties-common \
+    && apt-get install -y --no-install-recommends software-properties-common \
     && add-apt-repository ppa:git-core/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
