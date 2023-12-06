@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.35.40</span>
+								&#160;<span id="projectnumber">8193.36.7</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('group__dotnet.html',''); initResizable
 <div class="contents">
 
 
-<h3><a id="dotnet"></a>Readme</h3><div class="textblock">Implement your server scripts in C# (and other dotnet languages)<h2><a class="anchor" id="autotoc_md255"></a>
+<h3><a id="dotnet"></a>Readme</h3><div class="textblock">Implement your server scripts in C# (and other dotnet languages)<h2><a class="anchor" id="autotoc_md278"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -114,31 +114,31 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NETHOST_PATH </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Path where to load libnethost.so from </td><td class="markdownTableBodyNone"><em>none</em>  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md256"></a>
+<h2><a class="anchor" id="autotoc_md279"></a>
 Basic Setup</h2>
-<h3><a class="anchor" id="autotoc_md257"></a>
+<h3><a class="anchor" id="autotoc_md280"></a>
 Dependencies</h3>
 <p>You will need <code>dotnet-sdk-3.1</code> installed on the server to use this plugin. The same package is used to build the managed code. Installation instructions are <a href="https://dotnet.microsoft.com/download/linux-package-manager/sdk-current">here</a>.</p>
 <p>There are no compiletime dependencies for the unmanaged code.</p>
-<h3><a class="anchor" id="autotoc_md258"></a>
+<h3><a class="anchor" id="autotoc_md281"></a>
 Compile managed code</h3>
 <p>Copy everything within [DotNET/NWN/...](NWN) into a folder that will be your module's root. Then, in that folder run <code>dotnet build</code>. This will produce several files, most notably:</p>
 <ul>
 <li><code>NWN.dll</code> - your compiled code</li>
 <li><code>NWN.runtimeconfig.json</code> - config file that tells nwnx how to run your code</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md259"></a>
+<h3><a class="anchor" id="autotoc_md282"></a>
 Run NWNX with your DLL</h3>
 <p>In your startup script, you need to minimally set up the assembly path (note: without .dll extension): </p><pre class="fragment">export NWNX_DOTNET_ASSEMBLY=/full/path/to/your/compiled/NWN
 </pre><p>And then start NWNX+NWServer.</p>
-<h3><a class="anchor" id="autotoc_md260"></a>
+<h3><a class="anchor" id="autotoc_md283"></a>
 Troubleshooting</h3>
-<h4><a class="anchor" id="autotoc_md261"></a>
+<h4><a class="anchor" id="autotoc_md284"></a>
 libnethost.so</h4>
 <p>If you get the following error: </p><pre class="fragment">Unable to load libnethost.so. .NET plugin will be unavailable.
 </pre><p>make sure you have <code>dotnet-sdk-3.1</code> (or later?) installed on your system. If it is present, run <code>locate libnethost.so</code> to find the location of the library. Then add it to: </p><pre class="fragment">export NWNX_DOTNET_NETHOST_PATH=/full/path/to/libnethost.so
 </pre><p>Please also open an issue showing the output of your <code>locate</code> command so that we can add the path to the auto-search code.</p>
-<h4><a class="anchor" id="autotoc_md262"></a>
+<h4><a class="anchor" id="autotoc_md285"></a>
 runtime config</h4>
 <p>If you get the following error: </p><pre class="fragment">Unable to load runtime config [...]
 </pre><p>verify your <code>NWNX_DOTNET_ASSEMBLY</code> variable - it needs to contain the path to your DLL, with the base name, but without the extension. So, if you have: </p><pre class="fragment">/some/path/my/project/NWN.dll
@@ -146,19 +146,19 @@ runtime config</h4>
 /some/path/my/project/NWN.deps.json
 /some/path/my/project/NWN.pdb
 </pre><p>your <code>NWNX_DOTNET_ASSEMBLY</code> should be <code>/some/path/my/project/NWN</code></p>
-<h4><a class="anchor" id="autotoc_md263"></a>
+<h4><a class="anchor" id="autotoc_md286"></a>
 Bootstrap()</h4>
 <p>If you get the following error: </p><pre class="fragment">Unable to get [something].Bootstrap() function [...]
 </pre><p>and you have changed the default entrypoint, verify that your <code>NWNX_DOTNET_ENTRYPOINT</code> variable contains the full <code>Namespace.Class.Subclass</code>, and that a static <code>Bootstrap()</code> function with the correct signature exists in that path.</p>
-<h2><a class="anchor" id="autotoc_md264"></a>
+<h2><a class="anchor" id="autotoc_md287"></a>
 How it works (basic)</h2>
 <p>In <a href="NWN/Entrypoints.cs">Entrypoints.cs</a> you have three events that you need to implement:</p>
-<h3><a class="anchor" id="autotoc_md265"></a>
+<h3><a class="anchor" id="autotoc_md288"></a>
 &lt;tt&gt;OnStart&lt;/tt&gt;</h3>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OnStart()</div>
 </div><!-- fragment --><p>This event is called only once, when the dotnet runtime has been initialized. Use this event to initialize any static data you might have.</p>
 <dl class="section note"><dt>Note</dt><dd>At this time, the NWScript VM is not yet initialized, so you cannot use any nwscript functions. Even the module object does not exist yet.</dd></dl>
-<h3><a class="anchor" id="autotoc_md266"></a>
+<h3><a class="anchor" id="autotoc_md289"></a>
 &lt;tt&gt;OnRunScript&lt;/tt&gt;</h3>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> OnRunScript(<span class="keywordtype">string</span> script, uint oidSelf);</div>
 </div><!-- fragment --><p>This event runs whenever a named script - i.e. event scripts set in the toolset, or with <code>SetEventScript</code> - is to be executed. This runs <em>before</em> any nwscript scripts, and runs for all scripts, including stock bioware ones.</p>
@@ -170,12 +170,12 @@ How it works (basic)</h2>
 <li>Use reflection to find functions with the same name as the script (precompute or cache results)</li>
 <li>Use attributes on methods that are script handlers</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md267"></a>
+<h3><a class="anchor" id="autotoc_md290"></a>
 &lt;tt&gt;OnMainLoop&lt;/tt&gt;</h3>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OnMainLoop(ulong frame);</div>
 </div><!-- fragment --><p>This is called every main loop frame (approximately/ideally every 10ms). It runs in script context (so NWScript functions are available), but <code>OBJECT_SELF == OBJECT_INVALID</code>.</p>
 <p>You should keep the processing in this function to a minimum, as it may have adverse effect on server performance.</p>
-<h3><a class="anchor" id="autotoc_md268"></a>
+<h3><a class="anchor" id="autotoc_md291"></a>
 Using NWScript in C</h3>
 <p>All classic NWScript functions are available in the <a href="NWN/NWScript/Functions.cs"><code>NWN.NWScript</code></a> class.</p>
 <p>For example:</p>
@@ -190,13 +190,13 @@ Using NWScript in C</h3>
 <div class="line">    NWScript.AssignCommand(NWScript.GetFirstPC(),</div>
 <div class="line">        () =&gt; NWScript.ActionDoCommand(() =&gt; NWScript.ActionSpeakString(<span class="stringliteral">&quot;Hello! I am speaking this string!&quot;</span>)));</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md269"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md292"></a>
 Advanced stuff</h2>
 <p>All the managed code provided in this repo is meant just as a primer, You are encouraged to copy it and adapt to your own needs.</p>
-<h3><a class="anchor" id="autotoc_md270"></a>
+<h3><a class="anchor" id="autotoc_md293"></a>
 NWN types</h3>
 <p>When talking to unmanaged code, we only deal with basic types. Objects are passed as <code>uint</code>s. Other engine structures, like <code>Effect</code>,<code>Location</code>, etc, all have <code>IntPtr Handle</code> which is passed instead.</p>
-<h3><a class="anchor" id="autotoc_md271"></a>
+<h3><a class="anchor" id="autotoc_md294"></a>
 Bootstrapping</h3>
 <p>The basic interop between unmanaged NWNX and managed module code is entirely contained within <a href="NWN/Internal/Bootstrap.cs">Bootstrap.cs</a>. Your managed DLL needs to have this function:</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> Bootstrap(IntPtr arg, <span class="keywordtype">int</span> argLength);</div>
@@ -228,11 +228,11 @@ Bootstrapping</h3>
 <div class="line">    Marshal.StructureToPtr(handlers, ptr, <span class="keyword">false</span>);      <span class="comment">// copy the structure over</span></div>
 <div class="line">    NativeFunctions.RegisterHandlers(ptr, (uint)size); <span class="comment">// call native function</span></div>
 <div class="line">    Marshal.FreeHGlobal(ptr);                          <span class="comment">// free unmanaged memory</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md272"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md295"></a>
 OBJECT_SELF</h3>
 <p>The <code>OBJECT_SELF</code> global is handled in the managed code. In the <code>OnRunScript</code> handler, the argument <code>oidSelf</code> is assigned to the global. Before the handler finishes, the old value is restored.</p>
 <p>You can find implementation details in <a href="NWN/Internal/Internal.cs">Internal.cs</a>, where a <code>Stack&lt;&gt;</code> is used to keep track of nested script calls.</p>
-<h3><a class="anchor" id="autotoc_md273"></a>
+<h3><a class="anchor" id="autotoc_md296"></a>
 Closures</h3>
 <p>A closure is a script context that is saved to be executed at a later time - <code>DelayCommand</code>, <code>AssignCommand</code>, etc. The closure support in dotnet is almost entirely handled on the managed side. The three native functions you'd use to schedule a closure are:</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keywordtype">int</span> ClosureAssignCommand(uint oid, ulong eventId);</div>
@@ -260,7 +260,7 @@ Closures</h3>
 <div class="line">        Closures.Add(NextEventId++, <span class="keyword">new</span> Closure { OwnerObject = obj, Run = func });</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md274"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md297"></a>
 Exceptions</h3>
 <p>Exceptions work within the managed code, however they do not cross the managed/unmanaged boundary. This means that uncaught exceptions will bring down the entire nwserver process. It is advisable to wrap most of your logic in <code>try...catch</code> blocks in all three entry points (See <a href="NWN/Internal/Internal.cs">Internal.cs</a> for examples).</p>
 <p>Errors which happen while executing unmanaged code invoked through one of the bootstrap delegates will also bring down the server (e.g. by passing invalid <code>IntPtr Handle</code> for engine structures) </p>
@@ -270,7 +270,7 @@ Exceptions</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Dec 3 2023 22:03:55 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Dec 6 2023 11:46:17 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
