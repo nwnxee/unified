@@ -90,7 +90,7 @@ void HideHardcodedItemVFX()
                     if (nDamageType != -1)
                     {
                         int32_t nDisplayVFX = 0;
-                        Globals::Rules()->m_p2DArrays->m_pIPRPDamageTable->GetINTEntry(pItemProperty->m_nCostTableValue, "VFX", &nDisplayVFX);
+                        Globals::Rules()->m_p2DArrays->GetDamageTable()->GetINTEntry(pItemProperty->m_nCostTableValue, "VFX", &nDisplayVFX);
 
                         if (nDisplayVFX)
                         {
@@ -126,7 +126,7 @@ void HideHardcodedItemVFX()
                     else if (pItemProperty->m_nPropertyName == Constants::ItemProperty::VampiricRegeneration && !(s_HiddenVFX & 64))
                     {
                         int32_t nDisplayVFX = 0;
-                        Globals::Rules()->m_p2DArrays->m_pIPRPMelee->GetINTEntry(pItemProperty->m_nCostTableValue, "VFX", &nDisplayVFX);
+                        Globals::Rules()->m_p2DArrays->GetIPRPMelee()->GetINTEntry(pItemProperty->m_nCostTableValue, "VFX", &nDisplayVFX);
                         if (nDisplayVFX)
                             nItemVFX = Constants::ItemVFX::Evil;
                     }

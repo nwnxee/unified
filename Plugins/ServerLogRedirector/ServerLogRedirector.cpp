@@ -1,7 +1,7 @@
 #include "nwnx.hpp"
 
 #include "API/CExoDebugInternal.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -53,8 +53,8 @@ static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction((void*)&CExoDebu
         s_WriteToErrorFileHook->CallOriginal<void>(pExoDebugInternal, message);
     }, Hooks::Order::VeryEarly);
 
-static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction((void*)&CNWVirtualMachineCommands::ExecuteCommandPrintString,
-    +[](CNWVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
+static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction((void*)&CNWSVirtualMachineCommands::ExecuteCommandPrintString,
+    +[](CNWSVirtualMachineCommands *pVirtualMachineCommands, int32_t nCommandId, int32_t nParameters) -> int32_t
     {
         s_printString = true;
         auto retVal = s_ExecuteCommandPrintStringHook->CallOriginal<int32_t>(pVirtualMachineCommands, nCommandId, nParameters);

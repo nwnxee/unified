@@ -52,7 +52,7 @@ struct CNetLayerPlayerInfo
     void AddCDKey(const CExoString & sPublic, const CExoString & sResponse);
     BOOL AllKeysAuthed(uint32_t & nExpansionPacks);
     void SetCDKey(int nIndex, const CExoString & sPublic, const CExoString & sResponse);
-    bool SatisfiesBuild(int32_t nBuild, int32_t nRevision) const;
+    bool SatisfiesBuild(int32_t nBuild, int32_t nRevision, int32_t nPostfix) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayerPlayerInfo

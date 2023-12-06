@@ -42,9 +42,9 @@ static BOOL AddAttackActionsHook(CNWSCreature*, ObjectID, BOOL, BOOL, BOOL);
 static void AddAttackOfOpportunityHook(CNWSCombatRound*, ObjectID);
 static void SetBroadcastedAOOToHook(CNWSCreature*, BOOL);
 static void PlayBattleMusicHook(CNWSAmbientSound*, BOOL);
-static void AddActionHook(CNWSObject*, uint32_t, uint16_t, 
-    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*, 
-    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*, 
+static void AddActionHook(CNWSObject*, uint32_t, uint16_t,
+    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*,
+    uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*,
     uint32_t, void*, uint32_t, void*, uint32_t, void*, uint32_t, void*);
 static void ChangeAttackTargetHook(CNWSCreature*, CNWSObjectActionNode*, const OBJECT_ID);
 
@@ -63,7 +63,7 @@ void CombatEvents()
         s_ApplyDisarmHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyDisarm,
                                                 &ApplyDisarmHook, Hooks::Order::Early);
     });
-    InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", []() {
+    InitOnFirstSubscribe("NWNX_ON_COMBAT_(ENTER|EXIT)_.*", []() {
         s_SendServerToPlayerAmbientBattleMusicPlayHook = Hooks::HookFunction(
                 &CNWSMessage::SendServerToPlayerAmbientBattleMusicPlay,
                 &SendServerToPlayerAmbientBattleMusicPlayHook, Hooks::Order::Earliest);
@@ -321,14 +321,14 @@ void PlayBattleMusicHook(CNWSAmbientSound *pThis, BOOL bPlay)
     }
 }
 
-static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGroupId, uint32_t nParamType1, void* pParameter1, 
-    uint32_t nParamType2, void* pParameter2, uint32_t nParamType3, void* pParameter3, uint32_t nParamType4, void* pParameter4, 
-    uint32_t nParamType5, void* pParameter5, uint32_t nParamType6, void* pParameter6, uint32_t nParamType7, void* pParameter7, 
-    uint32_t nParamType8, void* pParameter8, uint32_t nParamType9, void* pParameter9, uint32_t nParamType10, void* pParameter10, 
+static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGroupId, uint32_t nParamType1, void* pParameter1,
+    uint32_t nParamType2, void* pParameter2, uint32_t nParamType3, void* pParameter3, uint32_t nParamType4, void* pParameter4,
+    uint32_t nParamType5, void* pParameter5, uint32_t nParamType6, void* pParameter6, uint32_t nParamType7, void* pParameter7,
+    uint32_t nParamType8, void* pParameter8, uint32_t nParamType9, void* pParameter9, uint32_t nParamType10, void* pParameter10,
     uint32_t nParamType11, void* pParameter11, uint32_t nParamType12, void* pParameter12)
 {
     bool bOriginalCalled = false;
-    if ((pObject->m_nObjectType == Constants::ObjectType::Creature) && 
+    if ((pObject->m_nObjectType == Constants::ObjectType::Creature) &&
         ((nActionId == 12 /* Attack */) || (nActionId == 1 /* MoveToPoint */) || (nActionId == 51 /* Drivemode */)))
     {
         auto* pCreature = Utils::AsNWSCreature(pObject);
@@ -364,11 +364,11 @@ static void AddActionHook(CNWSObject* pObject, uint32_t nActionId, uint16_t nGro
             bOriginalCalled = true;
 
             PushAndSignal("NWNX_ON_ATTACK_TARGET_CHANGE_AFTER", oidNewTarget, false);
-          
+
             pCreature->nwnxSet("LAST_ATTACK_TARGET", (int32_t)oidNewTarget);
         }
     }
-    
+
     if (!bOriginalCalled)
     {
         s_AddActionHook->CallOriginal<void>(pObject, nActionId, nGroupId, nParamType1, pParameter1,

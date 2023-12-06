@@ -59,7 +59,7 @@ struct CNWSCreatureStats
     int32_t m_nOriginalFactionId;
     int32_t m_nPreDominationFactionId;
     float m_fChallengeRating;
-    uint8_t m_nStartingPackage;
+    uint32_t m_nStartingPackage;
     uint8_t m_nNumMultiClasses;
     CNWSCreatureStats_ClassInfo m_ClassInfo[8];
     uint16_t m_nRace;
@@ -174,7 +174,7 @@ struct CNWSCreatureStats
     BOOL CanLevelUp();
     void LevelUp(CNWLevelStats * pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool, BOOL bAddStatsToList);
     void LevelDown(CNWLevelStats * pLevelUpStats);
-    BOOL LevelUpAutomatic(uint8_t nClass, BOOL bReadyAllSpells, uint8_t nPackage);
+    BOOL LevelUpAutomatic(uint8_t nClass, BOOL bReadyAllSpells, uint32_t nPackage);
     BOOL CanChooseFeat(uint16_t nFeatID, uint8_t nNumberNormalFeats, uint8_t nNumberBonusFeats, CExoArrayList<uint16_t> * pChosenFeats);
     BOOL FeatRequirementsMet(uint16_t nFeatID, CExoArrayList<uint16_t> * pChosenFeats);
     void SetNormalBonusFlags(uint16_t nFeatID, BOOL & bNormalListFeat, BOOL & bBonusListFeat);
@@ -195,7 +195,7 @@ struct CNWSCreatureStats
     void SetExperience(uint32_t nValue, BOOL bDoLevel = true);
     void AddExperience(uint32_t nValue);
     CExoString GetClassString(uint8_t nMultiClass);
-    uint8_t GetClassLevel(uint8_t nMultiClass, BOOL bUseNegativeLevel = false);
+    uint8_t GetClassLevel(uint8_t nMultiClass, BOOL bUseNegativeLevel = false, BOOL bIncludeCasterMultiplier = false);
     uint8_t GetClassNegativeLevels(uint8_t nMultiClass);
     uint8_t GetClass(uint8_t nMultiClass);
     CNWSCreatureStats_ClassInfo * GetClassInfo(uint8_t nMultiClass);
@@ -369,6 +369,11 @@ struct CNWSCreatureStats
     void ResetSpellLikeAbilities();
     BOOL GetIsInSpellLikeAbilityList(uint32_t nSpellId);
     uint8_t GetSpellLikeAbilityCasterLevel(uint32_t nSpellId);
+    int32_t GetSpellLikeAbilityCount();
+    uint32_t GetSpellLikeAbilitySlotSpellId(uint32_t nSlot);
+    uint8_t GetSpellLikeAbilitySlotCasterLevel(uint32_t nSlot);
+    BOOL GetSpellLikeAbilitySlotReady(uint32_t nSlot);
+    void SetSpellLikeAbilitySlotReady(uint32_t nSlot, BOOL bReady);
     float GetStatById(int32_t nId);
     void SetStatById(int32_t nId, float nStat);
     BOOL GetIsWeaponOfChoice(uint32_t nBaseItemType);

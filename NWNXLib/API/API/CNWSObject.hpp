@@ -16,6 +16,7 @@
 #include "ObjectVisualTransformData.hpp"
 #include "TextureReplaceInfo.hpp"
 #include "Vector.hpp"
+#include "Database.hpp"
 #include <memory>
 
 
@@ -49,7 +50,7 @@ typedef uint32_t STRREF;
 
 struct CNWSObject : CGameObject
 {
-    CExoLocString m_sForGCC;
+    static CExoLocString m_sForGCC;
     uint16_t m_nGroupID;
     uint16_t m_nLastGroupID;
     CExoString m_sTag;
@@ -143,7 +144,7 @@ struct CNWSObject : CGameObject
     int32_t m_nTextBubbleOverrideType;
     CExoString m_sTextBubbleOverrideText;
     CNWSTransition m_pTransition;
-    std::shared_ptr<void*> m_sqlite_db;
+    std::shared_ptr<NWSQLite::Database> m_sqlite_db;
     ObjectVisualTransformData * m_pVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
     CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
@@ -212,15 +213,16 @@ struct CNWSObject : CGameObject
     virtual int16_t GetMaxHitPoints(BOOL bIncludeToughness = true);
     virtual int16_t GetCurrentHitPoints(BOOL bExcludeTemporaryHits = false);
     virtual void DoDamage(int32_t nDamage);
-    virtual int32_t DoDamageReduction(CNWSCreature * pDamager, int32_t nDamage, uint8_t nDamagePower, BOOL bSimulation, BOOL bCombatDamage);
-    virtual int32_t DoDamageResistance(CNWSCreature * pDamager, int32_t nDamage, uint32_t nFlags, BOOL bSimulation, BOOL bCombatDamage, BOOL bBaseWeaponDamage = false);
-    virtual int32_t GetMaximumDamageResistanceVsDamageFlag(uint32_t nDamageFlag, int32_t * nBestIndex);
+    virtual int32_t DoDamageReduction(CNWSCreature * pDamager, int32_t nDamage, uint8_t nDamagePower, BOOL bSimulation, BOOL bCombatDamage, BOOL bRangedAttack);
+    virtual int32_t DoDamageResistance(CNWSCreature * pDamager, int32_t nDamage, uint32_t nFlags, BOOL bSimulation, BOOL bCombatDamage, BOOL bBaseWeaponDamage, BOOL bRangedAttack);
+    virtual int32_t GetMaximumDamageResistanceVsDamageFlag(uint32_t nDamageFlag, int32_t * nBestIndex, BOOL bRangedAttack);
     virtual int32_t DoDamageImmunity(CNWSCreature * pDamager, int32_t nDamage, uint32_t nFlags, BOOL bSimulation, BOOL bCombatDamage);
     virtual char GetDamageImmunity(uint8_t nType);
     virtual char GetDamageImmunityByFlags(uint32_t nFlags);
     void SetDamageImmunity(uint32_t nFlags, int32_t nValue);
     int32_t DoSpellLevelAbsorption(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
     int32_t DoSpellImmunity(CNWSObject * pCaster, CNWSAreaOfEffectObject * pAoEObject = nullptr);
+    int32_t GetCasterLevel();
     uint8_t GetDamageLevel();
     void DeleteCurrentAIAction();
     void ApplyEffect(CGameEffect * e, BOOL bLoadingGame = false, BOOL bInitialApplication = false);
@@ -264,7 +266,7 @@ struct CNWSObject : CGameObject
     void CalculateLastSpellProjectileTime(uint8_t nProjectilePathType = 0);
     void SpawnBodyBag();
     void ReportOverflow(int32_t nOverflowFeedbackType, int32_t nTotal, int32_t nError, BOOL bCritical = false);
-    std::shared_ptr<void*> GetObjectSqlDatabase();
+    std::shared_ptr<NWSQLite::Database> GetObjectSqlDatabase();
     virtual bool GetCanCarrySqlDatabase();
     void DestroyObjectSqlDatabase();
     void SaveVisualTransform(CResGFF * pRes, CResStruct * pStruct);

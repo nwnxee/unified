@@ -31,9 +31,6 @@ struct CAppManager
     uint32_t m_nApplicationId;
     BOOL m_bMultiplayerEnabled;
     BOOL m_bWasPaused;
-    BOOL m_bDigitalDistributionModule;
-    uint8_t * m_pDDCipher;
-    uint32_t m_nDDOffset;
     uint32_t m_nPlayerTimeout;
     BOOL m_bLogModelErrors;
 
@@ -48,10 +45,7 @@ struct CAppManager
     BOOL GetDungeonMasterEXERunning();
     void DisplayScriptDebuggerPopup();
     void DestroyScriptDebuggerPopup();
-    BOOL SetDDCipherForModule(CExoString moduleName);
     uint8_t ReadProgressFromINI(uint8_t m_nCampaign);
-    // CExoLocString GetHostedModuleDescription();
-    // CExoString GetHostedPublicInternetAddressAndPort();
     void ConnectToServer(CExoString sAddress, BOOL bPasswordRequired);
     class CWorldTimer * GetWorldTimer();
     CExoString GetCryptoKxPublicKeyBase64();

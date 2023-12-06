@@ -1036,7 +1036,7 @@ int operands_extract(_CodeInfo* ci, _DInst* di, _InstInfo* ii,
 				operands_set_ts(op, O_PTR, 32);
 				di->imm.ptr.off = RULONG(ci->code); /* Read 32bits offset this time. */
 				di->imm.ptr.seg = RUSHORT((ci->code + sizeof(int32_t))); /* And read segment, 16 bits. */
-				
+
 				ci->code += sizeof(int32_t) + sizeof(int16_t);
 			}
 		break;
@@ -1088,7 +1088,7 @@ int operands_extract(_CodeInfo* ci, _DInst* di, _InstInfo* ii,
 			prefixes_use_segment(INST_PRE_DS, ps, ci->dt, di);
 
 			/*
-			 * Just a pointer to a BYTE, WORD, DWORD, QWORD. Works only with ACC8/16/32/64 respectively. 
+			 * Just a pointer to a BYTE, WORD, DWORD, QWORD. Works only with ACC8/16/32/64 respectively.
 			 * MOV [0x1234], AL ; MOV AX, [0x1234] ; MOV EAX, [0x1234], note that R/E/AX will be chosen by OT_ACC_FULL.
 			 */
 			if (effAdrSz == Decode16Bits) {
@@ -1240,7 +1240,7 @@ int operands_extract(_CodeInfo* ci, _DInst* di, _InstInfo* ii,
 			if (effAdrSz == Decode16Bits) op->index = R_SI;
 			else if (effAdrSz == Decode32Bits) op->index = R_ESI;
 			else op->index = R_RSI;
-			
+
 			di->usedRegistersMask |= _REGISTERTORCLASS[R_RSI]; /* Maps to RM_SI. */
 		break;
 		case OT_REGI_EDI:

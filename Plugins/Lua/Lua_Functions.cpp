@@ -1,7 +1,7 @@
 #include "nwnx.hpp"
 #include "Lua_Functions.hpp"
 #include "API/CAppManager.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Globals.hpp"
@@ -35,9 +35,9 @@ CVirtualMachine* GetVm()
 }
 
 
-CNWVirtualMachineCommands* GetVmCommands()
+CNWSVirtualMachineCommands* GetVmCommands()
 {
-    return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
+    return static_cast<CNWSVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
 CVirtualMachineScript* CreateScriptForClosure(const char* token)

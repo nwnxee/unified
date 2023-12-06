@@ -32,7 +32,6 @@ struct CExoEncapsulatedFile : CExoPackedFile
     virtual uint32_t GetResourceSize(RESID nID);
     virtual BOOL Initialize();
     virtual BOOL OpenFile();
-    virtual BOOL OpenFile(uint8_t * pCipher);
     virtual uint32_t ReadResource(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
     virtual BOOL LoadHeader(const char * expectOid, uint8_t nType = 0);
     virtual BOOL UnloadHeader();

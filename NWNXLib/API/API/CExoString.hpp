@@ -55,7 +55,6 @@ struct CExoString
     CExoString RemoveAll(const char * c) const;
     CExoString RemoveAllExcept(const char * c) const;
     void Format(const char * format, ...);
-    int32_t GetLength() const;
     void Insert(const CExoString & string, int32_t position);
     BOOL IsEmpty() const;
     CExoString Left(int32_t count) const;
@@ -71,7 +70,23 @@ struct CExoString
     std::vector<CExoString> Split(const CExoString & delimiter) const;
     static CExoString FormatBytes(uint64_t bytes);
     static CExoString FormatDuration(uint64_t span, int compact_levels = 0, int min_level = 0, bool label_fields = true, const char* separator = " ");
+    int32_t GetHash() const;
 
+    inline int32_t GetLength() const { return m_sString ? (int32_t)strlen(m_sString) : 0; }
+    void Clear()
+    {
+        delete[] m_sString;
+        m_sString = nullptr;
+        m_nBufferLength = 0;
+    }
+
+    template<typename ... T>
+    static CExoString F(const char* fmt, T&& ... args)
+    {
+        CExoString f;
+        f.Format(fmt, args...);
+        return f;
+    }
 
 #ifdef NWN_CLASS_EXTENSION_CExoString
     NWN_CLASS_EXTENSION_CExoString

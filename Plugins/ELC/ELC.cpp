@@ -241,7 +241,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             }
             // **********************************************************************************************************************
 
-            if (pCreatureStats->m_nNumMultiClasses > std::clamp<int32_t>(Globals::Rules()->GetRulesetIntEntry("MULTICLASS_LIMIT", 3), 1, 8))
+            if (pCreatureStats->m_nNumMultiClasses > std::clamp<int32_t>(Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("MULTICLASS_LIMIT"), 3), 1, 8))
             {
                 if (auto strrefFailure = HandleValidationFailure(
                         ValidationFailureType::Character,
@@ -524,8 +524,8 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     nAbility[nAbilityGain]--;
             }
 
-            static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MIN", 8);
-            static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
+            static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_BASE_ABILITY_MIN"), 8);
+            static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_BASE_ABILITY_MAX"), 18);
 
             // Check if >18 in an ability
             for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
@@ -546,10 +546,8 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             uint8_t nAbilityAtLevel[6] = {0};
             uint8_t nPointBuy = pRace->m_nAbilitiesPointBuyNumber;
 
-            static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT2",
-                                                                                        14);
-            static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT3",
-                                                                                        16);
+            static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_ABILITY_COST_INCREMENT2"), 14);
+            static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_ABILITY_COST_INCREMENT3"), 16);
 
             for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
             {
@@ -875,8 +873,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                         listSkillRanks[nSkill] += nRankChange;
 
                         // Can't have more than Level + 3 in a class skill, or (Level + 3) / 2 for a non class skill
-                        static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry(
-                                "CHARGEN_SKILL_MAX_LEVEL_1_BONUS", 3);
+                        static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_SKILL_MAX_LEVEL_1_BONUS"), 3);
                         if (bClassSkill)
                         {
                             if (listSkillRanks[nSkill] > nLevel + skillMaxLevel1Bonus)
@@ -1573,8 +1570,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                             if (nSchool != 0)
                             {
                                 int32_t nOppositionSchool;
-                                if (pRules->m_p2DArrays->m_pSpellSchoolTable->GetINTEntry(nSchool, "Opposition",
-                                                                                          &nOppositionSchool))
+                                if (pRules->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSchool, "Opposition", &nOppositionSchool))
                                 {
                                     if (pSpell->m_nSchool == (uint8_t) nOppositionSchool)
                                     {

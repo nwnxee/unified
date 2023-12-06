@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
+https://github.com/nwnxee/unified/compare/build8193.36.7...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.36.7
+https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7
 
 ### Added
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL` to modify a creature's spell DC for a spell school
@@ -25,6 +49,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
+- NWSQLiteExtensions: Adds various extensions for the game's built-in sqlite databases.
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
@@ -35,6 +60,7 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Creature: NWNX_Creature_GetMaxAttackRange()
 - Player: GetTURD()
 - Item: {Get|Set}MinEquipLevel{Modifier|Override}()
+- Util: UpdateClientObject()
 
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()`

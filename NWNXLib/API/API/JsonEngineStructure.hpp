@@ -19,8 +19,9 @@ struct JsonEngineStructure : public SharedPtrEngineStructure<JsonEngineStructure
     JsonEngineStructure(const json& j, const CExoString& err);
     JsonEngineStructure(json&& j, CExoString&& err);
     virtual ~JsonEngineStructure() {}
-    bool IsEmpty() const { return m_shared->m_json.is_null(); }
-    void Clear() { m_shared->m_json = nullptr; m_shared->m_error = ""; }
+    bool IsEmpty() const override;
+    void Clear() override;
+    void Unlink() override;
 };
 
 

@@ -47,7 +47,7 @@ struct CGameEffect
     CGameEffect(CGameEffect * pParent, BOOL bCopyIconVisibility = false);
     ~CGameEffect();
     CGameEffect & operator=(const CGameEffect & effect);
-    int32_t GetScriptEffectType();
+    int32_t GetScriptEffectType(BOOL bAllTypes);
     void SetCreator(OBJECT_ID oidCreator);
     int32_t GetInteger(int32_t nStorageLocation);
     void SetInteger(int32_t nStorageLocation, int32_t nValue);
@@ -57,8 +57,8 @@ struct CGameEffect
     void SetFloat(int32_t nStorageLocation, float fValue);
     OBJECT_ID GetObjectID(int32_t nStorageLocation);
     void SetObjectID(int32_t nStorageLocation, OBJECT_ID oidValue);
-    CExoString GetString(int32_t nStorageLocation);
-    void SetString(int32_t nStorageLocation, CExoString sString);
+    const CExoString & GetString(int32_t nStorageLocation);
+    void SetString(int32_t nStorageLocation, const CExoString & sString);
     Vector GetVector(int32_t nStorageLocation);
     void SetVector(int32_t nStorageLocation, Vector vVector);
     BOOL operator==(const CGameEffect & effect) const;
@@ -66,7 +66,7 @@ struct CGameEffect
     void CopyEffect(CGameEffect * pEffect, BOOL bIgnoreArrayLists = false);
     void SetExpiryTime(uint32_t nCalendarDayExpiry, uint32_t nTimeOfDayExpiry);
     void GetExpiryTime(uint32_t * nCurrentCalendarDay, uint32_t * nCurrentTimeOfDay);
-    CExoString GetCustomTag() const;
+    const CExoString & GetCustomTag() const;
     void SetCustomTag(const CExoString & sTag);
     void SetLinked(CGameEffect * pLeft, CGameEffect * pRight);
     void UpdateLinked(BOOL bUpdateIconVisibility = false);

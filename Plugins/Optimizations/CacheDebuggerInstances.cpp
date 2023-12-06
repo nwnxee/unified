@@ -8,7 +8,7 @@ namespace Optimizations {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static std::unordered_map<std::string, std::shared_ptr<CVirtualMachineDebuggerInstance>> s_DebuggerInstances;
+static std::unordered_map<int32_t, std::shared_ptr<CVirtualMachineDebuggerInstance>> s_DebuggerInstances;
 
 void CacheDebuggerInstances() __attribute__((constructor));
 void CacheDebuggerInstances()
@@ -21,12 +21,12 @@ void CacheDebuggerInstances()
         +[](CVirtualMachine *pVirtualMachine) -> std::shared_ptr<CVirtualMachineDebuggerInstance>
         {
             auto pScript = pVirtualMachine->m_pVirtualMachineScript[pVirtualMachine->m_nRecursionLevel];
-            std::string key = pScript.m_sScriptChunk.IsEmpty() ? pScript.m_sScriptName.CStr() : pScript.m_sScriptChunk.CStr();
+            int32_t nHash = pScript.m_sScriptChunk.IsEmpty() ? pScript.m_sScriptName.GetHash() : pScript.m_sScriptChunk.GetHash();
 
-            if (key.empty())
+            if (!nHash)
                 return s_GetDebuggerInstanceHook->CallOriginal<std::shared_ptr<CVirtualMachineDebuggerInstance>>(pVirtualMachine);
 
-            auto debuggerInstance = s_DebuggerInstances.find(key);
+            auto debuggerInstance = s_DebuggerInstances.find(nHash);
             if (debuggerInstance != s_DebuggerInstances.end())
                 return debuggerInstance->second;
             else
@@ -34,7 +34,7 @@ void CacheDebuggerInstances()
                 auto dbg = s_GetDebuggerInstanceHook->CallOriginal<std::shared_ptr<CVirtualMachineDebuggerInstance>>(pVirtualMachine);
 
                 if (dbg)
-                    s_DebuggerInstances[key] = dbg;
+                    s_DebuggerInstances[nHash] = dbg;
 
                 return dbg;
             }

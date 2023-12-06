@@ -1,6 +1,6 @@
 #include "nwnx.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CGameEffect.hpp"
 #include "API/CGameObject.hpp"
 
@@ -19,8 +19,8 @@ void UncapDamageResistanceDamageFlags()
     LOG_INFO("Damage flags for EffectDamageResistance will be uncapped.");
 
     static Hooks::Hook s_ExecuteCommandEffectDamageResistanceHook =
-            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandEffectDamageResistance,
-    +[](CNWVirtualMachineCommands *thisPtr, int32_t, int32_t) -> int32_t
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandEffectDamageResistance,
+    +[](CNWSVirtualMachineCommands *thisPtr, int32_t, int32_t) -> int32_t
             {
                 auto *pVM = Globals::VirtualMachine();
                 int32_t nDamageFlags, nAmount, nLimit;

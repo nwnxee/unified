@@ -12,7 +12,7 @@ extern "C" {
 }
 
 CVirtualMachine* GetVm();
-CNWVirtualMachineCommands* GetVmCommands();
+CNWSVirtualMachineCommands* GetVmCommands();
 
 void LUA_InitNWScript(lua_State *L);
 

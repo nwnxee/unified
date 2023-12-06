@@ -33,7 +33,7 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
             auto scriptName = Utils::PeekMessage<std::string>(thisPtr, offset);
             offset += scriptName.length() + 4;
 
-            OBJECT_ID oidTarget = pPlayer->SatisfiesBuild(8193, 14) ?
+            OBJECT_ID oidTarget = pPlayer->SatisfiesBuild(8193, 14, 0) ?
                              Utils::PeekMessage<OBJECT_ID>(thisPtr, offset) : Constants::OBJECT_INVALID;
             if (oidTarget == Constants::OBJECT_INVALID)
                 oidTarget = pPlayer->m_oidNWSObject;

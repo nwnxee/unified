@@ -248,6 +248,11 @@ void NWNX_Util_SetCurrentlyRunningEvent(int nEventID);
 /// @return The number of characters different between the compared strings.
 int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo);
 
+/// @brief Sends a full object update of oObjectToUpdate to all clients
+/// @param oObjectToUpdate The object to update
+/// @param oPlayer The player for which the objects needs to update, OBJECT_INVALID for all players
+void NWNX_Util_UpdateClientObject(object oObjectToUpdate, object oPlayer = OBJECT_INVALID);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -616,4 +621,13 @@ int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo)
     NWNX_PushArgumentString(sString);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Util_UpdateClientObject(object oObjectToUpdate, object oPlayer = OBJECT_INVALID)
+{
+    string sFunc = "UpdateClientObject";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_PushArgumentObject(oObjectToUpdate);
+    NWNX_CallFunction(NWNX_Util, sFunc);
 }

@@ -68,6 +68,7 @@ struct CNWArea
     BOOL m_bNoRestingAllowed;
     uint8_t m_nShadowOpacity;
     float m_fFogClipDistance;
+    BOOL m_bTileBorderDisabled;
 
     CNWArea();
     virtual ~CNWArea();

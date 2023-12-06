@@ -993,12 +993,12 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 
     if(plugin.m_GASling && nBaseItem == Constants::BaseItem::Sling && pStats->m_nRace != Constants::RacialType::Halfling && pStats->HasFeat(Constants::Feat::GoodAim))
     {
-        nMod += Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1);
+        nMod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("GOOD_AIM_MODIFIER"), 1);
 
         if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
         {
             auto sDebugMsg = CExoString(" + ") +
-                             CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1))) +
+                             CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("GOOD_AIM_MODIFIER"), 1))) +
                              CExoString(" (Good Aim Feat)") ;
             auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
             pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;

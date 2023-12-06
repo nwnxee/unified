@@ -337,11 +337,9 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
 
     if (!s_scriptCompiler)
     {
-        s_scriptCompiler = std::make_unique<CScriptCompiler>();
-        s_scriptCompiler->SetCompileDebugLevel(0);
-        s_scriptCompiler->SetCompileSymbolicOutput(0);
+        s_scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
         s_scriptCompiler->SetGenerateDebuggerOutput(0);
-        s_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        s_scriptCompiler->SetOptimizationFlags(CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING);
         s_scriptCompiler->SetCompileConditionalOrMain(true);
         s_scriptCompiler->SetIdentifierSpecification("nwscript");
     }
@@ -555,10 +553,10 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
             {
                 pDoor->m_nAppearanceType = appearance;
                 int32_t bVisibleModel = true;
-                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
+                Globals::Rules()->m_p2DArrays->GetDoorTypesTable()->GetINTEntry(appearance, "VisibleModel", &bVisibleModel);
                 pDoor->m_bVisibleModel = bVisibleModel;
                 CExoString sWalkMeshTemplate;
-                Globals::Rules()->m_p2DArrays->m_pDoorTypesTable->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
+                Globals::Rules()->m_p2DArrays->GetDoorTypesTable()->GetCExoStringEntry(appearance, "Model", &sWalkMeshTemplate);
                 delete pDoor->m_pWalkMesh;
                 pDoor->m_pWalkMesh = new CNWDoorSurfaceMesh;
                 pDoor->m_pWalkMesh->LoadWalkMesh(sWalkMeshTemplate);
@@ -734,16 +732,16 @@ NWNX_EXPORT ArgumentStack GetStringLevenshteinDistance(ArgumentStack&& args)
     // https://rosettacode.org/wiki/Levenshtein_distance#C++
     auto s1 = args.extract<std::string>();
     auto s2 = args.extract<std::string>();
-    
+
 	const size_t m = s1.size();
     const size_t n = s2.size();
-	
+
     if (m == 0)
         return (int32_t)n;
-	
+
     if (n == 0)
         return (int32_t)m;
-	
+
     std::vector<size_t> costs(n + 1);
     std::iota(costs.begin(), costs.end(), 0);
     size_t i = 0;
@@ -763,4 +761,17 @@ NWNX_EXPORT ArgumentStack GetStringLevenshteinDistance(ArgumentStack&& args)
     }
 
     return (int32_t)costs[n];
+}
+
+NWNX_EXPORT ArgumentStack UpdateClientObject(ArgumentStack&& args)
+{
+    OBJECT_ID oidObject = args.extract<OBJECT_ID>();
+        ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    if (auto* pPlayer = Utils::PopPlayer(args))
+        Utils::UpdateClientObjectForPlayer(oidObject, pPlayer);
+    else
+        Utils::UpdateClientObject(oidObject);
+
+    return {};
 }

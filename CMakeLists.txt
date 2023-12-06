@@ -19,8 +19,8 @@ find_package(Sanitizers)
 
 execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
-set(TARGET_NWN_BUILD_REVISION 35)
-set(TARGET_NWN_BUILD_POSTFIX 40)
+set(TARGET_NWN_BUILD_REVISION 36)
+set(TARGET_NWN_BUILD_POSTFIX 7)
 set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
 
@@ -53,7 +53,7 @@ else()
     set(WARNING_FLAGS_CXX "-Wall -Wextra -Wno-pmf-conversions")
 endif()
 
-set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-frame-pointer -fPIC -fno-strict-aliasing")
+set(NWNX_STANDARD_FLAGS "-fdiagnostics-show-option -fno-omit-frame-pointer -fPIC -fno-strict-aliasing")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")

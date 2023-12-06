@@ -31,10 +31,6 @@ struct CNWSTrigger : CNWSObject
     CExoString m_sKey;
     int32_t m_nVertices;
     Vector * m_pvVertices;
-    int32_t m_nTriangles;
-    int32_t * m_pnTriangles;
-    int32_t m_nOutlineVertices;
-    int32_t * m_pnOutlineVertices;
     OBJECT_ID m_oidLastEntered;
     OBJECT_ID m_oidLastLeft;
     OBJECT_ID m_oidLastDisarmed;

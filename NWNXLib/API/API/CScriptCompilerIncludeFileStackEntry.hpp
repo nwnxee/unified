@@ -2,7 +2,6 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CScriptSourceFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -16,7 +15,7 @@ NWN_API_PROLOGUE(CScriptCompilerIncludeFileStackEntry)
 struct CScriptCompilerIncludeFileStackEntry
 {
     CExoString m_sCompiledScriptName;
-    CScriptSourceFile m_cSourceScript;
+    CExoString m_sSourceScript;
     int32_t m_nLine;
     int32_t m_nCharacterOnLine;
     int32_t m_nTokenStatus;

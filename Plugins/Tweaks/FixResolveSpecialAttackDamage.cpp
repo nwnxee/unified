@@ -106,9 +106,9 @@ void FixResolveSpecialAttackDamage()
                                         auto *pEffect = new CGameEffect();
                                         pEffect->m_nType = Constants::EffectTrueType::AttackDecrease;
                                         pEffect->SetDurationType(Constants::EffectDurationType::Temporary);
-                                        pEffect->m_fDuration = Globals::Rules()->GetRulesetFloatEntry("CALLED_SHOT_EFFECT_DURATION", 24.0f);
+                                        pEffect->m_fDuration = Globals::Rules()->GetRulesetFloatEntry(CRULES_HASHEDSTR("CALLED_SHOT_EFFECT_DURATION"), 24.0f);
                                         pEffect->SetCreator(pThis->m_idSelf);
-                                        pEffect->SetInteger(0, Globals::Rules()->GetRulesetIntEntry("CALLED_SHOT_ARM_ATTACK_PENALTY", 2));
+                                        pEffect->SetInteger(0, Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CALLED_SHOT_ARM_ATTACK_PENALTY"), 2));
                                         pEffect->SetInteger(1, 0);
                                         pEffect->SetInteger(2, 28);
 
@@ -154,18 +154,18 @@ void FixResolveSpecialAttackDamage()
                                         auto *pEffect1 = new CGameEffect();
                                         pEffect1->m_nType = Constants::EffectTrueType::AbilityDecrease;
                                         pEffect1->SetDurationType(Constants::EffectDurationType::Temporary);
-                                        pEffect1->m_fDuration = Globals::Rules()->GetRulesetFloatEntry("CALLED_SHOT_EFFECT_DURATION", 24.0f);
+                                        pEffect1->m_fDuration = Globals::Rules()->GetRulesetFloatEntry(CRULES_HASHEDSTR("CALLED_SHOT_EFFECT_DURATION"), 24.0f);
                                         pEffect1->SetCreator(pThis->m_idSelf);
                                         pEffect1->SetInteger(0, 1);
-                                        pEffect1->SetInteger(1, Globals::Rules()->GetRulesetIntEntry("CALLED_SHOT_LEG_ABILITY_PENALTY", 2));
+                                        pEffect1->SetInteger(1, Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CALLED_SHOT_LEG_ABILITY_PENALTY"), 2));
                                         pAttackData->m_alstOnHitGameEffects.Add(pEffect1);
 
                                         auto *pEffect2 = new CGameEffect();
                                         pEffect2->m_nType = Constants::EffectTrueType::MovementSpeedDecrease;
                                         pEffect2->SetDurationType(Constants::EffectDurationType::Temporary);
-                                        pEffect2->m_fDuration = Globals::Rules()->GetRulesetFloatEntry("CALLED_SHOT_EFFECT_DURATION", 24.0f);
+                                        pEffect2->m_fDuration = Globals::Rules()->GetRulesetFloatEntry(CRULES_HASHEDSTR("CALLED_SHOT_EFFECT_DURATION"), 24.0f);
                                         pEffect2->SetCreator(pThis->m_idSelf);
-                                        pEffect2->SetInteger(0, Globals::Rules()->GetRulesetIntEntry("CALLED_SHOT_LEG_MOVEMENT_PENALTY", 20));
+                                        pEffect2->SetInteger(0, Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CALLED_SHOT_LEG_MOVEMENT_PENALTY"), 20));
                                         pAttackData->m_alstOnHitGameEffects.Add(pEffect2);
                                     }
                                     else

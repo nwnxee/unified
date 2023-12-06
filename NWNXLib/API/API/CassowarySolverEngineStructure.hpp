@@ -11,7 +11,11 @@ NWN_API_PROLOGUE(CassowarySolverEngineStructure)
 struct CassowarySolverEngineStructureShared;
 struct CassowarySolverEngineStructure : public SharedPtrEngineStructure<CassowarySolverEngineStructureShared>
 {
+    CassowarySolverEngineStructure();
     virtual ~CassowarySolverEngineStructure() {}
+    bool IsEmpty() const override;
+    void Clear() override;
+    void Unlink() override;
 
 #ifdef NWN_CLASS_EXTENSION_CassowarySolverEngineStructure
     NWN_CLASS_EXTENSION_CassowarySolverEngineStructure

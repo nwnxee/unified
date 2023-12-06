@@ -435,10 +435,10 @@ NWNX_EXPORT ArgumentStack SetRestDuration(ArgumentStack&& args)
                 {
                     uint8_t creatureLevel = pCreature->m_pStats->GetLevel(0);
                     int32_t originalValue;
-                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
-                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
+                    Globals::Rules()->m_p2DArrays->GetRestDurationTable()->GetINTEntry(creatureLevel, "DURATION", &originalValue);
+                    Globals::Rules()->m_p2DArrays->GetRestDurationTable()->SetINTEntry(creatureLevel, "DURATION", *restDuration);
                     auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
-                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
+                    Globals::Rules()->m_p2DArrays->GetRestDurationTable()->SetINTEntry(creatureLevel, "DURATION", originalValue);
                     return retVal;
                 }
                 else
@@ -478,11 +478,11 @@ NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
         try
         {
             fScale = args.extract<float>();
-            
+
             vTranslate.x = args.extract<float>();
             vTranslate.y = args.extract<float>();
             vTranslate.z = args.extract<float>();
-            
+
             vRotation.x = args.extract<float>();
             vRotation.y = args.extract<float>();
             vRotation.z = args.extract<float>();
@@ -1290,7 +1290,7 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
 
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
         {
-            if (!pPlayerInfo->SatisfiesBuild(8193, 14))
+            if (!pPlayerInfo->SatisfiesBuild(8193, 14, 0))
             {
                 LOG_WARNING("ToggleDM: Target player's client does not support PlayerDM functionality");
                 return {};
@@ -1956,14 +1956,14 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetTURD(ArgumentStack&& args)
 {
     const auto oidPlayer = args.extract<OBJECT_ID>();
-    
+
     if (CExoLinkedListInternal* pTURDS = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
     {
         for (CExoLinkedListPosition pNode = pTURDS->pHead; pNode; pNode = pNode->pNext)
         {
             auto* pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
             if ((pTURD) && (pTURD->m_oidPlayer == oidPlayer))
-                return pTURD->m_idSelf; 
+                return pTURD->m_idSelf;
         }
     }
 

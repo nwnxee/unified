@@ -35,7 +35,7 @@ struct CNWSSoundObject;
 struct CNWSStore;
 struct CNWSTrigger;
 struct CNWSWaypoint;
-struct CNWVirtualMachineCommands;
+struct CNWSVirtualMachineCommands;
 struct CNetLayer;
 struct CServerAIMaster;
 struct CServerInfo;
@@ -64,7 +64,7 @@ struct CServerExoAppInternal
     BOOL m_bCDResponseReceived;
     CServerInfo * m_pServerInfo;
     int16_t m_nServerMode;
-    CNWVirtualMachineCommands * m_pVirtualMachineCommandImplementer;
+    CNWSVirtualMachineCommands * m_pVirtualMachineCommandImplementer;
     CNWSMessage * m_pMessage;
     BOOL m_bForceUpdate;
     uint32_t * m_pPendingAuthorization;
@@ -120,6 +120,7 @@ struct CServerExoAppInternal
     int m_nGameObjectUpdateIntervalTargetLoading;
     int m_nGameObjectUpdateMessageLimit;
     int m_nGameObjectUpdateMessageLimitLoading;
+    uint64_t m_nLastGameObjectUpdateDuration = 0;
     uint64_t m_nAutoSaveTimer;
     CExoArrayList<SSubNetProfile *> m_acSubNetProfiles;
     uint64_t m_nTotalSubNetSent;
@@ -184,7 +185,6 @@ struct CServerExoAppInternal
     BOOL ExportAllPlayers();
     BOOL ExportPlayer(CNWSPlayer * pPlayer);
     void DealWithLoadGameError(uint32_t nLoadErr);
-    BOOL SetDDCipherForModule(CExoString moduleName);
     CNWSModule * GetModule();
     CExoString GetModuleName();
     CGameObject * GetGameObject(OBJECT_ID nObjectID);

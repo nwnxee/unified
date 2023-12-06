@@ -39,7 +39,7 @@ void SneakAttackCritImmunity()
 static void ResolveSneakAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
     static const float SNEAK_ATTACK_DISTANCE = std::pow(
-        Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
+        Globals::Rules()->GetRulesetFloatEntry(CRULES_HASHEDSTR("MAX_RANGED_SNEAK_ATTACK_DISTANCE"), 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -153,7 +153,7 @@ static void ResolveSneakAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
                 }
             }
 
-            isSneakAttack = attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4);
+            isSneakAttack = attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("FLANK_LEVEL_RANGE"), 4);
         }
     }
 
@@ -177,7 +177,7 @@ static void ResolveSneakAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
 static void ResolveDeathAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
     static const float SNEAK_ATTACK_DISTANCE = std::pow(
-            Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
+            Globals::Rules()->GetRulesetFloatEntry(CRULES_HASHEDSTR("MAX_RANGED_SNEAK_ATTACK_DISTANCE"), 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -266,7 +266,7 @@ static void ResolveDeathAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
                 }
             }
 
-            isDeathAttack = attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4);
+            isDeathAttack = attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("FLANK_LEVEL_RANGE"), 4);
         }
     }
 
