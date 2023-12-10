@@ -3,6 +3,7 @@
 %include <stdint.i>
 %include <std_string.i>
 %include <std_vector.i>
+%include <std_shared_ptr.i>
 %include <swiginterface.i>
 
 %include "DotNETExtensions.i"
@@ -100,6 +101,13 @@ MarshalPtr(ENCAPSULATED_KEYLISTENTRY*, void*)
 MarshalPtr(NWPlayerCharacterList_st*, void*)
 MarshalPtr(SSubNetProfile*, void*)
 MarshalPtr(Task::CExoTaskManager*, void*)
+
+// Smart Pointers
+%shared_ptr(NWSQLite::Database)
+%shared_ptr(CVirtualMachineDebuggerInstance)
+%shared_ptr(DataView)
+%shared_ptr(DataBlock)
+%shared_ptr(DataView::Shared)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
@@ -287,6 +295,8 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
 %template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
 %template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
+%template(CExoArrayListCLastUpdateObjectPtr) CExoArrayList<CLastUpdateObject*>;
+%template(CExoArrayListCLastUpdatePartyObjectPtr) CExoArrayList<CLastUpdatePartyObject*>;
 
 // Array wrappers for structures
 DefineArray(CExoArrayList<CNWSStats_Spell *>, CExoArrayListCNWSStatsSpellPtr, CExoArrayListCNWSStatsSpellPtrArray)
@@ -331,10 +341,13 @@ DefineArrayPtr(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 // Std templates
 %template(VectorNWSyncAdvertisementManifest) std::vector<NWSync::AdvertisementManifest>;
 %template(VectorCExoString) std::vector<CExoString>;
+%template(VectorNWSQLiteMigrationsDefinitionMigrationDef) std::vector<NWSQLite::Migrations::Definition::MigrationDef>;
 %template(UnorderedMapCExoStringCNWSScriptVar) std::unordered_map<CExoString, CNWSScriptVar>;
 %template(UnorderedMapUInt32CExoString) std::unordered_map<unsigned int, CExoString>;
 %template(UnorderedMapUInt32STR_RES) std::unordered_map<unsigned int, STR_RES>;
 %template(UnorderedMapStringCachedRulesetEntry) std::unordered_map<std::string, CachedRulesetEntry>;
+%template(UnorderedMapInt32CNWSAreaGrassOverride) std::unordered_map<int, CNWSAreaGrassOverride>;
+%template(UnorderedMapUInt64CachedRulesetEntry) std::unordered_map<unsigned long long, CachedRulesetEntry>;
 
 // Destructors
 SWIG_DOTNET_DESTRUCTORS(CExoString)
