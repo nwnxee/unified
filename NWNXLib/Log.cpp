@@ -86,7 +86,7 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         case Channel::SEV_INFO:    std::cout << rang::fg::gray;                      break;
         case Channel::SEV_NOTICE:  /*default*/                                       break;
         case Channel::SEV_WARNING: std::cout << rang::fg::yellow;                    break;
-        case Channel::SEV_ERROR:   std::cout << rang::fg::red << rang::style::dim;   break;
+        case Channel::SEV_ERROR:   std::cout << rang::fg::red;                       break;
         case Channel::SEV_FATAL:   std::cout << rang::fg::red << rang::style::bold;  break;
     }
     std::cout << message << rang::style::reset << rang::fg::reset  << std::endl;
