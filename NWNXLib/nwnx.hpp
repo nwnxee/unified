@@ -253,8 +253,10 @@ namespace Utils
     CNWSDoor*      PopDoor(ArgumentStack& args, bool throwOnFail=false);
 
     int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType);
+    int32_t EngineObjectTypeToNWScriptObjectType(int32_t engineObjectType);
     void UpdateClientObject(ObjectID oidObject);
     void UpdateClientObjectForPlayer(ObjectID oidObject, CNWSPlayer* oidPlayer);
+    CItemRepository* GetItemRepository(ObjectID oidTarget);
 }
 
 namespace POS

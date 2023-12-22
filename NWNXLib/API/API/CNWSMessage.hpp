@@ -56,6 +56,7 @@ struct CNWSMessage : CNWMessage
 
     CNWSMessage();
     ~CNWSMessage();
+    static BOOL GetLocStringServer(uint32_t dwPlayerID, CExoLocString sFirstLoc, CExoLocString sLastLoc, CExoString& sOut, float& fSoundLength, uint8_t nGender = 0);
     OBJECT_ID ReadOBJECTIDServer();
     void WriteCExoLocStringServer(const CExoLocString & sLocString, uint8_t nGender = 0);
     void WriteOBJECTIDServer(OBJECT_ID oidObjectId);

@@ -548,11 +548,29 @@ int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType)
     }
 }
 
+int32_t EngineObjectTypeToNWScriptObjectType(int32_t engineObjectType)
+{
+    switch (engineObjectType)
+    {
+        case Constants::ObjectType::Creature:       return 1;
+        case Constants::ObjectType::Item:           return 2;
+        case Constants::ObjectType::Trigger:        return 4;
+        case Constants::ObjectType::Door:           return 8;
+        case Constants::ObjectType::AreaOfEffect:   return 16;
+        case Constants::ObjectType::Waypoint:       return 32;
+        case Constants::ObjectType::Placeable:      return 64;
+        case Constants::ObjectType::Store:          return 128;
+        case Constants::ObjectType::Encounter:      return 256;
+        case Constants::ObjectType::Sound:          return 32767; // :(
+        default: return 0;
+    }
+}
+
 void UpdateClientObjectForPlayer(ObjectID oidObject, CNWSPlayer* pPlayer)
 {
     for (auto* pLuo : pPlayer->m_lstActiveObjectsLastUpdate)
     {
-        if (pLuo->m_nId == oidObject) 
+        if (pLuo->m_nId == oidObject)
         {
             pPlayer->m_lstActiveObjectsLastUpdate.Remove(pLuo);
             delete pLuo;
@@ -569,6 +587,25 @@ void UpdateClientObject(ObjectID oidObject)
         auto* pPlayer = static_cast<CNWSPlayer*>(static_cast<CNWSClient*>(pHead->pObject));
         UpdateClientObjectForPlayer(oidObject, pPlayer);
     }
+}
+
+CItemRepository* GetItemRepository(ObjectID oidTarget)
+{
+    auto *pTarget = Utils::GetGameObject(oidTarget);
+    if (!pTarget)
+        return nullptr;
+
+    switch (pTarget->m_nObjectType)
+    {
+        case Constants::ObjectType::Creature:
+            return Utils::AsNWSCreature(pTarget)->m_pcItemRepository;
+        case Constants::ObjectType::Placeable:
+            return Utils::AsNWSPlaceable(pTarget)->m_pcItemRepository;
+        case Constants::ObjectType::Item:
+            return Utils::AsNWSItem(pTarget)->m_pItemRepository;
+    }
+
+    return nullptr;
 }
 
 }

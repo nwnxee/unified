@@ -275,24 +275,6 @@ NWNX_EXPORT ArgumentStack GetMinEquipLevel(ArgumentStack&& args)
     return -1;
 }
 
-CItemRepository* GetObjectItemRepository(OBJECT_ID oidPossessor)
-{
-    auto pPossessor = Utils::GetGameObject(oidPossessor);
-    if (!pPossessor) return nullptr;
-
-    switch (pPossessor->m_nObjectType)
-    {
-        case Constants::ObjectType::Creature:
-            return Utils::AsNWSCreature(pPossessor)->m_pcItemRepository;
-        case Constants::ObjectType::Placeable:
-            return Utils::AsNWSPlaceable(pPossessor)->m_pcItemRepository;
-        case Constants::ObjectType::Item:
-            return Utils::AsNWSItem(pPossessor)->m_pItemRepository;
-    }
-
-    return nullptr;
-}
-
 NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
 {
     if (auto *pItem = Utils::PopItem(args))
@@ -312,7 +294,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
             // Is the item already on/in the target?
             if (oidRealItemPossessor == oidRealTargetPossessor)
             {
-                auto pTargetItemRepo = GetObjectItemRepository(pTarget->m_idSelf);
+                auto pTargetItemRepo = Utils::GetItemRepository(pTarget->m_idSelf);
                 if ((pTargetItemRepo) && (pTargetItemRepo->GetItemInRepository(pItem)))
                 {
                     LOG_DEBUG("NWNX_Item_MoveTo: Item is already on the target!");
@@ -360,7 +342,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                 case Constants::ObjectType::Store:
                 {
                     auto pTargetStore = Utils::AsNWSStore(pTarget);
-                    auto pOriginalOwnerRepository = GetObjectItemRepository(pItem->m_oidPossessor);
+                    auto pOriginalOwnerRepository = Utils::GetItemRepository(pItem->m_oidPossessor);
 
                     pTargetStore->AcquireItem(pItem, false, 0xFF, 0xFF);
 
