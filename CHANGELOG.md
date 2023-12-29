@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.36.8...HEAD
 
 ### Added
-- N/A
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
 
 ##### New Plugins
 - N/A
