@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.36.8...HEAD
+https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD
 
 ### Added
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
@@ -27,6 +27,12 @@ https://github.com/nwnxee/unified/compare/build8193.36.8...HEAD
 
 ### Fixed
 - N/A
+
+## 8193.36.9
+https://github.com/nwnxee/unified/compare/build8193.36.8...build8193.36.9
+
+### Added
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
 
 ## 8193.36.7
 https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7
@@ -68,9 +74,6 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7
 - Damage: The damage event now also fires for doors
 - Feat: Added the 'Damage'(Increase/Decrease) as an option
 - Object: GetInventoryItemCount() will also work on stores.
-
-### Deprecated
-- N/A
 
 ### Removed
 - Tweaks: `NWNX_TWEAKS_FIX_AUTOMAP_CRASH`, fixed in basegame.
