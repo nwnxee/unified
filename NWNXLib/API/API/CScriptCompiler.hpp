@@ -102,7 +102,7 @@ struct CScriptCompiler
     CScriptCompilerIdentifierHashTableEntry * m_pIdentifierHashTable;
     int32_t m_nTokenStatus;
     int32_t m_nTokenCharacters;
-    char m_pchToken[8192];
+    char m_pchToken[65536];
     CScriptCompilerStackEntry * m_pSRStack;
     int32_t m_nSRStackEntries;
     int32_t m_nSRStackStates;
