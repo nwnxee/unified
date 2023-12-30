@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.8</span>
+								&#160;<span id="projectnumber">8193.36.9</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
 <h1><a class="anchor" id="autotoc_md10"></a>
 Unreleased</h1>
-<p><a href="https://github.com/nwnxee/unified/compare/build8193.36.8...HEAD">https://github.com/nwnxee/unified/compare/build8193.36.8...HEAD</a></p>
+<p><a href="https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD">https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD</a></p>
 <h2><a class="anchor" id="autotoc_md11"></a>
 Added</h2>
 <ul>
@@ -141,9 +141,17 @@ Fixed</h2>
 <li>N/A</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md18"></a>
+8193.36.9</h1>
+<p><a href="https://github.com/nwnxee/unified/compare/build8193.36.8...build8193.36.9">https://github.com/nwnxee/unified/compare/build8193.36.8...build8193.36.9</a></p>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Added</h2>
+<ul>
+<li>Optimizations: added <code>NWNX_OPTIMIZATIONS_CACHE_SCRIPTS</code> to cache scripts after first execution.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md20"></a>
 8193.36.7</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7">https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7</a></p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Added</h2>
 <ul>
 <li>Feat: added modifier <code>NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL</code> to modify a creature's spell DC for a spell school</li>
@@ -161,13 +169,13 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES</code> which makes the module OnPlayerEquipItem and OnPlayerUnEquipItem events fire for all creatures.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT</code> which fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md20"></a>
+<h4><a class="anchor" id="autotoc_md22"></a>
 New Plugins</h4>
 <ul>
 <li>Resources: Adds <code>RESOURCES_*</code> variables for adding NWSync as a resource source, and specifying a replacement hak list.</li>
 <li>NWSQLiteExtensions: Adds various extensions for the game's built-in sqlite databases.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md21"></a>
+<h4><a class="anchor" id="autotoc_md23"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Object: GetLastSpellInstant()</li>
@@ -180,7 +188,7 @@ New NWScript Functions</h4>
 <li>Item: {Get|Set}MinEquipLevel{Modifier|Override}()</li>
 <li>Util: UpdateClientObject()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Changed</h2>
 <ul>
 <li>Creature: Added an argument for passing a class package to <code><a class="el" href="group__creature.html#gad9c359948d6fca590e670986a7ed083d" title="Add levels of class to the creature, bypassing all validation.">NWNX_Creature_LevelUp()</a></code></li>
@@ -189,28 +197,23 @@ Changed</h2>
 <li>Feat: Added the 'Damage'(Increase/Decrease) as an option</li>
 <li>Object: GetInventoryItemCount() will also work on stores.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md23"></a>
-Deprecated</h2>
-<ul>
-<li>N/A</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Removed</h2>
 <ul>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_AUTOMAP_CRASH</code>, fixed in basegame.</li>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_TURD_EFFECT_UNLINKING</code>, fixed in basegame.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Fixed</h2>
 <ul>
 <li>Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook</li>
 <li>Reveal: Fixed Reveal plugin always revealing all PCs regardless of plugin usage.</li>
 <li>Area: RotateArea's 'NewOrientation' corrected for NWN bearings, correcting direction of objects within the area after 90 or 270 degree rotation.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 8193.35.40</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40">https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40</a></p>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Added</h2>
 <ul>
 <li>Tweaks: added <code>NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES</code> which makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).</li>
@@ -222,7 +225,7 @@ Added</h2>
 <li>Events: added skippable event <code>NWNX_ON_AREA_PLAY_BATTLE_MUSIC_{BEFORE|AFTER}</code> which allows skipping the starting/stopping of an area's battle music.</li>
 <li>Experimental: Added <code>NWNX_EXPERIMENTAL_END_COMBATROUND_AFTER_SPELLCAST</code> to end combat rounds right after casting or canceling a spell so that a new spell can be cast immediately after</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md28"></a>
+<h4><a class="anchor" id="autotoc_md29"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Object: GetInventoryItemCount()</li>
@@ -232,45 +235,45 @@ New NWScript Functions</h4>
 <li>Creature: {Get|Set}LockOrientationToObject()</li>
 <li>Creature: BroadcastAttackOfOpportunity()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Changed</h2>
 <ul>
 <li>Events: Added event data <code>TARGET_OBJECT_ID</code>/<code>TARGET_POSITION_{X|Y|Z}</code>/<code>SPELL_DOMAIN</code>/<code>SPELL_SPONTANEOUS</code>/<code>SPELL_METAMAGIC</code>/<code>PROJECTILE_PATH_TYPE</code> to <code>NWNX_ON_BROADCAST_CAST_SPELL_*</code></li>
 <li><em><b>ABI BREAKING:</b></em> Creature: DoItemCastSpell() can now override the spell impact script, and set the spell cast item retrieved by GetSpellCastItem().</li>
 <li><em><b>ABI BREAKING:</b></em> Damage: SetAttackEventData() can now set <code>AttackEventData.iSneakAttack</code>. This only affects the attack roll message and floating text feedback. Immunities and damage will have already been resolved by the time the attack event script is ran.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Fixed</h2>
 <ul>
 <li>Tweaks: FixResolveSpecialAttackDamage: fixed a crash involving ranged special attacks interacting oddly with Epic Dodge.</li>
 <li>Player: fixed ToggleDM() not working correctly with EffectTimeStopImmunity().</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 8193.35.37</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37">https://github.com/nwnxee/unified/compare/build8193.35.36...build8193.35.37</a></p>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
 Added</h2>
 <ul>
 <li>Events: added event data <code>TARGET_OBJECT_ID</code>, <code>TARGET_POSITION_X</code>, <code>TARGET_POSITION_Y</code> and <code>TARGET_POSITION_Z</code> to the <code>NWNX_ON_TRAP_SET_*</code> events</li>
 <li>Events: added <code>NEEDS_TO_MOVE</code> event data to BEFORE trap events to differentiate between the BEFORE event that will be fired if the player is not in range of its target and the BEFORE event that will be fired right before interacting with the trap. Both BEFORE events are skippable</li>
 <li>Events: added event data <code>VERSION_POSTFIX</code> to event <code>NWNX_ON_CLIENT_CONNECT_*</code></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md33"></a>
+<h4><a class="anchor" id="autotoc_md34"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: {Get|Set}MaximumBonusAttacks()</li>
 <li>Player: SendPartyInvite()</li>
 <li>Item: MoveTo()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Changed</h2>
 <ul>
 <li>Events: Trap events don't fire 2-3 times for each action, but a single BEFORE and AFTER event plus an additional BEFORE event if the player needs to move to the target first</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 8193.35.36</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36">https://github.com/nwnxee/unified/compare/build8193.34final...build8193.35.36</a></p>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Added</h2>
 <ul>
 <li>Administration: added <code>NWNX_ADMINISTRATION_OPTION_SHOW_PLAYER_JOIN_MESSAGES</code> to {Get|Set}PlayOption.</li>
@@ -278,7 +281,7 @@ Added</h2>
 <li>SQL: added <code>CHARACTER_SET</code> support to PostgresSQL.</li>
 <li>Optimizations: added <code>NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES</code> to cache nwscript debugger instances, improving GetScriptBacktrace() performance.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md37"></a>
+<h4><a class="anchor" id="autotoc_md38"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: SetDefaultObjectUiDiscoveryMask()</li>
@@ -292,14 +295,14 @@ New NWScript Functions</h4>
 <li>Player: SetObjectUiDiscoveryMaskOverride()</li>
 <li>SQL: PostgreSQL_SetNextQueryResultsBinaryMode()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Changed</h2>
 <ul>
 <li>SQL: Sqlite support now uses the sqlite3 embedded in NWNX.</li>
 <li>Core: NWScript NWNX Functions are now also blocked in DelayCommand/AssignCommand spawned from script chunks unless disabled by config.</li>
 <li>Item: GetEntireItemAppearance() and RestoreItemAppearance() now support the new extended model part range.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Removed</h2>
 <ul>
 <li>The following tweaks / optimizations have been removed due to being fixed or added in the basegame:<ul>
@@ -348,15 +351,15 @@ Removed</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md40"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Fixed</h2>
 <ul>
 <li>Item: SetItemAppearance() now properly works with WeaponColor/Model, identical to CopyItemAndModify()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 8193.34Final</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final">https://github.com/nwnxee/unified/compare/build8193.34...build8193.34final</a></p>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Added</h2>
 <ul>
 <li>Tweaks: added <code>NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN</code> to have the CNWSCreature::CanUseItem() function also check ILR for Henchmen.</li>
@@ -379,7 +382,7 @@ Added</h2>
 <li>Experimental: added <code>NWNX_EXPERIMENTAL_IGNORE_MODULE_VERSION</code> to ignore the module version when loading.</li>
 <li>Events: added <code>NWNX_ON_OBJECT_USE_{BEFORE|AFTER}</code> which fires when player uses a placeable.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md43"></a>
+<h4><a class="anchor" id="autotoc_md44"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: GetTileInfoByTileIndex()</li>
@@ -414,7 +417,7 @@ New NWScript Functions</h4>
 <li>Regex: Match()</li>
 <li>Core: PluginExists()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 Changed</h2>
 <ul>
 <li>Events: added event data <code>VERSION_MAJOR</code>/<code>VERSION_MINOR</code>/<code>PLATFORM_ID</code> to <code>NWNX_ON_CLIENT_CONNECT_*</code></li>
@@ -425,12 +428,12 @@ Changed</h2>
 <li>Events: added event data <code>TYPE</code>/<code>TARGET</code>/<code>KEY</code>/<code>VALUE</code> to <code>NWNX_ON_DM_SET_VARIABLE_*</code></li>
 <li>Events: added event data <code>TARGET</code>/<code>FACTION_ID</code>/<code>FACTION_NAME</code> to <code>NWNX_ON_DM_SET_FACTION_*</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 Deprecated</h2>
 <ul>
 <li>Util: PluginExists()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Fixed</h2>
 <ul>
 <li>Race: Fixed an issue with feat usages being reset upon character relog</li>
@@ -442,77 +445,77 @@ Fixed</h2>
 <li>Tweaks: Fixed an issue where lobby PC list viewers would see new characters logged in when those names should be suppressed</li>
 <li>Tweaks: Classes are not hidden from DMs when using <code>NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 8193.34</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.33...build8193.34">https://github.com/nwnxee/unified/compare/build8193.33...build8193.34</a></p>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Added</h2>
 <ul>
 <li>Tweaks: added <code>NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</code> to hide various hardcoded item vfx.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_RESMAN_MEMLEAK</code> that fixes a memory leak in Resman / CResGFF.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_DM_FACTION_BUG</code> that fixes a DM faction bug when using a non-DMClient BIC file.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md49"></a>
+<h4><a class="anchor" id="autotoc_md50"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: RotateArea()</li>
 <li>Creature: OverrideRangedProjectileVFX()</li>
 <li>Object: GetAoEObjectDurationRemaining()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Changed</h2>
 <ul>
 <li>Object: <code>NWNX_Object_Export</code> added argument sAlias, default 'NWNX'</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 Removed</h2>
 <ul>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_RESMAN_MEMLEAK</code>, fixed in basegame.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md53"></a>
 8193.33</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.32...build8193.33">https://github.com/nwnxee/unified/compare/build8193.32...build8193.33</a></p>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Added</h2>
 <ul>
 <li>Events: added event <code>NWNX_ON_CLIENT_SET_DEVICE_PROPERTY_BEFORE__*</code> which fires when a player changes a device property (window size/gui scale).</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION</code> which makes CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation(), possibly fixing some Familiar/AnimalCompanion summon issues.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md54"></a>
+<h4><a class="anchor" id="autotoc_md55"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Util: GetModuleMtime()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Fixed</h2>
 <ul>
 <li>Chat: When using custom hearing distances, broadcast the actual message instead of the tellname.</li>
 <li>Chat: When using custom hearing distances, check if a player actually has one set and don't just overwrite the distance with 0.0f if not set.</li>
 <li>Chat: When using custom hearing distances, don't send messages to players that don't have a valid creature object causing a server crash.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 8193.32</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.31...build8193.32">https://github.com/nwnxee/unified/compare/build8193.31...build8193.32</a></p>
-<h2><a class="anchor" id="autotoc_md57"></a>
+<h2><a class="anchor" id="autotoc_md58"></a>
 Added</h2>
 <ul>
 <li>Administration: added <code>NWNX_ADMINISTRATION_OPTION_PLAYER_PARTY_CONTROL</code> to {Get|Set}PlayOption() to toggle player party control.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 Fixed</h2>
 <ul>
 <li>Util: fixed a memory leak in GetFirstResRef()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md59"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 8193.31</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.30...build8193.31">https://github.com/nwnxee/unified/compare/build8193.30...build8193.31</a></p>
-<h2><a class="anchor" id="autotoc_md60"></a>
+<h2><a class="anchor" id="autotoc_md61"></a>
 Added</h2>
 <ul>
 <li>Events: Added NWNX_ON_ITEM_MERGE_BEFORE and NWNX_ON_ITEM_MERGE_AFTER.</li>
 <li>ELC: added <code>NWNX_ELC_ENFORCE_CASTER_PRIMARY_STAT_IS_11</code>, if enabled, ELC will check when a character's first level class is a spellcaster, if their primary casting stat is &gt;= 11.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md61"></a>
+<h4><a class="anchor" id="autotoc_md62"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: RemoveFeatByLevel()</li>
@@ -520,7 +523,7 @@ New NWScript Functions</h4>
 <li>Creature: SetSkillRankByLevel()</li>
 <li>SQL: PreparedNULL()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md62"></a>
+<h2><a class="anchor" id="autotoc_md63"></a>
 Changed</h2>
 <ul>
 <li>Core: <b>POLICY CHANGE:</b> Only <code>stdout</code> output will be accepted in bug reports.</li>
@@ -531,113 +534,113 @@ Changed</h2>
 <li>Core: <code>nwnx.txt</code> is no longer created by default. Set <code>NWNX_CORE_LOG_FILE_PATH="path/to/nwnx.txt"</code> to use it.</li>
 <li>Race: The AC modifier now supports specifying the AC type.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md64"></a>
 Fixed</h2>
 <ul>
 <li>Core: Fixed a minor memory leak when asserts were triggered.</li>
 <li>Rename: Fixed SetPCNameOverride() subscribing to <code>NWNX_CREATURE_ORIGINALNAME_SIGNAL</code> whenever the function is called, causing bad performance.</li>
 <li>Player: Fixed a nullptr deref crash in ApplyLoopingVisualEffectToObject()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md65"></a>
 8193.30</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.29...build8193.30">https://github.com/nwnxee/unified/compare/build8193.29...build8193.30</a></p>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md66"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md66"></a>
+<h4><a class="anchor" id="autotoc_md67"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Object: SetLastTriggered()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Changed</h2>
 <ul>
 <li><em><b>ABI BREAKING</b></em> Creature: SetClassByPosition by default replaces all occurrences of the old class in CNWLevelStats. This can be disabled with the argument 'bUpdateLevels'.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md68"></a>
+<h2><a class="anchor" id="autotoc_md69"></a>
 Deprecated</h2>
 <ul>
 <li>Weapon: SetWeaponIsMonkWeapon()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md69"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 Removed</h2>
 <ul>
 <li>CombatModes: plugin has been removed. The NWNX_ON_COMBAT_MODE_* events and <a class="el" href="group__weapon.html#ga16ec75cebc8186286084e58172f62e82" title="Set base item as monk weapon.">NWNX_Weapon_SetWeaponIsMonkWeapon()</a> Flurry of Blows functionality has been preserved.</li>
 <li>Tweaks: removed <code>NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG</code>, fixed in basegame.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 8193.29</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.26...build8193.29">https://github.com/nwnxee/unified/compare/build8193.26...build8193.29</a></p>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 Added</h2>
 <ul>
 <li>Tweaks: added <code>NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL</code> to allow setting params on all applicable materials at once.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_AOE_OBJECT_POSITION_BUG</code> to stop AreaOfEffect objects (auras, etc) from breaking GetNearestXXX() stuff.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md72"></a>
+<h1><a class="anchor" id="autotoc_md73"></a>
 8193.26</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.25...build8193.26">https://github.com/nwnxee/unified/compare/build8193.25...build8193.26</a></p>
 <ul>
 <li>No user facing changes</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md73"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 8193.25</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.24...build8193.25">https://github.com/nwnxee/unified/compare/build8193.24...build8193.25</a></p>
 <ul>
 <li>No user facing changes</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md74"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 8193.24</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.23...build8193.24">https://github.com/nwnxee/unified/compare/build8193.23...build8193.24</a></p>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 Added</h2>
 <ul>
 <li>Feat: added environment variable <code>NWNX_FEAT_CUSTOM_SPELL_ID</code> to give a custom spellid to all effects created by this plugin.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md76"></a>
+<h4><a class="anchor" id="autotoc_md77"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: RunEquip()</li>
 <li>Creature: RunUnequip()</li>
 <li>Util: SetCurrentlyRunningEvent()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 Changed</h2>
 <ul>
 <li>Damage: added ToHitRoll and ToHitModifier data to the AttackEvent structure.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md79"></a>
 Fixed</h2>
 <ul>
 <li>Core: {Get|Set}LocalCassowary() actually work and no longer throw asserts.</li>
 <li>Dialog: fixed a crash when calling GetCurrentNodeID() in an OnConversationAborted script.</li>
 <li>Events: InputEvents: NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_* now uses the right hook.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md80"></a>
 8193.22</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.22...build8193.23">https://github.com/nwnxee/unified/compare/build8193.22...build8193.23</a></p>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md81"></a>
+<h4><a class="anchor" id="autotoc_md82"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: DoItemCastSpell()</li>
 <li>Object: GetLastSpellCastFeat()</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md82"></a>
+<h4><a class="anchor" id="autotoc_md83"></a>
 New Plugins</h4>
 <ul>
 <li>Compiler: Adds command-line compilation of nss files using the in-built compiler.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Changed</h2>
 <ul>
 <li><em><b>ABI BREAKING:</b></em> Effect: Apply() switched the order in which the arguments are pushed and renamed the internal function name.</li>
 <li><em><b>API BREAKING:</b></em> Tileset: <a class="el" href="group__tileset.html#gabb37973c04de9bc0d4ebc9b0e155f772" title="Get the tile ID at nTileIndex in nGroupIndex of sTileset.">NWNX_Tileset_GetTilesetGroupTile()</a> needs the tileset name and group index in addition to the tile index.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 8193.21</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.21...build8193.22">https://github.com/nwnxee/unified/compare/build8193.21...build8193.22</a></p>
-<h2><a class="anchor" id="autotoc_md85"></a>
+<h2><a class="anchor" id="autotoc_md86"></a>
 Added</h2>
 <ul>
 <li>Events: added skippable event <code>NWNX_ON_CLIENT_LEVEL_UP_BEGIN_*</code> which fires when a player clicks the levelup button.</li>
@@ -648,12 +651,12 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT</code> to retain local variables when an item is split.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION</code> to make attack bonuses not bypass reductions (soak).</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md86"></a>
+<h4><a class="anchor" id="autotoc_md87"></a>
 New Plugins</h4>
 <ul>
 <li>NoStack: Adds <code>NWNX_NOSTACK_*</code> variables to control ability, skill, attack and/or saving throw bonuses stacking</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md87"></a>
+<h4><a class="anchor" id="autotoc_md88"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: Get{Armor|Shield}CheckPenalty()</li>
@@ -667,7 +670,7 @@ New NWScript Functions</h4>
 <li>Player: SetTlkOverride()</li>
 <li>Util: GetTTY()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md89"></a>
 Changed</h2>
 <ul>
 <li>The argument stack is now cleared after every NWNX function call.</li>
@@ -678,22 +681,22 @@ Changed</h2>
 <li><em><b>API BREAKING</b></em> Object: The <code>NWNX_Object_Export</code> function has had its arguments reordered.</li>
 <li><em><b>ABI BREAKING:</b></em> <code><a class="el" href="nwnx_8nss.html">nwnx.nss</a></code> has changed, please update all your <code>nwnx_*.nss</code> scripts including <code><a class="el" href="nwnx_8nss.html">nwnx.nss</a></code> and recompile. Existing compiled scripts will still work.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md89"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 Removed</h2>
 <ul>
 <li>Data and Time plugins have been removed. Compatibility scripts are provided <a href="Compatibility/">here</a></li>
 <li><em><b>API BREAKING</b></em> Events: removed deprecated <code>NWNX_ON_{ENTER|EXIT}_STEALTH_*</code> events. Use <code>NWNX_ON_STEALTH_{ENTER|EXIT}_*</code></li>
 <li>Tweaks: removed deprecated <code>NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST</code> environment variable. Use <code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md90"></a>
+<h2><a class="anchor" id="autotoc_md91"></a>
 Fixed</h2>
 <ul>
 <li>Race: Effects vs Child Races are now functional. Battle Training Vs. * feats now apply their bonus against child races as well.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md91"></a>
+<h1><a class="anchor" id="autotoc_md92"></a>
 8193.20</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.20...build8193.21">https://github.com/nwnxee/unified/compare/build8193.20...build8193.21</a></p>
-<h2><a class="anchor" id="autotoc_md92"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 Added</h2>
 <ul>
 <li>Events: added <code>NWNX_ON_INPUT_EMOTE_*</code> events to InputEvents, this event fires when a player uses a radial menu emote.</li>
@@ -708,12 +711,12 @@ Added</h2>
 <li>Optimizations: Added <code>LuoLookup</code> optimization that speeds up per-player object updates.</li>
 <li>Optimizations: Added <code>PlayerLookup</code> optimization that speeds up some player related functions on highly populated servers.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md93"></a>
+<h4><a class="anchor" id="autotoc_md94"></a>
 New Plugins</h4>
 <ul>
 <li>SWIG: Native Interop support added for DotNET.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md94"></a>
+<h4><a class="anchor" id="autotoc_md95"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Admin: {Get/Set}MinLevel()</li>
@@ -738,7 +741,7 @@ New NWScript Functions</h4>
 <li>Util: GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)</li>
 <li>Weapon: SetMaxRangedAttackDistanceOverride()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md95"></a>
+<h2><a class="anchor" id="autotoc_md96"></a>
 Changed</h2>
 <ul>
 <li>Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem &gt; Specified Hand &gt; non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a> if you are using these functions</em>.</li>
@@ -747,22 +750,22 @@ Changed</h2>
 <li>Rename: NWNX_Rename can now co-exist with <code>NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST</code>, as such NWNX_Rename's handling of said tweak has been removed.</li>
 <li>Optimizations: <code>GameObjectLookup</code> no longer reads nwn config for cache size, and instead just assumes 1 million (uses 64MB RAM).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md96"></a>
+<h2><a class="anchor" id="autotoc_md97"></a>
 Deprecated</h2>
 <ul>
 <li>Data: The NWNX_Data array implementation is deprecated. SQLite implementation available. Shim include file provided for compatibility.</li>
 <li>Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md97"></a>
+<h2><a class="anchor" id="autotoc_md98"></a>
 Fixed</h2>
 <ul>
 <li>Feedback: Fixed a memory leak when suppressing messages.</li>
 <li>Utils: Fixed a memory corruption in <code>GetAsciiTableString()</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md98"></a>
+<h1><a class="anchor" id="autotoc_md99"></a>
 8193.16</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.16...build8193.20">https://github.com/nwnxee/unified/compare/build8193.16...build8193.20</a></p>
-<h2><a class="anchor" id="autotoc_md99"></a>
+<h2><a class="anchor" id="autotoc_md100"></a>
 Added</h2>
 <ul>
 <li>Chat: targeted messages can now be sent on the Party or DM channels</li>
@@ -784,14 +787,14 @@ Added</h2>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code></li>
 <li>Tweaks: <code>NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS</code></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md100"></a>
+<h4><a class="anchor" id="autotoc_md101"></a>
 New Plugins</h4>
 <p>The following plugins were added:</p><ul>
 <li>Feat: Allows to define a variety of effects that are granted to feat holders.</li>
 <li>Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().</li>
 <li>Diagnostics: Plugin exposing diagnostic facilities to help server debugging.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md101"></a>
+<h4><a class="anchor" id="autotoc_md102"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: GetTileInfo()</li>
@@ -812,7 +815,7 @@ New NWScript Functions</h4>
 <li>Util: SetDawnHour()</li>
 <li>Util: SetDuskHour()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md102"></a>
+<h2><a class="anchor" id="autotoc_md103"></a>
 Changed</h2>
 <ul>
 <li>Area: ExportGIT() now supports valid custom resource directory aliases.</li>
@@ -826,18 +829,18 @@ Changed</h2>
 <li>Weapon: Good Aim Feat now takes value from ruleset.2da</li>
 <li>We now only allow builds with the <code>CMAKE_BUILD_TYPE=RelWithDebInfo</code> configuration. <code>Debug</code> builds produce unexpected behaviour and <code>Release</code> builds are generally unnecessary and mess with Assert functionality.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<h2><a class="anchor" id="autotoc_md104"></a>
 Deprecated</h2>
 <ul>
 <li>Events: Stealth Events have had their name changed from NWNX_ON_{ENTER|EXIT}_STEALTH_* to NWNX_ON_STEALTH_{ENTER|EXIT}_*. Please update your scripts as the old names will eventually be removed.</li>
 <li>Tweaks: <code>NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST</code> has been deprecated, use <code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code> now</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md104"></a>
+<h2><a class="anchor" id="autotoc_md105"></a>
 Removed</h2>
 <ul>
 <li>Optimizations: <code>OBJECT_TAG_LOOKUP</code> optimization has been removed. It caused instability and didn't really improve perf.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md105"></a>
+<h2><a class="anchor" id="autotoc_md106"></a>
 Fixed</h2>
 <ul>
 <li>Administration: fix crash in DeletePlayerCharacter()</li>
@@ -857,10 +860,10 @@ Fixed</h2>
 <li>Weapon: fixed bug in SetGreaterWeaponFocusFeat()</li>
 <li>Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md106"></a>
+<h1><a class="anchor" id="autotoc_md107"></a>
 8193.16</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.13...build8193.16">https://github.com/nwnxee/unified/compare/build8193.13...build8193.16</a></p>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md108"></a>
 Added</h2>
 <ul>
 <li>Core: added environment variable <code>NWNX_CORE_CUSTOM_RESMAN_DEFINITION</code> to specify a file with additional resource directories.</li>
@@ -872,7 +875,7 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_BLOCK_DM_SPAWNITEM</code> to block the usage of dm_spawnitem</li>
 <li>Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md108"></a>
+<h4><a class="anchor" id="autotoc_md109"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: AddObjectToExclusionList()</li>
@@ -899,7 +902,7 @@ New NWScript Functions</h4>
 <li>Util: {Get|Set}ResourceOverride()</li>
 <li>Weapon: {Get|Set}OneHalfStrength()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md109"></a>
+<h2><a class="anchor" id="autotoc_md110"></a>
 Changed</h2>
 <ul>
 <li>Administration: added an optional sKickReason parameter to DeleteCharacter()</li>
@@ -909,28 +912,28 @@ Changed</h2>
 <li>Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time</li>
 <li>Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon****Feat and will be used in addition to any set feats</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 Deprecated</h2>
 <ul>
 <li>Object: StringToObject();</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 Removed</h2>
 <ul>
 <li>Creature: {Get|Set}{ClericDomain|WizardSpecialization}()</li>
 <li>Creature: SetAbilityScore()</li>
 <li>Object: {Get|Set|Delete}Persistent{Int|String|Float}()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 Fixed</h2>
 <ul>
 <li>Administration: DeletePlayerCharacter() now deletes the TURD as well</li>
 <li>Creature: SetMovementRate() now properly reattaches the creature's legs when switching from NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE to the other constants</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md113"></a>
+<h1><a class="anchor" id="autotoc_md114"></a>
 8193.14</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.13...build8193.14">https://github.com/nwnxee/unified/compare/build8193.13...build8193.14</a></p>
-<h2><a class="anchor" id="autotoc_md114"></a>
+<h2><a class="anchor" id="autotoc_md115"></a>
 Added</h2>
 <ul>
 <li>ServerLogRedirector: added environment variable <code>NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES</code> to hide <code>*** ValidateGFFResource sent by user.</code> messages from the NWNX log.</li>
@@ -939,7 +942,7 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG</code> to prevent the unlimited potions/scrolls bug.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_UNHARDCODE_SHIELDS</code> to change shield AC and create new shield-like items using the BaseAC column in baseitems.2da.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md115"></a>
+<h4><a class="anchor" id="autotoc_md116"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()</li>
@@ -958,14 +961,14 @@ New NWScript Functions</h4>
 <li>Util: CreateDoor()</li>
 <li>Util: SetItemActivator()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md116"></a>
+<h2><a class="anchor" id="autotoc_md117"></a>
 Changed</h2>
 <ul>
 <li>Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.</li>
 <li>Object: <code>GetLocalVariable()</code> behavior has changed. See function documentation for details.</li>
 <li>Profiler: Corrected a typo preventing the retrieval of certain event data (OVERHEAD_COMPENSTION_FORCE -&gt; OVERHEAD_COMPENSATION_FORCE). Note: breaking change.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md117"></a>
+<h2><a class="anchor" id="autotoc_md118"></a>
 Fixed</h2>
 <ul>
 <li>Core: fixed NWNX ResourceDirectory init crashing on failed module load</li>
@@ -973,25 +976,25 @@ Fixed</h2>
 <li>Weapon: fixed a nullptr reference crash in GetEpicWeaponDevastatingCritical()</li>
 <li>Player: fixed possessed associates from losing their associate type on unpossess</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md118"></a>
+<h1><a class="anchor" id="autotoc_md119"></a>
 8193.13</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.12...build8193.13">https://github.com/nwnxee/unified/compare/build8193.12...build8193.13</a></p>
-<h2><a class="anchor" id="autotoc_md119"></a>
+<h2><a class="anchor" id="autotoc_md120"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md120"></a>
+<h4><a class="anchor" id="autotoc_md121"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: JumpToLimbo()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md121"></a>
+<h2><a class="anchor" id="autotoc_md122"></a>
 Fixed</h2>
 <ul>
 <li>SkillRanks: Now respects ruleset.2da values.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md122"></a>
+<h1><a class="anchor" id="autotoc_md123"></a>
 8193.12</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.11...build8193.12">https://github.com/nwnxee/unified/compare/build8193.11...build8193.12</a></p>
-<h2><a class="anchor" id="autotoc_md123"></a>
+<h2><a class="anchor" id="autotoc_md124"></a>
 Added</h2>
 <ul>
 <li>Events: added QuickbarSetButton event to QuickbarEvents</li>
@@ -999,7 +1002,7 @@ Added</h2>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS</code> to enable a fix for effects losing the caster level vs. dispel checks when the effect creator is deleted.</li>
 <li>Tweaks: <code>NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS</code> to automatically add caster levels from prestige classes based on the {Arc|Div}SpellLvlMod columns in classes.2da</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md124"></a>
+<h4><a class="anchor" id="autotoc_md125"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: GetFlatFooted()</li>
@@ -1008,15 +1011,15 @@ New NWScript Functions</h4>
 <li>Object: ClearSpellEffectsOnOthers()</li>
 <li>Object: PeekUUID()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md125"></a>
+<h2><a class="anchor" id="autotoc_md126"></a>
 Changed</h2>
 <ul>
 <li>ELC: Updated with recent changes.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md126"></a>
+<h1><a class="anchor" id="autotoc_md127"></a>
 8193.11</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.10...build8193.11">https://github.com/nwnxee/unified/compare/build8193.10...build8193.11</a></p>
-<h2><a class="anchor" id="autotoc_md127"></a>
+<h2><a class="anchor" id="autotoc_md128"></a>
 Added</h2>
 <ul>
 <li>Events: Added Keyboard Input event to InputEvents</li>
@@ -1024,23 +1027,23 @@ Added</h2>
 <li>Events: Added Equip Item validation event to allow control of item equip restrictions.</li>
 <li>Events: Added OnExportCharacter event to ClientEvents</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md128"></a>
+<h2><a class="anchor" id="autotoc_md129"></a>
 Changed</h2>
 <ul>
 <li>Events: "You cannot use that item" feedback can now be suppressed for skipped Use Item events by setting the event result to 1</li>
 <li>Rename: Added the environment variable <code>NWNX_RENAME_OVERWRITE_DISPLAY_NAME</code> to control whether display names should be overwritten globally (for scripts and DMs) when global override is set. Then new default is now <code>false</code>, meaning that global overrides are only applied to players, and DMs and scripts see the original name by default.</li>
 <li>Core: Stack traces will now resolve base game functions</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md129"></a>
+<h2><a class="anchor" id="autotoc_md130"></a>
 Fixed</h2>
 <ul>
 <li>MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.</li>
 <li>Player: <a class="el" href="group__player.html#ga17e50dc03d386cd9f5412a0063dbb9f3" title="Override the name of placeable for player only.">NWNX_Player_SetPlaceableNameOverride()</a> once again updates in realtime.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md130"></a>
+<h1><a class="anchor" id="autotoc_md131"></a>
 8193.10</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.9...build8193.10">https://github.com/nwnxee/unified/compare/build8193.9...build8193.10</a></p>
-<h2><a class="anchor" id="autotoc_md131"></a>
+<h2><a class="anchor" id="autotoc_md132"></a>
 Added</h2>
 <ul>
 <li>SQL: Added optional support for object storage in binary fields via an optional parameter <code>base64</code> in <code>NWNX_SQL_PreparedObjectFull</code> and <code>NWNX_SQL_ReadFullObjectInActiveRow</code></li>
@@ -1048,7 +1051,7 @@ Added</h2>
 <li>ELC: Added <code>NWNX_ON_ELC_VALIDATE_CHARACTER_{BEFORE|AFTER}</code> events, can be subscribed to with NWNX_Events.</li>
 <li>Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md132"></a>
+<h4><a class="anchor" id="autotoc_md133"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Creature: GetFeatGrantLevel()</li>
@@ -1059,21 +1062,21 @@ New NWScript Functions</h4>
 <li>Object: AcquireItem()</li>
 <li>Object: SetFacing()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md133"></a>
+<h2><a class="anchor" id="autotoc_md134"></a>
 Deprecated</h2>
 <ul>
 <li>Creature: Get{Domain|Specialization}</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md134"></a>
+<h1><a class="anchor" id="autotoc_md135"></a>
 8193.9</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.7...build8193.9">https://github.com/nwnxee/unified/compare/build8193.7...build8193.9</a></p>
-<h2><a class="anchor" id="autotoc_md135"></a>
+<h2><a class="anchor" id="autotoc_md136"></a>
 Added</h2>
 <ul>
 <li>SQL: <code>NWNX_SQL_PORT</code> to set the port used for MySQL database connections.</li>
 <li>Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the /nwnx or /development folders</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md136"></a>
+<h4><a class="anchor" id="autotoc_md137"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Administration: GetServerName()</li>
@@ -1082,26 +1085,26 @@ New NWScript Functions</h4>
 <li>Util: (Un)RegisterServerConsoleCommand()</li>
 <li>Area: GetTileModuleResRef()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md137"></a>
+<h2><a class="anchor" id="autotoc_md138"></a>
 Changed</h2>
 <ul>
 <li>Core: the console commands <code>eval</code> and <code>evalx</code> will now provide an error message if the script chunk fails to execute.</li>
 <li>Damage: Added a Ranged flag to <a class="el" href="group__damage.html#gac2fbf4ab0070f31b5fde15a4afc29a99" title="Deal damage to a target.">NWNX_Damage_DealDamage()</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md138"></a>
+<h2><a class="anchor" id="autotoc_md139"></a>
 Removed</h2>
 <ul>
 <li>Tweaks: Removed scroll learning freeze bugfix.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md139"></a>
+<h2><a class="anchor" id="autotoc_md140"></a>
 Fixed</h2>
 <ul>
 <li>Optimizations: GameObjectLookup no longer breaks <code><a class="el" href="group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b" title="Get the last created object.">NWNX_Util_GetLastCreatedObject()</a></code> and <code>NWNX_ON_DM_SPAWN_OBJECT</code> functionality.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md140"></a>
+<h1><a class="anchor" id="autotoc_md141"></a>
 8193.7</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.6...build8193.7">https://github.com/nwnxee/unified/compare/build8193.6...build8193.7</a></p>
-<h2><a class="anchor" id="autotoc_md141"></a>
+<h2><a class="anchor" id="autotoc_md142"></a>
 Added</h2>
 <ul>
 <li>Events: Added OnUUIDCollision event to UUIDEvents</li>
@@ -1110,7 +1113,7 @@ Added</h2>
 <li>Tweaks: <code>NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</code> to revert the cost of items with charges to 1.69 values</li>
 <li>Core: <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH</code> variable to override the default path of the UserDirectory/nwnx folder</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md142"></a>
+<h4><a class="anchor" id="autotoc_md143"></a>
 New Plugins</h4>
 <ul>
 <li>Optimizations: Tweaks that (potentially) improve performance<ul>
@@ -1120,7 +1123,7 @@ New Plugins</h4>
 </ul>
 </li>
 </ul>
-<h4><a class="anchor" id="autotoc_md143"></a>
+<h4><a class="anchor" id="autotoc_md144"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Player: SetResManOverride()</li>
@@ -1129,7 +1132,7 @@ New NWScript Functions</h4>
 <li>Area: CreateGenericTrigger()</li>
 <li>Object: GetPositionIsInTrigger()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md144"></a>
+<h2><a class="anchor" id="autotoc_md145"></a>
 Changed</h2>
 <ul>
 <li>ELC: Updated for custom spellcaster changes</li>
@@ -1137,12 +1140,12 @@ Changed</h2>
 <li>Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)</li>
 <li>Events: OnStealthExit will no longer fire if OnStealthEnter was skipped</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md145"></a>
+<h2><a class="anchor" id="autotoc_md146"></a>
 Deprecated</h2>
 <ul>
 <li>Creature: {Get|Set}{ClericDomain|WizardSpecialization}()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md146"></a>
+<h2><a class="anchor" id="autotoc_md147"></a>
 Fixed</h2>
 <ul>
 <li>Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</li>
@@ -1151,10 +1154,10 @@ Fixed</h2>
 <li>Core: Fixed issue where POS would occasionally get corrupted and print errors to the log</li>
 <li>ServerLogRedirector: Fixed dropped prefixes when using PrintString()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md147"></a>
+<h1><a class="anchor" id="autotoc_md148"></a>
 8193.6</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.5...build8193.6">https://github.com/nwnxee/unified/compare/build8193.5...build8193.6</a></p>
-<h4><a class="anchor" id="autotoc_md148"></a>
+<h4><a class="anchor" id="autotoc_md149"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Object: {Get|Set|Delete}{Int|String|Float}()</li>
@@ -1162,108 +1165,108 @@ New NWScript Functions</h4>
 <li>Util: AddNSSFile()</li>
 <li>Util: RemoveNWNXResourceFile()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md149"></a>
+<h2><a class="anchor" id="autotoc_md150"></a>
 Changed</h2>
 <ul>
 <li>Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis</li>
 <li>Util: <code>NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK</code> will now provide an error message if it fails to run a script chunk</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md150"></a>
+<h2><a class="anchor" id="autotoc_md151"></a>
 Deprecated</h2>
 <ul>
 <li>Object: {Get|Set|Delete}Persistent{Int|String|Float}()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md151"></a>
+<h1><a class="anchor" id="autotoc_md152"></a>
 8193.5</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.4...build8193.5">https://github.com/nwnxee/unified/compare/build8193.4...build8193.5</a></p>
-<h2><a class="anchor" id="autotoc_md152"></a>
+<h2><a class="anchor" id="autotoc_md153"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md153"></a>
+<h4><a class="anchor" id="autotoc_md154"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Administration: ReloadRules() (DANGER, DRAGONS)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md154"></a>
+<h2><a class="anchor" id="autotoc_md155"></a>
 Changed</h2>
 <ul>
 <li>Core: NWNX now also checks the build revision of nwserver-linux when starting.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md155"></a>
+<h2><a class="anchor" id="autotoc_md156"></a>
 Fixed</h2>
 <ul>
 <li>Tweaks: DisablePause works yet again, woo.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md156"></a>
+<h1><a class="anchor" id="autotoc_md157"></a>
 8193.4</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.3...build8193.4">https://github.com/nwnxee/unified/compare/build8193.3...build8193.4</a></p>
-<h2><a class="anchor" id="autotoc_md157"></a>
+<h2><a class="anchor" id="autotoc_md158"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md158"></a>
+<h4><a class="anchor" id="autotoc_md159"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Object: {Get|Set|Delete}Persistent{Int|String|Float}()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md159"></a>
+<h2><a class="anchor" id="autotoc_md160"></a>
 Changed</h2>
 <ul>
 <li>Tweaks: SneakAttackCritImmunity now takes <code>FLANK_LEVEL_RANGE</code> ruleset.2da setting into account</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md160"></a>
+<h1><a class="anchor" id="autotoc_md161"></a>
 8193.3</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.2...build8193.3">https://github.com/nwnxee/unified/compare/build8193.2...build8193.3</a></p>
-<h2><a class="anchor" id="autotoc_md161"></a>
+<h2><a class="anchor" id="autotoc_md162"></a>
 Added</h2>
 <ul>
 <li>Events: Added skippable {Lock|Unlock} events to ObjectEvents</li>
 <li>Player: GetLanguage() function</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md162"></a>
+<h2><a class="anchor" id="autotoc_md163"></a>
 Changed</h2>
 <ul>
 <li>DotNET: C# API has moved from using <code>NWN.Object</code> to plain <code>uint</code> for NWScript <code>object</code> type</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md163"></a>
+<h2><a class="anchor" id="autotoc_md164"></a>
 Fixed</h2>
 <ul>
 <li>ELC: RDDs now pass NWNX_ELC</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md164"></a>
+<h1><a class="anchor" id="autotoc_md165"></a>
 8193.2</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.1...build8193.2">https://github.com/nwnxee/unified/compare/build8193.1...build8193.2</a></p>
-<h2><a class="anchor" id="autotoc_md165"></a>
+<h2><a class="anchor" id="autotoc_md166"></a>
 Changed</h2>
 <ul>
 <li>Per Object Storage can now be persisted to GFF. The following variables will now persist: <code>NWNX_Player!ALWAYS_WALK</code>, <code>NWNX_Player!REST_DURATION</code>, , <code>NWNX_Player!REST_ANIMATION</code>, <code>NWNX_Creature!WALK_RATE_CAP</code>, <code>NWNX_Chat!HEARING_DISTANCE*</code>, <code>NWNX_Damage!*_EVENT_SCRIPT</code>, <code>NWNX_Feedback!*</code>, <code>NWNX_Reveal!*</code>, <code>NWNX_SkillRanks!SKILLRANK_MOD_*</code>. This means you no longer need to re-apply these to your players and objects after every restart.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md166"></a>
+<h1><a class="anchor" id="autotoc_md167"></a>
 8193.1</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193...build8193.1">https://github.com/nwnxee/unified/compare/build8193...build8193.1</a></p>
 <p>Note: Some nwscript files have changed. You will need to update them and recompile all scripts.</p>
-<h2><a class="anchor" id="autotoc_md167"></a>
+<h2><a class="anchor" id="autotoc_md168"></a>
 Added</h2>
-<h4><a class="anchor" id="autotoc_md168"></a>
+<h4><a class="anchor" id="autotoc_md169"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Area: GetMusicIsPlaying()</li>
 <li>Player: GetPlatformId()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md169"></a>
+<h2><a class="anchor" id="autotoc_md170"></a>
 Changed</h2>
 <ul>
 <li>Core: NWNX will now provide you with better error messages when you try to call a NWScript NWNX function and you haven't updated your nwnx_*.nss files or the plugin is not loaded.</li>
 <li>We no longer have separate build types (except for symbols and compiler optimizations). All builds now include error messaging and handling.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md170"></a>
+<h2><a class="anchor" id="autotoc_md171"></a>
 Fixed</h2>
 <ul>
 <li>Fixed an issue where the <code>cwd</code> value was garbled, causing plugin load to fail unless <code>NWNX_CORE_LOAD_PATH</code> was set.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md171"></a>
+<h1><a class="anchor" id="autotoc_md172"></a>
 8193</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8186-lts...build8193">https://github.com/nwnxee/unified/compare/build8186-lts...build8193</a></p>
 <p>NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.</p>
 <p>NOTE: There may be more breaking changes added here until the next official release happens.</p>
-<h2><a class="anchor" id="autotoc_md172"></a>
+<h2><a class="anchor" id="autotoc_md173"></a>
 Added</h2>
 <ul>
 <li>Core: Added the environment variable <code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code> to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked</li>
@@ -1281,12 +1284,12 @@ Added</h2>
 <li>Core: Added the following log related environment variables: <code>NWNX_CORE_LOG_TIMESTAMP</code>, <code>NWNX_CORE_LOG_PLUGIN</code>, <code>NWNX_CORE_LOG_SOURCE</code>, <code>NWNX_CORE_LOG_COLOR</code>, <code>NWNX_CORE_LOG_FORCE_COLOR</code></li>
 <li>Util: Added the environment variable <code>NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK</code> which lets you set a nwscript chunk that runs before the OnModuleLoad event</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md173"></a>
+<h4><a class="anchor" id="autotoc_md174"></a>
 New Plugins</h4>
 <p>The following plugins were added:</p><ul>
 <li><b>DotNET</b>: Implement your server scripts in C# (and other dotnet languages)</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md174"></a>
+<h4><a class="anchor" id="autotoc_md175"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Administration: {Get|Set}DebugValue()</li>
@@ -1299,7 +1302,7 @@ New NWScript Functions</h4>
 <li>Util: GetNSSContents()</li>
 <li>Weapon: GetWeaponFinesseSize()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md175"></a>
+<h2><a class="anchor" id="autotoc_md176"></a>
 Changed</h2>
 <ul>
 <li>Administration: DeleteTURD() now returns TRUE on success</li>
@@ -1310,7 +1313,7 @@ Changed</h2>
 <li>Itemproperty: Removed the EffectID parameter from the struct</li>
 <li>SQL: The SQLite database extension has been changed to <code>.sqlite3nwnxee</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md176"></a>
+<h2><a class="anchor" id="autotoc_md177"></a>
 Removed</h2>
 <ul>
 <li>The following plugins were removed: JVM, Mono</li>
@@ -1320,11 +1323,11 @@ Removed</h2>
 <li>Player: {Get|Set}VisibilityOverride()</li>
 <li>Util: GenerateUUID()</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md177"></a>
+<h1><a class="anchor" id="autotoc_md178"></a>
 8186 LTS</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts">https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts</a></p>
 <p>NOTICE: The ABI has changed, please make sure to update your <a class="el" href="nwnx_8nss.html">nwnx.nss</a> and recompile all your scripts.</p>
-<h2><a class="anchor" id="autotoc_md178"></a>
+<h2><a class="anchor" id="autotoc_md179"></a>
 Added</h2>
 <ul>
 <li>Added support to skip building certain plugins by setting an environment variable, for example: <code>NWNX_SKIP_PLUGINS="JVM;Lua;Mono;Ruby;SpellChecker"</code></li>
@@ -1371,7 +1374,7 @@ Added</h2>
 <li>WebHook: Added support for richer Slack-compatible messages</li>
 <li>Util: Added the environment variable <code>NWNX_UTIL_PRE_MODULE_START_SCRIPT=scriptname</code> which lets you set a nwscript that runs before the OnModuleLoad event </li>
 </ul>
-<h4><a class="anchor" id="autotoc_md179"></a>
+<h4><a class="anchor" id="autotoc_md180"></a>
 New Plugins</h4>
 <p>The following plugins were added:</p><ul>
 <li><b>Appearance</b>: Allows the appearance and some other things of creatures to be overridden per player</li>
@@ -1391,7 +1394,7 @@ New Plugins</h4>
 <li><b>SkillRanks</b>: Adds functions to create feats and perform actions that manipulate the calculations of skill ranks</li>
 <li><b>Visibility</b>: Allows the visibility of objects to be overridden globally or per player </li>
 </ul>
-<h4><a class="anchor" id="autotoc_md180"></a>
+<h4><a class="anchor" id="autotoc_md181"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Administration: GetPlayOption()</li>
@@ -1548,7 +1551,7 @@ New NWScript Functions</h4>
 <li>Visibility: SetVisibilityOverride()</li>
 <li>Weapon: SetWeaponIsMonkWeapon()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md181"></a>
+<h2><a class="anchor" id="autotoc_md182"></a>
 Changed</h2>
 <ul>
 <li>Core: The nwnx.txt logfile will now be written to the UserDirectory</li>
@@ -1560,18 +1563,18 @@ Changed</h2>
 <li>Events: Changed <code>NUM_LEVELS</code> to <code>AMOUNT</code> for DMActionEvent GiveLevel</li>
 <li>Player: StartGuiTimingBar() now accepts a type for pre-defined text</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md182"></a>
+<h2><a class="anchor" id="autotoc_md183"></a>
 Deprecated</h2>
 <ul>
 <li>Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!</li>
 <li>Object: {Get/Set}Portrait() are deprecated, please use the native {Get/Set}PortraitResRef() functions instead!</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md183"></a>
+<h2><a class="anchor" id="autotoc_md184"></a>
 Removed</h2>
 <ul>
 <li>The following plugins were removed: Names, BehaviourTree</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md184"></a>
+<h2><a class="anchor" id="autotoc_md185"></a>
 Fixed</h2>
 <ul>
 <li>Administration: Fixed a nullptr crash in Get{DM/Player}Password()</li>
@@ -1587,7 +1590,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 29 2023 14:33:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Dec 30 2023 16:16:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
