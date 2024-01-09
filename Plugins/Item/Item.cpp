@@ -251,6 +251,7 @@ NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
                 break;
             }
         }
+        pItem->m_nArmorValue = pItem->ComputeArmorClass();
     }
     else
     {

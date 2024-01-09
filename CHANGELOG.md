@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD
 - N/A
 
 ### Changed
-- N/A
+- NWNX_Item_RestoreItemAppearance() will now force an immediate update to the items AC, depending on new appearance.
 
 ### Deprecated
 - N/A
