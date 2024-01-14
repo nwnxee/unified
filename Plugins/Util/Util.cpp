@@ -374,8 +374,10 @@ NWNX_EXPORT ArgumentStack AddNSSFile(ArgumentStack&& args)
     }
 
     auto file = CExoFile((alias + ":" + fileName).c_str(), Constants::ResRefType::NSS, "w");
-
-    return file.FileOpened() && file.Write(contents) && file.Flush();
+    bool bOk = file.FileOpened() && file.Write(contents) && file.Flush();
+    if (bOk)
+        Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
+    return bOk;
 }
 
 NWNX_EXPORT ArgumentStack RemoveNWNXResourceFile(ArgumentStack&& args)
@@ -393,9 +395,10 @@ NWNX_EXPORT ArgumentStack RemoveNWNXResourceFile(ArgumentStack&& args)
         alias = "NWNX";
     }
 
-    CExoString exoFileName = alias + ":" + fileName;
-
-    return Globals::ExoResMan()->RemoveFile(exoFileName, type);
+    bool bOk = Globals::ExoResMan()->RemoveFile(alias + ":" + fileName, type);
+    if (bOk)
+        Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
+    return bOk;
 }
 
 NWNX_EXPORT ArgumentStack SetInstructionLimit(ArgumentStack&& args)
@@ -774,4 +777,18 @@ NWNX_EXPORT ArgumentStack UpdateClientObject(ArgumentStack&& args)
         Utils::UpdateClientObject(oidObject);
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack CleanResourceDirectory(ArgumentStack&& args)
+{
+    const auto alias = args.extract<std::string>();
+    const auto type = args.extract<int32_t>();
+    if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+    {
+        LOG_WARNING("NWNX_Util_CleanResourceDirectory() called with an invalid alias: %s", alias);
+        return false;
+    }
+    bool bOk = Globals::ExoResMan()->CleanDirectory(alias + ":", false, false, type);
+    Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
+    return bOk;
 }
