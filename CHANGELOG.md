@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Util: CleanResourceDirectory()
 
 ### Changed
 - NWNX_Item_RestoreItemAppearance() will now force an immediate update to the items AC, depending on new appearance.

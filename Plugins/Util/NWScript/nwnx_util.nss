@@ -253,6 +253,12 @@ int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo);
 /// @param oPlayer The player for which the objects needs to update, OBJECT_INVALID for all players
 void NWNX_Util_UpdateClientObject(object oObjectToUpdate, object oPlayer = OBJECT_INVALID);
 
+/// @brief Clean a resource directory, deleting all files of nResType.
+/// @param sAlias A resource directory alias, NWNX or one defined in the custom resource directory file.
+/// @param nResType The type of file to delete or 0xFFFF for all types.
+/// @return TRUE if successful, FALSE on error.
+int NWNX_Util_CleanResourceDirectory(string sAlias, int nResType = 0xFFFF);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -630,4 +636,13 @@ void NWNX_Util_UpdateClientObject(object oObjectToUpdate, object oPlayer = OBJEC
     NWNX_PushArgumentObject(oPlayer);
     NWNX_PushArgumentObject(oObjectToUpdate);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_CleanResourceDirectory(string sAlias, int nResType = 0xFFFF)
+{
+    string sFunc = "CleanResourceDirectory";
+    NWNX_PushArgumentInt(nResType);
+    NWNX_PushArgumentString(sAlias);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
