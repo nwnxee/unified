@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.9...HEAD
 
 ### Added
 - Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
+- Tweaks: added `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` to not drop a TURD when SetCutsceneMode() is called.
 
 ##### New Plugins
 - N/A
