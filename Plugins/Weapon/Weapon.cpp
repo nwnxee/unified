@@ -56,7 +56,6 @@ Weapon::Weapon(Services::ProxyServiceList* services)
 
     m_GetWeaponFocusHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponFocus, &Weapon::GetWeaponFocus, Hooks::Order::Late);
     m_GetEpicWeaponFocusHook = Hooks::HookFunction(&CNWSCreatureStats::GetEpicWeaponFocus, &Weapon::GetEpicWeaponFocus);
-    static auto s_GetWeaponFinesseHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponFinesse, &GetWeaponFinesse, Hooks::Order::Final);
 
     m_GetWeaponImprovedCriticalHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponImprovedCritical, &Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
     m_GetWeaponSpecializationHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponSpecialization, &Weapon::GetWeaponSpecialization, Hooks::Order::Late);
@@ -70,8 +69,6 @@ Weapon::Weapon(Services::ProxyServiceList* services)
     m_GetAttackModifierVersusHook = Hooks::HookFunction(&CNWSCreatureStats::GetAttackModifierVersus, &Weapon::GetAttackModifierVersus, Hooks::Order::Late);
     m_GetMeleeAttackBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetMeleeAttackBonus, &Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
     m_GetRangedAttackBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetRangedAttackBonus, &Weapon::GetRangedAttackBonus, Hooks::Order::Late);
-
-    m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
 
     m_DCScript="";
 
@@ -184,7 +181,7 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
     CNWBaseItem *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem);
       ASSERT_OR_THROW(pBaseItem);
 
-    m_WeaponFinesseSizeMap.insert({w_bitem, size});
+    pBaseItem->m_nWeaponFinesseMinimumCreatureSize = size;
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName);
 
@@ -193,17 +190,14 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
 
 ArgumentStack Weapon::GetWeaponFinesseSize(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
     const auto baseItem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(baseItem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(baseItem <= Constants::BaseItem::MAX);
 
-    auto search = m_WeaponFinesseSizeMap.find(baseItem);
-    if (search != m_WeaponFinesseSizeMap.end())
-        retVal = search->second;
+    CNWBaseItem *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem);
+      ASSERT_OR_THROW(pBaseItem);
 
-    return ScriptAPI::Arguments(retVal);
+    return !pBaseItem->m_nWeaponFinesseMinimumCreatureSize ? -1 : pBaseItem->m_nWeaponFinesseMinimumCreatureSize;
 }
 
 ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
@@ -552,16 +546,6 @@ int32_t Weapon::GetEpicWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
         }
     }
     return (bApplicableFeatExists && bHasApplicableFeat ? 1 : plugin.m_GetEpicWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon));
-}
-
-int32_t Weapon::GetWeaponFinesse(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (!pStats->HasFeat(Constants::Feat::WeaponFinesse))
-        return 0;
-
-    return plugin.GetIsWeaponLight(pStats, pWeapon, true) ? 1 : 0;
 }
 
 int32_t Weapon::GetWeaponImprovedCritical(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
@@ -1127,80 +1111,6 @@ int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, int32_t bInclude
         nBonus += 1;
     }
     return nBonus;
-}
-
-
-bool Weapon::GetIsWeaponLight(CNWSCreatureStats* pStats, CNWSItem* pWeapon, bool bFinesse)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (GetIsUnarmedWeapon(pWeapon))
-    {
-        return true;
-    }
-
-    if (pStats->m_pBaseCreature == nullptr ||
-        pStats->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CreatureSize::Tiny ||
-        pStats->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CreatureSize::Huge)
-    {
-        return false;
-    }
-
-    if (bFinesse)
-    {
-        auto w = plugin.m_WeaponFinesseSizeMap.find(pWeapon->m_nBaseItem);
-        int iSize =  (w == plugin.m_WeaponFinesseSizeMap.end()) ? Constants::CreatureSize::Huge + 1 : w->second;
-
-        if (pStats->m_pBaseCreature->m_nCreatureSize >= iSize)
-        {
-            return true;
-        }
-    }
-
-    int rel = pStats->m_pBaseCreature->GetRelativeWeaponSize(pWeapon);
-
-    // Ensure small creatures can finesse small weapons
-    if (bFinesse &&
-        (uint32_t) (pStats->m_pBaseCreature->m_nCreatureSize) <= Constants::CreatureSize::Small)
-    {
-        return (rel <= 0);
-    }
-
-    return (rel < 0);
-}
-
-bool Weapon::GetIsUnarmedWeapon(CNWSItem* pWeapon)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (pWeapon == nullptr)
-        return true;
-
-    // In case of standard unarmed weapon return true
-    if (pWeapon->m_nBaseItem == Constants::BaseItem::Gloves       ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::Bracer       ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreaturePierceWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureBludgeWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashPierceWeapon)
-    {
-        return true;
-    }
-
-    // Check if weapon should be considered unarmed
-    auto w = plugin.m_WeaponUnarmedSet.find(pWeapon->m_nBaseItem);
-    return (w == plugin.m_WeaponUnarmedSet.end()) ? false : true;
-}
-
-int Weapon::GetLevelByClass(CNWSCreatureStats *pStats, uint32_t nClassType)
-{
-    for (int i = 0; i < pStats->m_nNumMultiClasses; i++)
-    {
-        if (pStats->m_ClassInfo[i].m_nClass == nClassType)
-            return pStats->m_ClassInfo[i].m_nLevel;
-    }
-
-    return 0;
 }
 
 ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)

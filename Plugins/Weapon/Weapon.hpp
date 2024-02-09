@@ -78,7 +78,6 @@ private:
 
     static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem* pItem);
     static int32_t GetEpicWeaponFocus               (CNWSCreatureStats *pStats, CNWSItem *pItem);
-    static int32_t GetWeaponFinesse                 (CNWSCreatureStats *pStats, CNWSItem *pItem);
     static int32_t GetWeaponImprovedCritical        (CNWSCreatureStats *pStats, CNWSItem *pItem);
     static int32_t GetWeaponSpecialization          (CNWSCreatureStats *pStats, CNWSItem *pItem);
     static int32_t GetEpicWeaponSpecialization      (CNWSCreatureStats *pStats, CNWSItem *pItem);
@@ -94,7 +93,6 @@ private:
 
     std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponFocusMap;
     std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponFocusMap;
-    std::map<std::uint32_t, std::uint8_t>  m_WeaponFinesseSizeMap;
     std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponImprovedCriticalMap;
     std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponSpecializationMap;
     std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponSpecializationMap;
@@ -105,10 +103,6 @@ private:
     std::map<std::uint32_t, std::set<std::uint32_t>> m_GreaterWeaponFocusMap;
 
     std::set<std::uint32_t>  m_WeaponUnarmedSet;
-
-    bool GetIsWeaponLight  (CNWSCreatureStats* pInfo, CNWSItem* pWeapon, bool bFinesse);
-    bool GetIsUnarmedWeapon(CNWSItem* pWeapon);
-    int  GetLevelByClass   (CNWSCreatureStats* pStats, uint32_t nClassType);
 
     // Devastating Critical data
     DevastatingCriticalDataStr m_DCData;
