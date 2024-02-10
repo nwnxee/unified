@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.9</span>
+								&#160;<span id="projectnumber">8193.36.10</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('md_NWNXLib_External_funchook_capstone_
 <li>Windows CE 8, a.k.a, <a href="https://www.microsoft.com/windowsembedded/en-us/windows-embedded-compact-2013.aspx">Windows Embedded Compact 2013</a>, on <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0406c/index.html">ARMv7</a>.</li>
 </ul>
 <p>To build Capstone for a different platform, please refer to <code>COMPILE.TXT</code>.</p>
-<h1><a class="anchor" id="autotoc_md205"></a>
+<h1><a class="anchor" id="autotoc_md210"></a>
 Prerequisites</h1>
 <p>We support the following scenario regarding the build machine:</p><ul>
 <li>Build running on Microsoft Windows.</li>
@@ -116,7 +116,7 @@ Prerequisites</h1>
 </li>
 </ul>
 <p>Before building Capstone for Windows CE 7 (respectively, Windows CE 8), the build script <code>windowsce/make_windowsce7-armv7.bat</code> (respectively, <code>windowsce/make_windowsce8-armv7.bat</code>) needs to be modified. The variables specified in the rest of this section are set in this script file.</p>
-<h1><a class="anchor" id="autotoc_md206"></a>
+<h1><a class="anchor" id="autotoc_md211"></a>
 Toolchain specification</h1>
 <p>The following information need to be specified in the build script in order to perform the build:</p><ul>
 <li><code>set WINCE_TOOLCHAIN_ROOT=</code> is the path of the root directory of the Windows CE toolchain. To build for Windows CE 7, this should be set to the Windows Embedded Compact 7 toolchain. To build for Windows CE 8, this should be set to the device toolchain. Examples:<ul>
@@ -150,10 +150,10 @@ Toolchain specification</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md207"></a>
+<h1><a class="anchor" id="autotoc_md212"></a>
 Capstone binary format</h1>
 <p>By default, the build script produces a <b>dynamic link library</b> (i.e., <code>.DLL</code>). In order to produce a <b>static library</b> (i.e., <code>.LIB</code>) instead, the <code>SHARED</code> variable needs to be set to <code>0</code>, i.e.: </p><div class="fragment"><div class="line">set SHARED=0</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md208"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md213"></a>
 Architectures supported at runtime</h1>
 <p>Capstone supports the following architectures: ARM, ARM64 (AArch64), M68K, MIPS, PowerPC, Sparc, SystemZ, x86 and XCore. However, Capstone can be configured in order to select which architectures need to be supported <b>at runtime</b>. This is controlled via the variable <code>DISASM_ARCH_LIST</code>, which is a space-separated list that is a combination of the following names:</p><ul>
 <li><code>ARM</code></li>
@@ -168,7 +168,7 @@ Architectures supported at runtime</h1>
 </ul>
 <p>By default, <code>DISASM_ARCH_LIST</code> includes support for <b>all</b> architectures supported by Capstone. For example: </p><div class="fragment"><div class="line">set DISASM_ARCH_LIST=ARM ARM64 X86</div>
 </div><!-- fragment --><p>will produce a Capstone binary that supports the following architectures: ARM, ARM64 and x86.</p>
-<h2><a class="anchor" id="autotoc_md209"></a>
+<h2><a class="anchor" id="autotoc_md214"></a>
 Features customization</h2>
 <p>Capstone has a list of features that can be controlled when needed. Each feature is controlled through setting a variable from the following list:</p>
 <ul>
@@ -192,7 +192,7 @@ Features customization</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jan 14 2024 18:53:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Feb 10 2024 12:28:46 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.9</span>
+								&#160;<span id="projectnumber">8193.36.10</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,18 +105,18 @@ $(document).ready(function(){initNavTree('group__feat.html',''); initResizable()
 <div class="contents">
 
 
-<h3><a id="feat"></a>Readme</h3><div class="textblock">This plugin allows for the builder to define many traits for feats.<h2><a class="anchor" id="autotoc_md427"></a>
+<h3><a id="feat"></a>Readme</h3><div class="textblock">This plugin allows for the builder to define many traits for feats.<h2><a class="anchor" id="autotoc_md432"></a>
 Environmental Variables</h2>
 <ul>
 <li><code>NWNX_FEAT_SHOW_EFFECT_ICON</code> - Helpful when debugging, this shows the effect's icon (the red and green squares). Some builders may even wish this permanently.</li>
 <li><code>NWNX_FEAT_CUSTOM_SPELL_ID</code> - A custom spell id given to all effects created by this plugin.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md428"></a>
+<h2><a class="anchor" id="autotoc_md433"></a>
 Setup</h2>
 <p>Adding new feats is beyond the scope of this documentation. The builder should know how to add new feats by adding a new entry in the <code>feat.2da</code> as well as adding the appropriate TLK reference identifiers for that new feat then adjusting the appropriate columns for that feat.</p>
 <p>Once your feat has been added (or it's also fine to modify existing feats) builders run the <a class="el" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c" title="Sets a feat modifier.">NWNX_Feat_SetFeatModifier()</a> as illustrated below. The builder can use as many modifiers as they wish for one feat including the same modifiers with different parameters.</p>
 <p>The <b>NWNX_Feat plugin does not provide modifications to skill ranks</b>, use the NWNX_SkillRanks plugin for changing those.</p>
-<h3><a class="anchor" id="autotoc_md429"></a>
+<h3><a class="anchor" id="autotoc_md434"></a>
 The 2da Method</h3>
 <p>To use the 2da method, the builder must create a new column at the end of the <code>feat.2da</code> named <b>FeatModsTable</b>. This column should then be populated with a string value that references another 2da file in which we will define our feat modifiers. Once that is done the builder needs to <b>include nwnx_feat_2da and make sure to run <code><a class="el" href="group__feat.html#gac9f962b68e39727e913c3b3c92b4058e" title="Loops through feat.2da and checks for the column for feat modifications and sets them.">NWNX_Feat_LoadFeatModifiers()</a></code> in their OnModuleLoad script</b>.</p>
 <p>For example, we've inserted a new feat called <b>Fireproof</b> into <code>feat.2da</code> at line 1200. In the <code>FeatModsTable</code> column we enter <b>FEATMOD_FIREPRF</b> (Remember maximum 16 characters, case insensitive)</p>
@@ -127,7 +127,7 @@ The 2da Method</h3>
 <div class="line">0   SaveVsFire                  SAVEVSTYPE      0       7       2       ****</div>
 <div class="line">1   FireResist                  DMGRESIST       256     10      ****    ****</div>
 <div class="line">2   CombustImmunity             SPELLIMMUNITY   518     ****    ****    ****</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md430"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md435"></a>
 Feat Modifiers</h2>
 <p>These commands should be ran <code>on_module_load</code>.</p>
 <ul>
@@ -162,64 +162,64 @@ Feat Modifiers</h2>
 <li><a href="#visualeffect">VISUALEFFECT</a></li>
 </ul>
 <hr  />
-<h3><a class="anchor" id="autotoc_md431"></a>
+<h3><a class="anchor" id="autotoc_md436"></a>
 AB</h3>
 <p>The <code>AB</code> entry is used to modify an attack bonus. Note: this is not a change to the base attack bonus, it's added on top of that.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md432"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md437"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga80583e6668b92e91464d05a06be108f5">NWNX_FEAT_MODIFIER_AB</a>, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md433"></a>
+ <h3><a class="anchor" id="autotoc_md438"></a>
 ABILITY</h3>
 <p>The <code>ABILITY</code> entry is used to modify an ability bonus.</p>
 <ul>
 <li>Param1 = ABILITY_ constant</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md434"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md439"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga310df9b0fd359e4e6da7432302b7b743">NWNX_FEAT_MODIFIER_ABILITY</a>, ABILITY_STRENGTH, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md435"></a>
+ <h3><a class="anchor" id="autotoc_md440"></a>
 ABVSRACE</h3>
 <p>The <code>ABVSRACE</code> entry is used to modify the attack bonus versus another race.</p>
 <ul>
 <li>Param1 = Racial ID from racialtypes.2da</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md436"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md441"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga356b6db301b6a91488b16feb88632102">NWNX_FEAT_MODIFIER_ABVSRACE</a>, RACIAL_TYPE_DRAGON, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md437"></a>
+ <h3><a class="anchor" id="autotoc_md442"></a>
 AC</h3>
 <p>The <code>AC</code> entry is used to modify the base AC.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md438"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md443"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga74662062e826877cd9a1973e030d98ad">NWNX_FEAT_MODIFIER_AC</a>, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md439"></a>
+ <h3><a class="anchor" id="autotoc_md444"></a>
 ACVSRACE</h3>
 <p>The <code>ACVSRACE</code> entry is used to modify the base AC versus another race.</p>
 <ul>
 <li>Param1 = Racial ID from racialtypes.2da</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md440"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md445"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga4ce6d77a7747c0324247d96cdef95b88">NWNX_FEAT_MODIFIER_ACVSRACE</a>, RACIAL_TYPE_DRAGON, 4);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md441"></a>
+ <h3><a class="anchor" id="autotoc_md446"></a>
 ARCANESPELLFAILURE</h3>
 <p>The <code>ARCANESPELLFAILURE</code> can modify the arcane spell failure for the creature.</p>
 <ul>
 <li>Param1 = The percentage change to their failure (-100/+100)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md442"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md447"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga64ba3e21fe509a96305d5a5c077e1db7">NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE</a>, -30);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md443"></a>
+ <h3><a class="anchor" id="autotoc_md448"></a>
 BONUSSPELL</h3>
 <p>The <code>BONUSSPELL</code> entry is used to grant additional spell slots to a class at a level. Param1 is the Class constant ID, param2 is the level and param3 is the amount of spells gained.</p>
 <ul>
@@ -227,110 +227,110 @@ BONUSSPELL</h3>
 <li>Param2 = The spell level (0-9)</li>
 <li>Param3 = Amount of bonus spells (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md444"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md449"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga987ff2851bd0a82928827661eed63e8c">NWNX_FEAT_MODIFIER_BONUSSPELL</a>, CLASS_TYPE_CLERIC, 9, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md445"></a>
+ <h3><a class="anchor" id="autotoc_md450"></a>
 CONCEALMENT</h3>
 <p>The <code>CONCEALMENT</code> entry is used to grant an innate concealment.</p>
 <ul>
 <li>Param1 = Modifier value (1-100)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md446"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md451"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga142085a49f08ec20a435d6d1afac7bb8">NWNX_FEAT_MODIFIER_CONCEALMENT</a>, 30);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md447"></a>
+ <h3><a class="anchor" id="autotoc_md452"></a>
 DAMAGE</h3>
 <p>The <code>DAMAGE</code> entry gives a damage increase or decrease, as per the EffectDamageIncrease(/Decrease) effect</p>
 <ul>
 <li>Param1 = The damage type. Must be a single DAMAGE_TYPE_* constant per-call, although you can do multiple calls on the same feat to add further damage types</li>
 <li>Param2 = DAMAGE_BONUS_* constant group, from iprp_damagecost.2da. Negative values result in a DamageDecrease, including relevent limitations of that Effect.</li>
 </ul>
-<p><a class="anchor" id="autotoc_md448"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md453"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gac4304aba0b53c25cafb717b97b58a23a">NWNX_FEAT_MODIFIER_DAMAGE</a>, DAMAGE_TYPE_FIRE, 10); <span class="comment">//2d6 Fire Damage</span></div>
 <div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gac4304aba0b53c25cafb717b97b58a23a">NWNX_FEAT_MODIFIER_DAMAGE</a>, DAMAGE_TYPE_COLD, 5); <span class="comment">//Additionally +5 Cold damage</span></div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md449"></a>
+ <h3><a class="anchor" id="autotoc_md454"></a>
 DMGREDUCTION</h3>
 <p>The <code>DMGREDUCTION</code> entry gives an innate damage reduction</p>
 <ul>
 <li>Param1 = Points to soak (+)</li>
 <li>Param2 = Level of soak (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md450"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md455"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga6c74ed4ba3c8d382da00591cb5c3b6bf">NWNX_FEAT_MODIFIER_DMGREDUCTION</a>, 5, 5);</div>
 <div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga6c74ed4ba3c8d382da00591cb5c3b6bf">NWNX_FEAT_MODIFIER_DMGREDUCTION</a>, 10, 4);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md451"></a>
+ <h3><a class="anchor" id="autotoc_md456"></a>
 DMGRESIST</h3>
 <p>The <code>DMGRESIST</code> entry gives an innate resistance to damage types</p>
 <ul>
 <li>Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.</li>
 <li>Param2 = Points to resist (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md452"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md457"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga97621406c4b6ef5ef134d80898dfb3ac">NWNX_FEAT_MODIFIER_DMGRESIST</a>, DAMAGE_TYPE_FIRE, 10);</div>
 <div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga97621406c4b6ef5ef134d80898dfb3ac">NWNX_FEAT_MODIFIER_DMGRESIST</a>, DAMAGE_TYPE_FIRE &amp; DAMAGE_TYPE_COLD, 5);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md453"></a>
+ <h3><a class="anchor" id="autotoc_md458"></a>
 DMGIMMUNITY</h3>
 <p>The <code>DMGIMMUNITY</code> entry gives an innate immunity to damage types</p>
 <ul>
 <li>Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.</li>
 <li>Param2 = Percentage to resist (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md454"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md459"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gabed05be976f7ae0d94d54ccb8ef0cb64">NWNX_FEAT_MODIFIER_DMGIMMUNITY</a>, DAMAGE_TYPE_FIRE, 100);</div>
 <div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gabed05be976f7ae0d94d54ccb8ef0cb64">NWNX_FEAT_MODIFIER_DMGIMMUNITY</a>, DAMAGE_TYPE_ACID, -50);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md455"></a>
+ <h3><a class="anchor" id="autotoc_md460"></a>
 HASTE</h3>
 <p>The <code>HASTE</code> entry is used to grant haste.</p>
 <ul>
 <li>No parameters required</li>
 </ul>
-<p><a class="anchor" id="autotoc_md456"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md461"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gac912c96649b21da8f4a9a25bffe3cdb6">NWNX_FEAT_MODIFIER_HASTE</a>);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md457"></a>
+ <h3><a class="anchor" id="autotoc_md462"></a>
 IMMUNITY</h3>
 <p>The <code>IMMUNITY</code> entry is used to grant a total immunity to a variety of effects.</p>
 <ul>
 <li>Param1 = The IMMUNITY_TYPE_ constant value</li>
 </ul>
-<p><a class="anchor" id="autotoc_md458"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md463"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gacf08763fb7d5d0cfc0862950c2ad2185">NWNX_FEAT_MODIFIER_IMMUNITY</a>, IMMUNITY_TYPE_FEAR);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md459"></a>
+ <h3><a class="anchor" id="autotoc_md464"></a>
 MOVEMENTSPEED</h3>
 <p>The <code>MOVEMENTSPEED</code> can modify the speed by default.</p>
 <ul>
 <li>Param1 = The percentage change to their speed (-99/+99)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md460"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md465"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga83fa375fd5bb24351be78474f117535a">NWNX_FEAT_MODIFIER_MOVEMENTSPEED</a>, 33);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md461"></a>
+ <h3><a class="anchor" id="autotoc_md466"></a>
 REGENERATION</h3>
 <p>The <code>REGENERATION</code> entry is used to grant innate regeneration.</p>
 <ul>
 <li>Param1 = How many hitpoints to increase (+)</li>
 <li>Param2 = How often in seconds to increase the hitpoints (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md462"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md467"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gaa5d7ada1ec5678b61b8c002b2a0286e0">NWNX_FEAT_MODIFIER_REGENERATION</a>, 2, 6);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md463"></a>
+ <h3><a class="anchor" id="autotoc_md468"></a>
 SAVE</h3>
 <p>The <code>SAVE</code> entry is used to modify base save values.</p>
 <ul>
 <li>Param1 = 0-3 meaning SAVING_THROW_ALL, SAVING_THROW_FORT, SAVING_THROW_REFLEX or SAVING_THROW_WILL</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md464"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md469"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gad94641c668e4def8a48b6b9765d4ee54">NWNX_FEAT_MODIFIER_SAVE</a>, SAVING_THROW_FORT, -2);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md465"></a>
+ <h3><a class="anchor" id="autotoc_md470"></a>
 SAVEVSRACE</h3>
 <p>The <code>SAVEVSRACE</code> entry is used to modify base save values vs a specific race. Param1 is the Save constant ID and param2 is the target race constant ID and param3 is the modifier.</p>
 <ul>
@@ -338,10 +338,10 @@ SAVEVSRACE</h3>
 <li>Param2 = Racial ID from racialtypes.2da</li>
 <li>Param3 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md466"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md471"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga71f4ce98f3216af1280ecdb97332cc33">NWNX_FEAT_MODIFIER_SAVEVSRACE</a>, SAVING_THROW_ALL, RACIAL_TYPE_UNDEAD, 5);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md467"></a>
+ <h3><a class="anchor" id="autotoc_md472"></a>
 SAVEVSTYPE</h3>
 <p>The <code>SAVEVSTYPE</code> entry is used to modify base save values vs a specific type. Param1 is the Save constant ID and param2 is the Saving Throw Type constant ID and param3 is the modifier.</p>
 <ul>
@@ -349,10 +349,10 @@ SAVEVSTYPE</h3>
 <li>Param2 = A SAVING_THROW_TYPE_ constant</li>
 <li>Param3 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md468"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md473"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gadaf0bec7afb6290e66dada8cb5eec8b6">NWNX_FEAT_MODIFIER_SAVEVSTYPE</a>, SAVING_THROW_REFLEX, SAVING_THROW_TYPE_TRAP, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md469"></a>
+ <h3><a class="anchor" id="autotoc_md474"></a>
 SAVEVSTYPERACE</h3>
 <p>The <code>SAVEVSTYPERACE</code> entry is used to modify base save values vs a specific type versus a specific race. Param1 is the Save constant ID and param2 is the Saving Throw Type constant ID and param3 is the Racial Type constant ID and param4 is the modifier.</p>
 <ul>
@@ -361,35 +361,35 @@ SAVEVSTYPERACE</h3>
 <li>Param3 = A RACIAL_TYPE_ constant</li>
 <li>Param4 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md470"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md475"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gadaf0bec7afb6290e66dada8cb5eec8b6">NWNX_FEAT_MODIFIER_SAVEVSTYPE</a>, SAVING_THROW_ALL, SAVING_THROW_TYPE_SPELLS, RACIAL_TYPE_DRAGON, 3);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md471"></a>
+ <h3><a class="anchor" id="autotoc_md476"></a>
 SEEINVISIBLE</h3>
 <p>The <code>SEEINVISIBLE</code> entry is used to grant See Invisibility.</p>
 <ul>
 <li>No parameters required</li>
 </ul>
-<p><a class="anchor" id="autotoc_md472"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md477"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga69e0fc35546e3ff5d60a5bfb515f2611">NWNX_FEAT_MODIFIER_SEEINVISIBLE</a>);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md473"></a>
+ <h3><a class="anchor" id="autotoc_md478"></a>
 SPELLIMMUNITY</h3>
 <p>The <code>SPELLIMMUNITY</code> entry is used to grant a total immunity to specific spells. Note: Only spells that can be resisted can have immunities.</p>
-<p><a class="anchor" id="autotoc_md474"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md479"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gab42c4220aff312900e04fa857da054b1">NWNX_FEAT_MODIFIER_SPELLIMMUNITY</a>, SPELL_HORRID_WILTING);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md475"></a>
+ <h3><a class="anchor" id="autotoc_md480"></a>
 SRCHARGEN</h3>
 <p>The <code>SRCHARGEN</code> entry is used to award a default spell resistance on character creation.</p>
 <ul>
 <li>Param1 = Modifier value (+)</li>
 <li>Param2 (Optional) = Maximum value all Spell Resistance racial values can reach</li>
 </ul>
-<p><a class="anchor" id="autotoc_md476"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md481"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gafa4840505da14ddfe1e8886b3efc21f6">NWNX_FEAT_MODIFIER_SRCHARGEN</a>, 10, 36);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md477"></a>
+ <h3><a class="anchor" id="autotoc_md482"></a>
 SRINCLEVEL</h3>
 <p>The <code>SRINCLEVEL</code> entry is used to award a spell resistance racial bonus as the creature's level increases.</p>
 <ul>
@@ -397,63 +397,63 @@ SRINCLEVEL</h3>
 <li>Param2 = Level per increment (+)</li>
 <li>Param3 = Level at which the incremental gains begin (+)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md478"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md483"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gaa0294918b468359a753751a8af0c78cb">NWNX_FEAT_MODIFIER_SRINCLEVEL</a>, 1, 1, 6);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md479"></a>
+ <h3><a class="anchor" id="autotoc_md484"></a>
 SPELLSAVEDC</h3>
 <p>The <code>SPELLSAVEDC</code> entry is used to modify a creature's spell DCs.</p>
 <ul>
 <li>Param1 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md480"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md485"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga8fbc4e3fcb4b11221f8d1eb88f2e6100">NWNX_FEAT_MODIFIER_SPELLSAVEDC</a>, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md481"></a>
+ <h3><a class="anchor" id="autotoc_md486"></a>
 SPELLSAVEDCFORSCHOOL</h3>
 <p>The <code>SPELLSAVEDCFORSCHOOL</code> entry is used to modify a creature's spell DCs for a spell school.</p>
 <ul>
 <li>Param1 = A SPELL_SCHOOL_ constant</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md482"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md487"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga179f6a354a9753bcf70f0c20894ae82e">NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL</a>, SPELL_SCHOOL_ILLUSION, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md483"></a>
+ <h3><a class="anchor" id="autotoc_md488"></a>
 SPELLSAVEDCFORSPELL</h3>
 <p>The <code>SPELLSAVEDCFORSPELL</code> entry is used to modify a creature's spell DCs for an individual spell.</p>
 <ul>
 <li>Param1 = A SPELL_ constant</li>
 <li>Param2 = Modifier value (+/-)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md484"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md489"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gae56723de98fa8920d489fdb4c5cf7e67">NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL</a>, SPELL_PHANTASMAL_KILLER, 1);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md485"></a>
+ <h3><a class="anchor" id="autotoc_md490"></a>
 TRUESEEING</h3>
 <p>The <code>TRUESEEING</code> entry is used to grant True Seeing.</p>
 <ul>
 <li>No parameters required</li>
 </ul>
-<p><a class="anchor" id="autotoc_md486"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md491"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga2330652ba535628c66ddf6b81f0dc726">NWNX_FEAT_MODIFIER_TRUESEEING</a>);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md487"></a>
+ <h3><a class="anchor" id="autotoc_md492"></a>
 ULTRAVISION</h3>
 <p>The <code>ULTRAVISION</code> entry is used to grant Ultravision.</p>
 <ul>
 <li>No parameters required</li>
 </ul>
-<p><a class="anchor" id="autotoc_md488"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md493"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#gaf8b61065da94987f818070827068e625">NWNX_FEAT_MODIFIER_ULTRAVISION</a>);</div>
 </div><!-- fragment --><hr  />
- <h3><a class="anchor" id="autotoc_md489"></a>
+ <h3><a class="anchor" id="autotoc_md494"></a>
 VISUALEFFECT</h3>
 <p>The <code>VISUALEFFECT</code> entry is used to grant a Visual Effect to the feat holder.</p>
 <ul>
 <li>Param1 = The visual effect constant from visualeffects.2da (Duration Effects)</li>
 </ul>
-<p><a class="anchor" id="autotoc_md490"></a></p><h5>Example script on_module_load</h5>
+<p><a class="anchor" id="autotoc_md495"></a></p><h5>Example script on_module_load</h5>
 <div class="fragment"><div class="line"><a class="code" href="group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c">NWNX_Feat_SetFeatModifier</a>(2150, <a class="code" href="group__feat.html#ga874747e1595f185ee027e4dd7ed6eb87">NWNX_FEAT_MODIFIER_VISUALEFFECT</a>, VFX_DUR_GLOW_BLUE);</div>
 </div><!-- fragment --> </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
@@ -1131,7 +1131,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jan 14 2024 18:53:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Feb 10 2024 12:28:47 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

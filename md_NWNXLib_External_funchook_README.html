@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.9</span>
+								&#160;<span id="projectnumber">8193.36.10</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -110,25 +110,25 @@ $(document).ready(function(){initNavTree('md_NWNXLib_External_funchook_README.ht
 <p>On arm64</p><ul>
 <li><a href="https://github.com/aquynh/capstone">capstone</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md211"></a>
+<h1><a class="anchor" id="autotoc_md216"></a>
 TODO</h1>
 <ul>
 <li>write documents.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md212"></a>
+<h1><a class="anchor" id="autotoc_md217"></a>
 News</h1>
-<h2><a class="anchor" id="autotoc_md213"></a>
+<h2><a class="anchor" id="autotoc_md218"></a>
 2.0.0 (20XX-XX-XX)</h2>
 <ul>
 <li>Add <code>funchook_prepare_with_params()</code> to support prehook.</li>
 <li>Add <code>funchook_get_arg()</code> to get arguments in prehook.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h2><a class="anchor" id="autotoc_md219"></a>
 1.1.2 (2023-03-12)</h2>
 <ul>
 <li>Experimental support for Windows arm64</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md215"></a>
+<h2><a class="anchor" id="autotoc_md220"></a>
 1.1.1 (2022-10-02)</h2>
 <ul>
 <li>More permissive check for page allocation mmap (<a href="https://github.com/kubo/funchook/pull/25">#25</a>)</li>
@@ -153,7 +153,7 @@ News</h1>
 </li>
 <li>Fix tests on Android (<a href="https://github.com/kubo/funchook/pull/29">#29</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md221"></a>
 1.1.0 (2020-03-22)</h2>
 <ul>
 <li>Arm64 Linux support. <a href="https://github.com/aquynh/capstone">capstone</a> is used as the disassembler library on arm64.</li>
@@ -161,13 +161,13 @@ News</h1>
 <li><code>extern "C"</code> was added in funchook.h for C++. (<a href="https://github.com/kubo/funchook/issues/15">#15</a>)</li>
 <li>Libc-compatible functions were removed to simplify code.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md217"></a>
+<h2><a class="anchor" id="autotoc_md222"></a>
 1.0.0 (2020-01-19)</h2>
 <ul>
 <li><a href="https://github.com/gdabah/distorm/">diStorm3</a> is used as the disassembler library.</li>
 <li>Libc-compatible functions were implemented on Linux in order not to hook function calls issued by funchook itself.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md218"></a>
+<h1><a class="anchor" id="autotoc_md223"></a>
 Supported Platforms</h1>
 <ul>
 <li>Linux x86_64</li>
@@ -179,22 +179,22 @@ Supported Platforms</h1>
 </ul>
 <p>*1 <a href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mprotect.2.html"><code>mprotect</code></a> fails with EACCES. <br  />
 </p>
-<h1><a class="anchor" id="autotoc_md219"></a>
+<h1><a class="anchor" id="autotoc_md224"></a>
 Tested Platforms</h1>
 <p>Tested on some versions. Not tested in CI.</p>
 <ul>
 <li>Windows arm64 (version 1.1.2)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md220"></a>
+<h1><a class="anchor" id="autotoc_md225"></a>
 Unsupported Platforms</h1>
 <ul>
 <li>macOS arm64 (*1)</li>
 <li>x64/x86 emulation for Windows arm64</li>
 </ul>
 <p>*1 I received a mail that <a href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mprotect.2.html"><code>mprotect</code></a> failed with <code>EINVAL</code>. Apple seems to prevent executable memory regions from being writable.</p>
-<h1><a class="anchor" id="autotoc_md221"></a>
+<h1><a class="anchor" id="autotoc_md226"></a>
 Compilation and installation</h1>
-<h2><a class="anchor" id="autotoc_md222"></a>
+<h2><a class="anchor" id="autotoc_md227"></a>
 Unix</h2>
 <div class="fragment"><div class="line">$ git clone --recursive https://github.com/kubo/funchook.git</div>
 <div class="line">$ mkdir build</div>
@@ -214,7 +214,7 @@ Unix</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md223"></a>
+<h2><a class="anchor" id="autotoc_md228"></a>
 Windows</h2>
 <p>Here is an example to compile funchook with Visual Studio 2017 Win64. Change the argument of <code>-G</code> to use other compilers.</p>
 <div class="fragment"><div class="line">$ git clone --recursive https://github.com/kubo/funchook.git</div>
@@ -235,7 +235,7 @@ Windows</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md224"></a>
+<h1><a class="anchor" id="autotoc_md229"></a>
 Example</h1>
 <div class="fragment"><div class="line"><span class="keyword">static</span> ssize_t (*send_func)(<span class="keywordtype">int</span> sockfd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> flags);</div>
 <div class="line"><span class="keyword">static</span> ssize_t (*recv_func)(<span class="keywordtype">int</span> sockfd, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> flags);</div>
@@ -293,7 +293,7 @@ Example</h1>
 <div class="line">       ...</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md225"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
 Example - Using Python ctypes</h1>
 <div class="fragment"><div class="line"># should work on python 2.7/3 windows/linux</div>
 <div class="line"> </div>
@@ -340,7 +340,7 @@ Example - Using Python ctypes</h1>
 <div class="line">assert not ret, &#39;ret is &#39; + str(ret)</div>
 <div class="line">orig_write = hook_type.from_address(ctypes.addressof(orig_write_ptr))</div>
 <div class="line">PySys_WriteStdout(b&#39;hi there\n&#39;)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md226"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md231"></a>
 License</h1>
 <p>GPLv2 or later with a <a href="https://en.wikipedia.org/wiki/GPL_linking_exception">GPL linking exception</a>.</p>
 <p>You can use funchook in any software. Though funchook is licensed under the GPL, it doesn't affect outside of funchook due to the linking exception. You have no need to open your souce code under the GPL except funchook itself.</p>
@@ -353,7 +353,7 @@ License</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jan 14 2024 18:53:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Feb 10 2024 12:28:46 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
