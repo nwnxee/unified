@@ -43,7 +43,6 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
 | `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
-| `NWNX_TWEAKS_FIX_RESOLVE_SPECIAL_ATTACK_DAMAGE` | true or false | Stops damage from being resolved when a special attack misses. |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Casts all On Hit: Cast Spell item properties on hit, instead of only the first property. |

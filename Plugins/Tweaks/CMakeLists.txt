@@ -14,7 +14,6 @@ add_plugin(Tweaks
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixItemNullptrInCItemRepository.cpp"
-    "FixResolveSpecialAttackDamage.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
