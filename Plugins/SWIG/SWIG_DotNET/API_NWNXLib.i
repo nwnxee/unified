@@ -194,9 +194,7 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %template(CExoLinkedListCResRef) CExoLinkedList<CResRef>;
 %template(CExoLinkedListCServerAIEventNode) CExoLinkedList<CServerAIEventNode>;
 %template(CExoLinkedListEXOLOCSTRING) CExoLinkedList<EXOLOCSTRING>;
-%template(CExoLinkedListNWAreaExpansion) CExoLinkedList<NWAREAEXPANSION>;
 %template(CExoLinkedListNWModuleCutscene) CExoLinkedList<NWMODULECUTSCENE>;
-%template(CExoLinkedListNWModuleExpansion) CExoLinkedList<NWMODULEEXPANSION>;
 %template(CExoLinkedListNWPlayerListItem) CExoLinkedList<NWPLAYERLISTITEM>;
 %template(CExoLinkedListObjectId) CExoLinkedList<OBJECT_ID>;
 
@@ -294,7 +292,6 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
 %template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
 %template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
-%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
 %template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
 %template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
 %template(CExoArrayListUInt32) CExoArrayList<uint32_t>;

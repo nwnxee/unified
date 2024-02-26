@@ -185,7 +185,6 @@ struct CServerExoApp : CBaseExoApp
     void SetGameSpyEnabled(BOOL b);
     BOOL GetGameSpyEnabled();
     BOOL StripColorTokens(CExoString & sInput);
-    void AddSubNetProfileSendSize(uint32_t nPlayerID, uint32_t nSize);
     BOOL GetCreatureDeathLogging();
     void SetCreatureDeathLogging(BOOL );
     BOOL GetHeartBeatLogging();
