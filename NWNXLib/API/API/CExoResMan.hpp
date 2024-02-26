@@ -24,7 +24,7 @@ struct CKeyTableEntry;
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
-
+typedef bool (*ResourceAccessCheckFn)(CExoKeyTable*, const CResRef&, RESTYPE);
 
 struct CExoResMan
 {
@@ -50,7 +50,7 @@ struct CExoResMan
     void SetupDefaultSearchPath();
     BOOL AddEncapsulatedResourceFile(const CExoString & sName, uint32_t nPriority);
     BOOL AddFixedKeyTableFile(const CExoString & sName, uint32_t nPriority = (1*1000000));
-    BOOL AddResourceDirectory(const CExoString & sName, uint32_t nPriority, BOOL bDetectChanges = false);
+    BOOL AddResourceDirectory(const CExoString & sName, uint32_t nPriority, BOOL bDetectChanges = false, const ResourceAccessCheckFn accessCheck = nullptr);
     BOOL AddManifest(const Hash::SHA1 & manifestHash, uint32_t nPriority);
     void DumpAll();
     void DumpAllOfType(RESTYPE nType);
@@ -91,7 +91,7 @@ struct CExoResMan
     int32_t GetTableCount(CRes * pRes, BOOL bCountStatic);
     BOOL GetIsStaticType(RESTYPE nType);
     void RemoveFromToBeFreedList(CRes * pRes);
-    BOOL AddKeyTable(uint32_t nPriority, const CExoString & sName, uint32_t nTableType, BOOL bDetectChanges = false);
+    BOOL AddKeyTable(uint32_t nPriority, const CExoString & sName, uint32_t nTableType, BOOL bDetectChanges = false, const ResourceAccessCheckFn accessCheck = nullptr);
     BOOL RemoveKeyTable(const CExoString & sName, uint32_t nTableType, BOOL bEmitWarningOnFailure = true);
     size_t CountKeyTablesOf(int32_t type, const CExoString & sName = "");
     void AddOverride(const CResRef & oldname, const CResRef & newname, RESTYPE restype);
