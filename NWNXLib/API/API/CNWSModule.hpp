@@ -14,7 +14,6 @@
 #include "CResRef.hpp"
 #include "CWorldJournalEntry.hpp"
 #include "NWMODULECUTSCENE.hpp"
-#include "NWMODULEEXPANSION.hpp"
 #include "NWPLAYERLISTITEM.hpp"
 #include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
@@ -50,7 +49,6 @@ typedef uint32_t STRREF;
 
 struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
 {
-    CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
     CExoLinkedList<NWMODULECUTSCENE> m_lstModuleCutScene;
     CExoLinkedList<CResRef> m_lstModuleArea;
     CExoArrayList<OBJECT_ID> m_lstModuleAreaID;

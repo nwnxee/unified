@@ -30,7 +30,7 @@ void TURDByCDKey()
             {
                 if (auto *pPlayerInfo = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID))
                 {
-                    return pPlayerInfo->m_lstKeys[0].sPublic;
+                    return pPlayerInfo->m_cCDKey.sPublic;
                 }
 
                 return CExoString("");

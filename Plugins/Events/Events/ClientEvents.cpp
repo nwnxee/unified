@@ -127,7 +127,7 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
 
     std::string playerName = pPlayerInfo->m_sPlayerName.CStr();
-    std::string cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+    std::string cdKey = pPlayerInfo->m_cCDKey.sPublic.CStr();
     std::string isDM = std::to_string(pPlayerInfo->m_bGameMasterPrivileges);
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
     std::string versionMajor = std::to_string(pPlayerInfo->m_nBuildVersion);
