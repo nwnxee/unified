@@ -134,7 +134,7 @@ static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
                         pArea->m_nHeight = tileOverride->second.height;
                         pArea->m_nWidth = tileOverride->second.width;
                         pArea->m_refTileSet = tileOverride->second.tileset;
-                        pArea->m_pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileOverride->second.tileset));
+                        pArea->m_pTileSet = Globals::AppManager()->m_pNWTileSetManager->GetTileSet(CResRef(tileOverride->second.tileset));
 
                         if (!pArea->m_pTileSet)
                         {
@@ -186,14 +186,13 @@ static CachedTileset* GetCachedTileset(const std::string& tileset)
         return &cachedTilesetIterator->second;
     }
 
-    auto *pTileset = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset));
+    auto *pTileset = Globals::AppManager()->m_pNWTileSetManager->GetTileSet(CResRef(tileset));
 
     if (!pTileset)
         return nullptr;
 
     if (!pTileset->m_pRes->Demand())
     {
-        Globals::AppManager()->m_pNWTileSetManager->UnregisterTileSet(pTileset);
         return nullptr;
     }
 
@@ -313,7 +312,6 @@ static CachedTileset* GetCachedTileset(const std::string& tileset)
 
     pTileset->m_pRes->Release();
     pTileset->m_pRes->Dump();
-    Globals::AppManager()->m_pNWTileSetManager->UnregisterTileSet(pTileset);
 
     auto it = s_CachedTilesets.emplace(tileset, cachedTileset);
 
