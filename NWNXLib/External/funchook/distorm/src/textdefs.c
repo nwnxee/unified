@@ -36,7 +36,7 @@ void str_hex(_WString* s, const uint8_t* buf, unsigned int len)
 		"d0d1d2d3d4d5d6d7d8d9dadbdcdddedf" \
 		"e0e1e2e3e4e5e6e7e8e9eaebecedeeef" \
 		"f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff";
-	
+
 	unsigned int i = 0;
 	/* Length is at least 1, enter loop. */
 	s->length = len * 2;

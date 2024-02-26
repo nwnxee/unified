@@ -170,15 +170,14 @@ namespace Nui::JSON {
     //using EventQueue = std::queue<Event>;
 }
 
-namespace NWSQLite {
-    using Database = void*;
-}
-
 template<typename T>
 struct SharedPtrEngineStructure
 {
     std::shared_ptr<T> m_shared;
     virtual ~SharedPtrEngineStructure() {}
+    virtual bool IsEmpty() const = 0;
+    virtual void Clear() = 0;
+    virtual void Unlink() = 0;
 };
 
 #define NWN_CLASS_EXTENSION_CGameObject \

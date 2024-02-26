@@ -238,7 +238,7 @@ int32_t HandlePlayerToServerDeviceHook(CNWSMessage *pMessage, CNWSPlayer *pPlaye
 
     int32_t oldValue = pPlayer->m_device_properties[property];
 
-    if (oldValue == 0)// Initial set happens on connect so no valid player character yet
+    if (!pPlayer->GetGameObject())// Initial set happens on connect so no valid player character yet
         return s_HandlePlayerToServerDeviceHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
 
     PushEventData("PROPERTY", property);

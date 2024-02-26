@@ -239,14 +239,14 @@ NWNX_EXPORT ArgumentStack DealDamage(ArgumentStack&& args)
             if (vDamage[k] > 0)
                 vDamage[k] = pTarget->DoDamageImmunity(pSource, vDamage[k], 1 << k, false, false);
             if (vDamage[k] > 0)
-                vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false);
+                vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false, false);
         }
 
         // apply DR (combine physical damage for this)
         vDamage[12] = vDamage[0] + vDamage[1] + vDamage[2];
         positive[12] = positive[0] || positive[1] || positive[2];
         if (vDamage[12] > 0)
-            vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false);
+            vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false, false);
 
         auto *pEffect = new CGameEffect(true);
         pEffect->m_nType = 38;

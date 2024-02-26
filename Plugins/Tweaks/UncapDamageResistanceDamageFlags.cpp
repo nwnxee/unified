@@ -1,6 +1,6 @@
 #include "nwnx.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CGameEffect.hpp"
 #include "API/CGameObject.hpp"
 
@@ -19,15 +19,18 @@ void UncapDamageResistanceDamageFlags()
     LOG_INFO("Damage flags for EffectDamageResistance will be uncapped.");
 
     static Hooks::Hook s_ExecuteCommandEffectDamageResistanceHook =
-            Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandEffectDamageResistance,
-    +[](CNWVirtualMachineCommands *thisPtr, int32_t, int32_t) -> int32_t
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandEffectDamageResistance,
+    +[](CNWSVirtualMachineCommands *thisPtr, int32_t, int32_t nParameters) -> int32_t
             {
                 auto *pVM = Globals::VirtualMachine();
-                int32_t nDamageFlags, nAmount, nLimit;
+                int32_t nDamageFlags, nAmount, nLimit, bRangedOnly = 0;
 
                 if (!pVM->StackPopInteger(&nDamageFlags) ||
                     !pVM->StackPopInteger(&nAmount) ||
                     !pVM->StackPopInteger(&nLimit))
+                    return Constants::VMError::StackUnderflow;
+
+                if (nParameters >= 4 && !pVM->StackPopInteger(&bRangedOnly))
                     return Constants::VMError::StackUnderflow;
 
                 if (nDamageFlags < 0)
@@ -40,6 +43,7 @@ void UncapDamageResistanceDamageFlags()
                 pEffect->SetInteger(0, nDamageFlags);
                 pEffect->SetInteger(1, nAmount);
                 pEffect->SetInteger(2, nLimit);
+                pEffect->SetInteger(3, bRangedOnly);
 
                 if (auto *pGO = Utils::GetGameObject(thisPtr->m_oidObjectRunScript))
                     pEffect->SetCreator(pGO->m_idSelf);

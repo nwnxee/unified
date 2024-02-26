@@ -21,7 +21,6 @@ struct CVirtualMachineStack
     int32_t m_nStackPointer;
     int32_t m_nBasePointer;
     int32_t m_nTotalSize;
-    char * m_pchStackTypes;
     StackElement * m_pStackNodes;
     CVirtualMachine * m_pVMachine;
 

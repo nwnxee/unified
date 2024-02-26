@@ -15,6 +15,8 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static bool s_bMinEquipLevelHooksInitialized = false;
+
 NWNX_EXPORT ArgumentStack SetWeight(ArgumentStack&& args)
 {
     if (auto *pItem = Utils::PopItem(args))
@@ -249,6 +251,7 @@ NWNX_EXPORT ArgumentStack RestoreItemAppearance(ArgumentStack&& args)
                 break;
             }
         }
+        pItem->m_nArmorValue = pItem->ComputeArmorClass();
     }
     else
     {
@@ -280,9 +283,9 @@ CItemRepository* GetObjectItemRepository(OBJECT_ID oidPossessor)
 
     switch (pPossessor->m_nObjectType)
     {
-        case Constants::ObjectType::Creature: 
+        case Constants::ObjectType::Creature:
             return Utils::AsNWSCreature(pPossessor)->m_pcItemRepository;
-        case Constants::ObjectType::Placeable: 
+        case Constants::ObjectType::Placeable:
             return Utils::AsNWSPlaceable(pPossessor)->m_pcItemRepository;
         case Constants::ObjectType::Item:
             return Utils::AsNWSItem(pPossessor)->m_pItemRepository;
@@ -306,7 +309,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                 oidRealItemPossessor = (pPossessor->m_nObjectType == Constants::ObjectType::Item) ? Utils::AsNWSItem(pPossessor)->m_oidPossessor : pPossessor->m_idSelf;
             }
             auto oidRealTargetPossessor = (pTarget->m_nObjectType == Constants::ObjectType::Item) ? Utils::AsNWSItem(pTarget)->m_oidPossessor : pTarget->m_idSelf;
-        
+
             // Is the item already on/in the target?
             if (oidRealItemPossessor == oidRealTargetPossessor)
             {
@@ -325,7 +328,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                 case Constants::ObjectType::Creature:
                 {
                     auto pTargetCreature = Utils::AsNWSCreature(pTarget);
-                    
+
                     uint8_t x, y;
                     if (!pTargetCreature->m_pcItemRepository->FindPosition(pItem, x, y))
                     {
@@ -349,7 +352,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                         LOG_DEBUG("NWNX_Item_MoveTo: Item does not fit in target placeable!");
                         return false;
                     }
-                    
+
                     pTargetPlaceable->AcquireItem(&pItem, pItem->m_oidPossessor, 0xFF, 0xFF, bSendFeedback);
                     break;
                 }
@@ -363,8 +366,8 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                     pTargetStore->AcquireItem(pItem, false, 0xFF, 0xFF);
 
                     // CNWSStore::AcquireItem doesn't remove the source item
-                    if (pOriginalOwnerRepository) 
-                        pOriginalOwnerRepository->RemoveItem(pItem); 
+                    if (pOriginalOwnerRepository)
+                        pOriginalOwnerRepository->RemoveItem(pItem);
                     else if (pItem->m_oidArea != Constants::OBJECT_INVALID)
                         pItem->RemoveFromArea();
 
@@ -391,7 +394,7 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                     if (!pTargetContainer->m_pItemRepository->FindPosition(pItem, x, y))
                     {
                         LOG_DEBUG("NWNX_Item_MoveTo: Item does not fit in target container!");
-                        
+
                         auto pOwnerCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidRealTargetPossessor));
                         if (pOwnerCreature)
                         {
@@ -406,8 +409,8 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
                     pTargetContainer->AcquireItem(&pItem, pItem->m_oidPossessor, 0xFF, 0xFF, bSendFeedback);
                     break;
                 }
-                
-                default: 
+
+                default:
                     LOG_ERROR("NWNX_Item_MoveTo: Invalid target object type!");
                     return false;
             }
@@ -417,4 +420,79 @@ NWNX_EXPORT ArgumentStack MoveTo(ArgumentStack&& args)
     }
 
     return false;
+}
+
+static void InitItemEquipLevelHook()
+{
+    static Hooks::Hook pGetMinEquipLevel_hook =
+        Hooks::HookFunction(&CNWSItem::GetMinEquipLevel, +[](CNWSItem *pThis) -> uint8_t
+        {
+            int32_t retVal;
+
+            if (auto minEquipOvr = pThis->nwnxGet<int32_t>("MINIMUM_EQUIP_LEVEL_OVERRIDE"))
+                retVal = minEquipOvr.value();
+            else
+                retVal = pGetMinEquipLevel_hook->CallOriginal<uint8_t>(pThis);
+
+            if (auto minEquipMod = pThis->nwnxGet<int32_t>("MINIMUM_EQUIP_LEVEL_MODIFIER"))
+                retVal = retVal + minEquipMod.value();
+
+            return std::clamp<uint8_t>(retVal, 1, 255);
+        }, Hooks::Order::Late);
+
+    s_bMinEquipLevelHooksInitialized = true;
+}
+
+NWNX_EXPORT ArgumentStack SetMinEquipLevelModifier(ArgumentStack&& args)
+{
+    if (!s_bMinEquipLevelHooksInitialized)
+        InitItemEquipLevelHook();
+
+    if (auto* pItem = Utils::PopItem(args))
+    {
+        const auto modifier = args.extract<int32_t>();
+        const bool persist = !!args.extract<int32_t>();
+
+        if (modifier)
+            pItem->nwnxSet("MINIMUM_EQUIP_LEVEL_MODIFIER", modifier, persist);
+        else
+            pItem->nwnxRemove("MINIMUM_EQUIP_LEVEL_MODIFIER");
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMinEquipLevelModifier(ArgumentStack&& args)
+{
+    if (auto* pItem = Utils::PopItem(args))
+    {
+        return pItem->nwnxGet<int32_t>("MINIMUM_EQUIP_LEVEL_MODIFIER").value_or(0);
+    }
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetMinEquipLevelOverride(ArgumentStack&& args)
+{
+    if (!s_bMinEquipLevelHooksInitialized)
+        InitItemEquipLevelHook();
+
+    if (auto* pItem = Utils::PopItem(args))
+    {
+        const auto modifier = args.extract<int32_t>();
+        const bool persist = !!args.extract<int32_t>();
+
+        if (modifier)
+            pItem->nwnxSet("MINIMUM_EQUIP_LEVEL_OVERRIDE", modifier, persist);
+        else
+            pItem->nwnxRemove("MINIMUM_EQUIP_LEVEL_OVERRIDE");
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMinEquipLevelOverride(ArgumentStack&& args)
+{
+    if (auto* pItem = Utils::PopItem(args))
+    {
+        return pItem->nwnxGet<int32_t>("MINIMUM_EQUIP_LEVEL_OVERRIDE").value_or(0);
+    }
+    return 0;
 }

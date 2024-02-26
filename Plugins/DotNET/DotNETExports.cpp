@@ -6,9 +6,10 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
 
+#include <csignal>
 #include <dlfcn.h>
 
 using namespace NWNXLib;
@@ -22,14 +23,16 @@ using RunScriptHandlerType = int (*)(const char*, uint32_t);
 using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 using SignalHandlerType = void (*)(const char*);
 using AssertHandlerType = void (*)(const char*, const char*);
+using CrashHandlerType = void (*)(int, const char*);
 
 struct AllHandlers
 {
-    MainLoopHandlerType  MainLoop;
-    RunScriptHandlerType RunScript;
-    ClosureHandlerType   Closure;
-    SignalHandlerType    SignalHandler;
-    AssertHandlerType    AssertHandler;
+    MainLoopHandlerType      MainLoop;
+    RunScriptHandlerType     RunScript;
+    ClosureHandlerType       Closure;
+    SignalHandlerType        SignalHandler;
+    AssertHandlerType        AssertHandler;
+    CrashHandlerType         CrashHandler;
 };
 static AllHandlers s_handlers;
 
@@ -53,6 +56,14 @@ static uintptr_t GetFunctionPointer(const char* name)
         LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
     dlclose(core);
     return ret;
+}
+
+void CrashHandler(int sig)
+{
+    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
+    s_handlers.CrashHandler(sig, stackTrace.c_str());
+    std::signal(SIGABRT, NULL);
+    std::abort();
 }
 
 static void RegisterHandlers(AllHandlers* handlers, unsigned size)
@@ -186,6 +197,15 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
                 }
             });
     }
+
+    if (s_handlers.CrashHandler)
+    {
+        LOG_DEBUG("Registered managed crash handler: %p", s_handlers.CrashHandler);
+        std::signal(SIGABRT, CrashHandler);
+        std::signal(SIGFPE, CrashHandler);
+        std::signal(SIGSEGV, CrashHandler);
+        std::signal(SIGILL, CrashHandler);
+    }
 }
 
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
@@ -207,7 +227,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 static void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
 
     int pushedCount = s_pushedCount;
     s_pushedCount = 0;
@@ -458,7 +478,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
+        auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
         LOG_DEBUG("Freeing game structure at 0x%x", ptr);
         cmd->DestroyGameDefinedStructure(structId, ptr);
     }

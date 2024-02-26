@@ -33,7 +33,6 @@ struct CResGFF : CRes
     uint32_t DATALAYOUTFIELD_GROWSIZE;
     uint32_t DATALAYOUTLIST_GROWSIZE;
     CResGFFFileHeader * m_pFileHeader;
-    uint8_t * m_pDDFileHeader;
     uint32_t m_nHeaderOffset;
     CResGFFStruct * m_pStruct;
     uint32_t m_nStructAllocated;

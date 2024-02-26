@@ -100,6 +100,31 @@ int NWNX_Item_GetMinEquipLevel(object oItem);
 /// @return TRUE if the item was successfully moved to the target, otherwise FALSE
 int NWNX_Item_MoveTo(object oItem, object oTarget, int bHideAllFeedback = FALSE);
 
+/// @brief Set a modifier to the Minimum Level to Equip (Item Level Restriction).
+/// @param oItem The item object.
+/// @param nModifier the modifier to apply (After any Override)
+/// @param bPersist Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning)
+/// @note This function (or override partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
+/// @warning if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
+void NWNX_Item_SetMinEquipLevelModifier(object oItem, int nModifier, int bPersist = TRUE);
+
+/// @brief Gets the applied modifier to the Minimum Level to Equip (Item Level Restriction).
+/// @param oItem The item object.
+int NWNX_Item_GetMinEquipLevelModifier(object oItem);
+
+/// @brief Set an override to the Minimum Level to Equip (Item Level Restriction).
+/// @param oItem The item object.
+/// @param nOverride the nOverride to apply (Before any Modifier)
+/// @param bPersist Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning)
+/// @note This function (or modifier partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
+/// @warning if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
+void NWNX_Item_SetMinEquipLevelOverride(object oItem, int nOverride, int bPersist = TRUE);
+
+/// @brief Gets the applied override to the Minimum Level to Equip (Item Level Restriction).
+/// @param oItem The item object.
+int NWNX_Item_GetMinEquipLevelOverride(object oItem);
+
+
 /// @}
 
 void NWNX_Item_SetWeight(object oItem, int w)
@@ -225,5 +250,47 @@ int NWNX_Item_MoveTo(object oItem, object oTarget, int bHideAllFeedback = FALSE)
 
     NWNX_CallFunction(NWNX_Item, sFunc);
 
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Item_SetMinEquipLevelModifier(object oItem, int nModifier, int bPersist = TRUE)
+{
+    string sFunc = "SetMinEquipLevelModifier";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nModifier);
+    NWNX_PushArgumentObject(oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetMinEquipLevelModifier(object oItem)
+{
+    string sFunc = "GetMinEquipLevelModifier";
+
+    NWNX_PushArgumentObject(oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
+void NWNX_Item_SetMinEquipLevelOverride(object oItem, int nOverride, int bPersist = TRUE)
+{
+    string sFunc = "SetMinEquipLevelOverride";
+
+    NWNX_PushArgumentInt(bPersist);
+    NWNX_PushArgumentInt(nOverride);
+    NWNX_PushArgumentObject(oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetMinEquipLevelOverride(object oItem)
+{
+    string sFunc = "GetMinEquipLevelOverride";
+
+    NWNX_PushArgumentObject(oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
     return NWNX_GetReturnValueInt();
 }

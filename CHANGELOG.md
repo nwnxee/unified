@@ -5,7 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
+https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.36.10
+https://github.com/nwnxee/unified/compare/build8193.36.9...build8193.36.10
+
+### Added
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
+
+##### New NWScript Functions
+- Util: CleanResourceDirectory()
+
+### Changed
+- NWNX_Item_RestoreItemAppearance() will now force an immediate update to the items AC, depending on new appearance.
+
+### Fixed
+- Weapon: fixed SetWeaponFinesseSize() clobbering the baseitems.2da values.
+
+## 8193.36.9
+https://github.com/nwnxee/unified/compare/build8193.36.8...build8193.36.9
+
+### Added
+- Optimizations: added `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` to cache scripts after first execution.
+
+## 8193.36.7
+https://github.com/nwnxee/unified/compare/build8193.35.40...build8193.36.7
 
 ### Added
 - Feat: added modifier `NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL` to modify a creature's spell DC for a spell school
@@ -13,9 +58,19 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Events: added event `NWNX_ON_SPELL_FAILED_{BEFORE|AFTER}` which fires when the casting of a spell did not finish for any reason.
 - Tweaks: added `NWNX_TWEAKS_FIX_AUTOMAP_CRASH` which fixes a server crash that happens when automap data is outdated for a player.
 - Events: added event `NWNX_ON_ATTACK_TARGET_CHANGE_{BEFORE|AFTER}` which fires when a creature changes its attack target.
+- Events: added `NWNX_ON_PLACEABLE_OPEN_{BEFORE|AFTER}` which fires when player opens a placeable.
+- Events: added `NWNX_ON_PLACEABLE_CLOSE_{BEFORE|AFTER}` which fires when player closes a placeable.
+- Events: added event `NWNX_ON_CREATURE_TILE_CHANGE_{BEFORE|AFTER}` which fires when a creature changes the tile it's on.
+- Tweaks: added `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` which will enable firing of the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events when a creature is first added to an area.
+- Events: added `NWNX_ON_CREATURE_JUMP_TO_POSITION_{BEFORE|AFTER}` which fires when a creature is being jumped to a new location (area + x/y/z coordinates).
+- Events: added `NWNX_ON_CREATURE_JUMP_TO_OBJECT_{BEFORE|AFTER}` which fires when a creature is being jumped to a new location (to an object).
+- Events: added skippable events `NWNX_ON_ITEMPROPERTY_EFFECT_(APPLIED|REMOVED)_*` which fire when the game applies or removes the effects from an itemproperty.
+- Tweaks: added `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` which makes the module OnPlayerEquipItem and OnPlayerUnEquipItem events fire for all creatures.
+- Tweaks: added `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` which fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick.
 
 ##### New Plugins
 - Resources: Adds `RESOURCES_*` variables for adding NWSync as a resource source, and specifying a replacement hak list.
+- NWSQLiteExtensions: Adds various extensions for the game's built-in sqlite databases.
 
 ##### New NWScript Functions
 - Object: GetLastSpellInstant()
@@ -25,20 +80,24 @@ https://github.com/nwnxee/unified/compare/build8193.35.40...HEAD
 - Util: GetModuleFile()
 - Creature: NWNX_Creature_GetMaxAttackRange()
 - Player: GetTURD()
+- Item: {Get|Set}MinEquipLevel{Modifier|Override}()
+- Util: UpdateClientObject()
 
 ### Changed
 - Creature: Added an argument for passing a class package to `NWNX_Creature_LevelUp()`
 - Player: Added arguments for passing transform data (scale, translation, rotation) to `NWNX_Player_ShowVisualEffect()` and `NWNX_Player_ApplyInstantVisualEffectToObject()`
 - Damage: The damage event now also fires for doors
-
-### Deprecated
-- N/A
+- Feat: Added the 'Damage'(Increase/Decrease) as an option
+- Object: GetInventoryItemCount() will also work on stores.
 
 ### Removed
-- N/A
+- Tweaks: `NWNX_TWEAKS_FIX_AUTOMAP_CRASH`, fixed in basegame.
+- Tweaks: `NWNX_TWEAKS_FIX_TURD_EFFECT_UNLINKING`, fixed in basegame.
 
 ### Fixed
 - Experimental: PlayerHitpointsAsPercentage: added the new argument nMessageLimit to SendServerToPlayerGameObjUpdate hook
+- Reveal: Fixed Reveal plugin always revealing all PCs regardless of plugin usage.
+- Area: RotateArea's 'NewOrientation' corrected for NWN bearings, correcting direction of objects within the area after 90 or 270 degree rotation.
 
 ## 8193.35.40
 https://github.com/nwnxee/unified/compare/build8193.35.37...build8193.35.40

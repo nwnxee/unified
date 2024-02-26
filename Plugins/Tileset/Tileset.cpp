@@ -7,7 +7,7 @@
 #include "API/CNWTileSet.hpp"
 #include "API/CNWSTile.hpp"
 #include "API/CNWTileData.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CAppManager.hpp"
 
 using namespace NWNXLib;
@@ -85,8 +85,8 @@ static bool s_CreatingArea = false;
 static std::string s_OriginalSourceAreaResRef;
 
 static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
-        &CNWVirtualMachineCommands::ExecuteCommandAreaManagement,
-        +[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
+        &CNWSVirtualMachineCommands::ExecuteCommandAreaManagement,
+        +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
         {
             if (nCommandId == Constants::VMCommand::CreateArea)
             {

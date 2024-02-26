@@ -18,7 +18,6 @@ typedef int BOOL;
 
 struct CNWTileData
 {
-    CExoLinkedList<CExoString> * m_pMethodStringList;
     CNWTileSurfaceMesh * m_pSurfaceMesh;
     CResRef m_refModel;
     CResRef m_refMapIcon;
@@ -34,8 +33,6 @@ struct CNWTileData
 
     CNWTileData();
     virtual ~CNWTileData();
-    BOOL AddPropertyMethodString(uint32_t nProperty, CExoString sMethodString);
-    CExoLinkedList<CExoString> * GetPropertyMethodStringList(uint32_t nProperty);
     CResRef GetModelResRef();
     void SetModelResRef(CResRef refModel);
     CResRef GetMapIcon();

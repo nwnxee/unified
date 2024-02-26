@@ -2,7 +2,7 @@
 
 #include "nwnx.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 
 #include <functional>
 #include <map>
@@ -16,11 +16,11 @@ public:
     NWNXCore();
     ~NWNXCore();
 
-    static int32_t GetVarHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t SetVarHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagEffectHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagItemPropertyHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t PlaySoundHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t GetVarHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t SetVarHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagEffectHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagItemPropertyHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t PlaySoundHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
 
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
@@ -42,6 +42,7 @@ private:
     std::unique_ptr<NWNXLib::Services::ServiceList> ConstructCoreServices();
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> ConstructProxyServices(const std::string& plugin);
 
+    void CleanupPreload();
     void ConfigureLogLevel(const std::string& plugin);
 
     void InitialSetupHooks();

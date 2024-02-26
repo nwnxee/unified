@@ -606,13 +606,13 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
         auto diceRoll = Globals::Rules()->RollDice(1, 20);
         auto mod = pStats->GetDEXMod(0);
         if (pStats->HasFeat(Feat::EpicSuperiorInitiative))
-            mod += Globals::Rules()->GetRulesetIntEntry("EPIC_SUPERIOR_INITIATIVE_BONUS", 8);
+            mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("EPIC_SUPERIOR_INITIATIVE_BONUS"), 8);
         else if (pStats->HasFeat(Feat::ImprovedInitiative))
-            mod += Globals::Rules()->GetRulesetIntEntry("IMPROVED_INITIATIVE_BONUS", 4);
+            mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("IMPROVED_INITIATIVE_BONUS"), 4);
         if (pStats->HasFeat(Feat::Blooded))
-            mod += Globals::Rules()->GetRulesetIntEntry("BLOODED_INITIATIVE_BONUS", 2);
+            mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("BLOODED_INITIATIVE_BONUS"), 2);
         if (pStats->HasFeat(Feat::Thug))
-            mod += Globals::Rules()->GetRulesetIntEntry("THUG_INITIATIVE_BONUS", 2);
+            mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("THUG_INITIATIVE_BONUS"), 2);
 
         // Add racial bonus
         auto nRace = pCreature->m_pStats->m_nRace;
@@ -843,7 +843,7 @@ void Race::CreateDefaultQuickButtonsHook(CNWSCreature *pCreature)
     SetOrRestoreRace(false, pCreature->m_pStats);
 }
 
-int32_t Race::LevelUpAutomaticHook(CNWSCreatureStats *pCreatureStats, uint8_t nClass, int32_t bReadyAllSpells, uint8_t nPackage)
+int32_t Race::LevelUpAutomaticHook(CNWSCreatureStats *pCreatureStats, uint8_t nClass, int32_t bReadyAllSpells, uint32_t nPackage)
 {
     SetOrRestoreRace(true, pCreatureStats);
     auto retVal = s_LevelUpAutomaticHook->CallOriginal<int32_t>(pCreatureStats, nClass, bReadyAllSpells, nPackage);
@@ -1201,12 +1201,12 @@ int32_t Race::GetAttackModifierVersusHook(CNWSCreatureStats* pStats, CNWSCreatur
             (parRace == RacialType::HumanoidGoblinoid && pStats->HasFeat(Feat::BattleTrainingVersusGoblins)) ||
             (parRace == RacialType::HumanoidReptilian && pStats->HasFeat(Feat::BattleTrainingVersusReptilians)))
         {
-            modABVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1);
+            modABVSRaceBonus = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("OFFENSIVE_TRAINING_MODIFIER"), 1);
 
             if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
             {
                 auto sDebugMsg = CExoString(" + ") +
-                                 CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("OFFENSIVE_TRAINING_MODIFIER", 1))) +
+                                 CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("OFFENSIVE_TRAINING_MODIFIER"), 1))) +
                                  CExoString(" (Offensive training/battle training)") ;
                 auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
                 pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
@@ -1227,7 +1227,7 @@ int16_t Race::GetArmorClassVersusHook(CNWSCreatureStats* pStats, CNWSCreature* p
         auto parRace = g_plugin->m_RaceParent[pCreature->m_pStats->m_nRace];
 
         if(parRace == RacialType::Giant && pStats->HasFeat(Feat::BattleTrainingVersusGiants))
-            modACVSRaceBonus = Globals::Rules()->GetRulesetIntEntry("DEFENSIVE_TRAINING_MODIFIER", 4);
+            modACVSRaceBonus = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("DEFENSIVE_TRAINING_MODIFIER"), 4);
 
     }
 

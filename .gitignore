@@ -6,6 +6,9 @@ build/
 Documentation/
 _BuildReadme.txt
 
+cmake-build-*/
+.env
+
 # Visual Studio
 .vs/
 out/

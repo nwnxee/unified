@@ -37,9 +37,9 @@
 
 #if defined(_MSC_VER) && _MSC_VER < 1700
 #ifdef _WIN64
-#define PRIxPTR "I64"
+#define PRIxPTR "I64x"
 #else
-#define PRIxPTR ""
+#define PRIxPTR "x"
 #endif
 #else
 #include <inttypes.h>
@@ -56,6 +56,9 @@
 #ifndef __GNUC__
 #define __attribute__(arg)
 #endif
+#if defined(__MINGW64__) && !defined(_UCRT)
+#define __attribute__(arg)
+#endif
 
 #define ROUND_DOWN(num, unit) ((num) & ~((unit) - 1))
 #define ROUND_UP(num, unit) (((num) + (unit) - 1) & ~((unit) - 1))
@@ -66,7 +69,7 @@
 #define ADDR_FMT "%08" PRIxPTR
 #endif
 
-#if defined __aarch64__
+#if defined _M_ARM64 || defined __aarch64__
 #define CPU_ARM64
 #define CPU_64BIT
 #endif
@@ -80,11 +83,13 @@
 #define CPU_X86
 #endif
 
+#include "template.inc"
+
 #if defined(CPU_ARM64)
-#include "funchook_arm64.h"
+#include "arch_arm64.h"
 #endif
 #if defined(CPU_X86) || defined(CPU_X86_64)
-#include "funchook_x86.h"
+#include "arch_x86.h"
 #endif
 
 #define JUMP32_BYTE_SIZE (JUMP32_SIZE * sizeof(insn_t))
@@ -100,6 +105,12 @@
  * member of the SYSTEM_INFO structure on Windows.
  */
 #define ALLOCATION_UNIT 0x10000 /* 64k */
+
+struct funchook_arg_handle {
+    const size_t *base_pointer;
+    const char *arg_types;
+    uint32_t flags;
+};
 
 typedef struct {
     void *addr;
@@ -125,8 +136,9 @@ extern const size_t funchook_size;
 extern char funchook_debug_file[];
 void funchook_log(funchook_t *funchook, const char *fmt, ...) __attribute__((__format__ (__printf__, 2, 3)));
 void funchook_set_error_message(funchook_t *funchook, const char *fmt, ...) __attribute__((__format__ (__printf__, 2, 3)));
+void *funchook_hook_caller(size_t transit_addr, const size_t *base_pointer);
 
-/* Functions in funchook_linux.c & funchook_windows.c */
+/* Functions in os_unix.c & os_windows.c */
 extern const size_t page_size;
 extern const size_t allocation_unit; /* windows only */
 
@@ -146,6 +158,7 @@ void *funchook_resolve_func(funchook_t *funchook, void *func);
 /* Functions in funchook_{CPU_NAME}.c */
 int funchook_make_trampoline(funchook_t *funchook, ip_displacement_t *disp, const insn_t *func, insn_t *trampoline, size_t *trampoline_size);
 int funchook_fix_code(funchook_t *funchook, funchook_entry_t *entry, const ip_displacement_t *disp);
+int funchook_get_arg_offset(const char *arg_types, int pos, uint32_t flags);
 #ifdef CPU_X86_64
 int funchook_page_avail(funchook_t *funchook, funchook_page_t *page, int idx, uint8_t *addr, ip_displacement_t *disp);
 #else

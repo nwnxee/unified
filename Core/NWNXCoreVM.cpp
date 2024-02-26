@@ -11,7 +11,7 @@
 #include "API/CScriptLocation.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CGameEffect.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CNWSObject.hpp"
 
 #include <cstring>
@@ -91,7 +91,7 @@ namespace Core {
 
 extern NWNXCore* g_core;
 
-int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t NWNXCore::GetVarHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     switch (nCommandId)
     {
@@ -200,7 +200,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
     return success ? VMError::Success : VMError::StackOverflow;
 }
-int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t NWNXCore::SetVarHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     switch (nCommandId)
     {
@@ -323,7 +323,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
     return VMError::Success;
 }
 
-int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t NWNXCore::TagEffectHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagEffect); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
@@ -374,7 +374,7 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
 }
 
 
-int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t NWNXCore::TagItemPropertyHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagItemProperty); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
@@ -424,7 +424,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
 }
 
 
-int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+int32_t NWNXCore::PlaySoundHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::PlaySound); ASSERT(nParameters == 1);
     auto *vm = Globals::VirtualMachine();

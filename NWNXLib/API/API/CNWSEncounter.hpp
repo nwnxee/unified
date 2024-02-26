@@ -50,8 +50,6 @@ struct CNWSEncounter : CNWSObject
     BOOL m_bNewEntry;
     Vector * m_pvActivateVertices;
     int32_t m_nNumActivateVertices;
-    int32_t * m_pnOutlineVertices;
-    int32_t m_nNumOutlineVertices;
     float m_fMinActivateX;
     float m_fMaxActivateX;
     float m_fMinActivateY;

@@ -37,12 +37,34 @@ struct CNWMessage
     BOOL m_bHighPriority;
     uint32_t m_dwPlayerID;
 
+    enum class MessageType
+    {
+        BITS    = 1,
+        BOOL    = 2,
+        BYTE    = 3,
+        CHAR    = 4,
+        WORD    = 5,
+        SHORT   = 6,
+        DWORD   = 7,
+        INT     = 8,
+        DWORD64 = 9,
+        INT64   = 10,
+        FLOAT   = 11,
+        DOUBLE  = 12,
+        RESREF  = 13,
+        STRING  = 14,
+        VOIDPTR = 15,
+        JSON    = 16
+    };
+
     CNWMessage();
     virtual ~CNWMessage();
     BOOL SetReadMessage(uint8_t * pMessage, uint32_t dwSize, uint32_t dwPlayerID = 0xffffffff, BOOL bHighPriority = true);
     void ClearReadMessage();
+    void HandleExpectedTypeMismatch(MessageType expect, MessageType got);
+    void ExpectType(MessageType t);
     BOOL ReadBOOL();
-    uint8_t ReadBYTE(int32_t nCount = 8);
+    uint8_t ReadBYTE(int32_t nCount = 8, BOOL bPrefix = true);
     char ReadCHAR(int32_t nCount = 8);
     uint16_t ReadWORD(int32_t nCount = 16);
     int16_t ReadSHORT(int32_t nCount = 16);
@@ -57,13 +79,14 @@ struct CNWMessage
     CResRef ReadCResRef(int32_t nCount = 16);
     CExoString ReadCExoString(int32_t nCount = 32);
     void * ReadVOIDPtr(int32_t nSize);
-    //json ReadJSON();
+    json ReadJSON();
     BOOL MessageReadOverflow(BOOL bWarn = true);
     BOOL MessageReadUnderflow(BOOL bWarn = true);
     BOOL MessageMoreDataToRead();
     void CreateWriteMessage(uint32_t nSize = 128, uint32_t dwPlayerID = 0xffffffff, BOOL bHighPriority = true);
+    void WriteType(MessageType t);
     void WriteBOOL(BOOL nBool);
-    void WriteBYTE(uint8_t nByte, int32_t nCount = 8);
+    void WriteBYTE(uint8_t nByte, int32_t nCount = 8, BOOL bPrefix = true);
     void WriteCHAR(char nChar, int32_t nCount = 8);
     void WriteWORD(uint16_t nWord, int32_t nCount = 16);
     void WriteSHORT(int16_t nShort, int32_t nCount = 16);
@@ -78,7 +101,7 @@ struct CNWMessage
     void WriteCResRef(CResRef cResRef, int32_t nCount = 16);
     void WriteCExoString(CExoString sString, int32_t nCount = 32);
     void WriteVOIDPtr(void * pVoidPtr, int32_t nSize);
-    //void WriteJSON(const json & json);
+    void WriteJSON(const json & json);
     uint32_t PeekAtWriteMessageSize();
     BOOL GetWriteMessage(uint8_t * * pMessage, uint32_t * dwSize);
     void ExtendWriteBuffer(uint32_t nSize);

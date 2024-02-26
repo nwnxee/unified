@@ -1,9 +1,7 @@
 # GIT_SHALLOW requires cmake 3.6.
 cmake_minimum_required(VERSION 3.6)
 
-project(funchook LANGUAGES C ASM)
-set(PROJECT_VERSION 1.1.1)
-set(PROJECT_VERSION_MAJOR 1)
+project(funchook VERSION 2.0.0 LANGUAGES C ASM)
 
 include("GNUInstallDirs")
 
@@ -13,6 +11,9 @@ if(NOT FUNCHOOK_CPU)
       set(FUNCHOOK_CPU x86)
   endif ()
   if (FUNCHOOK_CPU MATCHES "aarch64")
+      set(FUNCHOOK_CPU arm64)
+  endif ()
+  if (FUNCHOOK_CPU MATCHES "ARM64")
       set(FUNCHOOK_CPU arm64)
   endif ()
 endif ()
@@ -83,14 +84,6 @@ endfunction(add_subdirectory_pic)
 # capstone
 #
 if (DISASM_CAPSTONE)
-  configure_file(cmake/capstone.cmake.in capstone-download/CMakeLists.txt)
-  execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/capstone-download"
-  )
-  execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/capstone-download"
-  )
-
   string(TOUPPER ${FUNCHOOK_CPU} FUNCHOOK_CPU_UPPER)
 
   set(CAPSTONE_BUILD_SHARED OFF CACHE BOOL "")
@@ -99,7 +92,7 @@ if (DISASM_CAPSTONE)
   set(CAPSTONE_BUILD_CSTOOL OFF CACHE BOOL "")
   set(CAPSTONE_ARCHITECTURE_DEFAULT OFF CACHE BOOL "")
   set(CAPSTONE_${FUNCHOOK_CPU_UPPER}_SUPPORT ON CACHE BOOL "")
-  add_subdirectory_pic(${CMAKE_CURRENT_BINARY_DIR}/capstone-src ${CMAKE_CURRENT_BINARY_DIR}/capstone-build)
+  add_subdirectory_pic(capstone capstone)
 
   list(APPEND FUNCHOOK_DEPS capstone-static)
   set(DISASM capstone)
@@ -165,7 +158,21 @@ endif ()
 # funchook
 #
 
-set(FUNCHOOK_SOURCES src/funchook.c src/funchook_${FUNCHOOK_CPU}.c src/funchook_${FUNCHOOK_OS}.c src/disasm_${DISASM}.c)
+set(FUNCHOOK_SOURCES src/funchook.c src/arch_${FUNCHOOK_CPU}.c src/os_${FUNCHOOK_OS}.c src/disasm_${DISASM}.c)
+
+if ((FUNCHOOK_CPU STREQUAL x86) AND (CMAKE_SIZEOF_VOID_P EQUAL "8"))
+  if (MSVC)
+    # Microsoft x64 calling convention (Microsoft Visual C++)
+    enable_language(ASM_MASM)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-ms.asm)
+  elseif (WIN32)
+    # Microsoft x64 calling convention (Mingw-w64)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-ms.S)
+  else ()
+    # System V ABI (Linux, macOS)
+    set(FUNCHOOK_SOURCES ${FUNCHOOK_SOURCES} src/prehook-x86_64-sysv.S)
+  endif ()
+endif ()
 
 set(FUNCHOOK_PROPERTIES
     OUTPUT_NAME funchook
@@ -184,7 +191,7 @@ function (add_funchook_library target_name target_type)
   target_include_directories(${target_name} PUBLIC include)
   target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}) # to include config.h
   if (DISASM_CAPSTONE)
-    target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/capstone-src/include)
+    target_include_directories(${target_name} PRIVATE capstone/include)
   endif()
   target_link_libraries(${target_name} PRIVATE ${FUNCHOOK_DEPS})
   if (HAVE_FVISIBILITY_HIDDEN)

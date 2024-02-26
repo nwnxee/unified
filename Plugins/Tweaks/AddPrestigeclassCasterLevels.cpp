@@ -5,7 +5,7 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/CTwoDimArrays.hpp"
 
 
@@ -49,16 +49,16 @@ void AddPrestigeclassCasterLevels()
 
     s_LoadClassInfoHook = Hooks::HookFunction(&CNWRules::LoadClassInfo, &LoadClassInfoHook, Hooks::Order::Early);
     s_GetClassLevelHook = Hooks::HookFunction(&CNWSCreatureStats::GetClassLevel, &GetClassLevelHook, Hooks::Order::Early);
-    s_ExecuteCommandGetCasterLevelHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandGetCasterLevel,
-        +[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+    s_ExecuteCommandGetCasterLevelHook = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandGetCasterLevel,
+        +[](CNWSVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
             s_bAdjustCasterLevel = false;
             return retVal;
         }, Hooks::Order::Early);
-    s_ExecuteCommandResistSpellHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandResistSpell,
-        +[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+    s_ExecuteCommandResistSpellHook = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandResistSpell,
+        +[](CNWSVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);

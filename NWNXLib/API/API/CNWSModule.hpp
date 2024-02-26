@@ -19,6 +19,7 @@
 #include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
+#include "Database.hpp"
 #include <memory>
 
 
@@ -64,10 +65,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CUUID m_cModUUID;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
-    CExoString m_sDDResourceName;
-    BOOL m_bIsDDModule;
-    BOOL m_bIsDDDemoModule;
-    BOOL m_bIsDDModuleLoaded;
     CExoLocString m_lsModuleName;
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
@@ -211,6 +208,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     uint8_t IsOfficialCampaign(void );
     void DestroyModuleSqliteDatabase();
     BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
+    BOOL GetPlayerPartyControl();
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
@@ -222,7 +220,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void TimeStopSanityCheck();
-    uint8_t * GetFullCipher(CExoString sModuleResourceName);
     int32_t FindTagPositionInTable(char * szTag);
 
 

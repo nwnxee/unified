@@ -1603,6 +1603,29 @@ _______________________________________
     ----------------------|--------|-------
     OBJECT                | object | The Object being used |
 _______________________________________
+    ## Placeable Open Events (Placeables with inventory)
+    - NWNX_ON_PLACEABLE_OPEN_BEFORE
+    - NWNX_ON_PLACEABLE_OPEN_AFTER
+
+    `OBJECT_SELF` = The placeable being openeed.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The player opening. |
+    BEFORE_SKIPPED        | int    | TRUE/FALSE, only in _AFTER events|
+_______________________________________
+    ## Placeable Close Events (Placeables with inventory)
+    - NWNX_ON_PLACEABLE_CLOSE_BEFORE
+    - NWNX_ON_PLACEABLE_CLOSE_AFTER
+
+    `OBJECT_SELF` = The placeable being closed.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The player closing. |
+
+    @note Skipping event is not allowed (since otherwise client UI will hang and be glitchy)
+_______________________________________
     ## Broadcast Safe Projectile Events
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE
     - NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER
@@ -1674,6 +1697,78 @@ _______________________________________
     AUTOMATIC_CHANGE      | int    | TRUE if the game automatically decided on the new target, FALSE if explicitly chosen |
     RETARGETABLE          | int    | TRUE if the new target can be changed using NWNX_Events_SetEventResult() (Only in BEFORE) |
 _______________________________________
+    ## Creature Tile Change Events
+    - NWNX_ON_CREATURE_TILE_CHANGE_BEFORE
+    - NWNX_ON_CREATURE_TILE_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature changing tile positions.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD_TILE_INDEX        | int    | The index of the old tile. |
+    OLD_TILE_X            | int    | The tile grid x position of the old tile. |
+    OLD_TILE_Y            | int    | The tile grid y position of the old tile. |
+    NEW_TILE_INDEX        | int    | The index of the new tile. |
+    NEW_TILE_X            | int    | The tile grid x position of the new tile. |
+    NEW_TILE_Y            | int    | The tile grid y position of the new tile. |
+_______________________________________
+    ## Creature Jump To Point Events
+    - NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER
+
+    `OBJECT_SELF` = The creature jumping.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_AREA           | object | The target area. Convert to object with StringToObject() |
+    POS_X                 | float  | The x position the target is being moved to |
+    POS_Y                 | float  | The y position the target is being moved to |
+    POS_Z                 | float  | The z position the target is being moved to |
+_______________________________________
+    ## Creature Jump To Object Events
+    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE
+    - NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER
+
+    `OBJECT_SELF` = The creature jumping.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OBJECT                | object | The object the creature is jumping to. Convert to object with StringToObject() |
+_______________________________________
+    ## Item Property Effect Apply/Remove Events
+    - NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE
+    - NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER
+    - NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE
+    - NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER
+
+    `OBJECT_SELF` = The item source of the item property.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    CREATURE              | object | The creature to which Convert to object with StringToObject() |
+    LOADING_GAME          | int    | TRUE if the itemproperty is being applied when loading into the game and not due to equipping the item. |
+    INVENTORY_SLOT        | int    | The INVENTORY_SLOT_* the item is (un)equipped to/from. |
+    PROPERTY              | int    | The ITEM_PROPERTY_* type. |
+    SUBTYPE               | int    | The subtype of the itemproperty. |
+    TAG                   | string | The optional tag set by TagItemProperty() |
+    COST_TABLE            | int    | The index into iprp_costtable.2da |
+    COST_TABLE_VALUE      | int    | The index into the 2da pointed at by COST_TABLE |
+    PARAM1                | int    | The index into iprp_paramtable.2da |
+    PARAM1_VALUE          | int    | The index into the 2da pointed at by PARAM1 |
+
+    @note These events fire when the game applies or removes the effects from an itemproperty.
+          Skipping NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE will stop the basegame effects for that itemproperty to not be applied.
+          If you skip the application of ITEM_PROPERTY_BONUS_SPELL_SLOT_OF_LEVEL_N or ITEM_PROPERTY_UNLIMITED_AMMUNITION you must also skip its removal event.
+
+    @note Any non-DURATION_TYPE_INSTANT effects applied to the creature in NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE **must** be of type DURATION_TYPE_EQUIPPED
+          See the `NWNX_EFFECT_EXTEND_DURATION_TYPE` environment variable in NWNX_Effect on how to enable this duration type.
+
+    @note See the NWNX_Events README.md for an example script!
+
+    @note The whitelist is enabled by default for these events, to whitelist a particular itemproperty, do the following:
+          \code{.c}
+          NWNX_Events_AddIDToWhitelist("NWNX_ON_ITEMPROPERTY_EFFECT", ITEM_PROPERTY_*);
+          \endcode
 */
 
 /// @name Events Event Constants
@@ -2002,6 +2097,10 @@ const string NWNX_ON_RUN_EVENT_SCRIPT_BEFORE = "NWNX_ON_RUN_EVENT_SCRIPT_BEFORE"
 const string NWNX_ON_RUN_EVENT_SCRIPT_AFTER = "NWNX_ON_RUN_EVENT_SCRIPT_AFTER";
 const string NWNX_ON_OBJECT_USE_BEFORE = "NWNX_ON_OBJECT_USE_BEFORE";
 const string NWNX_ON_OBJECT_USE_AFTER = "NWNX_ON_OBJECT_USE_AFTER";
+const string NWNX_ON_PLACEABLE_OPEN_BEFORE = "NWNX_ON_PLACEABLE_OPEN_BEFORE";
+const string NWNX_ON_PLACEABLE_OPEN_AFTER = "NWNX_ON_PLACEABLE_OPEN_AFTER";
+const string NWNX_ON_PLACEABLE_CLOSE_BEFORE = "NWNX_ON_PLACEABLE_CLOSE_BEFORE";
+const string NWNX_ON_PLACEABLE_CLOSE_AFTER = "NWNX_ON_PLACEABLE_CLOSE_AFTER";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_BEFORE";
 const string NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER = "NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER";
 const string NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE = "NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE";
@@ -2012,6 +2111,16 @@ const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE = "NWNX_ON_AREA_PLAY_BATTLE_M
 const string NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER = "NWNX_ON_AREA_PLAY_BATTLE_MUSIC_AFTER";
 const string NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE = "NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE";
 const string NWNX_ON_ATTACK_TARGET_CHANGE_AFTER = "NWNX_ON_ATTACK_TARGET_CHANGE_AFTER";
+const string NWNX_ON_CREATURE_TILE_CHANGE_BEFORE = "NWNX_ON_CREATURE_TILE_CHANGE_BEFORE";
+const string NWNX_ON_CREATURE_TILE_CHANGE_AFTER = "NWNX_ON_CREATURE_TILE_CHANGE_AFTER";
+const string NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE = "NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE";
+const string NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER = "NWNX_ON_CREATURE_JUMP_TO_POINT_AFTER";
+const string NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE = "NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE";
+const string NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER = "NWNX_ON_CREATURE_JUMP_TO_OBJECT_AFTER";
+const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE = "NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE";
+const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER";
+const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE";
+const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2172,6 +2281,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - EventScript event
 /// - Broadcast Safe Projectile event
 /// - Attack of Opportunity events
+/// - Creature Jump events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

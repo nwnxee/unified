@@ -193,6 +193,10 @@ struct CNWSEffectListHandler : CGameEffectApplierRemover
     int32_t OnRemoveSpellFailure(CNWSObject * pObject, CGameEffect * pEffect);
     int32_t OnApplyRunScript(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemoveRunScript(CNWSObject * pObject, CGameEffect * pEffect);
+    int32_t OnApplyPacify(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
+    int32_t OnRemovePacify(CNWSObject * pObject, CGameEffect * pEffect);
+    int32_t OnApplyTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
+    int32_t OnRemoveTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEffectListHandler

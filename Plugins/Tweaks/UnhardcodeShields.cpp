@@ -46,7 +46,7 @@ static int32_t CNWSItem_ComputeArmorClassHook(CNWSItem* thisPtr)
     if (pBaseItem->m_nModelType == Constants::ItemAppearanceType::ArmorModel)
     {
         float fArmorAC = 0.0f;
-        Globals::Rules()->m_p2DArrays->m_pPartsChest->GetFLOATEntry(thisPtr->m_nArmorModelPart[Constants::ItemAppearance::ArmorModel_Torso], CExoString("ACBonus"), &fArmorAC);
+        Globals::Rules()->m_p2DArrays->GetPartsChest()->GetFLOATEntry(thisPtr->m_nArmorModelPart[Constants::ItemAppearance::ArmorModel_Torso], CExoString("ACBonus"), &fArmorAC);
         nAC = std::round(fArmorAC);
     }
     else

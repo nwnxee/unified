@@ -25,9 +25,38 @@ struct CScriptParseTreeNodeBlock;
 
 typedef int BOOL;
 
+//
+// Compiler optimization flags.
+// Note that some optimizations might interfere with NDB generation.
+//
+
+// Removes any functions that cannot possibly be called by any codepath
+#define CSCRIPTCOMPILER_OPTIMIZE_DEAD_FUNCTIONS                       0x00000001
+// Merges constant expressions into a single constant where possible.
+// Note: Only affects runtime expressions, assignments to const variables are always folded.
+#define CSCRIPTCOMPILER_OPTIMIZE_FOLD_CONSTANTS                       0x00000002
+// Post processes generated instructions to merge sequences into shorter equivalents
+#define CSCRIPTCOMPILER_OPTIMIZE_MELD_INSTRUCTIONS                    0x00000004
+
+#define CSCRIPTCOMPILER_OPTIMIZE_NOTHING                              0x00000000
+#define CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING                           0xFFFFFFFF
+
+struct CScriptCompilerAPI
+{
+    CScriptCompilerAPI() { memset(this, 0, sizeof(CScriptCompilerAPI)); }
+    BOOL (*ResManUpdateResourceDirectory)(const char* sAlias);
+    int32_t (*ResManWriteToFile)(const char* sFileName, RESTYPE nResType, const uint8_t* pData, size_t nSize, bool bBinary);
+    const char* (*ResManLoadScriptSourceFile)(const char* sFileName, RESTYPE nResType);
+    const char* (*TlkResolve)(STRREF strRef);
+};
 
 struct CScriptCompiler
 {
+    static CScriptCompilerAPI MakeDefaultAPI();
+    CScriptCompilerAPI m_cAPI;
+    RESTYPE m_nResTypeSource;
+    RESTYPE m_nResTypeCompiled;
+    RESTYPE m_nResTypeDebug;
     int32_t m_nKeyWords;
     CScriptCompilerKeyWordEntry * m_pcKeyWords;
     int32_t m_nParseTreeNodeBlockEmptyNodes;
@@ -46,23 +75,22 @@ struct CScriptCompiler
     CExoString m_psTableFileNames[512];
     int32_t m_nLineNumberEntries;
     int32_t m_nFinalLineNumberEntries;
-    CExoArrayList<int32_t> m_pnTableInstructionFileReference;
-    CExoArrayList<int32_t> m_pnTableInstructionLineNumber;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryStart;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryEnd;
-    CExoArrayList<int32_t> m_pnTableInstructionBinaryFinal;
-    CExoArrayList<int32_t> m_pnTableInstructionBinarySortedOrder;
+    std::vector<int32_t> m_pnTableInstructionFileReference;
+    std::vector<int32_t> m_pnTableInstructionLineNumber;
+    std::vector<int32_t> m_pnTableInstructionBinaryStart;
+    std::vector<int32_t> m_pnTableInstructionBinaryEnd;
+    std::vector<int32_t> m_pnTableInstructionBinaryFinal;
+    std::vector<int32_t> m_pnTableInstructionBinarySortedOrder;
     int32_t m_nSymbolTableVariables;
     int32_t m_nFinalSymbolTableVariables;
-    CExoArrayList<int32_t> m_pnSymbolTableVarType;
-    CExoArrayList<CExoString> m_psSymbolTableVarName;
-    CExoArrayList<CExoString> m_psSymbolTableVarStructureName;
-    CExoArrayList<int32_t> m_pnSymbolTableVarStackLoc;
-    CExoArrayList<int32_t> m_pnSymbolTableVarBegin;
-    CExoArrayList<int32_t> m_pnSymbolTableVarEnd;
-    CExoArrayList<int32_t> m_pnSymbolTableBinaryFinal;
-    CExoArrayList<int32_t> m_pnSymbolTableBinarySortedOrder;
-    int32_t m_nDebugStatus;
+    std::vector<int32_t> m_pnSymbolTableVarType;
+    std::vector<CExoString> m_psSymbolTableVarName;
+    std::vector<CExoString> m_psSymbolTableVarStructureName;
+    std::vector<int32_t> m_pnSymbolTableVarStackLoc;
+    std::vector<int32_t> m_pnSymbolTableVarBegin;
+    std::vector<int32_t> m_pnSymbolTableVarEnd;
+    std::vector<int32_t> m_pnSymbolTableBinaryFinal;
+    std::vector<int32_t> m_pnSymbolTableBinarySortedOrder;
     BOOL m_bCompileConditionalFile;
     BOOL m_bOldCompileConditionalFile;
     BOOL m_bCompileConditionalOrMain;
@@ -74,7 +102,7 @@ struct CScriptCompiler
     CScriptCompilerIdentifierHashTableEntry * m_pIdentifierHashTable;
     int32_t m_nTokenStatus;
     int32_t m_nTokenCharacters;
-    char m_pchToken[8192];
+    char m_pchToken[65536];
     CScriptCompilerStackEntry * m_pSRStack;
     int32_t m_nSRStackEntries;
     int32_t m_nSRStackStates;
@@ -140,16 +168,15 @@ struct CScriptCompiler
     int32_t m_nSymbolLabelList;
     CScriptCompilerSymbolTableEntry * m_pSymbolLabelList;
     int32_t m_pSymbolLabelStartEntry[512];
-    int32_t m_nDebugSymbolicOutput;
     int32_t m_nGenerateDebuggerOutput;
     BOOL m_bAutomaticCleanUpAfterCompiles;
-    BOOL m_bOptimizeBinarySpace;
+    uint32_t m_nOptimizationFlags;
     int32_t m_nTotalCompileNodes;
     BOOL m_bCompilingConditional;
     char * m_pchOutputCode;
     int32_t m_nOutputCodeSize;
     int32_t m_nOutputCodeLength;
-    int32_t m_nBinaryCodeLength;
+    std::vector<int32_t> m_aOutputCodeInstructionBoundaries;
     char * m_pchResolvedOutputBuffer;
     int32_t m_nResolvedOutputBufferSize;
     char * m_pchDebuggerCode;
@@ -159,15 +186,13 @@ struct CScriptCompiler
     CExoString m_pchActionParameterStructureNames[32];
     int32_t m_nFinalBinarySize;
     CExoString m_sCapturedError;
+    STRREF m_nCapturedErrorStrRef;
 
-    CScriptCompiler();
+    explicit CScriptCompiler(RESTYPE nSource, RESTYPE nCompiled, RESTYPE nDebug, CScriptCompilerAPI api = MakeDefaultAPI());
     ~CScriptCompiler();
     void SetIdentifierSpecification(const CExoString & sLanguageSource);
     void SetOutputAlias(const CExoString & sAlias);
-    void SetCompileDebugLevel(int32_t nValue);
-    void SetCompileSymbolicOutput(int32_t nValue);
     void SetGenerateDebuggerOutput(int32_t nValue);
-    void SetOptimizeBinaryCodeLength(BOOL nValue);
     void SetAutomaticCleanUpAfterCompiles(BOOL bValue);
     void CleanUpAfterCompiles();
     void SetCompileConditionalFile(BOOL nValue);
@@ -194,13 +219,14 @@ struct CScriptCompiler
     int32_t TestIdentifierToken();
     int32_t HandleIdentifierToken();
     int32_t ParseCharacterNumeric(int32_t ch);
-    int32_t ParseCharacterPeriod();
+    int32_t ParseCharacterPeriod(int32_t chNext);
     int32_t ParseCharacterSlash(int32_t chNext);
     int32_t ParseCharacterAsterisk(int32_t chNext);
     int32_t ParseCharacterAmpersand(int32_t chNext);
     int32_t ParseCharacterVerticalBar(int32_t chNext);
     int32_t ParseCharacterAlphabet(int32_t ch);
     int32_t ParseStringCharacter(int32_t ch, int32_t chNext, char * pScript, int32_t nScriptLength);
+    int32_t ParseRawStringCharacter(int32_t ch, int32_t chNext);
     int32_t ParseCharacterQuotationMark();
     int32_t ParseCharacterHyphen(int32_t chNext);
     int32_t ParseCharacterLeftBrace();
@@ -236,6 +262,10 @@ struct CScriptCompiler
     int32_t PreVisitGenerateCode(CScriptParseTreeNode * pNode);
     int32_t InVisitGenerateCode(CScriptParseTreeNode * pNode);
     int32_t PostVisitGenerateCode(CScriptParseTreeNode * pNode);
+    void WriteByteSwap32(char *buffer, int32_t value);
+    int32_t ReadByteSwap32(char *buffer);
+    char *EmitInstruction(uint8_t nOpCode, uint8_t nAuxCode = 0, int32_t nDataSize = 0);
+    void EmitModifyStackPointer(int32_t nModifyBy);
     void StartLineNumberAtBinaryInstruction(int32_t nFileReference, int32_t nLineNumber, int32_t nBinaryInstruction);
     void EndLineNumberAtBinaryInstruction(int32_t nFileReference, int32_t nLineNumber, int32_t nBinaryInstruction);
     void ResolveDebuggingInformation();
@@ -261,12 +291,12 @@ struct CScriptCompiler
     int32_t GetStructureSize(const CExoString & sStructureName);
     int32_t GetIdentifierByName(const CExoString & sIdentifierName);
     int32_t AddToGlobalVariableList(CScriptParseTreeNode * pGlobalVariableNode);
+    BOOL ConstantFoldNode(CScriptParseTreeNode *pNode, BOOL bForce = false);
     void InitializeSwitchLabelList();
     int32_t TraverseTreeForSwitchLabels(CScriptParseTreeNode * pNode);
     void ClearSwitchLabelList();
     int32_t GenerateCodeForSwitchLabels(CScriptParseTreeNode * pNode);
     int32_t GenerateIdentifiersFromConstantVariables(CScriptParseTreeNode * pNode);
-    void PrintBinaryAddress();
     int32_t FoundReturnStatementOnAllBranches(CScriptParseTreeNode * pNode);
     void AddVariableToStack(int32_t nVariableType, CExoString * psVariableTypeName, BOOL bGenerateCode);
     void AddStructureToStack(const CExoString & sStructureName, BOOL bGenerateCode);
@@ -278,6 +308,7 @@ struct CScriptCompiler
     void ClearAllSymbolLists();
     int32_t CleanUpDuringCompile(int32_t nReturnValue);
     int32_t CleanUpAfterCompile(int32_t nReturnValue, CScriptParseTreeNode * pReturnTree);
+    char *InstructionLookback(uint32_t last = 1);
     int32_t InstallLoader();
     CScriptParseTreeNode * InsertGlobalVariablesInParseTree(CScriptParseTreeNode * pOldTree);
     int32_t OutputIdentifierError(const CExoString & sFunctionName, int32_t nError, int32_t nFileStackDrop = 0);
@@ -286,6 +317,8 @@ struct CScriptCompiler
     int32_t ResolveLabels();
     int32_t WriteResolvedOutput();
 
+    void SetOptimizationFlags(uint32_t nFlags) { m_nOptimizationFlags = nFlags; }
+    uint32_t GetOptimizationFlags() { return m_nOptimizationFlags; }
 
 #ifdef NWN_CLASS_EXTENSION_CScriptCompiler
     NWN_CLASS_EXTENSION_CScriptCompiler
