@@ -18,7 +18,6 @@ struct CNetLayerPlayerCDKeyInfo
     CExoString sPublic;
     CExoString sResponse;
     BOOL bValidated;
-    uint32_t nExpansionPack;
 
 
 

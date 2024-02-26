@@ -26,7 +26,7 @@ struct CNetLayer
     BOOL Initialize(CBaseExoApp * pcExoApp);
     class CBaseExoApp * GetExoApp();
     BOOL ShutDown();
-    BOOL StartProtocol(uint32_t nProtocol, uint32_t nSendingAddress, uint32_t nReceivingAddress, uint32_t nInstance);
+    BOOL StartProtocol(uint32_t nProtocol, uint32_t nPort, uint32_t nInstance);
     BOOL EndProtocol(uint32_t nProtocol);
     void SetServerLanguage(int32_t nLanguage);
     BOOL StartServerMode(CExoString sSessionName, uint32_t nMaxPlayers);
@@ -72,7 +72,7 @@ struct CNetLayer
     void SetSessionMaxPlayers(uint32_t nMaxPlayers);
     CExoString GetSessionName();
     void SetSessionName(CExoString sSessionName);
-    uint32_t GetUDPRecievePort();
+    uint32_t GetUDPPort();
     uint32_t GetPortBySessionId(uint32_t nSessionId);
     CNetLayerSessionInfo * GetSessionInfo(uint32_t nSession);
     BOOL EndConnectToSession();
@@ -82,7 +82,6 @@ struct CNetLayer
     BOOL DisconnectFromSession();
     BOOL DropConnectionToServer();
     BOOL IsConnectedToLocalhost();
-    BOOL MessageArrived(uint32_t nProtocol, uint32_t nSocketId, uint32_t nErrorCode, BOOL bRemoveFromQueue = true);
     void ProcessReceivedFrames(BOOL bProcessReceivedMessage = true);
     BOOL SendMessageToPlayer(uint32_t nPlayerId, uint8_t * pData, uint32_t nSize, uint32_t nFlags);
     BOOL SendMessageToAddress(uint32_t nConnectionId, uint8_t * pData, uint32_t nSize);
@@ -95,11 +94,8 @@ struct CNetLayer
     class CExoNet * GetExoNet();
     CExoString GetServerNetworkAddress();
     void SetCurrentMasterServerInternetAddress(uint32_t nAddress, uint32_t nPort);
-    uint32_t GetSendUDPSocket();
     void ShutDownClientInterfaceWithReason(uint32_t nReason, const CExoString & sReason = "");
     void SetMstServerPassword(CExoString szTemp);
-    void SetExpansionPackReqd(uint16_t nExpansionPack);
-    uint16_t GetExpansionPackReqd();
     BOOL PlayerIdToConnectionId(uint32_t nPlayerId, uint32_t * nConnectionId);
     BOOL GetAnyWindowBehind();
     BOOL OpenStandardConnection(int32_t nConnectionToUse, CExoString sHostName, int32_t nPort);

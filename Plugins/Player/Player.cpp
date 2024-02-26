@@ -933,7 +933,7 @@ NWNX_EXPORT ArgumentStack SetPersistentLocation(ArgumentStack&& args)
                     {
                         auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
                         auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-                        std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+                        std::string sCDKey = pPlayerInfo->m_cCDKey.sPublic.CStr();
                         sKey = sCDKey + "!" + sBicFileName;
                     }
                     auto wpOID = s_PersistentLocationWP[sKey].first;

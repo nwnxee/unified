@@ -12,7 +12,6 @@
 #include "CResARE.hpp"
 #include "CResHelper.hpp"
 #include "CResRef.hpp"
-#include "NWAREAEXPANSION.hpp"
 #include "Vector.hpp"
 
 
@@ -55,7 +54,6 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     int32_t m_nObjectByNameIndex;
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
-    CExoLinkedList<NWAREAEXPANSION> m_lstExpansions;
     CExoString m_sComments;
     CExoLocString m_lsName;
     CExoString m_sTag;
