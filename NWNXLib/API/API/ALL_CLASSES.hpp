@@ -135,8 +135,6 @@ struct CResSET;
 struct CResWOK;
 struct C2DA;
 struct CTwoDimArrays;
-struct CObjectLookupTable;
-struct CObjectTableManager;
 struct CGameObject;
 struct CGameObjectArrayNode;
 struct CGameObjectArray;
