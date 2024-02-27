@@ -20,6 +20,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Store: {Get|Set}BlackMarketMarkDown()
 - Store: {Get|Set}MarkDown()
 - Store: {Get|Set}MarkUp()
+- Player: ReloadTlk()
 
 ### Changed
 - N/A
