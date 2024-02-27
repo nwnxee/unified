@@ -11,10 +11,14 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - N/A
 
 ##### New Plugins
-- N/A
+- Store: Enables getting and setting store data.
 
 ##### New NWScript Functions
 - Util: GetModuleTlkFile()
+- Store: New `GetIsRestrictedBuyItem`
+- Store: New `{Get|Set}BlackMarketMarkDown`
+- Store: New `{Get|Set}MarkDown`
+- Store: New `{Get|Set}MarkUp`
 
 ### Changed
 - N/A

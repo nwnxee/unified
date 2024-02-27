@@ -509,6 +509,10 @@ CNWSDoor* PopDoor(ArgumentStack& args, bool throwOnFail)
 {
     return AsNWSDoor(PopGameObject(args, throwOnFail));
 }
+CNWSStore* PopStore(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSStore(PopGameObject(args, throwOnFail));
+}
 CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
 {
     const auto playerId = args.extract<ObjectID>();
