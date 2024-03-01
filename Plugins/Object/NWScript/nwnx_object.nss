@@ -418,6 +418,12 @@ int NWNX_Object_GetLastSpellInstant();
 /// @param oCreator The new creator of the trap. Any non-creature creator will assign OBJECT_INVALID (similar to toolset-laid traps)
 void NWNX_Object_SetTrapCreator(object oObject, object oCreator);
 
+/// @brief Return the name of the object as set in the toolset for nLanguage.
+/// @param oObject an object
+/// @param nLanguage A PLAYER_LANGUAGE constant.
+/// @return The localized string.
+string NWNX_Object_GetNameByLanguage(object oObject, int nLanguage);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -1035,4 +1041,15 @@ void NWNX_Object_SetTrapCreator(object oObject, object oCreator)
     NWNX_PushArgumentObject(oCreator);
     NWNX_PushArgumentObject(oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_GetNameByLanguage(object oObject, int nLanguage)
+{
+    string sFunc = "GetNameByLanguage";
+
+    NWNX_PushArgumentInt(nLanguage);
+    NWNX_PushArgumentObject(oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueString();
 }

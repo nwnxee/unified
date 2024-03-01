@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 
 ### Added
-- N/A
+- Object: GetNameByLanguage()
 
 ##### New Plugins
 - N/A

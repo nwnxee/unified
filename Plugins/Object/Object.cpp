@@ -1285,3 +1285,16 @@ NWNX_EXPORT ArgumentStack SetTrapCreator(ArgumentStack&& args)
     }
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetNameByLanguage(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        const auto nLanguage = args.extract<int32_t>();
+
+        CExoString myString;
+        pObject->GetFirstName().GetString(nLanguage, &myString);
+        return myString;
+    }
+    return {};
+}
