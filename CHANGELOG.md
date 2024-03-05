@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 
 ##### New NWScript Functions
 - Util: GetModuleTlkFile()
+- Object: {Set|Get}LocalizedName()
 
 ### Changed
 - N/A
