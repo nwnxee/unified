@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"group__creature.html#ga007d581a39d037dce04fdfa034427efd":[4,0,3,5,0,0,84],
+"group__creature.html#ga007d581a39d037dce04fdfa034427efd":[0,8,87],
 "group__creature.html#ga00f4501dd691fe86a3264f158db3c88b":[4,0,3,5,0,0,148],
 "group__creature.html#ga00f4501dd691fe86a3264f158db3c88b":[0,8,151],
 "group__creature.html#ga023cb65acd8f802b1157068187054f26":[4,0,3,5,0,0,176],
@@ -183,8 +185,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga82df154139fe280327b544db96c2469f":[0,8,108],
 "group__creature.html#ga85589bd3d90008ee8d2765e7b822e627":[4,0,3,5,0,0,159],
 "group__creature.html#ga85589bd3d90008ee8d2765e7b822e627":[0,8,161],
-"group__creature.html#ga863e019031899379a9359157264fa1cc":[4,0,3,5,0,0,41],
 "group__creature.html#ga863e019031899379a9359157264fa1cc":[0,8,44],
+"group__creature.html#ga863e019031899379a9359157264fa1cc":[4,0,3,5,0,0,41],
 "group__creature.html#ga86d70c8f0727daeec07a84df9e5d353b":[4,0,3,5,0,0,90],
 "group__creature.html#ga86d70c8f0727daeec07a84df9e5d353b":[0,8,93],
 "group__creature.html#ga86ea47f9480ce99791bb8660a1940bb7":[0,8,37],
@@ -241,13 +243,11 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b":[0,8,82],
 "group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[4,0,3,5,0,0,102],
 "group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[0,8,105],
-"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[4,0,3,5,0,0,40],
 "group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[0,8,43],
+"group__creature.html#gab001d230daa910a4dd7deef8a60aa9dc":[4,0,3,5,0,0,40],
 "group__creature.html#gab02585354561ce598009815630a8ea20":[4,0,3,5,0,0,92],
 "group__creature.html#gab02585354561ce598009815630a8ea20":[0,8,95],
 "group__creature.html#gab29a65c34e82a3f565551a6d706179db":[4,0,3,5,0,0,85],
 "group__creature.html#gab29a65c34e82a3f565551a6d706179db":[0,8,88],
-"group__creature.html#gab4338193b84f354007440a28c0ae6a7a":[0,8,30],
-"group__creature.html#gab4338193b84f354007440a28c0ae6a7a":[4,0,3,5,0,0,27],
-"group__creature.html#gab4b96e16f98d1b88fe6a3484716537e1":[4,0,3,5,0,0,86]
+"group__creature.html#gab4338193b84f354007440a28c0ae6a7a":[0,8,30]
 };

@@ -40,6 +40,7 @@ var modules =
     [ "SkillRanks", "group__skillranks.html", "group__skillranks" ],
     [ "SpellChecker", "group__spellchecker.html", "group__spellchecker" ],
     [ "SQL", "group__sql.html", "group__sql" ],
+    [ "Store", "group__store.html", "group__store" ],
     [ "ThreadWatchdog", "group__threadwatchdog.html", "group__threadwatchdog" ],
     [ "Tileset", "group__tileset.html", "group__tileset" ],
     [ "Tracking", "group__tracking.html", "group__tracking" ],
