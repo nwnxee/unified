@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['vdirection_2638',['vDirection',['../structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef',1,'NWNX_Area_AreaWind']]],
-  ['visibility_2639',['Visibility',['../group__visibility.html',1,'']]],
-  ['vparam0_2640',['vParam0',['../structNWNX__EffectUnpacked.html#a2a662e0b9af4a7c7aff93d810cb87f54',1,'NWNX_EffectUnpacked']]],
-  ['vparam1_2641',['vParam1',['../structNWNX__EffectUnpacked.html#a02dd1d1841933c337c9ee948e6264d4f',1,'NWNX_EffectUnpacked']]]
+  ['vdirection_2639',['vDirection',['../structNWNX__Area__AreaWind.html#ad703008e4250d2752b1c49c3a73116ef',1,'NWNX_Area_AreaWind']]],
+  ['visibility_2640',['Visibility',['../group__visibility.html',1,'']]],
+  ['vparam0_2641',['vParam0',['../structNWNX__EffectUnpacked.html#a2a662e0b9af4a7c7aff93d810cb87f54',1,'NWNX_EffectUnpacked']]],
+  ['vparam1_2642',['vParam1',['../structNWNX__EffectUnpacked.html#a02dd1d1841933c337c9ee948e6264d4f',1,'NWNX_EffectUnpacked']]]
 ];

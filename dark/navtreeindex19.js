@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__IPUnpacked.html":[0,21,2],
+"structNWNX__IPUnpacked.html#a240e9078eb102d6be03ec5e517b083f9":[0,21,2,1],
 "structNWNX__IPUnpacked.html#a28d5dd1ff936a69a03304c96ee3f1f5a":[0,21,2,2],
 "structNWNX__IPUnpacked.html#a40f155e0ea3624566d16be67a0647062":[0,21,2,6],
 "structNWNX__IPUnpacked.html#a6ce26f6d7aad00efb729b282a901a413":[0,21,2,0],

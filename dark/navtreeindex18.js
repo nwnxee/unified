@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__redis__short_8nss.html#adde70c729765e95f861cdddb8193e3ed":[4,0,3,29,0,3,120],
+"nwnx__redis__short_8nss.html#adeb2f9a3935768c1e1f3b5d346d02b38":[4,0,3,29,0,3,24],
 "nwnx__redis__short_8nss.html#adf532e5e37cbde194b492b06d856f3d2":[4,0,3,29,0,3,207],
 "nwnx__redis__short_8nss.html#ae00d293d2f7c84f869c1187a46aa2535":[4,0,3,29,0,3,110],
 "nwnx__redis__short_8nss.html#ae05b8bc47bbf98f853c71a3d1865d724":[4,0,3,29,0,3,164],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9":[0,15,2,3],
 "structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566":[0,15,2,1],
 "structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601":[0,15,2,2],
-"structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6":[0,15,2,0],
-"structNWNX__IPUnpacked.html":[0,21,2],
-"structNWNX__IPUnpacked.html#a240e9078eb102d6be03ec5e517b083f9":[0,21,2,1]
+"structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6":[0,15,2,0]
 };
