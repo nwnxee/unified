@@ -15,10 +15,11 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 
 ##### New NWScript Functions
 - Util: GetModuleTlkFile()
-- Store: New `GetIsRestrictedBuyItem`
-- Store: New `{Get|Set}BlackMarketMarkDown`
-- Store: New `{Get|Set}MarkDown`
-- Store: New `{Get|Set}MarkUp`
+- Object: {Set|Get}LocalizedName()
+- Store: GetIsRestrictedBuyItem()
+- Store: {Get|Set}BlackMarketMarkDown()
+- Store: {Get|Set}MarkDown()
+- Store: {Get|Set}MarkUp()
 
 ### Changed
 - N/A
