@@ -60,6 +60,8 @@ var nwnx__object_8nss =
     [ "NWNX_Object_OverrideSpellProjectileVFX", "group__object.html#gab9ade3b58934c2d91d6df894cbcf4cbb", null ],
     [ "NWNX_Object_GetLastSpellInstant", "group__object.html#gaa7bd95e05561a86c7e99e890854f30e7", null ],
     [ "NWNX_Object_SetTrapCreator", "group__object.html#gae0190fed3e5cc051a1f19e651a417784", null ],
+    [ "NWNX_Object_GetLocalizedName", "group__object.html#gac8f3436d3615809331b4dc55c48fa5ef", null ],
+    [ "NWNX_Object_SetLocalizedName", "group__object.html#ga373653199b8f15c1c6ef22919723dc5a", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],

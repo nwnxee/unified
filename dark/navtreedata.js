@@ -54,13 +54,13 @@ var NAVTREEINDEX =
 "group__feedback.html#ga67a193ec575b59d7489f7cce148394ee",
 "group__feedback.html#gad9d5b8eafd9ca2058c4d5af18e25e31e",
 "group__object.html#ga1578fb78ce8258f0e5f86f3dd9ebc9f5",
-"group__player.html#ga48977ad0f343886c83dcdd19b123ccc0",
-"group__redis.html#autotoc_md601",
-"group__util.html#ga1369c11a9efff4b4b78bd2ebb700a455",
-"nwnx__deprecated_8nss.html#a34030d81dd3ff20a18a96e336a3f97ca",
-"nwnx__redis_8nss.html#abc981d575076b7ef7dde736ca00c9f92",
-"nwnx__redis__short_8nss.html#adde70c729765e95f861cdddb8193e3ed",
-"structNWNX__IPUnpacked.html"
+"group__player.html#ga44be8ea8530e6c50a2dbde4083bf66cd",
+"group__redis.html#autotoc_md597",
+"group__util.html",
+"nwnx__deprecated_8nss.html#a1c821bcf452e11a82082b18143cdd777",
+"nwnx__redis_8nss.html#ab964973e1f60c4bf7cf62d97c9e80aa1",
+"nwnx__redis__short_8nss.html#adb1f0279318f6a7e17e0ef33bf2338c4",
+"structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
