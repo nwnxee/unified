@@ -259,6 +259,10 @@ void NWNX_Util_UpdateClientObject(object oObjectToUpdate, object oPlayer = OBJEC
 /// @return TRUE if successful, FALSE on error.
 int NWNX_Util_CleanResourceDirectory(string sAlias, int nResType = 0xFFFF);
 
+/// @brief Return the filename of the tlk file.
+/// @return The name
+string NWNX_Util_GetModuleTlkFile();
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -645,4 +649,11 @@ int NWNX_Util_CleanResourceDirectory(string sAlias, int nResType = 0xFFFF)
     NWNX_PushArgumentString(sAlias);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueInt();
+}
+
+string NWNX_Util_GetModuleTlkFile()
+{
+    string sFunc = "GetModuleTlkFile";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString();
 }

@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Util: GetModuleTlkFile()
 
 ### Changed
 - N/A
