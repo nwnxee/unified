@@ -9,10 +9,14 @@ for exclude in "${EXCLUDES[@]}"; do
 done
 
 echo "%{" > $NWNXLIB_SWG
+echo "#include \"External/sqlite3/include/sqlite3.h\"" >> $NWNXLIB_SWG
+echo "#include \"External/sqlite3/sqlite_modern_cpp/sqlite_modern_cpp.h\"" >> $NWNXLIB_SWG
+
 find ../../../NWNXLib/API -type f -name '*.hpp' "${FIND_ARGS[@]}" -printf '#include "%P"\n' | sort >> $NWNXLIB_SWG
 echo "%}" >> $NWNXLIB_SWG
 
 echo "%include NamespaceUsings.i" >> $NWNXLIB_SWG
+echo "%include sqlite3.i" >> $NWNXLIB_SWG
 
 for include in "${FIRST_INCLUDES[@]}"
 do
