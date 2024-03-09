@@ -108,9 +108,11 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %shared_ptr(DataView)
 %shared_ptr(DataBlock)
 %shared_ptr(DataView::Shared)
+%shared_ptr(sqlite3)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
+%rename(SqliteDatabase) sqlite::database;
 
 // Rename/ignore operators methods
 %rename(_OpNot) operator!;
