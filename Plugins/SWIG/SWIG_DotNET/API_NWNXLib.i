@@ -280,6 +280,7 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListCNWSStatsSpellPtr) CExoArrayList<CNWSStats_Spell *>;
 %template(CExoArrayListCNWSTagNode) CExoArrayList<CNWSTagNode>;
 %template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
+%template(CExoArrayListCNWVisibilityNode) CExoArrayList<CNWVisibilityNode>;
 %template(CExoArrayListCResRef) CExoArrayList<CResRef>;
 %template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
 %template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
