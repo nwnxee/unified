@@ -1711,6 +1711,30 @@ NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack ReloadTlk(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+    {
+        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            pMessage->CreateWriteMessage(4, pPlayer->m_nPlayerID, 1);
+            pMessage->WriteDWORD(0x10);
+            uint8_t *buffer;
+            uint32_t size;
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                                                    Constants::MessageMajor::Resman,
+                                                    0x4,
+                                                    buffer, size);
+            }
+        }
+    }
+
+    return {};
+}
+
+
 NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
