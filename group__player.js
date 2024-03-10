@@ -78,6 +78,7 @@ var group__player =
     [ "NWNX_Player_GetJournalEntry", "group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7", null ],
     [ "NWNX_Player_CloseStore", "group__player.html#ga8e0a7d8bb62c2549bb4690ff90cf1ed5", null ],
     [ "NWNX_Player_SetTlkOverride", "group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a", null ],
+    [ "NWNX_Player_ReloadTlk", "group__player.html#gacf36156daa5d57d66da8b597cf6f8c7a", null ],
     [ "NWNX_Player_UpdateWind", "group__player.html#gac3c9085bf735bd4c7edcd52b9d43c870", null ],
     [ "NWNX_Player_UpdateSkyBox", "group__player.html#ga3a2beb8a6af9a3b4bbb2caef69fbf568", null ],
     [ "NWNX_Player_UpdateFogColor", "group__player.html#gaa9cda6c9e2572f4854a96502b8c11aec", null ],
