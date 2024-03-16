@@ -116,6 +116,7 @@ struct CNWSItem : CNWItem, CNWSObject
     void CalculateBaseCosts();
     float CalculatePassiveCost(CNWItemProperty * pItemProperty);
 
+    inline CExoLocString &GetFirstName() override { return m_sName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSItem
     NWN_CLASS_EXTENSION_CNWSItem

@@ -9,6 +9,7 @@
 #include "CNWSObject.hpp"
 #include "CNWSPVPEntry.hpp"
 #include "CNWSPersonalReputation.hpp"
+#include "CNWSCreatureStats.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
 
@@ -729,6 +730,8 @@ struct CNWSCreature : CNWSObject
     BOOL WalkUpdateLocationDistance(float fDistance, Vector * vNewPosition, Vector * vNewOrientation, CExoArrayList<OBJECT_ID> * aIntersectingSubAreas);
     BOOL WalkUpdateLocationTestDistance(Vector vStart, Vector vEnd);
 
+    inline CExoLocString &GetFirstName() override { if (!m_pStats) return CNWSObject::GetFirstName(); return m_pStats->m_lsFirstName; }
+    inline CExoLocString &GetLastName() override { if (!m_pStats) return CNWSObject::GetLastName(); return m_pStats->m_lsLastName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSCreature
     NWN_CLASS_EXTENSION_CNWSCreature

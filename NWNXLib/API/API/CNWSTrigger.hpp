@@ -83,6 +83,7 @@ struct CNWSTrigger : CNWSObject
     BOOL GetCanFireTrapOnObject(OBJECT_ID oidCreatureEntered, BOOL bForceSet);
     void OnEnterTrap(BOOL bForceSet);
 
+    inline CExoLocString &GetFirstName() override { return m_sLocalizedName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSTrigger
     NWN_CLASS_EXTENSION_CNWSTrigger

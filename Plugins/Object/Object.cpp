@@ -1297,6 +1297,8 @@ NWNX_EXPORT ArgumentStack GetLocalizedName(ArgumentStack&& args)
 
         if (auto *pArea = Utils::AsNWSArea(pGameObject))
             pArea->m_lsName.GetString(nLanguage, &myString, nGender);
+        else if (auto *pStore = Utils::AsNWSStore(pGameObject))
+            pStore->m_sName.GetString(nLanguage, &myString, nGender);
         else if (auto *pObject = Utils::AsNWSObject(pGameObject))
             pObject->GetFirstName().GetString(nLanguage, &myString, nGender);
 
@@ -1318,6 +1320,11 @@ NWNX_EXPORT ArgumentStack SetLocalizedName(ArgumentStack&& args)
         {
             pArea->m_lsName.RemoveString(nLanguage, nGender);
             pArea->m_lsName.AddString(nLanguage, myString, nGender);
+        }
+        else if (auto *pStore = Utils::AsNWSStore(pGameObject))
+        {
+            pStore->m_sName.RemoveString(nLanguage, nGender);
+            pStore->m_sName.AddString(nLanguage, myString, nGender);
         }
         else if (auto *pObject = Utils::AsNWSObject(pGameObject))
         {
