@@ -126,6 +126,7 @@ struct CNWSPlaceable : CNWSObject
     void ClosePlaceableForAllPlayers();
     void CalculateActionPoints();
 
+    inline CExoLocString &GetFirstName() override { return m_sLocName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSPlaceable
     NWN_CLASS_EXTENSION_CNWSPlaceable
