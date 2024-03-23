@@ -70,7 +70,7 @@ void SetPositionMaterialChangeHook(CNWSObject* thisPtr, Vector vPosition, BOOL b
             int32_t oldMaterial = pArea->GetSurfaceMaterial(pCreature->m_vPosition);
             int32_t newMaterial = pArea->GetSurfaceMaterial(vPosition);
 
-            if (oldMaterial != newMaterial || pCreature->m_vPosition == vPosition)
+            if (oldMaterial != newMaterial)
             {
                 PushEventData("MATERIAL_TYPE", std::to_string(newMaterial));
                 SignalEvent("NWNX_ON_MATERIALCHANGE_BEFORE", thisPtr->m_idSelf);
