@@ -42,7 +42,6 @@
 #include "API/Functions.hpp"
 #include "API/CNWSFaction.hpp"
 
-
 #include <set>
 
 using namespace NWNXLib;
@@ -52,11 +51,11 @@ static std::unordered_map<std::string, std::pair<ObjectID, bool>> s_PersistentLo
 
 NWNX_EXPORT ArgumentStack ForcePlaceableExamineWindow(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto placeableId = args.extract<ObjectID>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             pMessage->SendServerToPlayerExamineGui_PlaceableData(pPlayer, placeableId);
     }
 
@@ -65,12 +64,12 @@ NWNX_EXPORT ArgumentStack ForcePlaceableExamineWindow(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ForcePlaceableInventoryWindow(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidTarget = args.extract<ObjectID>();
         const auto oidPlayer = pPlayer->m_oidNWSObject;
 
-        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
+        if (auto* pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
         {
             pPlaceable->m_bHasInventory = 1;
             pPlaceable->OpenInventory(oidPlayer);
@@ -83,36 +82,36 @@ NWNX_EXPORT ArgumentStack ForcePlaceableInventoryWindow(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack StartGuiTimingBar(ArgumentStack&& args)
 {
     static Hooks::Hook pHandlePlayerToServerInputCancelGuiTimingEventHook =
-            Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerInputCancelGuiTimingEvent,
-                +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> int32_t
+        Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerInputCancelGuiTimingEvent,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> int32_t
+            {
+                CNWSScriptVarTable* pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
+
+                if (pScriptVarTable)
                 {
-                    CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
+                    CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
+                    int32_t id = pScriptVarTable->GetInt(varName);
 
-                    if (pScriptVarTable)
+                    if (id > 0)
                     {
-                        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
-                        int32_t id = pScriptVarTable->GetInt(varName);
-
-                        if (id > 0)
-                        {
-                            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
-                            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
-                            pScriptVarTable->DestroyInt(varName);
-                        }
+                        LOG_DEBUG("Cancelling GUI timing event id %d...", id);
+                        pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
+                        pScriptVarTable->DestroyInt(varName);
                     }
+                }
 
-                    return pHandlePlayerToServerInputCancelGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer);
-                }, Hooks::Order::Early);
+                return pHandlePlayerToServerInputCancelGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto seconds = args.extract<float>();
         const auto milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
         const auto type = args.extract<int32_t>();
-          ASSERT_OR_THROW(type > 0);
-          ASSERT_OR_THROW(type <= 10);
+        ASSERT_OR_THROW(type > 0);
+        ASSERT_OR_THROW(type <= 10);
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, type, milliseconds);
         }
@@ -123,9 +122,9 @@ NWNX_EXPORT ArgumentStack StartGuiTimingBar(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack StopGuiTimingBar(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
     }
 
@@ -135,20 +134,20 @@ NWNX_EXPORT ArgumentStack StopGuiTimingBar(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetAlwaysWalk(ArgumentStack&& args)
 {
     static NWNXLib::Hooks::Hook pOnRemoveLimitMovementSpeed_hook =
-            Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveLimitMovementSpeed,
-                +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
-                {
-                    // Don't remove the forced walk flag when various slowdown effects expire
-                    auto walk = pObject->nwnxGet<int>("ALWAYS_WALK");
-                    if (walk && *walk)
-                        return 1;
+        Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveLimitMovementSpeed,
+            +[](CNWSEffectListHandler* pThis, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
+            {
+                // Don't remove the forced walk flag when various slowdown effects expire
+                auto walk = pObject->nwnxGet<int>("ALWAYS_WALK");
+                if (walk && *walk)
+                    return 1;
 
-                    return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
-                }, Hooks::Order::Late);
+                return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
+            }, Hooks::Order::Late);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        CNWSCreature* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature)
         {
             LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x",
@@ -168,18 +167,17 @@ NWNX_EXPORT ArgumentStack SetAlwaysWalk(ArgumentStack&& args)
 
             // Fake effect object for bsearch. Don't want to deal with alloc/free from real one..
             uint8_t key[sizeof(CGameEffect)];
-            CGameEffect *pkey = (CGameEffect*)key;
+            CGameEffect* pkey = (CGameEffect*)key;
             pkey->m_nType = 59; // NOTE: different from nwscript.nss
 
             // Check for any other effects that limit movement speed
             pCreature->m_bForcedWalk = !!std::bsearch(&pkey, pCreature->m_appliedEffects.element, pCreature->m_appliedEffects.num, sizeof(pkey),
-                                            +[](const void *a, const void *b){ return ((CGameEffect*)a)->m_nType - ((CGameEffect*)b)->m_nType; });
+                +[](const void* a, const void* b) { return ((CGameEffect*)a)->m_nType - ((CGameEffect*)b)->m_nType; });
             if (!pCreature->m_bForcedWalk)
             {
                 pCreature->UpdateEncumbranceState(false);
                 pCreature->m_bForcedWalk = (pCreature->m_nEncumbranceState != 0);
             }
-
         }
     }
     return {};
@@ -188,12 +186,12 @@ NWNX_EXPORT ArgumentStack SetAlwaysWalk(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack GetQuickBarSlot(ArgumentStack&& args)
 {
     CNWSQuickbarButton qbs;
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto slot = args.extract<int32_t>();
-          ASSERT_OR_THROW(slot < 36);
+        ASSERT_OR_THROW(slot < 36);
 
-        if (auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
+        if (auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
         {
             if (!pCreature->m_pQuickbarButton)
                 pCreature->InitializeQuickbar();
@@ -222,31 +220,31 @@ NWNX_EXPORT ArgumentStack GetQuickBarSlot(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetQuickBarSlot(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto slot = args.extract<int32_t>();
-          ASSERT_OR_THROW(slot >= 0);
-          ASSERT_OR_THROW(slot < 36);
+        ASSERT_OR_THROW(slot >= 0);
+        ASSERT_OR_THROW(slot < 36);
 
-        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        CNWSCreature* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature->m_pQuickbarButton)
             pCreature->InitializeQuickbar();
 
-        pCreature->m_pQuickbarButton[slot].m_oidAssociate     = args.extract<ObjectID>();
-        pCreature->m_pQuickbarButton[slot].m_nAssociateType   = args.extract<int32_t>();
-        pCreature->m_pQuickbarButton[slot].m_nDomainLevel     = args.extract<int32_t>();
-        pCreature->m_pQuickbarButton[slot].m_nMetaType        = args.extract<int32_t>();
-        pCreature->m_pQuickbarButton[slot].m_nINTParam1       = args.extract<int32_t>();
-        pCreature->m_pQuickbarButton[slot].m_sToolTip         = args.extract<std::string>().c_str();
-        pCreature->m_pQuickbarButton[slot].m_sCommandLine     = args.extract<std::string>().c_str();
-        pCreature->m_pQuickbarButton[slot].m_sCommandLabel    = args.extract<std::string>().c_str();
-        pCreature->m_pQuickbarButton[slot].m_cResRef          = args.extract<std::string>().c_str();
-        pCreature->m_pQuickbarButton[slot].m_nMultiClass      = args.extract<int32_t>();
-        pCreature->m_pQuickbarButton[slot].m_nObjectType      = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_oidAssociate = args.extract<ObjectID>();
+        pCreature->m_pQuickbarButton[slot].m_nAssociateType = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_nDomainLevel = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_nMetaType = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_nINTParam1 = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_sToolTip = args.extract<std::string>().c_str();
+        pCreature->m_pQuickbarButton[slot].m_sCommandLine = args.extract<std::string>().c_str();
+        pCreature->m_pQuickbarButton[slot].m_sCommandLabel = args.extract<std::string>().c_str();
+        pCreature->m_pQuickbarButton[slot].m_cResRef = args.extract<std::string>().c_str();
+        pCreature->m_pQuickbarButton[slot].m_nMultiClass = args.extract<int32_t>();
+        pCreature->m_pQuickbarButton[slot].m_nObjectType = args.extract<int32_t>();
         pCreature->m_pQuickbarButton[slot].m_oidSecondaryItem = args.extract<ObjectID>();
-        pCreature->m_pQuickbarButton[slot].m_oidItem          = args.extract<ObjectID>();
+        pCreature->m_pQuickbarButton[slot].m_oidItem = args.extract<ObjectID>();
 
-        auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
+        auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
         pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, slot, 0);
     }
     return {};
@@ -254,7 +252,7 @@ NWNX_EXPORT ArgumentStack SetQuickBarSlot(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetBicFileName(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
         return std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
 
     return "";
@@ -262,12 +260,12 @@ NWNX_EXPORT ArgumentStack GetBicFileName(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         Vector pos;
         auto effectId = args.extract<int32_t>();
-          ASSERT_OR_THROW(effectId >= 0);
-          ASSERT_OR_THROW(effectId <= 0xFFFF);
+        ASSERT_OR_THROW(effectId >= 0);
+        ASSERT_OR_THROW(effectId <= 0xFFFF);
         pos.z = args.extract<float>();
         pos.y = args.extract<float>();
         pos.x = args.extract<float>();
@@ -287,15 +285,15 @@ NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
             vRotation.y = args.extract<float>();
             vRotation.x = args.extract<float>();
         }
-        catch(const std::runtime_error& e)
+        catch (const std::runtime_error& e)
         {
             LOG_WARNING("NWNX_Player_ShowVisualEffect: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
         }
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             ObjectVisualTransformData ovtd;
-            ovtd.m_scopes[0].m_scale = Vector{fScale, fScale, fScale};
+            ovtd.m_scopes[0].m_scale = Vector{ fScale, fScale, fScale };
             ovtd.m_scopes[0].m_rotate = vRotation;
             ovtd.m_scopes[0].m_translate = vTranslate;
             ovtd.m_scopes[0].m_animationSpeed = 1.0f;
@@ -307,16 +305,16 @@ NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ChangeBackgroundMusic(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
-        auto day   = args.extract<int32_t>();
+        auto day = args.extract<int32_t>();
         auto track = args.extract<int32_t>();
-          ASSERT_OR_THROW(track >= 0);
-          ASSERT_OR_THROW(track <= 0xFFFF);
+        ASSERT_OR_THROW(track >= 0);
+        ASSERT_OR_THROW(track <= 0xFFFF);
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerAmbientMusicChangeTrack(oidPlayer, day, track);
         }
@@ -326,13 +324,13 @@ NWNX_EXPORT ArgumentStack ChangeBackgroundMusic(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack PlayBackgroundMusic(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
         auto play = args.extract<int32_t>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerAmbientMusicPlay(oidPlayer, play);
         }
@@ -342,15 +340,15 @@ NWNX_EXPORT ArgumentStack PlayBackgroundMusic(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ChangeBattleMusic(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
         auto track = args.extract<int32_t>();
-          ASSERT_OR_THROW(track >= 0);
-          ASSERT_OR_THROW(track <= 0xFFFF);
+        ASSERT_OR_THROW(track >= 0);
+        ASSERT_OR_THROW(track <= 0xFFFF);
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerAmbientBattleMusicChange(oidPlayer, track);
         }
@@ -360,13 +358,13 @@ NWNX_EXPORT ArgumentStack ChangeBattleMusic(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack PlayBattleMusic(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
         auto play = args.extract<int32_t>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerAmbientBattleMusicPlay(oidPlayer, play);
         }
@@ -376,7 +374,7 @@ NWNX_EXPORT ArgumentStack PlayBattleMusic(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack PlaySound(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto playerID = pPlayer->m_nPlayerID;
 
@@ -389,7 +387,7 @@ NWNX_EXPORT ArgumentStack PlaySound(ArgumentStack&& args)
             oidTarget = pPlayer->m_oidNWSObject;
         }
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidTarget, sound.c_str());
         }
@@ -399,26 +397,26 @@ NWNX_EXPORT ArgumentStack PlaySound(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPlaceableUsable(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlaceable = args.extract<ObjectID>();
         const auto bUsable = args.extract<int32_t>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->CreateWriteMessage(sizeof(bUsable) + sizeof(oidPlaceable), pPlayer->m_nPlayerID, 1);
 
             pMessage->WriteOBJECTIDServer(oidPlaceable);
             pMessage->WriteBOOL(bUsable);
-            uint8_t *buffer;
+            uint8_t* buffer;
             uint32_t size;
 
             if (pMessage->GetWriteMessage(&buffer, &size))
             {
                 pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
-                                                    Constants::MessageMajor::GameObjectUpdate,
-                                                    Constants::MessageGameObjectUpdateMinor::PlaceableUseable,
-                                                    buffer, size);
+                    Constants::MessageMajor::GameObjectUpdate,
+                    Constants::MessageGameObjectUpdateMinor::PlaceableUseable,
+                    buffer, size);
             }
         }
     }
@@ -428,8 +426,8 @@ NWNX_EXPORT ArgumentStack SetPlaceableUsable(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetRestDuration(ArgumentStack&& args)
 {
     static Hooks::Hook pAIActionRestHook =
-            Hooks::HookFunction(&CNWSCreature::AIActionRest,
-    +[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
+        Hooks::HookFunction(&CNWSCreature::AIActionRest,
+            +[](CNWSCreature* pCreature, CNWSObjectActionNode* pNode) -> uint32_t
             {
                 if (auto restDuration = pCreature->nwnxGet<int>("REST_DURATION"))
                 {
@@ -445,7 +443,7 @@ NWNX_EXPORT ArgumentStack SetRestDuration(ArgumentStack&& args)
                     return pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
             }, Hooks::Order::Late);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto duration = args.extract<int32_t>();
 
@@ -465,12 +463,12 @@ NWNX_EXPORT ArgumentStack SetRestDuration(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto visualEffect = args.extract<int32_t>();
-          ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
+        ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
 
         float fScale = 1.0;
         Vector vTranslate = { 0.0, 0.0, 0.0 };
@@ -487,23 +485,23 @@ NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
             vRotation.y = args.extract<float>();
             vRotation.z = args.extract<float>();
         }
-        catch(const std::runtime_error& e)
+        catch (const std::runtime_error& e)
         {
             LOG_WARNING("NWNX_Player_ApplyInstantVisualEffectToObject: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
         }
 
-        Vector vTargetPosition {};
+        Vector vTargetPosition{};
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             ObjectVisualTransformData ovtd;
-            ovtd.m_scopes[0].m_scale = Vector{fScale, fScale, fScale};
+            ovtd.m_scopes[0].m_scale = Vector{ fScale, fScale, fScale };
             ovtd.m_scopes[0].m_rotate = vRotation;
             ovtd.m_scopes[0].m_translate = vTranslate;
             ovtd.m_scopes[0].m_animationSpeed = 1.0f;
 
             pMessage->SendServerToPlayerGameObjUpdateVisEffect(pPlayer, visualEffect, oidTarget, Utils::GetModule()->m_idSelf,
-                                                               0, 0, vTargetPosition, 0.0f, ovtd);
+                0, 0, vTargetPosition, 0.0f, ovtd);
         }
     }
     return {};
@@ -511,13 +509,13 @@ NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateCharacterSheet(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto charSheet = pPlayer->m_pCharSheetGUI;
         uint32_t msg = charSheet->ComputeCharacterSheetUpdateRequired(pPlayer);
         if (msg)
         {
-            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+            if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
                 pMessage->WriteGameObjUpdate_CharacterSheet(pPlayer, msg);
         }
     }
@@ -526,16 +524,16 @@ NWNX_EXPORT ArgumentStack UpdateCharacterSheet(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack OpenInventory(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto open = !!args.extract<int32_t>();
 
-        CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == oidTarget ? pPlayer->m_pInventoryGUI :
-                                                                                    pPlayer->m_pOtherInventoryGUI;
+        CNWSPlayerInventoryGUI* pInventory = pPlayer->m_oidNWSObject == oidTarget ? pPlayer->m_pInventoryGUI :
+            pPlayer->m_pOtherInventoryGUI;
 
-        auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
+        auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
         if (pMessage && pInventory)
         {
             pMessage->SendPlayerToServerGuiInventory_Status(pPlayer, open, oidTarget);
@@ -553,21 +551,21 @@ NWNX_EXPORT ArgumentStack OpenInventory(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetAreaExplorationState(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        CNWSCreature* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         const auto areaId = args.extract<ObjectID>();
         if (pCreature && areaId != Constants::OBJECT_INVALID)
         {
             const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
             if (pArea)
             {
-                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
-                for (int k = 0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                uint32_t* p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k = 0; k < pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
                 {
                     if (*p_oidArea == areaId)
                     {
-                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        uint8_t* pTileData = *(pCreature->m_nAutoMapTileData + k);
                         if (pTileData)
                         {
                             std::vector<uint8_t> tileDataVector(&pTileData[0], &pTileData[pArea->m_nMapSize]);
@@ -584,9 +582,9 @@ NWNX_EXPORT ArgumentStack GetAreaExplorationState(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAreaExplorationState(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        CNWSCreature* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         const auto areaId = args.extract<ObjectID>();
         if (pCreature && areaId != Constants::OBJECT_INVALID)
         {
@@ -595,12 +593,12 @@ NWNX_EXPORT ArgumentStack SetAreaExplorationState(ArgumentStack&& args)
             {
                 auto encString = args.extract<std::string>();
 
-                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
-                for (int k = 0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                uint32_t* p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k = 0; k < pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
                 {
                     if (*p_oidArea == areaId)
                     {
-                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        uint8_t* pTileData = *(pCreature->m_nAutoMapTileData + k);
                         if (pTileData)
                         {
                             std::vector<uint8_t> tileDataVector = NWNXLib::String::FromBase64(encString);
@@ -618,8 +616,8 @@ NWNX_EXPORT ArgumentStack SetAreaExplorationState(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetRestAnimation(ArgumentStack&& args)
 {
     static Hooks::Hook pAIActionRestHook =
-            Hooks::HookFunction(&CNWSCreature::AIActionRest,
-            +[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
+        Hooks::HookFunction(&CNWSCreature::AIActionRest,
+            +[](CNWSCreature* pCreature, CNWSObjectActionNode* pNode) -> uint32_t
             {
                 auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
 
@@ -632,7 +630,7 @@ NWNX_EXPORT ArgumentStack SetRestAnimation(ArgumentStack&& args)
                 return retVal;
             }, Hooks::Order::Late);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto animation = args.extract<int32_t>();
 
@@ -650,39 +648,38 @@ NWNX_EXPORT ArgumentStack SetRestAnimation(ArgumentStack&& args)
     return {};
 }
 
-
 NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectVisualTransformOverrideHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
+                        pObject->m_nObjectType == Constants::ObjectType::Placeable ||
+                        pObject->m_nObjectType == Constants::ObjectType::Item ||
+                        pObject->m_nObjectType == Constants::ObjectType::Door)
                     {
-                        if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
-                            pObject->m_nObjectType == Constants::ObjectType::Placeable ||
-                            pObject->m_nObjectType == Constants::ObjectType::Item ||
-                            pObject->m_nObjectType == Constants::ObjectType::Door)
+                        if (auto objectVisualTransformData = pObject->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                         {
-                            if (auto objectVisualTransformData = pObject->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                            {
-                                auto *pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
+                            auto* pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
 
-                                std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
-                                pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                                std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
+                            std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
+                            pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                            std::swap(pObjectVisualTransformData, pObject->m_pVisualTransformData);
 
-                                return;
-                            }
+                            return;
                         }
                     }
-                    pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooks::Order::Early);
+                }
+                pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto oidObject = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
         const auto transform = args.extract<int32_t>();
         const auto value = args.extract<float>();
 
@@ -700,7 +697,7 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
         }
         else
         {
-            ObjectVisualTransformData *pObjectVisualTransformData;
+            ObjectVisualTransformData* pObjectVisualTransformData;
 
             if (auto objectVisualTransformData = obj->nwnxGet<void*>("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
@@ -709,52 +706,52 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
             else
             {
                 pObjectVisualTransformData = new ObjectVisualTransformData();
-                pObjectVisualTransformData->m_scopes[0].m_scale = Vector{1.0f, 1.0f, 1.0f};
-                pObjectVisualTransformData->m_scopes[0].m_rotate = Vector{0.0f, 0.0f, 0.0f};
-                pObjectVisualTransformData->m_scopes[0].m_translate = Vector{0.0f, 0.0f, 0.0f};
+                pObjectVisualTransformData->m_scopes[0].m_scale = Vector{ 1.0f, 1.0f, 1.0f };
+                pObjectVisualTransformData->m_scopes[0].m_rotate = Vector{ 0.0f, 0.0f, 0.0f };
+                pObjectVisualTransformData->m_scopes[0].m_translate = Vector{ 0.0f, 0.0f, 0.0f };
                 pObjectVisualTransformData->m_scopes[0].m_animationSpeed = 1.0f;
 
                 obj->nwnxSet("OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
-                        pObjectVisualTransformData, [](void*p) { delete static_cast<ObjectVisualTransformData*>(p); });
+                    pObjectVisualTransformData, [](void* p) { delete static_cast<ObjectVisualTransformData*>(p); });
             }
 
             switch (transform)
             {
-                case Constants::ObjectVisualTransform::Scale:
-                    pObjectVisualTransformData->m_scopes[0].m_scale.x = value;
-                    break;
+            case Constants::ObjectVisualTransform::Scale:
+                pObjectVisualTransformData->m_scopes[0].m_scale.x = value;
+                break;
 
-                case Constants::ObjectVisualTransform::RotateX:
-                    pObjectVisualTransformData->m_scopes[0].m_rotate.x = value;
-                    break;
+            case Constants::ObjectVisualTransform::RotateX:
+                pObjectVisualTransformData->m_scopes[0].m_rotate.x = value;
+                break;
 
-                case Constants::ObjectVisualTransform::RotateY:
-                    pObjectVisualTransformData->m_scopes[0].m_rotate.y = value;
-                    break;
+            case Constants::ObjectVisualTransform::RotateY:
+                pObjectVisualTransformData->m_scopes[0].m_rotate.y = value;
+                break;
 
-                case Constants::ObjectVisualTransform::RotateZ:
-                    pObjectVisualTransformData->m_scopes[0].m_rotate.z = value;
-                    break;
+            case Constants::ObjectVisualTransform::RotateZ:
+                pObjectVisualTransformData->m_scopes[0].m_rotate.z = value;
+                break;
 
-                case Constants::ObjectVisualTransform::TranslateX:
-                    pObjectVisualTransformData->m_scopes[0].m_translate.x = value;
-                    break;
+            case Constants::ObjectVisualTransform::TranslateX:
+                pObjectVisualTransformData->m_scopes[0].m_translate.x = value;
+                break;
 
-                case Constants::ObjectVisualTransform::TranslateY:
-                    pObjectVisualTransformData->m_scopes[0].m_translate.y = value;
-                    break;
+            case Constants::ObjectVisualTransform::TranslateY:
+                pObjectVisualTransformData->m_scopes[0].m_translate.y = value;
+                break;
 
-                case Constants::ObjectVisualTransform::TranslateZ:
-                    pObjectVisualTransformData->m_scopes[0].m_translate.z = value;
-                    break;
+            case Constants::ObjectVisualTransform::TranslateZ:
+                pObjectVisualTransformData->m_scopes[0].m_translate.z = value;
+                break;
 
-                case Constants::ObjectVisualTransform::AnimationSpeed:
-                    pObjectVisualTransformData->m_scopes[0].m_animationSpeed = value;
-                    break;
+            case Constants::ObjectVisualTransform::AnimationSpeed:
+                pObjectVisualTransformData->m_scopes[0].m_animationSpeed = value;
+                break;
 
-                default:
-                    LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");
-                    break;
+            default:
+                LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");
+                break;
             }
         }
     }
@@ -765,41 +762,41 @@ NWNX_EXPORT ArgumentStack SetObjectVisualTransformOverride(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 {
     static Hooks::Hook pApplyLoopingVisualEffectToObjectHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto loopingVisualEffectSet = pObject->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
-                            if (auto loopingVisualEffectSet = pObject->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                            {
-                                auto *pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
+                        auto* pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
 
-                                for(auto visualEffect : *pLoopingVisualEffectSet)
-                                {
-                                    pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
-                                }
+                        for (auto visualEffect : *pLoopingVisualEffectSet)
+                        {
+                            pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
+                        }
 
-                                pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
 
-                                for(auto visualEffect : *pLoopingVisualEffectSet)
-                                {
-                                    pObject->RemoveLoopingVisualEffect(visualEffect);
-                                }
+                        for (auto visualEffect : *pLoopingVisualEffectSet)
+                        {
+                            pObject->RemoveLoopingVisualEffect(visualEffect);
+                        }
 
-                                return;
-                            }
+                        return;
                     }
-                    pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooks::Order::Early);
+                }
+                pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto visualEffect = args.extract<int32_t>();
-          ASSERT_OR_THROW(visualEffect <= 65535);
+        ASSERT_OR_THROW(visualEffect <= 65535);
 
-        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        if (auto* pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
         {
             if (visualEffect < 0)
             {
@@ -814,7 +811,7 @@ NWNX_EXPORT ArgumentStack ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
             }
             else
             {
-                std::set<uint16_t> *pLoopingVisualEffectSet;
+                std::set<uint16_t>* pLoopingVisualEffectSet;
 
                 if (auto loopingVisualEffectSet = pTarget->nwnxGet<void*>("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                 {
@@ -825,7 +822,7 @@ NWNX_EXPORT ArgumentStack ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                     pLoopingVisualEffectSet = new std::set<uint16_t>();
 
                     pTarget->nwnxSet("LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
-                                    pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
+                        pLoopingVisualEffectSet, [](void* p) { delete static_cast<std::set<uint16_t>*>(p); });
                 }
 
                 if (pLoopingVisualEffectSet->find(visualEffect) != pLoopingVisualEffectSet->end())
@@ -845,31 +842,31 @@ NWNX_EXPORT ArgumentStack ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetPlaceableNameOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetPlaceableNameOverrideHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
                 {
-                    if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto name = pPlaceable->nwnxGet<std::string>("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
-                        if (auto name = pPlaceable->nwnxGet<std::string>("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                        {
-                            CExoString swapName = CExoString(*name);
+                        CExoString swapName = CExoString(*name);
 
-                            std::swap(swapName, pPlaceable->m_sDisplayName);
-                            pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                            std::swap(swapName, pPlaceable->m_sDisplayName);
-                            return;
-                        }
+                        std::swap(swapName, pPlaceable->m_sDisplayName);
+                        pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        std::swap(swapName, pPlaceable->m_sDisplayName);
+                        return;
                     }
-                    pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooks::Order::Early);
+                }
+                pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto name = args.extract<std::string>();
 
-        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
+        if (auto* pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
         {
             if (name.empty())
             {
@@ -880,7 +877,7 @@ NWNX_EXPORT ArgumentStack SetPlaceableNameOverride(ArgumentStack&& args)
                 pPlaceable->nwnxSet("PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
             }
 
-            if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pPlaceable->m_idSelf))
+            if (auto* pLastUpdateObject = pPlayer->GetLastUpdateObject(pPlaceable->m_idSelf))
             {
                 pLastUpdateObject->m_nUpdateDisplayNameSeq--;
             }
@@ -891,9 +888,9 @@ NWNX_EXPORT ArgumentStack SetPlaceableNameOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetQuestCompleted(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         const auto questTag = args.extract<std::string>();
 
         if (pCreature && pCreature->m_pJournal)
@@ -918,57 +915,57 @@ NWNX_EXPORT ArgumentStack SetPersistentLocation(ArgumentStack&& args)
 {
     static Hooks::Hook pSetPersistentLocationHook =
         Hooks::HookFunction(&CServerExoAppInternal::LoadCharacterFinish,
-                +[](CServerExoAppInternal *pServerExoAppInternal, CNWSPlayer *pPlayer, int32_t bUseSaveGameCharacter, int32_t bUseStateDataInSaveGame ) -> int32_t
+            +[](CServerExoAppInternal* pServerExoAppInternal, CNWSPlayer* pPlayer, int32_t bUseSaveGameCharacter, int32_t bUseStateDataInSaveGame) -> int32_t
+            {
+                auto retVal = pSetPersistentLocationHook->CallOriginal<int32_t>(pServerExoAppInternal, pPlayer, bUseSaveGameCharacter, bUseStateDataInSaveGame);
+
+                std::string sKey;
+                std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+                if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
                 {
-                    auto retVal = pSetPersistentLocationHook->CallOriginal<int32_t>(pServerExoAppInternal, pPlayer, bUseSaveGameCharacter, bUseStateDataInSaveGame);
-
-                    std::string sKey;
-                    std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
-                    if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
-                    {
-                        std::string sCommunityName = pPlayer->GetPlayerName().CStr();
-                        sKey = sCommunityName + "!" + sBicFileName;
-                    }
-                    else
-                    {
-                        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
-                        auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-                        std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
-                        sKey = sCDKey + "!" + sBicFileName;
-                    }
-                    auto wpOID = s_PersistentLocationWP[sKey].first;
-                    if (!wpOID)
-                        return retVal;
-
-                    auto bFirstConnectOnly = s_PersistentLocationWP[sKey].second;
-
-                    // Delete the key if this is the first connect and we're only setting the location on first connect
-                    if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
-                    {
-                        s_PersistentLocationWP.erase(sKey);
-                    }
-                        // The TURD exists already meaning its not the first connect
-                    else if (bFirstConnectOnly)
-                        return retVal;
-
-                    // Fake some changes to their area/position as though they had a TURD
-                    auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
-                    if (pWP)
-                    {
-                        auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
-                        pCreature->m_oidDesiredArea = pWP->m_oidArea;
-                        pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
-                        pCreature->m_bDesiredAreaUpdateComplete = false;
-                        pCreature->m_vOrientation = pWP->m_vOrientation;
-                        pPlayer->m_bFromTURD = true;
-                        // We don't need the WP any more if we're only setting the location on first connect
-                        if (bFirstConnectOnly)
-                        {
-                            Utils::AddDestroyObjectEvent(pWP->m_idSelf);
-                        }
-                    }
+                    std::string sCommunityName = pPlayer->GetPlayerName().CStr();
+                    sKey = sCommunityName + "!" + sBicFileName;
+                }
+                else
+                {
+                    auto* pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+                    auto* pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
+                    std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+                    sKey = sCDKey + "!" + sBicFileName;
+                }
+                auto wpOID = s_PersistentLocationWP[sKey].first;
+                if (!wpOID)
                     return retVal;
-                }, Hooks::Order::Early);
+
+                auto bFirstConnectOnly = s_PersistentLocationWP[sKey].second;
+
+                // Delete the key if this is the first connect and we're only setting the location on first connect
+                if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
+                {
+                    s_PersistentLocationWP.erase(sKey);
+                }
+                // The TURD exists already meaning its not the first connect
+                else if (bFirstConnectOnly)
+                    return retVal;
+
+                // Fake some changes to their area/position as though they had a TURD
+                auto* pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
+                if (pWP)
+                {
+                    auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                    pCreature->m_oidDesiredArea = pWP->m_oidArea;
+                    pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
+                    pCreature->m_bDesiredAreaUpdateComplete = false;
+                    pCreature->m_vOrientation = pWP->m_vOrientation;
+                    pPlayer->m_bFromTURD = true;
+                    // We don't need the WP any more if we're only setting the location on first connect
+                    if (bFirstConnectOnly)
+                    {
+                        Utils::AddDestroyObjectEvent(pWP->m_idSelf);
+                    }
+                }
+                return retVal;
+            }, Hooks::Order::Early);
 
     const auto sCDKeyOrCommunityName = args.extract<std::string>();
     const auto sBicFileName = args.extract<std::string>();
@@ -983,13 +980,13 @@ NWNX_EXPORT ArgumentStack SetPersistentLocation(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateItemName(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidItem = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
 
-        auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
-        auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
+        auto* pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
+        auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
 
         if (pItem && pMessage)
         {
@@ -1004,16 +1001,16 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
     const auto possessorId = args.extract<ObjectID>();
     const auto possessedId = args.extract<ObjectID>();
     const auto bMindImmune = args.extract<int32_t>();
-    const auto bCreateQB   = args.extract<int32_t>();
+    const auto bCreateQB = args.extract<int32_t>();
 
     auto pServer = Globals::AppManager()->m_pServerExoApp;
-    auto *pPossessor = pServer->GetCreatureByGameObjectID(possessorId);
+    auto* pPossessor = pServer->GetCreatureByGameObjectID(possessorId);
     if (!pPossessor || !pPossessor->m_bPlayerCharacter)
     {
         LOG_ERROR("Attempt to possess a creature with an invalid possessor.");
         return false;
     }
-    auto *pPossessed = pServer->GetCreatureByGameObjectID(possessedId);
+    auto* pPossessed = pServer->GetCreatureByGameObjectID(possessedId);
     if (!pPossessed || pPossessed->m_bPlayerCharacter)
     {
         LOG_ERROR("Attempt to possess an invalid creature.");
@@ -1038,12 +1035,12 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
 
     // When a PC is logging off we don't want this creature to unsummon themselves (unless crashed in AT)
     static NWNXLib::Hooks::Hook pUnsummonMyselfHook =
-            Hooks::HookFunction(&CNWSCreature::UnsummonMyself,
-            +[](CNWSCreature *pPossessed) -> void
+        Hooks::HookFunction(&CNWSCreature::UnsummonMyself,
+            +[](CNWSCreature* pPossessed) -> void
             {
                 auto possessorOidPOS = pPossessed->nwnxGet<int>("possessorOid");
                 auto pServer = Globals::AppManager()->m_pServerExoApp;
-                auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
+                auto* pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
 
                 //Possessed, not in limbo
                 if (pPossessor && pPossessed->m_oidArea != Constants::OBJECT_INVALID)
@@ -1058,7 +1055,7 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
                     {
                         for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
                         {
-                            auto *eff = pPossessor->m_appliedEffects.element[i];
+                            auto* eff = pPossessor->m_appliedEffects.element[i];
                             if (eff->m_nType == Constants::EffectTrueType::Immunity &&
                                 eff->m_nSubType == Constants::EffectSubType::Magical &&
                                 eff->m_oidCreator == pPossessor->m_idSelf &&
@@ -1076,41 +1073,41 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
             }, Hooks::Order::Late);
 
     static NWNXLib::Hooks::Hook pPossessFamiliarHook =
-            Hooks::HookFunction(&CNWSCreature::PossessFamiliar,
-                +[](CNWSCreature *pPossessor) -> void
+        Hooks::HookFunction(&CNWSCreature::PossessFamiliar,
+            +[](CNWSCreature* pPossessor) -> void
+            {
+                auto possessorOidPOS = pPossessor->nwnxGet<int>("possessorOid");
+                if (possessorOidPOS)
                 {
-                    auto possessorOidPOS = pPossessor->nwnxGet<int>("possessorOid");
-                    if (possessorOidPOS)
-                    {
-                        LOG_ERROR("Attempt to possess a familiar while already possessing.");
-                    }
-                    else
-                    {
-                        pPossessFamiliarHook->CallOriginal<void>(pPossessor);
-                    }
-                }, Hooks::Order::Late);
+                    LOG_ERROR("Attempt to possess a familiar while already possessing.");
+                }
+                else
+                {
+                    pPossessFamiliarHook->CallOriginal<void>(pPossessor);
+                }
+            }, Hooks::Order::Late);
 
     static NWNXLib::Hooks::Hook pUnpossessFamiliarHook =
-            Hooks::HookFunction(&CNWSCreature::UnpossessFamiliar,
-                +[](CNWSCreature *pPossessor) -> void
+        Hooks::HookFunction(&CNWSCreature::UnpossessFamiliar,
+            +[](CNWSCreature* pPossessor) -> void
+            {
+                pUnpossessFamiliarHook->CallOriginal<void>(pPossessor);
+
+                auto possessedOidPOS = pPossessor->nwnxGet<int>("possessedOid");
+                if (possessedOidPOS)
                 {
-                    pUnpossessFamiliarHook->CallOriginal<void>(pPossessor);
+                    pPossessor->RemoveAssociate(*possessedOidPOS);
+                    pPossessor->nwnxRemove("possessedOid");
+                    Utils::GetGameObject(*possessedOidPOS)->nwnxRemove("possessorOid");
 
-                    auto possessedOidPOS = pPossessor->nwnxGet<int>("possessedOid");
-                    if (possessedOidPOS)
+                    auto possessedAssociateType = pPossessor->nwnxGet<int>("possessedAssociateType");
+                    if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
                     {
-                        pPossessor->RemoveAssociate(*possessedOidPOS);
-                        pPossessor->nwnxRemove("possessedOid");
-                        Utils::GetGameObject(*possessedOidPOS)->nwnxRemove("possessorOid");
-
-                        auto possessedAssociateType = pPossessor->nwnxGet<int>("possessedAssociateType");
-                        if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
-                        {
-                            pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
-                            pPossessor->nwnxRemove("possessedAssociateType");
-                        }
+                        pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
+                        pPossessor->nwnxRemove("possessedAssociateType");
                     }
-                }, Hooks::Order::Early);
+                }
+            }, Hooks::Order::Early);
 
     // Save previous associate type so it can be set back after unpossess
     pPossessor->nwnxSet("possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
@@ -1139,7 +1136,7 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
     {
         for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
         {
-            auto *eff = pPossessor->m_appliedEffects.element[i];
+            auto* eff = pPossessor->m_appliedEffects.element[i];
             if (eff->m_nType == Constants::EffectTrueType::Immunity &&
                 eff->m_nSubType == Constants::EffectSubType::Magical &&
                 eff->m_oidCreator == pPossessor->m_idSelf &&
@@ -1158,10 +1155,10 @@ NWNX_EXPORT ArgumentStack PossessCreature(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetPlatformId(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
-        if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
+        auto* pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+        if (auto* pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
             return pPlayerInfo->m_nPlatformId;
     }
     return 0;
@@ -1169,10 +1166,10 @@ NWNX_EXPORT ArgumentStack GetPlatformId(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetLanguage(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
-        if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
+        auto* pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+        if (auto* pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
             return pPlayerInfo->m_nPlayerLanguage;
     }
     return 0;
@@ -1180,16 +1177,16 @@ NWNX_EXPORT ArgumentStack GetLanguage(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetResManOverride(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto resType = args.extract<int32_t>();
         const auto oldResName = args.extract<std::string>();
-          ASSERT_OR_THROW(!oldResName.empty());
-          ASSERT_OR_THROW(oldResName.size() <= 16);
+        ASSERT_OR_THROW(!oldResName.empty());
+        ASSERT_OR_THROW(oldResName.size() <= 16);
         const auto newResName = args.extract<std::string>();
-          ASSERT_OR_THROW(newResName.size() <= 16);
+        ASSERT_OR_THROW(newResName.size() <= 16);
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             pMessage->SendServerToPlayerResmanOverride(pPlayer->m_nPlayerID, resType, oldResName.c_str(), newResName.c_str());
     }
 
@@ -1198,12 +1195,12 @@ NWNX_EXPORT ArgumentStack SetResManOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetCustomToken(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto tokenNumber = args.extract<int32_t>();
         const auto tokenText = args.extract<std::string>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             pMessage->SendServerToPlayerSetCustomToken(pPlayer->m_nPlayerID, tokenNumber, tokenText.c_str());
     }
 
@@ -1213,31 +1210,31 @@ NWNX_EXPORT ArgumentStack SetCustomToken(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetCreatureNameOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetCreatureNameOverrideHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                 +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
-                 {
-                     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
-                     {
-                         if (auto name = pCreature->nwnxGet<std::string>("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                         {
-                             CExoString swapName = CExoString(*name);
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
+                {
+                    if (auto name = pCreature->nwnxGet<std::string>("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+                    {
+                        CExoString swapName = CExoString(*name);
 
-                             std::swap(swapName, pCreature->m_sDisplayName);
-                             pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                             std::swap(swapName, pCreature->m_sDisplayName);
-                             return;
-                         }
-                     }
-                     pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                 }, Hooks::Order::Early);
+                        std::swap(swapName, pCreature->m_sDisplayName);
+                        pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        std::swap(swapName, pCreature->m_sDisplayName);
+                        return;
+                    }
+                }
+                pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto name = args.extract<std::string>();
 
-        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidTarget)))
+        if (auto* pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidTarget)))
         {
             if (name.empty())
             {
@@ -1248,7 +1245,7 @@ NWNX_EXPORT ArgumentStack SetCreatureNameOverride(ArgumentStack&& args)
                 pCreature->nwnxSet("CRENO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
             }
 
-            if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
+            if (auto* pLastUpdateObject = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
                 pLastUpdateObject->m_nUpdateDisplayNameSeq--;
         }
     }
@@ -1257,16 +1254,16 @@ NWNX_EXPORT ArgumentStack SetCreatureNameOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidCreature = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         auto text = args.extract<std::string>();
-          ASSERT_OR_THROW(!text.empty());
+        ASSERT_OR_THROW(!text.empty());
 
-        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
+        if (auto* pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
         {
-            if (auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+            if (auto* pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
             {
                 CNWCCMessageData messageData;
                 messageData.SetObjectID(0, pCreature->m_idSelf);
@@ -1283,12 +1280,12 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto isDM = !!args.extract<int32_t>();
-        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+        auto* pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
 
-        if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
+        if (auto* pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
         {
             if (!pPlayerInfo->SatisfiesBuild(8193, 14, 0))
             {
@@ -1302,7 +1299,7 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
                 return {};
             }
 
-            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+            if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
                 bool currentlyPlayerDM = pPlayerInfo->m_bGameMasterPrivileges && pPlayerInfo->m_bGameMasterIsPlayerLogin;
 
@@ -1312,14 +1309,14 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = true;
                     pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, true, true);
 
-                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    if (auto* pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
                     {
                         pCreature->m_pStats->m_bDMManifested = true;
                         pCreature->UpdateVisibleList();
                     }
 
                     bool bRemoveFromTimeStopExclusionList = true;
-                    auto *pEffectList = &pPlayer->GetGameObject()->m_appliedEffects;
+                    auto* pEffectList = &pPlayer->GetGameObject()->m_appliedEffects;
                     for (int32_t i = 0; i < pEffectList->num && pEffectList->element[i]->m_nType <= Constants::EffectTrueType::TimeStopImmunity; i++)
                     {
                         if (pEffectList->element[i]->m_nType == Constants::EffectTrueType::TimeStopImmunity)
@@ -1346,7 +1343,7 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = false;
                     pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, false, true);
 
-                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    if (auto* pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
                     {
                         pCreature->m_pStats->m_bDMManifested = true;
                         pCreature->UpdateVisibleList();
@@ -1367,29 +1364,29 @@ NWNX_EXPORT ArgumentStack ToggleDM(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetObjectMouseCursorOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectMouseCursorOverrideHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto cursorId = pObject->nwnxGet<int32_t>("OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
-                        if (auto cursorId = pObject->nwnxGet<int32_t>("OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                        {
-                            std::swap(*cursorId, pObject->m_nMouseCursor);
-                            pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                            std::swap(*cursorId, pObject->m_nMouseCursor);
-                            return;
-                        }
+                        std::swap(*cursorId, pObject->m_nMouseCursor);
+                        pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        std::swap(*cursorId, pObject->m_nMouseCursor);
+                        return;
                     }
-                    pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooks::Order::Early);
+                }
+                pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto cursorId = args.extract<int32_t>();
 
-        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
         {
             if (cursorId < 0)
             {
@@ -1407,35 +1404,35 @@ NWNX_EXPORT ArgumentStack SetObjectMouseCursorOverride(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetObjectHiliteColorOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectHiliteColorHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-                +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+            {
+                if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto hiliteColor = pObject->nwnxGet<int32_t>("OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
-                        if (auto hiliteColor = pObject->nwnxGet<int32_t>("OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-                        {
-                            Vector vHiliteColor = {};
-                            vHiliteColor.x = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f; // R
-                            vHiliteColor.y = (float)((*hiliteColor >> 8) & 0xFF) / 255.0f;  // G
-                            vHiliteColor.z = (float)(*hiliteColor & 0xFF) / 255.0f;         // B
+                        Vector vHiliteColor = {};
+                        vHiliteColor.x = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f; // R
+                        vHiliteColor.y = (float)((*hiliteColor >> 8) & 0xFF) / 255.0f;  // G
+                        vHiliteColor.z = (float)(*hiliteColor & 0xFF) / 255.0f;         // B
 
-                            std::swap(vHiliteColor, pObject->m_vHiliteColor);
-                            pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                            std::swap(vHiliteColor, pObject->m_vHiliteColor);
-                            return;
-                        }
+                        std::swap(vHiliteColor, pObject->m_vHiliteColor);
+                        pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+                        std::swap(vHiliteColor, pObject->m_vHiliteColor);
+                        return;
                     }
-                    pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooks::Order::Early);
+                }
+                pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+            }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto hiliteColor = args.extract<int32_t>();
-          ASSERT_OR_THROW(hiliteColor <= 0xFFFFFF);
+        ASSERT_OR_THROW(hiliteColor <= 0xFFFFFF);
 
-        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
         {
             if (hiliteColor < 0)
             {
@@ -1453,29 +1450,29 @@ NWNX_EXPORT ArgumentStack SetObjectHiliteColorOverride(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack RemoveEffectFromTURD(ArgumentStack&& args)
 {
     const auto oidPlayer = args.extract<ObjectID>();
-      ASSERT_OR_THROW(oidPlayer != Constants::OBJECT_INVALID);
+    ASSERT_OR_THROW(oidPlayer != Constants::OBJECT_INVALID);
     const auto effectTag = args.extract<std::string>();
-      ASSERT_OR_THROW(!effectTag.empty());
+    ASSERT_OR_THROW(!effectTag.empty());
 
-    auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    auto* pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
     if (!pTURDList)
         return {};
 
-    for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
+    for (auto* pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
     {
-        auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+        auto* pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
 
         if (pTURD && pTURD->m_oidPlayer == oidPlayer)
         {
             std::vector<uint64_t> remove(128);
             for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
             {
-                auto *pEffect = pTURD->m_appliedEffects.element[i];
+                auto* pEffect = pTURD->m_appliedEffects.element[i];
 
                 if (pEffect->m_sCustomTag == effectTag)
                     remove.push_back(pEffect->m_nID);
             }
-            for (auto id: remove)
+            for (auto id : remove)
                 pTURD->RemoveEffectById(id);
             break;
         }
@@ -1486,11 +1483,11 @@ NWNX_EXPORT ArgumentStack RemoveEffectFromTURD(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetSpawnLocation(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidArea = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-          ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
+        ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
         auto x = args.extract<float>();
         auto y = args.extract<float>();
         auto z = args.extract<float>();
@@ -1501,7 +1498,7 @@ NWNX_EXPORT ArgumentStack SetSpawnLocation(ArgumentStack&& args)
             pPlayer->m_bFromTURD = true;
 
             pCreature->m_oidDesiredArea = oidArea;
-            pCreature->m_vDesiredAreaLocation = {x, y, z};
+            pCreature->m_vDesiredAreaLocation = { x, y, z };
             pCreature->m_bDesiredAreaUpdateComplete = false;
             Utils::SetOrientation(pCreature, facing);
         }
@@ -1512,20 +1509,19 @@ NWNX_EXPORT ArgumentStack SetSpawnLocation(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SendDMAllCreatorLists(ArgumentStack&& args)
 {
-    if(auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
 
-        if(pCreature && pCreature->m_pStats->GetIsDM())
+        if (pCreature && pCreature->m_pStats->GetIsDM())
         {
             if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
                 auto original = pPlayer->m_bWasSentITP;
-                pPlayer->m_bWasSentITP=false;
+                pPlayer->m_bWasSentITP = false;
                 pMessage->SendServerToPlayerDungeonMasterCreatorLists(pPlayer);
-                pPlayer->m_bWasSentITP=original;
+                pPlayer->m_bWasSentITP = original;
             }
-
         }
     }
 
@@ -1535,9 +1531,9 @@ NWNX_EXPORT ArgumentStack SendDMAllCreatorLists(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack AddCustomJournalEntry(ArgumentStack&& args)
 {
     int32_t retval = -1;
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        if (auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
+        if (auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
         {
             const auto questName = args.extract<std::string>();
             const auto questText = args.extract<std::string>();
@@ -1562,8 +1558,8 @@ NWNX_EXPORT ArgumentStack AddCustomJournalEntry(ArgumentStack&& args)
             ASSERT_OR_THROW(updated >= 0);
             ASSERT_OR_THROW(silentUpdate >= 0);
 
-            CNWSJournal *pJournal = pCreature->GetJournal();
-              ASSERT_OR_THROW(pJournal);// Should never happen, but still.
+            CNWSJournal* pJournal = pCreature->GetJournal();
+            ASSERT_OR_THROW(pJournal);// Should never happen, but still.
 
             // If server owner leaves this 0 - the entry will be added with today's date
             if (calDay <= 0)
@@ -1576,21 +1572,21 @@ NWNX_EXPORT ArgumentStack AddCustomJournalEntry(ArgumentStack&& args)
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
 
-            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+            if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
                 auto entries = pJournal->m_lstEntries;
                 SJournalEntry newJournal; // Only instantiate the struct if the message was created
-                newJournal.szName          = Utils::CreateLocString(questName,0,0);
-                newJournal.szText          = Utils::CreateLocString(questText,0,0);
-                newJournal.nCalendarDay    = calDay;
-                newJournal.nTimeOfDay      = timeDay;
-                newJournal.szPlot_Id       = CExoString(tag.c_str());
-                newJournal.nState          = state;
-                newJournal.nPriority       = priority;
-                newJournal.nPictureIndex   = 0; // Not implemented by bioware/beamdog
+                newJournal.szName = Utils::CreateLocString(questName, 0, 0);
+                newJournal.szText = Utils::CreateLocString(questText, 0, 0);
+                newJournal.nCalendarDay = calDay;
+                newJournal.nTimeOfDay = timeDay;
+                newJournal.szPlot_Id = CExoString(tag.c_str());
+                newJournal.nState = state;
+                newJournal.nPriority = priority;
+                newJournal.nPictureIndex = 0; // Not implemented by bioware/beamdog
                 newJournal.bQuestCompleted = completed;
                 newJournal.bQuestDisplayed = displayed;
-                newJournal.bUpdated        = updated;
+                newJournal.bUpdated = updated;
                 int overwrite = -1;
                 if (entries.num > 0)
                 {
@@ -1608,27 +1604,27 @@ NWNX_EXPORT ArgumentStack AddCustomJournalEntry(ArgumentStack&& args)
                 }
                 // If we have overwritten an existing entry - we don't need to perform an add -
                 // Instead we perform an update only
-                if(overwrite == -1)
+                if (overwrite == -1)
                 {
                     // New entry added
                     pJournal->m_lstEntries.Add(newJournal);
                 }
                 pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
-                                                            newJournal.szPlot_Id,
-                                                            newJournal.nState,
-                                                            newJournal.nPriority,
-                                                            newJournal.nPictureIndex,
-                                                            newJournal.bQuestCompleted,
-                                                            newJournal.nCalendarDay,
-                                                            newJournal.nTimeOfDay,
-                                                            newJournal.szName,
-                                                            newJournal.szText);
+                    newJournal.szPlot_Id,
+                    newJournal.nState,
+                    newJournal.nPriority,
+                    newJournal.nPictureIndex,
+                    newJournal.bQuestCompleted,
+                    newJournal.nCalendarDay,
+                    newJournal.nTimeOfDay,
+                    newJournal.szName,
+                    newJournal.szText);
                 retval = pJournal->m_lstEntries.num; // Success
 
                 //If no update message is desired, we can keep it silent.
-                if(!silentUpdate)
+                if (!silentUpdate)
                 {
-                    pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
+                    pMessage->SendServerToPlayerJournalUpdated(pPlayer, 1, newJournal.bQuestCompleted, newJournal.szName);
                 }
             }
             else
@@ -1642,9 +1638,9 @@ NWNX_EXPORT ArgumentStack AddCustomJournalEntry(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetJournalEntry(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (pCreature && pCreature->m_pJournal)
         {
             auto entries = pCreature->m_pJournal->m_lstEntries;
@@ -1680,9 +1676,9 @@ NWNX_EXPORT ArgumentStack GetJournalEntry(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack CloseStore(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        if (auto *pPlayerStoreGUI = pPlayer->m_pStoreGUI)
+        if (auto* pPlayerStoreGUI = pPlayer->m_pStoreGUI)
             pPlayerStoreGUI->CloseStore(pPlayer, true);
     }
 
@@ -1691,10 +1687,10 @@ NWNX_EXPORT ArgumentStack CloseStore(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         const auto strRef = args.extract<int32_t>();
-          ASSERT_OR_THROW(strRef >= 0);
+        ASSERT_OR_THROW(strRef >= 0);
         auto override = args.extract<std::string>();
         const auto restoreGlobal = !!args.extract<int32_t>();
 
@@ -1704,7 +1700,7 @@ NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
                 override = Globals::TlkTable()->m_overrides[strRef].CStr();
         }
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             pMessage->SendServerToPlayerSetTlkOverride(pPlayer->m_nPlayerID, strRef, override);
     }
 
@@ -1713,20 +1709,20 @@ NWNX_EXPORT ArgumentStack SetTlkOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack ReloadTlk(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->CreateWriteMessage(4, pPlayer->m_nPlayerID, 1);
             pMessage->WriteDWORD(0x10);
-            uint8_t *buffer;
+            uint8_t* buffer;
             uint32_t size;
             if (pMessage->GetWriteMessage(&buffer, &size))
             {
                 pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
-                                                    Constants::MessageMajor::Resman,
-                                                    0x4,
-                                                    buffer, size);
+                    Constants::MessageMajor::Resman,
+                    0x4,
+                    buffer, size);
             }
         }
     }
@@ -1734,10 +1730,9 @@ NWNX_EXPORT ArgumentStack ReloadTlk(ArgumentStack&& args)
     return {};
 }
 
-
 NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         Vector vDirection;
         vDirection.z = args.extract<float>();
@@ -1747,7 +1742,7 @@ NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
         float fYaw = args.extract<float>();
         float fPitch = args.extract<float>();
 
-        if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
             pMessage->SendServerToPlayerArea_UpdateWind(pPlayer, vDirection, fMagnitude, fYaw, fPitch);
         }
@@ -1758,27 +1753,27 @@ NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateSkyBox(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
         {
-            if  (auto* pArea = pPlayerCreature->GetArea())
+            if (auto* pArea = pPlayerCreature->GetArea())
             {
                 const auto skyBox = args.extract<int32_t>();
                 const auto oidArea = pArea->m_idSelf;
-                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
                 {
                     pMessage->CreateWriteMessage(sizeof(skyBox) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
                     pMessage->WriteINT(skyBox);
                     pMessage->WriteOBJECTIDServer(oidArea);
-                    uint8_t *buffer;
+                    uint8_t* buffer;
                     uint32_t size;
                     if (pMessage->GetWriteMessage(&buffer, &size))
                     {
                         pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
-                                                            Constants::MessageMajor::Area,
-                                                            Constants::MessageAreaMinor::UpdateSkyBox,
-                                                            buffer, size);
+                            Constants::MessageMajor::Area,
+                            Constants::MessageAreaMinor::UpdateSkyBox,
+                            buffer, size);
                     }
                 }
             }
@@ -1789,11 +1784,11 @@ NWNX_EXPORT ArgumentStack UpdateSkyBox(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateFogColor(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
         {
-            if  (auto* pArea = pPlayerCreature->GetArea())
+            if (auto* pArea = pPlayerCreature->GetArea())
             {
                 const auto sunFogColor = args.extract<int32_t>();
                 const auto sunBGR = (uint32_t)(((sunFogColor & 0x000000FF) << 16) | (sunFogColor & 0x0000FF00) | ((sunFogColor & 0x00FF0000) >> 16));
@@ -1801,20 +1796,20 @@ NWNX_EXPORT ArgumentStack UpdateFogColor(ArgumentStack&& args)
                 const auto moonBGR = (uint32_t)(((moonFogColor & 0x000000FF) << 16) | (moonFogColor & 0x0000FF00) | ((moonFogColor & 0x00FF0000) >> 16));
                 //both sunFogColor and moonFogColor need to be converted from RGB to BGR colors, because they'll be written as DWORD.
                 const auto oidArea = pArea->m_idSelf;
-                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
                 {
                     pMessage->CreateWriteMessage(sizeof(sunBGR) + sizeof(moonBGR) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
                     pMessage->WriteDWORD(sunBGR);
                     pMessage->WriteDWORD(moonBGR);
                     pMessage->WriteOBJECTIDServer(oidArea);
-                    uint8_t *buffer;
+                    uint8_t* buffer;
                     uint32_t size;
                     if (pMessage->GetWriteMessage(&buffer, &size))
                     {
                         pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
-                                                            Constants::MessageMajor::Area,
-                                                            Constants::MessageAreaMinor::UpdateFogColor,
-                                                            buffer, size);
+                            Constants::MessageMajor::Area,
+                            Constants::MessageAreaMinor::UpdateFogColor,
+                            buffer, size);
                     }
                 }
             }
@@ -1825,11 +1820,11 @@ NWNX_EXPORT ArgumentStack UpdateFogColor(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
 {
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         if (auto pPlayerCreature = Utils::AsNWSCreature(pPlayer->GetGameObject()))
         {
-            if  (auto* pArea = pPlayerCreature->GetArea())
+            if (auto* pArea = pPlayerCreature->GetArea())
             {
                 const auto sunFogAmount = args.extract<int32_t>();
                 ASSERT_OR_THROW(sunFogAmount >= 0);
@@ -1838,20 +1833,20 @@ NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
                 ASSERT_OR_THROW(moonFogAmount >= 0);
                 ASSERT_OR_THROW(moonFogAmount <= 255);
                 const auto oidArea = pArea->m_idSelf;
-                if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+                if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
                 {
                     pMessage->CreateWriteMessage(sizeof(sunFogAmount) + sizeof(moonFogAmount) + sizeof(oidArea), pPlayer->m_nPlayerID, 1);
                     pMessage->WriteBYTE(sunFogAmount);
                     pMessage->WriteBYTE(moonFogAmount);
                     pMessage->WriteOBJECTIDServer(oidArea);
-                    uint8_t *buffer;
+                    uint8_t* buffer;
                     uint32_t size;
                     if (pMessage->GetWriteMessage(&buffer, &size))
                     {
                         pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
-                                                            Constants::MessageMajor::Area,
-                                                            Constants::MessageAreaMinor::UpdateFogAmount,
-                                                            buffer, size);
+                            Constants::MessageMajor::Area,
+                            Constants::MessageAreaMinor::UpdateFogAmount,
+                            buffer, size);
                     }
                 }
             }
@@ -1862,13 +1857,13 @@ NWNX_EXPORT ArgumentStack UpdateFogAmount(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
 {
-    if (auto *obj = Utils::PopGameObject(args))
+    if (auto* obj = Utils::PopGameObject(args))
     {
-        auto *playerList = (CExoLinkedList<CNWSClient>*) Globals::AppManager()->m_pServerExoApp->GetPlayerList();
+        auto* playerList = (CExoLinkedList<CNWSClient>*) Globals::AppManager()->m_pServerExoApp->GetPlayerList();
         CExoLinkedListPosition pListPosition = playerList->GetHeadPos();
         while (pListPosition != NULL)
         {
-            auto pPlayer = (CNWSPlayer *) playerList->GetAtPos(pListPosition);
+            auto pPlayer = (CNWSPlayer*)playerList->GetAtPos(pListPosition);
 
             if (pPlayer->m_oidPCObject == obj->m_idSelf)
             {
@@ -1885,10 +1880,10 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectUiDiscoveryMaskOverrideHook =
-            Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
-            +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
+        Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+            +[](CNWSMessage* pMessage, CNWSPlayer* pPlayer, CNWSObject* pPlayerGameObject, CGameObjectArray* pGameObjectArray, ObjectID oidObjectToUpdate) -> void
             {
-                if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                 {
                     if (auto discoveryMask = pObject->nwnxGet<int>("OBJUDO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                     {
@@ -1901,13 +1896,13 @@ NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
                 pSetObjectUiDiscoveryMaskOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
             }, Hooks::Order::Early);
 
-    if (auto *pPlayer = Utils::PopPlayer(args))
+    if (auto* pPlayer = Utils::PopPlayer(args))
     {
         auto oidTarget = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto discoveryMask = args.extract<int32_t>();
 
-        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        if (auto* pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
         {
             if (discoveryMask < 0)
             {
@@ -1924,9 +1919,9 @@ NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
 {
-    if (auto *pInvitedCreature = Utils::PopCreature(args))
+    if (auto* pInvitedCreature = Utils::PopCreature(args))
     {
-        if (auto *pInvitingCreature = Utils::PopCreature(args))
+        if (auto* pInvitingCreature = Utils::PopCreature(args))
         {
             auto bForceInvite = args.extract<int32_t>();
             auto bHideDialog = args.extract<int32_t>();
@@ -1966,7 +1961,7 @@ NWNX_EXPORT ArgumentStack SendPartyInvite(ArgumentStack&& args)
             }
             else if (pInvitingCreature->GetFaction()->InviteMember(pInvitedCreature->m_idSelf, pInvitingCreature->m_idSelf) && (!bHideDialog))
             {
-                if (auto *pMessageUI = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+                if (auto* pMessageUI = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
                 {
                     pMessageUI->SendServerToPlayerPopUpGUIPanel(pInvitedCreature->m_idSelf, 1/*GUI_PANEL_PARTY_INVITE*/, 0, 0, 0, pInvitingCreature->m_pStats->GetFullName());
                 }
@@ -1992,4 +1987,27 @@ NWNX_EXPORT ArgumentStack GetTURD(ArgumentStack&& args)
     }
 
     return Constants::OBJECT_INVALID;
+}
+
+NWNX_EXPORT ArgumentStack ReloadColorPalettes(ArgumentStack&& args)
+{
+    if (auto* pPlayer = Utils::PopPlayer(args))
+    {
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            pMessage->CreateWriteMessage(4, pPlayer->m_nPlayerID, 1);
+            pMessage->WriteDWORD(0x20);
+            uint8_t* buffer;
+            uint32_t size;
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                    Constants::MessageMajor::Resman,
+                    0x4,
+                    buffer, size);
+            }
+        }
+    }
+
+    return {};
 }

@@ -21,6 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Store: {Get|Set}MarkDown()
 - Store: {Get|Set}MarkUp()
 - Player: ReloadTlk()
+- Player: ReloadColorPalettes()
 
 ### Changed
 - N/A
