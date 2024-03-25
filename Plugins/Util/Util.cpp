@@ -792,3 +792,9 @@ NWNX_EXPORT ArgumentStack CleanResourceDirectory(ArgumentStack&& args)
     Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
     return bOk;
 }
+
+NWNX_EXPORT ArgumentStack GetModuleTlkFile(ArgumentStack&& args)
+{
+    CNWSModule *pMod = Utils::GetModule();
+    return pMod->m_sModuleAltTLKFile;
+}

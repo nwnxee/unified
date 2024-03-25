@@ -94,6 +94,7 @@ struct CNWSDoor : CNWSObject
     Vector GetActionPoint(int32_t nAnimation, uint8_t nPositionNumber);
     Vector GetNearestActionPoint(const Vector & vCloseTo, BOOL bPretendDoorIsClosed = false);
 
+    inline CExoLocString &GetFirstName() override { return m_sLocName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSDoor
     NWN_CLASS_EXTENSION_CNWSDoor

@@ -103,6 +103,7 @@ struct CNWSEncounter : CNWSObject
     void TallyEnemyRadiusPoints();
     void LoadFractionalCRData();
 
+    inline CExoLocString &GetFirstName() override { return m_sLocalizedName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEncounter
     NWN_CLASS_EXTENSION_CNWSEncounter

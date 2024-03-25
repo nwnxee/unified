@@ -1285,3 +1285,53 @@ NWNX_EXPORT ArgumentStack SetTrapCreator(ArgumentStack&& args)
     }
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetLocalizedName(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        const auto nLanguage = args.extract<int32_t>();
+        const auto nGender   = args.extract<int32_t>();
+
+        CExoString myString;
+
+        if (auto *pArea = Utils::AsNWSArea(pGameObject))
+            pArea->m_lsName.GetString(nLanguage, &myString, nGender);
+        else if (auto *pStore = Utils::AsNWSStore(pGameObject))
+            pStore->m_sName.GetString(nLanguage, &myString, nGender);
+        else if (auto *pObject = Utils::AsNWSObject(pGameObject))
+            pObject->GetFirstName().GetString(nLanguage, &myString, nGender);
+
+        return myString;
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetLocalizedName(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        const auto sName     = args.extract<std::string>();
+        const auto nLanguage = args.extract<int32_t>();
+        const auto nGender   = args.extract<int32_t>();
+
+        CExoString myString(sName);
+        if (auto *pArea = Utils::AsNWSArea(pGameObject))
+        {
+            pArea->m_lsName.RemoveString(nLanguage, nGender);
+            pArea->m_lsName.AddString(nLanguage, myString, nGender);
+        }
+        else if (auto *pStore = Utils::AsNWSStore(pGameObject))
+        {
+            pStore->m_sName.RemoveString(nLanguage, nGender);
+            pStore->m_sName.AddString(nLanguage, myString, nGender);
+        }
+        else if (auto *pObject = Utils::AsNWSObject(pGameObject))
+        {
+            pObject->GetFirstName().RemoveString(nLanguage, nGender);
+            pObject->GetFirstName().AddString(nLanguage, myString, nGender);
+        }
+    }
+
+    return {};
+}
