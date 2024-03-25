@@ -1153,7 +1153,7 @@ object NWNX_Player_GetTURD(object oPlayer)
 
 void NWNX_Player_ReloadColorPalettes(object oPlayer)
 {
-    string sFunc = "ReloadColorPalette";
+    string sFunc = "ReloadColorPalettes";
 
     NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
