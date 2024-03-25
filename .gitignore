@@ -4,7 +4,6 @@ Binaries/
 build-nwnx/
 build/
 Documentation/
-_BuildReadme.txt
 
 cmake-build-*/
 .env

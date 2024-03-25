@@ -1,7 +1,6 @@
 #include "Events.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "API/CNWSArea.hpp"
 
 namespace Events {
 
@@ -161,11 +160,20 @@ int32_t HandleDetectionHook(const std::string& type, Hooks::FunctionHook* pHook,
 
 int32_t DoListenDetectionHook(CNWSCreature* pThis, CNWSCreature* pTarget, int32_t bTargetInvisible)
 {
+    if (!pTarget->m_nStealthMode && !bTargetInvisible)
+        return true;
+
     return HandleDetectionHook("LISTEN", s_DoListenDetectionHook.get(), pThis, pTarget, bTargetInvisible);
 }
 
 int32_t DoSpotDetectionHook(CNWSCreature* pThis, CNWSCreature* pTarget, int32_t bTargetInvisible)
 {
+    if (bTargetInvisible || pThis->GetBlind())
+        return false;
+
+    if (!pTarget->m_nStealthMode)
+        return true;
+
     return HandleDetectionHook("SPOT", s_DoSpotDetectionHook.get(), pThis, pTarget, bTargetInvisible);
 }
 
