@@ -449,6 +449,10 @@ void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvi
 /// @return the TURD object of oPlayer, or OBJECT_INVALID if no TURD exists
 object NWNX_Player_GetTURD(object oPlayer);
 
+/// @brief Reloads the color palettes for oPlayer
+/// @param oPlayer The player to reload the color palette for
+void NWNX_Player_ReloadColorPalettes(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -1145,4 +1149,12 @@ object NWNX_Player_GetTURD(object oPlayer)
     NWNX_CallFunction(NWNX_Player, sFunc);
     
     return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Player_ReloadColorPalettes(object oPlayer)
+{
+    string sFunc = "ReloadColorPalettes";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
