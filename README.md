@@ -121,6 +121,19 @@ To build on Windows:
 3.  The Container will execute the ./scripts/buildnwnx.sh script
 4.  To perform a clean build pass -FORCECLEAN eg './scripts/rundockerbuild.ps1 -FORCECLEAN'
 
+## Docker images
+
+Prebuilt images exist for the master branch and can be found under [nwnxee/package](https://github.com/orgs/nwnxee/packages?repo_name=unified). The Dockerfiles in this repository serve the following purposes:
+
+1. `builder.Dockerfile` defines the environment to compile nwnx ([ghcr.io/nwnxee/builder](https://github.com/nwnxee/unified/pkgs/container/builder))
+1. `base.Dockerfile` defines the environment to run nwserver and nwnx, but has no nwnx binaries ([ghcr.io/nwnxee/nwnxee-base](https://github.com/nwnxee/unified/pkgs/container/nwnxee-base))
+1. `gha.Dockerfile` defines the environment to run nwserver and nwnx, using binaries built by CI [ghcr.io/nwnxee/unified](https://github.com/nwnxee/unified/pkgs/container/unified)
+1. `Dockerfile` defines the environment to run nwserver and nwnx, using binaries built locally with the builder image, and based on the local base image
+
+Note that the nwserver binary in the base image is included by starting "FROM [ghcr.io/urothis/nwserver](https://github.com/urothis/nwserver/pkgs/container/nwserver)".
+
+It is recommended to use the prebuilt images for production environments. If you cannot use a prebuilt image (e.g. if you are testing a preview branch), you can build the image locally using `Dockerfile`. You may use `Scripts/buildimages.sh` to do this, or run the docker build commands yourself.
+
 ## Contributing code
 
 All contribution are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for requirements and style guidelines.
