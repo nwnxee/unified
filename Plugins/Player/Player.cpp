@@ -1264,14 +1264,25 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
         auto text = args.extract<std::string>();
           ASSERT_OR_THROW(!text.empty());
 
+        int32_t bChatWindow = true;
+        try
+        {
+            bChatWindow = !!args.extract<int32_t>();
+        }
+        catch(const std::runtime_error&)
+        {
+            LOG_WARNING("NWNX_Player_FloatingTextStringOnCreature() called from NWScript without 'bChatWindow' parameter. Please update nwnx_player.nss");
+        }
+
         if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
         {
-            if (auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
                 CNWCCMessageData messageData;
                 messageData.SetObjectID(0, pCreature->m_idSelf);
                 messageData.SetInteger(9, 94);
                 messageData.SetString(0, text);
+                messageData.SetInteger(0, bChatWindow);
 
                 pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::Feedback, &messageData, nullptr);
             }

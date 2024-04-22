@@ -24,7 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Player: ReloadColorPalettes()
 
 ### Changed
-- N/A
+- Player: added bChatWindow parameter to FloatingTextStringOnCreature() 
 
 ### Deprecated
 - N/A
