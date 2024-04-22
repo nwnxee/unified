@@ -22,6 +22,7 @@ struct DamageData
 {
     uint32_t oidDamager;
     int32_t vDamage[MAX_DAMAGE_TYPES];
+    int32_t nSpellId;
 };
 
 struct AttackData
@@ -57,6 +58,7 @@ static Hooks::Hook s_OnApplyDamageHook = Hooks::HookFunction(&CNWSEffectListHand
             {
                 s_DamageData.oidDamager = pEffect->m_oidCreator;
                 std::memcpy(s_DamageData.vDamage, pEffect->m_nParamInteger, MAX_DAMAGE_TYPES * sizeof(int32_t));
+                s_DamageData.nSpellId = pEffect->m_nSpellId;
                 Utils::ExecuteScript(sScript, pObject->m_idSelf);
                 std::memcpy(pEffect->m_nParamInteger, s_DamageData.vDamage, MAX_DAMAGE_TYPES * sizeof(int32_t));
             }
@@ -158,6 +160,7 @@ NWNX_EXPORT ArgumentStack GetDamageEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
+    ScriptAPI::InsertArgument(stack, s_DamageData.nSpellId);
     for (int k = (MAX_DAMAGE_TYPES - 1); k >= 0; k--)
     {
         ScriptAPI::InsertArgument(stack, s_DamageData.vDamage[k]);
