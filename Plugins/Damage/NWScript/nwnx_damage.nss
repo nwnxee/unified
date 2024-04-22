@@ -43,6 +43,7 @@ struct NWNX_Damage_DamageEventData
     int iCustom17; ///< Custom17 damage
     int iCustom18; ///< Custom18 damage
     int iCustom19; ///< Custom19 damage
+    int iSpellId; ///< The spell id associated with the damage or -1 if not known.
 };
 
 /// @struct NWNX_Damage_AttackEventData
@@ -222,6 +223,7 @@ struct NWNX_Damage_DamageEventData NWNX_Damage_GetDamageEventData()
     data.iCustom17    = NWNX_GetReturnValueInt();
     data.iCustom18    = NWNX_GetReturnValueInt();
     data.iCustom19    = NWNX_GetReturnValueInt();
+    data.iSpellId     = NWNX_GetReturnValueInt();
 
     return data;
 }
