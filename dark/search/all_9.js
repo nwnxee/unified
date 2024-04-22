@@ -63,10 +63,11 @@ var searchData=
   ['islash_262',['iSlash',['../structNWNX__Damage__DamageEventData.html#aedd89f02fec3bb8c5c3924e1f2c9d1c3',1,'NWNX_Damage_DamageEventData::iSlash()'],['../structNWNX__Damage__AttackEventData.html#a4a442823998c0b06cb99d7ac45c0a3d3',1,'NWNX_Damage_AttackEventData::iSlash()'],['../structNWNX__Damage__DamageData.html#a897eac283c5b8d73e8072ca018fdedb8',1,'NWNX_Damage_DamageData::iSlash()']]],
   ['isneakattack_263',['iSneakAttack',['../structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0',1,'NWNX_Damage_AttackEventData']]],
   ['isonic_264',['iSonic',['../structNWNX__Damage__DamageEventData.html#ab621265dce87ad6d8f00805455aef99f',1,'NWNX_Damage_DamageEventData::iSonic()'],['../structNWNX__Damage__AttackEventData.html#a320fa9900bb825ce2f251fbf7a942f60',1,'NWNX_Damage_AttackEventData::iSonic()'],['../structNWNX__Damage__DamageData.html#a7c3afe6cc289c5904aa533d76938521b',1,'NWNX_Damage_DamageData::iSonic()']]],
-  ['item_265',['Item',['../group__item.html',1,'']]],
-  ['itemproperty_266',['ItemProperty',['../group__itemproperty.html',1,'']]],
-  ['itimestamp_267',['iTimestamp',['../structNWNX__WebHook__Message.html#acc31ee95b8eeebba9f5d970bcc796c90',1,'NWNX_WebHook_Message']]],
-  ['itohitmodifier_268',['iToHitModifier',['../structNWNX__Damage__AttackEventData.html#afc5f25c2e9d25dfe026a45eb479f0ece',1,'NWNX_Damage_AttackEventData']]],
-  ['itohitroll_269',['iToHitRoll',['../structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235',1,'NWNX_Damage_AttackEventData']]],
-  ['iweaponattacktype_270',['iWeaponAttackType',['../structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873',1,'NWNX_Damage_AttackEventData']]]
+  ['ispellid_265',['iSpellId',['../structNWNX__Damage__DamageEventData.html#a65a5a8c26c08cd945914f05335170a6f',1,'NWNX_Damage_DamageEventData']]],
+  ['item_266',['Item',['../group__item.html',1,'']]],
+  ['itemproperty_267',['ItemProperty',['../group__itemproperty.html',1,'']]],
+  ['itimestamp_268',['iTimestamp',['../structNWNX__WebHook__Message.html#acc31ee95b8eeebba9f5d970bcc796c90',1,'NWNX_WebHook_Message']]],
+  ['itohitmodifier_269',['iToHitModifier',['../structNWNX__Damage__AttackEventData.html#afc5f25c2e9d25dfe026a45eb479f0ece',1,'NWNX_Damage_AttackEventData']]],
+  ['itohitroll_270',['iToHitRoll',['../structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235',1,'NWNX_Damage_AttackEventData']]],
+  ['iweaponattacktype_271',['iWeaponAttackType',['../structNWNX__Damage__AttackEventData.html#a839798bdaa39dbf0756a9f930f4a4873',1,'NWNX_Damage_AttackEventData']]]
 ];
