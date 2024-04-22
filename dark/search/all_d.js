@@ -1504,7 +1504,7 @@ var searchData=
   ['nwnx_5fplayer_5fapplyinstantvisualeffecttoobject_1810',['NWNX_Player_ApplyInstantVisualEffectToObject',['../group__player.html#ga9c984ffe634a7d8d57464c758f6cc6aa',1,'nwnx_player.nss']]],
   ['nwnx_5fplayer_5fapplyloopingvisualeffecttoobject_1811',['NWNX_Player_ApplyLoopingVisualEffectToObject',['../group__player.html#ga73a710fc8c8f8dcaa5bcf0d72a9e71fd',1,'nwnx_player.nss']]],
   ['nwnx_5fplayer_5fclosestore_1812',['NWNX_Player_CloseStore',['../group__player.html#ga8e0a7d8bb62c2549bb4690ff90cf1ed5',1,'nwnx_player.nss']]],
-  ['nwnx_5fplayer_5ffloatingtextstringoncreature_1813',['NWNX_Player_FloatingTextStringOnCreature',['../group__player.html#ga2ae474cf0bc8bfc8310738f9c89dd2e1',1,'nwnx_player.nss']]],
+  ['nwnx_5fplayer_5ffloatingtextstringoncreature_1813',['NWNX_Player_FloatingTextStringOnCreature',['../group__player.html#ga1c2ca7696b716df298c05e665021a046',1,'nwnx_player.nss']]],
   ['nwnx_5fplayer_5fforceplaceableexaminewindow_1814',['NWNX_Player_ForcePlaceableExamineWindow',['../group__player.html#ga9858c43c6d7bcb4c6fd2484eb87a85c0',1,'nwnx_player.nss']]],
   ['nwnx_5fplayer_5fforceplaceableinventorywindow_1815',['NWNX_Player_ForcePlaceableInventoryWindow',['../group__player.html#ga44be8ea8530e6c50a2dbde4083bf66cd',1,'nwnx_player.nss']]],
   ['nwnx_5fplayer_5fgetareaexplorationstate_1816',['NWNX_Player_GetAreaExplorationState',['../group__player.html#gad4b53329b786cc1bd0a8ba82e67f6779',1,'nwnx_player.nss']]],
