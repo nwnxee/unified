@@ -754,7 +754,7 @@ NWNX_EXPORT ArgumentStack ExportARE(ArgumentStack&& args)
             std::sprintf(field, "Tag");
             resGff.WriteFieldCExoString(&resStruct, newTag.empty() ? pArea->m_sTag : CExoString(newTag).AsTAG(), field);
             std::sprintf(field, "ResRef");
-            resGff.WriteFieldCExoString(&resStruct, CResRef(fileName), field);
+            resGff.WriteFieldCExoString(&resStruct, CExoString(CResRef(fileName)), field);
             std::sprintf(field, "Width");
             resGff.WriteFieldINT(&resStruct, pArea->m_nWidth, field);
             std::sprintf(field, "Height");

@@ -18,6 +18,7 @@ struct CNWTileSetManager
 {
     std::unordered_map<std::string, std::unique_ptr<CNWTileSet>> m_tileSets;
     CNWTilePathNode * m_apTileNodes[50][4];
+    BOOL m_bSkipClearTilesets;
 
     CNWTileSetManager();
     ~CNWTileSetManager();

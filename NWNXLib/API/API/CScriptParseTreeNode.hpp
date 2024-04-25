@@ -30,7 +30,7 @@ struct CScriptParseTreeNode
     int32_t nType;
     CExoString * m_psTypeName;
     int32_t m_nStackPointer;
-
+    bool m_bAllowAsDefaultValueInFunctionDecl;
 
 
 #ifdef NWN_CLASS_EXTENSION_CScriptParseTreeNode

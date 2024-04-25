@@ -36,21 +36,21 @@ struct CERFFile
 
     CERFFile();
     ~CERFFile();
-    void SetVersion(char * sVersion);
-    BOOL AddResource(CExoString & sResourceName);
-    BOOL AddResource(char * szResName, RESTYPE rtResType, CRes * pRes);
-    BOOL RemoveResource(CExoString & sResourceName, uint16_t a_wResourceType);
+    void SetVersion(const char * sVersion);
+    BOOL AddResource(const CExoString & sResourceName);
+    BOOL AddResource(const char * szResName, RESTYPE rtResType, CRes * pRes);
+    BOOL RemoveResource(const CExoString & sResourceName, uint16_t a_wResourceType);
     BOOL RemoveResource(CERFRes * pData);
     BOOL AddString(CERFString * pString);
     BOOL Read();
     BOOL Reset();
-    BOOL Write(CExoString & sFilename);
+    BOOL Write(const CExoString & sFilename);
     void RecalculateOffsets();
-    BOOL Create(CExoString & sOutFile);
+    BOOL Create(const CExoString & sOutFile);
     BOOL WriteHeader();
     BOOL WriteStringTable();
     BOOL SetNumEntries(uint32_t nEntries);
-    BOOL WriteResource(char * szResName, RESTYPE rtResType, CRes * pRes, BOOL bIsGFF = true);
+    BOOL WriteResource(const char * szResName, RESTYPE rtResType, CRes * pRes, BOOL bIsGFF = true);
     BOOL WriteResource(const char * szResName, RESTYPE rtResType, DataViewRef pData);
     BOOL Finish();
 

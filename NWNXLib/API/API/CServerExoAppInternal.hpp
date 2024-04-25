@@ -59,7 +59,7 @@ struct CServerExoAppInternal
 {
     uint8_t ScratchMessageBuffer[65536];
     BOOL m_bMultiplayerEnabled;
-    BOOL m_bGameSpyEnabled;
+    BOOL m_bGamePostedToInternet;
     BOOL m_bCDResponseReceived;
     CServerInfo * m_pServerInfo;
     int16_t m_nServerMode;
@@ -105,8 +105,6 @@ struct CServerExoAppInternal
     CExoArrayList<OBJECT_ID> m_exportPlayerCharacterRequests;
     BOOL m_bNeedSinglePlayerCharacter;
     uint32_t m_nEstimatedSaveSize;
-    uint64_t m_nLogHeartbeatTimer;
-    uint64_t m_nLogHeartbeatTimeStamp;
     CExoArrayList<uint32_t> m_nCharListRequests;
     CExoArrayList<CExoString> m_lstBannedListIP;
     CExoArrayList<CExoString> m_lstBannedListCDKey;
@@ -121,7 +119,6 @@ struct CServerExoAppInternal
     int m_nGameObjectUpdateMessageLimitLoading;
     uint64_t m_nLastGameObjectUpdateDuration = 0;
     uint64_t m_nAutoSaveTimer;
-    BOOL m_bHeartBeatLoggingEnabled;
     BOOL m_bCreatureDeathLoggingEnabled;
     uint32_t m_nClientsRequiredToDisableCPUSleep;
     BOOL m_bStickyCombatModesEnabled;
@@ -164,7 +161,6 @@ struct CServerExoAppInternal
     void OnLostFocus();
     void OnVideoChange();
     CWorldTimer * GetActiveTimer(OBJECT_ID oid = 0x7f000000);
-    void SetGameSpyReporting(BOOL bEnabled);
     CNWSPlayer * GetClientObjectByObjectId(OBJECT_ID nObjectId);
     CNWSClient * GetClientObjectByPlayerId(uint32_t nPlayerId, uint8_t nClientType = 0);
     BOOL CopyModuleToCurrentGame(CExoString & sOldFilename, CExoString & sNewFilename, RESTYPE nResType);
@@ -199,7 +195,6 @@ struct CServerExoAppInternal
     int32_t GetModuleLanguage();
     BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
     void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);
-    void HandleGameSpyToServerMessage(int32_t nKeyId, void * pOutBuf, int nIndex = - 1);
     void UpdateClientsForObject(OBJECT_ID oidObjectToUpdate);
     void MarkUpdateClientsForObject(OBJECT_ID oidObjectToUpdate);
     void UpdateClientGameObjectsForPlayer(CNWSPlayer * pPlayer, BOOL bForce, uint64_t nCurrentSystemTime = 0);
@@ -272,7 +267,6 @@ struct CServerExoAppInternal
     void ConnectionLibMainLoop();
     void StartShutdownTimer(uint64_t nTime, uint64_t nDelay);
     BOOL UpdateShutdownTimer(uint64_t nTime);
-    BOOL UpdateLogHeartbeatTimer(uint64_t nTime);
     BOOL UpdateAutoSaveTimer();
 
 

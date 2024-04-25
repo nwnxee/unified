@@ -74,7 +74,6 @@ struct StackElement;
 struct CVirtualMachineStack;
 struct CVirtualMachineScript;
 struct CVirtualMachineFile;
-struct CScriptLog;
 struct CVirtualMachine;
 struct CServerExoApp;
 struct CServerOptionLookup;

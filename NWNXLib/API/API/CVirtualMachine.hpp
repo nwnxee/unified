@@ -50,12 +50,6 @@ struct CVirtualMachine
     CVirtualMachineCmdImplementer * m_pCmdImplementer;
     BOOL m_bDebugGUIRequired;
     BOOL m_bDebuggerSpawned;
-    CScriptLog * m_pLog;
-    CExoArrayList<CScriptLog *> m_aScriptLog;
-    BOOL m_bEnableScriptLogging;
-    BOOL m_bEnableScriptProfiling;
-    uint32_t m_nScriptStartTime;
-    uint32_t m_nScriptEndTime;
     uint32_t m_nInstructionLimit;
     CExoString m_sAbortCustomError;
 
@@ -97,7 +91,6 @@ struct CVirtualMachine
     BOOL StackPopCommand_Internal(CVirtualMachineScript * * pScript);
     BOOL SaveScriptSituation_Internal(CVirtualMachineScript * pScript, CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadScriptSituation_Internal(CVirtualMachineScript * * pScript, CResGFF * pRes, CResStruct * pStruct);
-    CScriptLog * GetScriptLog(const CExoString & sScript);
     std::shared_ptr<CVirtualMachineDebuggerInstance> GetDebuggerInstance();
 
 
