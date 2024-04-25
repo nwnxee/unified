@@ -23,11 +23,9 @@ struct CExoDebug
     ~CExoDebug();
     void Assert(int32_t nLineNumber, const char * sFileName, const char * sComment = nullptr);
     void CloseLogFiles();
-    void FlushErrorFile();
     void FlushLogFile();
     void OpenLogFiles(CExoString sExecutableName, int32_t nMaxLogSize = 10000000);
-    void Warning(int32_t nLineNumber, const char * sFileName, const char * sComment = nullptr);
-    void WriteToErrorFile(const CExoString & sLogString);
+    void Warning(int32_t nLineNumber, const char * sFileName, const char * sComment= nullptr, const char * sCond = nullptr, const char * sAction = nullptr);
     void WriteToLogFile(const CExoString & sLogString);
     void GetCurrentTimestamp(CExoString & sTimestamp);
     void SetRotateLogFile(BOOL bEnable);

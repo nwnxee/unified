@@ -59,7 +59,6 @@ struct CServerExoApp : CBaseExoApp
     BOOL ContinueMessageProcessing();
     void RemovePCFromWorld(CNWSPlayer * pPlayer);
     void Shutdown(BOOL bWarnLocals, BOOL bFromMessage = false);
-    void SetGameSpyReporting(BOOL bEnabled);
     class CServerInfo * GetServerInfo();
     CExoLocString GetModuleDescription();
     void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);
@@ -153,7 +152,6 @@ struct CServerExoApp : CBaseExoApp
     BOOL ValidatePlayerLogin(void * pPlayer);
     void MovePlayerToArea(void * pPlayer);
     void InitiateModuleForPlayer(void * pPlayer);
-    void HandleGameSpyToServerMessage(int32_t nKeyId, void * pOutBuf, int nIndex = - 1);
     CConnectionLib * GetConnectionLib();
     CCampaignDB * GetCampaignDB();
     BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
@@ -182,13 +180,11 @@ struct CServerExoApp : CBaseExoApp
     OBJECT_ID GetNextPCObject();
     void PushMessageOverWall(uint8_t * pData, uint32_t nMsgLength);
     BOOL GetIsMultiPlayer();
-    void SetGameSpyEnabled(BOOL b);
-    BOOL GetGameSpyEnabled();
+    void SetGamePostedToInternet(BOOL b);
+    BOOL GetGamePostedToInternet();
     BOOL StripColorTokens(CExoString & sInput);
     BOOL GetCreatureDeathLogging();
     void SetCreatureDeathLogging(BOOL );
-    BOOL GetHeartBeatLogging();
-    void SetHeartBeatLogging(BOOL );
     uint32_t GetClientsRequiredToDisableCPUSleep();
     BOOL GetStickyCombatModesEnabled();
     void SetStickyCombatModesEnabled(BOOL v);

@@ -42,7 +42,7 @@ struct CTlkTable
     void ClearCustomTokens();
     void ClearOverrides();
     void SetOverride(STRREF strId, const CExoString & ovr);
-    char * RemapFontName(char * pFontName);
+    char * RemapFontName(const char * pFontName);
     void ParseStr(CExoString & sText);
     CExoString GetSimpleString(STRREF strId);
     uint32_t GetLanguageVersion();

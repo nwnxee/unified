@@ -218,7 +218,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void TimeStopSanityCheck();
-    int32_t FindTagPositionInTable(char * szTag);
+    int32_t FindTagPositionInTable(const char * szTag);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSModule

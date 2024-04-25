@@ -23,7 +23,7 @@ struct CERFKey
 
     CERFKey();
     ~CERFKey();
-    void SetName(CExoString & sData);
+    void SetName(const CExoString & sData);
     BOOL Read();
     BOOL Reset();
     BOOL Write(CExoFile & cOutFile);

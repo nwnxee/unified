@@ -148,14 +148,12 @@ void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 
 std::ostream& operator<<(std::ostream& out, const CExoString& str)
 {
-    out << str.m_sString;
+    out << str.CStr();
     return out;
 }
 
 std::ostream& operator<<(std::ostream& out, const CResRef& str)
 {
-    char buffer[17] = {0};
-    std::memcpy(buffer, str.m_resRefLowerCase, 16);
-    out << buffer;
+    out << str.GetResRefStr();
     return out;
 }

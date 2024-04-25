@@ -29,7 +29,6 @@ struct CBaseExoApp
     virtual void ShutDownToMainMenu();
     virtual BOOL GetMultiplayerEnabled();
     virtual class CExtendedServerInfo * GetExtendedServerInfo();
-    virtual void HandleGameSpyToServerMessage(int32_t nKeyId, void * pOutBuf, int nIndex = - 1);
     virtual class CConnectionLib * GetConnectionLib();
     virtual class CServerInfo * GetServerInfo();
     virtual void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);

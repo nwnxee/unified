@@ -72,9 +72,9 @@ struct CVirtualMachineDebuggerInstance
     BOOL ReadIntegerFromInput(int32_t * pnSize, int32_t * pnInteger);
     BOOL ReadStringFromInput(int32_t * pnSize, CExoString * psString);
     BOOL ParseAndExecuteMessage(int32_t * nSize);
-    char * LoadDebugInfoLine(uint8_t * pResourceData, uint32_t nResourceSize, uint32_t nOffsetStart, uint32_t * pnOffsetEnd);
+    char * LoadDebugInfoLine(const uint8_t * pResourceData, uint32_t nResourceSize, uint32_t nOffsetStart, uint32_t * pnOffsetEnd);
     BOOL LoadDebugInfo(DataViewRef pDebugData);
-    char * LoadScriptLine(uint8_t * pResourceData, uint32_t nResourceSize, uint32_t nOffsetStart, uint32_t * pnOffsetEnd, BOOL bIncludeReturns);
+    char * LoadScriptLine(const uint8_t * pResourceData, uint32_t nResourceSize, uint32_t nOffsetStart, uint32_t * pnOffsetEnd, BOOL bIncludeReturns);
     int32_t GenerateFunctionIDFromInstructionPointer(int32_t nIP);
     int32_t GenerateTypeSize(CExoString * pNDBString);
     int32_t GenerateStackSizeAtInstructionPointer(int32_t nFunctionID, int32_t nIP);

@@ -88,7 +88,6 @@ MarshalPtr(CNWVisibilityNode*, void*)
 MarshalPtr(CObjectLookupTable*, void*)
 MarshalPtr(CPathfindInfoIntraTileSuccessors*, void*)
 MarshalPtr(CScriptCompiler*, void*)
-MarshalPtr(CScriptLog*, void*)
 MarshalPtr(CScriptParseTreeNode*, void*)
 MarshalPtr(CSpell_Add*, void*)
 MarshalPtr(CSpell_Delete*, void*)
@@ -279,7 +278,6 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
 %template(CExoArrayListCNWVisibilityNode) CExoArrayList<CNWVisibilityNode>;
 %template(CExoArrayListCResRef) CExoArrayList<CResRef>;
-%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
 %template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
 %template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
 %template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;

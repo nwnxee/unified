@@ -7,7 +7,6 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static bool s_printString;
-static bool s_hideValidateGFFResourceMessage = Config::Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
 
 inline std::string TrimMessage(CExoString* message)
 {
@@ -27,30 +26,8 @@ inline std::string TrimMessage(CExoString* message)
 static Hooks::Hook s_WriteToLogFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToLogFile,
     +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
     {
-        std::string str = TrimMessage(message);
-
-        if (s_hideValidateGFFResourceMessage)
-        {
-            if(str.find("*** ValidateGFFResource sent by user.") == std::string::npos)
-            {
-                LOG_INFO("(Server) %s", str);
-            }
-        }
-        else
-        {
-            LOG_INFO("(Server) %s", str);
-        }
-
+        LOG_INFO("(Server) %s", TrimMessage(message));
         s_WriteToLogFileHook->CallOriginal<void>(pExoDebugInternal, message);
-    }, Hooks::Order::VeryEarly);
-
-static Hooks::Hook s_WriteToErrorFileHook = Hooks::HookFunction((void*)&CExoDebugInternal::WriteToErrorFile,
-    +[](CExoDebugInternal *pExoDebugInternal, CExoString* message) -> void
-    {
-        std::string str = TrimMessage(message);
-        LOG_INFO("(Error) %s", str);
-
-        s_WriteToErrorFileHook->CallOriginal<void>(pExoDebugInternal, message);
     }, Hooks::Order::VeryEarly);
 
 static Hooks::Hook s_ExecuteCommandPrintStringHook = Hooks::HookFunction((void*)&CNWSVirtualMachineCommands::ExecuteCommandPrintString,
