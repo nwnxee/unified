@@ -447,13 +447,10 @@ int NWNX_Util_GetScriptReturnValue()
 
 object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1)
 {
-    vector vPosition = GetPositionFromLocation(locLocation);
     NWNXPushInt(nAppearanceType);
     NWNXPushString(sNewTag);
     NWNXPushFloat(GetFacingFromLocation(locLocation));
-    NWNXPushFloat(vPosition.z);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.x);
+    NWNXPushVector(GetPositionFromLocation(locLocation));
     NWNXPushObject(GetAreaFromLocation(locLocation));
     NWNXPushString(sResRef);
     NWNXCall(NWNX_Util, "CreateDoor");

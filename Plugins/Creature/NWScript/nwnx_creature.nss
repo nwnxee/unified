@@ -1908,16 +1908,10 @@ vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, flo
 {
     NWNXPushInt(bWalkStraightLineRequired);
     NWNXPushFloat(fRadius);
-    NWNXPushFloat(vPosition.x);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.z);
+    NWNXPushVector(vPosition);
     NWNXPushObject(oCreature);
     NWNXCall(NWNX_Creature, "ComputeSafeLocation");
-    vector v;
-    v.z = NWNXPopFloat();
-    v.y = NWNXPopFloat();
-    v.x = NWNXPopFloat();
-    return v;
+    return NWNXPopVector();
 }
 
 void NWNX_Creature_DoPerceptionUpdateOnCreature(object oCreature, object oTargetCreature)
@@ -2037,8 +2031,6 @@ void NWNX_Creature_SetLastKiller(object oCreature, object oKiller)
 
 void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location locTarget, int nSpellID, int nCasterLevel, float fProjectileTime, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int nProjectileSpellID = -1, object oItem = OBJECT_INVALID, string sImpactScript = "")
 {
-    object oArea = GetAreaFromLocation(locTarget);
-    vector vPosition = GetPositionFromLocation(locTarget);
     NWNXPushString(sImpactScript);
     NWNXPushObject(oItem);
     NWNXPushInt(nProjectileSpellID);
@@ -2046,10 +2038,8 @@ void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location lo
     NWNXPushFloat(fProjectileTime);
     NWNXPushInt(nCasterLevel);
     NWNXPushInt(nSpellID);
-    NWNXPushFloat(vPosition.z);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.x);
-    NWNXPushObject(oArea);
+    NWNXPushVector(GetPositionFromLocation(locTarget));
+    NWNXPushObject(GetAreaFromLocation(locTarget));
     NWNXPushObject(oTarget);
     NWNXPushObject(oCreature);
     NWNXCall(NWNX_Creature, "DoItemCastSpell");
@@ -2112,9 +2102,7 @@ int NWNX_Creature_AddCastSpellActions(object oCreature, object oTarget, vector v
     NWNXPushInt(nMetaMagic);
     NWNXPushInt(nMultiClass);
     NWNXPushInt(nSpellID);
-    NWNXPushFloat(vTargetLocation.z);
-    NWNXPushFloat(vTargetLocation.y);
-    NWNXPushFloat(vTargetLocation.x);
+    NWNXPushVector(vTargetLocation);
     NWNXPushObject(oTarget);
     NWNXPushObject(oCreature);
     NWNXCall(NWNX_Creature, "AddCastSpellActions");

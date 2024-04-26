@@ -225,11 +225,9 @@ location NWNX_Encounter_GetSpawnPointByIndex(object encounter, int index)
     NWNXPushInt(index);
     NWNXPushObject(encounter);
     NWNXCall(NWNX_Encounter, "GetSpawnPointByIndex");
-    float o = NWNXPopFloat();
-    float z = NWNXPopFloat();
-    float y = NWNXPopFloat();
-    float x = NWNXPopFloat();
-    return Location(GetArea(encounter), Vector(x, y, z), o);
+    float fOrientation = NWNXPopFloat();
+    vector vPosition = NWNXPopVector();
+    return Location(GetArea(encounter), vPosition, fOrientation);
 }
 
 int NWNX_Encounter_GetMinNumSpawned(object encounter)

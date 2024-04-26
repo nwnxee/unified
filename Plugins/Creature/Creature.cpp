@@ -2589,10 +2589,7 @@ NWNX_EXPORT ArgumentStack ComputeSafeLocation(ArgumentStack&& args)
 
     if (auto *pCreature = Utils::PopCreature(args))
     {
-        Vector vCurrentPosition{};
-        vCurrentPosition.z = args.extract<float>();
-        vCurrentPosition.y = args.extract<float>();
-        vCurrentPosition.x = args.extract<float>();
+        const auto vCurrentPosition = args.extract<Vector>();
         const auto fSearchRadius = args.extract<float>();
         const auto bWalkStraightLineRequired = !!args.extract<int32_t>();
 
@@ -2607,7 +2604,7 @@ NWNX_EXPORT ArgumentStack ComputeSafeLocation(ArgumentStack&& args)
             vNewPosition = vCurrentPosition;
     }
 
-    return {vNewPosition.x, vNewPosition.y, vNewPosition.z };
+    return vNewPosition;
 }
 
 NWNX_EXPORT ArgumentStack DoPerceptionUpdateOnCreature(ArgumentStack&& args)
@@ -2847,21 +2844,19 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
 {
     if (auto *pCaster = Utils::PopCreature(args))
     {
-        auto oidTarget = args.extract<ObjectID>();
-        auto oidArea = args.extract<ObjectID>();
-        auto x = args.extract<float>();
-        auto y = args.extract<float>();
-        auto z = args.extract<float>();
-        auto spellID = args.extract<int32_t>();
+        const auto oidTarget = args.extract<ObjectID>();
+        const auto oidArea = args.extract<ObjectID>();
+        const auto vecTarget = args.extract<Vector>();
+        const auto spellID = args.extract<int32_t>();
           ASSERT_OR_THROW(spellID >= 0);
-        auto casterLevel = args.extract<int32_t>();
+        const auto casterLevel = args.extract<int32_t>();
           ASSERT_OR_THROW(casterLevel >= 0);
-        auto delay = args.extract<float>();
+        const auto delay = args.extract<float>();
           ASSERT_OR_THROW(delay >= 0.0f);
         auto projectilePathType = args.extract<int32_t>();
-        auto projectileSpellID = args.extract<int32_t>();
-        auto oidItem = args.extract<ObjectID>();
-        auto impactScript = args.extract<std::string>();
+        const auto projectileSpellID = args.extract<int32_t>();
+        const auto oidItem = args.extract<ObjectID>();
+        const auto impactScript = args.extract<std::string>();
 
         auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(spellID);
         auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
@@ -2876,7 +2871,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         if (pCaster->m_oidArea != oidTargetArea)
             return {};
 
-        Vector vTargetPosition = pTarget ? pTarget->m_vPosition : Vector(x, y, z);
+        Vector vTargetPosition = pTarget ? pTarget->m_vPosition : vecTarget;
         auto delayMs = (int32_t)(delay * 1000);
 
         if (delayMs > 0)
@@ -3084,11 +3079,7 @@ NWNX_EXPORT ArgumentStack AddCastSpellActions(ArgumentStack&& args)
     {
         auto oidTarget = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
-        const auto fX = args.extract<float>();
-        const auto fY = args.extract<float>();
-        const auto fZ = args.extract<float>();
-        Vector targetLocation{fX, fY, fZ};
-
+        const auto targetLocation = args.extract<Vector>();
         const auto spellId = args.extract<int32_t>();
           ASSERT_OR_THROW(spellId >= 0);
         const auto multiClass = args.extract<int32_t>();

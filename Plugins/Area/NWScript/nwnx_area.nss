@@ -674,9 +674,7 @@ int NWNX_Area_GetAmbientSoundNightVolume(object oArea)
 object NWNX_Area_CreateSoundObject(object oArea, vector vPosition, string sResRef)
 {
     NWNXPushString(sResRef);
-    NWNXPushFloat(vPosition.z);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.x);
+    NWNXPushVector(vPosition);
     NWNXPushObject(oArea);
     NWNXCall(NWNX_Area, "CreateSoundObject");
     return NWNXPopObject();
@@ -706,10 +704,8 @@ struct NWNX_Area_TileInfo NWNX_Area_GetTileInfoByTileIndex(object oArea, int nIn
 int NWNX_Area_GetPathExists(object oArea, vector vStartPosition, vector vEndPosition, int nMaxDepth)
 {
     NWNXPushInt(nMaxDepth);
-    NWNXPushFloat(vEndPosition.y);
-    NWNXPushFloat(vEndPosition.x);
-    NWNXPushFloat(vStartPosition.y);
-    NWNXPushFloat(vStartPosition.x);
+    NWNXPushVector(vEndPosition);
+    NWNXPushVector(vStartPosition);
     NWNXPushObject(oArea);
     NWNXCall(NWNX_Area, "GetPathExists");
     return NWNXPopInt();
@@ -737,9 +733,7 @@ struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea)
     data.fPitch = NWNXPopFloat();
     data.fYaw = NWNXPopFloat();
     data.fMagnitude = NWNXPopFloat();
-    data.vDirection.x = NWNXPopFloat();
-    data.vDirection.y = NWNXPopFloat();
-    data.vDirection.z = NWNXPopFloat();
+    data.vDirection = NWNXPopVector();
     return data;
 }
 

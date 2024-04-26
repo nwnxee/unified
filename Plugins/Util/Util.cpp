@@ -522,15 +522,13 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
       ASSERT_OR_THROW(!strResRef.empty());
     const auto oidArea = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-    const auto posX = args.extract<float>();
-    const auto posY = args.extract<float>();
-    const auto posZ = args.extract<float>();
+    const auto pos = args.extract<Vector>();
     const auto facing = args.extract<float>();
     const auto tag = args.extract<std::string>();
     const auto appearance = args.extract<int32_t>();
 
     auto resRef = CResRef(strResRef);
-    Vector position = {posX, posY, posZ};
+    Vector position = {pos.x, pos.y, pos.z};
 
     if (!Globals::ExoResMan()->Exists(resRef, Constants::ResRefType::UTD, nullptr))
     {
@@ -573,7 +571,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
                 Utils::GetModule()->AddObjectToLookupTable(pDoor->m_sTag, pDoor->m_idSelf);
             }
 
-            pDoor->AddToArea(pArea, posX, posY, pArea->ComputeHeight(position));
+            pDoor->AddToArea(pArea, pos.x, pos.y, pArea->ComputeHeight(position));
 
             retVal = pDoor->m_idSelf;
         }
@@ -768,7 +766,7 @@ NWNX_EXPORT ArgumentStack GetStringLevenshteinDistance(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack UpdateClientObject(ArgumentStack&& args)
 {
-    OBJECT_ID oidObject = args.extract<OBJECT_ID>();
+    auto oidObject = args.extract<OBJECT_ID>();
         ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto* pPlayer = Utils::PopPlayer(args))
@@ -793,8 +791,7 @@ NWNX_EXPORT ArgumentStack CleanResourceDirectory(ArgumentStack&& args)
     return bOk;
 }
 
-NWNX_EXPORT ArgumentStack GetModuleTlkFile(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetModuleTlkFile(ArgumentStack&&)
 {
-    CNWSModule *pMod = Utils::GetModule();
-    return pMod->m_sModuleAltTLKFile;
+    return Utils::GetModule()->m_sModuleAltTLKFile;
 }
