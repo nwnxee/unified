@@ -410,16 +410,7 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
-        std::string alias;
-        try
-        {
-            alias = args.extract<std::string>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Object_Export() called from NWScript without sAlias parameter. Please update nwnx_object.nss");
-            alias = "NWNX";
-        }
+        auto alias = args.extract<std::string>();
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
         {
@@ -674,17 +665,7 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
     {
         if(auto *pVersus = Utils::PopObject(args))
         {
-            int32_t spellId;
-            try
-            {
-                spellId = args.extract<int32_t>();
-            }
-            catch(const std::runtime_error& e)
-            {
-                LOG_WARNING("NWNX_Object_DoSpellImmunity() called from NWScript without new parameter. Please update nwnx_object.nss");
-                spellId = -1;
-            }
-
+            const auto spellId = args.extract<int32_t>();
             uint32_t prevSpellId;
             auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus);
             if(spellId>=0)
@@ -728,23 +709,11 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
     {
         if(auto *pVersus = Utils::PopObject(args))
         {
-            int32_t spellId, spellLevel, spellSchool;
-            try
-            {
-                spellId = args.extract<int32_t>();
-                spellLevel = args.extract<int32_t>();
-                spellSchool = args.extract<int32_t>();
-            }
-            catch(const std::runtime_error& e)
-            {
-                LOG_WARNING("NWNX_Object_DoSpellLevelAbsorption() called from NWScript without new parameters. Please update nwnx_object.nss");
-                spellId = -1;
-                spellLevel = -1;
-                spellSchool = -1;
-            }
-
-            ASSERT_OR_THROW(spellLevel <= 10);
-            ASSERT_OR_THROW(spellSchool <= 8);
+            const auto spellId = args.extract<int32_t>();
+            const auto spellLevel = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellLevel <= 10);
+            const auto spellSchool = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellSchool <= 8);
 
             auto pCaster = Utils::AsNWSCreature(pVersus);
             if(!pCaster)
