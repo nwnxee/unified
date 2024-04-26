@@ -2,7 +2,6 @@
 /// @brief Functions to allow more control over ability/skill/bonuses stacking.
 /// @{
 /// @file nwnx_nostack.nss
-#include "nwnx"
 
 const string NWNX_NoStack = "NWNX_NoStack"; ///< @private
 
@@ -31,10 +30,7 @@ void NWNX_NoStack_SetSpellBonusType(int spell, int type);
 
 void NWNX_NoStack_SetSpellBonusType(int spell, int type)
 {
-    string sFunc = "SetSpellBonusType";
-
-    NWNX_PushArgumentInt(type);
-    NWNX_PushArgumentInt(spell);
-
-    NWNX_CallFunction(NWNX_NoStack, sFunc);
+    NWNXPushInt(type);
+    NWNXPushInt(spell);
+    NWNXCall(NWNX_NoStack, "SetSpellBonusType");
 }

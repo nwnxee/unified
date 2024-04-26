@@ -2,7 +2,6 @@
 /// @brief Execute Lua code and generate events in NWScript
 /// @{
 /// @file nwnx_lua.nss
-#include "nwnx"
 
 const string NWNX_Lua = "NWNX_Lua"; ///< @private
 
@@ -25,27 +24,21 @@ void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="");
 
 void NWNX_Lua_EvalVoid(string sCode)
 {
-    string sFunc = "EvalVoid";
-
-    NWNX_PushArgumentString(sCode);
-    NWNX_CallFunction(NWNX_Lua, sFunc);
+    NWNXPushString(sCode);
+    NWNXCall(NWNX_Lua, "EvalVoid");
 }
 
 string NWNX_Lua_Eval(string sCode)
 {
-    string sFunc = "Eval";
-
-    NWNX_PushArgumentString(sCode);
-    NWNX_CallFunction(NWNX_Lua, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushString(sCode);
+    NWNXCall(NWNX_Lua, "Eval");
+    return NWNXPopString();
 }
 
 void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="")
 {
-    string sFunc = "RunEvent";
-
-    NWNX_PushArgumentString(sExtra);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Lua, sFunc);
+    NWNXPushString(sExtra);
+    NWNXPushObject(oObject);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Lua, "RunEvent");
 }

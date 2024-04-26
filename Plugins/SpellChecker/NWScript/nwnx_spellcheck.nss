@@ -2,7 +2,6 @@
 /// @brief Functions related to spellchecking
 /// @{
 /// @file nwnx_spellcheck.nss
-#include "nwnx"
 
 const string NWNX_SpellChecker = "NWNX_SpellChecker"; ///< @private
 
@@ -27,17 +26,14 @@ string NWNX_SpellChecker_GetSuggestSpell(string word);
 
 string NWNX_SpellChecker_FindMisspell(string sentence)
 {
-    string sFunc = "FindMisspell";
-
-    NWNX_PushArgumentString(sentence);
-    NWNX_CallFunction(NWNX_SpellChecker, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushString(sentence);
+    NWNXCall(NWNX_SpellChecker, "FindMisspell");
+    return NWNXPopString();
 }
 
 string NWNX_SpellChecker_GetSuggestSpell(string word)
 {
-    string sFunc = "GetSuggestSpell";
-    NWNX_PushArgumentString(word);
-    NWNX_CallFunction(NWNX_SpellChecker, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushString(word);
+    NWNXCall(NWNX_SpellChecker, "GetSuggestSpell");
+    return NWNXPopString();
 }
