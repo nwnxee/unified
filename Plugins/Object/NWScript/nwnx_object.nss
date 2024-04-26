@@ -455,9 +455,7 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
 {
     NWNXPushInt(bUpdateSubareas);
-    NWNXPushFloat(vPosition.x);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.z);
+    NWNXPushVector(vPosition);
     NWNXPushObject(oObject);
     NWNXCall(NWNX_Object, "SetPosition");
 }
@@ -543,9 +541,7 @@ int NWNX_Object_GetDamageImmunity(object obj, int damageType)
 
 void NWNX_Object_AddToArea(object obj, object area, vector pos)
 {
-    NWNXPushFloat(pos.z);
-    NWNXPushFloat(pos.y);
-    NWNXPushFloat(pos.x);
+    NWNXPushVector(pos);
     NWNXPushObject(area);
     NWNXPushObject(obj);
     NWNXCall(NWNX_Object, "AddToArea");
@@ -682,9 +678,7 @@ void NWNX_Object_DeleteVarRegex(object oObject, string sRegex)
 
 int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition)
 {
-    NWNXPushFloat(vPosition.z);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.x);
+    NWNXPushVector(vPosition);
     NWNXPushObject(oTrigger);
     NWNXCall(NWNX_Object, "GetPositionIsInTrigger");
     return NWNXPopInt();

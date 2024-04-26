@@ -164,8 +164,6 @@ NWNX_EXPORT ArgumentStack GetNumberOfSpawnPoints(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack GetSpawnPointByIndex(ArgumentStack&& args)
 {
-    float x = 0.0, y = 0.0, z = 0.0, o = 0.0;
-
     if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto index = args.extract<int32_t>();
@@ -173,14 +171,10 @@ NWNX_EXPORT ArgumentStack GetSpawnPointByIndex(ArgumentStack&& args)
 
         if (index < pEncounter->m_nNumSpawnPoints)
         {
-            x = pEncounter->m_pSpawnPointList[index].m_vPosition.x;
-            y = pEncounter->m_pSpawnPointList[index].m_vPosition.y;
-            z = pEncounter->m_pSpawnPointList[index].m_vPosition.z;
-            o = pEncounter->m_pSpawnPointList[index].m_fOrientation;
+            return {pEncounter->m_pSpawnPointList[index].m_vPosition, pEncounter->m_pSpawnPointList[index].m_fOrientation};
         }
     }
-
-    return {x, y, z, o};
+    return {Vector(), 0.0f};
 }
 
 NWNX_EXPORT ArgumentStack GetMinNumSpawned(ArgumentStack&& args)

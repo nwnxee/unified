@@ -150,14 +150,8 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(int bLink=TRUE)
 
     n.sTag = NWNXPopString();
 
-    float fZ = NWNXPopFloat();
-    float fY = NWNXPopFloat();
-    float fX = NWNXPopFloat();
-    n.vParam1 = Vector(fX, fY, fZ);
-    fZ = NWNXPopFloat();
-    fY = NWNXPopFloat();
-    fX = NWNXPopFloat();
-    n.vParam0 = Vector(fX, fY, fZ);
+    n.vParam1 = NWNXPopVector();
+    n.vParam0 = NWNXPopVector();
     n.oParam3 = NWNXPopObject();
     n.oParam2 = NWNXPopObject();
     n.oParam1 = NWNXPopObject();
@@ -261,13 +255,8 @@ void __NWNX_Effect_ResolvePack(struct NWNX_EffectUnpacked e, int bReplace=FALSE)
     NWNXPushObject(e.oParam2);
     NWNXPushObject(e.oParam3);
 
-    NWNXPushFloat(e.vParam0.x);
-    NWNXPushFloat(e.vParam0.y);
-    NWNXPushFloat(e.vParam0.z);
-
-    NWNXPushFloat(e.vParam1.x);
-    NWNXPushFloat(e.vParam1.y);
-    NWNXPushFloat(e.vParam1.z);
+    NWNXPushVector(e.vParam0);
+    NWNXPushVector(e.vParam1);
 
     NWNXPushString(e.sTag);
 

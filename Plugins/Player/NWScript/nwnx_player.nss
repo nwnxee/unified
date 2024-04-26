@@ -564,16 +564,10 @@ string NWNX_Player_GetBicFileName(object player)
 
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[])
 {
-    NWNXPushFloat(rotate.x);
-    NWNXPushFloat(rotate.y);
-    NWNXPushFloat(rotate.z);
-    NWNXPushFloat(translate.x);
-    NWNXPushFloat(translate.y);
-    NWNXPushFloat(translate.z);
+    NWNXPushVector(rotate);
+    NWNXPushVector(translate);
     NWNXPushFloat(scale);
-    NWNXPushFloat(position.x);
-    NWNXPushFloat(position.y);
-    NWNXPushFloat(position.z);
+    NWNXPushVector(position);
     NWNXPushInt(effectId);
     NWNXPushObject(player);
     NWNXCall(NWNX_Player, "ShowVisualEffect");
@@ -655,12 +649,8 @@ void NWNX_Player_SetRestDuration(object player, int duration)
 
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[])
 {
-    NWNXPushFloat(rotate.z);
-    NWNXPushFloat(rotate.y);
-    NWNXPushFloat(rotate.x);
-    NWNXPushFloat(translate.z);
-    NWNXPushFloat(translate.y);
-    NWNXPushFloat(translate.x);
+    NWNXPushVector(rotate);
+    NWNXPushVector(translate);
     NWNXPushFloat(scale);
     NWNXPushInt(visualeffect);
     NWNXPushObject(target);
@@ -844,11 +834,8 @@ void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag)
 
 void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn)
 {
-    vector vPosition = GetPositionFromLocation(locSpawn);
     NWNXPushFloat(GetFacingFromLocation(locSpawn));
-    NWNXPushFloat(vPosition.z);
-    NWNXPushFloat(vPosition.y);
-    NWNXPushFloat(vPosition.x);
+    NWNXPushVector(GetPositionFromLocation(locSpawn));
     NWNXPushObject(GetAreaFromLocation(locSpawn));
     NWNXPushObject(oPlayer);
     NWNXCall(NWNX_Player, "SetSpawnLocation");
@@ -927,9 +914,7 @@ void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude,
     NWNXPushFloat(fPitch);
     NWNXPushFloat(fYaw);
     NWNXPushFloat(fMagnitude);
-    NWNXPushFloat(vDirection.x);
-    NWNXPushFloat(vDirection.y);
-    NWNXPushFloat(vDirection.z);
+    NWNXPushVector(vDirection);
     NWNXPushObject(oPlayer);
     NWNXCall(NWNX_Player, "UpdateWind");
 }

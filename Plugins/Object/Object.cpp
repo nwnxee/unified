@@ -81,19 +81,16 @@ NWNX_EXPORT ArgumentStack SetPosition(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))
     {
-        Vector pos{};
-        pos.z = args.extract<float>();
-        pos.y = args.extract<float>();
-        pos.x = args.extract<float>();
-        auto bUpdateSubareas = !!args.extract<int32_t>();
+        const auto vPosition = args.extract<Vector>();
+        const auto bUpdateSubareas = !!args.extract<int32_t>();
 
-        pObject->SetPosition(pos, false);
+        pObject->SetPosition(vPosition, false);
 
         if (bUpdateSubareas)
         {
             if (auto *pCreature = Utils::AsNWSCreature(pObject))
             {
-                pCreature->UpdateSubareasOnJumpPosition(pos, pCreature->m_oidArea);
+                pCreature->UpdateSubareasOnJumpPosition(vPosition, pCreature->m_oidArea);
             }
         }
     }
@@ -239,14 +236,12 @@ NWNX_EXPORT ArgumentStack AddToArea(ArgumentStack&& args)
     {
         const auto oidArea = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-        const auto posX = args.extract<float>();
-        const auto posY = args.extract<float>();
-        const auto posZ = args.extract<float>();
+        const auto vPosition = args.extract<Vector>();
 
         if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
         {
-            if (!Utils::AddToArea(pObject, pArea, posX, posY, posZ))
-                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, posX, posY, posZ);
+            if (!Utils::AddToArea(pObject, pArea, vPosition.x, vPosition.y, vPosition.z))
+                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, vPosition.x, vPosition.y, vPosition.z);
         }
     }
 
@@ -605,12 +600,7 @@ NWNX_EXPORT ArgumentStack GetPositionIsInTrigger(ArgumentStack&& args)
 {
     if (auto *pTrigger = Utils::PopTrigger(args))
     {
-        const auto fX = args.extract<float>();
-        const auto fY = args.extract<float>();
-        const auto fZ = args.extract<float>();
-
-        Vector vPosition = {fX, fY, fZ};
-        return pTrigger->InTrigger(vPosition);
+        return pTrigger->InTrigger(args.extract<Vector>());
     }
 
     return false;
