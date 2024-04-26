@@ -2,7 +2,6 @@
 /// @brief Various admin related functions
 /// @{
 /// @file nwnx_admin.nss
-#include "nwnx"
 
 const string NWNX_Administration = "NWNX_Administration"; ///< @private
 
@@ -179,213 +178,161 @@ void NWNX_Administration_SetMaxLevel(int nLevel);
 
 string NWNX_Administration_GetPlayerPassword()
 {
-    string sFunc = "GetPlayerPassword";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_Administration, "GetPlayerPassword");
+    return NWNXPopString();
 }
 
 void NWNX_Administration_SetPlayerPassword(string password)
 {
-    string sFunc = "SetPlayerPassword";
-
-    NWNX_PushArgumentString(password);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(password);
+    NWNXCall(NWNX_Administration, "SetPlayerPassword");
 }
 
 void NWNX_Administration_ClearPlayerPassword()
 {
-    string sFunc = "ClearPlayerPassword";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXCall(NWNX_Administration, "ClearPlayerPassword");
 }
 
 string NWNX_Administration_GetDMPassword()
 {
-    string sFunc = "GetDMPassword";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_Administration, "GetDMPassword");
+    return NWNXPopString();
 }
 
 void NWNX_Administration_SetDMPassword(string password)
 {
-    string sFunc = "SetDMPassword";
-
-    NWNX_PushArgumentString(password);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(password);
+    NWNXCall(NWNX_Administration, "SetDMPassword");
 }
 
 void NWNX_Administration_ShutdownServer()
 {
-    string sFunc = "ShutdownServer";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXCall(NWNX_Administration, "ShutdownServer");
 }
 
 void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup = TRUE, string sKickMessage = "")
 {
-    string sFunc = "DeletePlayerCharacter";
-
-    NWNX_PushArgumentString(sKickMessage);
-    NWNX_PushArgumentInt(bPreserveBackup);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(sKickMessage);
+    NWNXPushInt(bPreserveBackup);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Administration, "DeletePlayerCharacter");
 }
 
 void NWNX_Administration_AddBannedIP(string ip)
 {
-    string sFunc = "AddBannedIP";
-
-    NWNX_PushArgumentString(ip);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(ip);
+    NWNXCall(NWNX_Administration, "AddBannedIP");
 }
 void NWNX_Administration_RemoveBannedIP(string ip)
 {
-    string sFunc = "RemoveBannedIP";
-
-    NWNX_PushArgumentString(ip);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(ip);
+    NWNXCall(NWNX_Administration, "RemoveBannedIP");
 }
 void NWNX_Administration_AddBannedCDKey(string key)
 {
-    string sFunc = "AddBannedCDKey";
-
-    NWNX_PushArgumentString(key);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(key);
+    NWNXCall(NWNX_Administration, "AddBannedCDKey");
 }
 void NWNX_Administration_RemoveBannedCDKey(string key)
 {
-    string sFunc = "RemoveBannedCDKey";
-
-    NWNX_PushArgumentString(key);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(key);
+    NWNXCall(NWNX_Administration, "RemoveBannedCDKey");
 }
 void NWNX_Administration_AddBannedPlayerName(string playerName)
 {
-    string sFunc = "AddBannedPlayerName";
-
-    NWNX_PushArgumentString(playerName);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(playerName);
+    NWNXCall(NWNX_Administration, "AddBannedPlayerName");
 }
 void NWNX_Administration_RemoveBannedPlayerName(string playerName)
 {
-    string sFunc = "RemoveBannedPlayerName";
-
-    NWNX_PushArgumentString(playerName);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(playerName);
+    NWNXCall(NWNX_Administration, "RemoveBannedPlayerName");
 }
 string NWNX_Administration_GetBannedList()
 {
-    string sFunc = "GetBannedList";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_Administration, "GetBannedList");
+    return NWNXPopString();
 }
 
 void NWNX_Administration_SetModuleName(string name)
 {
-    string sFunc = "SetModuleName";
-
-    NWNX_PushArgumentString(name);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(name);
+    NWNXCall(NWNX_Administration, "SetModuleName");
 }
 
 void NWNX_Administration_SetServerName(string name)
 {
-    string sFunc = "SetServerName";
-
-    NWNX_PushArgumentString(name);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushString(name);
+    NWNXCall(NWNX_Administration, "SetServerName");
 }
 
 string NWNX_Administration_GetServerName()
 {
-    string sFunc = "GetServerName";
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_Administration, "GetServerName");
+    return NWNXPopString();
 }
 
 int NWNX_Administration_GetPlayOption(int option)
 {
-    string sFunc = "GetPlayOption";
-
-    NWNX_PushArgumentInt(option);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(option);
+    NWNXCall(NWNX_Administration, "GetPlayOption");
+    return NWNXPopInt();
 }
 
 void NWNX_Administration_SetPlayOption(int option, int value)
 {
-    string sFunc = "SetPlayOption";
-
-    NWNX_PushArgumentInt(value);
-    NWNX_PushArgumentInt(option);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushInt(value);
+    NWNXPushInt(option);
+    NWNXCall(NWNX_Administration, "SetPlayOption");
 }
 
 int NWNX_Administration_DeleteTURD(string playerName, string characterName)
 {
-    string sFunc = "DeleteTURD";
-
-    NWNX_PushArgumentString(characterName);
-    NWNX_PushArgumentString(playerName);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(characterName);
+    NWNXPushString(playerName);
+    NWNXCall(NWNX_Administration, "DeleteTURD");
+    return NWNXPopInt();
 }
 
 int NWNX_Administration_GetDebugValue(int type)
 {
-    string sFunc = "GetDebugValue";
-
-    NWNX_PushArgumentInt(type);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(type);
+    NWNXCall(NWNX_Administration, "GetDebugValue");
+    return NWNXPopInt();
 }
 
 void NWNX_Administration_SetDebugValue(int type, int state)
 {
-    string sFunc = "SetDebugValue";
-
-    NWNX_PushArgumentInt(state);
-    NWNX_PushArgumentInt(type);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushInt(state);
+    NWNXPushInt(type);
+    NWNXCall(NWNX_Administration, "SetDebugValue");
 }
 
 void NWNX_Administration_ReloadRules()
 {
-    string sFunc = "ReloadRules";
-
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXCall(NWNX_Administration, "ReloadRules");
 }
 
 int NWNX_Administration_GetMinLevel()
 {
-    string sFunc = "GetMinLevel";
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_Administration, "GetMinLevel");
+    return NWNXPopInt();
 }
 
 void NWNX_Administration_SetMinLevel(int nLevel)
 {
-    string sFunc = "SetMinLevel";
-    NWNX_PushArgumentInt(nLevel);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushInt(nLevel);
+    NWNXCall(NWNX_Administration, "SetMinLevel");
 }
 
 int NWNX_Administration_GetMaxLevel()
 {
-    string sFunc = "GetMaxLevel";
-    NWNX_CallFunction(NWNX_Administration, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_Administration, "GetMaxLevel");
+    return NWNXPopInt();
 }
 
 void NWNX_Administration_SetMaxLevel(int nLevel)
 {
-    string sFunc = "SetMaxLevel";
-    NWNX_PushArgumentInt(nLevel);
-    NWNX_CallFunction(NWNX_Administration, sFunc);
+    NWNXPushInt(nLevel);
+    NWNXCall(NWNX_Administration, "SetMaxLevel");
 }

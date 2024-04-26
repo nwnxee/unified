@@ -10,7 +10,6 @@
 ///    * -1 = Personal state is not set for Message
 /// @{
 /// @file nwnx_feedback.nss
-#include "nwnx"
 
 const string NWNX_Feedback = "NWNX_Feedback"; ///< @private
 
@@ -402,95 +401,69 @@ void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist);
 
 int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(nMessage);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(nMessage);
+    NWNXPushInt(0);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "GetMessageHidden");
+    return NWNXPopInt();
 }
 
 void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(isHidden);
-    NWNX_PushArgumentInt(nMessage);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
+    NWNXPushInt(isHidden);
+    NWNXPushInt(nMessage);
+    NWNXPushInt(0);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "SetMessageHidden");
 }
 
 int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 1;
+    NWNXPushInt(nMessage);
+    NWNXPushInt(1);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "GetMessageHidden");
 
-    NWNX_PushArgumentInt(nMessage);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    return NWNXPopInt();
 }
 
 void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 1;
-
-    NWNX_PushArgumentInt(isHidden);
-    NWNX_PushArgumentInt(nMessage);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
+    NWNXPushInt(isHidden);
+    NWNXPushInt(nMessage);
+    NWNXPushInt(1);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "SetMessageHidden");
 }
 
 int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
 {
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 2;
-
-    NWNX_PushArgumentInt(0);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(0);
+    NWNXPushInt(2);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "GetMessageHidden");
+    return NWNXPopInt();
 }
 
 void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 2;
-
-    NWNX_PushArgumentInt(isHidden);
-    NWNX_PushArgumentInt(0);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_PushArgumentObject(oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
+    NWNXPushInt(isHidden);
+    NWNXPushInt(0);
+    NWNXPushInt(2);
+    NWNXPushObject(oPC);
+    NWNXCall(NWNX_Feedback, "SetMessageHidden");
 }
 
 void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
 {
-    string sFunc = "SetFeedbackMode";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(bWhitelist);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
+    NWNXPushInt(bWhitelist);
+    NWNXPushInt(0);
+    NWNXCall(NWNX_Feedback, "SetFeedbackMode");
 }
 
 void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
 {
-    string sFunc = "SetFeedbackMode";
-    int nMessageType = 1;
-
-    NWNX_PushArgumentInt(bWhitelist);
-    NWNX_PushArgumentInt(nMessageType);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
+    NWNXPushInt(bWhitelist);
+    NWNXPushInt(1);
+    NWNXCall(NWNX_Feedback, "SetFeedbackMode");
 }

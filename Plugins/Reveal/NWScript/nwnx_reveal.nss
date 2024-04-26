@@ -2,7 +2,6 @@
 /// @brief Allows the selective revealing of a stealthing character to another character or their party.
 /// @{
 /// @file nwnx_reveal.nss
-#include "nwnx"
 
 const string NWNX_Reveal = "NWNX_Reveal"; ///< @private
 
@@ -28,22 +27,16 @@ void NWNX_Reveal_SetRevealToParty(object oHiding, int bReveal, int iDetectionMet
 
 void NWNX_Reveal_RevealTo(object oHiding, object oObserver, int iDetectionMethod = NWNX_REVEAL_HEARD)
 {
-    string sFunc = "RevealTo";
-    
-    NWNX_PushArgumentInt(iDetectionMethod);
-    NWNX_PushArgumentObject(oObserver);
-    NWNX_PushArgumentObject(oHiding);
-
-    NWNX_CallFunction(NWNX_Reveal, sFunc);
+    NWNXPushInt(iDetectionMethod);
+    NWNXPushObject(oObserver);
+    NWNXPushObject(oHiding);
+    NWNXCall(NWNX_Reveal, "RevealTo");
 }
 
 void NWNX_Reveal_SetRevealToParty(object oHiding, int bReveal, int iDetectionMethod = NWNX_REVEAL_HEARD)
 {
-    string sFunc = "SetRevealToParty";
-    
-    NWNX_PushArgumentInt(iDetectionMethod);
-    NWNX_PushArgumentInt(bReveal);
-    NWNX_PushArgumentObject(oHiding);
-
-    NWNX_CallFunction(NWNX_Reveal, sFunc);
+    NWNXPushInt(iDetectionMethod);
+    NWNXPushInt(bReveal);
+    NWNXPushObject(oHiding);
+    NWNXCall(NWNX_Reveal, "SetRevealToParty");
 }

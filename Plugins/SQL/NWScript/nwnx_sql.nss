@@ -2,7 +2,6 @@
 /// @brief Functions to interface with a database through SQL
 /// @{
 /// @file nwnx_sql.nss
-#include "nwnx"
 
 const string NWNX_SQL = "NWNX_SQL"; ///< @private
 
@@ -116,19 +115,15 @@ void NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode();
 
 int NWNX_SQL_PrepareQuery(string query)
 {
-    string sFunc = "PrepareQuery";
-
-    NWNX_PushArgumentString(query);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(query);
+    NWNXCall(NWNX_SQL, "PrepareQuery");
+    return NWNXPopInt();
 }
 
 int NWNX_SQL_ExecutePreparedQuery()
 {
-    string sFunc = "ExecutePreparedQuery";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_SQL, "ExecutePreparedQuery");
+    return NWNXPopInt();
 }
 
 int NWNX_SQL_ExecuteQuery(string query)
@@ -146,76 +141,58 @@ int NWNX_SQL_ExecuteQuery(string query)
 
 int NWNX_SQL_ReadyToReadNextRow()
 {
-    string sFunc = "ReadyToReadNextRow";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_SQL, "ReadyToReadNextRow");
+    return NWNXPopInt();
 }
 
 void NWNX_SQL_ReadNextRow()
 {
-    string sFunc = "ReadNextRow";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXCall(NWNX_SQL, "ReadNextRow");
 }
 
 string NWNX_SQL_ReadDataInActiveRow(int column = 0)
 {
-    string sFunc = "ReadDataInActiveRow";
-
-    NWNX_PushArgumentInt(column);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushInt(column);
+    NWNXCall(NWNX_SQL, "ReadDataInActiveRow");
+    return NWNXPopString();
 }
 
 
 void NWNX_SQL_PreparedInt(int position, int value)
 {
-    string sFunc = "PreparedInt";
-
-    NWNX_PushArgumentInt(value);
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushInt(value);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedInt");
 }
 void NWNX_SQL_PreparedString(int position, string value)
 {
-    string sFunc = "PreparedString";
-
-    NWNX_PushArgumentString(value);
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushString(value);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedString");
 }
 void NWNX_SQL_PreparedFloat(int position, float value)
 {
-    string sFunc = "PreparedFloat";
-
-    NWNX_PushArgumentFloat(value);
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushFloat(value);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedFloat");
 }
 void NWNX_SQL_PreparedObjectId(int position, object value)
 {
-    string sFunc = "PreparedObjectId";
-
-    NWNX_PushArgumentObject(value);
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushObject(value);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedObjectId");
 }
 void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE)
 {
-    string sFunc = "PreparedObjectFull";
-
-    NWNX_PushArgumentInt(base64);
-    NWNX_PushArgumentObject(value);
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushInt(base64);
+    NWNXPushObject(value);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedObjectFull");
 }
 void NWNX_SQL_PreparedNULL(int position)
 {
-    string sFunc = "PreparedNULL";
-
-    NWNX_PushArgumentInt(position);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXPushInt(position);
+    NWNXCall(NWNX_SQL, "PreparedNULL");
 }
 void NWNX_SQL_PreparedJson(int position, json value)
 {
@@ -227,60 +204,46 @@ void NWNX_SQL_PreparedJson(int position, json value)
 
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0, int base64 = TRUE)
 {
-    string sFunc = "ReadFullObjectInActiveRow";
-
-    NWNX_PushArgumentInt(base64);
-    NWNX_PushArgumentFloat(z);
-    NWNX_PushArgumentFloat(y);
-    NWNX_PushArgumentFloat(x);
-    NWNX_PushArgumentObject(owner);
-    NWNX_PushArgumentInt(column);
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueObject();
+    NWNXPushInt(base64);
+    NWNXPushFloat(z);
+    NWNXPushFloat(y);
+    NWNXPushFloat(x);
+    NWNXPushObject(owner);
+    NWNXPushInt(column);
+    NWNXCall(NWNX_SQL, "ReadFullObjectInActiveRow");
+    return NWNXPopObject();
 }
 
 int NWNX_SQL_GetAffectedRows()
 {
-    string sFunc = "GetAffectedRows";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_SQL, "GetAffectedRows");
+    return NWNXPopInt();
 }
 
 string NWNX_SQL_GetDatabaseType()
 {
-    string sFunc = "GetDatabaseType";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_SQL, "GetDatabaseType");
+    return NWNXPopString();
 }
 
 void NWNX_SQL_DestroyPreparedQuery()
 {
-    string sFunc = "DestroyPreparedQuery";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXCall(NWNX_SQL, "DestroyPreparedQuery");
 }
 
 string NWNX_SQL_GetLastError()
 {
-    string sFunc = "GetLastError";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_SQL, "GetLastError");
+    return NWNXPopString();
 }
 
 int NWNX_SQL_GetPreparedQueryParamCount()
 {
-    string sFunc = "GetPreparedQueryParamCount";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_SQL, "GetPreparedQueryParamCount");
+    return NWNXPopInt();
 }
 
 void NWNX_SQL_PostgreSQL_SetNextQueryResultsBinaryMode()
 {
-    string sFunc = "PostgreSQL_SetNextQueryResultsBinaryMode";
-
-    NWNX_CallFunction(NWNX_SQL, sFunc);
+    NWNXCall(NWNX_SQL, "PostgreSQL_SetNextQueryResultsBinaryMode");
 }

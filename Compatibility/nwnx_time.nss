@@ -2,7 +2,6 @@
 /// @brief Provides various time related functions
 /// @{
 /// @file nwnx_time.nss
-#include "nwnx"
 #include "nwnx_util"
 #include "inc_sqlite_time"
 

@@ -2,7 +2,6 @@
 /// @brief Various extensions for the game's built-in sqlite database.
 /// @{
 /// @file nwnx_nwsqliteext.nss
-#include "nwnx"
 
 const string NWNX_NWSQLiteExtensions = "NWNX_NWSQLiteExtensions"; ///< @private
 
@@ -17,9 +16,9 @@ int NWNX_NWSQLiteExtensions_CreateVirtual2DATable(string s2DA, string sColumnTyp
 
 int NWNX_NWSQLiteExtensions_CreateVirtual2DATable(string s2DA, string sColumnTypeHints = "", string sTableName = "")
 {
-    NWNX_PushArgumentString(sTableName);
-    NWNX_PushArgumentString(sColumnTypeHints);
-    NWNX_PushArgumentString(s2DA);
-    NWNX_CallFunction(NWNX_NWSQLiteExtensions, "CreateVirtual2DATable");
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(sTableName);
+    NWNXPushString(sColumnTypeHints);
+    NWNXPushString(s2DA);
+    NWNXCall(NWNX_NWSQLiteExtensions, "CreateVirtual2DATable");
+    return NWNXPopInt();
 }

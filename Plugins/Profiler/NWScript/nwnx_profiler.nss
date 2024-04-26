@@ -3,7 +3,6 @@
 /// @remark These functions are for advanced users.
 /// @{
 /// @file nwnx_profiler.nss
-#include "nwnx"
 
 const string NWNX_Profiler = "NWNX_Profiler"; ///< @private
 
@@ -39,22 +38,17 @@ void NWNX_Profiler_PopPerfScope();
 
 void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_value = "")
 {
-    string sFunc = "PushPerfScope";
-
     if (tag0_value != "" && tag0_tag != "")
     {
-        NWNX_PushArgumentString(tag0_value);
-        NWNX_PushArgumentString(tag0_tag);
+        NWNXPushString(tag0_value);
+        NWNXPushString(tag0_tag);
     }
-
-    NWNX_PushArgumentString(name);
-
-    NWNX_CallFunction(NWNX_Profiler, sFunc);
+    NWNXPushString(name);
+    NWNXCall(NWNX_Profiler, "PushPerfScope");
 }
 
 void NWNX_Profiler_PopPerfScope()
 {
-    string sFunc = "PopPerfScope";
-
-    NWNX_CallFunction(NWNX_Profiler, sFunc);
+    NWNXCall(NWNX_Profiler, "PopPerfScope");
 }
+
