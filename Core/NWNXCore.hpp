@@ -16,26 +16,16 @@ public:
     NWNXCore();
     ~NWNXCore();
 
-    static int32_t GetVarHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t SetVarHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagEffectHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagItemPropertyHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t PlaySoundHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
-
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
     const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
 
-    NWNXLib::Hooks::Hook m_vmSetVarHook;
-    NWNXLib::Hooks::Hook m_vmGetVarHook;
-
 private:
     NWNXLib::Hooks::Hook m_createServerHook;
-    NWNXLib::Hooks::Hook m_vmTagEffectHook;
-    NWNXLib::Hooks::Hook m_vmTagItemProperyHook;
-    NWNXLib::Hooks::Hook m_vmPlaySoundHook;
     NWNXLib::Hooks::Hook m_destroyServerHook;
     NWNXLib::Hooks::Hook m_mainLoopInternalHook;
+    NWNXLib::Hooks::Hook m_vmPlaySoundHook;
+    NWNXLib::Hooks::Hook m_nwnxFunctionManagementHook;
 
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
 
@@ -57,6 +47,8 @@ private:
     static void CreateServerHandler(CAppManager*);
     static void DestroyServerHandler(CAppManager*);
     static int32_t MainLoopInternalHandler(CServerExoAppInternal*);
+    static int32_t PlaySoundHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t NWNXFunctionManagementHandler(CNWSVirtualMachineCommands*, int32_t, int32_t);
 
     int m_ScriptChunkRecursion;
     std::vector<std::string> m_CustomResourceDirectoryAliases;

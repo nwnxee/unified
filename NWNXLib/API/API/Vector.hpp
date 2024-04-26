@@ -132,6 +132,11 @@ struct Vector
         return p0 + w * t;
     }
 
+    std::string ToString() const
+    {
+        return "{" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + "}";
+    }
+
 #ifdef NWN_CLASS_EXTENSION_Vector
     NWN_CLASS_EXTENSION_Vector
 #endif

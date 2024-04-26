@@ -518,6 +518,7 @@ struct CNWSVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandMusicBackground(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMusicBattle(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandNuiManagement(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandNWNXFunctionManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectTextBubble(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectUiDiscoverMask(int32_t nCommandId, int32_t nParameters);
