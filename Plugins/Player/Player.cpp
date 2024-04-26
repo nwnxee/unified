@@ -1225,16 +1225,7 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         auto text = args.extract<std::string>();
           ASSERT_OR_THROW(!text.empty());
-
-        int32_t bChatWindow = true;
-        try
-        {
-            bChatWindow = !!args.extract<int32_t>();
-        }
-        catch(const std::runtime_error&)
-        {
-            LOG_WARNING("NWNX_Player_FloatingTextStringOnCreature() called from NWScript without 'bChatWindow' parameter. Please update nwnx_player.nss");
-        }
+        const auto bChatWindow = !!args.extract<int32_t>();
 
         if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
         {
