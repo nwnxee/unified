@@ -18,14 +18,22 @@ using namespace NWNXLib::API;
 
 namespace DotNET {
 
-    // Bootstrap functions
-    std::vector<void*> GetExports();
+// Bootstrap functions
+std::vector<void*> GetExports();
 
-    AllHandlers s_handlers;
-    static int32_t s_pushedCount;
-    static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
-    static std::string s_nwnxActivePlugin;
-    static std::string s_nwnxActiveFunction;
+AllHandlers s_handlers;
+static int32_t s_pushedCount;
+static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
+static std::string s_nwnxActivePlugin;
+static std::string s_nwnxActiveFunction;
+
+static void CrashHandler(int sig)
+{
+    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
+    s_handlers.CrashHandler(sig, stackTrace.c_str());
+    std::signal(SIGABRT, NULL);
+    std::abort();
+}
 
 NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
 {
@@ -40,14 +48,6 @@ NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
         LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
     dlclose(core);
     return ret;
-}
-
-NWNX_EXPORT void CrashHandler(int sig)
-{
-    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
-    s_handlers.CrashHandler(sig, stackTrace.c_str());
-    std::signal(SIGABRT, NULL);
-    std::abort();
 }
 
 NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
@@ -87,7 +87,6 @@ NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
             Hooks::Order::VeryEarly);
     }
 
-
     static Hooks::Hook RunScriptHook;
     if (s_handlers.RunScript)
     {
@@ -116,7 +115,6 @@ NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
             },
             Hooks::Order::Latest);
     }
-
 
     static Hooks::Hook RunScriptSituationHook;
     if (s_handlers.Closure)
