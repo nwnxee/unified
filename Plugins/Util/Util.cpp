@@ -520,15 +520,11 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
 
     const auto strResRef = args.extract<std::string>();
       ASSERT_OR_THROW(!strResRef.empty());
-    const auto oidArea = args.extract<ObjectID>();
-      ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-    const auto pos = args.extract<Vector>();
-    const auto facing = args.extract<float>();
+    const auto locSpawn = args.extract<CScriptLocation>();
     const auto tag = args.extract<std::string>();
     const auto appearance = args.extract<int32_t>();
 
     auto resRef = CResRef(strResRef);
-    Vector position = {pos.x, pos.y, pos.z};
 
     if (!Globals::ExoResMan()->Exists(resRef, Constants::ResRefType::UTD, nullptr))
     {
@@ -536,7 +532,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
         return Constants::OBJECT_INVALID;
     }
 
-    if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
+    if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(locSpawn.m_oArea)))
     {
         CResStruct resStruct{};
         CResGFF gff(Constants::ResRefType::UTD, (char*)"UTD ", resRef);
@@ -549,7 +545,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
             pDoor->m_sTemplate = resRef.GetResRefStr();
             pDoor->LoadDoor(&gff, &resStruct);
             pDoor->LoadVarTable(&gff, &resStruct);
-            pDoor->SetPosition(position);
+            pDoor->SetPosition(locSpawn.m_vPosition);
             if (appearance > 0)
             {
                 pDoor->m_nAppearanceType = appearance;
@@ -563,7 +559,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
                 pDoor->m_pWalkMesh->LoadWalkMesh(sWalkMeshTemplate);
                 pDoor->PostProcess();
             }
-            Utils::SetOrientation(pDoor, facing);
+            pDoor->SetOrientation(locSpawn.m_vOrientation);
 
             if (!tag.empty())
             {
@@ -571,7 +567,7 @@ NWNX_EXPORT ArgumentStack CreateDoor(ArgumentStack&& args)
                 Utils::GetModule()->AddObjectToLookupTable(pDoor->m_sTag, pDoor->m_idSelf);
             }
 
-            pDoor->AddToArea(pArea, pos.x, pos.y, pArea->ComputeHeight(position));
+            pDoor->AddToArea(pArea, locSpawn.m_vPosition.x, locSpawn.m_vPosition.y, pArea->ComputeHeight(locSpawn.m_vPosition));
 
             retVal = pDoor->m_idSelf;
         }

@@ -2837,8 +2837,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
     if (auto *pCaster = Utils::PopCreature(args))
     {
         const auto oidTarget = args.extract<ObjectID>();
-        const auto oidArea = args.extract<ObjectID>();
-        const auto vecTarget = args.extract<Vector>();
+        const auto location = args.extract<CScriptLocation>();
         const auto spellID = args.extract<int32_t>();
           ASSERT_OR_THROW(spellID >= 0);
         const auto casterLevel = args.extract<int32_t>();
@@ -2853,7 +2852,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(spellID);
         auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
         auto *pItem = Utils::AsNWSObject(Utils::GetGameObject(oidItem));
-        auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea));
+        auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(location.m_oArea));
 
         if (!pSpell || (!pTarget && !pArea))
             return {};
@@ -2863,7 +2862,7 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         if (pCaster->m_oidArea != oidTargetArea)
             return {};
 
-        Vector vTargetPosition = pTarget ? pTarget->m_vPosition : vecTarget;
+        Vector vTargetPosition = pTarget ? pTarget->m_vPosition : location.m_vPosition;
         auto delayMs = (int32_t)(delay * 1000);
 
         if (delayMs > 0)

@@ -2038,8 +2038,7 @@ void NWNX_Creature_DoItemCastSpell(object oCreature, object oTarget, location lo
     NWNXPushFloat(fProjectileTime);
     NWNXPushInt(nCasterLevel);
     NWNXPushInt(nSpellID);
-    NWNXPushVector(GetPositionFromLocation(locTarget));
-    NWNXPushObject(GetAreaFromLocation(locTarget));
+    NWNXPushLocation(locTarget);
     NWNXPushObject(oTarget);
     NWNXPushObject(oCreature);
     NWNXCall(NWNX_Creature, "DoItemCastSpell");

@@ -1452,19 +1452,14 @@ NWNX_EXPORT ArgumentStack SetSpawnLocation(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        const auto oidArea = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-          ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
-        const auto position = args.extract<Vector>();
-        const auto facing = args.extract<float>();
-
+        const auto locSpawn = args.extract<CScriptLocation>();
         if (auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
         {
             pPlayer->m_bFromTURD = true;
-            pCreature->m_oidDesiredArea = oidArea;
-            pCreature->m_vDesiredAreaLocation = position;
+            pCreature->m_oidDesiredArea = locSpawn.m_oArea;
+            pCreature->m_vDesiredAreaLocation = locSpawn.m_vPosition;
             pCreature->m_bDesiredAreaUpdateComplete = false;
-            Utils::SetOrientation(pCreature, facing);
+            pCreature->SetOrientation(locSpawn.m_vOrientation);
         }
     }
 

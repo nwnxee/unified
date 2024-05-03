@@ -174,6 +174,16 @@ int32_t NWNXCore::NWNXFunctionManagementHandler(CNWSVirtualMachineCommands* this
             break;
         }
 
+        case VMCommand::NWNXPushLocation:
+        {
+            CScriptLocation *pLocation;
+            SCOPEGUARD(delete pLocation);
+            if (!pVirtualMachine->StackPopEngineStructure(VMStructure::Location, (void**)&pLocation))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(*pLocation);
+            break;
+        }
+
         case VMCommand::NWNXPushEffect:
         {
             CGameEffect *pEffect;
@@ -233,6 +243,14 @@ int32_t NWNXCore::NWNXFunctionManagementHandler(CNWSVirtualMachineCommands* this
         case VMCommand::NWNXPopVector:
         {
             if (!pVirtualMachine->StackPushVector(ScriptAPI::Pop<Vector>().value_or(Vector())))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopLocation:
+        {
+            CScriptLocation location = ScriptAPI::Pop<CScriptLocation>().value_or(CScriptLocation());
+            if (!pVirtualMachine->StackPushEngineStructure(VMStructure::Location, &location))
                 return VMError::StackOverflow;
             break;
         }

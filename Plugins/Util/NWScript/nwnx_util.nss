@@ -449,9 +449,7 @@ object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag
 {
     NWNXPushInt(nAppearanceType);
     NWNXPushString(sNewTag);
-    NWNXPushFloat(GetFacingFromLocation(locLocation));
-    NWNXPushVector(GetPositionFromLocation(locLocation));
-    NWNXPushObject(GetAreaFromLocation(locLocation));
+    NWNXPushLocation(locLocation);
     NWNXPushString(sResRef);
     NWNXCall(NWNX_Util, "CreateDoor");
     return NWNXPopObject();

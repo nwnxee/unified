@@ -32,6 +32,13 @@ struct CScriptLocation
                m_vPosition.IsZero() &&
                m_vOrientation.IsZero(); }
 
+    std::string ToString() const
+    {
+        return "LOCATION: Area: " + std::to_string(m_oArea) +
+                ", Position: " + m_vPosition.ToString() +
+                ", Orientation: " + m_vOrientation.ToString();
+    }
+
 #ifdef NWN_CLASS_EXTENSION_CScriptLocation
     NWN_CLASS_EXTENSION_CScriptLocation
 #endif

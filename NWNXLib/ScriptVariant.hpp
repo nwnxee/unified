@@ -2,6 +2,7 @@
 
 #include "API/API/CGameEffect.hpp"
 #include "API/API/JsonEngineStructure.hpp"
+#include "API/API/CScriptLocation.hpp"
 
 #include <deque>
 #include <stdexcept>
@@ -23,6 +24,7 @@ constexpr bool is_argument_type()
          || std::is_same_v<T, ObjectID>
          || std::is_same_v<T, std::string>
          || std::is_same_v<T, Vector>
+         || std::is_same_v<T, CScriptLocation>
          || std::is_same_v<T, CGameEffect*>
          || std::is_same_v<T, JsonEngineStructure>
          || std::is_same_v<T, NullArgument>);
@@ -39,6 +41,7 @@ struct ScriptVariant
         ObjectID,
         std::string,
         Vector,
+        CScriptLocation,
         CGameEffect*,
         JsonEngineStructure>;
     Variant m_data;
@@ -80,6 +83,7 @@ struct ScriptVariant
         else if (Holds<ObjectID>()) {       return Utils::ObjectIDToString(Get<ObjectID>()); }
         else if (Holds<std::string>()) {    return Get<std::string>(); }
         else if (Holds<Vector>()) {         return Get<Vector>().ToString(); }
+        else if (Holds<CScriptLocation>()) {return Get<CScriptLocation>().ToString(); }
         else if (Holds<NullArgument>()) {   return "(null)"; }
         else if (Holds<CGameEffect*>())
         {
