@@ -834,9 +834,7 @@ void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag)
 
 void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn)
 {
-    NWNXPushFloat(GetFacingFromLocation(locSpawn));
-    NWNXPushVector(GetPositionFromLocation(locSpawn));
-    NWNXPushObject(GetAreaFromLocation(locSpawn));
+    NWNXPushLocation(locSpawn);
     NWNXPushObject(oPlayer);
     NWNXCall(NWNX_Player, "SetSpawnLocation");
 }

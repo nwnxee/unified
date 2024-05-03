@@ -1,5 +1,3 @@
-#include <openssl/x509.h>
-
 #include "nwnx.hpp"
 
 #include "API/CGameEffect.hpp"
