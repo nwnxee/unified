@@ -1,3 +1,3 @@
-add_plugin(DotNET
+add_shared_plugin(DotNET
     "DotNET.cpp"
     "DotNETExports.cpp")

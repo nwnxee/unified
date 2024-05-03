@@ -1,4 +1,5 @@
 #include "nwnx.hpp"
+#include "DotNET.hpp"
 
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
@@ -17,33 +18,16 @@ using namespace NWNXLib::API;
 
 namespace DotNET {
 
-// Bootstrap functions
-using MainLoopHandlerType  = void (*)(uint64_t);
-using RunScriptHandlerType = int (*)(const char*, uint32_t);
-using ClosureHandlerType = void (*)(uint64_t, uint32_t);
-using SignalHandlerType = void (*)(const char*);
-using AssertHandlerType = void (*)(const char*, const char*);
-using CrashHandlerType = void (*)(int, const char*);
+    // Bootstrap functions
+    std::vector<void*> GetExports();
 
-struct AllHandlers
-{
-    MainLoopHandlerType      MainLoop;
-    RunScriptHandlerType     RunScript;
-    ClosureHandlerType       Closure;
-    SignalHandlerType        SignalHandler;
-    AssertHandlerType        AssertHandler;
-    CrashHandlerType         CrashHandler;
-};
-static AllHandlers s_handlers;
+    AllHandlers s_handlers;
+    static int32_t s_pushedCount;
+    static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
+    static std::string s_nwnxActivePlugin;
+    static std::string s_nwnxActiveFunction;
 
-static int32_t s_pushedCount = 0;
-
-static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
-
-static std::string s_nwnxActivePlugin;
-static std::string s_nwnxActiveFunction;
-
-static uintptr_t GetFunctionPointer(const char* name)
+NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
 {
     void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
@@ -58,7 +42,7 @@ static uintptr_t GetFunctionPointer(const char* name)
     return ret;
 }
 
-void CrashHandler(int sig)
+NWNX_EXPORT void CrashHandler(int sig)
 {
     auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
     s_handlers.CrashHandler(sig, stackTrace.c_str());
@@ -66,7 +50,7 @@ void CrashHandler(int sig)
     std::abort();
 }
 
-static void RegisterHandlers(AllHandlers* handlers, unsigned size)
+NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
 {
     if (size > sizeof(*handlers))
     {
@@ -159,26 +143,6 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
             Hooks::Order::Latest);
     }
 
-    if (s_handlers.SignalHandler)
-    {
-        LOG_DEBUG("Registered core signal handler: %p", s_handlers.SignalHandler);
-        MessageBus::Subscribe("NWNX_CORE_SIGNAL",
-            [](const std::vector<std::string>& message)
-            {
-                if (API::Globals::VirtualMachine())
-                {
-                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.SignalHandler(message[0].c_str());
-                    int spAfter = Utils::PopScriptContext();
-                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                }
-                else
-                {
-                    s_handlers.SignalHandler(message[0].c_str());
-                }
-            });
-    }
-
     if (s_handlers.AssertHandler)
     {
         LOG_DEBUG("Registered native assertion handler: %p", s_handlers.AssertHandler);
@@ -208,7 +172,7 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
     }
 }
 
-static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
+NWNX_EXPORT CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
     auto* script = new CVirtualMachineScript();
     script->m_pCode = nullptr;
@@ -224,7 +188,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
     return script;
 }
 
-static void CallBuiltIn(int32_t id)
+NWNX_EXPORT void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
     auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -237,7 +201,7 @@ static void CallBuiltIn(int32_t id)
     cmd->ExecuteCommand(id, pushedCount);
 }
 
-static void StackPushInteger(int32_t value)
+NWNX_EXPORT void StackPushInteger(int32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing integer %i.", value);
@@ -254,7 +218,7 @@ static void StackPushInteger(int32_t value)
     }
 }
 
-static void StackPushFloat(float value)
+NWNX_EXPORT void StackPushFloat(float value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing float %f.", value);
@@ -271,7 +235,7 @@ static void StackPushFloat(float value)
     }
 }
 
-static void StackPushString(const char* value)
+NWNX_EXPORT void StackPushString(const char* value)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -290,7 +254,7 @@ static void StackPushString(const char* value)
     }
 }
 
-static void StackPushRawString(const char* value)
+NWNX_EXPORT void StackPushRawString(const char* value)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -308,7 +272,7 @@ static void StackPushRawString(const char* value)
     }
 }
 
-static void StackPushObject(uint32_t value)
+NWNX_EXPORT void StackPushObject(uint32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing object 0x%x.", value);
@@ -325,7 +289,7 @@ static void StackPushObject(uint32_t value)
     }
 }
 
-static void StackPushVector(Vector value)
+NWNX_EXPORT void StackPushVector(Vector value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing vector { %f, %f, %f }.", value.x, value.y, value.z);
@@ -342,7 +306,7 @@ static void StackPushVector(Vector value)
     }
 }
 
-static void StackPushGameDefinedStructure(int32_t structId, void* value)
+NWNX_EXPORT void StackPushGameDefinedStructure(int32_t structId, void* value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing game defined structure %i at 0x%x.", structId, value);
@@ -358,7 +322,7 @@ static void StackPushGameDefinedStructure(int32_t structId, void* value)
     s_pushedCount += ret;
 }
 
-static int32_t StackPopInteger()
+NWNX_EXPORT int32_t StackPopInteger()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -374,7 +338,7 @@ static int32_t StackPopInteger()
     return value;
 }
 
-static float StackPopFloat()
+NWNX_EXPORT float StackPopFloat()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -390,7 +354,7 @@ static float StackPopFloat()
     return value;
 }
 
-static const char* StackPopString()
+NWNX_EXPORT const char* StackPopString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -408,7 +372,7 @@ static const char* StackPopString()
     return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
-static const char* StackPopRawString()
+NWNX_EXPORT const char* StackPopRawString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -425,7 +389,7 @@ static const char* StackPopRawString()
     return value.CStr();
 }
 
-static uint32_t StackPopObject()
+NWNX_EXPORT uint32_t StackPopObject()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -441,7 +405,7 @@ static uint32_t StackPopObject()
     return value;
 }
 
-static Vector StackPopVector()
+NWNX_EXPORT Vector StackPopVector()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -457,7 +421,7 @@ static Vector StackPopVector()
     return value;
 }
 
-static void* StackPopGameDefinedStructure(int32_t structId)
+NWNX_EXPORT void* StackPopGameDefinedStructure(int32_t structId)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -474,7 +438,7 @@ static void* StackPopGameDefinedStructure(int32_t structId)
     return value;
 }
 
-static void FreeGameDefinedStructure(int32_t structId, void* ptr)
+NWNX_EXPORT void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
@@ -484,7 +448,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
     }
 }
 
-static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -496,7 +460,7 @@ static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -511,7 +475,7 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
     return 0;
 }
 
-static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
     if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
@@ -522,69 +486,69 @@ static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static void NWNXSetFunction(const char* plugin, const char* function)
+NWNX_EXPORT void NWNXSetFunction(const char* plugin, const char* function)
 {
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
 
-static void NWNXPushInt(int32_t n)
+NWNX_EXPORT void NWNXPushInt(int32_t n)
 {
     ScriptAPI::Push(n);
 }
 
-static void NWNXPushFloat(float f)
+NWNX_EXPORT void NWNXPushFloat(float f)
 {
     ScriptAPI::Push(f);
 }
 
-static void NWNXPushObject(uint32_t o)
+NWNX_EXPORT void NWNXPushObject(uint32_t o)
 {
     ScriptAPI::Push((ObjectID)o);
 }
 
-static void NWNXPushString(const char* s)
+NWNX_EXPORT void NWNXPushString(const char* s)
 {
     ScriptAPI::Push(String::FromUTF8(s));
 }
 
-static void NWNXPushRawString(const char* s)
+NWNX_EXPORT void NWNXPushRawString(const char* s)
 {
     ScriptAPI::Push<std::string>(s);
 }
 
-static void NWNXPushEffect(CGameEffect* e)
+NWNX_EXPORT void NWNXPushEffect(CGameEffect* e)
 {
     ScriptAPI::Push(e);
 }
 
-static void NWNXPushItemProperty(CGameEffect* ip)
+NWNX_EXPORT void NWNXPushItemProperty(CGameEffect* ip)
 {
     ScriptAPI::Push(ip);
 }
 
-static int32_t NWNXPopInt()
+NWNX_EXPORT int32_t NWNXPopInt()
 {
     return ScriptAPI::Pop<int32_t>().value_or(0);
 }
 
-static float NWNXPopFloat()
+NWNX_EXPORT float NWNXPopFloat()
 {
     return ScriptAPI::Pop<float>().value_or(0.0f);
 }
 
-static uint32_t NWNXPopObject()
+NWNX_EXPORT uint32_t NWNXPopObject()
 {
     return ScriptAPI::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 
-static const char* NWNXPopString()
+NWNX_EXPORT const char* NWNXPopString()
 {
     auto str = ScriptAPI::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
 
-static const char* NWNXPopRawString()
+NWNX_EXPORT const char* NWNXPopRawString()
 {
     auto value = ScriptAPI::Pop<std::string>();
 
@@ -600,17 +564,17 @@ static const char* NWNXPopRawString()
     }
 }
 
-static CGameEffect* NWNXPopEffect()
+NWNX_EXPORT CGameEffect* NWNXPopEffect()
 {
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
-static CGameEffect* NWNXPopItemProperty()
+NWNX_EXPORT CGameEffect* NWNXPopItemProperty()
 {
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
-static void NWNXCallFunction()
+NWNX_EXPORT void NWNXCallFunction()
 {
     ScriptAPI::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
@@ -633,7 +597,7 @@ static struct NWNXExportedGlobals
     int32_t                *pbEnableHitDieDebugging;
     int32_t                *pbExitProgram;
 } ExportedGlobals;
-static NWNXExportedGlobals GetNWNXExportedGlobals()
+NWNX_EXPORT NWNXExportedGlobals GetNWNXExportedGlobals()
 {
     if (ExportedGlobals.psBuildNumber == nullptr)
     {
@@ -657,13 +621,13 @@ static NWNXExportedGlobals GetNWNXExportedGlobals()
     return ExportedGlobals;
 }
 
-static void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
+NWNX_EXPORT void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
 {
     auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
 }
 
-static void ReturnHook(void* trampoline)
+NWNX_EXPORT void ReturnHook(void* trampoline)
 {
     for (auto it = s_managedHooks.begin(); it != s_managedHooks.end(); it++)
     {
