@@ -106,6 +106,7 @@ struct CExoString
     CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f") const;
     CExoString AsTAG() const;
     int32_t GetHash() const;
+    std::vector<CExoString> Split(const CExoString & delimiter) const;
     static CExoString FormatBytes(uint64_t bytes);
     static CExoString FormatDuration(uint64_t span, int compact_levels = 4, int min_level = 1, bool label_fields = true, const char* separator = " ");
 
