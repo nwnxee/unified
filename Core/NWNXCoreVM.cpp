@@ -261,7 +261,6 @@ int32_t NWNXCore::NWNXFunctionManagementHandler(CNWSVirtualMachineCommands* this
             SCOPEGUARD(delete pEffect);
             if (auto effect = ScriptAPI::Pop<CGameEffect*>())
                 pEffect = *effect;
-            ASSERT(pEffect);
             if (!pVirtualMachine->StackPushEngineStructure(VMStructure::Effect, pEffect))
                 return VMError::StackOverflow;
             break;
@@ -273,7 +272,6 @@ int32_t NWNXCore::NWNXFunctionManagementHandler(CNWSVirtualMachineCommands* this
             SCOPEGUARD(delete pItemProperty);
             if (auto effect = ScriptAPI::Pop<CGameEffect*>())
                 pItemProperty = *effect;
-            ASSERT(pItemProperty);
             if (!pVirtualMachine->StackPushEngineStructure(VMStructure::ItemProperty, pItemProperty))
                 return VMError::StackOverflow;
             break;
