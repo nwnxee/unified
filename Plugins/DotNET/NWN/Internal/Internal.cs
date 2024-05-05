@@ -1,13 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace NWN
 {
-  internal partial class Internal
+  internal unsafe partial class Internal
   {
     public const uint OBJECT_INVALID = 0x7F000000;
     public static uint OBJECT_SELF { get; private set; } = OBJECT_INVALID;
 
+    private static readonly Encoding Encoding;
+
+    static Internal()
+    {
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+      Encoding = Encoding.GetEncoding("windows-1252");
+    }
+
+    [UnmanagedCallersOnly]
     public static void OnMainLoop(ulong frame)
     {
       try
@@ -28,10 +39,13 @@ namespace NWN
 
     private static Stack<ScriptContext> ScriptContexts = new Stack<ScriptContext>();
 
-    public static int OnRunScript(string script, uint oidSelf)
+    [UnmanagedCallersOnly]
+    public static int OnRunScript(byte* pScript, uint oidSelf)
     {
       int ret = 0;
       OBJECT_SELF = oidSelf;
+      string script = ReadNullTerminatedString(pScript);
+
       ScriptContexts.Push(new ScriptContext { OwnerObject = oidSelf, ScriptName = script });
       try
       {
@@ -56,25 +70,28 @@ namespace NWN
     private static ulong NextEventId = 0;
     private static Dictionary<ulong, Closure> Closures = new Dictionary<ulong, Closure>();
 
-    public static void OnClosure(ulong eid, uint oidSelf)
+    [UnmanagedCallersOnly]
+    public static void OnClosure(ulong eventId, uint oidSelf)
     {
       uint old = OBJECT_SELF;
       OBJECT_SELF = oidSelf;
       try
       {
-        Closures[eid].Run();
+        Closures[eventId].Run();
       }
       catch (Exception e)
       {
         Console.WriteLine(e.ToString());
       }
 
-      Closures.Remove(eid);
+      Closures.Remove(eventId);
       OBJECT_SELF = old;
     }
 
-    public static void OnSignal(string signal)
+    [UnmanagedCallersOnly]
+    public static void OnSignal(byte* pSignal)
     {
+      string signal = ReadNullTerminatedString(pSignal);
       try
       {
         switch (signal)
@@ -115,6 +132,22 @@ namespace NWN
       {
         Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
       }
+    }
+
+    private static string ReadNullTerminatedString(byte* cString)
+    {
+      return Encoding.GetString(cString, GetStringLength(cString));
+    }
+
+    private static int GetStringLength(byte* cString, int? maxLength = null)
+    {
+      byte* walk = cString;
+      while (*walk != 0 && (maxLength == null || walk - cString < maxLength))
+      {
+        walk++;
+      }
+
+      return (int)(walk - cString);
     }
   }
 }

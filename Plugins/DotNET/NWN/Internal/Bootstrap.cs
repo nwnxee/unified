@@ -3,46 +3,26 @@ using System.Runtime.InteropServices;
 
 namespace NWN
 {
-  internal partial class Internal
+  internal unsafe partial class Internal
   {
-    public delegate void MainLoopHandlerDelegate(ulong frame);
-    public delegate int RunScriptHandlerDelegate(string script, uint oid);
-    public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
-    public delegate void SignalHandlerDelegate(string signal);
-    public delegate void AssertHandlerDelegate(string message, string stackTrace);
-    public delegate void CrashHandlerDelegate(int signal, string stackTrace);
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterMainLoopHandler(delegate* unmanaged<ulong, void> handler);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct AllHandlers
-    {
-      public MainLoopHandlerDelegate  MainLoop;
-      public RunScriptHandlerDelegate RunScript;
-      public ClosureHandlerDelegate   Closure;
-      public SignalHandlerDelegate    Signal;
-      public AssertHandlerDelegate    AssertFail;
-      public CrashHandlerDelegate     CrashHandler;
-    }
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterRunScriptHandler(delegate* unmanaged<byte*, uint, int> handler);
 
-    private static AllHandlers _handlers;
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterClosureHandler(delegate* unmanaged<ulong, uint, void> handler);
 
-    public static void RegisterHandlers(AllHandlers handlers)
-    {
-      _handlers = handlers;
-      var size = Marshal.SizeOf(typeof(AllHandlers));
-      IntPtr ptr = Marshal.AllocHGlobal(size);
-      Marshal.StructureToPtr(_handlers, ptr, false);
-      NWNXPInvoke.RegisterHandlers(ptr, (uint)size);
-      Marshal.FreeHGlobal(ptr);
-    }
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterSignalHandler(delegate* unmanaged<byte*, void> handler);
 
     public static void Bootstrap()
     {
-      AllHandlers handlers = new AllHandlers();
-      handlers.MainLoop  = OnMainLoop;
-      handlers.RunScript = OnRunScript;
-      handlers.Closure   = OnClosure;
-      handlers.Signal    = OnSignal;
-      RegisterHandlers(handlers);
+      NWNXPInvoke.RegisterMainLoopHandler(&OnMainLoop);
+      NWNXPInvoke.RegisterRunScriptHandler(&OnRunScript);
+      NWNXPInvoke.RegisterClosureHandler(&OnClosure);
+      NWNXPInvoke.RegisterSignalHandler(&OnSignal);
 
       try
       {

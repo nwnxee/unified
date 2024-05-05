@@ -4,13 +4,28 @@ using System.Runtime.InteropServices;
 
 namespace NWN
 {
-  public static class NWNXPInvoke
+  public static unsafe class NWNXPInvoke
   {
     [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
-    public static extern void CallBuiltIn(int id);
+    public static extern void RegisterMainLoopHandler(delegate* unmanaged<ulong, void> handler);
 
     [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
-    public static extern void RegisterHandlers(IntPtr handlers, uint size);
+    public static extern void RegisterRunScriptHandler(delegate* unmanaged<byte*, uint, int> handler);
+
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterClosureHandler(delegate* unmanaged<ulong, uint, void> handler);
+
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterSignalHandler(delegate* unmanaged<byte*, void> handler);
+
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterAssertHandler(delegate* unmanaged<byte*, IntPtr, void> handler);
+
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void RegisterCrashHandler(delegate* unmanaged<int, byte*, void> handler);
+
+    [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void CallBuiltIn(int id);
 
     [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
     public static extern void StackPushInteger(int value);
