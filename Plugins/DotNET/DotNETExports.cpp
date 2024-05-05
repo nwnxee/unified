@@ -48,6 +48,8 @@ static void OnServerCrash(int sig)
 
 NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
 {
+    LOG_WARNING("GetFunctionPointer is deprecated and will be removed in a future release. Function pointers can be resolved natively in .NET using the System.Runtime.InteropServices.NativeLibrary API.");
+
     void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
     {
@@ -693,6 +695,8 @@ static struct NWNXExportedGlobals
 } ExportedGlobals;
 NWNX_EXPORT NWNXExportedGlobals GetNWNXExportedGlobals()
 {
+    LOG_WARNING("GetNWNXExportedGlobals is deprecated and will be removed in a future release. Native globals can be accessed using SWIG_DotNET, or through PInvoke.");
+
     if (ExportedGlobals.psBuildNumber == nullptr)
     {
         ExportedGlobals.psBuildNumber                  = Globals::BuildNumber();
