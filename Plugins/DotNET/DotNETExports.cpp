@@ -1,4 +1,5 @@
 #include "nwnx.hpp"
+#include "DotNET.hpp"
 
 #include "API/CNWSObject.hpp"
 #include "API/CAppManager.hpp"
@@ -18,33 +19,37 @@ using namespace NWNXLib::API;
 namespace DotNET {
 
 // Bootstrap functions
-using MainLoopHandlerType  = void (*)(uint64_t);
-using RunScriptHandlerType = int (*)(const char*, uint32_t);
-using ClosureHandlerType = void (*)(uint64_t, uint32_t);
-using SignalHandlerType = void (*)(const char*);
-using AssertHandlerType = void (*)(const char*, const char*);
-using CrashHandlerType = void (*)(int, const char*);
+std::vector<void*> GetExports();
 
-struct AllHandlers
-{
-    MainLoopHandlerType      MainLoop;
-    RunScriptHandlerType     RunScript;
-    ClosureHandlerType       Closure;
-    SignalHandlerType        SignalHandler;
-    AssertHandlerType        AssertHandler;
-    CrashHandlerType         CrashHandler;
-};
-static AllHandlers s_handlers;
-
-static int32_t s_pushedCount = 0;
-
+AllHandlers s_handlers;
+static uint64_t s_frame = 0;
+static int32_t s_pushedCount;
 static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
-
 static std::string s_nwnxActivePlugin;
 static std::string s_nwnxActiveFunction;
 
-static uintptr_t GetFunctionPointer(const char* name)
+static Hooks::Hook s_mainLoopHook;
+static Hooks::Hook s_runScriptHook;
+static Hooks::Hook s_runScriptSituationHook;
+
+static bool s_assertSubscribed;
+static bool s_crashSubscribed;
+
+static void OnServerCrash(int sig)
 {
+    if (s_handlers.Crash)
+    {
+        auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
+        s_handlers.Crash(sig, stackTrace.c_str());
+        std::signal(SIGABRT, NULL);
+        std::abort();
+    }
+}
+
+NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
+{
+    LOG_WARNING("GetFunctionPointer is deprecated and will be removed in a future release. Function pointers can be resolved natively in .NET using the System.Runtime.InteropServices.NativeLibrary API.");
+
     void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
     {
@@ -58,89 +63,101 @@ static uintptr_t GetFunctionPointer(const char* name)
     return ret;
 }
 
-void CrashHandler(int sig)
+NWNX_EXPORT void RegisterMainLoopHandler(MainLoopHandler handler)
 {
-    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
-    s_handlers.CrashHandler(sig, stackTrace.c_str());
-    std::signal(SIGABRT, NULL);
-    std::abort();
-}
-
-static void RegisterHandlers(AllHandlers* handlers, unsigned size)
-{
-    if (size > sizeof(*handlers))
+    s_handlers.MainLoop = handler;
+    if (!handler)
     {
-        LOG_ERROR("RegisterHandlers argument contains too many entries, aborting");
+        if (s_mainLoopHook)
+        {
+            LOG_DEBUG("Removed main loop handler");
+            s_mainLoopHook.reset();
+        }
+
         return;
     }
-    if (size < sizeof(*handlers))
-    {
-        LOG_WARNING("RegisterHandlers argument missing some entries - Managed/Unmanaged mismatch, update managed code");
-    }
 
-    LOG_INFO("Registering managed code handlers.");
-    s_handlers = *handlers;
-
-    static Hooks::Hook MainLoopHook;
-    if (s_handlers.MainLoop)
+    LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
+    if (!s_mainLoopHook)
     {
-        LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
-        MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
-            +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
+        s_mainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                             +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
             {
-                static uint64_t frame = 0;
-                if (s_handlers.MainLoop)
-                {
-                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.MainLoop(frame);
-                    int spAfter = Utils::PopScriptContext();
-                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                }
-                ++frame;
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                s_handlers.MainLoop(s_frame);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                ++s_frame;
 
-                return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
-            },
-            Hooks::Order::VeryEarly);
+                return s_mainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+            }, Hooks::Order::VeryEarly);
+    }
+}
+
+NWNX_EXPORT void RegisterRunScriptHandler(RunScriptHandler handler)
+{
+    s_handlers.RunScript = handler;
+    if (!handler)
+    {
+        if (s_runScriptHook)
+        {
+            LOG_DEBUG("Removed run script handler");
+            s_runScriptHook.reset();
+        }
+
+        return;
     }
 
-
-    static Hooks::Hook RunScriptHook;
-    if (s_handlers.RunScript)
+    LOG_DEBUG("Registered run script handler: %p", s_handlers.RunScript);
+    if (!s_runScriptHook)
     {
-        LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
-        RunScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
-            +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
-                       int32_t eventId) -> int32_t
+        s_runScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
+                                              +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
+                                                      int32_t eventId) -> int32_t
             {
                 if (!script || *script == "")
                     return 1;
 
                 LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
                 int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
-                int32_t retval = s_handlers.RunScript(script->CStr(), objId);
+                int32_t retVal = s_handlers.RunScript(script->CStr(), objId);
                 int spAfter = Utils::PopScriptContext();
                 ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
 
                 // ~0 is returned if runscript request is not handled and needs to be forwarded
-                if (retval != ~0)
+                if (retVal != ~0)
                 {
                     Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
-                    Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                    Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retVal);
                     return 1;
                 }
-                return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
-            },
-            Hooks::Order::Latest);
+
+                return s_runScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
+            },Hooks::Order::Latest);
+    }
+}
+
+NWNX_EXPORT void RegisterClosureHandler(ClosureHandler handler)
+{
+    s_handlers.Closure = handler;
+    if (!handler)
+    {
+        LOG_DEBUG("Removed closure handler");
+        if (s_runScriptSituationHook)
+        {
+            s_runScriptSituationHook.reset();
+        }
+
+        return;
     }
 
+    LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
 
-    static Hooks::Hook RunScriptSituationHook;
-    if (s_handlers.Closure)
+    if (!s_runScriptSituationHook)
     {
-        LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
-        RunScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
-            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
-                       int32_t valid) -> int32_t
+        s_runScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
+                                                       +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
+                                                               int32_t valid) -> int32_t
             {
                 uint64_t eventId;
                 if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
@@ -152,63 +169,106 @@ static void RegisterHandlers(AllHandlers* handlers, unsigned size)
                     int spAfter = Utils::PopScriptContext();
                     ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
                     delete script;
+
                     return 1;
                 }
-                return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-            },
-            Hooks::Order::Latest);
+
+                return s_runScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+            }, Hooks::Order::Latest);
+    }
+}
+
+NWNX_EXPORT void RegisterSignalHandler(SignalHandler handler)
+{
+    s_handlers.Signal = handler;
+    if (handler)
+    {
+        LOG_DEBUG("Registered signal handler: %p", s_handlers.Closure);
+    }
+    else
+    {
+        LOG_DEBUG("Removed signal handler");
+    }
+}
+
+NWNX_EXPORT void RegisterAssertHandler(AssertHandler handler)
+{
+    s_handlers.Assert = handler;
+    if (!handler)
+    {
+        LOG_DEBUG("Removed assertion handler");
+        return;
     }
 
-    if (s_handlers.SignalHandler)
+    LOG_DEBUG("Registered native assertion handler: %p", s_handlers.Assert);
+    if (!s_assertSubscribed)
     {
-        LOG_DEBUG("Registered core signal handler: %p", s_handlers.SignalHandler);
-        MessageBus::Subscribe("NWNX_CORE_SIGNAL",
-            [](const std::vector<std::string>& message)
-            {
-                if (API::Globals::VirtualMachine())
-                {
-                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.SignalHandler(message[0].c_str());
-                    int spAfter = Utils::PopScriptContext();
-                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                }
-                else
-                {
-                    s_handlers.SignalHandler(message[0].c_str());
-                }
-            });
-    }
-
-    if (s_handlers.AssertHandler)
-    {
-        LOG_DEBUG("Registered native assertion handler: %p", s_handlers.AssertHandler);
+        s_assertSubscribed = true;
         MessageBus::Subscribe("NWNX_ASSERT_FAIL",
             [](const std::vector<std::string>& message)
             {
+                if (!s_handlers.Assert)
+                {
+                    return;
+                }
+
                 if (API::Globals::VirtualMachine())
                 {
                     Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    s_handlers.Assert(message[0].c_str(), message[1].c_str());
                     Utils::PopScriptContext();
                 }
                 else
                 {
-                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    s_handlers.Assert(message[0].c_str(), message[1].c_str());
                 }
             });
     }
+}
 
-    if (s_handlers.CrashHandler)
+NWNX_EXPORT void RegisterCrashHandler(CrashHandler handler)
+{
+    s_handlers.Crash = handler;
+    if (!handler)
     {
-        LOG_DEBUG("Registered managed crash handler: %p", s_handlers.CrashHandler);
-        std::signal(SIGABRT, CrashHandler);
-        std::signal(SIGFPE, CrashHandler);
-        std::signal(SIGSEGV, CrashHandler);
-        std::signal(SIGILL, CrashHandler);
+        LOG_DEBUG("Removed managed crash handler");
+        return;
+    }
+
+    LOG_DEBUG("Registered managed crash handler: %p", s_handlers.Crash);
+    if (!s_crashSubscribed)
+    {
+        s_crashSubscribed = true;
+        std::signal(SIGABRT, OnServerCrash);
+        std::signal(SIGFPE, OnServerCrash);
+        std::signal(SIGSEGV, OnServerCrash);
+        std::signal(SIGILL, OnServerCrash);
     }
 }
 
-static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
+NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
+{
+    if (handlers == nullptr)
+    {
+        LOG_ERROR("RegisterHandlers argument is null pointer, aborting");
+        return;
+    }
+    if (size != sizeof(*handlers))
+    {
+        LOG_ERROR("RegisterHandlers argument contains invalid number of entries, aborting");
+        return;
+    }
+
+    LOG_INFO("Registering managed code handlers");
+    RegisterMainLoopHandler(handlers->MainLoop);
+    RegisterRunScriptHandler(handlers->RunScript);
+    RegisterClosureHandler(handlers->Closure);
+    RegisterSignalHandler(handlers->Signal);
+    RegisterAssertHandler(handlers->Assert);
+    RegisterCrashHandler(handlers->Crash);
+}
+
+NWNX_EXPORT CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
     auto* script = new CVirtualMachineScript();
     script->m_pCode = nullptr;
@@ -224,7 +284,7 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
     return script;
 }
 
-static void CallBuiltIn(int32_t id)
+NWNX_EXPORT void CallBuiltIn(int32_t id)
 {
     auto vm = Globals::VirtualMachine();
     auto cmd = static_cast<CNWSVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -237,7 +297,7 @@ static void CallBuiltIn(int32_t id)
     cmd->ExecuteCommand(id, pushedCount);
 }
 
-static void StackPushInteger(int32_t value)
+NWNX_EXPORT void StackPushInteger(int32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing integer %i.", value);
@@ -254,7 +314,7 @@ static void StackPushInteger(int32_t value)
     }
 }
 
-static void StackPushFloat(float value)
+NWNX_EXPORT void StackPushFloat(float value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing float %f.", value);
@@ -271,7 +331,7 @@ static void StackPushFloat(float value)
     }
 }
 
-static void StackPushString(const char* value)
+NWNX_EXPORT void StackPushString(const char* value)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -290,7 +350,7 @@ static void StackPushString(const char* value)
     }
 }
 
-static void StackPushRawString(const char* value)
+NWNX_EXPORT void StackPushRawString(const char* value)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -308,7 +368,7 @@ static void StackPushRawString(const char* value)
     }
 }
 
-static void StackPushObject(uint32_t value)
+NWNX_EXPORT void StackPushObject(uint32_t value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing object 0x%x.", value);
@@ -325,7 +385,7 @@ static void StackPushObject(uint32_t value)
     }
 }
 
-static void StackPushVector(Vector value)
+NWNX_EXPORT void StackPushVector(Vector value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing vector { %f, %f, %f }.", value.x, value.y, value.z);
@@ -342,7 +402,7 @@ static void StackPushVector(Vector value)
     }
 }
 
-static void StackPushGameDefinedStructure(int32_t structId, void* value)
+NWNX_EXPORT void StackPushGameDefinedStructure(int32_t structId, void* value)
 {
     auto vm = Globals::VirtualMachine();
     LOG_DEBUG("Pushing game defined structure %i at 0x%x.", structId, value);
@@ -358,7 +418,7 @@ static void StackPushGameDefinedStructure(int32_t structId, void* value)
     s_pushedCount += ret;
 }
 
-static int32_t StackPopInteger()
+NWNX_EXPORT int32_t StackPopInteger()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -374,7 +434,7 @@ static int32_t StackPopInteger()
     return value;
 }
 
-static float StackPopFloat()
+NWNX_EXPORT float StackPopFloat()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -390,7 +450,7 @@ static float StackPopFloat()
     return value;
 }
 
-static const char* StackPopString()
+NWNX_EXPORT const char* StackPopString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -408,7 +468,7 @@ static const char* StackPopString()
     return strdup(String::ToUTF8(value.CStr()).c_str());
 }
 
-static const char* StackPopRawString()
+NWNX_EXPORT const char* StackPopRawString()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -425,7 +485,7 @@ static const char* StackPopRawString()
     return value.CStr();
 }
 
-static uint32_t StackPopObject()
+NWNX_EXPORT uint32_t StackPopObject()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -441,7 +501,7 @@ static uint32_t StackPopObject()
     return value;
 }
 
-static Vector StackPopVector()
+NWNX_EXPORT Vector StackPopVector()
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -457,7 +517,7 @@ static Vector StackPopVector()
     return value;
 }
 
-static void* StackPopGameDefinedStructure(int32_t structId)
+NWNX_EXPORT void* StackPopGameDefinedStructure(int32_t structId)
 {
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
@@ -474,7 +534,7 @@ static void* StackPopGameDefinedStructure(int32_t structId)
     return value;
 }
 
-static void FreeGameDefinedStructure(int32_t structId, void* ptr)
+NWNX_EXPORT void FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
@@ -484,7 +544,7 @@ static void FreeGameDefinedStructure(int32_t structId, void* ptr)
     }
 }
 
-static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -496,7 +556,7 @@ static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
     {
@@ -511,7 +571,7 @@ static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventI
     return 0;
 }
 
-static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
+NWNX_EXPORT int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
     if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
@@ -522,69 +582,69 @@ static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-static void NWNXSetFunction(const char* plugin, const char* function)
+NWNX_EXPORT void NWNXSetFunction(const char* plugin, const char* function)
 {
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
 
-static void NWNXPushInt(int32_t n)
+NWNX_EXPORT void NWNXPushInt(int32_t n)
 {
     ScriptAPI::Push(n);
 }
 
-static void NWNXPushFloat(float f)
+NWNX_EXPORT void NWNXPushFloat(float f)
 {
     ScriptAPI::Push(f);
 }
 
-static void NWNXPushObject(uint32_t o)
+NWNX_EXPORT void NWNXPushObject(uint32_t o)
 {
     ScriptAPI::Push((ObjectID)o);
 }
 
-static void NWNXPushString(const char* s)
+NWNX_EXPORT void NWNXPushString(const char* s)
 {
     ScriptAPI::Push(String::FromUTF8(s));
 }
 
-static void NWNXPushRawString(const char* s)
+NWNX_EXPORT void NWNXPushRawString(const char* s)
 {
     ScriptAPI::Push<std::string>(s);
 }
 
-static void NWNXPushEffect(CGameEffect* e)
+NWNX_EXPORT void NWNXPushEffect(CGameEffect* e)
 {
     ScriptAPI::Push(e);
 }
 
-static void NWNXPushItemProperty(CGameEffect* ip)
+NWNX_EXPORT void NWNXPushItemProperty(CGameEffect* ip)
 {
     ScriptAPI::Push(ip);
 }
 
-static int32_t NWNXPopInt()
+NWNX_EXPORT int32_t NWNXPopInt()
 {
     return ScriptAPI::Pop<int32_t>().value_or(0);
 }
 
-static float NWNXPopFloat()
+NWNX_EXPORT float NWNXPopFloat()
 {
     return ScriptAPI::Pop<float>().value_or(0.0f);
 }
 
-static uint32_t NWNXPopObject()
+NWNX_EXPORT uint32_t NWNXPopObject()
 {
     return ScriptAPI::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 
-static const char* NWNXPopString()
+NWNX_EXPORT const char* NWNXPopString()
 {
     auto str = ScriptAPI::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
 
-static const char* NWNXPopRawString()
+NWNX_EXPORT const char* NWNXPopRawString()
 {
     auto value = ScriptAPI::Pop<std::string>();
 
@@ -600,17 +660,17 @@ static const char* NWNXPopRawString()
     }
 }
 
-static CGameEffect* NWNXPopEffect()
+NWNX_EXPORT CGameEffect* NWNXPopEffect()
 {
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
-static CGameEffect* NWNXPopItemProperty()
+NWNX_EXPORT CGameEffect* NWNXPopItemProperty()
 {
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
-static void NWNXCallFunction()
+NWNX_EXPORT void NWNXCallFunction()
 {
     ScriptAPI::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
@@ -633,8 +693,10 @@ static struct NWNXExportedGlobals
     int32_t                *pbEnableHitDieDebugging;
     int32_t                *pbExitProgram;
 } ExportedGlobals;
-static NWNXExportedGlobals GetNWNXExportedGlobals()
+NWNX_EXPORT NWNXExportedGlobals GetNWNXExportedGlobals()
 {
+    LOG_WARNING("GetNWNXExportedGlobals is deprecated and will be removed in a future release. Native globals can be accessed using SWIG_DotNET, or through PInvoke.");
+
     if (ExportedGlobals.psBuildNumber == nullptr)
     {
         ExportedGlobals.psBuildNumber                  = Globals::BuildNumber();
@@ -657,13 +719,13 @@ static NWNXExportedGlobals GetNWNXExportedGlobals()
     return ExportedGlobals;
 }
 
-static void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
+NWNX_EXPORT void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
 {
     auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
 }
 
-static void ReturnHook(void* trampoline)
+NWNX_EXPORT void ReturnHook(void* trampoline)
 {
     for (auto it = s_managedHooks.begin(); it != s_managedHooks.end(); it++)
     {

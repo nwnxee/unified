@@ -6,17 +6,18 @@ Implement your server scripts in C# (and other dotnet languages)
 
 ## Environment Variables
 
-| Variable Name  |  Type  | Description                                              | Default Value |
-| -------------  | :----: | -------------                                            | ------------- |
-| ASSEMBLY       | string | Full path to your assembly directory (without extension) | _none_        |
-| ENTRYPOINT     | string | Path to class containing Bootstrap() function            | NWN.Internal  |
-| NETHOST_PATH   | string | Path where to load libnethost.so from                    | _none_        |
+| Variable Name |  Type  | Description                                                                             | Default Value |
+|---------------| :----: |-----------------------------------------------------------------------------------------|---------------|
+| ASSEMBLY      | string | Full path to your assembly/dll (without extension)                                      | _none_        |
+| ENTRYPOINT    | string | Full type name containing static entrypoint method.                                     | NWN.Internal  |
+| METHOD        | string | Name of entrypoint method to call. Method must be `static void` without any parameters. | Bootstrap     |
+| NETHOST_PATH  | string | Path where to load libnethost.so from                                                   | _none_        |
 
 ## Basic Setup
 
 ### Dependencies
 
-You will need `dotnet-sdk-3.1` installed on the server to use this plugin. The same package is used to build the managed code.  Installation instructions are [here](https://dotnet.microsoft.com/download/linux-package-manager/sdk-current).
+You will need `dotnet-sdk` installed on the server to use this plugin. The same package is used to build the managed code.  Installation instructions are [here](https://dotnet.microsoft.com/download/linux-package-manager/sdk-current).
 
 There are no compiletime dependencies for the unmanaged code.
 
@@ -64,13 +65,15 @@ verify your `NWNX_DOTNET_ASSEMBLY` variable - it needs to contain the path to yo
 
 your `NWNX_DOTNET_ASSEMBLY` should be `/some/path/my/project/NWN`
 
-#### Bootstrap()
+#### Bootstrap Method
 
 If you get the following error:
 
-    Unable to get [something].Bootstrap() function [...]
+    Unable to get [something].[something]() function [...]
 
-and you have changed the default entrypoint, verify that your `NWNX_DOTNET_ENTRYPOINT` variable contains the full `Namespace.Class.Subclass`, and that a static `Bootstrap()` function with the correct signature exists in that path.
+and you have changed the default entrypoint, verify that your `NWNX_DOTNET_ENTRYPOINT` contains the full `Namespace.Class.Subclass`,  and that `NWNX_DOTNET_METHOD` is declared as a `static void` method with no arguments.
+
+E.g. `NWNX_DOTNET_METHOD=Bootstrap` -> `public static void Bootstrap()`
 
 ## How it works (basic)
 
@@ -143,49 +146,89 @@ All the managed code provided in this repo is meant just as a primer, You are en
 
 When talking to unmanaged code, we only deal with basic types. Objects are passed as `uint`s. Other engine structures, like `Effect`,`Location`, etc, all have `IntPtr Handle` which is passed instead.
 
+Engine structures like `Effect`/`Location` have a backing unmanaged structure, and need to be cleaned up after usage.
+It is recommended to have a wrapper like this to allow the native C# garbage collector to handle it for you:
+
+```cs
+  public partial class Effect
+  {
+    public IntPtr Handle;
+    public Effect(IntPtr handle) => Handle = handle;
+    ~Effect() { NWNXPInvoke.FreeGameDefinedStructure(NWScript.ENGINE_STRUCTURE_EFFECT, Handle); }
+
+    public static implicit operator IntPtr(Effect effect) => effect.Handle;
+    public static implicit operator Effect(IntPtr intPtr) => new Effect(intPtr);
+  }
+```
+
 ### Bootstrapping
 
 The basic interop between unmanaged NWNX and managed module code is entirely contained within [Bootstrap.cs](NWN/Internal/Bootstrap.cs). Your managed DLL needs to have this function:
 
 ```cs
-    public static int Bootstrap(IntPtr arg, int argLength);
+    public static void Bootstrap();
 ```
 
-exposed. By default, NWNX will look for the `Bootstrap()` function in `NWN.Internal`, but you can override that through `NWNX_DOTNET_ENTRYPOINT` environment variable. The function name cannot be changed.
+exposed. By default, NWNX will look for the `Bootstrap()` function in `NWN.Internal`, but you can override that through the `NWNX_DOTNET_ENTRYPOINT` and `NWNX_DOTNET_METHOD` environment variables.
 
-The argument is a pointer to the `BootstrapArgs` structure that contains some 50 delegates that call into unmanaged code. Save these delegates somewhere.
+In your bootstrap code, you will need to register a set of method handlers that will be called by NWNX/NWN to execute your C# code.
 
-```cs
-public static BootstrapArgs NativeFunctions;
-//... in Bootstrap()...
-    NativeFunctions = Marshal.PtrToStructure<BootstrapArgs>(arg);
-```
+For this, we use the `RegisterHandler` methods exposed by NWNX_DotNET. This can be called through Platform Invoke (PInvoke).
 
-Then you need to hand your event handler delegates back to the unmanaged code. For this we use `RegisterHandlers()` delegate we received in `BootstrapArgs`:
+At minimum, it is recommended to register the main loop, run script, closure and signal handlers:
 
 ```cs
-// Types of handlers we give back:
-public delegate void MainLoopHandlerDelegate(ulong frame);
-public delegate int RunScriptHandlerDelegate(string script, uint oid);
-public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
+// Handler functions exposed from NWNX_DotNET
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterMainLoopHandler(delegate* unmanaged<ulong, void> handler);
 
-// Structure to hand back
-[StructLayout(LayoutKind.Sequential)]
-public struct AllHandlers
-{
-    public MainLoopHandlerDelegate  MainLoop;
-    public RunScriptHandlerDelegate RunScript;
-    public ClosureHandlerDelegate   Closure;
-}
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterRunScriptHandler(delegate* unmanaged<byte*, uint, int> handler);
+
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterClosureHandler(delegate* unmanaged<ulong, uint, void> handler);
+
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterSignalHandler(delegate* unmanaged<byte*, void> handler);
 
 //...in Bootstrap()...
-    AllHandlers handlers = { /* populate with your functions */ };
-    // We need to get an unmanaged pointer to the handlers structure...
-    var size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(AllHandlers));
-    IntPtr ptr = Marshal.AllocHGlobal(size);           // allocate unmanaged memory
-    Marshal.StructureToPtr(handlers, ptr, false);      // copy the structure over
-    NativeFunctions.RegisterHandlers(ptr, (uint)size); // call native function
-    Marshal.FreeHGlobal(ptr);                          // free unmanaged memory
+public static void Bootstrap()
+{
+  NWNXPInvoke.RegisterMainLoopHandler(&OnMainLoop);
+  NWNXPInvoke.RegisterRunScriptHandler(&OnRunScript);
+  NWNXPInvoke.RegisterClosureHandler(&OnClosure);
+  NWNXPInvoke.RegisterSignalHandler(&OnSignal);
+}
+
+// Your handler functions
+[UnmanagedCallersOnly] // Indicates that this method will only be called by native code/NWNX.
+public static void OnMainLoop(ulong frame)
+{
+  try
+  {
+    Entrypoints.OnMainLoop(frame);
+  }
+  catch (Exception e)
+  {
+    Console.WriteLine(e.ToString());
+  }
+}
+```
+
+### Using native NWNX_DotNET functions
+
+This plugin exposes various functions and utilities that can be used through platform invoke.
+
+Functions in [DotNETExports.cpp](DotNETExports.cpp) declared with `NWNX_EXPORT` can be accessed by declaring an extern function in C#, with an appropriate `DllImport` attribute.
+
+Example:
+```
+// C++
+NWNX_EXPORT void ReturnHook(void* trampoline)
+
+// C#
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void ReturnHook(IntPtr hook);
 ```
 
 ### OBJECT_SELF
@@ -205,11 +248,7 @@ public int ClosureActionDoCommand(uint oid, ulong eventId);
 
 ```
 The `oid` is the ID of the object that will run the closure (usually `OBJECT_SELF` for `DelayCommand`). The `eventId` is any `ulong` tag given to this closure that will then be handed back.
-The native code will then just schedule `{oid, eventId}` pair to execute at the given time. When it executes, it will call back into the `handlers.Closure` handler that was registered:
-
-```cs
-    public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
-```
+The native code will then just schedule `{oid, eventId}` pair to execute at the given time. When it executes, it will call back into the closure handler that was registered with `RegisterClosureHandler`
 
 The sample call implements closures in [Internal.cs](NWN/Internal/Internal.cs), as:
 
@@ -228,7 +267,7 @@ private static Dictionary<ulong, Closure> Closures = new Dictionary<ulong, Closu
 // Scheduling a closure:
 public static void ClosureDelayCommand(uint obj, float duration, ActionDelegate func)
 {
-    if (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)
+    if (NWNXPInvoke.ClosureDelayCommand(obj, duration, NextEventId) != 0)
     {
         Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
     }
