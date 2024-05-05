@@ -173,41 +173,46 @@ exposed. By default, NWNX will look for the `Bootstrap()` function in `NWN.Inter
 
 In your bootstrap code, you will need to register a set of method handlers that will be called by NWNX/NWN to execute your C# code.
 
-For this, we use the `RegisterHandlers()` method exposed by NWNX_DotNET. This can be called through Platform Invoke (PInvoke).
+For this, we use the `RegisterHandler` methods exposed by NWNX_DotNET. This can be called through Platform Invoke (PInvoke).
+
+At minimum, it is recommended to register the main loop, run script, closure and signal handlers:
 
 ```cs
-// Types of handlers we give back:
-public delegate void MainLoopHandlerDelegate(ulong frame);
-public delegate int RunScriptHandlerDelegate(string script, uint oid);
-public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
-public delegate void SignalHandlerDelegate(string signal);
-public delegate void AssertHandlerDelegate(string message, string stackTrace);
-public delegate void CrashHandlerDelegate(int signal, string stackTrace);
-
-// Structure to hand back
-[StructLayout(LayoutKind.Sequential)]
-public struct AllHandlers
-{
-  public MainLoopHandlerDelegate  MainLoop;
-  public RunScriptHandlerDelegate RunScript;
-  public ClosureHandlerDelegate   Closure;
-  public SignalHandlerDelegate    Signal;
-  public AssertHandlerDelegate    AssertFail;
-  public CrashHandlerDelegate     CrashHandler;
-}
-
-// PInvoke to NWNX_DotNET
+// Handler functions exposed from NWNX_DotNET
 [DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
-public static extern void RegisterHandlers(IntPtr handlers, uint size);
+public static extern void RegisterMainLoopHandler(delegate* unmanaged<ulong, void> handler);
+
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterRunScriptHandler(delegate* unmanaged<byte*, uint, int> handler);
+
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterClosureHandler(delegate* unmanaged<ulong, uint, void> handler);
+
+[DllImport("NWNX_DotNET", CallingConvention = CallingConvention.Cdecl)]
+public static extern void RegisterSignalHandler(delegate* unmanaged<byte*, void> handler);
 
 //...in Bootstrap()...
-    AllHandlers handlers = { /* populate with your functions */ };
-    // We need to get an unmanaged pointer to the handlers structure...
-    var size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(AllHandlers));
-    IntPtr ptr = Marshal.AllocHGlobal(size);           // allocate unmanaged memory
-    Marshal.StructureToPtr(handlers, ptr, false);      // copy the structure over
-    RegisterHandlers(ptr, (uint)size); // call native function
-    Marshal.FreeHGlobal(ptr);                          // free unmanaged memory
+public static void Bootstrap()
+{
+  NWNXPInvoke.RegisterMainLoopHandler(&OnMainLoop);
+  NWNXPInvoke.RegisterRunScriptHandler(&OnRunScript);
+  NWNXPInvoke.RegisterClosureHandler(&OnClosure);
+  NWNXPInvoke.RegisterSignalHandler(&OnSignal);
+}
+
+// Your handler functions
+[UnmanagedCallersOnly] // Indicates that this method will only be called by native code/NWNX.
+public static void OnMainLoop(ulong frame)
+{
+  try
+  {
+    Entrypoints.OnMainLoop(frame);
+  }
+  catch (Exception e)
+  {
+    Console.WriteLine(e.ToString());
+  }
+}
 ```
 
 ### Using native NWNX_DotNET functions
@@ -243,11 +248,7 @@ public int ClosureActionDoCommand(uint oid, ulong eventId);
 
 ```
 The `oid` is the ID of the object that will run the closure (usually `OBJECT_SELF` for `DelayCommand`). The `eventId` is any `ulong` tag given to this closure that will then be handed back.
-The native code will then just schedule `{oid, eventId}` pair to execute at the given time. When it executes, it will call back into the `handlers.Closure` handler that was registered:
-
-```cs
-    public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
-```
+The native code will then just schedule `{oid, eventId}` pair to execute at the given time. When it executes, it will call back into the closure handler that was registered with `RegisterClosureHandler`
 
 The sample call implements closures in [Internal.cs](NWN/Internal/Internal.cs), as:
 
@@ -266,7 +267,7 @@ private static Dictionary<ulong, Closure> Closures = new Dictionary<ulong, Closu
 // Scheduling a closure:
 public static void ClosureDelayCommand(uint obj, float duration, ActionDelegate func)
 {
-    if (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)
+    if (NWNXPInvoke.ClosureDelayCommand(obj, duration, NextEventId) != 0)
     {
         Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
     }
