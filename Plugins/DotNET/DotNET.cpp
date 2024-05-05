@@ -180,18 +180,18 @@ void CoreMessageHandler(const std::vector<std::string> &message)
     {
         Bootstrap();
     }
-    if (s_handlers.SignalHandler)
+    if (s_handlers.Signal)
     {
         if (API::Globals::VirtualMachine())
         {
             int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-            s_handlers.SignalHandler(message[0].c_str());
+            s_handlers.Signal(message[0].c_str());
             int spAfter = Utils::PopScriptContext();
             ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
         }
         else
         {
-            s_handlers.SignalHandler(message[0].c_str());
+            s_handlers.Signal(message[0].c_str());
         }
     }
 }

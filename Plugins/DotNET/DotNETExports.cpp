@@ -22,17 +22,28 @@ namespace DotNET {
 std::vector<void*> GetExports();
 
 AllHandlers s_handlers;
+static uint64_t s_frame = 0;
 static int32_t s_pushedCount;
 static std::vector<std::unique_ptr<NWNXLib::Hooks::FunctionHook>> s_managedHooks;
 static std::string s_nwnxActivePlugin;
 static std::string s_nwnxActiveFunction;
 
-static void CrashHandler(int sig)
+static Hooks::Hook s_mainLoopHook;
+static Hooks::Hook s_runScriptHook;
+static Hooks::Hook s_runScriptSituationHook;
+
+static bool s_assertSubscribed;
+static bool s_crashSubscribed;
+
+static void OnServerCrash(int sig)
 {
-    auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
-    s_handlers.CrashHandler(sig, stackTrace.c_str());
-    std::signal(SIGABRT, NULL);
-    std::abort();
+    if (s_handlers.Crash)
+    {
+        auto stackTrace = NWNXLib::Platform::GetStackTrace(20);
+        s_handlers.Crash(sig, stackTrace.c_str());
+        std::signal(SIGABRT, NULL);
+        std::abort();
+    }
 }
 
 NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
@@ -50,79 +61,101 @@ NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
     return ret;
 }
 
-NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
+NWNX_EXPORT void RegisterMainLoopHandler(MainLoopHandler handler)
 {
-    if (size > sizeof(*handlers))
+    s_handlers.MainLoop = handler;
+    if (!handler)
     {
-        LOG_ERROR("RegisterHandlers argument contains too many entries, aborting");
+        if (s_mainLoopHook)
+        {
+            LOG_DEBUG("Removed main loop handler");
+            s_mainLoopHook.reset();
+        }
+
         return;
     }
-    if (size < sizeof(*handlers))
-    {
-        LOG_WARNING("RegisterHandlers argument missing some entries - Managed/Unmanaged mismatch, update managed code");
-    }
 
-    LOG_INFO("Registering managed code handlers.");
-    s_handlers = *handlers;
-
-    static Hooks::Hook MainLoopHook;
-    if (s_handlers.MainLoop)
+    LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
+    if (!s_mainLoopHook)
     {
-        LOG_DEBUG("Registered main loop handler: %p", s_handlers.MainLoop);
-        MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
-            +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
+        s_mainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                             +[](CServerExoAppInternal* pServerExoAppInternal) -> int32_t
             {
-                static uint64_t frame = 0;
-                if (s_handlers.MainLoop)
-                {
-                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.MainLoop(frame);
-                    int spAfter = Utils::PopScriptContext();
-                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                }
-                ++frame;
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
+                s_handlers.MainLoop(s_frame);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+                ++s_frame;
 
-                return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
-            },
-            Hooks::Order::VeryEarly);
+                return s_mainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+            }, Hooks::Order::VeryEarly);
+    }
+}
+
+NWNX_EXPORT void RegisterRunScriptHandler(RunScriptHandler handler)
+{
+    s_handlers.RunScript = handler;
+    if (!handler)
+    {
+        if (s_runScriptHook)
+        {
+            LOG_DEBUG("Removed run script handler");
+            s_runScriptHook.reset();
+        }
+
+        return;
     }
 
-    static Hooks::Hook RunScriptHook;
-    if (s_handlers.RunScript)
+    LOG_DEBUG("Registered run script handler: %p", s_handlers.RunScript);
+    if (!s_runScriptHook)
     {
-        LOG_DEBUG("Registered runscript handler: %p", s_handlers.RunScript);
-        RunScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
-            +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
-                       int32_t eventId) -> int32_t
+        s_runScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
+                                              +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid,
+                                                      int32_t eventId) -> int32_t
             {
                 if (!script || *script == "")
                     return 1;
 
                 LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
                 int spBefore = Utils::PushScriptContext(objId, eventId, !!valid);
-                int32_t retval = s_handlers.RunScript(script->CStr(), objId);
+                int32_t retVal = s_handlers.RunScript(script->CStr(), objId);
                 int spAfter = Utils::PopScriptContext();
                 ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
 
                 // ~0 is returned if runscript request is not handled and needs to be forwarded
-                if (retval != ~0)
+                if (retVal != ~0)
                 {
                     Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
-                    Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                    Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retVal);
                     return 1;
                 }
-                return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
-            },
-            Hooks::Order::Latest);
+
+                return s_runScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
+            },Hooks::Order::Latest);
+    }
+}
+
+NWNX_EXPORT void RegisterClosureHandler(ClosureHandler handler)
+{
+    s_handlers.Closure = handler;
+    if (!handler)
+    {
+        LOG_DEBUG("Removed closure handler");
+        if (s_runScriptSituationHook)
+        {
+            s_runScriptSituationHook.reset();
+        }
+
+        return;
     }
 
-    static Hooks::Hook RunScriptSituationHook;
-    if (s_handlers.Closure)
+    LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
+
+    if (!s_runScriptSituationHook)
     {
-        LOG_DEBUG("Registered closure handler: %p", s_handlers.Closure);
-        RunScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
-            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
-                       int32_t valid) -> int32_t
+        s_runScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
+                                                       +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId,
+                                                               int32_t valid) -> int32_t
             {
                 uint64_t eventId;
                 if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
@@ -134,40 +167,103 @@ NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
                     int spAfter = Utils::PopScriptContext();
                     ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
                     delete script;
+
                     return 1;
                 }
-                return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-            },
-            Hooks::Order::Latest);
+
+                return s_runScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+            }, Hooks::Order::Latest);
+    }
+}
+
+NWNX_EXPORT void RegisterSignalHandler(SignalHandler handler)
+{
+    s_handlers.Signal = handler;
+    if (handler)
+    {
+        LOG_DEBUG("Registered signal handler: %p", s_handlers.Closure);
+    }
+    else
+    {
+        LOG_DEBUG("Removed signal handler");
+    }
+}
+
+NWNX_EXPORT void RegisterAssertHandler(AssertHandler handler)
+{
+    s_handlers.Assert = handler;
+    if (!handler)
+    {
+        LOG_DEBUG("Removed assertion handler");
+        return;
     }
 
-    if (s_handlers.AssertHandler)
+    LOG_DEBUG("Registered native assertion handler: %p", s_handlers.Assert);
+    if (!s_assertSubscribed)
     {
-        LOG_DEBUG("Registered native assertion handler: %p", s_handlers.AssertHandler);
+        s_assertSubscribed = true;
         MessageBus::Subscribe("NWNX_ASSERT_FAIL",
             [](const std::vector<std::string>& message)
             {
+                if (!s_handlers.Assert)
+                {
+                    return;
+                }
+
                 if (API::Globals::VirtualMachine())
                 {
                     Utils::PushScriptContext(Constants::OBJECT_INVALID, 0, false);
-                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    s_handlers.Assert(message[0].c_str(), message[1].c_str());
                     Utils::PopScriptContext();
                 }
                 else
                 {
-                    s_handlers.AssertHandler(message[0].c_str(), message[1].c_str());
+                    s_handlers.Assert(message[0].c_str(), message[1].c_str());
                 }
             });
     }
+}
 
-    if (s_handlers.CrashHandler)
+NWNX_EXPORT void RegisterCrashHandler(CrashHandler handler)
+{
+    s_handlers.Crash = handler;
+    if (!handler)
     {
-        LOG_DEBUG("Registered managed crash handler: %p", s_handlers.CrashHandler);
-        std::signal(SIGABRT, CrashHandler);
-        std::signal(SIGFPE, CrashHandler);
-        std::signal(SIGSEGV, CrashHandler);
-        std::signal(SIGILL, CrashHandler);
+        LOG_DEBUG("Removed managed crash handler");
+        return;
     }
+
+    LOG_DEBUG("Registered managed crash handler: %p", s_handlers.Crash);
+    if (!s_crashSubscribed)
+    {
+        s_crashSubscribed = true;
+        std::signal(SIGABRT, OnServerCrash);
+        std::signal(SIGFPE, OnServerCrash);
+        std::signal(SIGSEGV, OnServerCrash);
+        std::signal(SIGILL, OnServerCrash);
+    }
+}
+
+NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
+{
+    if (handlers == nullptr)
+    {
+        LOG_ERROR("RegisterHandlers argument is null pointer, aborting");
+        return;
+    }
+    if (size != sizeof(*handlers))
+    {
+        LOG_ERROR("RegisterHandlers argument contains invalid number of entries, aborting");
+        return;
+    }
+
+    LOG_INFO("Registering managed code handlers");
+    RegisterMainLoopHandler(handlers->MainLoop);
+    RegisterRunScriptHandler(handlers->RunScript);
+    RegisterClosureHandler(handlers->Closure);
+    RegisterSignalHandler(handlers->Signal);
+    RegisterAssertHandler(handlers->Assert);
+    RegisterCrashHandler(handlers->Crash);
 }
 
 NWNX_EXPORT CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
