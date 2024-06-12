@@ -96,6 +96,7 @@ struct CScriptCompiler
     BOOL m_bCompileConditionalOrMain;
     CExoString m_sLanguageSource;
     CExoString m_sOutputAlias;
+    CExoString m_sGraphvizPath;
     int32_t m_nLines;
     int32_t m_nCharacterOnLine;
     int32_t * m_pnHashString;
@@ -142,6 +143,7 @@ struct CScriptCompiler
     int32_t m_nSwitchIdentifier;
     int32_t m_nSwitchStackDepth;
     CExoString m_sUndefinedIdentifier;
+    CExoString m_sParserErrorExtraInfo;
     BOOL m_bSwitchLabelDefault;
     int32_t m_nSwitchLabelNumber;
     int32_t m_nSwitchLabelArraySize;
@@ -296,6 +298,7 @@ struct CScriptCompiler
     int32_t GetIdentifierByName(const CExoString & sIdentifierName);
     int32_t AddToGlobalVariableList(CScriptParseTreeNode * pGlobalVariableNode);
     BOOL ConstantFoldNode(CScriptParseTreeNode *pNode, BOOL bForce = false);
+    CScriptParseTreeNode *TrimParseTree(CScriptParseTreeNode *pNode);
     void InitializeSwitchLabelList();
     int32_t TraverseTreeForSwitchLabels(CScriptParseTreeNode * pNode);
     void ClearSwitchLabelList();

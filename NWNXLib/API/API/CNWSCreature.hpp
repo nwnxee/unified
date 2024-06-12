@@ -143,6 +143,7 @@ struct CNWSCreature : CNWSObject
     float m_fCutsceneCameraMoveFactor;
     BOOL m_bWasPlotCreature;
     BOOL m_bCutsceneGhost;
+    uint8_t m_nPerceptionRange;
     OBJECT_ID m_oidLastPerception;
     BOOL m_bLastPerceptionHeard;
     BOOL m_bLastPerceptionSeen;

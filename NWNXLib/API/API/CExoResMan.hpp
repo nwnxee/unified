@@ -41,7 +41,7 @@ struct CExoResMan
     CResRef m_cLastFailedLookup;
     RESTYPE m_nLastFailedLookupType;
     BOOL m_bOverrideAll;
-    NWSync::CNWSync m_pNWSync;
+    NWSync::CNWSync m_cNWSync;
     void * m_pResourceOverrideMap;
 
     CExoResMan();

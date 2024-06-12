@@ -46,8 +46,9 @@ struct CAppManager
     class CWorldTimer * GetWorldTimer();
     CExoString GetCryptoKxPublicKeyBase64();
     CExoString GetPublicCdKey();
-    uint8_t GetPlatformId();
-    uint8_t GetLanguageId();
+    uint8_t GetPlatformId() const;
+    uint8_t GetLanguageId() const;
+    CExoString GetAdvancedVersionString() const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CAppManager

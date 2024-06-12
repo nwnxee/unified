@@ -22,9 +22,10 @@ struct Definition
         const char* m_sql;
     };
 
-    Definition() : m_schema(nullptr) {}
-    Definition(const char* schema, std::vector<MigrationDef> migrations) : m_schema(schema), m_migrations(migrations) {}
-    const char* m_schema;
+    Definition() {}
+    Definition(int64_t user_version, const char* schema, std::vector<MigrationDef> migrations) : m_user_version(user_version), m_schema(schema), m_migrations(migrations) {}
+    int64_t m_user_version = 0;
+    const char* m_schema = nullptr;
     std::vector<MigrationDef> m_migrations;
 };
 }
@@ -43,14 +44,7 @@ struct Database : sqlite::database, InstanceLookup::List<Database>
     Database(const Database& other) = delete;
     Database& operator=(const Database&) = delete;
     Database(const std::string & identifier, const std::string & path, DataViewRef copyAtomically = nullptr, const Migrations::Definition & source = NWSQLite::Migrations::Definition());
-    virtual ~Database()
-    {
-        if (m_delete_after_close && m_path != "" && m_path != ":memory:")
-        {
-            _db = nullptr;
-            (void)remove(m_path.c_str());
-        }
-    }
+    virtual ~Database();
     void Setup();
 
 

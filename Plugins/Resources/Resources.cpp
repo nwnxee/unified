@@ -38,8 +38,6 @@ constexpr int NWSYNC_STATE_GOT_PERMISSION_TO_SYNC = 21;  // Internal state.
 constexpr int NWSYNC_STATE_SYNC_IN_PROGRESS = 100; // We're currently syncing.
 constexpr int NWSYNC_STATE_SYNC_IN_PROGRESS_FLUSH = 101; // We're currently flushing to disk.
 
-constexpr int NWSYNC_STATE_HOUSEKEEPING_IN_PROGRESS = 200; // Do some post-transfer cleanup.
-
 constexpr int NWSYNC_STATE_DONE = 800; // Done! Go ahead.
 constexpr int NWSYNC_STATE_FAILED = 801; // We aborted. Error will be in currentStateMessage.
 
@@ -297,7 +295,6 @@ static const char* NWSyncStateToStr(const int state)
     else if (state == NWSYNC_STATE_GOT_PERMISSION_TO_SYNC) return "Got Permission Response";
     else if (state == NWSYNC_STATE_SYNC_IN_PROGRESS) return "Sync In Progress";
     else if (state == NWSYNC_STATE_SYNC_IN_PROGRESS_FLUSH) return "Sync In Progress (Waiting On Storage)";
-    else if (state == NWSYNC_STATE_HOUSEKEEPING_IN_PROGRESS) return "Housekeeping";
     else if (state == NWSYNC_STATE_DONE) return "Done";
     else if (state == NWSYNC_STATE_FAILED) return "FAILED";
     else return "?";
