@@ -10,6 +10,7 @@ add_definitions(-DSQLITE_ENABLE_NORMALIZE)
 add_definitions(-DSQLITE_SOUNDEX)
 add_definitions(-DSQLITE_ENABLE_MATH_FUNCTIONS)
 add_definitions(-DSQLITE_ENABLE_JSON1)
+add_definitions(-DSQLITE_STRICT_SUBTYPE=1)
 
 include_directories(include)
 add_library(sqlite3 STATIC sqlite3.c)
