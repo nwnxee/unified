@@ -3220,9 +3220,9 @@ NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
     }, Hooks::Order::Final);
 
     static Hooks::Hook s_OnApplyModifyNumAttacksHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyModifyNumAttacks,
-    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> int32_t
+    +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> int32_t
     {
-        if (pObject->GetDead() && !bLoadingGame)
+        if (!pThis->CheckEffectAppliesToObject(pObject, pEffect, bLoadingGame))
             return 1;
 
         if (auto *pCreature = Utils::AsNWSCreature(pObject))

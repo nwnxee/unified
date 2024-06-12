@@ -48,6 +48,7 @@ struct CCombatInformation
     uint8_t m_nDamageDie;
 
     CCombatInformation();
+    CCombatInformation(CCombatInformation * m_ExistingCombatDataToCopy);
     ~CCombatInformation();
     BOOL SaveData(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadData(CResGFF * pRes, CResStruct * pStruct);

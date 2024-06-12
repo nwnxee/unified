@@ -198,6 +198,7 @@ struct CNWSEffectListHandler : CGameEffectApplierRemover
     int32_t OnApplyTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemoveTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect);
 
+    BOOL CheckEffectAppliesToObject(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame, BOOL bCheckDyingState = false);
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEffectListHandler
     NWN_CLASS_EXTENSION_CNWSEffectListHandler

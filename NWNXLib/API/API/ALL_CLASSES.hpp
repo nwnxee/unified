@@ -209,7 +209,6 @@ struct CNWSQuickbarButton;
 struct CNWSSpellScriptData;
 struct CNWSInvitationDetails;
 struct CNWSPVPEntry;
-struct CNWSCreRestorePolymorphData;
 struct CNWSCreature;
 struct CNWSCreatureStats_ClassInfo;
 struct CNWSCreatureStats;
