@@ -15,6 +15,9 @@ struct NWNX_Encounter_CreatureListEntry
     int alreadyUsed; //< Creature has already been used.
 };
 
+/// @brief Immediately destroys the specified encounter object.
+/// @param encounter The encounter object.
+void NWNX_Encounter_Destroy(object encounter);
 
 /// @brief Get the number of creatures in the encounter list
 /// @param encounter The encounter object.
@@ -116,6 +119,14 @@ string NWNX_Encounter_GetGeometry(object oEncounter);
 void NWNX_Encounter_SetGeometry(object oTrigger, string sGeometry);
 
 /// @}
+
+void NWNX_Encounter_Destroy(object encounter)
+{
+    string sFunc = "Destroy";
+
+    NWNX_PushArgumentObject(encounter);
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+}
 
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)
 {

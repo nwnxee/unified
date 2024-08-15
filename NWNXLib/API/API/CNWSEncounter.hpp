@@ -50,8 +50,6 @@ struct CNWSEncounter : CNWSObject
     BOOL m_bNewEntry;
     Vector * m_pvActivateVertices;
     int32_t m_nNumActivateVertices;
-    int32_t * m_pnOutlineVertices;
-    int32_t m_nNumOutlineVertices;
     float m_fMinActivateX;
     float m_fMaxActivateX;
     float m_fMinActivateY;
@@ -105,6 +103,7 @@ struct CNWSEncounter : CNWSObject
     void TallyEnemyRadiusPoints();
     void LoadFractionalCRData();
 
+    inline CExoLocString &GetFirstName() override { return m_sLocalizedName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEncounter
     NWN_CLASS_EXTENSION_CNWSEncounter

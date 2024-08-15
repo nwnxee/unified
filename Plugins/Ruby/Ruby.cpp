@@ -38,7 +38,7 @@ Ruby::Ruby(Services::ProxyServiceList* services)
         SafeRequire(*preloadScript);
     }
 
-    Events::RegisterEvent(PLUGIN_NAME, "Evaluate", std::bind(&Ruby::Evaluate, this, std::placeholders::_1));
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "Evaluate", std::bind(&Ruby::Evaluate, this, std::placeholders::_1));
 }
 
 Ruby::~Ruby()
@@ -46,9 +46,9 @@ Ruby::~Ruby()
 
 }
 
-Events::ArgumentStack Ruby::Evaluate(Events::ArgumentStack&& args)
+ArgumentStack Ruby::Evaluate(ArgumentStack&& args)
 {
-    const auto code = Events::ExtractArgument<std::string>(args);
+    const auto code = ScriptAPI::ExtractArgument<std::string>(args);
 
     const auto evaluate = [this](const std::string& evalCode) -> const char*
     {
@@ -104,7 +104,7 @@ Events::ArgumentStack Ruby::Evaluate(Events::ArgumentStack&& args)
 
     LOG_INFO("Evaluated Ruby. Ruby ID: '%i', code: '%s', got return value '%s'.", evaluationId, code, retString);
 
-    return Events::Arguments(std::string(retString));
+    return ScriptAPI::Arguments(std::string(retString));
 }
 
 void Ruby::SafeRequire(const std::string& script)

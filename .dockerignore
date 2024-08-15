@@ -7,7 +7,6 @@ docker
 LICENSE
 *.md
 .git*
-.circleci
 .idea/
 .vscode/
 Binaries/
@@ -16,3 +15,5 @@ Documentation/
 .vs/
 out/
 CMakeSettings.json
+.cache/
+Build/

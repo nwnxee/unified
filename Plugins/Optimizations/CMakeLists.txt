@@ -3,6 +3,7 @@ add_plugin(Optimizations
         "GameObjectLookup.cpp"
         "LuoLookup.cpp"
         "PlayerLookup.cpp"
-        "ReconcileAutoMap.cpp"
         "CacheScriptChunks.cpp"
+        "CacheDebuggerInstances.cpp"
+        "CacheScripts.cpp"
 )

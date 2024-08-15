@@ -57,26 +57,26 @@ static int32_t CheckScript(CNWSDialog*, CNWSObject*, const CResRef*, const CExoA
 static void RunScript(CNWSDialog*, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
 
 static Hooks::Hook s_GetStartEntryHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
-    (void*)&GetStartEntry, Hooks::Order::Early);
+    &CNWSDialog::GetStartEntry,
+    &GetStartEntry, Hooks::Order::Early);
 static Hooks::Hook s_GetStartEntryOneLinerHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog21GetStartEntryOneLinerEP10CNWSObjectR13CExoLocStringR7CResRefS5_R13CExoArrayListI11ScriptParamE,
-    (void*)&GetStartEntryOneLiner, Hooks::Order::Early);
+    &CNWSDialog::GetStartEntryOneLiner,
+    &GetStartEntryOneLiner, Hooks::Order::Early);
 static Hooks::Hook s_SendDialogEntryHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
-    (void*)&SendDialogEntry, Hooks::Order::Early);
+    &CNWSDialog::SendDialogEntry,
+    &SendDialogEntry, Hooks::Order::Early);
 static Hooks::Hook s_SendDialogRepliesHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
-    (void*)&SendDialogReplies, Hooks::Order::Early);
+    &CNWSDialog::SendDialogReplies,
+    &SendDialogReplies, Hooks::Order::Early);
 static Hooks::Hook s_HandleReplyHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
-    (void*)&HandleReply, Hooks::Order::Early);
+    &CNWSDialog::HandleReply,
+    &HandleReply, Hooks::Order::Early);
 static Hooks::Hook s_CheckScriptHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-    (void*)&CheckScript, Hooks::Order::Early);
+    &CNWSDialog::CheckScript,
+    &CheckScript, Hooks::Order::Early);
 static Hooks::Hook s_RunScriptHook = Hooks::HookFunction(
-    Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-    (void*)&RunScript, Hooks::Order::Early);
+    &CNWSDialog::RunScript,
+    &RunScript, Hooks::Order::Early);
 
 static uint32_t GetStartEntry(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner)
 {

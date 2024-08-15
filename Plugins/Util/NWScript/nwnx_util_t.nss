@@ -31,12 +31,7 @@ void main()
     string sRedString = StringToRGBString("stripped colors.", STRING_COLOR_RED);
     str = "This is a <cfff>test</c> of "+sRedString;
     string strip_colors = NWNX_Util_StripColors(str);
-    NWNX_Tests_Report("NWNX_Util", "RegexReplace", strip_colors == "This is a test of stripped colors.");
-
-    string sValidResRef = "nw_undeadhigh";
-    NWNX_Tests_Report("NWNX_Util", "IsValidResRef", NWNX_Util_IsValidResRef(sValidResRef, NWNX_UTIL_RESREF_TYPE_ENCOUNTER));
-    string sInValidResRef = "aaaaaaaaaaaaaaaa";
-    NWNX_Tests_Report("NWNX_Util", "IsValidResRef", NWNX_Util_IsValidResRef(sInValidResRef, NWNX_UTIL_RESREF_TYPE_ITEM) == 0);
+    NWNX_Tests_Report("NWNX_Util", "StripColors", strip_colors == "This is a test of stripped colors.");
 
     string sEnvVar = "NWNX_CORE_LOG_LEVEL";
     NWNX_Tests_Report("NWNX_Util", "GetEnvironmentVariable", StringToInt(NWNX_Util_GetEnvironmentVariable(sEnvVar)) > 0);
@@ -49,13 +44,8 @@ void main()
     string sStringForURL = "This is a test, yes.";
     NWNX_Tests_Report("NWNX_Util", "EncodeStringForURL", NWNX_Util_EncodeStringForURL(sStringForURL) == "This+is+a+test%2C+yes.");
 
-    string sTwoDA = "bodybag";
-    NWNX_Tests_Report("NWNX_Util", "Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
-
     NWNX_Tests_Report("NWNX_Util", "GetFirstResRef", NWNX_Util_GetFirstResRef(NWNX_UTIL_RESREF_TYPE_NSS, "nwnx_util.*") != "");
     NWNX_Tests_Report("NWNX_Util", "GetNextResRef", NWNX_Util_GetNextResRef() != "");
-
-    NWNX_Tests_Report("NWNX_Util", "GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
 
     NWNX_Tests_Report("NWNX_Util", "GetLastCreatedObject", GetIsObjectValid(NWNX_Util_GetLastCreatedObject(4/*OBJECT_TYPE_AREA*/, 1)));
 
@@ -71,6 +61,9 @@ void main()
                              "t2.seconds: " + IntToString(t2.seconds) + "; " +
                              "t2.microseconds: " + IntToString(t2.microseconds) + "; ");
     NWNX_Tests_Report("NWNX_Util", "GetHighResTimeStamp", t1.microseconds != t2.microseconds);
+    
+    string sModMame = NWNX_Util_GetModuleFile();
+    NWNX_Tests_Report("NWNX_Util", "GetModuleFile", sModMame != "");
 
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

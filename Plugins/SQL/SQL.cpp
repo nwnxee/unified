@@ -31,7 +31,7 @@ SQL::SQL(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(PrepareQuery);
@@ -62,11 +62,11 @@ SQL::SQL(Services::ProxyServiceList* services)
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
     }
 
-    auto type = Config::Get<std::string>("TYPE", "MYSQL");
-    std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
+    m_databaseType = Config::Get<std::string>("TYPE", "MYSQL");
+    std::transform(std::begin(m_databaseType), std::end(m_databaseType), std::begin(m_databaseType), ::toupper);
 
-    LOG_INFO("Connecting to type %s", type);
-    if (type == "MYSQL")
+    LOG_INFO("Connecting to type %s", m_databaseType);
+    if (m_databaseType == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
         m_target = std::make_unique<MySQL>();
@@ -74,7 +74,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Targeting MySQL, but no MySQL support built in.");
 #endif
     }
-    else if (type == "POSTGRESQL")
+    else if (m_databaseType == "POSTGRESQL")
     {
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
         m_target = std::make_unique<PostgreSQL>();
@@ -82,13 +82,9 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
     }
-    else if (type == "SQLITE")
+    else if (m_databaseType == "SQLITE")
     {
-#if defined(NWNX_SQL_SQLITE_SUPPORT)
         m_target = std::make_unique<SQLite>();
-#else
-        throw std::runtime_error("Targeting SQLite3, but no SQLite3 support built in.");
-#endif
     }
     else
     {
@@ -133,7 +129,7 @@ bool SQL::Reconnect(int32_t attempts)
     return m_target->IsConnected();
 }
 
-Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
+ArgumentStack SQL::PrepareQuery(ArgumentStack&& args)
 {
     m_activeQuery = args.extract<std::string>();
 
@@ -154,7 +150,7 @@ Events::ArgumentStack SQL::PrepareQuery(Events::ArgumentStack&& args)
     return m_queryPrepared;
 }
 
-Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
+ArgumentStack SQL::ExecutePreparedQuery(ArgumentStack&&)
 {
     if (!m_queryPrepared)
     {
@@ -240,12 +236,12 @@ Events::ArgumentStack SQL::ExecutePreparedQuery(Events::ArgumentStack&&)
     return querySucceeded ? queryId : 0;
 }
 
-Events::ArgumentStack SQL::ReadyToReadNextRow(Events::ArgumentStack&&)
+ArgumentStack SQL::ReadyToReadNextRow(ArgumentStack&&)
 {
     return m_activeResults.empty() ? 0 : 1;
 }
 
-Events::ArgumentStack SQL::ReadNextRow(Events::ArgumentStack&&)
+ArgumentStack SQL::ReadNextRow(ArgumentStack&&)
 {
     if (m_activeResults.empty())
     {
@@ -257,7 +253,7 @@ Events::ArgumentStack SQL::ReadNextRow(Events::ArgumentStack&&)
     return {};
 }
 
-Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
+ArgumentStack SQL::ReadDataInActiveRow(ArgumentStack&& args)
 {
     const size_t column = args.extract<int32_t>();
 
@@ -266,9 +262,9 @@ Events::ArgumentStack SQL::ReadDataInActiveRow(Events::ArgumentStack&& args)
         throw std::runtime_error("Trying to access column outside of range.");
     }
 
-    return Events::Arguments(m_utf8 ? String::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
+    return ScriptAPI::Arguments(m_utf8 ? String::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
 }
-Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedInt(ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<int32_t>();
@@ -282,7 +278,7 @@ Events::ArgumentStack SQL::PreparedInt(Events::ArgumentStack&& args)
     }
     return {};
 }
-Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedString(ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<std::string>();
@@ -296,7 +292,7 @@ Events::ArgumentStack SQL::PreparedString(Events::ArgumentStack&& args)
     }
     return {};
 }
-Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedFloat(ArgumentStack&& args)
 {
     const auto position = args.extract<int32_t>();
     const auto value = args.extract<float>();
@@ -310,7 +306,7 @@ Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
     }
     return {};
 }
-Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedObjectId(ArgumentStack&& args)
 {
     auto position = args.extract<int32_t>();
     auto value = args.extract<ObjectID>();
@@ -326,7 +322,7 @@ Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
     }
     return {};
 }
-Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedObjectFull(ArgumentStack&& args)
 {
     auto position = args.extract<int32_t>();
     auto value = args.extract<ObjectID>();
@@ -349,7 +345,7 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
     }
     return {};
 }
-Events::ArgumentStack SQL::PreparedNULL(Events::ArgumentStack&& args)
+ArgumentStack SQL::PreparedNULL(ArgumentStack&& args)
 {
     auto position = args.extract<int32_t>();
 
@@ -364,7 +360,7 @@ Events::ArgumentStack SQL::PreparedNULL(Events::ArgumentStack&& args)
     return {};
 }
 
-Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& args)
+ArgumentStack SQL::ReadFullObjectInActiveRow(ArgumentStack&& args)
 {
     const size_t column = args.extract<int32_t>();
     const auto owner = args.extract<ObjectID>();
@@ -405,29 +401,29 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
     return retval;
 }
 
-Events::ArgumentStack SQL::GetAffectedRows(Events::ArgumentStack&&)
+ArgumentStack SQL::GetAffectedRows(ArgumentStack&&)
 {
     return m_target->GetAffectedRows();
 }
 
-Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
+ArgumentStack SQL::GetDatabaseType(ArgumentStack&&)
 {
-    return Config::Get<std::string>("TYPE", "MYSQL");
+    return m_databaseType;
 }
 
-Events::ArgumentStack SQL::DestroyPreparedQuery(Events::ArgumentStack&&)
+ArgumentStack SQL::DestroyPreparedQuery(ArgumentStack&&)
 {
     m_target->DestroyPreparedQuery();
     m_queryPrepared = false;
     return {};
 }
 
-Events::ArgumentStack SQL::GetLastError(Events::ArgumentStack&&)
+ArgumentStack SQL::GetLastError(ArgumentStack&&)
 {
     return m_target->GetLastError(true);
 }
 
-Events::ArgumentStack SQL::GetPreparedQueryParamCount(Events::ArgumentStack&&)
+ArgumentStack SQL::GetPreparedQueryParamCount(ArgumentStack&&)
 {
     return m_queryPrepared ? m_target->GetPreparedQueryParamCount() : -1;
 }

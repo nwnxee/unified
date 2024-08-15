@@ -24,8 +24,8 @@ void DisableLevelUpValidation()
 
     LOG_INFO("EXPERIMENTAL: Disabling LevelUp Validation.");
 
-    static Hooks::Hook s_ValidateLevelUpHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
-        (void*)+[](CNWSCreatureStats* pCreatureStats, CNWLevelStats* pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+    static Hooks::Hook s_ValidateLevelUpHook = Hooks::HookFunction(&CNWSCreatureStats::ValidateLevelUp,
+        +[](CNWSCreatureStats* pCreatureStats, CNWLevelStats* pLevelUpStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
         {
             bool bValidated = pCreatureStats->CanLevelUp() && pCreatureStats->GetIsClassAvailable(pLevelUpStats->m_nClass);
 

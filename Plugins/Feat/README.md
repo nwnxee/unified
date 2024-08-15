@@ -1,5 +1,5 @@
 @page feat Readme
-@ingroup feat 
+@ingroup feat
 
 This plugin allows for the builder to define many traits for feats.
 
@@ -14,6 +14,22 @@ Adding new feats is beyond the scope of this documentation. The builder should k
 Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below. The builder can use as many modifiers as they wish for one feat including the same modifiers with different parameters.
 
 The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the NWNX_SkillRanks plugin for changing those.
+
+### The 2da Method
+To use the 2da method, the builder must create a new column at the end of the `feat.2da` named **FeatModsTable**. This column should then be populated with a string value that references another 2da file in which we will define our feat modifiers. Once that is done the builder needs to **include nwnx_feat_2da and make sure to run `NWNX_Feat_LoadFeatModifiers()` in their OnModuleLoad script**.
+
+For example, we've inserted a new feat called **Fireproof** into `feat.2da` at line 1200. In the `FeatModsTable` column we enter **FEATMOD_FIREPRF** (Remember maximum 16 characters, case insensitive)
+
+We will now create and define our `featmod_fireprf.2da` file and enter appropriate lines for each modifier we want our feat to grant. The end result will look something like this:
+
+```text
+2DA V2.0
+
+    LABEL                       Type            Param1  Param2  Param3  Param4
+0   SaveVsFire                  SAVEVSTYPE      0       7       2       ****
+1   FireResist                  DMGRESIST       256     10      ****    ****
+2   CombustImmunity             SPELLIMMUNITY   518     ****    ****    ****
+```
 
 ## Feat Modifiers
 
@@ -42,6 +58,9 @@ These commands should be ran `on_module_load`.
 * [SPELLIMMUNITY](#spellimmunity)
 * [SRCHARGEN](#srchargen)
 * [SRINCLEVEL](#srinclevel)
+* [SPELLSAVEDC](#spellsavedc)
+* [SPELLSAVEDCFORSCHOOL](#spellsavedcforschool)
+* [SPELLSAVEDCFORSPELL](#spellsavedcforspell)
 * [TRUESEEING](#trueseeing)
 * [ULTRAVISION](#ultravision)
 * [VISUALEFFECT](#visualeffect)
@@ -124,7 +143,7 @@ NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_BONUSSPELL, CLASS_TYPE_CLERIC
 ```
 ***
 ### CONCEALMENT
-The `CONCEALMENT` entry is used to grant an inate concealment.
+The `CONCEALMENT` entry is used to grant an innate concealment.
 
 * Param1 = Modifier value (1-100)
 
@@ -133,8 +152,20 @@ The `CONCEALMENT` entry is used to grant an inate concealment.
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_CONCEALMENT, 30);
 ```
 ***
+### DAMAGE
+The `DAMAGE` entry gives a damage increase or decrease, as per the EffectDamageIncrease(/Decrease) effect
+
+* Param1 = The damage type. Must be a single DAMAGE_TYPE_* constant per-call, although you can do multiple calls on the same feat to add further damage types
+* Param2 = DAMAGE_BONUS_* constant group, from iprp_damagecost.2da. Negative values result in a DamageDecrease, including relevent limitations of that Effect.
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DAMAGE, DAMAGE_TYPE_FIRE, 10); //2d6 Fire Damage
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DAMAGE, DAMAGE_TYPE_COLD, 5); //Additionally +5 Cold damage
+```
+***
 ### DMGREDUCTION
-The `DMGREDUCTION` entry gives an inate damage reduction
+The `DMGREDUCTION` entry gives an innate damage reduction
 
 * Param1 = Points to soak (+)
 * Param2 = Level of soak (+)
@@ -146,7 +177,7 @@ NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGREDUCTION, 10, 4);
 ```
 ***
 ### DMGRESIST
-The `DMGRESIST` entry gives an inate resistance to damage types
+The `DMGRESIST` entry gives an innate resistance to damage types
 
 * Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.
 * Param2 = Points to resist (+)
@@ -158,7 +189,7 @@ NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGRESIST, DAMAGE_TYPE_FIRE &
 ```
 ***
 ### DMGIMMUNITY
-The `DMGIMMUNITY` entry gives an inate immunity to damage types
+The `DMGIMMUNITY` entry gives an innate immunity to damage types
 
 * Param1 = The damage type, can be a single Damage Type integer or multiple Damage Type integers summed. You can also just do each on its own line if you'd prefer. Hex can be used for the scripting method if preferred.
 * Param2 = Percentage to resist (+/-)
@@ -200,7 +231,7 @@ NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_MOVEMENTSPEED, 33);
 ```
 ***
 ### REGENERATION
-The `REGENERATION` entry is used to grant inate regeneration.
+The `REGENERATION` entry is used to grant innate regeneration.
 
 * Param1 = How many hitpoints to increase (+)
 * Param2 = How often in seconds to increase the hitpoints (+)
@@ -297,6 +328,38 @@ The `SRINCLEVEL` entry is used to award a spell resistance racial bonus as the c
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SRINCLEVEL, 1, 1, 6);
+```
+***
+### SPELLSAVEDC
+The `SPELLSAVEDC` entry is used to modify a creature's spell DCs.
+
+* Param1 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDC, 1);
+```
+***
+### SPELLSAVEDCFORSCHOOL
+The `SPELLSAVEDCFORSCHOOL` entry is used to modify a creature's spell DCs for a spell school.
+
+* Param1 = A SPELL_SCHOOL_ constant
+* Param2 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL, SPELL_SCHOOL_ILLUSION, 1);
+```
+***
+### SPELLSAVEDCFORSPELL
+The `SPELLSAVEDCFORSPELL` entry is used to modify a creature's spell DCs for an individual spell.
+
+* Param1 = A SPELL_ constant
+* Param2 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL, SPELL_PHANTASMAL_KILLER, 1);
 ```
 ***
 ### TRUESEEING

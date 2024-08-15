@@ -11,6 +11,8 @@ namespace NWN
         public delegate int RunScriptHandlerDelegate(string script, uint oid);
         public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
         public delegate void SignalHandlerDelegate(string signal);
+        public delegate void AssertHandlerDelegate(string message, string stackTrace);
+        public delegate void CrashHandlerDelegate(int signal, string stackTrace);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct AllHandlers
@@ -19,6 +21,8 @@ namespace NWN
             public RunScriptHandlerDelegate RunScript;
             public ClosureHandlerDelegate   Closure;
             public SignalHandlerDelegate    Signal;
+            public AssertHandlerDelegate    AssertFail;
+            public CrashHandlerDelegate     CrashHandler;
         }
 
         [SuppressUnmanagedCodeSecurity]
@@ -30,14 +34,14 @@ namespace NWN
         {
             public IntPtr PSBuildNumber;
             public IntPtr PSBuildRevision;
-            public IntPtr PPExoBase;
-            public IntPtr PPExoResMan;
-            public IntPtr PPVirtualMachine;
-            public IntPtr PPScriptCompiler;
-            public IntPtr PPAppManager;
-            public IntPtr PPTlkTable;
-            public IntPtr PPRules;
-            public IntPtr PPExoTaskManager;
+            public IntPtr PExoBase;
+            public IntPtr PExoResMan;
+            public IntPtr PVirtualMachine;
+            public IntPtr PScriptCompiler;
+            public IntPtr PAppManager;
+            public IntPtr PTlkTable;
+            public IntPtr PRules;
+            public IntPtr PExoTaskManager;
             public IntPtr PBEnableCombatDebugging;
             public IntPtr PBEnableSavingThrowDebugging;
             public IntPtr PBEnableMovementSpeedDebugging;

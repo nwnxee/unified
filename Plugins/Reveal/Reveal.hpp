@@ -1,7 +1,7 @@
 #pragma once
 
 #include "nwnx.hpp"
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace Reveal {
 
@@ -14,7 +14,7 @@ public:
 private:
     NWNXLib::Hooks::Hook m_DoStealthDetection;
 
-    static int32_t HookStealthDetection(CNWSCreature* thisCreature, CNWSCreature* pHidingCreature, int32_t bClearLOS, int32_t* bSeen, int32_t* bHeard, int32_t bTargetInvisible);
+    static BOOL HookStealthDetection(CNWSCreature* thisCreature, CNWSCreature* pHidingCreature, BOOL bClearLOS, BOOL* bSeen, BOOL* bHeard, BOOL bTargetHiding);
 
     ArgumentStack RevealTo(ArgumentStack&& args);
     ArgumentStack SetRevealToParty(ArgumentStack&& args);

@@ -101,10 +101,12 @@ namespace EffectTrueType
         CutsceneImmobile              = 94,
         DefensiveStance               = 95,
         RunScript                     = 96,
+        Pacify                        = 97,
+        TimeStopImmunity              = 98,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 96;
-    static_assert(MAX == RunScript);
+    constexpr int32_t MAX   = 98;
+    static_assert(MAX == TimeStopImmunity);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -204,6 +206,8 @@ namespace EffectTrueType
             "Cutscene Immobile",
             "Defensive Stance",
             "Run Script",
+            "Pacify",
+            "TimeStop Immunity",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
@@ -250,12 +254,13 @@ namespace EffectSubType
         Magical       = 8,
         Supernatural  = 16,
         Extraordinary = 24,
+        Unyielding    = 32,
     };
     constexpr int32_t MIN   = 8;
-    constexpr int32_t MAX   = 24;
-    constexpr int32_t MASK  = 0x18;
+    constexpr int32_t MAX   = 32;
+    constexpr int32_t MASK  = 0x38;
 
-    static_assert(MAX == Extraordinary);
+    static_assert(MAX == Unyielding);
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -264,6 +269,7 @@ namespace EffectSubType
             case Magical:       return "Magical";
             case Supernatural:  return "Supernatural";
             case Extraordinary: return "Extraordinary";
+            case Unyielding:    return "Unyielding";
         }
         return "(invalid)";
     }

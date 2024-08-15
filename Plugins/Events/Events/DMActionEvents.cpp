@@ -8,6 +8,7 @@
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSMessage.hpp"
 #include <vector>
 
 namespace Events {
@@ -30,8 +31,8 @@ void DMActionEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_DM_.*", []() {
         s_HandlePlayerToServerDungeonMasterMessageHook = Hooks::HookFunction(
-                Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi,
-                (void*)&HandleDMMessageHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerDungeonMasterMessage,
+                &HandleDMMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -602,7 +603,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
         case MessageDungeonMasterMinor::GetVar:
         {
             event += "GET_VARIABLE";
-            
+
             int32_t offset = 0;
 
             uint8_t varType = Utils::PeekMessage<uint8_t>(thisPtr, offset); offset += sizeof(uint8_t);

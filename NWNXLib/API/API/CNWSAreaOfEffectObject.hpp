@@ -34,7 +34,7 @@ struct CNWSAreaOfEffectObject : CNWSObject
     OBJECT_ID m_oidLastEntered;
     OBJECT_ID m_oidLastLeft;
     int32_t m_nSpellSaveDC;
-    int32_t m_nSpellLevel;
+    int32_t m_nSpellCasterLevel;
     CExoString m_sScripts[4];
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
@@ -55,7 +55,7 @@ struct CNWSAreaOfEffectObject : CNWSObject
     void LoadAreaEffect(int32_t nId);
     void SetDuration(uint8_t nDurationType, float fDuration = 0.0f);
     Vector GetPosition();
-    void SetCreator(OBJECT_ID oidObject);
+    void SetCreator(OBJECT_ID oidObject, int32_t nCasterLevel, int32_t nSpellId);
     virtual uint32_t GetEffectSpellId();
     virtual void SetEffectSpellId(uint32_t nSpellId);
     void JumpToPoint(CNWSArea * pNewArea, const Vector & vNewPos);

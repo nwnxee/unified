@@ -19,8 +19,8 @@ void SendTlkOverrideBeforeChargen()
     LOG_INFO("Sending Tlk Overrides before Character Generation.");
 
    static Hooks::Hook s_SendServerToPlayerCharListHook = Hooks::HookFunction(
-            API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer,
-            (void*)+[](CNWSMessage *thisPtr, CNWSPlayer *pPlayer) -> int32_t
+            &CNWSMessage::SendServerToPlayerCharList,
+            +[](CNWSMessage *thisPtr, CNWSPlayer *pPlayer) -> int32_t
             {
                 auto retVal = s_SendServerToPlayerCharListHook->CallOriginal<int32_t>(thisPtr, pPlayer);
 

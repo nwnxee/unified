@@ -16,8 +16,8 @@ void QuickbarEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", []() {
         s_HandlePlayerToServerGuiQuickbar_SetButtonHook = Hooks::HookFunction(
-                API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh,
-                (void*)&HandlePlayerToServerGuiQuickbar_SetButtonHook, Hooks::Order::Early);
+                &CNWSMessage::HandlePlayerToServerGuiQuickbar_SetButton,
+                &HandlePlayerToServerGuiQuickbar_SetButtonHook, Hooks::Order::Early);
     });
 }
 

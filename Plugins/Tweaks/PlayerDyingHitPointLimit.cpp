@@ -21,8 +21,8 @@ void PlayerDyingHitPointLimit()
 
     LOG_INFO("Setting the player dying HP limit to %d", s_HPLimit);
 
-    static Hooks::Hook s_GetIsPCDyingHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject12GetIsPCDyingEv,
-        (void*)+[](CNWSObject* thisPtr) -> int32_t
+    static Hooks::Hook s_GetIsPCDyingHook = Hooks::HookFunction(&CNWSObject::GetIsPCDying,
+        +[](CNWSObject* thisPtr) -> int32_t
         {
             if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
             {
@@ -36,8 +36,8 @@ void PlayerDyingHitPointLimit()
             return false;
         }, Hooks::Order::Final);
 
-    static Hooks::Hook s_GetDeadHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject7GetDeadEv,
-        (void*)+[](CNWSObject* thisPtr) -> int32_t
+    static Hooks::Hook s_GetDeadHook = Hooks::HookFunction(&CNWSObject::GetDead,
+        +[](CNWSObject* thisPtr) -> int32_t
         {
             int16_t hp = thisPtr->GetCurrentHitPoints(false);
             if (auto *pCreature = Utils::AsNWSCreature(thisPtr))

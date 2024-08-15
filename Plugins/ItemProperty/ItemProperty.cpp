@@ -49,26 +49,26 @@ NWNX_EXPORT ArgumentStack PackIP(ArgumentStack&& args)
     ip->SetInteger(8, usable);
     ip->SetString(0, tag.c_str());
 
-    return Events::Arguments(ip);
+    return ScriptAPI::Arguments(ip);
 }
 NWNX_EXPORT ArgumentStack UnpackIP(ArgumentStack&& args)
 {
     ArgumentStack stack;
     auto ip = args.extract<CGameEffect*>();
 
-    Events::InsertArgument(stack, ip->GetString(0).CStr());
-    Events::InsertArgument(stack, (ObjectID)ip->m_oidCreator);
-    Events::InsertArgument(stack, (int32_t)ip->m_nSpellId);
-    Events::InsertArgument(stack, ip->GetInteger(8));
-    Events::InsertArgument(stack, ip->GetInteger(7));
-    Events::InsertArgument(stack, ip->GetInteger(6));
-    Events::InsertArgument(stack, ip->GetInteger(5));
-    Events::InsertArgument(stack, ip->GetInteger(4));
-    Events::InsertArgument(stack, ip->GetInteger(3));
-    Events::InsertArgument(stack, ip->GetInteger(2));
-    Events::InsertArgument(stack, ip->GetInteger(1));
-    Events::InsertArgument(stack, ip->GetInteger(0));
-    Events::InsertArgument(stack, std::to_string(ip->m_nItemPropertySourceId));
+    ScriptAPI::InsertArgument(stack, ip->GetString(0).CStr());
+    ScriptAPI::InsertArgument(stack, (ObjectID)ip->m_oidCreator);
+    ScriptAPI::InsertArgument(stack, (int32_t)ip->m_nSpellId);
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(8));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(7));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(6));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(5));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(4));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(3));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(2));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(1));
+    ScriptAPI::InsertArgument(stack, ip->GetInteger(0));
+    ScriptAPI::InsertArgument(stack, std::to_string(ip->m_nItemPropertySourceId));
 
     Utils::DestroyGameEffect(ip);
     return stack;
@@ -89,15 +89,15 @@ NWNX_EXPORT ArgumentStack GetActiveProperty(ArgumentStack&& args)
 
     ArgumentStack stack;
 
-    Events::InsertArgument(stack, ip->m_sCustomTag.CStr());
-    Events::InsertArgument(stack, ip->m_bUseable);
-    Events::InsertArgument(stack, ip->m_nChanceOfAppearing);
-    Events::InsertArgument(stack, ip->m_nUsesPerDay);
-    Events::InsertArgument(stack, ip->m_nParam1Value);
-    Events::InsertArgument(stack, ip->m_nParam1);
-    Events::InsertArgument(stack, ip->m_nCostTableValue);
-    Events::InsertArgument(stack, ip->m_nCostTable);
-    Events::InsertArgument(stack, ip->m_nSubType);
-    Events::InsertArgument(stack, ip->m_nPropertyName);
+    ScriptAPI::InsertArgument(stack, ip->m_sCustomTag.CStr());
+    ScriptAPI::InsertArgument(stack, ip->m_bUseable);
+    ScriptAPI::InsertArgument(stack, ip->m_nChanceOfAppearing);
+    ScriptAPI::InsertArgument(stack, ip->m_nUsesPerDay);
+    ScriptAPI::InsertArgument(stack, ip->m_nParam1Value);
+    ScriptAPI::InsertArgument(stack, ip->m_nParam1);
+    ScriptAPI::InsertArgument(stack, ip->m_nCostTableValue);
+    ScriptAPI::InsertArgument(stack, ip->m_nCostTable);
+    ScriptAPI::InsertArgument(stack, ip->m_nSubType);
+    ScriptAPI::InsertArgument(stack, ip->m_nPropertyName);
     return stack;
 }

@@ -18,7 +18,6 @@ const string NWNX_Feedback = "NWNX_Feedback"; ///< @private
 /// @anchor combat_log_msgs
 /// @{
 const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE    = 1;  // Simple_Adjective: <charname> : <adjective described by strref>
-/*
 const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;  // Simple_Damage: <charname> damaged : <amount>
 const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;  // Complex_Damage: <charname> damages <charname> : <amount>
 const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;  // Complex_Death: <charname> killed <charname>
@@ -39,7 +38,6 @@ const int NWNX_FEEDBACK_COMBATLOG_VIBRATE             = 19; // Controller vibrat
 const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20; // Unlock Campaign Achievement
 const int NWNX_FEEDBACK_COMBATLOG_POSTAURSTRING       = 22; // PostString messages
 const int NWNX_FEEDBACK_COMBATLOG_ENTERTARGETINGMODE  = 23; // Enter Targeting Mode
-*/
 /// @}
 
 /// @name Feedback Message Types
@@ -47,7 +45,6 @@ const int NWNX_FEEDBACK_COMBATLOG_ENTERTARGETINGMODE  = 23; // Enter Targeting M
 /// @{
 
 const int NWNX_FEEDBACK_SKILL_CANT_USE                     = 0;
-/*
 /// Skill Feedback Messages
 const int NWNX_FEEDBACK_SKILL_CANT_USE_TIMER               = 1;
 const int NWNX_FEEDBACK_SKILL_ANIMALEMPATHY_VALID_TARGETS  = 2;
@@ -349,7 +346,6 @@ const int NWNX_FEEDBACK_CAMERA_CHASECAM                    = 258;
 
 const int NWNX_FEEDBACK_SAVING                             = 225;
 const int NWNX_FEEDBACK_SAVE_COMPLETE                      = 226;
-*/
 /// @}
 
 /// @brief Gets if feedback message is hidden.

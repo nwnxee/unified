@@ -5,11 +5,16 @@ build-nwnx/
 build/
 Documentation/
 
+cmake-build-*/
+.env
+
 # Visual Studio
 .vs/
 out/
 CMakeSettings.json
 CMakePresets.json
+.cache/
+Build/
 
 # SWIG
 Plugins/SWIG/SWIG_*/NWNXLib.i

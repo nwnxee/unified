@@ -27,7 +27,7 @@ Weapon::Weapon(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeaponFocusFeat);
@@ -54,24 +54,21 @@ Weapon::Weapon(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_GetWeaponFocusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooks::Order::Late);
-    m_GetEpicWeaponFocusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem, (void*)&Weapon::GetEpicWeaponFocus);
-    static auto s_GetWeaponFinesseHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooks::Order::Final);
+    m_GetWeaponFocusHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponFocus, &Weapon::GetWeaponFocus, Hooks::Order::Late);
+    m_GetEpicWeaponFocusHook = Hooks::HookFunction(&CNWSCreatureStats::GetEpicWeaponFocus, &Weapon::GetEpicWeaponFocus);
 
-    m_GetWeaponImprovedCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem, (void*)&Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
-    m_GetWeaponSpecializationHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetWeaponSpecialization, Hooks::Order::Late);
-    m_GetEpicWeaponSpecializationHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetEpicWeaponSpecialization, Hooks::Order::Late);
-    m_GetEpicWeaponOverwhelmingCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponOverwhelmingCritical, Hooks::Order::Late);
-    m_GetEpicWeaponDevastatingCriticalHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponDevastatingCritical, Hooks::Order::Late);
-    m_GetIsWeaponOfChoiceHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj, (void*)&Weapon::GetIsWeaponOfChoice, Hooks::Order::Late);
-    m_GetMeleeDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih, (void*)&Weapon::GetMeleeDamageBonus, Hooks::Order::Late);
-    m_GetDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei, (void*)&Weapon::GetDamageBonus, Hooks::Order::Late);
-    m_GetRangedDamageBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv, (void*)&Weapon::GetRangedDamageBonus, Hooks::Order::Late);
-    m_GetAttackModifierVersusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Weapon::GetAttackModifierVersus, Hooks::Order::Late);
-    m_GetMeleeAttackBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
-    m_GetRangedAttackBonusHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooks::Order::Late);
-
-    m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
+    m_GetWeaponImprovedCriticalHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponImprovedCritical, &Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
+    m_GetWeaponSpecializationHook = Hooks::HookFunction(&CNWSCreatureStats::GetWeaponSpecialization, &Weapon::GetWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponSpecializationHook = Hooks::HookFunction(&CNWSCreatureStats::GetEpicWeaponSpecialization, &Weapon::GetEpicWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponOverwhelmingCriticalHook = Hooks::HookFunction(&CNWSCreatureStats::GetEpicWeaponOverwhelmingCritical, &Weapon::GetEpicWeaponOverwhelmingCritical, Hooks::Order::Late);
+    m_GetEpicWeaponDevastatingCriticalHook = Hooks::HookFunction(&CNWSCreatureStats::GetEpicWeaponDevastatingCritical, &Weapon::GetEpicWeaponDevastatingCritical, Hooks::Order::Late);
+    m_GetIsWeaponOfChoiceHook = Hooks::HookFunction(&CNWSCreatureStats::GetIsWeaponOfChoice, &Weapon::GetIsWeaponOfChoice, Hooks::Order::Late);
+    m_GetMeleeDamageBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetMeleeDamageBonus, &Weapon::GetMeleeDamageBonus, Hooks::Order::Late);
+    m_GetDamageBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetDamageBonus, &Weapon::GetDamageBonus, Hooks::Order::Late);
+    m_GetRangedDamageBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetRangedDamageBonus, &Weapon::GetRangedDamageBonus, Hooks::Order::Late);
+    m_GetAttackModifierVersusHook = Hooks::HookFunction(&CNWSCreatureStats::GetAttackModifierVersus, &Weapon::GetAttackModifierVersus, Hooks::Order::Late);
+    m_GetMeleeAttackBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetMeleeAttackBonus, &Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
+    m_GetRangedAttackBonusHook = Hooks::HookFunction(&CNWSCreatureStats::GetRangedAttackBonus, &Weapon::GetRangedAttackBonus, Hooks::Order::Late);
 
     m_DCScript="";
 
@@ -84,10 +81,10 @@ Weapon::~Weapon()
 
 ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -109,15 +106,15 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -139,15 +136,15 @@ ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Greater Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -169,46 +166,43 @@ ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Epic Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto size     = Events::ExtractArgument<int32_t>(args);
+    const auto size     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(size > 0);
       ASSERT_OR_THROW(size <= 255);
 
     CNWBaseItem *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem);
       ASSERT_OR_THROW(pBaseItem);
 
-    m_WeaponFinesseSizeMap.insert({w_bitem, size});
+    pBaseItem->m_nWeaponFinesseMinimumCreatureSize = size;
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetWeaponFinesseSize(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
-
-    const auto baseItem  = Events::ExtractArgument<int32_t>(args);
+    const auto baseItem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(baseItem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(baseItem <= Constants::BaseItem::MAX);
 
-    auto search = m_WeaponFinesseSizeMap.find(baseItem);
-    if (search != m_WeaponFinesseSizeMap.end())
-        retVal = search->second;
+    CNWBaseItem *pBaseItem = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem);
+      ASSERT_OR_THROW(pBaseItem);
 
-    return Events::Arguments(retVal);
+    return !pBaseItem->m_nWeaponFinesseMinimumCreatureSize ? -1 : pBaseItem->m_nWeaponFinesseMinimumCreatureSize;
 }
 
 ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
 
@@ -219,12 +213,12 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Base Item Type %d [%s] set as unarmed weapon", w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
 
@@ -237,15 +231,15 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Base Item Type %d [%s] set as monk weapon", w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -267,15 +261,15 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Improved Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -297,15 +291,15 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -327,15 +321,15 @@ ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Greater Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -357,15 +351,15 @@ ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Epic Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -387,15 +381,15 @@ ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Overwhelming Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -417,15 +411,15 @@ ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Devastating Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
 {
-    const auto w_bitem  = Events::ExtractArgument<int32_t>(args);
+    const auto w_bitem  = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(w_bitem >= Constants::BaseItem::MIN);
       ASSERT_OR_THROW(w_bitem <= Constants::BaseItem::MAX);
-    const auto feat     = Events::ExtractArgument<int32_t>(args);
+    const auto feat     = ScriptAPI::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
       ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
 
@@ -447,13 +441,13 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
     auto baseItemName = pBaseItem->GetNameText();
     LOG_INFO("Weapon of Choice Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetOption(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
-    const auto nVal     = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
+    const auto nVal     = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
@@ -466,34 +460,34 @@ ArgumentStack Weapon::SetOption(ArgumentStack&& args)
             LOG_INFO("Set NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS to %d", nVal);
             break;
     }
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetDevastatingCriticalEventScript(ArgumentStack&& args)
 {
-    m_DCScript = Events::ExtractArgument<std::string>(args);
+    m_DCScript = ScriptAPI::ExtractArgument<std::string>(args);
     LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetEventData(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
         case NWNX_WEAPON_GETDATA_DC:
-            return Events::Arguments(m_DCData.nDamage, m_DCData.oidTarget, m_DCData.oidWeapon);
+            return ScriptAPI::Arguments(m_DCData.nDamage, m_DCData.oidTarget, m_DCData.oidWeapon);
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
 {
-    const auto nOption  = Events::ExtractArgument<int32_t>(args);
-    const auto nVal     = Events::ExtractArgument<int32_t>(args);
+    const auto nOption  = ScriptAPI::ExtractArgument<int32_t>(args);
+    const auto nVal     = ScriptAPI::ExtractArgument<int32_t>(args);
 
     switch(nOption)
     {
@@ -503,7 +497,7 @@ ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
             break;
     }
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 int32_t Weapon::GetWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
@@ -552,16 +546,6 @@ int32_t Weapon::GetEpicWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
         }
     }
     return (bApplicableFeatExists && bHasApplicableFeat ? 1 : plugin.m_GetEpicWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon));
-}
-
-int32_t Weapon::GetWeaponFinesse(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (!pStats->HasFeat(Constants::Feat::WeaponFinesse))
-        return 0;
-
-    return plugin.GetIsWeaponLight(pStats, pWeapon, true) ? 1 : 0;
 }
 
 int32_t Weapon::GetWeaponImprovedCritical(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
@@ -993,12 +977,12 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 
     if(plugin.m_GASling && nBaseItem == Constants::BaseItem::Sling && pStats->m_nRace != Constants::RacialType::Halfling && pStats->HasFeat(Constants::Feat::GoodAim))
     {
-        nMod += Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1);
+        nMod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("GOOD_AIM_MODIFIER"), 1);
 
         if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
         {
             auto sDebugMsg = CExoString(" + ") +
-                             CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1))) +
+                             CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("GOOD_AIM_MODIFIER"), 1))) +
                              CExoString(" (Good Aim Feat)") ;
             auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
             pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
@@ -1129,92 +1113,18 @@ int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, int32_t bInclude
     return nBonus;
 }
 
-
-bool Weapon::GetIsWeaponLight(CNWSCreatureStats* pStats, CNWSItem* pWeapon, bool bFinesse)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (GetIsUnarmedWeapon(pWeapon))
-    {
-        return true;
-    }
-
-    if (pStats->m_pBaseCreature == nullptr ||
-        pStats->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CreatureSize::Tiny ||
-        pStats->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CreatureSize::Huge)
-    {
-        return false;
-    }
-
-    if (bFinesse)
-    {
-        auto w = plugin.m_WeaponFinesseSizeMap.find(pWeapon->m_nBaseItem);
-        int iSize =  (w == plugin.m_WeaponFinesseSizeMap.end()) ? Constants::CreatureSize::Huge + 1 : w->second;
-
-        if (pStats->m_pBaseCreature->m_nCreatureSize >= iSize)
-        {
-            return true;
-        }
-    }
-
-    int rel = pStats->m_pBaseCreature->GetRelativeWeaponSize(pWeapon);
-
-    // Ensure small creatures can finesse small weapons
-    if (bFinesse &&
-        (uint32_t) (pStats->m_pBaseCreature->m_nCreatureSize) <= Constants::CreatureSize::Small)
-    {
-        return (rel <= 0);
-    }
-
-    return (rel < 0);
-}
-
-bool Weapon::GetIsUnarmedWeapon(CNWSItem* pWeapon)
-{
-    Weapon& plugin = *g_plugin;
-
-    if (pWeapon == nullptr)
-        return true;
-
-    // In case of standard unarmed weapon return true
-    if (pWeapon->m_nBaseItem == Constants::BaseItem::Gloves       ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::Bracer       ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreaturePierceWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureBludgeWeapon ||
-        pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashPierceWeapon)
-    {
-        return true;
-    }
-
-    // Check if weapon should be considered unarmed
-    auto w = plugin.m_WeaponUnarmedSet.find(pWeapon->m_nBaseItem);
-    return (w == plugin.m_WeaponUnarmedSet.end()) ? false : true;
-}
-
-int Weapon::GetLevelByClass(CNWSCreatureStats *pStats, uint32_t nClassType)
-{
-    for (int i = 0; i < pStats->m_nNumMultiClasses; i++)
-    {
-        if (pStats->m_ClassInfo[i].m_nClass == nClassType)
-            return pStats->m_ClassInfo[i].m_nLevel;
-    }
-
-    return 0;
-}
-
 ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
 {
-    auto objectId = Events::ExtractArgument<ObjectID>(args);
+    auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     if(objectId == Constants::OBJECT_INVALID)
     {
         LOG_INFO("Invalid Object Passed into SetOneHalfStrength");
-        return Events::Arguments();
+        return ScriptAPI::Arguments();
     }
 
-    auto bMulti = Events::ExtractArgument<int32_t>(args);
-    bool bPersist = !!Events::ExtractArgument<int32_t>(args);
+    auto bMulti = ScriptAPI::ExtractArgument<int32_t>(args);
+    bool bPersist = !!ScriptAPI::ExtractArgument<int32_t>(args);
 
     auto obj = Utils::GetGameObject(objectId);
     if(bMulti)
@@ -1222,12 +1132,12 @@ ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
     else
         obj->nwnxRemove("ONE_HALF_STRENGTH");
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
 {
-    auto objectId = Events::ExtractArgument<ObjectID>(args);
+    auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
     int32_t retVal = 0;
     if(objectId != Constants::OBJECT_INVALID)
     {
@@ -1237,13 +1147,13 @@ ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
             retVal = exist.value();
     }
 
-    return Events::Arguments(retVal);
+    return ScriptAPI::Arguments(retVal);
 }
 
 ArgumentStack Weapon::SetMaxRangedAttackDistanceOverride(ArgumentStack&& args)
 {
-    static Hooks::Hook s_MaxAttackRangeHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14MaxAttackRangeEjii,
-        (void*)+[](CNWSCreature *pCreature, ObjectID oidTarget, BOOL bBaseValue, BOOL bPassiveRange) -> float
+    static Hooks::Hook s_MaxAttackRangeHook = Hooks::HookFunction(&CNWSCreature::MaxAttackRange,
+        +[](CNWSCreature *pCreature, ObjectID oidTarget, BOOL bBaseValue, BOOL bPassiveRange) -> float
         {
             if (auto *pEquippedWeapon = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand))
             {

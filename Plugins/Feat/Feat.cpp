@@ -9,6 +9,7 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "API/CTwoDimArrays.hpp"
@@ -48,7 +49,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
@@ -59,20 +60,20 @@ Feat::Feat(Services::ProxyServiceList* services)
     m_nCustomSpellID = Config::Get<uint32_t>("CUSTOM_SPELL_ID", 0xFFFFFFFF);
 
     // We want the feat bonuses to not count toward limits
-    s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
-                                                             (void*)&GetTotalEffectBonusHook, Hooks::Order::Early);
-    s_SavingThrowRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
-                                                         (void*)&SavingThrowRollHook, Hooks::Order::Early);
-    s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
-                                                        (void*)&GetWeaponPowerHook, Hooks::Order::Early);
+    s_GetTotalEffectBonusHook = Hooks::HookFunction(&CNWSCreature::GetTotalEffectBonus,
+                                                             &GetTotalEffectBonusHook, Hooks::Order::Early);
+    s_SavingThrowRollHook = Hooks::HookFunction(&CNWSCreature::SavingThrowRoll,
+                                                         &SavingThrowRollHook, Hooks::Order::Early);
+    s_GetWeaponPowerHook = Hooks::HookFunction(&CNWSCreature::GetWeaponPower,
+                                                        &GetWeaponPowerHook, Hooks::Order::Early);
 
-    s_AddFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7AddFeatEt, (void*)&AddFeatHook, Hooks::Order::Early);
-    s_RemoveFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, (void*)&RemoveFeatHook, Hooks::Order::Early);
-    s_OnApplyBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti,
-                                                          (void*)&OnApplyBonusFeatHook, Hooks::Order::Early);
-    s_OnRemoveBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect,
-                                                           (void*)&OnRemoveBonusFeatHook, Hooks::Order::Early);
-    s_EatTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&EatTURDHook, Hooks::Order::Early);
+    s_AddFeatHook = Hooks::HookFunction(&CNWSCreatureStats::AddFeat, &AddFeatHook, Hooks::Order::Early);
+    s_RemoveFeatHook = Hooks::HookFunction(&CNWSCreatureStats::RemoveFeat, &RemoveFeatHook, Hooks::Order::Early);
+    s_OnApplyBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyBonusFeat,
+                                                          &OnApplyBonusFeatHook, Hooks::Order::Early);
+    s_OnRemoveBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveBonusFeat,
+                                                           &OnRemoveBonusFeatHook, Hooks::Order::Early);
+    s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD, &EatTURDHook, Hooks::Order::Early);
 }
 
 Feat::~Feat()
@@ -180,6 +181,19 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     if (modConceal != 0)
     {
         g_plugin->DoEffect(pCreature, nFeat,Concealment, modConceal, Constants::RacialType::Invalid);
+    }
+
+    // DAMAGE
+    for (auto &damageMod : g_plugin->m_FeatDamage[nFeat])
+    {
+        auto modDamageType = damageMod.first;
+        auto modDamageValue = damageMod.second;
+        if (modDamageValue != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               modDamageValue > 0 ? DamageIncrease : DamageDecrease,
+                               abs(modDamageValue), modDamageType, 28, 0, 0);
+        }
     }
 
     // DMGIMMUNITY
@@ -319,15 +333,15 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         g_plugin->DoEffect(pCreature, nFeat, SeeInvisible);
     }
 
-    // SPELLSAVEDC
-    if (g_plugin->m_FeatSpellSaveDC[nFeat] != 0)
+    // SPELLSAVEDC / SPELLSAVEDCFORSCHOOL / SPELLSAVEDCFORSPELL
+    if ((g_plugin->m_FeatSpellSaveDC[nFeat] != 0) || (g_plugin->m_FeatSpellSaveDCForSpellSchool[nFeat].second != 0) || (g_plugin->m_FeatSpellSaveDCForSpell[nFeat].second != 0))
     {
         static NWNXLib::Hooks::Hook pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
         {
             pCalculateSpellSaveDC_hook = Hooks::HookFunction(
-                    Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi,
-                    (void*)+[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
+                    &CNWSCreature::CalculateSpellSaveDC,
+                    +[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
                         int iMods = 0;
                         for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
@@ -337,6 +351,31 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                                 iMods += spellSaveDCMod.second;
                             }
                         }
+
+                        auto* pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID);
+                        if (pSpell)
+                        {
+                            for (auto &spellSaveDCSchoolMod : g_plugin->m_FeatSpellSaveDCForSpellSchool)
+                            {
+                                if (pThis->m_pStats->HasFeat(spellSaveDCSchoolMod.first))
+                                {
+                                    auto pairSchoolSave = spellSaveDCSchoolMod.second;
+                                    if (pairSchoolSave.first == pSpell->m_nSchool)
+                                        iMods += pairSchoolSave.second;
+                                }
+                            }
+                        }
+
+                        for (auto &spellSaveDCSpellMod : g_plugin->m_FeatSpellSaveDCForSpell)
+                        {
+                            if (pThis->m_pStats->HasFeat(spellSaveDCSpellMod.first))
+                            {
+                                auto pairSpellSave = spellSaveDCSpellMod.second;
+                                if (pairSpellSave.first == nSpellID)
+                                    iMods += pairSpellSave.second;
+                            }
+                        }
+
                         return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
                     }, Hooks::Order::Late);
         }
@@ -465,7 +504,7 @@ int32_t Feat::GetTotalEffectBonusHook(CNWSCreature *pCreature, uint8_t nEffectBo
         }
         else if (nEffectBonusType == 4)
         {
-            auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
+            auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nAbilityScore];
             pServerExoApp->SetAbilityBonusLimit(pServerExoApp->GetAbilityBonusLimit() + modAbilityBonus);
         }
     }
@@ -595,7 +634,7 @@ void Feat::RemoveFeatHook(CNWSCreatureStats *pCreatureStats, uint16_t nFeat)
 int32_t Feat::OnRemoveBonusFeatHook(CNWSEffectListHandler *pEffectListHandler, CNWSObject *pObject, CGameEffect *pEffect)
 {
     if (auto *pCreature = Utils::AsNWSCreature(pObject))
-        AddFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
+        RemoveFeatEffects(pCreature->m_pStats, pEffect->GetInteger(0));
 
     return s_OnRemoveBonusFeatHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
 }
@@ -709,6 +748,21 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
             }
             g_plugin->m_FeatConcealment[featId] = param1;
             LOG_INFO("%s: Setting Natural Concealment modifier to %d.", featName, param1);
+            break;
+        }
+        case DAMAGE:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Damage modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+            g_plugin->m_FeatDamage[featId][param1] = param2;
+            if (param2 > 0)
+                LOG_INFO("%s: Setting Damage Increase %s to DAMAGE_BONUS_* constant %d.", featName, Constants::DamageType::ToString(param1), param2);
+            else
+                LOG_INFO("%s: Setting Damage Decrease %s DAMAGE_BONUS_* constant  %d.", featName, Constants::DamageType::ToString(param1), param2);
             break;
         }
         case DMGIMMUNITY:
@@ -854,6 +908,34 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
             LOG_INFO("%s: Caster's Spell Save DC will be modified by %d.", featName, param1);
             break;
         }
+        case SPELLSAVEDCFORSCHOOL:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Spell Save DC for school modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+
+            g_plugin->m_FeatSpellSaveDCForSpellSchool[featId] = std::make_pair(param1, param2);
+            LOG_INFO("%s: Caster's Spell Save DC for school %s will be modified by %d.", featName, Constants::SpellSchool::ToString(param1), param2);
+            break;
+        }
+        case SPELLSAVEDCFORSPELL:
+        {
+            if (param2 == (int32_t)0xDEADBEEF)
+            {
+                LOG_ERROR("%s: Spell Save DC for spell modifier improperly set.", featName);
+                retVal = false;
+                break;
+            }
+
+            g_plugin->m_FeatSpellSaveDCForSpell[featId] = std::make_pair(param1, param2);
+
+            auto spellName = Globals::Rules()->m_pSpellArray[0].GetSpell(param1)->GetSpellNameText();
+            LOG_INFO("%s: Caster's Spell Save DC for spell %s will be modified by %d.", featName, spellName, param2);
+            break;
+        }
         case SRCHARGEN:
         {
             g_plugin->m_FeatSRCharGen[featId] = std::make_pair(param1, param2);
@@ -908,17 +990,17 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
 {
-    auto featId = Events::ExtractArgument<int>(args);
-    auto featMod = static_cast<FeatModifier>(Events::ExtractArgument<int>(args));
-    auto param1 = Events::ExtractArgument<int>(args);
-    auto param2 = Events::ExtractArgument<int>(args);
-    auto param3 = Events::ExtractArgument<int>(args);
-    auto param4 = Events::ExtractArgument<int>(args);
+    auto featId = ScriptAPI::ExtractArgument<int>(args);
+    auto featMod = static_cast<FeatModifier>(ScriptAPI::ExtractArgument<int>(args));
+    auto param1 = ScriptAPI::ExtractArgument<int>(args);
+    auto param2 = ScriptAPI::ExtractArgument<int>(args);
+    auto param3 = ScriptAPI::ExtractArgument<int>(args);
+    auto param4 = ScriptAPI::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
         g_plugin->m_Feats.insert(featId);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

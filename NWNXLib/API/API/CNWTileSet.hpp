@@ -42,8 +42,6 @@ struct CNWTileSet : CResHelper<CResSET, 2013>
     CResRef GetEnvMapResRef();
     CNWTileData * GetTileData(int32_t nID);
     BOOL LoadTileSet();
-    BOOL ParseLine(char * pLine);
-    BOOL SetTileValue(char * pVariable, char * pValue);
     void UnloadTileSet();
 
 

@@ -1,6 +1,7 @@
 #include "Events.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSObjectActionNode.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 
 namespace Events {
 
@@ -16,12 +17,12 @@ void HealingEvents() __attribute__((constructor));
 void HealingEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", []() {
-        s_AIActionHealHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode,
-                                          (void*)&AIActionHealHook, Hooks::Order::Early);
+        s_AIActionHealHook = Hooks::HookFunction(&CNWSCreature::AIActionHeal,
+                                          &AIActionHealHook, Hooks::Order::Early);
     });
     InitOnFirstSubscribe("NWNX_ON_HEAL_.*", []() {
-        s_OnApplyHealHook = Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti,
-                                         (void*)&OnApplyHealHook, Hooks::Order::Early);
+        s_OnApplyHealHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyHeal,
+                                         &OnApplyHealHook, Hooks::Order::Early);
     });
 }
 

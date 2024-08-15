@@ -4,15 +4,13 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-extern "C" {
-    #include "External/funchook/include/funchook.h"
-}
+#include "External/funchook/include/funchook.h"
 
 using namespace NWNXLib;
 namespace NWNXLib::Hooks
 {
 
-FunctionHook::FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order)
+FunctionHook::FunctionHook(void* originalFunction, void* newFunction, int32_t order)
     : m_originalFunction(originalFunction), m_newFunction(newFunction), m_order(order)
 {
     auto &v = s_hooks[originalFunction];
@@ -38,7 +36,7 @@ FunctionHook::FunctionHook(uintptr_t originalFunction, void* newFunction, int32_
     }
 
     v.insert(v.begin() + insert, this);
-    
+
     for (int32_t i = insert; i < (int32_t)v.size(); i++)
     {
         v[i]->m_trampoline = (void*)originalFunction;
@@ -62,11 +60,6 @@ FunctionHook::~FunctionHook()
     }
     funchook_uninstall((funchook_t*)m_funchook, 0);
     funchook_destroy((funchook_t*)m_funchook);
-}
-
-Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order)
-{
-    return std::make_unique<FunctionHook>(Platform::GetRelocatedAddress(address), funcPtr, order);
 }
 
 };

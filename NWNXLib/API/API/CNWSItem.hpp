@@ -39,9 +39,8 @@ struct CNWSItem : CNWItem, CNWSObject
     uint32_t m_nUnidentifiedCost;
     int32_t m_nAdditionalCost;
     BOOL m_bRecalculateCost;
-    uint8_t m_nModelPart[3];
-    uint8_t m_nArmorModelPart[19];
-    uint8_t m_nUnalteredArmorModelPart[19];
+    uint16_t m_nModelPart[3];
+    uint16_t m_nArmorModelPart[19];
     OBJECT_ID m_oidPossessor;
     CItemRepository * m_pItemRepository;
     uint8_t m_nRepositoryPositionX;
@@ -90,7 +89,7 @@ struct CNWSItem : CNWItem, CNWSObject
     uint32_t GetCost(BOOL bIncludeStackSize = true, BOOL bIdentifiedCost = false, BOOL bUseILRStackSize = false, BOOL bIgnorePlotFlag = false);
     void SetIdentified(BOOL bIdentified);
     int32_t ComputeArmorClass();
-    uint16_t GetDamageFlags();
+    uint32_t GetDamageFlags();
     BOOL MergeItem(CNWSItem * pItemToMerge);
     CNWSItem * SplitItem(int32_t nNumberToSplitOff);
     void SetNumCharges(int32_t nNumCharges, BOOL bUpdateActiveProperties = true);
@@ -117,6 +116,7 @@ struct CNWSItem : CNWItem, CNWSObject
     void CalculateBaseCosts();
     float CalculatePassiveCost(CNWItemProperty * pItemProperty);
 
+    inline CExoLocString &GetFirstName() override { return m_sName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSItem
     NWN_CLASS_EXTENSION_CNWSItem

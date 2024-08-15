@@ -39,13 +39,16 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_RETAIN_LOCAL_VARIABLES_ON_ITEM_SPLIT` | true or false | When splitting an item, local variables will be copied. |
 | `NWNX_TWEAKS_PREVENT_ATTACK_BONUS_BYPASSING_REDUCTION` | true or false | Prevents attack bonus effects from bypassing damage reductions. |
 | `NWNX_TWEAKS_MATERIAL_NAME_NULL_IS_ALL` | true or false | Makes SetMaterialShaderParamXxx() functions take `sMaterial=""` to mean all materials. |
-| `NWNX_TWEAKS_SUMMON_ASSOCIATE_USE_COMPUTE_SAFE_LOCATION` | true or false | CNWSCreature::SummonAssociate() will use ComputeSafeLocation() instead of ComputeNonVisibleLocation() |
 | `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` | int | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx). |
-| `NWNX_TWEAKS_FIX_DM_FACTION_BUG` | true or false | Fixes a DM faction bug when using a non-DMClient BIC file. |
 | `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
-| `NWNX_TWEAKS_FIX_DM_SELECTION_BOX` | true or false | Fixes the DM creature selection box not showing up when player party control is off. |
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
-| `NWNX_TWEAKS_FIX_MULTICLASS_XP_PENALTY_BUG` | true or false | Fixes a bug where multiclass xp penalties are calculated incorrectly. |
+| `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
+| `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
+| `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
+| `NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Casts all On Hit: Cast Spell item properties on hit, instead of only the first property. |
+| `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` | true or false | If enabled, a creature getting added to an area will fire the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events. |
+| `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` | true or false | The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures |
+| `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
 
 ## Environment variable values
 

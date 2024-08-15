@@ -3,7 +3,7 @@
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 #include "API/Functions.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 //for objectself
 #include "API/CVirtualMachine.hpp"
 // for dlopen
@@ -126,9 +126,9 @@ namespace Lua {
         }
 
         // bind events
-        Events::RegisterEvent(PLUGIN_NAME, "Eval", std::bind(&Lua::Eval, this, std::placeholders::_1));
-        Events::RegisterEvent(PLUGIN_NAME, "EvalVoid", std::bind(&Lua::EvalVoid, this, std::placeholders::_1));
-        Events::RegisterEvent(PLUGIN_NAME, "RunEvent", std::bind(&Lua::RunEvent, this, std::placeholders::_1));
+        ScriptAPI::RegisterEvent(PLUGIN_NAME, "Eval", std::bind(&Lua::Eval, this, std::placeholders::_1));
+        ScriptAPI::RegisterEvent(PLUGIN_NAME, "EvalVoid", std::bind(&Lua::EvalVoid, this, std::placeholders::_1));
+        ScriptAPI::RegisterEvent(PLUGIN_NAME, "RunEvent", std::bind(&Lua::RunEvent, this, std::placeholders::_1));
 
         // RunScript hook
         if(!runScriptTable.empty())
@@ -137,8 +137,8 @@ namespace Lua {
             lua_getglobal(m_luaInstance, runScriptTable.c_str());
             m_runScriptTable = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
 
-            s_RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringjii,
-                (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId)
+            s_RunScriptHook = Hooks::HookFunction(&CVirtualMachine::RunScript,
+                +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid, int32_t eventId)
                 {
                     bool skip = script->m_sString && g_plugin->OnScript(script->m_sString, objId, !!valid);
                     return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid, eventId);
@@ -147,8 +147,8 @@ namespace Lua {
         }
 
         // RunScriptSituation hook
-        s_RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
-            (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID oid, int32_t oidValid)
+        s_RunScriptSituationHook = Hooks::HookFunction(&CVirtualMachine::RunScriptSituation,
+            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID oid, int32_t oidValid)
             {
                 if (strstr(script->m_sScriptName.m_sString, "NWNX_LUA_INTERNAL"))
                 {
@@ -184,10 +184,10 @@ namespace Lua {
     }
 
     // Eval Lua code and returns the result
-    Events::ArgumentStack Lua::Eval(Events::ArgumentStack&& args)
+    ArgumentStack Lua::Eval(ArgumentStack&& args)
     {
-        const auto code = Events::ExtractArgument<std::string>(args);
-        Events::ArgumentStack stack;
+        const auto code = ScriptAPI::ExtractArgument<std::string>(args);
+        ArgumentStack stack;
 
         SetObjectSelf();
 
@@ -196,27 +196,27 @@ namespace Lua {
         if(luaL_dostring(m_luaInstance, code.c_str()))
         {
             LOG_ERROR("Error on Eval: %s", lua_tostring(m_luaInstance, -1));
-            Events::InsertArgument(stack, std::string(""));
+            ScriptAPI::InsertArgument(stack, std::string(""));
         }
         else if(lua_gettop(m_luaInstance))
         {
             size_t iLength = 0;
             const char *returnStr = lua_tolstring(m_luaInstance, -1, &iLength);
-            Events::InsertArgument(stack, std::string(returnStr, iLength));
+            ScriptAPI::InsertArgument(stack, std::string(returnStr, iLength));
         }
         else
         {
-            Events::InsertArgument(stack, std::string(""));
+            ScriptAPI::InsertArgument(stack, std::string(""));
         }
         lua_settop(m_luaInstance, 0);
         return stack;
     }
 
     // Eval Lua code without result
-    Events::ArgumentStack Lua::EvalVoid(Events::ArgumentStack&& args)
+    ArgumentStack Lua::EvalVoid(ArgumentStack&& args)
     {
-        const auto code = Events::ExtractArgument<std::string>(args);
-        Events::ArgumentStack stack;
+        const auto code = ScriptAPI::ExtractArgument<std::string>(args);
+        ArgumentStack stack;
 
         SetObjectSelf();
 
@@ -258,12 +258,12 @@ namespace Lua {
     }
 
     // Call the event function
-    Events::ArgumentStack Lua::RunEvent(Events::ArgumentStack&& args)
+    ArgumentStack Lua::RunEvent(ArgumentStack&& args)
     {
-        const auto eventStr = Events::ExtractArgument<std::string>(args);
-        const auto objectId = Events::ExtractArgument<ObjectID>(args);
-        const auto extraStr = Events::ExtractArgument<std::string>(args);
-        Events::ArgumentStack stack;
+        const auto eventStr = ScriptAPI::ExtractArgument<std::string>(args);
+        const auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
+        const auto extraStr = ScriptAPI::ExtractArgument<std::string>(args);
+        ArgumentStack stack;
 
         SetObjectSelf();
 

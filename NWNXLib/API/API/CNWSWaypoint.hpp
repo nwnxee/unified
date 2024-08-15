@@ -38,6 +38,7 @@ struct CNWSWaypoint : CNWSObject
     BOOL LoadWaypoint(CResGFF * pRes, CResStruct * cWaypointStruct, CExoString * pTag = nullptr);
     BOOL SaveWaypoint(CResGFF * pRes, CResStruct * cWaypointStruct);
 
+    inline CExoLocString &GetFirstName() override { return m_sLocalizedName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSWaypoint
     NWN_CLASS_EXTENSION_CNWSWaypoint

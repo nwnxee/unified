@@ -31,10 +31,6 @@ struct CNWSTrigger : CNWSObject
     CExoString m_sKey;
     int32_t m_nVertices;
     Vector * m_pvVertices;
-    int32_t m_nTriangles;
-    int32_t * m_pnTriangles;
-    int32_t m_nOutlineVertices;
-    int32_t * m_pnOutlineVertices;
     OBJECT_ID m_oidLastEntered;
     OBJECT_ID m_oidLastLeft;
     OBJECT_ID m_oidLastDisarmed;
@@ -87,6 +83,7 @@ struct CNWSTrigger : CNWSObject
     BOOL GetCanFireTrapOnObject(OBJECT_ID oidCreatureEntered, BOOL bForceSet);
     void OnEnterTrap(BOOL bForceSet);
 
+    inline CExoLocString &GetFirstName() override { return m_sLocalizedName; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSTrigger
     NWN_CLASS_EXTENSION_CNWSTrigger

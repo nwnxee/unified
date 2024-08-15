@@ -1,22 +1,24 @@
-__asm__ (
+#include <dlfcn.h>
+#include <stdio.h>
 
-".global NWNX_API_START\n"
-"NWNX_API_START:\n"
-"    nop\n"
+#include "Functions.hpp"
 
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
-#define NWNXLIB_FUNCTION(name, address) \
-".global " #name "\n"                   \
-#name ":\n"                             \
-"movq $0x0000abcd12345678, %rax\n"      \
-"addq $" #address ", %rax\n"            \
-"pushq %rax\n"                          \
-"ret\n"
+
+#define NWNXLIB_FUNCTION(name) \
+    void* NWNXLib::API::Functions::name;
+#include "FunctionsLinux.hpp"
+#undef NWNXLIB_FUNCTION
+
+void NWNXLib::API::Functions::Initialize()
+{
+#define NWNXLIB_FUNCTION(name)                             \
+    name = const_cast<void*>(dlsym(RTLD_DEFAULT, #name )); \
+    if (!name)                                             \
+    {                                                      \
+        printf("dlsym(%s) = null\n", #name);               \
+    }
 
 #include "FunctionsLinux.hpp"
-
-".global NWNX_API_END\n"
-"NWNX_API_END:\n"
-"    nop\n"
-
-);
+#undef NWNXLIB_FUNCTION
+}

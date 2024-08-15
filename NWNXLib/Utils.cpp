@@ -4,7 +4,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
-#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
@@ -27,6 +27,8 @@
 #include "API/CExoString.hpp"
 #include "API/CExoArrayList.hpp"
 #include "../Core/NWNXCore.hpp"
+#include "API/CNWSClient.hpp"
+#include "API/CNWSPlayer.hpp"
 
 #include <cmath>
 #include <sstream>
@@ -46,6 +48,17 @@ std::string ObjectIDToString(const ObjectID id)
     std::stringstream ss;
     ss << std::hex << id;
     return ss.str();
+}
+
+ObjectID StringToObjectID(const std::string idStr)
+{
+    ObjectID oidResult;
+
+    std::stringstream ss;
+    ss << std::hex << idStr;
+    ss >> oidResult;
+
+    return oidResult;
 }
 
 std::string GetCurrentScript()
@@ -258,14 +271,6 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
     }
 }
 
-bool operator==(Vector& v1, Vector& v2)
-{
-    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
-}
-bool operator!=(Vector& v1, Vector& v2)
-{
-    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
-}
 
 bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2)
 {
@@ -401,7 +406,7 @@ void AddDestroyObjectEvent(ObjectID oid)
 int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 {
     auto vm = API::Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(vm->m_pCmdImplementer);
 
     if (vm->m_nRecursionLevel++ == -1)
     {
@@ -422,7 +427,7 @@ int PushScriptContext(ObjectID oid, int32_t scriptEventId, bool valid)
 int PopScriptContext()
 {
     auto vm = API::Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+    auto cmd = static_cast<CNWSVirtualMachineCommands*>(vm->m_pCmdImplementer);
 
     if (--vm->m_nRecursionLevel != -1)
     {
@@ -504,6 +509,10 @@ CNWSDoor* PopDoor(ArgumentStack& args, bool throwOnFail)
 {
     return AsNWSDoor(PopGameObject(args, throwOnFail));
 }
+CNWSStore* PopStore(ArgumentStack& args, bool throwOnFail)
+{
+    return AsNWSStore(PopGameObject(args, throwOnFail));
+}
 CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
 {
     const auto playerId = args.extract<ObjectID>();
@@ -526,5 +535,44 @@ CNWSPlayer* PopPlayer(ArgumentStack& args, bool throwOnFail)
     return pPlayer;
 }
 
+int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType)
+{
+    switch (nwscriptObjectType)
+    {
+        case 1: return Constants::ObjectType::Creature;
+        case 2: return Constants::ObjectType::Item;
+        case 4: return Constants::ObjectType::Trigger;
+        case 8: return Constants::ObjectType::Door;
+        case 16: return Constants::ObjectType::AreaOfEffect;
+        case 32: return Constants::ObjectType::Waypoint;
+        case 64: return Constants::ObjectType::Placeable;
+        case 128: return Constants::ObjectType::Store;
+        case 256: return Constants::ObjectType::Encounter;
+        default: return 0;
+    }
+}
+
+void UpdateClientObjectForPlayer(ObjectID oidObject, CNWSPlayer* pPlayer)
+{
+    for (auto* pLuo : pPlayer->m_lstActiveObjectsLastUpdate)
+    {
+        if (pLuo->m_nId == oidObject) 
+        {
+            pPlayer->m_lstActiveObjectsLastUpdate.Remove(pLuo);
+            delete pLuo;
+            break;
+        }
+    }
+}
+
+void UpdateClientObject(ObjectID oidObject)
+{
+    auto* pPlayerList = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
+    for (auto* pHead = pPlayerList->pHead; pHead; pHead = pHead->pNext)
+    {
+        auto* pPlayer = static_cast<CNWSPlayer*>(static_cast<CNWSClient*>(pHead->pObject));
+        UpdateClientObjectForPlayer(oidObject, pPlayer);
+    }
+}
 
 }

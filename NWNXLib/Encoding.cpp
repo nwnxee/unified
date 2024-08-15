@@ -264,6 +264,10 @@ std::vector<uint8_t> FromBase64(const std::string &in)
     int val = 0, valb = -8;
     for (char c : in)
     {
+        // Ignoring whitespace is conveniently in-spec: Sometimes,
+        // base64 is broken up in 78-column chunks.
+        if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+            continue;
         if (Table[(uint8_t)c] == -1)
             break;
         val = (val<<6) + Table[(uint8_t)c];

@@ -31,7 +31,11 @@
 #include "API/CNWSSpellScriptData.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSpell.hpp"
+#include "API/CNWSPlayer.hpp"
+#include "API/CNWSStore.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CNWSVirtualMachineCommands.hpp"
+#include "API/CNWSEffectListHandler.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -46,6 +50,7 @@ static bool s_bCasterLevelHooksInitialized = false;
 static bool s_bCriticalMultiplierHooksInitialized = false;
 static bool s_bCriticalRangeHooksInitialized = false;
 static bool s_bResolveAttackRollHookInitialized = false;
+static bool s_bResolveInitiativeRollHookInitialized = false;
 static Hooks::Hook s_GetClassLevelHook = nullptr;
 
 static std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> s_RollModifier;
@@ -514,104 +519,6 @@ NWNX_EXPORT ArgumentStack GetPrePolymorphAbilityScore(ArgumentStack&& args)
     return -1;
 }
 
-NWNX_EXPORT ArgumentStack GetMemorisedSpell(ArgumentStack&& args)
-{
-    int32_t id, ready, meta, domain;
-    id = ready = meta = domain = -1;
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<uint8_t>(level),
-                                                                            static_cast<uint8_t>(index)))
-                {
-                    id     = static_cast<int32_t>(pSpell->m_nSpellId);
-                    ready  = pSpell->m_bReadied;
-                    meta   = pSpell->m_nMetaType;
-                    domain = pSpell->m_bDomainSpell;
-                }
-                break;
-            }
-        }
-    }
-    return {id, ready, meta, domain};
-}
-
-NWNX_EXPORT ArgumentStack GetMemorisedSpellCountByLevel(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return classInfo.GetNumberMemorizedSpellSlots(static_cast<uint8_t>(level));
-        }
-    }
-    return 0;
-}
-
-NWNX_EXPORT ArgumentStack SetMemorisedSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        const auto domain  = args.extract<int32_t>();
-        const auto meta    = args.extract<int32_t>();
-        const auto ready   = args.extract<int32_t>();
-        const auto id      = args.extract<int32_t>();
-          ASSERT_OR_THROW(id >= 0);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.SetMemorizedSpellSlot(static_cast<uint8_t>(level),
-                                                static_cast<uint8_t>(index),
-                                                static_cast<uint32_t>(id),
-                                                domain,
-                                                static_cast<uint8_t>(meta));
-
-                classInfo.SetMemorizedSpellInSlotReady(static_cast<uint8_t>(level),
-                                                       static_cast<uint8_t>(index),
-                                                       ready);
-                return {};
-            }
-        }
-    }
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -623,7 +530,7 @@ NWNX_EXPORT ArgumentStack GetRemainingSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -647,7 +554,7 @@ NWNX_EXPORT ArgumentStack SetRemainingSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(slots >= 0);
           ASSERT_OR_THROW(slots <= 255);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -671,56 +578,11 @@ NWNX_EXPORT ArgumentStack GetMaxSpellSlots(ArgumentStack&& args)
           ASSERT_OR_THROW(level >= 0);
           ASSERT_OR_THROW(level < 10);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
                 return (int32_t)(pCreature->m_pStats->GetSpellGainWithBonus(i, level) + classInfo.m_nBonusSpellsList[level]);
-        }
-    }
-    return -1;
-}
-
-NWNX_EXPORT ArgumentStack GetKnownSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return (int32_t)classInfo.GetKnownSpell(level, index);
-        }
-    }
-    return -1;
-}
-
-NWNX_EXPORT ArgumentStack GetKnownSpellCount(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-                return classInfo.GetNumberKnownSpells(static_cast<uint8_t>(level));
         }
     }
     return -1;
@@ -739,7 +601,7 @@ NWNX_EXPORT ArgumentStack RemoveKnownSpell(ArgumentStack&& args)
         const auto spellId = args.extract<int32_t>();
           ASSERT_OR_THROW(spellId >= 0);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -765,62 +627,12 @@ NWNX_EXPORT ArgumentStack AddKnownSpell(ArgumentStack&& args)
         const auto spellId = args.extract<int32_t>();
           ASSERT_OR_THROW(spellId >= 0);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
                 classInfo.AddKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
-                break;
-            }
-        }
-    }
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack ClearMemorisedKnownSpells(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto id      = args.extract<int32_t>();
-          ASSERT_OR_THROW(id >= 0);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.ClearMemorizedKnownSpells(static_cast<uint32_t>(id));
-                break;
-            }
-        }
-    }
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack ClearMemorisedSpell(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto classId = args.extract<int32_t>();
-          ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
-          ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
-        const auto level   = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level < 10);
-        const auto index   = args.extract<int32_t>();
-          ASSERT_OR_THROW(index >= 0);
-          ASSERT_OR_THROW(index <= 255);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                classInfo.ClearMemorizedSpellSlot(level, index);
                 break;
             }
         }
@@ -902,19 +714,29 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactor(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetMovementRateFactorCap(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if(auto pCap = pCreature->nwnxGet<float>("MOVEMENT_RATE_FACTOR_CAP"))
+            return *pCap;
+    }
+    return 0.0f;
+}
+
 NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetMovementRateFactor_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv,
-        (void*)+[](CNWSCreature *pThis) -> float
+        Hooks::HookFunction(&CNWSCreature::GetMovementRateFactor,
+        +[](CNWSCreature *pThis) -> float
         {
             auto pRate = pThis->nwnxGet<float>("MOVEMENT_RATE_FACTOR");
             return pRate.value_or(pGetMovementRateFactor_hook->CallOriginal<float>(pThis));
         }, Hooks::Order::Late);
 
     static Hooks::Hook pSetMovementRateFactor_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf,
-        (void*)+[](CNWSCreature *pThis, float fRate) -> void
+        Hooks::HookFunction(&CNWSCreature::SetMovementRateFactor,
+        +[](CNWSCreature *pThis, float fRate) -> void
         {
             // Always set the default so it goes back to normal if cap is reset
             pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
@@ -986,7 +808,7 @@ NWNX_EXPORT ArgumentStack SetDomain(ArgumentStack&& args)
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
           ASSERT_OR_THROW(pClass != nullptr);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -1013,7 +835,7 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
           ASSERT_OR_THROW(pClass != nullptr);
 
-        for (int32_t i = 0; i < 3; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
@@ -1022,26 +844,6 @@ NWNX_EXPORT ArgumentStack SetSpecialization(ArgumentStack&& args)
                 break;
             }
         }
-    }
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack GetSoundset(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-        return pCreature->m_nSoundSet;
-
-    return -1;
-}
-
-NWNX_EXPORT ArgumentStack SetSoundset(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto soundset = args.extract<int32_t>();
-          ASSERT_OR_THROW(soundset >= 0);
-
-        pCreature->m_nSoundSet = static_cast<uint16_t>(soundset);
     }
     return {};
 }
@@ -1181,20 +983,6 @@ NWNX_EXPORT ArgumentStack GetAttacksPerRound(ArgumentStack&& args)
     return -1;
 }
 
-NWNX_EXPORT ArgumentStack SetGender(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto gender = args.extract<int32_t>();
-          ASSERT_OR_THROW(gender >= 0);
-          ASSERT_OR_THROW(gender <= 255);
-
-        pCreature->m_pStats->m_nGender = gender;
-        pCreature->m_cAppearance.m_nGender = gender;
-    }
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack RestoreFeats(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
@@ -1208,27 +996,6 @@ NWNX_EXPORT ArgumentStack RestoreSpecialAbilities(ArgumentStack&& args)
     if (auto *pCreature = Utils::PopCreature(args))
         pCreature->m_pStats->ResetSpellLikeAbilities();
 
-    return {};
-}
-
-NWNX_EXPORT ArgumentStack RestoreSpells(ArgumentStack&& args)
-{
-    if (auto *pCreature = Utils::PopCreature(args))
-    {
-        const auto level = args.extract<int32_t>();
-          ASSERT_OR_THROW(level >= -1);
-          ASSERT_OR_THROW(level <= 9);
-
-        if (level >= 0 && level <= 9)
-        {
-            pCreature->m_pStats->ReadySpellLevel(level);
-        }
-        else
-        {
-            for (int i = 0; i <= 9; i++)
-               pCreature->m_pStats->ReadySpellLevel(i);
-        }
-    }
     return {};
 }
 
@@ -1356,8 +1123,8 @@ NWNX_EXPORT ArgumentStack GetMovementType(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetWalkRateCap(ArgumentStack&& args)
 {
     static Hooks::Hook pGetWalkRate_hook =
-        Hooks::HookFunction(Functions::_ZN12CNWSCreature11GetWalkRateEv,
-        (void*)+[](CNWSCreature *pThis) -> float
+        Hooks::HookFunction(&CNWSCreature::GetWalkRate,
+        +[](CNWSCreature *pThis) -> float
         {
             float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
 
@@ -1459,8 +1226,8 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 {
     static bool bSkipLevelUpValidation = false;
 
-    static Hooks::Hook pCanLevelUp_hook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
-        (void*)+[](CNWSCreatureStats *pThis) -> int32_t
+    static Hooks::Hook pCanLevelUp_hook = Hooks::HookFunction(&CNWSCreatureStats::CanLevelUp,
+        +[](CNWSCreatureStats *pThis) -> int32_t
         {
             if (bSkipLevelUpValidation && !pThis->m_bIsPC)
             {
@@ -1470,8 +1237,8 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
         }, Hooks::Order::Late);
 
     static Hooks::Hook pValidateLevelUp_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
-        (void*)+[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+        Hooks::HookFunction(&CNWSCreatureStats::ValidateLevelUp,
+        +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
         {
             if (bSkipLevelUpValidation)
             {
@@ -1493,12 +1260,21 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 
         const auto cls = args.extract<int32_t>();
         const auto count = args.extract<int32_t>();
+        int32_t package = 255;
+        try
+        {
+            package = args.extract<int32_t>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Creature_LevelUp: Missing argument \"package\". Continuing with \"package\" = PACKAGE_INVALID. Please update nwnx_creature.nss and recompile your module!");
+        }
 
         // Allow leveling outside of regular rules
         bSkipLevelUpValidation = true;
         for (int32_t i = 0; i < count; i++)
         {
-            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, Constants::ClassType::Invalid))
+            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, package))
             {
                 LOG_WARNING("Failed to add level of class %d, aborting", cls);
                 break;
@@ -1945,12 +1721,12 @@ static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* pThis, uint8_
 }
 static void InitCasterLevelHooks()
 {
-    s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
-                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
+    s_GetClassLevelHook = Hooks::HookFunction(&CNWSCreatureStats::GetClassLevel,
+                                       &CNWSCreatureStats__GetClassLevel, Hooks::Order::Earliest);
 
     static Hooks::Hook s_ExecuteCommandGetCasterLevelHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
-                (void*)+[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandGetCasterLevel,
+                +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -1958,8 +1734,8 @@ static void InitCasterLevelHooks()
                     return retVal;
                 }, Hooks::Order::Early);
     static Hooks::Hook s_ExecuteCommandResistSpellHook =
-            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
-                (void*)+[](CNWVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
+            Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandResistSpell,
+                +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
@@ -1967,8 +1743,8 @@ static void InitCasterLevelHooks()
                     return retVal;
                 }, Hooks::Order::Early);
     static Hooks::Hook s_SetCreatorHook =
-            Hooks::HookFunction(Functions::_ZN11CGameEffect10SetCreatorEj,
-        (void*)+[](CGameEffect *pThis, ObjectID oidCreator)
+            Hooks::HookFunction(&CGameEffect::SetCreator,
+                +[](CGameEffect *pThis, ObjectID oidCreator)
                 {
                     s_bAdjustCasterLevel = true;
                     s_SetCreatorHook->CallOriginal<void>(pThis, oidCreator);
@@ -2068,8 +1844,8 @@ NWNX_EXPORT ArgumentStack JumpToLimbo(ArgumentStack&& args)
 static void InitCriticalMultiplierHook()
 {
     static Hooks::Hook pGetCriticalHitMultiplier_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi,
-        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetCriticalHitMultiplier,
+        +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
             if (!bOffHand) //mainhand
@@ -2245,8 +2021,8 @@ NWNX_EXPORT ArgumentStack GetCriticalMultiplierOverride(ArgumentStack&& args)
 static void InitCriticalRangeHook()
 {
     static NWNXLib::Hooks::Hook pGetCriticalHitRoll_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi,
-        (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetCriticalHitRoll,
+        +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
             if (!bOffHand) //mainhand
@@ -2440,31 +2216,10 @@ NWNX_EXPORT ArgumentStack AddAssociate(ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack SetEffectIconFlashing(ArgumentStack&& args)
-{
-    if (auto* pCreature = Utils::PopCreature(args))
-    {
-        auto iconId = args.extract<int32_t>();
-          ASSERT_OR_THROW(iconId >= 0);
-          ASSERT_OR_THROW(iconId <= 255);
-        auto flashing = !!args.extract<int32_t>();
-
-        for (auto* effectIconObject : pCreature->m_aEffectIcons)
-        {
-            if (effectIconObject->m_nIcon == iconId && effectIconObject->m_nPlayerBar)
-            {
-                effectIconObject->m_bFlashing = flashing;
-            }
-        }
-    }
-
-    return {};
-}
-
 NWNX_EXPORT ArgumentStack OverrideDamageLevel(ArgumentStack&& args)
 {
-    static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(Functions::_ZN10CNWSObject14GetDamageLevelEv,
-        (void*)+[](CNWSObject *pThis) -> uint8_t
+    static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(&CNWSObject::GetDamageLevel,
+        +[](CNWSObject *pThis) -> uint8_t
         {
             auto damageLevel = pThis->nwnxGet<int>("CREATURE_DAMAGE_LEVEL_OVERRIDE");
             return damageLevel.value_or(pGetDamageLevelHook->CallOriginal<uint8_t>(pThis));
@@ -2663,7 +2418,7 @@ static void DoResolveAttackHook(CNWSCreature* pThis, CNWSObject* pTarget)
         if (nParryCheck >= 0)
         {
             pAttackData->m_nAttackResult = 2;
-            if (nParryCheck >= Globals::Rules()->GetRulesetIntEntry("PARRY_RIPOSTE_DIFFERENCE", 10))
+            if (nParryCheck >= Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("PARRY_RIPOSTE_DIFFERENCE"), 10))
                 pTargetCreature->m_pcCombatRound->AddParryAttack(pThis->m_idSelf);
             return;
         }
@@ -2732,8 +2487,8 @@ static void DoResolveAttackHook(CNWSCreature* pThis, CNWSObject* pTarget)
 
 static void InitResolveAttackRollHook()
 {
-    static auto s_ResolveAttackRoll = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
-    (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+    static auto s_ResolveAttackRoll = Hooks::HookFunction(&CNWSCreature::ResolveAttackRoll,
+    +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
     {
         auto pTargetCreature = Utils::AsNWSCreature(pTarget);
         int32_t bRoundPaused = false;
@@ -3009,8 +2764,8 @@ NWNX_EXPORT ArgumentStack GetShieldCheckPenalty(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack SetBypassEffectImmunity(ArgumentStack&& args)
 {
     static Hooks::Hook pGetEffectImmunity_hook =
-        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats17GetEffectImmunityEhP12CNWSCreaturei,
-        (void*)+[](CNWSCreatureStats *pThis, uint8_t nType, CNWSCreature * pVersus, int32_t bConsiderFeats) -> int32_t
+        Hooks::HookFunction(&CNWSCreatureStats::GetEffectImmunity,
+        +[](CNWSCreatureStats *pThis, uint8_t nType, CNWSCreature * pVersus, int32_t bConsiderFeats) -> int32_t
         {
             int32_t BypassCounter = 0;
 
@@ -3105,9 +2860,12 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
           ASSERT_OR_THROW(delay >= 0.0f);
         auto projectilePathType = args.extract<int32_t>();
         auto projectileSpellID = args.extract<int32_t>();
+        auto oidItem = args.extract<ObjectID>();
+        auto impactScript = args.extract<std::string>();
 
         auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(spellID);
         auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget));
+        auto *pItem = Utils::AsNWSObject(Utils::GetGameObject(oidItem));
         auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea));
 
         if (!pSpell || (!pTarget && !pArea))
@@ -3142,9 +2900,9 @@ NWNX_EXPORT ArgumentStack DoItemCastSpell(ArgumentStack&& args)
         pSpellScriptData->m_nFeatId = 0xFFFF;
         pSpellScriptData->m_oidCaster = pCaster->m_idSelf;
         pSpellScriptData->m_oidTarget = pTarget ? pTarget->m_idSelf : Constants::OBJECT_INVALID;
-        pSpellScriptData->m_oidItem = Constants::OBJECT_INVALID;
+        pSpellScriptData->m_oidItem = pItem ? pItem->m_idSelf : Constants::OBJECT_INVALID;
         pSpellScriptData->m_vTargetPosition = vTargetPosition;
-        pSpellScriptData->m_sScript = pSpell->m_sImpactScript;
+        pSpellScriptData->m_sScript = !impactScript.empty() ? CExoString(impactScript) : pSpell->m_sImpactScript;
         pSpellScriptData->m_oidArea = oidTargetArea;
         pSpellScriptData->m_nItemCastLevel = casterLevel;
 
@@ -3200,8 +2958,8 @@ NWNX_EXPORT ArgumentStack RunUnequip(ArgumentStack&& args)
 NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
 {
     static Hooks::Hook s_BroadcastSafeProjectileHook =
-            Hooks::HookFunction(Functions::_ZN10CNWSObject23BroadcastSafeProjectileEjj6VectorS0_jhjhh,
-            (void*)+[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
+            Hooks::HookFunction(&CNWSObject::BroadcastSafeProjectile,
+            +[](CNWSObject *pThis, ObjectID oidOriginator, ObjectID oidTarget, Vector vOriginator, Vector vTarget, uint32_t nDelta,
                        uint8_t nProjectileType, uint32_t nSpellID, uint8_t nAttackResult, uint8_t nProjectilePathType) -> void
             {
                 if (nProjectileType <= 5)
@@ -3234,4 +2992,595 @@ NWNX_EXPORT ArgumentStack OverrideRangedProjectileVFX(ArgumentStack&& args)
     }
 
     return {};
+}
+static void InitInitiativeRollHook()
+{
+    static Hooks::Hook pResolveInitiative_hook = Hooks::HookFunction(&CNWSCreature::ResolveInitiative,
+    +[](CNWSCreature *pCreature) -> void
+    {
+        auto initMod = pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
+        if (!initMod)
+            return pResolveInitiative_hook->CallOriginal<void>(pCreature);
+
+        if (pCreature->m_bInitiativeExpired == 1)
+        {
+            auto pStats = pCreature->m_pStats;
+            auto diceRoll = Globals::Rules()->RollDice(1, 20);
+            auto mod = pStats->GetDEXMod(0);
+            if (pStats->HasFeat(Constants::Feat::EpicSuperiorInitiative))
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("EPIC_SUPERIOR_INITIATIVE_BONUS"), 8);
+            else if (pStats->HasFeat(Constants::Feat::ImprovedInitiative))
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("IMPROVED_INITIATIVE_BONUS"), 4);
+            if (pStats->HasFeat(Constants::Feat::Blooded))
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("BLOODED_INITIATIVE_BONUS"), 2);
+            if (pStats->HasFeat(Constants::Feat::Thug))
+                mod += Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("THUG_INITIATIVE_BONUS"), 2);
+
+            // Add creature bonus
+            mod += initMod;
+
+            pCreature->m_nInitiativeRoll = diceRoll + mod;
+            auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(
+                    pCreature->m_idSelf);
+            if (pPlayer)
+            {
+                CNWCCMessageData messageData;
+                messageData.SetObjectID(0, pCreature->m_idSelf);
+                messageData.SetInteger(0, diceRoll);
+                messageData.SetInteger(1, mod);
+                auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+                if (pMessage)
+                {
+                    pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID,
+                                                          Constants::MessageClientSideMsgMinor::Initiative,
+                                                          &messageData, nullptr);
+                }
+            }
+            pCreature->m_bInitiativeExpired = 0;
+        }
+    }, Hooks::Order::Latest);
+
+    s_bResolveInitiativeRollHookInitialized = true;
+}
+
+NWNX_EXPORT ArgumentStack SetInitiativeModifier(ArgumentStack&& args)
+{
+    if (!s_bResolveInitiativeRollHookInitialized)
+        InitInitiativeRollHook();
+
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        const auto initiativeMod = args.extract<int32_t>();
+        const bool persist = !!args.extract<int32_t>();
+
+        if (initiativeMod)
+            pCreature->nwnxSet("INITIATIVE_MOD", initiativeMod, persist);
+        else
+            pCreature->nwnxRemove("INITIATIVE_MOD");
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetInitiativeModifier(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->nwnxGet<int32_t>("INITIATIVE_MOD").value_or(0);
+    }
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack GetBodyBag(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+        return pCreature->m_oidBodyBag;
+
+    return Constants::OBJECT_INVALID;
+}
+
+NWNX_EXPORT ArgumentStack AddCastSpellActions(ArgumentStack&& args)
+{
+    if (auto* pCreature = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<ObjectID>();
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        const auto fX = args.extract<float>();
+        const auto fY = args.extract<float>();
+        const auto fZ = args.extract<float>();
+        Vector targetLocation{fX, fY, fZ};
+
+        const auto spellId = args.extract<int32_t>();
+          ASSERT_OR_THROW(spellId >= 0);
+        const auto multiClass = args.extract<int32_t>();
+          ASSERT_OR_THROW(multiClass >= 0);
+        const auto metaType = args.extract<int32_t>();
+          ASSERT_OR_THROW(metaType >= 0);
+          ASSERT_OR_THROW(metaType <= 32);
+        const auto domainLevel = args.extract<int32_t>();
+          ASSERT_OR_THROW(domainLevel >= 0);
+        auto projectilePathType = args.extract<int32_t>();
+          ASSERT_OR_THROW(projectilePathType >= 0);
+          ASSERT_OR_THROW(projectilePathType <= 4);
+        const auto instant = !!args.extract<int32_t>();
+        const auto clearActions = !!args.extract<int32_t>();
+        const auto addToFront = !!args.extract<int32_t>();
+
+        if (projectilePathType == 4)
+            projectilePathType = 5;
+
+        bool areaTarget = false;
+        if (Utils::AsNWSArea(Utils::GetGameObject(oidTarget)))
+        {
+            areaTarget = true;
+            oidTarget = Constants::OBJECT_INVALID;
+        }
+
+        if (clearActions)
+            pCreature->ActionManager(0x00000001);
+
+        uint8_t casterLevel = 0xFF;
+        if (multiClass == 254)
+            casterLevel = pCreature->m_pStats->GetSpellLikeAbilityCasterLevel(spellId);
+        if (multiClass == 254 && casterLevel == 0xFF)
+            return false;
+
+        int32_t retVal = pCreature->AddCastSpellActions(spellId, multiClass, domainLevel, metaType, false,
+                                              targetLocation, oidTarget, areaTarget, addToFront, false,
+                                              projectilePathType, instant, false, -1, casterLevel);
+
+        if (retVal && addToFront && instant && !clearActions)
+            pCreature->m_bLastSpellCast = false;
+
+        return retVal;
+    }
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack GetIsFlanking(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pTargetCreature = Utils::PopCreature(args))
+        {
+            return pCreature->GetFlanked(pTargetCreature);
+        }
+    }
+
+    return false;
+}
+
+NWNX_EXPORT ArgumentStack DecrementRemainingSpellSlots(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+
+        auto nSpellLevel = args.extract<int32_t>();
+        ASSERT_OR_THROW(nSpellLevel >= 0);
+        ASSERT_OR_THROW(nSpellLevel < 10);
+
+        for (int i=0; i < pCreature->m_pStats->m_nNumMultiClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->DecrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack IncrementRemainingSpellSlots(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto nClass = args.extract<int32_t>();
+        ASSERT_OR_THROW(nClass >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+
+        auto nSpellLevel = args.extract<int32_t>();
+        ASSERT_OR_THROW(nSpellLevel >= 0);
+        ASSERT_OR_THROW(nSpellLevel < 10);
+
+        for (int i=0; i < pCreature->m_pStats->m_nNumMultiClasses; i++)
+        {
+            if (pCreature->m_pStats->GetClass(i) == nClass)
+            {
+                pCreature->m_pStats->IncrementSpellsPerDayLeft(i, nSpellLevel);
+                break;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaximumBonusAttacks(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+            retVal = *maxBonusAttacks;
+        else
+            retVal = 5;
+    }
+
+    return retVal;
+}
+
+NWNX_EXPORT ArgumentStack SetMaximumBonusAttacks(ArgumentStack&& args)
+{
+    static Hooks::Hook s_ExecuteCommandEffectModifyAttacksHook = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandEffectModifyAttacks,
+    +[](CNWSVirtualMachineCommands *pThis, int32_t, int32_t) -> int32_t
+    {
+        int32_t nNumAttacks;
+
+        if (!Globals::VirtualMachine()->StackPopInteger(&nNumAttacks))
+            return Constants::VMError::StackUnderflow;
+
+        CGameEffect effect(true);
+        effect.m_nType = Constants::EffectTrueType::ModifyNumAttacks;
+        effect.SetCreator(pThis->m_oidObjectRunScript);
+        effect.SetSubType_Magical();
+        effect.SetInteger(0, nNumAttacks);
+
+        if (!Globals::VirtualMachine()->StackPushEngineStructure(Constants::VMStructure::Effect, (void*)&effect))
+            return Constants::VMError::StackOverflow;
+
+        return 0;
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook s_OnApplyModifyNumAttacksHook = Hooks::HookFunction(&CNWSEffectListHandler::OnApplyModifyNumAttacks,
+    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> int32_t
+    {
+        if (pObject->GetDead() && !bLoadingGame)
+            return 1;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            int32_t nMaxBonusAttacks = 5;
+            if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+                nMaxBonusAttacks = *maxBonusAttacks;
+
+            if (pCreature->m_pcCombatRound->m_nBonusEffectAttacks > nMaxBonusAttacks)
+                return 1;
+            else
+            {
+                int32_t nBonusAttacks = pCreature->m_pcCombatRound->m_nBonusEffectAttacks + pEffect->GetInteger(0);
+                nBonusAttacks = std::min(nBonusAttacks, nMaxBonusAttacks);
+                pCreature->m_pcCombatRound->m_nBonusEffectAttacks = nBonusAttacks;
+            }
+        }
+
+        return 0;
+    }, Hooks::Order::Final);
+
+    static auto RecalculateBonusAttacks = [](CNWSCreature *pCreature, CGameEffect *pEffect = nullptr) -> void
+    {
+        int32_t nBonusAttacks = 0;
+        auto *pAppliedEffects = &pCreature->m_appliedEffects;
+        for (int32_t i = 0; i < pAppliedEffects->num; i++)
+        {
+            auto *pAppliedEffect = (*pAppliedEffects)[i];
+            if (pAppliedEffect->m_nType == Constants::EffectTrueType::ModifyNumAttacks)
+            {
+                if (!pEffect || pAppliedEffect != pEffect)
+                    nBonusAttacks += pAppliedEffect->GetInteger(0);
+            }
+            else if (pAppliedEffect->m_nType > Constants::EffectTrueType::ModifyNumAttacks)
+            {
+                break;
+            }
+        }
+
+        int32_t nMaxBonusAttacks = 5;
+        if (auto maxBonusAttacks = pCreature->nwnxGet<int32_t>("MAXIMUM_BONUS_ATTACKS"))
+            nMaxBonusAttacks = *maxBonusAttacks;
+
+        nBonusAttacks = std::min(nBonusAttacks, nMaxBonusAttacks);
+        pCreature->m_pcCombatRound->m_nBonusEffectAttacks = nBonusAttacks;
+    };
+
+    static Hooks::Hook s_OnRemoveModifyNumAttacksHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveModifyNumAttacks,
+    +[](CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
+    {
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        {
+            RecalculateBonusAttacks(pCreature, pEffect);
+        }
+
+        return 1;
+    }, Hooks::Order::Final);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto maxBonusAttacks = args.extract<int32_t>();
+        const auto persist = !!args.extract<int32_t>();
+
+        if (maxBonusAttacks >= 0)
+            pCreature->nwnxSet("MAXIMUM_BONUS_ATTACKS", maxBonusAttacks, persist);
+        else
+            pCreature->nwnxRemove("MAXIMUM_BONUS_ATTACKS");
+
+        RecalculateBonusAttacks(pCreature);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack DoCleaveAttack(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto *pCombatRound = pCreature->m_pcCombatRound;
+
+        if (pCombatRound->GetTotalAttacks() < 50)
+        {
+            bool bHasGreatCleave = pCreature->m_pStats->HasFeat(Constants::Feat::GreatCleave);
+            if (bHasGreatCleave || (pCreature->m_pStats->HasFeat(Constants::Feat::Cleave) && pCombatRound->m_nCleaveAttacks > 0))
+            {
+                float fAttackRange = pCreature->MaxAttackRange(pCreature->m_idSelf, false, true);
+                auto oidNearestEnemy = pCreature->GetNearestEnemy(fAttackRange, pCreature->m_oidAttackTarget, true, false);
+                if (oidNearestEnemy != Constants::OBJECT_INVALID)
+                {
+                    pCombatRound->m_oidNewAttackTarget = oidNearestEnemy;
+                    pCombatRound->AddCleaveAttack(oidNearestEnemy, bHasGreatCleave);
+                    pCreature->m_bPassiveAttackBehaviour = 1;
+
+                    if (!bHasGreatCleave)
+                        pCombatRound->m_nCleaveAttacks--;
+                }
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetLockOrientationToObject(ArgumentStack&& args)
+{
+    ObjectID retval = Constants::OBJECT_INVALID;
+
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(pObject->GetLockOrientationToObject())))
+        {
+            retval = pTarget->m_idSelf;
+        }
+    }
+
+    return retval;
+}
+
+NWNX_EXPORT ArgumentStack SetLockOrientationToObject(ArgumentStack&& args)
+{
+    if (auto *pObject = Utils::PopObject(args))
+    {
+        const auto oidTarget = args.extract<ObjectID>();
+
+        if (auto *pTarget = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        {
+            pObject->SetLockOrientationToObject(pTarget->m_idSelf);
+        }
+        else
+        {
+            pObject->SetLockOrientationToObject(Constants::OBJECT_INVALID);
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack BroadcastAttackOfOpportunity(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidSingleTarget = Constants::OBJECT_INVALID;
+
+        if (auto *pTarget = Utils::PopCreature(args))
+            oidSingleTarget = pTarget->m_idSelf;
+
+        bool bMovement = !!args.extract<int32_t>();
+
+        pCreature->BroadcastAttackOfOpportunity(oidSingleTarget, bMovement);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf)))
+            {
+                return maxBuyPriceOverride.value();
+            }
+        }
+    }
+
+    return -2;
+}
+
+NWNX_EXPORT ArgumentStack SetMaxSellToStorePriceOverride(ArgumentStack&& args)
+{
+    static Hooks::Hook pCalculateItemBuyPrice_hook = Hooks::HookFunction(&CNWSStore::CalculateItemBuyPrice,
+    +[](CNWSStore *pThis, CNWSItem *pItem, OBJECT_ID oidSeller) -> int32_t
+    {
+        if (auto *pSeller = Utils::AsNWSCreature(Utils::GetGameObject(oidSeller)))
+        {
+            if (auto maxBuyPriceOverride = pSeller->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pThis->m_idSelf)))
+            {
+                if (pItem->m_bPlotObject)
+                    return 0;
+
+                if (auto nCost = pItem->GetCost(true, false, false, false))
+                {
+                    auto nMaxBuyPriceOverride = maxBuyPriceOverride.value();
+                    auto nBuyRate = pThis->GetCustomerBuyRate(oidSeller, pItem->m_bStolen);
+                    auto nBuyPrice = nCost * nBuyRate / 100.0;
+
+                    if (nMaxBuyPriceOverride != -1 && nMaxBuyPriceOverride < nBuyPrice)
+                        nBuyPrice = nMaxBuyPriceOverride;
+
+                    if (nBuyPrice < 1)
+                        nBuyPrice = 1;
+
+                    return nBuyPrice;
+                }
+
+                return 0;
+            }
+        }
+
+        return pCalculateItemBuyPrice_hook->CallOriginal<int32_t>(pThis, pItem, oidSeller);
+    }, Hooks::Order::Final);
+
+    static Hooks::Hook pSendServerToPlayerOpenStoreInventory_hook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerOpenStoreInventory,
+    +[](CNWSMessage *pThis, CNWSPlayer *pPlayer, OBJECT_ID oidStore, uint8_t nPanel) -> bool
+    {
+        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+        {
+            if (auto *pStore = Utils::AsNWSStore(Utils::GetGameObject(oidStore)))
+            {
+                if (auto maxBuyPriceOverride = pCreature->nwnxGet<int32_t>("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(oidStore)))
+                {
+                    auto nMaxBuyPrice = pStore->m_iMaxBuyPrice;
+
+                    pStore->m_iMaxBuyPrice = maxBuyPriceOverride.value();
+                    auto retVal = pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+                    pStore->m_iMaxBuyPrice = nMaxBuyPrice;
+
+                    return retVal;
+                }
+            }
+        }
+
+        return pSendServerToPlayerOpenStoreInventory_hook->CallOriginal<bool>(pThis, pPlayer, oidStore, nPanel);
+    }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        if (auto *pStore = Utils::AsNWSStore(Utils::PopGameObject(args)))
+        {
+            const auto nMaxBuyPrice = args.extract<int32_t>();
+
+            if (nMaxBuyPrice == -2)
+                pCreature->nwnxRemove("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf));
+            else
+                pCreature->nwnxSet("STORE_MAX_SELL_TO_PRICE_OVERRIDE!" + NWNXLib::Utils::ObjectIDToString(pStore->m_idSelf), nMaxBuyPrice, false);
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+
+        if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            return pLevelStats->m_nAbilityGain;
+        }
+    }
+
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetAbilityIncreaseByLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto level = args.extract<int32_t>();
+          ASSERT_OR_THROW(level >= 1);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
+        const auto ability = args.extract<int32_t>();
+          ASSERT_OR_THROW(ability >= Constants::Ability::MIN);
+          ASSERT_OR_THROW(ability <= Constants::Ability::MAX);
+
+        if ((level > 0) && (level <= pCreature->m_pStats->m_lstLevelStats.num))
+        {
+            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
+            ASSERT_OR_THROW(pLevelStats);
+
+            if (pLevelStats->m_nAbilityGain != ability)
+            {
+                switch (pLevelStats->m_nAbilityGain)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase - 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase - 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase - 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase - 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase - 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase - 1);
+                        break;
+                }
+
+                switch (ability)
+                {
+                    case Constants::Ability::Strength:
+                        pCreature->m_pStats->SetSTRBase(pCreature->m_pStats->m_nStrengthBase + 1);
+                        break;
+                    case Constants::Ability::Dexterity:
+                        pCreature->m_pStats->SetDEXBase(pCreature->m_pStats->m_nDexterityBase + 1);
+                        break;
+                    case Constants::Ability::Constitution:
+                        pCreature->m_pStats->SetCONBase(pCreature->m_pStats->m_nConstitutionBase + 1, true);
+                        break;
+                    case Constants::Ability::Intelligence:
+                        pCreature->m_pStats->SetINTBase(pCreature->m_pStats->m_nIntelligenceBase + 1);
+                        break;
+                    case Constants::Ability::Wisdom:
+                        pCreature->m_pStats->SetWISBase(pCreature->m_pStats->m_nWisdomBase + 1);
+                        break;
+                    case Constants::Ability::Charisma:
+                        pCreature->m_pStats->SetCHABase(pCreature->m_pStats->m_nCharismaBase + 1);
+                        break;
+                }
+
+                pLevelStats->m_nAbilityGain = ability;
+            }
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxAttackRange(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto oidTarget = args.extract<OBJECT_ID>();
+        return pCreature->MaxAttackRange(oidTarget);
+    }
+
+    return 0.0f;
 }

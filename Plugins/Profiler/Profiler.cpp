@@ -1,6 +1,7 @@
 #include "Profiler.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "ProfilerMacros.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
@@ -119,8 +120,8 @@ Profiler::Profiler(Services::ProxyServiceList* services)
 
     if (g_recalibrate || g_tickrate)
     {
-        s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                      (void*)&MainLoopUpdate, Hooks::Order::Earliest);
+        s_MainLoopHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop,
+                                                      &MainLoopUpdate, Hooks::Order::Earliest);
     }
 
     // Resamples all of the automated timing data.
@@ -159,31 +160,31 @@ Profiler::Profiler(Services::ProxyServiceList* services)
             });
     }
 
-    Events::RegisterEvent(PLUGIN_NAME, "PushPerfScope",
-        [this](Events::ArgumentStack&& args)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "PushPerfScope",
+        [this](ArgumentStack&& args)
         {
-            std::string scopeName = Events::ExtractArgument<std::string>(args);
+            std::string scopeName = ScriptAPI::ExtractArgument<std::string>(args);
 
             NWNXLib::Services::MetricData::Tags tags;
 
             while (!args.empty())
             {
                 ASSERT(args.size() >= 2);
-                std::string tag = Events::ExtractArgument<std::string>(args);
-                std::string value = Events::ExtractArgument<std::string>(args);
+                std::string tag = ScriptAPI::ExtractArgument<std::string>(args);
+                std::string value = ScriptAPI::ExtractArgument<std::string>(args);
                 tags.emplace_back(std::make_pair(std::move(tag), std::move(value)));
             }
 
             PushPerfScope(std::move(scopeName), std::move(tags));
-            return Events::Arguments();
+            return ScriptAPI::Arguments();
         });
 
 
-    Events::RegisterEvent(PLUGIN_NAME, "PopPerfScope",
-        [this](Events::ArgumentStack&&)
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "PopPerfScope",
+        [this](ArgumentStack&&)
         {
             PopPerfScope();
-            return Events::Arguments();
+            return ScriptAPI::Arguments();
         });
 }
 

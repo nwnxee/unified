@@ -40,18 +40,15 @@
 > 
 > copyruntimeconfiguration &
 79c107,109
-< LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
+< LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
-> exec ./nwserver-linux \
+> exec ./nwserver \
 84d113
 <   -module "${NWN_MODULE:-DockerDemo}" \
-102c131
+102,114c131
 <   ${args[@]}
----
->   "${args[@]}"
-103,114d131
 < RET=$?
 < set -e
 < 
@@ -64,3 +61,5 @@
 <   cp -va $HOMEPATH/nwserver-crash*.log $ROHOMEPATH/ || true
 < fi
 < exit $RET
+---
+>   "${args[@]}"
