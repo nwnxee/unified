@@ -2,7 +2,7 @@
 @ingroup httpclient
 
 ## Introduction
-The HTTP Plugin provides access to a Client to perform requests and return responses.
+The HTTPClient Plugin provides access to an HTTP Client to perform requests and return responses.
 
 ## Environment Variables
 
