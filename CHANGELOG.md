@@ -12,7 +12,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 
 ##### New Plugins
 - Store: Enables getting and setting store data.
-- HTTP: Client functionality.
+- HTTPClient: Perform HTTP Action like POST and GET and return responses.
 
 ##### New NWScript Functions
 - Util: GetModuleTlkFile()
