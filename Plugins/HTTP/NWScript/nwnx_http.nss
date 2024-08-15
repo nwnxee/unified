@@ -56,14 +56,6 @@ struct NWNX_HTTP_Client_Request
     string sHeaders; ///< Pipe (|) delimited header pairs, e.g. "User-Agent: My NWNX HTTP Client|Accept: application/vnd.github.v3+json"
 };
 
-/// @brief Returns a string to the http server
-/// @param nRequestId The id of the http server request
-/// @param sMessage The message to return
-/// @param nContentType The content type from @ref content_types "content_types" 
-/// @param nCache Length in seconds to cache the response
-/// @remark The cache setting does not honour any http client cache related headers, it merely caches an event response on the c++ side.
-void NWNX_HTTP_Server_SendResponse(int nRequestId, string sMessage, int nContentType = NWNX_HTTP_CONTENT_TYPE_HTML, int nCache = 0);
-
 /// @brief Sends an http method to the given host.
 /// @param s The structured NWNX_HTTP_Client_Request information.
 /// @return A unique identifier for the request for later access in the REQUEST_ID event data.
@@ -75,16 +67,6 @@ int NWNX_HTTP_Client_SendRequest(struct NWNX_HTTP_Client_Request s);
 struct NWNX_HTTP_Client_Request NWNX_HTTP_Client_GetRequest(int nRequestId);
 
 /// @}
-
-void NWNX_HTTP_Server_SendResponse(int nRequestId, string sMessage, int nContentType, int nCache)
-{
-    string sFunc = "Server_SendResponse";
-    NWNX_PushArgumentInt(NWNX_HTTP, sFunc, nCache);
-    NWNX_PushArgumentInt(NWNX_HTTP, sFunc, nContentType);
-    NWNX_PushArgumentString(NWNX_HTTP, sFunc, sMessage);
-    NWNX_PushArgumentInt(NWNX_HTTP, sFunc, nRequestId);
-    NWNX_CallFunction(NWNX_HTTP, sFunc);
-}
 
 int NWNX_HTTP_Client_SendRequest(struct NWNX_HTTP_Client_Request s)
 {

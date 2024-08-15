@@ -1,7 +1,5 @@
 #include "HTTP.hpp"
 #include "HTTP/Client.hpp"
-#include "HTTP/RPC.hpp"
-#include "HTTP/Server.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -21,15 +19,6 @@ HTTP::HTTP(Services::ProxyServiceList* services)
         : Plugin(services)
 {
     m_Client = std::make_unique<Client>();
-    bool bRPC = Config::Get<bool>("RPC", false);
-    if (Config::Get<bool>("SERVER", false) || bRPC)
-    {
-        m_Server = std::make_unique<Server>();
-        if (bRPC)
-        {
-            m_RPC = std::make_unique<RPC>();
-        }
-    }
 }
 
 HTTP::~HTTP()

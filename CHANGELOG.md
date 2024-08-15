@@ -254,7 +254,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 - Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
 
 ##### New Plugins
-- HTTP: Server and client functionality.
+- HTTP: Client functionality.
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions

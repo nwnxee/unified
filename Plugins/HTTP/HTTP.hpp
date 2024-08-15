@@ -5,8 +5,6 @@
 
 namespace HTTP {
     class Client;
-    class RPC;
-    class Server;
 
     class HTTP : public NWNXLib::Plugin
     {
@@ -54,8 +52,6 @@ namespace HTTP {
 
     private:
         std::unique_ptr<Client> m_Client;
-        std::unique_ptr<RPC> m_RPC;
-        std::unique_ptr<Server> m_Server;
     };
 
 }
