@@ -50,22 +50,22 @@ Here is an example of posting an issue to a github repository.
 
 
     struct NWNX_HTTPClient_Request stGithubPost;
-    stGithubPost.nRequestMethod = NWNX_HTTP_REQUEST_METHOD_POST;
+    stGithubPost.nRequestMethod = NWNX_HTTPCLIENT_REQUEST_METHOD_POST;
     stGithubPost.sHost = "api.github.com";
     stGithubPost.sPath = NWNX_Util_GetEnvironmentVariable("GITHUB_REPO_PATH") + "/issues";
     stGithubPost.sData = JsonDump(githubJSON);
-    stGithubPost.nAuthType = NWNX_HTTP_AUTH_TYPE_BASIC;
+    stGithubPost.nAuthType = NWNX_HTTPCLIENT_AUTH_TYPE_BASIC;
     stGithubPost.sAuthUserOrToken = NWNX_Util_GetEnvironmentVariable("GITHUB_USERNAME");
     stGithubPost.sAuthPassword = NWNX_Util_GetEnvironmentVariable("GITHUB_NWN_PAT");
     stGithubPost.sHeaders = "Accept: application/vnd.github.v3+json";
-    stGithubPost.nContentType = NWNX_HTTP_CONTENT_TYPE_JSON;
+    stGithubPost.nContentType = NWNX_HTTPCLIENT_CONTENT_TYPE_JSON;
     NWNX_HTTPClient_SendRequest(stGithubPost);
 ```
 
 Here's an example of insulting a PC when they enter an area
 ```c
    struct NWNX_HTTPClient_Request stInsultGen;
-   stInsultGen.nRequestMethod = NWNX_HTTP_REQUEST_METHOD_GET;
+   stInsultGen.nRequestMethod = NWNX_HTTPCLIENT_REQUEST_METHOD_GET;
    stInsultGen.sHost = "evilinsult.com";
    stInsultGen.sPath = "/generate_insult.php";
    stInsultGen.oObject = GetEnteringObject();
