@@ -273,9 +273,8 @@ using socket_t = int;
 #if OPENSSL_VERSION_NUMBER < 0x1010107f
 #error Please use OpenSSL or a current version of BoringSSL
 #endif
-#define SSL_get1_peer_certificate SSL_get_peer_certificate
 #elif OPENSSL_VERSION_NUMBER < 0x30000000L
-#error Sorry, OpenSSL versions prior to 3.0.0 are not supported
+#define SSL_get1_peer_certificate SSL_get_peer_certificate
 #endif
 
 #endif
