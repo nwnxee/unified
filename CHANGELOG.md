@@ -19,7 +19,7 @@ https://github.com/nwnxee/unified/compare/build8193.34...HEAD
 - Events: added skippable event `NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_{BEFORE|AFTER}` which fires when the dm_visualeffect console command is used.
 
 ##### New Plugins
-- N/A
+- HTTP: Client functionality
 
 ##### New NWScript Functions
 - Area: GetTileInfoByTileIndex()
@@ -254,7 +254,6 @@ https://github.com/nwnxee/unified/compare/build8193.20...build8193.21
 - Optimizations: Added `PlayerLookup` optimization that speeds up some player related functions on highly populated servers.
 
 ##### New Plugins
-- HTTP: Client functionality.
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions
