@@ -2,7 +2,7 @@
 
 #include "HTTP.hpp"
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace HTTP {
 

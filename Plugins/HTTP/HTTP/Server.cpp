@@ -12,7 +12,7 @@ std::chrono::milliseconds Server::m_responseTimeout;
 
 Server::Server()
 {
-    Events::RegisterEvent(PLUGIN_NAME, "Server_SendResponse", &SendResponse);
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "Server_SendResponse", &SendResponse);
 
     m_responseTimeout = std::chrono::milliseconds(Config::Get<int>("SERVER_RESPONSE_TIMEOUT", 1000));
     auto rootHTML = Config::Get<std::string>("SERVER_ROOT_HTML", "<html><head><title>Welcome to nwnx http!</title></head><body><h1>Welcome to nwnx http!</h1></body></html>");
@@ -156,21 +156,21 @@ Server::Response Server::WaitForResponse(uint32_t requestThreadId, const std::at
     return m_responses[requestThreadId];
 }
 
-Events::ArgumentStack Server::SendResponse(Events::ArgumentStack&& args)
+ScriptAPI::ArgumentStack Server::SendResponse(ScriptAPI::ArgumentStack&& args)
 {
     if (!m_httpServerThread || !m_httpServer->is_running())
     {
         LOG_ERROR("Can't send HTTP server response, no server is running!");
-        return Events::Arguments();
+        return ScriptAPI::Arguments();
     }
-    auto requestId = Events::ExtractArgument<int>(args);
-    auto response = Events::ExtractArgument<std::string>(args);
-    auto contentType = Events::ExtractArgument<int>(args);
-    auto cacheSeconds = Events::ExtractArgument<int>(args);
+    auto requestId = ScriptAPI::ExtractArgument<int>(args);
+    auto response = ScriptAPI::ExtractArgument<std::string>(args);
+    auto contentType = ScriptAPI::ExtractArgument<int>(args);
+    auto cacheSeconds = ScriptAPI::ExtractArgument<int>(args);
     auto cacheUntil = std::chrono::system_clock::now() + std::chrono::seconds(cacheSeconds);
     m_responses[requestId] = Server::Response(response, static_cast<HTTP::ContentType>(contentType), cacheUntil);
 
-    return Events::Arguments();
+    return ScriptAPI::Arguments();
 }
 
 }

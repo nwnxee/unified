@@ -34,7 +34,7 @@ ItemAppearance::ItemAppearance(Services::ProxyServiceList* services)
         : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(CacheAppearances);
@@ -55,7 +55,7 @@ ItemAppearance::~ItemAppearance()
 
 CNWSItem *ItemAppearance::item(ArgumentStack& args)
 {
-    const auto objectId = Events::ExtractArgument<ObjectID>(args);
+    const auto objectId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -283,8 +283,8 @@ ArgumentStack ItemAppearance::CacheAppearances(ArgumentStack&&)
 ArgumentStack ItemAppearance::SyncAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto baseItem = Events::ExtractArgument<int32_t>(args);
-    auto models = Events::ExtractArgument<std::string>(args);
+    auto baseItem = ScriptAPI::ExtractArgument<int32_t>(args);
+    auto models = ScriptAPI::ExtractArgument<std::string>(args);
     auto resRef = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem)->m_ItemClassResRefChunk;
 
     std::vector<int8_t> range;
@@ -329,13 +329,13 @@ ArgumentStack ItemAppearance::SyncAppearance(ArgumentStack&& args)
 ArgumentStack ItemAppearance::BlacklistAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto baseItem = Events::ExtractArgument<int32_t>(args);
-    auto bot = Events::ExtractArgument<std::string>(args);
-    auto mid = Events::ExtractArgument<std::string>(args);
-    auto top = Events::ExtractArgument<std::string>(args);
-    auto botc = Events::ExtractArgument<std::string>(args);
-    auto midc = Events::ExtractArgument<std::string>(args);
-    auto topc = Events::ExtractArgument<std::string>(args);
+    auto baseItem = ScriptAPI::ExtractArgument<int32_t>(args);
+    auto bot = ScriptAPI::ExtractArgument<std::string>(args);
+    auto mid = ScriptAPI::ExtractArgument<std::string>(args);
+    auto top = ScriptAPI::ExtractArgument<std::string>(args);
+    auto botc = ScriptAPI::ExtractArgument<std::string>(args);
+    auto midc = ScriptAPI::ExtractArgument<std::string>(args);
+    auto topc = ScriptAPI::ExtractArgument<std::string>(args);
 
     uint16_t modelType = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem)->m_nModelType;
     uint8_t rangeCheck = 25;
@@ -527,7 +527,7 @@ ArgumentStack ItemAppearance::GetRandomAppearance(ArgumentStack&& args)
     if (auto *pItem = item(args))
     {
         auto baseItem = pItem->m_nBaseItem;
-        auto index = Events::ExtractArgument<int32_t>(args);
+        auto index = ScriptAPI::ExtractArgument<int32_t>(args);
         auto resRef = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem)->m_ItemClassResRefChunk;
         std::random_device random_device;
         std::mt19937 engine{random_device()};
@@ -570,7 +570,7 @@ ArgumentStack ItemAppearance::GetRandomAppearance(ArgumentStack&& args)
             default:
                 break;
         }
-        Events::InsertArgument(stack, randomElement);
+        ScriptAPI::InsertArgument(stack, randomElement);
     }
 
     return stack;
@@ -582,7 +582,7 @@ ArgumentStack ItemAppearance::GetNextPreviousAppearanceColor(ArgumentStack& args
     int32_t retVal = -1;
     if (auto *pItem = item(args))
     {
-        auto part = Events::ExtractArgument<int32_t>(args);
+        auto part = ScriptAPI::ExtractArgument<int32_t>(args);
         auto resRef = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pItem->m_nBaseItem)->m_ItemClassResRefChunk;
 
         switch (Globals::Rules()->m_pBaseItemArray->GetBaseItem(pItem->m_nBaseItem)->m_nModelType)
@@ -771,7 +771,7 @@ ArgumentStack ItemAppearance::GetNextPreviousAppearanceColor(ArgumentStack& args
                 break;
         }
     }
-    Events::InsertArgument(stack, retVal);
+    ScriptAPI::InsertArgument(stack, retVal);
     return stack;
 }
 

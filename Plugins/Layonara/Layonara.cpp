@@ -13,6 +13,7 @@
 #include "API/CNWSArea.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSModule.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSModule.hpp"
@@ -50,7 +51,7 @@ Layonara::Layonara(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func) \
-    Events::RegisterEvent(PLUGIN_NAME, #func, \
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
     REGISTER(SetEquippableSlots);
     REGISTER(SetHostileFeat);
@@ -68,10 +69,8 @@ Layonara::Layonara(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_getItemInSlotHook = Hooks::HookFunction(
-            Functions::_ZN13CNWSInventory13GetItemInSlotEj,(void*)&GetItemInSlotHook, Hooks::Order::Early);
-    s_setPositionHook = Hooks::HookFunction(
-            Functions::_ZN10CNWSObject11SetPositionE6Vectori,(void*)&SetPositionHook, Hooks::Order::Early);
+    s_getItemInSlotHook = Hooks::HookFunction(&CNWSInventory::GetItemInSlot,&GetItemInSlotHook, Hooks::Order::Early);
+    s_setPositionHook = Hooks::HookFunction(&CNWSObject::SetPosition,&SetPositionHook, Hooks::Order::Early);
 
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
@@ -214,8 +213,8 @@ void Layonara::SetArrowsEffect(CNWSCreature *pCreature, bool bOff)
 ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto baseItemId =  Events::ExtractArgument<int32_t>(args);
-    auto slots =  Events::ExtractArgument<int32_t>(args);
+    auto baseItemId =  ScriptAPI::ExtractArgument<int32_t>(args);
+    auto slots =  ScriptAPI::ExtractArgument<int32_t>(args);
     Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItemId)->m_nEquipableSlots = slots;
     return stack;
 }
@@ -223,8 +222,8 @@ ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
 ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto featId =  Events::ExtractArgument<int32_t>(args);
-    auto hostile =  Events::ExtractArgument<int32_t>(args);
+    auto featId =  ScriptAPI::ExtractArgument<int32_t>(args);
+    auto hostile =  ScriptAPI::ExtractArgument<int32_t>(args);
     auto feat = Globals::Rules()->GetFeat(featId);
     feat->m_bHostileFeat = hostile;
     return stack;
@@ -233,8 +232,8 @@ ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto nBonus = ScriptAPI::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -269,8 +268,8 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto nBonus = ScriptAPI::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -303,8 +302,8 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto nBonus = ScriptAPI::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -336,8 +335,8 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto nActive = Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto nActive = ScriptAPI::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -381,8 +380,8 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto itemId = Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto itemId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
     if (!pCreature)
@@ -571,8 +570,8 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal;
-    const auto targetRuneId = Events::ExtractArgument<ObjectID>(args);
-    const auto runeId = Events::ExtractArgument<ObjectID>(args);
+    const auto targetRuneId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto runeId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     auto *pTgtGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(targetRuneId);
     auto *pTgtItem = pTgtGameObject->AsNWSItem();
@@ -625,7 +624,7 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
     else
         retVal = "";
 
-    Events::InsertArgument(stack, retVal);
+    ScriptAPI::InsertArgument(stack, retVal);
     return stack;
 }
 
@@ -633,7 +632,7 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal;
-    const auto runeId = Events::ExtractArgument<ObjectID>(args);
+    const auto runeId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(runeId);
     auto *pItem = pGameObject->AsNWSItem();
@@ -734,15 +733,15 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
 
     retVal = retVal + "\nThe rune's effects will last for " + std::to_string(fDuration/60) + " minutes.\n";
 
-    Events::InsertArgument(stack, retVal);
+    ScriptAPI::InsertArgument(stack, retVal);
     return stack;
 }
 
 ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
-    const auto nColor = Events::ExtractArgument<int32_t>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
+    const auto nColor = ScriptAPI::ExtractArgument<int32_t>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -787,7 +786,7 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
 ArgumentStack Layonara::SetQuiverArrows(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -953,7 +952,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bDoingC
 ArgumentStack Layonara::ClearSurfaceMaterial(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto creatureId = Events::ExtractArgument<ObjectID>(args);
+    const auto creatureId = ScriptAPI::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {

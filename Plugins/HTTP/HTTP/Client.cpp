@@ -11,8 +11,8 @@ namespace HTTP
 
 Client::Client()
 {
-    Events::RegisterEvent(PLUGIN_NAME, "Client_SendRequest", &SendRequest);
-    Events::RegisterEvent(PLUGIN_NAME, "Client_GetRequest", &GetRequest);
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "Client_SendRequest", &SendRequest);
+    ScriptAPI::RegisterEvent(PLUGIN_NAME, "Client_GetRequest", &GetRequest);
     m_clientTimeout = Config::Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
 }
 
@@ -171,48 +171,48 @@ httplib::Headers Client::ParseHeaderString(const std::string& headerStr)
     return headers;
 }
 
-Events::ArgumentStack Client::SendRequest(Events::ArgumentStack&& args)
+ScriptAPI::ArgumentStack Client::SendRequest(ScriptAPI::ArgumentStack&& args)
 {
     auto clientReq = Request();
     clientReq.id = m_clientRequestId++;
-    clientReq.tag =  Events::ExtractArgument<std::string>(args);
-    clientReq.requestMethod = static_cast<HTTP::RequestMethod>(Events::ExtractArgument<int>(args));
-    clientReq.host =  Events::ExtractArgument<std::string>(args);
-    clientReq.path = Events::ExtractArgument<std::string>(args);
-    clientReq.contentType = static_cast<HTTP::ContentType>(Events::ExtractArgument<int>(args));
-    clientReq.data = Events::ExtractArgument<std::string>(args);
-    clientReq.authType = static_cast<HTTP::AuthenticationType>(Events::ExtractArgument<int>(args));
-    clientReq.authUserToken = Events::ExtractArgument<std::string>(args);
-    clientReq.authPassword = Events::ExtractArgument<std::string>(args);
-    clientReq.port =  Events::ExtractArgument<int>(args);
+    clientReq.tag =  ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.requestMethod = static_cast<HTTP::RequestMethod>(ScriptAPI::ExtractArgument<int>(args));
+    clientReq.host =  ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.path = ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.contentType = static_cast<HTTP::ContentType>(ScriptAPI::ExtractArgument<int>(args));
+    clientReq.data = ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.authType = static_cast<HTTP::AuthenticationType>(ScriptAPI::ExtractArgument<int>(args));
+    clientReq.authUserToken = ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.authPassword = ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.port =  ScriptAPI::ExtractArgument<int>(args);
     if (!clientReq.port) clientReq.port = 443;
-    clientReq.headersString = Events::ExtractArgument<std::string>(args);
+    clientReq.headersString = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.headers = ParseHeaderString(clientReq.headersString);
     m_clientRequests[clientReq.id] = clientReq;
     PerformRequest(clientReq);
 
-    return Events::Arguments(clientReq.id);
+    return ScriptAPI::Arguments(clientReq.id);
 }
 
-Events::ArgumentStack Client::GetRequest(Events::ArgumentStack&& args)
+ScriptAPI::ArgumentStack Client::GetRequest(ScriptAPI::ArgumentStack&& args)
 {
-    Events::ArgumentStack stack;
-    auto requestId = Events::ExtractArgument<int>(args);
+    ScriptAPI::ArgumentStack stack;
+    auto requestId = ScriptAPI::ExtractArgument<int>(args);
     auto req = m_clientRequests.find(requestId);
     ASSERT_OR_THROW(req != std::end(m_clientRequests));
     auto clientReq = req->second;
 
-    Events::InsertArgument(stack, clientReq.headersString);
-    Events::InsertArgument(stack, (int32_t)clientReq.port);
-    Events::InsertArgument(stack, clientReq.authPassword);
-    Events::InsertArgument(stack, clientReq.authUserToken);
-    Events::InsertArgument(stack, (int32_t)clientReq.authType);
-    Events::InsertArgument(stack, clientReq.data);
-    Events::InsertArgument(stack, (int32_t)clientReq.contentType);
-    Events::InsertArgument(stack, clientReq.path);
-    Events::InsertArgument(stack, clientReq.host);
-    Events::InsertArgument(stack, (int32_t)clientReq.requestMethod);
-    Events::InsertArgument(stack, clientReq.tag);
+    ScriptAPI::InsertArgument(stack, clientReq.headersString);
+    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.port);
+    ScriptAPI::InsertArgument(stack, clientReq.authPassword);
+    ScriptAPI::InsertArgument(stack, clientReq.authUserToken);
+    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.authType);
+    ScriptAPI::InsertArgument(stack, clientReq.data);
+    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.contentType);
+    ScriptAPI::InsertArgument(stack, clientReq.path);
+    ScriptAPI::InsertArgument(stack, clientReq.host);
+    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.requestMethod);
+    ScriptAPI::InsertArgument(stack, clientReq.tag);
     return stack;
 }
 
