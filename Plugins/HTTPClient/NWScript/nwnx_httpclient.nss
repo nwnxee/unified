@@ -1,5 +1,5 @@
 /// @addtogroup httpclient HTTPClient
-/// @brief NWNX HTTP Client
+/// @brief NWNX HTTPClient
 /// @{
 /// @file nwnx_httpclient.nss
 #include "nwnx"
@@ -57,13 +57,13 @@ struct NWNX_HTTPClient_Request
 };
 
 /// @brief Sends an http method to the given host.
-/// @param s The structured NWNX_HTTP_Client_Request information.
+/// @param s The structured NWNX_HTTPClient_Request information.
 /// @return A unique identifier for the request for later access in the REQUEST_ID event data.
 int NWNX_HTTPClient_SendRequest(struct NWNX_HTTPClient_Request s);
 
 /// @brief Returns an NWNX_HTTP_Client_Request structure
-/// @param nRequestId The request id returned from NWNX_HTTP_Client_SendRequest()
-/// @return The structured NWNX_HTTP_Client_Request information
+/// @param nRequestId The request id returned from NWNX_HTTPClient_SendRequest()
+/// @return The structured NWNX_HTTPClient_Request information
 struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId);
 
 /// @}
