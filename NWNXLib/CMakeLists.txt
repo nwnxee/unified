@@ -24,7 +24,7 @@ nwnxlib_add(
     "Encoding.cpp"
     "Plugin.cpp"
     "Commands.cpp"
-    "Events.cpp"
+    "ScriptAPI.cpp"
     "MessageBus.cpp"
     "Hooks.cpp"
     "Tasks.cpp"
@@ -48,4 +48,6 @@ target_include_directories(NWNXLib PUBLIC "." "API")
 target_link_libraries(NWNXLib ${CMAKE_DL_LIBS})
 
 # For hooks -- pulled in from External.
-target_link_libraries(NWNXLib funchook)
+target_link_libraries(NWNXLib funchook-static)
+
+target_link_libraries(NWNXLib sqlite3)

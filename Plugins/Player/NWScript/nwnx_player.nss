@@ -135,7 +135,10 @@ string NWNX_Player_GetBicFileName(object player);
 /// @param player The player object.
 /// @param effectId The effect id.
 /// @param position The position to play the visual effect.
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
+/// @param scale The scale of the effect
+/// @param translate A translation vector to offset the position of the effect
+/// @param rotate A rotation vector to rotate the effect
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[]);
 
 /// @brief Changes the daytime music track for the given player only
 /// @param player The player object.
@@ -190,8 +193,11 @@ void NWNX_Player_SetRestDuration(object player, int duration);
 /// @param player The player object.
 /// @param target The target object to play the effect upon.
 /// @param visualeffect The visual effect id.
+/// @param scale The scale of the effect
+/// @param translate A translation vector to offset the position of the effect
+/// @param rotate A rotation vector to rotate the effect
 /// @note Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect);
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[]);
 
 /// @brief Refreshes the players character sheet
 /// @param player The player object.
@@ -323,7 +329,8 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
 /// @param oPlayer The player to display the text to.
 /// @param oCreature The creature to display the text above.
 /// @param sText The text to display.
-void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
+/// @param bChatWindow If TRUE, sText will be displayed in oPlayer's chat window.
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText, int bChatWindow = TRUE);
 
 /// @brief Toggle oPlayer's PlayerDM status.
 /// @note This function does nothing for actual DMClient DMs or players with a client version < 8193.14
@@ -390,6 +397,10 @@ void NWNX_Player_CloseStore(object oPlayer);
 /// @note Overrides will not persist through relogging.
 void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE);
 
+/// @brief Make the player reload it's TlkTable.
+/// @param oPlayer The player.
+void NWNX_Player_ReloadTlk(object oPlayer);
+
 /// @brief Update wind for oPlayer only.
 /// @param oPlayer The player.
 /// @param vDirection The Wind's direction.
@@ -397,6 +408,51 @@ void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, i
 /// @param fYaw The Wind's yaw.
 /// @param fPitch The Wind's pitch.
 void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude, float fYaw, float fPitch);
+
+/// @brief Update the SkyBox for oPlayer only.
+/// @param oPlayer The player.
+/// @param nSkyBox The Skybox ID.
+void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox);
+
+/// @brief Update Sun and Moon Fog Color for oPlayer only.
+/// @param oPlayer The player.
+/// @param nSunFogColor The int value of Sun Fog color.
+/// @param nMoonFogColor The int value of Moon Fog color.
+void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogColor);
+
+
+/// @brief Update Sun and Moon Fog Amount for oPlayer only.
+/// @param oPlayer The player.
+/// @param nSunFogAmount The int value of Sun Fog amount (range 0-255).
+/// @param nMoonFogAmount The int value of Moon Fog amount (range 0-255).
+void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFogAmount);
+
+/// @brief Return's the currently-possessed game object of a player.
+/// @param oPlayer The player object (e.g. from GetFirst/NextPC()).
+/// @return the actual game object of oPlayer, or OBJECT_INVALID on error.
+object NWNX_Player_GetGameObject(object oPlayer);
+
+/// @brief Override the ui discovery mask of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The target object.
+/// @param nMask A mask of OBJECT_UI_DISCOVERY_*, or -1 to clear the override
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask);
+
+/// @brief Send a party invite from oInviter to oPlayer
+/// @param oPlayer The player to invite
+/// @param oInviter The one inviting the player
+/// @param bForceInvite TRUE: Sends the invite even if the target ignores invites
+/// @param bHideDialog TRUE: Does not show the party invitation dialog
+void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE);
+
+/// @brief Get the TURD for oPlayer
+/// @param oPlayer The offline player to get the TURD from
+/// @return the TURD object of oPlayer, or OBJECT_INVALID if no TURD exists
+object NWNX_Player_GetTURD(object oPlayer);
+
+/// @brief Reloads the color palettes for oPlayer
+/// @param oPlayer The player to reload the color palette for
+void NWNX_Player_ReloadColorPalettes(object oPlayer);
 
 /// @}
 
@@ -535,10 +591,17 @@ string NWNX_Player_GetBicFileName(object player)
     return NWNX_GetReturnValueString();
 }
 
-void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
+void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[])
 {
     string sFunc = "ShowVisualEffect";
 
+    NWNX_PushArgumentFloat(rotate.x);
+    NWNX_PushArgumentFloat(rotate.y);
+    NWNX_PushArgumentFloat(rotate.z);
+    NWNX_PushArgumentFloat(translate.x);
+    NWNX_PushArgumentFloat(translate.y);
+    NWNX_PushArgumentFloat(translate.z);
+    NWNX_PushArgumentFloat(scale);
     NWNX_PushArgumentFloat(position.x);
     NWNX_PushArgumentFloat(position.y);
     NWNX_PushArgumentFloat(position.z);
@@ -652,10 +715,17 @@ void NWNX_Player_SetRestDuration(object player, int duration)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect)
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[])
 {
     string sFunc = "ApplyInstantVisualEffectToObject";
 
+    NWNX_PushArgumentFloat(rotate.z);
+    NWNX_PushArgumentFloat(rotate.y);
+    NWNX_PushArgumentFloat(rotate.x);
+    NWNX_PushArgumentFloat(translate.z);
+    NWNX_PushArgumentFloat(translate.y);
+    NWNX_PushArgumentFloat(translate.x);
+    NWNX_PushArgumentFloat(scale);
     NWNX_PushArgumentInt(visualeffect);
     NWNX_PushArgumentObject(target);
     NWNX_PushArgumentObject(player);
@@ -849,10 +919,11 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText)
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText, int bChatWindow = TRUE)
 {
     string sFunc = "FloatingTextStringOnCreature";
 
+    NWNX_PushArgumentInt(bChatWindow);
     NWNX_PushArgumentString(sText);
     NWNX_PushArgumentObject(oCreature);
     NWNX_PushArgumentObject(oPlayer);
@@ -989,6 +1060,14 @@ void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, i
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
+void NWNX_Player_ReloadTlk(object oPlayer)
+{
+    string sFunc = "ReloadTlk";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
 void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude, float fYaw, float fPitch)
 {
     string sFunc = "UpdateWind";
@@ -999,6 +1078,85 @@ void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude,
     NWNX_PushArgumentFloat(vDirection.x);
     NWNX_PushArgumentFloat(vDirection.y);
     NWNX_PushArgumentFloat(vDirection.z);
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox)
+{
+    string sFunc = "UpdateSkyBox";
+
+    NWNX_PushArgumentInt(nSkyBox);
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogColor)
+{
+    string sFunc = "UpdateFogColor";
+
+    NWNX_PushArgumentInt(nMoonFogColor);
+    NWNX_PushArgumentInt(nSunFogColor);
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFogAmount)
+{
+    string sFunc = "UpdateFogAmount";
+
+    NWNX_PushArgumentInt(nMoonFogAmount);
+    NWNX_PushArgumentInt(nSunFogAmount);
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+object NWNX_Player_GetGameObject(object oPlayer)
+{
+    string sFunc = "GetGameObject";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask)
+{
+    string sFunc = "SetObjectUiDiscoveryMaskOverride";
+
+    NWNX_PushArgumentInt(nMask);
+    NWNX_PushArgumentObject(oObject);
+    NWNX_PushArgumentObject(oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE)
+{
+    string sFunc = "SendPartyInvite";
+
+    NWNX_PushArgumentInt(bHideDialog);
+    NWNX_PushArgumentInt(bForceInvite);
+    NWNX_PushArgumentObject(oInviter);
+    NWNX_PushArgumentObject(oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+object NWNX_Player_GetTURD(object oPlayer)
+{
+    string sFunc = "GetTURD";
+
+    NWNX_PushArgumentObject(oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+
+    return NWNX_GetReturnValueObject();
+}
+
+void NWNX_Player_ReloadColorPalettes(object oPlayer)
+{
+    string sFunc = "ReloadColorPalettes";
+
     NWNX_PushArgumentObject(oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
 }

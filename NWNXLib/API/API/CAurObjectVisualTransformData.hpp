@@ -24,6 +24,13 @@ struct CAurObjectVisualTransformData
         m_translate(LerpVector{0.0, 0.0, 0.0}),
         m_animationSpeed(1.0) {}
 
+    bool operator==(const CAurObjectVisualTransformData& rhs) const {
+        return m_scale == rhs.m_scale &&
+               m_rotate == rhs.m_rotate &&
+               m_translate == rhs.m_translate &&
+               m_animationSpeed == rhs.m_animationSpeed;
+    }
+
 #ifdef NWN_CLASS_EXTENSION_CAurObjectVisualTransformData
     NWN_CLASS_EXTENSION_CAurObjectVisualTransformData
 #endif

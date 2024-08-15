@@ -19,6 +19,7 @@
 #include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
+#include "Database.hpp"
 #include <memory>
 
 
@@ -58,16 +59,12 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoLinkedList<CNWSPlayerTURD> m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
-    NWSyncAdvertisement m_nwsyncModuleSourceAdvert;
+    NWSync::Advertisement m_nwsyncModuleSourceAdvert;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
     CUUID m_cModUUID;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
-    CExoString m_sDDResourceName;
-    BOOL m_bIsDDModule;
-    BOOL m_bIsDDDemoModule;
-    BOOL m_bIsDDModuleLoaded;
     CExoLocString m_lsModuleName;
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
@@ -91,6 +88,8 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     OBJECT_ID m_oidLastItemEquippedBy;
     OBJECT_ID m_oidLastItemUnequipped;
     OBJECT_ID m_oidLastItemUnequippedBy;
+    int32_t m_nLastItemEquippedSlot;
+    int32_t m_nLastItemUnequippedSlot;
     OBJECT_ID m_oidLastRested;
     uint8_t m_nLastRestEventType;
     OBJECT_ID m_oidLastPlayerDied;
@@ -122,6 +121,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CWorldJournalEntry> m_pWorldJournal;
     BOOL m_bModuleLoadFinished;
     int32_t m_nMaxHenchmen;
+    int32_t m_nPartyControlMode;
     CExoArrayList<OBJECT_ID> m_aGameObjectsLimbo;
     CERFFile * m_pOutFile;
     CResStruct * m_pStructIFO;
@@ -146,6 +146,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     int32_t m_nLastGuiEventType;
     int32_t m_nLastGuiEventInteger;
     OBJECT_ID m_oidLastGuiEventObject;
+    Vector m_vLastGuiEventVector;
     OBJECT_ID m_oidLastPlayerToDoTileAction;
     int32_t m_nLastPlayerTileActionId;
     Vector m_vLastPlayerTileActionPosition;
@@ -165,6 +166,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CNWSArea * GetAreaByTag(CExoString & sAreaTag);
     void ClearAreaVisitedFlags();
     BOOL InterAreaDFS(int32_t level, int32_t depth, CPathfindInformation * pcPathfindInformation);
+    uint32_t LoadModuleStart(CExoString sModuleName, BOOL bIsSaveGame = false, int32_t nSourceType = 0, const NWSync::Advertisement & nwsyncModuleSourceAdvert = {});
     uint32_t LoadModuleInProgress(int32_t nAreasLoaded, int32_t nAreasToLoad);
     uint32_t LoadModuleFinish();
     void PackModuleResourcesIntoMessage();
@@ -206,6 +208,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     uint8_t IsOfficialCampaign(void );
     void DestroyModuleSqliteDatabase();
     BOOL RunEventScript(int32_t nScript, CExoString * psOverrideScriptName = nullptr);
+    BOOL GetPlayerPartyControl();
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
@@ -217,7 +220,6 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void TimeStopSanityCheck();
-    uint8_t * GetFullCipher(CExoString sModuleResourceName);
     int32_t FindTagPositionInTable(char * szTag);
 
 

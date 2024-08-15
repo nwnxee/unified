@@ -39,6 +39,14 @@ struct NWAREAHEADER;
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
+struct CNWSAreaGrassOverride
+{
+    CExoString sTexture;
+    float fDensity;
+    float fHeight;
+    Vector vAmbient;
+    Vector vDiffuse;
+};
 
 struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
 {
@@ -101,6 +109,8 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     int32_t m_nEnvironmentalAudio;
     uint16_t m_nLoadScreenID;
     CExoString m_sDisplayName;
+    BOOL m_bDefaultGrassDisabled;
+    std::unordered_map<int32_t, CNWSAreaGrassOverride> m_areaGrassOverrides;
     CNWSUUID m_pUUID;
 
     CNWSArea(CResRef cResRef, BOOL bSetAutoRequest, OBJECT_ID oidId = 0x7f000000);

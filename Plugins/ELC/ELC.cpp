@@ -96,7 +96,8 @@ namespace ValidationFailureSubType
         SkillListComparison,
         FeatListComparison,
         MiscSavingThrow,
-        NumFeatComparison
+        NumFeatComparison,
+        NumMulticlass
     };
 }
 // Validation Failure STRREFS
@@ -109,6 +110,7 @@ const int32_t STRREF_CHARACTER_NON_PLAYER_CLASS             = 66167;
 const int32_t STRREF_CHARACTER_TOO_MANY_HITPOINTS           = 3109;
 const int32_t STRREF_CHARACTER_SAVING_THROW                 = 8066;
 const int32_t STRREF_CHARACTER_INVALID_ABILITY_SCORES       = 63761;
+const int32_t STRREF_CHARACTER_NUMBERMULTICLASSES           = 63764;
 const int32_t STRREF_ITEM_LEVEL_RESTRICTION                 = 68521;
 const int32_t STRREF_SKILL_UNUSEABLE                        = 63815;
 const int32_t STRREF_SKILL_INVALID_RANKS                    = 66165;
@@ -131,7 +133,7 @@ const int32_t STRREF_CUSTOM                                 = 164;
 
 // Magic Numbers
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
-const int32_t NUM_MULTICLASS                = 3;
+const int32_t NUM_MULTICLASS                = 8;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
 const int32_t NUM_SPELL_LEVELS              = 10;
 
@@ -151,8 +153,8 @@ static int32_t s_ELCSkillID;
 static int32_t s_ELCFeatID;
 static int32_t s_ELCSpellID;
 
-static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi,
-        (void*)+[](CNWSPlayer *pPlayer, int32_t *bFailedServerRestriction) -> int32_t
+static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateCharacter,
+        +[](CNWSPlayer *pPlayer, int32_t *bFailedServerRestriction) -> int32_t
         {
             // Reset Variables
             s_ILRItemOID = Constants::OBJECT_INVALID;
@@ -238,6 +240,18 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
                 }
             }
             // **********************************************************************************************************************
+
+            if (pCreatureStats->m_nNumMultiClasses > std::clamp<int32_t>(Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("MULTICLASS_LIMIT"), 3), 1, 8))
+            {
+                if (auto strrefFailure = HandleValidationFailure(
+                        ValidationFailureType::Character,
+                        ValidationFailureSubType::NumMulticlass,
+                        STRREF_CHARACTER_NUMBERMULTICLASSES))
+                {
+                    *bFailedServerRestriction = true;
+                    return strrefFailure;
+                }
+            }
 
             // *** Level Hack Check *************************************************************************************************
             // Character level is stored in an uint8_t which means if a character has say 80/80/120 as their levels it'll wrap around
@@ -483,11 +497,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
             uint8_t nAbility[6] = {0};
             int32_t nMods[6] = {0};
 
-            auto GetStatBonusesFromFeats = reinterpret_cast<void (*)(CExoArrayList<uint16_t> *, int32_t *, int32_t)>(
-                    Platform::GetRelocatedAddress(
-                            API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii));
-
-            GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
+            CNWSCreatureStats::GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
 
             //LOG_DEBUG("(GetStatBonusesFromFeats) STR: %i, DEX: %i, CON: %i, INT: %i, WIS: %i, CHA: %i", nMods[0], nMods[1], nMods[2], nMods[3], nMods[4], nMods[5]);
 
@@ -510,15 +520,15 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
             {
                 uint8_t nAbilityGain = pCreatureStats->GetLevelStats(nLevel - 1)->m_nAbilityGain;
 
-                if (nAbilityGain <= Ability::MAX)
+                if (nAbilityGain < Ability::MAX)
                     nAbility[nAbilityGain]--;
             }
 
-            static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MIN", 8);
-            static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
+            static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_BASE_ABILITY_MIN"), 8);
+            static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_BASE_ABILITY_MAX"), 18);
 
             // Check if >18 in an ability
-            for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+            for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
             {
                 if (nAbility[nAbilityIndex] > charGenBaseAbilityMax)
                 {
@@ -536,12 +546,10 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
             uint8_t nAbilityAtLevel[6] = {0};
             uint8_t nPointBuy = pRace->m_nAbilitiesPointBuyNumber;
 
-            static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT2",
-                                                                                        14);
-            static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT3",
-                                                                                        16);
+            static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_ABILITY_COST_INCREMENT2"), 14);
+            static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_ABILITY_COST_INCREMENT3"), 16);
 
-            for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+            for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
             {
                 nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
 
@@ -712,10 +720,10 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
 
                 // Add the stat bonus from feats
                 int32_t nStatMods[6] = {0};
-                GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, false);
+                CNWSCreatureStats::GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, false);
 
                 // Update our ability values
-                for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                 {
                     nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
                 }
@@ -727,7 +735,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
 
                     if (pClass)
                     {
-                        for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                        for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                         {
                             nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForSingleLevel(nAbilityIndex,
                                                                                                    nMultiClassLevel[nMultiClassLeveledUpIn]);
@@ -772,7 +780,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
                 };
 
                 auto numSkillPoints =
-                        pRace->m_nSkillPointModifierAbility >= 0 && pRace->m_nSkillPointModifierAbility <= Ability::MAX ?
+                        pRace->m_nSkillPointModifierAbility >= 0 && pRace->m_nSkillPointModifierAbility < Ability::MAX ?
                         pCreatureStats->CalcStatModifier(
                                 nAbilityAtLevel[pRace->m_nSkillPointModifierAbility] + GetSkillPointAbilityAdjust()) : 0;
 
@@ -865,8 +873,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
                         listSkillRanks[nSkill] += nRankChange;
 
                         // Can't have more than Level + 3 in a class skill, or (Level + 3) / 2 for a non class skill
-                        static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry(
-                                "CHARGEN_SKILL_MAX_LEVEL_1_BONUS", 3);
+                        static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("CHARGEN_SKILL_MAX_LEVEL_1_BONUS"), 3);
                         if (bClassSkill)
                         {
                             if (listSkillRanks[nSkill] > nLevel + skillMaxLevel1Bonus)
@@ -1563,8 +1570,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(API::Functions::_ZN10CNWSP
                             if (nSchool != 0)
                             {
                                 int32_t nOppositionSchool;
-                                if (pRules->m_p2DArrays->m_pSpellSchoolTable->GetINTEntry(nSchool, "Opposition",
-                                                                                          &nOppositionSchool))
+                                if (pRules->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSchool, "Opposition", &nOppositionSchool))
                                 {
                                     if (pSpell->m_nSchool == (uint8_t) nOppositionSchool)
                                     {

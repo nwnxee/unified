@@ -45,7 +45,7 @@ struct CNWFeat
     uint8_t m_nMaxLevel;
     uint8_t m_nMinLevelClass;
     uint8_t m_nMinFortSave;
-    int32_t m_nSpellId;
+    uint32_t m_nSpellId;
     uint8_t m_nUsesPerDay;
     BOOL m_bValidFeat;
     BOOL m_bRequiresEpic;

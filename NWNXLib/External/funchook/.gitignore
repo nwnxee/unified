@@ -1,0 +1,6 @@
+*.disasm
+*.dll
+*.lib
+*.o
+*.so
+*~

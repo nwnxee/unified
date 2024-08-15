@@ -35,9 +35,20 @@ struct CNWSScriptVar
     bool HasFloat() const { return m_float != 0.0f; }
     bool HasObject() const { return m_objectId != NWNXLib::API::Constants::OBJECT_INVALID; }
     bool HasString() const { return !m_string.IsEmpty(); }
-    bool HasLocation() const { return m_location.m_oArea != NWNXLib::API::Constants::OBJECT_INVALID; }
+    bool HasLocation() const { return !m_location.IsEmpty(); }
+    bool HasCswy() const { return !m_cswy.IsEmpty(); }
     bool HasJson() const { return !m_json.IsEmpty(); }
 
+    bool IsEmpty() const
+    {
+        return !HasInt() &&
+               !HasFloat() &&
+               !HasObject() &&
+               !HasString() &&
+               !HasLocation() &&
+               !HasCswy() &&
+               !HasJson();
+    }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSScriptVar
     NWN_CLASS_EXTENSION_CNWSScriptVar

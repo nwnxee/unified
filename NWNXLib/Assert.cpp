@@ -29,7 +29,9 @@ void FailInternal(const char* condition, const char* file, int line, const char*
         std::strncat(buffer, message, sizeof(buffer)-1);
     }
 
-    std::strncat(buffer, Platform::GetStackTrace(20).c_str(), sizeof(buffer)-1);
+    std::string stackTrace = Platform::GetStackTrace(20);
+    MessageBus::Broadcast("NWNX_ASSERT_FAIL", { buffer, stackTrace });
+    std::strncat(buffer, stackTrace.c_str(), sizeof(buffer)-1);
     std::fputs(buffer, stdout);
     std::fflush(stdout);
     NWNXLib::Log::WriteToLogFile(buffer);

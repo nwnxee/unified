@@ -18,8 +18,8 @@ void ParryAllAttacks()
 
     LOG_INFO("Parry will no longer be limited to one attack per flurry");
 
-    static Hooks::Hook s_ResolveAttackRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
-        (void*)+[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
+    static Hooks::Hook s_ResolveAttackRollHook = Hooks::HookFunction(&CNWSCreature::ResolveAttackRoll,
+        +[](CNWSCreature *pThis, CNWSObject *pTarget) -> void
         {
             int32_t bRoundPaused = false;
             if (auto *pCreature = Utils::AsNWSCreature(pTarget))

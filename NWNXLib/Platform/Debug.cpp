@@ -42,77 +42,13 @@ std::string GetStackTrace(uint8_t levels)
         std::strncat(buffer, "\n  Backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < numCapturedFrames; ++i)
         {
-            uintptr_t addr, addr2;
-            char path[64];
             char backtraceBuffer[2048];
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
-            {
-                std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    %s(%s) [0x%lx]\n", path, ResolveAddress(addr).c_str(), addr2);
-            }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
         free(resolvedFrames);
     }
     return std::string(buffer);
-}
-
-static std::map<uintptr_t, std::string> s_FunctionMap;
-static void InitFunctionMap()
-{
-    if (!s_FunctionMap.empty()) return;
-
-#undef NWNXLIB_FUNCTION
-#define NWNXLIB_FUNCTION_NO_VERSION_CHECK
-#define NWNXLIB_FUNCTION(name, address) s_FunctionMap[address] = #name;
-#include "API/FunctionsLinux.hpp"
-#undef NWNXLIB_FUNCTION
-}
-
-std::string ResolveAddress(uintptr_t address)
-{
-    InitFunctionMap();
-
-    if (address > GetRelocatedAddress(0))
-        address -= GetRelocatedAddress(0);
-
-    auto it = s_FunctionMap.upper_bound(address);
-    if (it != s_FunctionMap.begin())
-    {
-        --it;
-        char offset[64];
-        std::snprintf(offset, sizeof(offset), "+0x%lx", address - it->first);
-        return it->second + offset;
-    }
-    return "<UNKNOWN>";
-}
-
-uintptr_t GetFunctionAddress(const std::string& mangledname)
-{
-    InitFunctionMap();
-    for (const auto& it: s_FunctionMap)
-    {
-        if (it.second == mangledname)
-            return it.first;
-    }
-    return 0;
-}
-
-bool AmICalledBy(uintptr_t address, uintptr_t returnAddress)
-{
-    InitFunctionMap();
-
-    if (returnAddress > GetRelocatedAddress(0))
-        returnAddress -= GetRelocatedAddress(0);
-
-    auto it = s_FunctionMap.upper_bound(returnAddress);
-    if (it != s_FunctionMap.begin())
-    {
-        --it;
-        return it->first == address;
-    }
-    return false;
 }
 
 }

@@ -30,7 +30,7 @@ void PreventAttackBonusBypassingReductions()
 
     LOG_INFO("Preventing attack bonus effects from bypassing damage reductions");
 
-    s_getWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti, (void*)&CNWSCreature__GetWeaponPower, Hooks::Order::Final);
+    s_getWeaponPowerHook = Hooks::HookFunction(&CNWSCreature::GetWeaponPower, &CNWSCreature__GetWeaponPower, Hooks::Order::Final);
 }
 
 int32_t CNWSCreature__GetWeaponPower(CNWSCreature* thisPtr, CNWSObject* pTarget, int32_t bOffhand)

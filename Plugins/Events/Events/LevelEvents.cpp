@@ -15,7 +15,7 @@ static Hooks::Hook s_LevelDownHook;
 static Hooks::Hook s_HandlePlayerToServerLevelUpMessageHook;
 
 static void LevelUpHook(CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t);
-static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
+static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint32_t);
 static void LevelDownHook(CNWSCreatureStats*, CNWLevelStats*);
 static int32_t HandlePlayerToServerLevelUpMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
 
@@ -23,20 +23,20 @@ void LevelEvents() __attribute__((constructor));
 void LevelEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", []() {
-        s_LevelUpHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi,
-                                     (void*)&LevelUpHook, Hooks::Order::Earliest);
+        s_LevelUpHook = Hooks::HookFunction(&CNWSCreatureStats::LevelUp,
+                                     &LevelUpHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", []() {
-        s_LevelUpAutomaticHook= Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
-                                             (void*)&LevelUpAutomaticHook, Hooks::Order::Earliest);
+        s_LevelUpAutomaticHook= Hooks::HookFunction(&CNWSCreatureStats::LevelUpAutomatic,
+                                             &LevelUpAutomaticHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", []() {
-        s_LevelDownHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
-                                       (void*)&LevelDownHook, Hooks::Order::Earliest);
+        s_LevelDownHook = Hooks::HookFunction(&CNWSCreatureStats::LevelDown,
+                                       &LevelDownHook, Hooks::Order::Earliest);
     });
     InitOnFirstSubscribe("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_.*", []() {
-        s_HandlePlayerToServerLevelUpMessageHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage34HandlePlayerToServerLevelUpMessageEP10CNWSPlayerh,
-                                                                       (void*)&HandlePlayerToServerLevelUpMessageHook, Hooks::Order::Early);
+        s_HandlePlayerToServerLevelUpMessageHook = Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerLevelUpMessage,
+                                                                       &HandlePlayerToServerLevelUpMessageHook, Hooks::Order::Early);
     });
 }
 
@@ -48,7 +48,7 @@ void LevelUpHook(CNWSCreatureStats *thisPtr, CNWLevelStats *pLevelUpStats, uint8
     SignalEvent("NWNX_ON_LEVEL_UP_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
 }
 
-int32_t LevelUpAutomaticHook(CNWSCreatureStats *thisPtr, uint8_t nClass, int32_t bReadyAllSpells, uint8_t nPackage)
+int32_t LevelUpAutomaticHook(CNWSCreatureStats *thisPtr, uint8_t nClass, int32_t bReadyAllSpells, uint32_t nPackage)
 {
     SignalEvent("NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
     auto retVal = s_LevelUpAutomaticHook->CallOriginal<int32_t>(thisPtr, nClass, bReadyAllSpells, nPackage);

@@ -25,10 +25,6 @@ struct CExoDebug
     void CloseLogFiles();
     void FlushErrorFile();
     void FlushLogFile();
-    uint32_t GetCurrentAllocatedMemory();
-    uint32_t GetMaxAllocatedMemory();
-    uint32_t GetTotalMemoryAllocations();
-    uint32_t GetCurrentMemoryAllocations();
     void OpenLogFiles(CExoString sExecutableName, int32_t nMaxLogSize = 10000000);
     void Warning(int32_t nLineNumber, const char * sFileName, const char * sComment = nullptr);
     void WriteToErrorFile(const CExoString & sLogString);

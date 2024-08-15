@@ -20,23 +20,23 @@ void AssociateEvents() __attribute__((constructor));
 void AssociateEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", []() {
-        s_AddAssociateHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12AddAssociateEjt,
-            (void*)&AddAssociateHook, Hooks::Order::Earliest);
+        s_AddAssociateHook = Hooks::HookFunction(&CNWSCreature::AddAssociate,
+            &AddAssociateHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_REMOVE_ASSOCIATE_.*", []() {
-        s_RemoveAssociateHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15RemoveAssociateEj,
-            (void*)&RemoveAssociateHook, Hooks::Order::Earliest);
+        s_RemoveAssociateHook = Hooks::HookFunction(&CNWSCreature::RemoveAssociate,
+            &RemoveAssociateHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_UNPOSSESS_FAMILIAR_.*", []() {
-        s_UnpossessFamiliarHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature17UnpossessFamiliarEv,
-            (void*)&UnpossessFamiliarHook, Hooks::Order::Earliest);
+        s_UnpossessFamiliarHook = Hooks::HookFunction(&CNWSCreature::UnpossessFamiliar,
+            &UnpossessFamiliarHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_POSSESS_FAMILIAR_.*", []() {
-        s_PossessFamiliarHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15PossessFamiliarEv,
-            (void*)&PossessFamiliarHook, Hooks::Order::Earliest);
+        s_PossessFamiliarHook = Hooks::HookFunction(&CNWSCreature::PossessFamiliar,
+            &PossessFamiliarHook, Hooks::Order::Earliest);
     });
 }
 

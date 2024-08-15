@@ -22,23 +22,23 @@ void StealthEvents() __attribute__((constructor));
 void StealthEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_STEALTH_E.*", []() {
-        s_SetStealthModeHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature14SetStealthModeEh,
-                                            (void*)&SetStealthModeHook, Hooks::Order::Early);
+        s_SetStealthModeHook = Hooks::HookFunction(&CNWSCreature::SetStealthMode,
+                                            &SetStealthModeHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_DETECT_E.*", []() {
-        s_SetDetectModeHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature13SetDetectModeEh,
-                                           (void*)&SetDetectModeHook, Hooks::Order::Early);
+        s_SetDetectModeHook = Hooks::HookFunction(&CNWSCreature::SetDetectMode,
+                                           &SetDetectModeHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", []() {
-        s_DoListenDetectionHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i,
-                                               (void*)&DoListenDetectionHook, Hooks::Order::Early);
+        s_DoListenDetectionHook = Hooks::HookFunction(&CNWSCreature::DoListenDetection,
+                                               &DoListenDetectionHook, Hooks::Order::Early);
     });
 
     InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", []() {
-        s_DoSpotDetectionHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i,
-                                             (void*)&DoSpotDetectionHook, Hooks::Order::Early);
+        s_DoSpotDetectionHook = Hooks::HookFunction(&CNWSCreature::DoSpotDetection,
+                                             &DoSpotDetectionHook, Hooks::Order::Early);
     });
 }
 

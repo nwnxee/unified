@@ -5,7 +5,7 @@
 
 #include <memory>
 
-using ArgumentStack = NWNXLib::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
 namespace SQL {
 
@@ -32,6 +32,9 @@ public:
     ArgumentStack DestroyPreparedQuery          (ArgumentStack&& args);
     ArgumentStack GetLastError                  (ArgumentStack&& args);
     ArgumentStack GetPreparedQueryParamCount    (ArgumentStack&& args);
+
+    ITarget* GetTarget() { return m_target.get(); }
+
 private:
     bool Reconnect(int32_t attempts = 1);
 
@@ -43,6 +46,7 @@ private:
     bool m_queryMetrics;
     bool m_queryPrepared;
     bool m_utf8;
+    std::string m_databaseType;
 };
 
 }

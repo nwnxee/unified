@@ -47,11 +47,13 @@ struct CNWArea
     uint32_t m_nMoonFogColor;
     uint8_t m_nMoonFogAmount;
     BOOL m_bMoonShadows;
+    Vector m_vMoonDirection;
     uint32_t m_nSunAmbientColor;
     uint32_t m_nSunDiffuseColor;
     uint32_t m_nSunFogColor;
     uint8_t m_nSunFogAmount;
     BOOL m_bSunShadows;
+    Vector m_vSunDirection;
     BOOL m_bUseDayNightCycle;
     BOOL m_bIsNight;
     uint8_t m_nSkyBox;
@@ -66,6 +68,7 @@ struct CNWArea
     BOOL m_bNoRestingAllowed;
     uint8_t m_nShadowOpacity;
     float m_fFogClipDistance;
+    BOOL m_bTileBorderDisabled;
 
     CNWArea();
     virtual ~CNWArea();

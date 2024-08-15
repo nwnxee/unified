@@ -1,6 +1,7 @@
 #include "nwnx.hpp"
 #include "HashTable32.hpp"
 
+#include "API/CServerExoApp.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
@@ -36,14 +37,14 @@ void PlayerLookup()
         LOG_INFO("Player object lookup optimization enabled");
         s_playerobjects.Initialize();
 
-        s_SetGameObject  = Hooks::HookFunction(Functions::_ZN10CNWSPlayer13SetGameObjectEP10CNWSObject, (void*)SetGameObject, Hooks::Order::VeryEarly);
+        s_SetGameObject  = Hooks::HookFunction(&CNWSPlayer::SetGameObject, SetGameObject, Hooks::Order::VeryEarly);
         s_DestroyPlayer0 = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD0Ev, (void*)DestroyPlayer0, Hooks::Order::Early);
         s_DestroyPlayer1 = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD1Ev, (void*)DestroyPlayer1, Hooks::Order::Early);
 
-        s_GetIsDM        = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7GetIsDMEv, (void*)GetIsDM, Hooks::Order::Final);
-        s_GetIsPlayerDM  = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetIsPlayerDMEv, (void*)GetIsPlayerDM, Hooks::Order::Final);
-        
-        s_GetClientObjectByObjectId  = Hooks::HookFunction(Functions::_ZN13CServerExoApp25GetClientObjectByObjectIdEj, (void*)GetClientObjectByObjectId, Hooks::Order::Final);
+        s_GetIsDM        = Hooks::HookFunction(&CNWSCreatureStats::GetIsDM, GetIsDM, Hooks::Order::Final);
+        s_GetIsPlayerDM  = Hooks::HookFunction(&CNWSCreatureStats::GetIsPlayerDM, GetIsPlayerDM, Hooks::Order::Final);
+
+        s_GetClientObjectByObjectId  = Hooks::HookFunction(&CServerExoApp::GetClientObjectByObjectId, GetClientObjectByObjectId, Hooks::Order::Final);
     }
 }
 

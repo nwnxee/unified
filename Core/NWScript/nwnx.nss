@@ -3,6 +3,8 @@
 /// @{
 /// @file nwnx.nss
 
+const string NWNX_Core = "NWNX_Core"; ///< @private
+
 /// @brief Scripting interface to NWNX.
 /// @param pluginName The plugin name.
 /// @param functionName The function name (do not include NWNX_Plugin_).
@@ -37,6 +39,12 @@ effect NWNX_GetReturnValueEffect();
 itemproperty NWNX_GetReturnValueItemProperty();
 /// @copydoc NWNX_GetReturnValueInt()
 json NWNX_GetReturnValueJson();
+
+/// @brief Determines if the given plugin exists and is enabled.
+/// @param sPlugin The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX
+/// @note Example usage: NWNX_PluginExists("NWNX_Creature");
+/// @return TRUE if the plugin exists and is enabled, otherwise FALSE.
+int NWNX_PluginExists(string sPlugin);
 
 /// @private
 const string NWNX_PUSH          = "NWNXEE!ABIv2!X!Y!PUSH";
@@ -118,4 +126,12 @@ itemproperty NWNX_GetReturnValueItemProperty()
 json NWNX_GetReturnValueJson()
 {
     return GetLocalJson(OBJECT_INVALID, NWNX_POP);
+}
+
+int NWNX_PluginExists(string sPlugin)
+{
+    string sFunc = "PluginExists";
+    NWNX_PushArgumentString(sPlugin);
+    NWNX_CallFunction(NWNX_Core, sFunc);
+    return NWNX_GetReturnValueInt();
 }

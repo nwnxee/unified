@@ -1,5 +1,3 @@
-#include "nwnx_regex"
-
 /// @addtogroup data Data
 /// @brief Provides a number of data structures for NWN code to use (simulated arrays)
 /// @{
@@ -131,7 +129,7 @@ string GetTableName(string tag, object obj=OBJECT_INVALID, int bare=FALSE) {
 
     string sName = "array_" + ObjectToString(obj) + "_" + tag;
     // Remove invalid characters from the tag rather than failing.
-    string sCleansed = NWNX_Regex_Replace(sName, "[^A-Za-z0-9_\$@#]", "");
+    string sCleansed = RegExpReplace("[^A-Za-z0-9_\$@#]", sName, "");
     // But provide some feedback.
     if (GetStringLength(sName) != GetStringLength(sCleansed) || GetStringLength(sCleansed) == 0) {
         WriteTimestampedLogEntry("WARNING:  Invalid table name detected for array with tag <" + tag + ">.  Only characters (a-zA-Z0-9), _, @, $ and # are allowed. Using <"+sCleansed+"> instead.");
@@ -150,7 +148,7 @@ string GetTableName(string tag, object obj=OBJECT_INVALID, int bare=FALSE) {
 string GetTableCreateString(string tag, object obj=OBJECT_INVALID) {
     // for simplicity sake, everything is turned into a string.  Possible enhancement
     // to create specific tables for int/float/whatever.
-    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER PRIMARY KEY, value TEXT )";
+    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER, value TEXT )";
 }
 
 int TableExists(string tag, object obj=OBJECT_INVALID) {
@@ -302,8 +300,15 @@ void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 // if not found, return INVALID_INDEX
 int Array_Find_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
-    string stmt = "SELECT IFNULL(MIN(ind),@invalid_index) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
-    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    string stmt;
+    sqlquery sqlQuery;
+
+    // Just create it before trying to select in case it doesn't exist yet.
+    CreateArrayTable(tag, obj);
+
+    stmt = "SELECT IFNULL(MIN(ind),@invalid_index) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
+    sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+
     SqlBindInt(sqlQuery, "@invalid_index", INVALID_INDEX);
     SqlBindString(sqlQuery, "@element", element);
     if ( SqlStep(sqlQuery) ) {
@@ -369,6 +374,9 @@ void Array_Insert_Obj(string tag, int index, object element, object obj=OBJECT_I
 // Insert a new element at the end of the array.
 void Array_PushBack_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
+    // Create it before trhing to INSERT into it.  If it already exists, this is a no-op.
+    CreateArrayTable(tag, obj);
+    
     // If rowCount = 10, indexes are from 0 to 9, so this becomes the 11th entry at index 10.
     int rowCount = GetRowCount(tag, obj);
 

@@ -22,8 +22,8 @@ void FixArmorDexBonusUnderOne()
 
     LOG_INFO("Allowing armors with max DEX bonus under 1.");
 
-    static Hooks::Hook s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats9GetDEXModEi,
-    (void*)+[](CNWSCreatureStats *pThis, int32_t bArmorDexCap) -> uint8_t
+    static Hooks::Hook s_ReplacedFunc = Hooks::HookFunction(&CNWSCreatureStats::GetDEXMod,
+    +[](CNWSCreatureStats *pThis, int32_t bArmorDexCap) -> uint8_t
     {
         auto nDexAC = pThis->m_nDexterityModifier;
 
@@ -33,7 +33,7 @@ void FixArmorDexBonusUnderOne()
             int nTempValue = 0;
             if (pArmor && (nTempValue = pArmor->ComputeArmorClass()) > 0)
             {
-                Globals::Rules()->m_p2DArrays->m_pArmorTable->GetINTEntry(nTempValue, CExoString("DEXBONUS"), &nTempValue);
+                Globals::Rules()->m_p2DArrays->GetArmorTable()->GetINTEntry(nTempValue, CExoString("DEXBONUS"), &nTempValue);
                 if (nTempValue < nDexAC)
                     nDexAC = static_cast<char>(nTempValue);
             }

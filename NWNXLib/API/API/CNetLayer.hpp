@@ -52,12 +52,12 @@ struct CNetLayer
     BOOL GetAddressTranslationResult(const CExoString & sInternetAddress, CExoArrayList<uint32_t> & nIPv4);
     void EndAddressTranslation(const CExoString & sInternetAddress);
     BOOL StartEnumerateSessionsSection(uint32_t nEnumerateSection, uint32_t nSize, CExoString * sServerListToEnumerate);
-    //BOOL EnumerateSessionsLoop();
     BOOL GetAnySessionsEnumerated();
     BOOL EndEnumerateSessionsSection(uint32_t nEnumerateSection);
     BOOL EndEnumerateSessions();
     void CleanUpEnumerateSpecific();
     uint32_t GetSessionSectionStart(uint32_t sectionSectionId);
+    void SetupConnectIdentity(const CExoString & sPlayerName, int32_t nPlayerLanguage, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey);
     BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, const CExoString & sPassword, uint32_t nTimeOut, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64 = "");
     BOOL RequestExtendedServerInfo(uint32_t nSessionId, BOOL bGetInfo = true, BOOL bGetPing = true);
     BOOL RequestServerDetails(uint32_t nConnectionId);
@@ -113,7 +113,7 @@ struct CNetLayer
     BOOL GetEnumerateSpecificOverRelay();
     void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken[6]);
     CExoString GetRouterPortMapDescription();
-    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
+    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision, int32_t nPostfix);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayer

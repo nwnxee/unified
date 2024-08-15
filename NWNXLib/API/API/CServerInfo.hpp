@@ -39,7 +39,7 @@ struct CServerInfo
     CAutoSave m_AutoSave;
     CPersistantWorldOptions m_PersistantWorldOptions;
     CServerNetOptions m_NetOptions;
-    NWSyncAdvertisement m_nwsyncAdvertisedData;
+    NWSync::Advertisement m_nwsyncAdvertisedData;
     BOOL m_bNWSyncPublishHaks;
     BOOL m_bConversationMultiPlayer;
     BOOL m_bConversationMultiPlayerViewOnly;

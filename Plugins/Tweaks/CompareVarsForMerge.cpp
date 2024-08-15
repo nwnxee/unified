@@ -17,8 +17,8 @@ void CompareVarsForMerge()
 
     LOG_INFO("Will compare local variables when merging item stacks");
 
-    static Hooks::Hook s_CompareItem_hook = Hooks::HookFunction(Functions::_ZN8CNWSItem11CompareItemEPS_,
-        (void*)+[](CNWSItem* thisPtr, CNWSItem* pOtherItem) -> int32_t
+    static Hooks::Hook s_CompareItem_hook = Hooks::HookFunction(&CNWSItem::CompareItem,
+        +[](CNWSItem* thisPtr, CNWSItem* pOtherItem) -> int32_t
         {
             auto bCompare = s_CompareItem_hook->CallOriginal<int32_t>(thisPtr, pOtherItem);
             if (bCompare)

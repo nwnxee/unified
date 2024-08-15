@@ -1,6 +1,7 @@
 #include "Targets/NetLayer.hpp"
 
 #include "API/Functions.hpp"
+#include "API/CNetLayer.hpp"
 #include "ProfilerMacros.hpp"
 
 namespace Profiler {
@@ -17,11 +18,11 @@ NetLayer::NetLayer(NWNXLib::Services::MetricsProxy* metrics)
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(
-        NetLayerProcessReceivedFrames, API::Functions::_ZN9CNetLayer21ProcessReceivedFramesEi,
+        NetLayerProcessReceivedFrames, &CNetLayer::ProcessReceivedFrames,
         void, CNetLayer*, int32_t);
 
     DEFINE_PROFILER_TARGET(
-        NetLayerUpdateStatusLoop, API::Functions::_ZN9CNetLayer16UpdateStatusLoopEj,
+        NetLayerUpdateStatusLoop, &CNetLayer::UpdateStatusLoop,
         int32_t, CNetLayer*, uint32_t);
 }
 

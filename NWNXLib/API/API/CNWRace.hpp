@@ -42,6 +42,7 @@ struct CNWRace
     int32_t m_nNormalFeatEveryNthLevel;
     int32_t m_nNumberNormalFeatsEveryNthLevel;
     int32_t m_nSkillPointModifierAbility;
+    uint16_t m_nFavoredEnemyFeat;
 
     CNWRace();
     ~CNWRace();

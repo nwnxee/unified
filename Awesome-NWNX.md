@@ -2,12 +2,19 @@
 
 A curated list of awesome NWNX projects and shiny things, and other adjacent NWN projects.
 
+- [Other NWNX Plugins](#other-nwnx-plugins)
 - [Tools](#tools)
 - [Frameworks](#frameworks)
 - [Persistent Worlds](#persistent-worlds)
 - [Tutorials](#tutorials)
 - [Other links](#other-links)
 - [Legacy stuff](#legacy-stuff)
+
+## Other NWNX Plugins
+
+*Awesome NWNX plugins that don't belong in the main repo*
+
+- [OpenAI](https://github.com/Liareth/unified/tree/liareth/openai/Plugins/OpenAI) - Use OpenAI API to chat with your NPCs
 
 ## Tools
 
@@ -22,6 +29,7 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 - [nwsync_gui](https://github.com/WilliamDraco/nwsync_gui) - An unofficial multi-platform gui for NWSync
 - [NWNFileFormats](https://github.com/Liareth/NWNFileFormats) -  For developers - a modern (and hopefully fast?) C++ API to read NWN / Aurora engine file formats
 - [nwn_sqlite](https://github.com/hendrikgit/nwn_sqlite#nwn_sqlite) - Writes information from a module, gff, 2da to a sqlite database file
+- [NWScript: EE Language Server](https://github.com/PhilippeChab/nwscript-ee-language-server) - A Visual Studio Code extension LSP for the NWScript language.
 
 ## Frameworks
 

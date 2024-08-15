@@ -38,7 +38,7 @@ struct AppearanceOverrideData
     uint8_t hairColor           = 0;
     uint8_t skinColor           = 0;
     uint8_t phenoType           = 0;
-    uint8_t headType            = 0;
+    uint16_t headType           = 0;
     uint16_t soundSet           = 0;
     uint32_t tailType           = 0;
     uint32_t wingType           = 0;
@@ -70,8 +70,8 @@ static void SetIntValue(int32_t type, int32_t value, std::bitset<OverrideType_MA
 }
 
 static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook =
-    Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
-        (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
+    Hooks::HookFunction(&CNWSMessage::ComputeGameObjectUpdateForObject,
+        +[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
                    CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate)
         {
             if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))

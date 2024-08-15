@@ -31,8 +31,8 @@ void CanUseItemCheckILRForHenchmen()
 
     LOG_INFO("CNWSCreature::CanUseItem() will also check ILR for Henchmen.");
 
-    static Hooks::Hook s_CanUseItemHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi,
-    (void*)+[](CNWSCreature *pCreature, CNWSItem *pItem, BOOL bIgnoreIdentifiedFlag) -> BOOL
+    static Hooks::Hook s_CanUseItemHook = Hooks::HookFunction(&CNWSCreature::CanUseItem,
+    +[](CNWSCreature *pCreature, CNWSItem *pItem, BOOL bIgnoreIdentifiedFlag) -> BOOL
     {
         bool bUsable = true;
 
@@ -63,12 +63,12 @@ void CanUseItemCheckILRForHenchmen()
                     if (auto *pProperty = pItem->GetActiveProperty(0))
                     {
                         int32_t nSpellID;
-                        Globals::Rules()->m_p2DArrays->m_pIPRPSpells->GetINTEntry(pProperty->m_nSubType, "SpellIndex", &nSpellID);
+                        Globals::Rules()->m_p2DArrays->GetIPRPSpells()->GetINTEntry(pProperty->m_nSubType, "SpellIndex", &nSpellID);
 
                         if (auto *pSpell = Globals::Rules()->m_pSpellArray->GetSpell(nSpellID))
                         {
                             int32_t nOppositionSchool;
-                            Globals::Rules()->m_p2DArrays->m_pSpellSchoolTable->GetINTEntry(nSpellSchool, "Opposition", &nOppositionSchool);
+                            Globals::Rules()->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSpellSchool, "Opposition", &nOppositionSchool);
 
                             if (pSpell->m_nSchool == nOppositionSchool)
                             {

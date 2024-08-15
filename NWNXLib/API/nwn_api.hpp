@@ -26,7 +26,6 @@ struct CExoLinkedListNode;
 typedef uint16_t RESTYPE;
 typedef uint32_t ObjectID;
 typedef uint32_t PlayerID;
-namespace NWSync { struct CNWSync { void *m_pInternal; char *m_tmp1; uint32_t m_tmp2; }; }
 
 struct DataView;
 using DataViewRef = std::shared_ptr<DataView>;
@@ -96,7 +95,49 @@ struct DataBlock : DataView
     void Compact();
 };
 
-struct CUUID { uint64_t ab = 0, cd = 0; };
+// sole.h
+struct CUUID {
+    CUUID() : ab(0), cd(0) {}
+
+    uint64_t ab;
+    uint64_t cd;
+
+    bool empty() const { return ab == 0 && cd == 0; }
+    operator bool() const { return !empty(); }
+
+    void clear() { ab = 0; cd = 0; }
+
+    inline bool operator==( const CUUID &other ) const {
+        return ab == other.ab && cd == other.cd;
+    }
+    inline bool operator!=( const CUUID &other ) const {
+        return !operator==(other);
+    }
+    inline bool operator<( const CUUID &other ) const {
+        if( ab < other.ab ) return true;
+        if( ab > other.ab ) return false;
+        if( cd < other.cd ) return true;
+        return false;
+    }
+
+    std::string pretty() const;
+    std::string base62() const;
+    std::string str() const;
+
+    template<typename ostream>
+    inline friend ostream &operator<<( ostream &os, const CUUID &self ) {
+        return os << self.str(), os;
+    }
+
+    // Generators
+    static CUUID uuid0(); // UUID v0, pro: unique; cons: MAC revealed, pid revealed, predictable.
+    static CUUID uuid1(); // UUID v1, pro: unique; cons: MAC revealed, predictable.
+    static CUUID uuid4(); // UUID v4, pros: anonymous, fast; con: uuids "can clash"
+
+    // Rebuilders
+    static CUUID rebuild( uint64_t ab, uint64_t cd );
+    static CUUID rebuild( const std::string &uustr );
+};
 using json = nlohmann::json;
 
 namespace Nui::JSON {
@@ -129,9 +170,15 @@ namespace Nui::JSON {
     //using EventQueue = std::queue<Event>;
 }
 
-namespace NWSQLite {
-    using Database = void*;
-}
+template<typename T>
+struct SharedPtrEngineStructure
+{
+    std::shared_ptr<T> m_shared;
+    virtual ~SharedPtrEngineStructure() {}
+    virtual bool IsEmpty() const = 0;
+    virtual void Clear() = 0;
+    virtual void Unlink() = 0;
+};
 
 #define NWN_CLASS_EXTENSION_CGameObject \
     using CleanupFunc = std::function<void(void*)>;                                                                         \

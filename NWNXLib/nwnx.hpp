@@ -50,7 +50,7 @@ namespace Config
 
 struct ScriptVariant;
 struct ScriptVariantStack;
-namespace Events
+namespace ScriptAPI
 {
     using Argument = ScriptVariant;
     using ArgumentStack = ScriptVariantStack;
@@ -62,7 +62,7 @@ namespace Events
     template <typename T> static std::optional<T> Pop();
     void Call(const std::string& pluginName, const std::string& eventName);
 }
-using ArgumentStack = Events::ArgumentStack;
+using ArgumentStack = ScriptVariantStack;
 
 namespace Hooks
 {
@@ -82,7 +82,7 @@ namespace Hooks
     class FunctionHook final
     {
     public:
-        FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Order::Default);
+        FunctionHook(void* originalFunction, void* newFunction, int32_t order = Order::Default);
         ~FunctionHook();
 
         void *GetOriginal() { return m_trampoline; }
@@ -93,17 +93,22 @@ namespace Hooks
         }
 
     private:
-        uintptr_t   m_originalFunction;
+        void*       m_originalFunction;
         void*       m_newFunction;
         int32_t     m_order;
         void*       m_funchook;
         void*       m_trampoline;
 
-        static inline std::unordered_map<uintptr_t, std::vector<FunctionHook*>> s_hooks;
+        static inline std::unordered_map<void*, std::vector<FunctionHook*>> s_hooks;
     };
 
     using Hook = std::unique_ptr<FunctionHook>;
-    [[nodiscard]] Hook HookFunction(uintptr_t address, void* funcPtr, int32_t order = Order::Default);
+
+    template <typename T1, typename T2>
+    [[nodiscard]] Hook HookFunction(T1 original, T2 replacement, int32_t order = Order::Default)
+    {
+        return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
+    }
 }
 
 namespace MessageBus
@@ -120,15 +125,6 @@ namespace Platform
 {
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);
-
-    std::string ResolveAddress(uintptr_t address);
-    uintptr_t GetFunctionAddress(const std::string& mangledname);
-
-    void CalculateBaseAddress();
-    uintptr_t GetRelocatedAddress(const uintptr_t address);
-    uintptr_t GetRelocatedGlobalAddress(const uintptr_t address);
-
-    bool AmICalledBy(uintptr_t address, uintptr_t returnAddress = (uintptr_t)__builtin_return_address(0));
 }
 
 namespace Commands
@@ -176,21 +172,10 @@ namespace String
     bool EndsWith(const std::string& str, const std::string& suffix);
 }
 
-namespace VectorMath
-{
-    float MagnitudeSquared(const Vector& v);
-    float Magnitude(const Vector& v);
-    float Dot(const Vector& a, const Vector& b);
-    Vector Add(const Vector& a, const Vector& b);
-    Vector Subtract(const Vector& a, const Vector& b);
-    Vector Multiply(const Vector& v, float s);
-    Vector Normalize(const Vector &v);
-    Vector Lineproject(const Vector &a, const Vector &b, const Vector &c);
-}
-
 namespace Utils
 {
     std::string ObjectIDToString(const ObjectID id);
+    ObjectID StringToObjectID(const std::string idStr);
 
     std::string GetCurrentScript();
     void ExecuteScript(const std::string& script, ObjectID oidOwner);
@@ -217,9 +202,6 @@ namespace Utils
     // Wrappers around non-virtual methods repeated for all NWS types
     bool AcquireItem(CNWSItem *pItem, CGameObject *pOwner);
     bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z);
-
-    bool operator==(Vector& v1, Vector& v2);
-    bool operator!=(Vector& v1, Vector& v2);
 
     // Returns TRUE if the var tables have the same variables with same values
     bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2);
@@ -269,6 +251,11 @@ namespace Utils
     CNWSWaypoint*  PopWaypoint(ArgumentStack& args, bool throwOnFail=false);
     CNWSTrigger*   PopTrigger(ArgumentStack& args, bool throwOnFail=false);
     CNWSDoor*      PopDoor(ArgumentStack& args, bool throwOnFail=false);
+    CNWSStore*     PopStore(ArgumentStack& args, bool throwOnFail=false);
+
+    int32_t NWScriptObjectTypeToEngineObjectType(int32_t nwscriptObjectType);
+    void UpdateClientObject(ObjectID oidObject);
+    void UpdateClientObjectForPlayer(ObjectID oidObject, CNWSPlayer* oidPlayer);
 }
 
 namespace POS
@@ -301,7 +288,7 @@ namespace Tasks
 #include "Assert.hpp"
 #include "ScriptVariant.hpp"
 #include "Config.hpp"
-#include "Events.hpp"
+#include "ScriptAPI.hpp"
 #include "Utils.hpp"
 
 namespace NWNXLib
