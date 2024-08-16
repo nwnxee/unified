@@ -10,6 +10,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 ### Added
 - DotNET: Added `NWNX_DOTNET_METHOD` option to change entrypoint method (default: `Bootstrap`)
 - DotNET: Added `NWNX_DOTNET_NEW_BOOTSTRAP` option to enable a new bootstrap method with less boilerplate code.
+- DotNET: Added `RequestFunctionHook`, `ReturnFunctionHook`.
 
 ##### New Plugins
 - Store: Enables getting and setting store data.
@@ -28,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature() 
 - Damage: added iSpellId to the NWNX_Damage_DamageEventData struct.
+- Docker: Add dotnet-runtime-8.0, dotnet-apphost-pack-8.0 packages.
 
 ### Deprecated
 - DotNET: GetFunctionPointer()
