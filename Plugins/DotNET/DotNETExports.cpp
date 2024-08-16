@@ -737,6 +737,24 @@ NWNX_EXPORT void ReturnHook(void* trampoline)
     }
 }
 
+NWNX_EXPORT Hooks::FunctionHook* RequestFunctionHook(void* address, void* managedFuncPtr, const int32_t order)
+{
+    const auto funcHook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
+    return funcHook;
+}
+
+NWNX_EXPORT void ReturnFunctionHook(const Hooks::FunctionHook* funcHook)
+{
+    for (auto it = s_managedHooks.begin(); it != s_managedHooks.end(); ++it)
+    {
+        if (it->get() == funcHook)
+        {
+            s_managedHooks.erase(it);
+            return;
+        }
+    }
+}
+
 std::vector<void*> GetExports()
 {
     //
