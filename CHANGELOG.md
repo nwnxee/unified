@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature() 
 - Damage: added iSpellId to the NWNX_Damage_DamageEventData struct.
+- Docker: Add dotnet-runtime-8.0, dotnet-apphost-pack-8.0 packages.
 
 ### Deprecated
 - DotNET: GetFunctionPointer()
