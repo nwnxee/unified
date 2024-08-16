@@ -74,8 +74,8 @@ void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nSlots);
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBaseItem);
+    NWNX_PushArgumentInt(nSlots);
+    NWNX_PushArgumentInt(nBaseItem);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -84,8 +84,8 @@ void NWNX_Layonara_SetHostileFeat(int nFeatID, int bHostile)
 {
     string sFunc = "SetHostileFeat";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, bHostile);
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nFeatID);
+    NWNX_PushArgumentInt(bHostile);
+    NWNX_PushArgumentInt(nFeatID);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -94,8 +94,8 @@ void NWNX_Layonara_SetDuelistCannyDefense(object creature, int nBonus)
 {
     string sFunc = "SetDuelistCannyDefense";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentInt(nBonus);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -104,8 +104,8 @@ void NWNX_Layonara_SetDuelistGrace(object creature, int nBonus)
 {
     string sFunc = "SetDuelistGrace";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentInt(nBonus);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -114,8 +114,8 @@ void NWNX_Layonara_SetDuelistElaborateParry(object creature, int nBonus)
 {
     string sFunc = "SetDuelistElaborateParry";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentInt(nBonus);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -124,8 +124,8 @@ void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE)
 {
     string sFunc = "SetSubraceDayEffects";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nActive);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentInt(nActive);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -134,8 +134,8 @@ void NWNX_Layonara_ApplyRune(object creature, object item)
 {
     string sFunc = "ApplyRune";
 
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentObject(item);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -144,31 +144,31 @@ string NWNX_Layonara_CombineRunes(object target, object item)
 {
     string sFunc = "CombineRunes";
 
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, target);
+    NWNX_PushArgumentObject(item);
+    NWNX_PushArgumentObject(target);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Layonara, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 string NWNX_Layonara_GetRuneDescription(object item)
 {
     string sFunc = "GetRuneDescription";
 
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
+    NWNX_PushArgumentObject(item);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 
-    return NWNX_GetReturnValueString(NWNX_Layonara, sFunc);
+    return NWNX_GetReturnValueString();
 }
 
 void NWNX_Layonara_SetQuiver(object creature, int nColor)
 {
     string sFunc = "SetQuiver";
 
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nColor);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentInt(nColor);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -177,7 +177,7 @@ void NWNX_Layonara_SetQuiverArrows(object creature)
 {
     string sFunc = "SetQuiverArrows";
 
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
@@ -193,7 +193,7 @@ void NWNX_Layonara_ClearSurfaceMaterial(object creature)
 {
     string sFunc = "ClearSurfaceMaterial";
 
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+    NWNX_PushArgumentObject(creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }

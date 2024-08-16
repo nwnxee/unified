@@ -36,13 +36,13 @@ void NWNX_ItemAppearance_CacheAppearances()
 void NWNX_ItemAppearance_BlacklistAppearance(int nBaseItem, string sBot = "*", string sMid = "*", string sTop = "*", string sBotC = "*", string sMidC = "*", string sTopC = "*")
 {
     string sFunc = "BlacklistAppearance";
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sTopC);
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sMidC);
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sBotC);
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sTop);
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sMid);
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sBot);
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nBaseItem);
+    NWNX_PushArgumentString(sTopC);
+    NWNX_PushArgumentString(sMidC);
+    NWNX_PushArgumentString(sBotC);
+    NWNX_PushArgumentString(sTop);
+    NWNX_PushArgumentString(sMid);
+    NWNX_PushArgumentString(sBot);
+    NWNX_PushArgumentInt(nBaseItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
 }
@@ -50,8 +50,8 @@ void NWNX_ItemAppearance_BlacklistAppearance(int nBaseItem, string sBot = "*", s
 void NWNX_ItemAppearance_SyncAppearance(int nBaseItem, string sPart)
 {
     string sFunc = "SyncAppearance";
-    NWNX_PushArgumentString(NWNX_ItemAppearance, sFunc, sPart);
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nBaseItem);
+    NWNX_PushArgumentString(sPart);
+    NWNX_PushArgumentInt(nBaseItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
 }
@@ -59,49 +59,49 @@ void NWNX_ItemAppearance_SyncAppearance(int nBaseItem, string sPart)
 int NWNX_ItemAppearance_GetRandomAppearance(object oItem, int nPart = 0)
 {
     string sFunc = "GetRandomAppearance";
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nPart);
-    NWNX_PushArgumentObject(NWNX_ItemAppearance, sFunc, oItem);
+    NWNX_PushArgumentInt(nPart);
+    NWNX_PushArgumentObject(oItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_ItemAppearance, sFunc);
+    return  NWNX_GetReturnValueInt();
 }
 
 int NWNX_ItemAppearance_GetNextAppearance(object oItem, int nPart = 0)
 {
     string sFunc = "GetNextAppearance";
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nPart);
-    NWNX_PushArgumentObject(NWNX_ItemAppearance, sFunc, oItem);
+    NWNX_PushArgumentInt(nPart);
+    NWNX_PushArgumentObject(oItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_ItemAppearance, sFunc);
+    return  NWNX_GetReturnValueInt();
 }
 
 int NWNX_ItemAppearance_GetPreviousAppearance(object oItem, int nPart = 0)
 {
     string sFunc = "GetPreviousAppearance";
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nPart);
-    NWNX_PushArgumentObject(NWNX_ItemAppearance, sFunc, oItem);
+    NWNX_PushArgumentInt(nPart);
+    NWNX_PushArgumentObject(oItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_ItemAppearance, sFunc);
+    return  NWNX_GetReturnValueInt();
 }
 
 int NWNX_ItemAppearance_GetNextColor(object oItem, int nPart = 0)
 {
     string sFunc = "GetNextColor";
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nPart);
-    NWNX_PushArgumentObject(NWNX_ItemAppearance, sFunc, oItem);
+    NWNX_PushArgumentInt(nPart);
+    NWNX_PushArgumentObject(oItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_ItemAppearance, sFunc);
+    return  NWNX_GetReturnValueInt();
 }
 
 int NWNX_ItemAppearance_GetPreviousColor(object oItem, int nPart = 0)
 {
     string sFunc = "GetPreviousColor";
-    NWNX_PushArgumentInt(NWNX_ItemAppearance, sFunc, nPart);
-    NWNX_PushArgumentObject(NWNX_ItemAppearance, sFunc, oItem);
+    NWNX_PushArgumentInt(nPart);
+    NWNX_PushArgumentObject(oItem);
 
     NWNX_CallFunction(NWNX_ItemAppearance, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_ItemAppearance, sFunc);
+    return  NWNX_GetReturnValueInt();
 }
