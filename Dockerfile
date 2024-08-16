@@ -1,7 +1,10 @@
 # This image is for users who wish to build their images themselves. It uses the builder factory that is created
 # via the builder.Dockerfile and the base that is created via the base.Dockerfile
 
-FROM nwnxee/builder as builder
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
+
+FROM ${BUILDER_IMAGE:-nwnxee/builder} as builder
 WORKDIR /nwnx/home
 COPY ./ .
 # Compile nwnx
@@ -11,7 +14,7 @@ ARG CXX=g++
 ENV CXX=$CXX
 RUN Scripts/buildnwnx.sh -j $(nproc)
 
-FROM nwnxee/nwnxee-base
+FROM ${BASE_IMAGE:-nwnxee/nwnxee-base}
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
 # Configure nwserver to run with nwnx
