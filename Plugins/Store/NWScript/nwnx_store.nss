@@ -45,7 +45,7 @@ void NWNX_Store_SetMarkUp(object oStore, int nValue);
 /// @brief Return current customer count
 /// @param oStore The store object.
 /// @return count, or -1 on error
-int NWNX_Store_GetCustomerCount(object oStore);
+int NWNX_Store_GetCurrentCustomersCount(object oStore);
 
 /// @}
 
@@ -120,9 +120,9 @@ void NWNX_Store_SetMarkUp(object oStore, int nValue)
     NWNX_CallFunction(NWNX_Store, sFunc);
 }
 
-int NWNX_Store_GetCustomerCount(object oStore)
+int NWNX_Store_GetCurrentCustomersCount(object oStore)
 {
-    string sFunc = "GetCustomerCount";
+    string sFunc = "GetCurrentCustomersCount";
 
     NWNX_PushArgumentObject(oStore);
 

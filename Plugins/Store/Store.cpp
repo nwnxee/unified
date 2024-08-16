@@ -80,7 +80,7 @@ NWNX_EXPORT ArgumentStack SetMarkUp(ArgumentStack&& args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetCustomerCount(ArgumentStack&& args)
+NWNX_EXPORT ArgumentStack GetCurrentCustomersCount(ArgumentStack&& args)
 {
     if (auto *pStore = Utils::PopStore(args))
     {
