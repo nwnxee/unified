@@ -111,11 +111,12 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md662">Running the server (Windows 10 WSL1)</a></li>
 <li class="level2"><a href="#autotoc_md663">Compiling NWNX:EE (native)</a></li>
 <li class="level2"><a href="#autotoc_md664">Compiling NWNX:EE (docker)</a></li>
-<li class="level2"><a href="#autotoc_md665">Contributing code</a></li>
-<li class="level2"><a href="#autotoc_md666">Reporting bugs</a></li>
-<li class="level2"><a href="#autotoc_md667">Who makes NWNX:EE?</a></li>
-<li class="level2"><a href="#autotoc_md668">You&#39;re awesome, let me pay you</a></li>
-<li class="level2"><a href="#autotoc_md669">Contact</a></li>
+<li class="level2"><a href="#autotoc_md665">Docker images</a></li>
+<li class="level2"><a href="#autotoc_md666">Contributing code</a></li>
+<li class="level2"><a href="#autotoc_md667">Reporting bugs</a></li>
+<li class="level2"><a href="#autotoc_md668">Who makes NWNX:EE?</a></li>
+<li class="level2"><a href="#autotoc_md669">You&#39;re awesome, let me pay you</a></li>
+<li class="level2"><a href="#autotoc_md670">Contact</a></li>
 </ul>
 </ul>
 </div>
@@ -210,18 +211,35 @@ Compiling NWNX:EE (docker)</h2>
 <li>To perform a clean build pass -FORCECLEAN eg './scripts/rundockerbuild.ps1 -FORCECLEAN'</li>
 </ol>
 <h2><a class="anchor" id="autotoc_md665"></a>
+Docker images</h2>
+<p>Prebuilt images exist for the master branch and can be found under <a href="https://github.com/orgs/nwnxee/packages?repo_name=unified">nwnxee/package</a>. The Dockerfiles in this repository serve the following purposes:</p>
+<ol type="1">
+<li><code>builder.Dockerfile</code> defines the environment to compile nwnx (<a href="https://github.com/nwnxee/unified/pkgs/container/builder">ghcr.io/nwnxee/builder</a>)</li>
+</ol>
+<ol type="1">
+<li><code>base.Dockerfile</code> defines the environment to run nwserver and nwnx, but has no nwnx binaries (<a href="https://github.com/nwnxee/unified/pkgs/container/nwnxee-base">ghcr.io/nwnxee/nwnxee-base</a>)</li>
+</ol>
+<ol type="1">
+<li><code>gha.Dockerfile</code> defines the environment to run nwserver and nwnx, using binaries built by CI <a href="https://github.com/nwnxee/unified/pkgs/container/unified">ghcr.io/nwnxee/unified</a></li>
+</ol>
+<ol type="1">
+<li><code>Dockerfile</code> defines the environment to run nwserver and nwnx, using binaries built locally with the builder image, and based on the local base image</li>
+</ol>
+<p>Note that the nwserver binary in the base image is included by starting "FROM [ghcr.io/urothis/nwserver](https://github.com/urothis/nwserver/pkgs/container/nwserver)".</p>
+<p>It is recommended to use the prebuilt images for production environments. If you cannot use a prebuilt image (e.g. if you are testing a preview branch), you can build the image locally using <code>Dockerfile</code>. You may use <code>Scripts/buildimages.sh</code> to do this, or run the docker build commands yourself.</p>
+<h2><a class="anchor" id="autotoc_md666"></a>
 Contributing code</h2>
 <p>All contribution are welcome. See <a class="el" href="CONTRIBUTING_8md.html">CONTRIBUTING.md</a> for requirements and style guidelines.</p>
-<h2><a class="anchor" id="autotoc_md666"></a>
+<h2><a class="anchor" id="autotoc_md667"></a>
 Reporting bugs</h2>
 <p>Use the <a href="https://github.com/nwnxee/unified/issues/new">issue tracker</a> to report any bugs. Please always provide the relevant <code>stdout</code> output of your runs, ideally at debug log level (<code>NWNX_CORE_LOG_LEVEL=7</code>).</p>
-<h2><a class="anchor" id="autotoc_md667"></a>
+<h2><a class="anchor" id="autotoc_md668"></a>
 Who makes NWNX:EE?</h2>
 <p>The project is an open source project created and maintained by community members for free in their spare time.</p>
-<h2><a class="anchor" id="autotoc_md668"></a>
+<h2><a class="anchor" id="autotoc_md669"></a>
 You're awesome, let me pay you</h2>
 <p>Thanks, but you should donate your dolla dolla bills to a good cause instead. If you really want to spend money to support NWN, consider donating to <a href="https://neverwintervault.org/">Neverwinter Vault</a> to cover their server hosting costs.</p>
-<h2><a class="anchor" id="autotoc_md669"></a>
+<h2><a class="anchor" id="autotoc_md670"></a>
 Contact</h2>
 <p>The team can be contacted on Discord using the invite at the following URL: <a href="https://discord.gg/hxTt8Fr">https://discord.gg/hxTt8Fr</a> </p>
 </div></div><!-- PageDoc -->
@@ -231,7 +249,7 @@ Contact</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Apr 22 2024 08:37:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Aug 16 2024 21:06:44 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
