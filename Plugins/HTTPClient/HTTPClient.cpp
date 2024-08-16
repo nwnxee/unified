@@ -75,16 +75,16 @@ using namespace NWNXLib::API;
 
 static std::unique_ptr<httplib::Result> GetResult(const Request&);
 static httplib::Headers ParseHeaderString(const std::string&);
-static inline int m_clientRequestId = 0;
-static inline int m_clientTimeout = Config::Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
-static inline std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> m_clientHostCache;
-static inline std::unordered_map<int, Request> m_clientRequests;
+static int s_clientRequestId = 0;
+static int s_clientTimeout = Config::Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
+static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_clientHostCache;
+static std::unordered_map<int, Request> s_clientRequests;
 
 
 std::unique_ptr<httplib::Result> GetResult(const Request &client_req)
 {
     std::unique_ptr<httplib::Result> result;
-    auto cli = m_clientHostCache[client_req.host].get();
+    auto cli = s_clientHostCache[client_req.host].get();
     switch (client_req.requestMethod)
     {
         case RequestMethod::GET:
@@ -123,11 +123,11 @@ std::unique_ptr<httplib::Result> GetResult(const Request &client_req)
 
 void PerformRequest(const Request &client_req)
 {
-    auto cli = m_clientHostCache.find(client_req.host);
-    if (cli == std::end(m_clientHostCache))
+    auto cli = s_clientHostCache.find(client_req.host);
+    if (cli == std::end(s_clientHostCache))
     {
         LOG_DEBUG("Creating new SSL client for host %s.", client_req.host);
-        cli = m_clientHostCache.insert(std::make_pair(client_req.host,
+        cli = s_clientHostCache.insert(std::make_pair(client_req.host,
                                                       std::make_unique<httplib::SSLClient>(client_req.host.c_str(),
                                                                                            client_req.port))).first;
     }
@@ -155,7 +155,7 @@ void PerformRequest(const Request &client_req)
     }
     Tasks::QueueOnAsyncThread([cli, client_req]()
                               {
-                                  cli->second->set_connection_timeout(0, m_clientTimeout * 1000);
+                                  cli->second->set_connection_timeout(0, s_clientTimeout * 1000);
                                   auto result = GetResult(client_req);
 
                                   if (result == nullptr || result->error() != httplib::Error::Success)
@@ -310,7 +310,7 @@ httplib::Headers ParseHeaderString(const std::string &headerStr)
 NWNX_EXPORT ArgumentStack SendRequest(ArgumentStack &&args)
 {
     auto clientReq = Request();
-    clientReq.id = m_clientRequestId++;
+    clientReq.id = s_clientRequestId++;
     clientReq.tag = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.requestMethod = static_cast<RequestMethod>(ScriptAPI::ExtractArgument<int>(args));
     clientReq.host = ScriptAPI::ExtractArgument<std::string>(args);
@@ -324,7 +324,7 @@ NWNX_EXPORT ArgumentStack SendRequest(ArgumentStack &&args)
     if (!clientReq.port) clientReq.port = 443;
     clientReq.headersString = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.headers = ParseHeaderString(clientReq.headersString);
-    m_clientRequests[clientReq.id] = clientReq;
+    s_clientRequests[clientReq.id] = clientReq;
     PerformRequest(clientReq);
 
     return ScriptAPI::Arguments(clientReq.id);
@@ -334,8 +334,8 @@ NWNX_EXPORT ArgumentStack GetRequest(ArgumentStack &&args)
 {
     ScriptAPI::ArgumentStack stack;
     auto requestId = ScriptAPI::ExtractArgument<int>(args);
-    auto req = m_clientRequests.find(requestId);
-    ASSERT_OR_THROW(req != std::end(m_clientRequests));
+    auto req = s_clientRequests.find(requestId);
+    ASSERT_OR_THROW(req != std::end(s_clientRequests));
     auto clientReq = req->second;
 
     ScriptAPI::InsertArgument(stack, clientReq.headersString);
