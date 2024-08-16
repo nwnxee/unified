@@ -17,6 +17,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Experimental", "dir_6e0c5d987c338b0072956bd3eccf79be.html", null ],
     [ "Feat", "dir_afbfad71a23b4f2e0a514ba6cf564f5b.html", "dir_afbfad71a23b4f2e0a514ba6cf564f5b" ],
     [ "Feedback", "dir_cec99290c1cd131a34cbea0b5d3e3a8f.html", "dir_cec99290c1cd131a34cbea0b5d3e3a8f" ],
+    [ "HTTPClient", "dir_a4616a424a425d941529e94c470a7a5f.html", "dir_a4616a424a425d941529e94c470a7a5f" ],
     [ "Item", "dir_8528ea76bce6f11033f11c3bac34ed32.html", "dir_8528ea76bce6f11033f11c3bac34ed32" ],
     [ "ItemProperty", "dir_fad520b62fe1864a3ce89e5e537cfebd.html", "dir_fad520b62fe1864a3ce89e5e537cfebd" ],
     [ "Lua", "dir_406089e986db710290248677fca3459a.html", "dir_406089e986db710290248677fca3459a" ],

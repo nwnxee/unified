@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['serverlogredirector_5325',['ServerLogRedirector',['../group__serverlogredirector.html',1,'']]],
-  ['skillranks_5326',['SkillRanks',['../group__skillranks.html',1,'']]],
-  ['spellchecker_5327',['SpellChecker',['../group__spellchecker.html',1,'']]],
-  ['sql_5328',['SQL',['../group__sql.html',1,'']]],
-  ['store_5329',['Store',['../group__store.html',1,'']]]
+  ['race_5383',['Race',['../group__race.html',1,'']]],
+  ['redis_5384',['Redis',['../group__redis.html',1,'']]],
+  ['rename_5385',['Rename',['../group__rename.html',1,'']]],
+  ['reveal_5386',['Reveal',['../group__reveal.html',1,'']]],
+  ['ruby_5387',['Ruby',['../group__ruby.html',1,'']]]
 ];

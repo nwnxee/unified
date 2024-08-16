@@ -14,6 +14,7 @@ var searchData=
   ['hset_197',['HSET',['../nwnx__redis__short_8nss.html#acc547f11a874fd99ba81759b9e381000',1,'nwnx_redis_short.nss']]],
   ['hsetnx_198',['HSETNX',['../nwnx__redis__short_8nss.html#adcc16e58d2a84ea7265bd5d990f5a6f5',1,'nwnx_redis_short.nss']]],
   ['hstrlen_199',['HSTRLEN',['../nwnx__redis__short_8nss.html#a9cea74ec316cbd7509668986370efe19',1,'nwnx_redis_short.nss']]],
-  ['hvals_200',['HVALS',['../nwnx__redis__short_8nss.html#aee29cdc7c756f72fd6e793ababec2124',1,'nwnx_redis_short.nss']]],
-  ['how_20to_20contribute_20to_20nwnx_3aee_201',['How to contribute to NWNX:EE',['../md_CONTRIBUTING.html',1,'']]]
+  ['httpclient_200',['HTTPClient',['../group__httpclient.html',1,'']]],
+  ['hvals_201',['HVALS',['../nwnx__redis__short_8nss.html#aee29cdc7c756f72fd6e793ababec2124',1,'nwnx_redis_short.nss']]],
+  ['how_20to_20contribute_20to_20nwnx_3aee_202',['How to contribute to NWNX:EE',['../md_CONTRIBUTING.html',1,'']]]
 ];

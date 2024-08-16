@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('group__nostack.html',''); initResizabl
 <div class="contents">
 
 
-<h3><a id="nostack"></a>Readme</h3><div class="textblock">Functions and variables to control stacking of multiple bonuses of the same type.<h2><a class="anchor" id="autotoc_md511"></a>
+<h3><a id="nostack"></a>Readme</h3><div class="textblock">Functions and variables to control stacking of multiple bonuses of the same type.<h2><a class="anchor" id="autotoc_md517"></a>
 Environment Variables</h2>
 <ul>
 <li><code>NWNX_NOSTACK_*</code>: See below.</li>
@@ -114,7 +114,7 @@ Environment Variables</h2>
 <li><code>NWNX_NOSTACK_ALWAYS_STACK_PENALTIES</code>: true or false. Defaults to false.</li>
 <li><code>NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS</code>: true or false. Defaults to false.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md512"></a>
+<h3><a class="anchor" id="autotoc_md518"></a>
 NWNX_NOSTACK_*</h3>
 <p>The following environment variables are available.</p>
 <table class="markdownTable">
@@ -144,7 +144,7 @@ NWNX_NOSTACK_*</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight">4 </td><td class="markdownTableBodyNone">Stacking will be determined by effect type that can be set using NWscript functions.  </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md513"></a>
+<h3><a class="anchor" id="autotoc_md519"></a>
 NWNX_NOSTACK_*_DEFAULT_TYPE</h3>
 <p>This variable takes one of the following values, assigning all effects this modifier type by default. This is used only when mode is set to 4. Per-spell overrides can be defined using the <code><a class="el" href="group__nostack.html#gab58506b6c8bd6a1d1f00797a1a7925d8" title="Sets a spell bonus type to be used by the NoStack feature.">NWNX_NoStack_SetSpellBonusType(int spellId, int type)</a></code> function. Effects of different types stack with each other but only circumstance bonuses stack with effects of the same type.</p>
 <p>Feats and other spell-like effects use spellIds from spells.2da to determine the bonus type. Item effects will always use the default type set for all items.</p>
@@ -172,7 +172,7 @@ NWNX_NOSTACK_*_DEFAULT_TYPE</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight">9-20 </td><td class="markdownTableBodyNone">Custom bonus types.  </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md514"></a>
+<h3><a class="anchor" id="autotoc_md520"></a>
 NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS</h3>
 <p>Set this value to true if you are adding effects through scripts that you want to stack with each other. This is needed because scripted effects, unless created from a spellscript, always have an INVALID_OBJECT creator and a spellId of -1.</p>
 <p>This is a quick fix, if you want to control each of the scripted effect types you will need to unpack the effect, set a valid spellId and use the <code>SetSpellBonusType()</code> function to set the bonus for that spellId. The spellId has to be a valid spell, so either reuse one of the existing spells that don't give a bonus effect (i.e. healing or damaging spells) or add a dummy spell to your spells.2da. </p>
@@ -379,7 +379,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Aug 16 2024 21:19:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Aug 16 2024 21:46:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

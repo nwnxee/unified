@@ -9,6 +9,7 @@ var annotated =
     [ "NWNX_Damage_DamageEventData", "structNWNX__Damage__DamageEventData.html", "structNWNX__Damage__DamageEventData" ],
     [ "NWNX_EffectUnpacked", "structNWNX__EffectUnpacked.html", "structNWNX__EffectUnpacked" ],
     [ "NWNX_Encounter_CreatureListEntry", "structNWNX__Encounter__CreatureListEntry.html", "structNWNX__Encounter__CreatureListEntry" ],
+    [ "NWNX_HTTPClient_Request", "structNWNX__HTTPClient__Request.html", "structNWNX__HTTPClient__Request" ],
     [ "NWNX_IPUnpacked", "structNWNX__IPUnpacked.html", "structNWNX__IPUnpacked" ],
     [ "NWNX_Object_LocalVariable", "structNWNX__Object__LocalVariable.html", "structNWNX__Object__LocalVariable" ],
     [ "NWNX_Player_JournalEntry", "structNWNX__Player__JournalEntry.html", "structNWNX__Player__JournalEntry" ],
