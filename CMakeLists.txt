@@ -30,6 +30,11 @@ function(add_plugin target)
     configure_plugin(${target})
 endfunction()
 
+function(add_shared_plugin target)
+    add_library(${target} SHARED ${ARGN})
+    configure_plugin(${target})
+endfunction()
+
 function(configure_plugin target)
     add_sanitizers(${target})
     target_link_libraries(${target} Core)

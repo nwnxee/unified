@@ -65,6 +65,12 @@ void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE);
 /// @param position The nth ? in a prepared statement.
 void NWNX_SQL_PreparedNULL(int position);
 
+/// @brief Set the Json value of a prepared statement at given position. 
+/// Convienence function to match other Prepared(type) functions.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
+void NWNX_SQL_PreparedJson(int position, json value);
+
 /// @brief Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 ///
 /// The object will be deserialized and created in the game. New object ID is returned.
@@ -210,6 +216,12 @@ void NWNX_SQL_PreparedNULL(int position)
 
     NWNX_PushArgumentInt(position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
+}
+void NWNX_SQL_PreparedJson(int position, json value)
+{
+    // Dump to string and continue as a string from here.
+    // Famously assuming we're sent valid Json here.
+    NWNX_SQL_PreparedString(position, JsonDump(value));
 }
 
 
