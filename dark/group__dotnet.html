@@ -108,17 +108,19 @@ Environment Variables</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Variable Name </th><th class="markdownTableHeadCenter">Type </th><th class="markdownTableHeadNone">Description </th><th class="markdownTableHeadNone">Default Value  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">ASSEMBLY </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Full path to your assembly directory (without extension) </td><td class="markdownTableBodyNone"><em>none</em>  </td></tr>
+<td class="markdownTableBodyNone">ASSEMBLY </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Full path to your assembly/dll (without extension) </td><td class="markdownTableBodyNone"><em>none</em>  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">ENTRYPOINT </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Path to class containing Bootstrap() function </td><td class="markdownTableBodyNone">NWN.Internal  </td></tr>
+<td class="markdownTableBodyNone">ENTRYPOINT </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Full type name containing static entrypoint method. </td><td class="markdownTableBodyNone">NWN.Internal  </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">METHOD </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Name of entrypoint method to call. Method must be <code>static void</code> without any parameters. </td><td class="markdownTableBodyNone">Bootstrap  </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">NETHOST_PATH </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Path where to load libnethost.so from </td><td class="markdownTableBodyNone"><em>none</em>  </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md285"></a>
 Basic Setup</h2>
 <h3><a class="anchor" id="autotoc_md286"></a>
 Dependencies</h3>
-<p>You will need <code>dotnet-sdk-3.1</code> installed on the server to use this plugin. The same package is used to build the managed code. Installation instructions are <a href="https://dotnet.microsoft.com/download/linux-package-manager/sdk-current">here</a>.</p>
+<p>You will need <code>dotnet-sdk</code> installed on the server to use this plugin. The same package is used to build the managed code. Installation instructions are <a href="https://dotnet.microsoft.com/download/linux-package-manager/sdk-current">here</a>.</p>
 <p>There are no compiletime dependencies for the unmanaged code.</p>
 <h3><a class="anchor" id="autotoc_md287"></a>
 Compile managed code</h3>
@@ -147,9 +149,10 @@ runtime config</h4>
 /some/path/my/project/NWN.pdb
 </pre><p>your <code>NWNX_DOTNET_ASSEMBLY</code> should be <code>/some/path/my/project/NWN</code></p>
 <h4><a class="anchor" id="autotoc_md292"></a>
-Bootstrap()</h4>
-<p>If you get the following error: </p><pre class="fragment">Unable to get [something].Bootstrap() function [...]
-</pre><p>and you have changed the default entrypoint, verify that your <code>NWNX_DOTNET_ENTRYPOINT</code> variable contains the full <code>Namespace.Class.Subclass</code>, and that a static <code>Bootstrap()</code> function with the correct signature exists in that path.</p>
+Bootstrap Method</h4>
+<p>If you get the following error: </p><pre class="fragment">Unable to get [something].[something]() function [...]
+</pre><p>and you have changed the default entrypoint, verify that your <code>NWNX_DOTNET_ENTRYPOINT</code> contains the full <code>Namespace.Class.Subclass</code>, and that <code>NWNX_DOTNET_METHOD</code> is declared as a <code>static void</code> method with no arguments.</p>
+<p>E.g. <code>NWNX_DOTNET_METHOD=Bootstrap</code> -&gt; <code>public static void Bootstrap()</code></p>
 <h2><a class="anchor" id="autotoc_md293"></a>
 How it works (basic)</h2>
 <p>In <a href="NWN/Entrypoints.cs">Entrypoints.cs</a> you have three events that you need to implement:</p>
@@ -196,51 +199,81 @@ Advanced stuff</h2>
 <h3><a class="anchor" id="autotoc_md299"></a>
 NWN types</h3>
 <p>When talking to unmanaged code, we only deal with basic types. Objects are passed as <code>uint</code>s. Other engine structures, like <code>Effect</code>,<code>Location</code>, etc, all have <code>IntPtr Handle</code> which is passed instead.</p>
-<h3><a class="anchor" id="autotoc_md300"></a>
+<p>Engine structures like <code>Effect</code>/<code>Location</code> have a backing unmanaged structure, and need to be cleaned up after usage. It is recommended to have a wrapper like this to allow the native C# garbage collector to handle it for you:</p>
+<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">partial class </span>Effect</div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">public</span> IntPtr Handle;</div>
+<div class="line">  <span class="keyword">public</span> Effect(IntPtr handle) =&gt; Handle = handle;</div>
+<div class="line">  ~Effect() { NWNXPInvoke.FreeGameDefinedStructure(NWScript.ENGINE_STRUCTURE_EFFECT, Handle); }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> implicit <span class="keyword">operator</span> IntPtr(Effect effect) =&gt; effect.Handle;</div>
+<div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> implicit <span class="keyword">operator</span> Effect(IntPtr intPtr) =&gt; <span class="keyword">new</span> Effect(intPtr);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md300"></a>
 Bootstrapping</h3>
 <p>The basic interop between unmanaged NWNX and managed module code is entirely contained within <a href="NWN/Internal/Bootstrap.cs">Bootstrap.cs</a>. Your managed DLL needs to have this function:</p>
-<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> Bootstrap(IntPtr arg, <span class="keywordtype">int</span> argLength);</div>
-</div><!-- fragment --><p>exposed. By default, NWNX will look for the <code>Bootstrap()</code> function in <code>NWN.Internal</code>, but you can override that through <code>NWNX_DOTNET_ENTRYPOINT</code> environment variable. The function name cannot be changed.</p>
-<p>The argument is a pointer to the <code>BootstrapArgs</code> structure that contains some 50 delegates that call into unmanaged code. Save these delegates somewhere.</p>
-<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> BootstrapArgs NativeFunctions;</div>
-<div class="line"><span class="comment">//... in Bootstrap()...</span></div>
-<div class="line">    NativeFunctions = Marshal.PtrToStructure&lt;BootstrapArgs&gt;(arg);</div>
-</div><!-- fragment --><p>Then you need to hand your event handler delegates back to the unmanaged code. For this we use <code>RegisterHandlers()</code> delegate we received in <code>BootstrapArgs</code>:</p>
-<div class="fragment"><div class="line"><span class="comment">// Types of handlers we give back:</span></div>
-<div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">void</span> MainLoopHandlerDelegate(ulong frame);</div>
-<div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">int</span> RunScriptHandlerDelegate(<span class="keywordtype">string</span> script, uint oid);</div>
-<div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">void</span> ClosureHandlerDelegate(ulong eid, uint oid);</div>
+<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> Bootstrap();</div>
+</div><!-- fragment --><p>exposed. By default, NWNX will look for the <code>Bootstrap()</code> function in <code>NWN.Internal</code>, but you can override that through the <code>NWNX_DOTNET_ENTRYPOINT</code> and <code>NWNX_DOTNET_METHOD</code> environment variables.</p>
+<p>In your bootstrap code, you will need to register a set of method handlers that will be called by NWNX/NWN to execute your C# code.</p>
+<p>For this, we use the <code>RegisterHandler</code> methods exposed by NWNX_DotNET. This can be called through Platform Invoke (PInvoke).</p>
+<p>At minimum, it is recommended to register the main loop, run script, closure and signal handlers:</p>
+<div class="fragment"><div class="line"><span class="comment">// Handler functions exposed from NWNX_DotNET</span></div>
+<div class="line">[DllImport(<span class="stringliteral">&quot;NWNX_DotNET&quot;</span>, CallingConvention = CallingConvention.Cdecl)]</div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keywordtype">void</span> RegisterMainLoopHandler(delegate* unmanaged&lt;ulong, void&gt; handler);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Structure to hand back</span></div>
-<div class="line">[StructLayout(LayoutKind.Sequential)]</div>
-<div class="line"><span class="keyword">public</span> <span class="keyword">struct </span>AllHandlers</div>
-<div class="line">{</div>
-<div class="line">    <span class="keyword">public</span> MainLoopHandlerDelegate  MainLoop;</div>
-<div class="line">    <span class="keyword">public</span> RunScriptHandlerDelegate RunScript;</div>
-<div class="line">    <span class="keyword">public</span> ClosureHandlerDelegate   Closure;</div>
-<div class="line">}</div>
+<div class="line">[DllImport(<span class="stringliteral">&quot;NWNX_DotNET&quot;</span>, CallingConvention = CallingConvention.Cdecl)]</div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keywordtype">void</span> RegisterRunScriptHandler(delegate* unmanaged&lt;byte*, uint, int&gt; handler);</div>
+<div class="line"> </div>
+<div class="line">[DllImport(<span class="stringliteral">&quot;NWNX_DotNET&quot;</span>, CallingConvention = CallingConvention.Cdecl)]</div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keywordtype">void</span> RegisterClosureHandler(delegate* unmanaged&lt;ulong, uint, void&gt; handler);</div>
+<div class="line"> </div>
+<div class="line">[DllImport(<span class="stringliteral">&quot;NWNX_DotNET&quot;</span>, CallingConvention = CallingConvention.Cdecl)]</div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keywordtype">void</span> RegisterSignalHandler(delegate* unmanaged&lt;byte*, void&gt; handler);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">//...in Bootstrap()...</span></div>
-<div class="line">    AllHandlers handlers = { <span class="comment">/* populate with your functions */</span> };</div>
-<div class="line">    <span class="comment">// We need to get an unmanaged pointer to the handlers structure...</span></div>
-<div class="line">    var size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(AllHandlers));</div>
-<div class="line">    IntPtr ptr = Marshal.AllocHGlobal(size);           <span class="comment">// allocate unmanaged memory</span></div>
-<div class="line">    Marshal.StructureToPtr(handlers, ptr, <span class="keyword">false</span>);      <span class="comment">// copy the structure over</span></div>
-<div class="line">    NativeFunctions.RegisterHandlers(ptr, (uint)size); <span class="comment">// call native function</span></div>
-<div class="line">    Marshal.FreeHGlobal(ptr);                          <span class="comment">// free unmanaged memory</span></div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> Bootstrap()</div>
+<div class="line">{</div>
+<div class="line">  NWNXPInvoke.RegisterMainLoopHandler(&amp;OnMainLoop);</div>
+<div class="line">  NWNXPInvoke.RegisterRunScriptHandler(&amp;OnRunScript);</div>
+<div class="line">  NWNXPInvoke.RegisterClosureHandler(&amp;OnClosure);</div>
+<div class="line">  NWNXPInvoke.RegisterSignalHandler(&amp;OnSignal);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Your handler functions</span></div>
+<div class="line">[UnmanagedCallersOnly] <span class="comment">// Indicates that this method will only be called by native code/NWNX.</span></div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OnMainLoop(ulong frame)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">try</span></div>
+<div class="line">  {</div>
+<div class="line">    Entrypoints.OnMainLoop(frame);</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">catch</span> (Exception e)</div>
+<div class="line">  {</div>
+<div class="line">    Console.WriteLine(e.ToString());</div>
+<div class="line">  }</div>
+<div class="line">}</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md301"></a>
+Using native NWNX_DotNET functions</h3>
+<p>This plugin exposes various functions and utilities that can be used through platform invoke.</p>
+<p>Functions in <a href="DotNETExports.cpp">DotNETExports.cpp</a> declared with <code>NWNX_EXPORT</code> can be accessed by declaring an extern function in C#, with an appropriate <code>DllImport</code> attribute.</p>
+<p>Example: </p><div class="fragment"><div class="line">// C++</div>
+<div class="line">NWNX_EXPORT void ReturnHook(void* trampoline)</div>
+<div class="line"> </div>
+<div class="line">// C#</div>
+<div class="line">[DllImport(&quot;NWNX_DotNET&quot;, CallingConvention = CallingConvention.Cdecl)]</div>
+<div class="line">public static extern void ReturnHook(IntPtr hook);</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md302"></a>
 OBJECT_SELF</h3>
 <p>The <code>OBJECT_SELF</code> global is handled in the managed code. In the <code>OnRunScript</code> handler, the argument <code>oidSelf</code> is assigned to the global. Before the handler finishes, the old value is restored.</p>
 <p>You can find implementation details in <a href="NWN/Internal/Internal.cs">Internal.cs</a>, where a <code>Stack&lt;&gt;</code> is used to keep track of nested script calls.</p>
-<h3><a class="anchor" id="autotoc_md302"></a>
+<h3><a class="anchor" id="autotoc_md303"></a>
 Closures</h3>
 <p>A closure is a script context that is saved to be executed at a later time - <code>DelayCommand</code>, <code>AssignCommand</code>, etc. The closure support in dotnet is almost entirely handled on the managed side. The three native functions you'd use to schedule a closure are:</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keywordtype">int</span> ClosureAssignCommand(uint oid, ulong eventId);</div>
 <div class="line"><span class="keyword">public</span> <span class="keywordtype">int</span> ClosureDelayCommand(uint oid, <span class="keywordtype">float</span> duration, ulong eventId);</div>
 <div class="line"><span class="keyword">public</span> <span class="keywordtype">int</span> ClosureActionDoCommand(uint oid, ulong eventId);</div>
-</div><!-- fragment --><p>The <code>oid</code> is the ID of the object that will run the closure (usually <code>OBJECT_SELF</code> for <code>DelayCommand</code>). The <code>eventId</code> is any <code>ulong</code> tag given to this closure that will then be handed back. The native code will then just schedule <code>{oid, eventId}</code> pair to execute at the given time. When it executes, it will call back into the <code>handlers.Closure</code> handler that was registered:</p>
-<div class="fragment"><div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">void</span> ClosureHandlerDelegate(ulong eid, uint oid);</div>
-</div><!-- fragment --><p>The sample call implements closures in <a href="NWN/Internal/Internal.cs">Internal.cs</a>, as:</p>
+</div><!-- fragment --><p>The <code>oid</code> is the ID of the object that will run the closure (usually <code>OBJECT_SELF</code> for <code>DelayCommand</code>). The <code>eventId</code> is any <code>ulong</code> tag given to this closure that will then be handed back. The native code will then just schedule <code>{oid, eventId}</code> pair to execute at the given time. When it executes, it will call back into the closure handler that was registered with <code>RegisterClosureHandler</code></p>
+<p>The sample call implements closures in <a href="NWN/Internal/Internal.cs">Internal.cs</a>, as:</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">void</span> ActionDelegate();</div>
 <div class="line"><span class="keyword">private</span> <span class="keyword">struct </span>Closure</div>
 <div class="line">{</div>
@@ -255,12 +288,12 @@ Closures</h3>
 <div class="line"><span class="comment">// Scheduling a closure:</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> ClosureDelayCommand(uint obj, <span class="keywordtype">float</span> duration, ActionDelegate func)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)</div>
+<div class="line">    <span class="keywordflow">if</span> (NWNXPInvoke.ClosureDelayCommand(obj, duration, NextEventId) != 0)</div>
 <div class="line">    {</div>
 <div class="line">        Closures.Add(NextEventId++, <span class="keyword">new</span> Closure { OwnerObject = obj, Run = func });</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md303"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md304"></a>
 Exceptions</h3>
 <p>Exceptions work within the managed code, however they do not cross the managed/unmanaged boundary. This means that uncaught exceptions will bring down the entire nwserver process. It is advisable to wrap most of your logic in <code>try...catch</code> blocks in all three entry points (See <a href="NWN/Internal/Internal.cs">Internal.cs</a> for examples).</p>
 <p>Errors which happen while executing unmanaged code invoked through one of the bootstrap delegates will also bring down the server (e.g. by passing invalid <code>IntPtr Handle</code> for engine structures) </p>
@@ -270,7 +303,7 @@ Exceptions</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Aug 16 2024 21:09:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Aug 16 2024 21:19:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

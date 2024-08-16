@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('group__nwsqliteextensions.html',''); i
 <div class="contents">
 
 
-<h3><a id="nwsqliteextensions"></a>Readme</h3><div class="textblock">Various extensions for the game's built-in sqlite database.<h2><a class="anchor" id="autotoc_md514"></a>
+<h3><a id="nwsqliteextensions"></a>Readme</h3><div class="textblock">Various extensions for the game's built-in sqlite database.<h2><a class="anchor" id="autotoc_md515"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -117,7 +117,7 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_NWSQLITEEXTENSIONS_ENABLE_2DA_VIRTUAL_TABLE_MODULE</code> </td><td class="markdownTableBodyCenter">true/false </td><td class="markdownTableBodyNone">Enable the 2DA Virtual Table Module. See below for more information.  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md515"></a>
+<h2><a class="anchor" id="autotoc_md516"></a>
 Mersenne Twister SQLite functions</h2>
 <p>A Mersenne Twister is a general-purpose pseudorandom number generator, useful if you need a seeded RNG.</p>
 <p>If enabled, the following functions will be available in queries:</p>
@@ -141,7 +141,7 @@ Mersenne Twister SQLite functions</h2>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md516"></a>
+<h3><a class="anchor" id="autotoc_md517"></a>
 Example functions:</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SqlMersenneTwisterSetSeed(<span class="keywordtype">string</span> sName, <span class="keywordtype">int</span> nSeed)</div>
 <div class="line">{</div>
@@ -158,13 +158,13 @@ Example functions:</h3>
 <div class="line">    SqlBindInt(sql, <span class="stringliteral">&quot;@maxinteger&quot;</span>, nMaxInteger);</div>
 <div class="line">    <span class="keywordflow">return</span> SqlStep(sql) ? SqlGetInt(sql, 0) : -1;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md517"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md518"></a>
 2DA Virtual Table Module</h2>
 <p>A SQLite Virtual Table that allows you to query 2DA data. These tables are read-only and only created in the module SQLite database.</p>
 <p>To use it, you must first create a virtual table for a 2da using the following function: </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code" href="group__nwsqliteextensions.html#ga99c18e4b05d4d65f5592fd89d83f133a">NWNX_NWSQLiteExtensions_CreateVirtual2DATable</a>(<span class="keywordtype">string</span> s2DA, <span class="keywordtype">string</span> sColumnTypeHints = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">string</span> sTableName = <span class="stringliteral">&quot;&quot;</span>);</div>
 </div><!-- fragment --><p>The columns of the table are the columns available in the 2da, their names are case-insensitive. To get the id of a row you can use the special SQLite <code>rowid</code> column.</p>
 <p><code>****</code> values in the 2DA are considered <code>NULL</code> in the SQLite table.</p>
-<h3><a class="anchor" id="autotoc_md518"></a>
+<h3><a class="anchor" id="autotoc_md519"></a>
 Column Type Hints</h3>
 <p><code>sColumnTypeHints</code> is an optional parameter that allows you to set the datatype of a column.</p>
 <p>If not set SQLite will assume the column type is TEXT/string, which means that if a column has integers as data you won't be able to use <code>column &gt;= 123</code> constraints in the <code>WHERE</code> clause and you would have to compare the value as TEXT/string: &lsquo;column = '1&rsquo;` etc.</p>
@@ -179,7 +179,7 @@ Column Type Hints</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">REAL </td><td class="markdownTableBodyNone">float  </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md519"></a>
+<h3><a class="anchor" id="autotoc_md520"></a>
 Example</h3>
 <p>If we look at <code>effecticons.2da</code>, we can see it has the following columns: </p><div class="fragment"><div class="line">2DA V2.0</div>
 <div class="line"> </div>
@@ -267,7 +267,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Aug 16 2024 21:09:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Aug 16 2024 21:19:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
