@@ -399,7 +399,7 @@ var searchData=
   ['nwnx_5fitem_5fsetaddgoldpiecevalue_3376',['NWNX_Item_SetAddGoldPieceValue',['../group__item.html#gaf58142d1d7277f86c857e6c4cec377f5',1,'nwnx_item.nss']]],
   ['nwnx_5fitem_5fsetbasegoldpiecevalue_3377',['NWNX_Item_SetBaseGoldPieceValue',['../group__item.html#gadf40650ece667c4777475ef2a394ce39',1,'nwnx_item.nss']]],
   ['nwnx_5fitem_5fsetbaseitemtype_3378',['NWNX_Item_SetBaseItemType',['../group__item.html#ga96785d68cf29f226db8d834e523dd019',1,'nwnx_item.nss']]],
-  ['nwnx_5fitem_5fsetitemappearance_3379',['NWNX_Item_SetItemAppearance',['../group__item.html#ga528797ba19be4bb40b456ce64059ad6a',1,'nwnx_item.nss']]],
+  ['nwnx_5fitem_5fsetitemappearance_3379',['NWNX_Item_SetItemAppearance',['../group__item.html#ga521f6fb8560e5e15b3755006f533fd33',1,'nwnx_item.nss']]],
   ['nwnx_5fitem_5fsetminequiplevelmodifier_3380',['NWNX_Item_SetMinEquipLevelModifier',['../group__item.html#gacca0831113a52a693aaba0e3ba87a443',1,'nwnx_item.nss']]],
   ['nwnx_5fitem_5fsetminequipleveloverride_3381',['NWNX_Item_SetMinEquipLevelOverride',['../group__item.html#ga8efd8d37305d3226837d977f081043ea',1,'nwnx_item.nss']]],
   ['nwnx_5fitem_5fsetweight_3382',['NWNX_Item_SetWeight',['../group__item.html#ga9464b3a05fa000e593e9b5780c16c13e',1,'nwnx_item.nss']]],
