@@ -11,6 +11,8 @@
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSStore.hpp"
 #include "API/CNWCCMessageData.hpp"
+#include "API/CNWSPlayer.hpp"
+#include "API/CNWSInventory.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -77,6 +79,16 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
         const auto idx   = args.extract<int32_t>();
         const auto val   = args.extract<int32_t>();
 
+        int32_t bUpdateCreatureAppearance = false;
+        try
+        {
+            bUpdateCreatureAppearance = !!args.extract<int32_t>();
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Item_SetItemAppearance() called from NWScript without bUpdateCreatureAppearance parameter. Please update nwnx_item.nss");
+        }
+
         switch(type)
         {
             case Constants::ItemAppearanceType::SimpleModel:
@@ -124,6 +136,37 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                     }
                 }
                 break;
+        }
+
+        if (auto *pPossessor= Utils::AsNWSCreature(Utils::GetGameObject(pItem->m_oidPossessor)))
+        {
+            if (!bUpdateCreatureAppearance || !pPossessor->m_pInventory->GetItemInInventory(pItem))
+                return {};
+            uint32_t nSlot = pPossessor->m_pInventory->GetSlotFromItem(pItem);
+            if (nSlot != Constants::EquipmentSlot::Head && nSlot != Constants::EquipmentSlot::Chest && nSlot != Constants::EquipmentSlot::Cloak)
+                return {};
+
+            auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
+            auto *pPlayerList = static_cast<CExoLinkedList<CNWSClient>*>(Globals::AppManager()->m_pServerExoApp->GetPlayerList());
+            CExoLinkedListPosition pListPosition = pPlayerList->GetHeadPos();
+            while (pListPosition != nullptr)
+            {
+                auto *pPlayer = static_cast<CNWSPlayer*>(pPlayerList->GetAtPos(pListPosition));
+                if (auto *pLUO = pPlayer->GetLastUpdateObject(pPossessor->m_idSelf))
+                {
+#define UPDATE_ITEM_APPEARANCE(oid)                                                                 \
+                    if (oid == pItem->m_idSelf) {                                                   \
+                        oid = Constants::OBJECT_INVALID;                                            \
+                        pMessage->SendServerPlayerItemUpdate_DestroyItem(pPlayer, pItem->m_idSelf); \
+                    }
+
+                    UPDATE_ITEM_APPEARANCE(pLUO->m_cAppearance.m_oidHeadItem)
+                    UPDATE_ITEM_APPEARANCE(pLUO->m_cAppearance.m_oidChestItem)
+                    UPDATE_ITEM_APPEARANCE(pLUO->m_cAppearance.m_oidCloakItem)
+#undef UPDATE_ITEM_APPEARANCE
+                }
+                pPlayerList->GetNext(pListPosition);
+            }
         }
     }
     return {};
