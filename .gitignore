@@ -2,6 +2,7 @@
 .vscode/
 Binaries/
 build-nwnx/
+build-nwnx-debug/
 build/
 Documentation/
 
