@@ -18,11 +18,11 @@ typedef int BOOL;
 struct CBaseExoApp
 {
 
-    virtual BOOL AdmitNetworkAddress(uint32_t nProtocol, CExoString sAddress);
+    virtual BOOL AdmitNetworkAddress(CExoString sAddress);
     virtual BOOL AdmitPlayerName(CExoString sPlayerName);
-    virtual BOOL SetNetworkAddressBan(uint32_t nProtocol, CExoString sAddress, BOOL bBanPlayer);
+    virtual BOOL SetNetworkAddressBan(CExoString sAddress, BOOL bBanPlayer);
     virtual void PlayerListChange(uint32_t nPlayerId, BOOL bEnter, BOOL bPrimaryPlayer = false);
-    virtual BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
+    virtual void HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize);
     virtual float GetFPS();
     virtual BOOL ContinueMessageProcessing();
     virtual class CNetLayer * GetNetLayer();

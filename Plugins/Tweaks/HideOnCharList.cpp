@@ -44,8 +44,8 @@ void HideOnCharList()
 static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage* thisPtr, PlayerID nPlayerId, ObjectID nCharacterId, int32_t bAdd)
 {
     auto *pServer = Globals::AppManager()->m_pServerExoApp;
-    auto *pObserver = static_cast<CNWSPlayer *>(pServer->GetClientObjectByPlayerId(nPlayerId));
-    auto *pPlayer = static_cast<CNWSPlayer *>(pServer->GetClientObjectByObjectId(nCharacterId));
+    auto *pObserver = pServer->GetClientObjectByPlayerId(nPlayerId);
+    auto *pPlayer = pServer->GetClientObjectByObjectId(nCharacterId);
     if (bAdd && (!pObserver || !pPlayer || (!pObserver->GetIsDM() &&
                                             ((s_HideCharBehavior == 3) ||
                                              (s_HideCharBehavior == 2 && !pPlayer->GetIsDM()) ||

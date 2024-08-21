@@ -89,7 +89,7 @@ int32_t SendServerToPlayerBarterCloseBarterHook(CNWSMessage *pMessage, ObjectID 
                                                               ObjectID nRecipientId, int32_t bAccepted)
 {
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
-    uint32_t oidPlayer = static_cast<CNWSPlayer*>(exoApp->GetClientObjectByPlayerId(nInitiatorId))->m_oidNWSObject;
+    uint32_t oidPlayer = exoApp->GetClientObjectByPlayerId(nInitiatorId)->m_oidNWSObject;
     CNWSCreature* pCreature = exoApp->GetCreatureByGameObjectID(oidPlayer);
     auto *pBarter = pCreature->GetBarterInfo(0);
 

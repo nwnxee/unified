@@ -2,9 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
-#include "CExoLinkedList.hpp"
 #include "CExoString.hpp"
-#include "CNWSClient.hpp"
 #include "CResRef.hpp"
 #include "NWSyncAdvertisement.hpp"
 
@@ -49,7 +47,6 @@ struct AdvertLUT {
 };
 
 typedef int BOOL;
-typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
 typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
@@ -85,8 +82,7 @@ struct CServerExoAppInternal
     CCampaignDB * m_pCampaignDB;
     CGameObjectArray * m_pGameObjArray;
     OBJECT_ID m_oidModule;
-    CExoLinkedList<CNWSClient> * m_pNWSPlayerList;
-    CExoLinkedList<CNWSClient> * m_pNWSSysAdminList;
+    CExoArrayList<CNWSPlayer*> m_lstPlayerList;
     CNWPlaceMeshManager * m_pPlaceMeshManager;
     BOOL m_bDebugMode;
     CExoArrayList<OBJECT_ID> * m_lstPauseExclusionList;
@@ -112,7 +108,7 @@ struct CServerExoAppInternal
     C2DA * m_pOldServerVault2DA;
     C2DA * m_pKnownServerNames2DA;
     uint32_t m_nBannedListsTimeStamp;
-    CExoLinkedListPosition m_posPCObject;
+    int32_t m_nPosPCObject;
     int m_nGameObjectUpdateIntervalTarget;
     int m_nGameObjectUpdateIntervalTargetLoading;
     int m_nGameObjectUpdateMessageLimit;
@@ -146,10 +142,10 @@ struct CServerExoAppInternal
     void ShutdownNetLayer();
     void RestartNetLayer();
     void Uninitialize();
-    BOOL AdmitNetworkAddress(uint32_t nProtocol, CExoString sAddress);
+    BOOL AdmitNetworkAddress(CExoString sAddress);
     BOOL AdmitPlayerName(CExoString sPlayerName);
-    BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
-    BOOL SetNetworkAddressBan(uint32_t nProtocol, CExoString sAddress, BOOL bBanAddress);
+    void HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize);
+    BOOL SetNetworkAddressBan(CExoString sAddress, BOOL bBanAddress);
     void PlayerListChange(uint32_t nPlayerId, BOOL bEnter, BOOL bPrimaryPlayer);
     BOOL ContinueMessageProcessing();
     void RemovePCFromWorld(CNWSPlayer * pPlayer);
@@ -162,7 +158,7 @@ struct CServerExoAppInternal
     void OnVideoChange();
     CWorldTimer * GetActiveTimer(OBJECT_ID oid = 0x7f000000);
     CNWSPlayer * GetClientObjectByObjectId(OBJECT_ID nObjectId);
-    CNWSClient * GetClientObjectByPlayerId(uint32_t nPlayerId, uint8_t nClientType = 0);
+    CNWSPlayer * GetClientObjectByPlayerId(uint32_t nPlayerId);
     BOOL CopyModuleToCurrentGame(CExoString & sOldFilename, CExoString & sNewFilename, RESTYPE nResType);
     BOOL LoadGame(uint32_t nSlot, CExoString & sSaveName, CExoString & sModuleName, CNWSPlayer * pPlayer = nullptr);
     void SetEstimatedSaveSize(const CExoString & sFile, RESTYPE nResType);
@@ -193,7 +189,7 @@ struct CServerExoAppInternal
     uint32_t GetPlayerIDByGameObjectID(OBJECT_ID nObjectID);
     int32_t GetPlayerLanguage(uint32_t nPlayerID);
     int32_t GetModuleLanguage();
-    BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
+    //CNetPeer GetPlayerAddressData(CNetConnectionId nConnectionId);
     void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);
     void UpdateClientsForObject(OBJECT_ID oidObjectToUpdate);
     void MarkUpdateClientsForObject(OBJECT_ID oidObjectToUpdate);

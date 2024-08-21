@@ -47,6 +47,9 @@ struct CTwoDimArrays
 
         TwoDA_PortraitTable,
 
+        TwoDA_SavingThrowTypesTable,
+        TwoDA_IPRPSaveElementTable,
+
         // client only
         TwoDA_PartTable,
         TwoDA_ArmorTypesTable,
@@ -194,6 +197,8 @@ struct CTwoDimArrays
     inline C2DA * GetRulesetTable()                    { return m_p2DAs[TwoDA_Ruleset]; }
     inline C2DA * GetDamageTypesTable()                { return m_p2DAs[TwoDA_DamageTypes]; }
     inline C2DA * GetDamageTypeGroupsTable()           { return m_p2DAs[TwoDA_DamageTypeGroups]; }
+    inline C2DA * GetSavingThrowTypesTable()           { return m_p2DAs[TwoDA_SavingThrowTypesTable]; }
+    inline C2DA * GetIPRPSaveElementTable()            { return m_p2DAs[TwoDA_IPRPSaveElementTable]; }
     inline C2DA * GetPartTable()                       { return m_p2DAs[TwoDA_PartTable]; }
     inline C2DA * GetArmorTypesTable()                 { return m_p2DAs[TwoDA_ArmorTypesTable]; }
     inline C2DA * GetTileColorTable()                  { return m_p2DAs[TwoDA_TileColorTable]; }

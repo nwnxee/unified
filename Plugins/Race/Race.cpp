@@ -712,8 +712,7 @@ int32_t Race::SendServerToPlayerLevelUp_ConfirmationHook(CNWSMessage *pMessage, 
     // Reapply the racial effects in case there are level specific ones
     if (bValidated)
     {
-        auto *client = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0);
-        auto *pPlayer = static_cast<CNWSPlayer *>(client);
+        auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId);
         auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         ApplyRaceEffects(pCreature);
     }

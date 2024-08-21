@@ -560,7 +560,7 @@ int NWNX_Util_GetStringLevenshteinDistance(string sString, string sCompareTo)
 {
     NWNXPushString(sCompareTo);
     NWNXPushString(sString);
-    NWNXCall(NWNX_Util, "LevenshteinDistance");
+    NWNXCall(NWNX_Util, "GetStringLevenshteinDistance");
     return NWNXPopInt();
 }
 

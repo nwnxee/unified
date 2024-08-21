@@ -70,12 +70,13 @@ int32_t NetMessages::SendServerToPlayerMessageHook(CNWSMessage *thisPtr, PlayerI
     return s_SendServerToPlayerMessageHook->CallOriginal<int32_t>(thisPtr, nPlayerId, nMajor, nMinor, pBuffer, nBufferSize);
 }
 
-int32_t NetMessages::HandlePlayerToServerMessageHook(CNWSMessage *thisPtr, PlayerID nPlayerId, uint8_t* pBuffer, uint32_t nBufferSize)
+void NetMessages::HandlePlayerToServerMessageHook(CNWSMessage *thisPtr, PlayerID nPlayerId, uint8_t* pBuffer, uint32_t nBufferSize)
 {
     if (nBufferSize < 3)
     {
         // Somebody might be doing bad things with packets.
-        return s_HandlePlayerToServerMessageHook->CallOriginal<int32_t>(thisPtr, nPlayerId, pBuffer, nBufferSize);
+        s_HandlePlayerToServerMessageHook->CallOriginal<int32_t>(thisPtr, nPlayerId, pBuffer, nBufferSize);
+        return;
     }
 
     g_metrics->Push(
@@ -91,7 +92,7 @@ int32_t NetMessages::HandlePlayerToServerMessageHook(CNWSMessage *thisPtr, Playe
             { "PlayerID", std::to_string(nPlayerId) }
         });
 
-    return s_HandlePlayerToServerMessageHook->CallOriginal<int32_t>(thisPtr, nPlayerId, pBuffer, nBufferSize);
+    s_HandlePlayerToServerMessageHook->CallOriginal<int32_t>(thisPtr, nPlayerId, pBuffer, nBufferSize);
 }
 
 }

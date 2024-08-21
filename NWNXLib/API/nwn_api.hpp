@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <type_traits>
 
 #include "External/json/json.hpp"
 
@@ -178,6 +179,48 @@ struct SharedPtrEngineStructure
     virtual bool IsEmpty() const = 0;
     virtual void Clear() = 0;
     virtual void Unlink() = 0;
+};
+
+template<typename T>
+struct DistinctSimpleType
+{
+    static_assert(std::is_trivially_copyable_v<T>, "T must be a trivially copyable type");
+
+    DistinctSimpleType(const DistinctSimpleType& other) = default;
+    DistinctSimpleType(DistinctSimpleType&& other) = default;
+    DistinctSimpleType& operator=(const DistinctSimpleType& other) = default;
+    DistinctSimpleType& operator=(DistinctSimpleType&& other) = default;
+
+    bool operator==(const DistinctSimpleType& rhs) const
+    {
+        return m_id == rhs.m_id;
+    }
+
+    bool operator!=(const DistinctSimpleType& rhs) const
+    {
+        return !(*this == rhs);
+    }
+
+    T operator*() const
+    {
+        return m_id;
+    }
+
+protected:
+    explicit DistinctSimpleType(T initial) : m_id(initial) {}
+
+    T m_id;
+};
+
+struct CNetConnectionId : public DistinctSimpleType<uint32_t>
+{
+    CNetConnectionId() : DistinctSimpleType(INVALID) {}
+    explicit CNetConnectionId(uint32_t id) : DistinctSimpleType(id) {}
+
+    static const CNetConnectionId INVALID;
+    static const CNetConnectionId MASTERSERVER;
+    static const CNetConnectionId BROADCAST;
+    static const CNetConnectionId SINGLEPLAYER;
 };
 
 #define NWN_CLASS_EXTENSION_CGameObject \

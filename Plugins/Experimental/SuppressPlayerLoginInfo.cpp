@@ -41,7 +41,7 @@ void SuppressPlayerLoginInfo()
     s_HandlePlayerToServerPlayModuleCharacterList_StartHook = Hooks::HookFunction(&CNWSMessage::HandlePlayerToServerPlayModuleCharacterList_Start,
         +[](CNWSMessage* pThis, CNWSPlayer* pPlayer) -> int32_t
         {
-            if (pThis->MessageReadOverflow(true) || pThis->MessageReadUnderflow(true))
+            if (pThis->MessageReadOverflow() || pThis->MessageReadUnderflow())
                 return false;
 
             pPlayer->m_bPlayModuleListingCharacters = true;

@@ -82,10 +82,9 @@ struct CNWSMessage : CNWMessage
     BOOL HandlePlayerToServerGoldMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerInventoryMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerLoginMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
-    BOOL HandlePlayerToServerMessage(uint32_t nPlayerId, uint8_t * pBuffer, uint32_t nBufferSize);
+    void HandlePlayerToServerMessage(uint32_t nPlayerId, uint8_t * pBuffer, uint32_t nBufferSize);
     BOOL HandlePlayerToServerModuleMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerParty(CNWSPlayer * pPlayer, uint8_t nMinor);
-    BOOL HandlePlayerToServerServerChatMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerServerStatusMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerQuickChatMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerJournalMessage(CNWSPlayer * pPlayer, uint8_t nMinor);

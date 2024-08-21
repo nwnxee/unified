@@ -12,7 +12,6 @@ NWN_API_PROLOGUE(CNWSVirtualMachineCommands)
 struct C2DA;
 struct CResGFF;
 struct CResStruct;
-typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
 typedef int BOOL;
@@ -21,6 +20,7 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSVirtualMachineCommands : CVirtualMachineCmdImplementer
 {
+    typedef int32_t (CNWSVirtualMachineCommands::*pfCVMCommands)(int32_t, int32_t);
     pfCVMCommands * m_pVirtualMachineCommands;
 
     CNWSVirtualMachineCommands(CVirtualMachine* vm) : CVirtualMachineCmdImplementer(vm, VMContext::SERVER) {}

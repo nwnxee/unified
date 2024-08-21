@@ -12,15 +12,15 @@ struct CNWSItem;
 struct CNWSObject;
 struct CNWSCreature;
 
-typedef int32_t (*pfAIPCommands)(CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t, BOOL);
-typedef int32_t (*pfRIPCommands)(CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t);
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
 struct CNWSItemPropertyHandler : CItemPropertyApplierRemover
 {
+    typedef int32_t (CNWSItemPropertyHandler::*pfAIPCommands)(CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t, BOOL);
     pfAIPCommands * m_pApplyItemPropertyCommands;
+    typedef int32_t (CNWSItemPropertyHandler::*pfRIPCommands)(CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t);
     pfRIPCommands * m_pRemoveItemPropertyCommands;
 
     ~CNWSItemPropertyHandler();

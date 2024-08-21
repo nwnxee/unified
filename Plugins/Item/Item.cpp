@@ -147,11 +147,8 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                 return {};
 
             auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
-            auto *pPlayerList = static_cast<CExoLinkedList<CNWSClient>*>(Globals::AppManager()->m_pServerExoApp->GetPlayerList());
-            CExoLinkedListPosition pListPosition = pPlayerList->GetHeadPos();
-            while (pListPosition != nullptr)
+            for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
             {
-                auto *pPlayer = static_cast<CNWSPlayer*>(pPlayerList->GetAtPos(pListPosition));
                 if (auto *pLUO = pPlayer->GetLastUpdateObject(pPossessor->m_idSelf))
                 {
 #define UPDATE_ITEM_APPEARANCE(oid)                                                                 \
@@ -165,7 +162,6 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                     UPDATE_ITEM_APPEARANCE(pLUO->m_cAppearance.m_oidCloakItem)
 #undef UPDATE_ITEM_APPEARANCE
                 }
-                pPlayerList->GetNext(pListPosition);
             }
         }
     }

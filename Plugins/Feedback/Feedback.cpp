@@ -56,9 +56,11 @@ static void SendFeedbackMessageHook(CNWSCreature *pCreature, uint16_t nFeedbackI
 
 static int32_t SendServerToPlayerCCMessageHook(CNWSMessage *pMessage, uint32_t nPlayerId, uint8_t nMinor, CNWCCMessageData *pMessageData, CNWSCombatAttackData *pAttackData)
 {
-    uint32_t oidPlayer = static_cast<CNWSPlayer*>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0))->m_oidPCObject;
+    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId);
+    if (!pPlayer)
+        return s_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
 
-    auto personalState = GetPersonalState(oidPlayer, COMBATLOG_MESSAGE, nMinor);
+    auto personalState = GetPersonalState(pPlayer->m_oidPCObject, COMBATLOG_MESSAGE, nMinor);
     auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
 
     return s_CombatMessageWhitelist != bSuppressFeedback ? false : s_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);

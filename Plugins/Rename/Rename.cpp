@@ -82,8 +82,7 @@ Rename::Rename(Services::ProxyServiceList* services)
     +[](CNWSMessage *thisPtr, uint32_t nPlayerID, OBJECT_ID oidSpeaker, CExoString sSpeakerMessage) -> int32_t \
     { \
         auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidSpeaker); \
-        auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerID, 0); \
-        auto *observerPlayer = static_cast<CNWSPlayer*>(observerClient); \
+        auto *observerPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerID); \
         SetOrRestorePlayerName(true, targetPlayer, observerPlayer); \
         auto retVal = CAT(pChatHook, __LINE__)->CallOriginal<int32_t>(thisPtr, nPlayerID, oidSpeaker, sSpeakerMessage);       \
         SetOrRestorePlayerName(false, targetPlayer, observerPlayer); \
@@ -286,8 +285,7 @@ int32_t Rename::SendServerToPlayerExamineGui_CreatureDataHook(CNWSMessage *pMess
 int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage *thisPtr, PlayerID nPlayerId, ObjectID nCharacterId, int32_t bAdd)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(nCharacterId);
-    auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0);
-    auto *observerPlayer = static_cast<CNWSPlayer *>(observerClient);
+    auto *observerPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId);
 
     SetOrRestorePlayerName(true, targetPlayer, observerPlayer);
     auto retVal = s_SendServerToPlayerPlayModuleCharacterListResponseHook->CallOriginal<int32_t>(thisPtr, nPlayerId, nCharacterId, bAdd);
@@ -367,15 +365,13 @@ void Rename::GlobalNameChange(
         PlayerID targetPlayerId)
 {
     auto *server = Globals::AppManager()->m_pServerExoApp;
-    auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
     std::vector<PlayerID> observersToNotify;
     std::vector<PlayerID> targetsToNotify;
 
     if (observerPlayerId == Constants::PLAYERID_ALL_PLAYERS || observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
     {
-        for (auto *head = playerList->pHead; head; head = head->pNext)
+        for (auto *observerPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
         {
-            auto *observerPlayer = static_cast<CNWSPlayer *>(static_cast<CNWSClient *>(head->pObject));
             if ((observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS &&
                  observerPlayer->m_nCharacterType == Constants::CharacterType::DM) ||
                 (observerPlayerId == Constants::PLAYERID_ALL_PLAYERS &&
@@ -392,9 +388,8 @@ void Rename::GlobalNameChange(
 
     if (targetPlayerId == Constants::PLAYERID_ALL_PLAYERS || targetPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
     {
-        for (auto *head = playerList->pHead; head; head = head->pNext)
+        for (auto *targetPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
         {
-            auto *targetPlayer = static_cast<CNWSPlayer *>(static_cast<CNWSClient *>(head->pObject));
             if ((targetPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS &&
                  targetPlayer->m_nCharacterType == Constants::CharacterType::DM) ||
                 (targetPlayerId == Constants::PLAYERID_ALL_PLAYERS &&
@@ -415,7 +410,7 @@ void Rename::GlobalNameChange(
     {
         for (auto &targetPid : targetsToNotify)
         {
-            auto *targetPlayer = static_cast<CNWSPlayer*>(server->GetClientObjectByPlayerId(targetPid, 0));
+            auto *targetPlayer = server->GetClientObjectByPlayerId(targetPid);
             auto targetOid = targetPlayer->m_oidNWSObject;
             auto *targetCreature = server->GetCreatureByGameObjectID(targetOid);
             if (targetCreature && g_plugin->m_RenamePlayerNames.count(targetOid) &&
@@ -448,7 +443,7 @@ void Rename::GlobalNameChange(
                     }
                 }
             }
-            auto *observerPlayer = static_cast<CNWSPlayer*>(server->GetClientObjectByPlayerId(observerPid, 0));
+            auto *observerPlayer = server->GetClientObjectByPlayerId(observerPid);
             SetOrRestorePlayerName(before, targetPlayer, observerPlayer, true);
         }
     }
@@ -479,13 +474,9 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
 
     if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS)
     {
-        auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
-
-        for (auto *head = playerList->pHead; head; head = head->pNext)
+        for (auto *player : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
         {
-            auto *client = static_cast<CNWSClient*>(head->pObject);
-            if (client)
-                playersToNotify.emplace_back(client->m_nPlayerID);
+            playersToNotify.emplace_back(player->m_nPlayerID);
         }
     }
     else
@@ -497,7 +488,7 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlaye
     for (auto &pid : playersToNotify)
     {
         bool success = false;
-        auto *observerPlayerObject = static_cast<CNWSPlayer*>(server->GetClientObjectByPlayerId(pid, 0));
+        auto *observerPlayerObject = server->GetClientObjectByPlayerId(pid);
         if (observerPlayerObject == nullptr)
             continue;
         auto targets = g_plugin->m_RenamePlayerNames[targetCreature->m_idSelf];

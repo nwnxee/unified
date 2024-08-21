@@ -1,4 +1,6 @@
-nwnxlib_add("FunctionsLinux.cpp")
+nwnxlib_add(
+    "FunctionsLinux.cpp"
+    "nwn_api.cpp")
 
 set(NWN_API_INCLUDE "ApiExtensions.hpp")
 

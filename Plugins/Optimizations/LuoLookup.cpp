@@ -24,7 +24,6 @@ static Hooks::Hook s_CreateNewLastUpdateObject;
 static Hooks::Hook s_TestObjectUpdateDifferences;
 static Hooks::Hook s_DeleteLastUpdateObjectsForObject;
 static Hooks::Hook s_DeleteLastUpdateObjectsInOtherAreas;
-static Hooks::Hook s_DestroyPlayer0;
 static Hooks::Hook s_DestroyPlayer1;
 static Hooks::Hook s_SendServerToPlayerGameObjUpdate;
 static CLastUpdateObject* GetLastUpdateObject(CNWSPlayer*, ObjectID) __attribute__((hot));
@@ -33,7 +32,6 @@ static void TestObjectUpdateDifferences(CNWSMessage*, CNWSPlayer*, CNWSObject*, 
 static void MessageDeleteLuo(CNWSMessage*, CLastUpdateObject*, CNWSPlayer*);
 static void DeleteLastUpdateObjectsForObject(CNWSMessage*, CNWSPlayer*, OBJECT_ID);
 static void DeleteLastUpdateObjectsInOtherAreas(CNWSMessage*, CNWSPlayer*);
-static void DestroyPlayer0(CNWSPlayer* pThis);
 static void DestroyPlayer1(CNWSPlayer* pThis);
 static BOOL SendServerToPlayerGameObjUpdate(CNWSMessage*, CNWSPlayer*, ObjectID);
 
@@ -47,7 +45,6 @@ void LuoLookup()
         s_playerluo.Initialize();
 
         s_CreateNewLastUpdateObject           = Hooks::HookFunction(&CNWSMessage::CreateNewLastUpdateObject, CreateNewLastUpdateObject, Hooks::Order::Early);
-        s_DestroyPlayer0                      = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD0Ev, (void*)DestroyPlayer0, Hooks::Order::Early);
         s_DestroyPlayer1                      = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD1Ev, (void*)DestroyPlayer1, Hooks::Order::Early);
 
         s_GetLastUpdateObject                 = Hooks::HookFunction(&CNWSPlayer::GetLastUpdateObject, GetLastUpdateObject, Hooks::Order::Final);
@@ -81,14 +78,6 @@ static inline LuoTable& GetLuoTable(CNWSPlayer* player)
     return *tbl;
 }
 
-static void DestroyPlayer0(CNWSPlayer* pThis)
-{
-    auto id = pThis->m_nPlayerID;
-    s_DestroyPlayer0->CallOriginal<void>(pThis);
-    LuoTable* tbl = nullptr;
-    s_playerluo.Delete(id, &tbl);
-    delete tbl;
-}
 static void DestroyPlayer1(CNWSPlayer* pThis)
 {
     auto id = pThis->m_nPlayerID;

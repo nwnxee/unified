@@ -183,7 +183,6 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %template(CExoLinkedListCKeyTableInfo) CExoLinkedList<CKeyTableInfo>;
 %template(CExoLinkedListCLastUpdateObject) CExoLinkedList<CLastUpdateObject>;
 %template(CExoLinkedListCLastUpdatePartyObject) CExoLinkedList<CLastUpdatePartyObject>;
-%template(CExoLinkedListCNWSClient) CExoLinkedList<CNWSClient>;
 %template(CExoLinkedListCNWSCombatRoundAction) CExoLinkedList<CNWSCombatRoundAction>;
 %template(CExoLinkedListCNWSDialogPlayer) CExoLinkedList<CNWSDialogPlayer>;
 %template(CExoLinkedListCNWSObjectActionNode) CExoLinkedList<CNWSObjectActionNode>;
@@ -414,7 +413,6 @@ SWIG_DOTNET_DESTRUCTORS(CNWSAmbientSound)
 SWIG_DOTNET_DESTRUCTORS(CNWSArea)
 SWIG_DOTNET_DESTRUCTORS(CNWSAreaOfEffectObject)
 SWIG_DOTNET_DESTRUCTORS(CNWSBarter)
-SWIG_DOTNET_DESTRUCTORS(CNWSClient)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatAttackData)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatRound)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatRoundAction)
@@ -449,7 +447,6 @@ SWIG_DOTNET_DESTRUCTORS(CNWSPlayerTURD)
 SWIG_DOTNET_DESTRUCTORS(CNWSRules)
 SWIG_DOTNET_DESTRUCTORS(CNWSSoundObject)
 SWIG_DOTNET_DESTRUCTORS(CNWSStore)
-SWIG_DOTNET_DESTRUCTORS(CNWSSysAdmin)
 SWIG_DOTNET_DESTRUCTORS(CNWSTile)
 SWIG_DOTNET_DESTRUCTORS(CNWSTrigger)
 SWIG_DOTNET_DESTRUCTORS(CNWSUUID)
