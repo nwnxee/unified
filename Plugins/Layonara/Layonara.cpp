@@ -113,6 +113,7 @@ Layonara::Layonara(Services::ProxyServiceList* services)
     m_PhysicalDamageTypes.push_back(DamageType::Slashing);
 
     m_SurfaceMaterialSpeeds[SurfaceMaterials::DIRT] = 33;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::STONE] = 33;
     m_SurfaceMaterialSpeeds[SurfaceMaterials::DIRTPATH] = 33;
     m_SurfaceMaterialSpeeds[SurfaceMaterials::STONEPATH] = 33;
     m_SurfaceMaterialSpeeds[SurfaceMaterials::WATER] = -25;
@@ -890,7 +891,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bDoingC
             return;
         }
         auto pArea = pServer->GetAreaByGameObjectID(thisPtr->m_oidArea);
-        if (pArea == nullptr || pArea->m_refTileSet == "ttu01")
+        if (pArea == nullptr || pArea->m_refTileSet == "ttu01" || pArea->m_refTileSet == "tcr10")
         {
             s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bDoingCharacterCopy);
             return;
