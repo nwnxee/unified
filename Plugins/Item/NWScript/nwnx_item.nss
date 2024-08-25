@@ -69,7 +69,12 @@ void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem);
 ///
 /// [1] When specifying per-part coloring, the value 255 corresponds with the logical
 /// function 'clear colour override', which clears the per-part override for that part.
-void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue);
+/// @param oItem The item
+/// @param nType The type
+/// @param nIndex The index
+/// @param nValue The value
+/// @param bUpdateCreatureAppearance If TRUE, also update the appearance of oItem's possessor. Only works for armor/helmets/cloaks. Will remove the item from the quickbar as side effect.
+void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue, int bUpdateCreatureAppearance = FALSE);
 
 /// @brief Return a string containing the entire appearance for an item.
 /// @sa NWNX_Item_RestoreItemAppearance
@@ -187,10 +192,11 @@ void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem)
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
 
-void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue)
+void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue, int bUpdateCreatureAppearance = FALSE)
 {
     string sFunc = "SetItemAppearance";
 
+    NWNX_PushArgumentInt(bUpdateCreatureAppearance);
     NWNX_PushArgumentInt(nValue);
     NWNX_PushArgumentInt(nIndex);
     NWNX_PushArgumentInt(nType);
