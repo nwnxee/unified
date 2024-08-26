@@ -10,7 +10,6 @@ This plugin allows for the builder to add new races or subraces and define many 
 ## Required NWNX Plugins
 
 * @ref skillranks "NWNX_SkillRanks" - Needed if you're modifying skill ranks.
-* @ref util "NWNX_Util" - Needed if you're using the 2da method which requires new `NWNX_Util_Get2DARowCount()`.
 
 ## Setup
 Adding new races is beyond the scope of this documentation. The builder should know how to add new races by adding a new entry in the `racialtypes.2da` as well as adding the appropriate TLK reference identifiers for that new race then adjusting the appropriate columns for their race, including the Ability Score modifications. 

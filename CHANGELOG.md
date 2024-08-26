@@ -40,7 +40,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Race: Documentation updated as `NWNX_Utils` is no longer required with introduction of native `Get2DARowCount()`.
 
 ## 8193.36.10
 https://github.com/nwnxee/unified/compare/build8193.36.9...build8193.36.10
