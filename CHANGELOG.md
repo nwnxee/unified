@@ -40,7 +40,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - N/A
 
 ### Fixed
-- N/A
+- Core: README indicated wrong argument for logging. `NWNX_CORE_LOG_FILE_NAME` should have been `NWNX_CORE_LOG_FILE_PATH`.
 
 ## 8193.36.10
 https://github.com/nwnxee/unified/compare/build8193.36.9...build8193.36.10

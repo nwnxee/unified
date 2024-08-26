@@ -25,7 +25,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_LOG_SOURCE` | 0-1 | 1 | Set whether to show source code location in logs printed by NWNX.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
 | `NWNX_CORE_LOG_FORCE_COLOR` | 0-1| 0 | Sets whether to force color output.
-| `NWNX_CORE_LOG_FILE_NAME` | string | Unset | Sets the secondary (in addition to `stdout`) log file.
+| `NWNX_CORE_LOG_FILE_PATH` | string | Unset | Sets the secondary (in addition to `stdout`) log file.
 | `NWNX_CORE_HARD_EXIT` | 0-1| 0 | If set, NWNX will hard kill the process after it unloads.
 | `NWNX_CORE_BASE_GAME_CRASH_HANDLER` | 0-1 | 0 | Sets whether to also call the base game handler in case of crash.
 
