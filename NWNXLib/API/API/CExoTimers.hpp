@@ -21,6 +21,7 @@ struct CExoTimers
     ~CExoTimers();
     uint32_t GetMillisecondTimer(BOOL bForceSyncTimer = false);
     uint64_t GetMicrosecondTimer(BOOL bForceSyncTimer = false);
+    time_t GetUnixTimestamp();
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoTimers

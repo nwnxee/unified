@@ -255,6 +255,7 @@ struct CNWSCreature : CNWSObject
     uint8_t m_nPrePolymorphCON;
     uint8_t m_nPrePolymorphDEX;
     uint16_t m_nPrePolymorphRacialType;
+    uint16_t m_nPrePolymorphSoundSet;
     int32_t m_nPolymorphSpellId1;
     int32_t m_nPolymorphSpellId2;
     int32_t m_nPolymorphSpellId3;
