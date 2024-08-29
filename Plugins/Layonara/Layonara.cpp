@@ -891,7 +891,7 @@ void Layonara::SetPositionHook(CNWSObject* thisPtr, Vector vPos, int32_t bDoingC
             return;
         }
         auto pArea = pServer->GetAreaByGameObjectID(thisPtr->m_oidArea);
-        if (pArea == nullptr || pArea->m_refTileSet == "ttu01" || pArea->m_refTileSet == "tcr10")
+        if (pArea == nullptr || pArea->m_refTileSet == "ttu01" || pArea->m_refTileSet == "tcr10" || pArea->m_refTileSet == "tbm01")
         {
             s_setPositionHook->CallOriginal<void>(thisPtr, vPos, bDoingCharacterCopy);
             return;
