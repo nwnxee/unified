@@ -173,7 +173,7 @@ void PerformRequest(const Request &client_req)
                                                                            {"RESPONSE",
                                                                             "Failed to make a client request with server. Is the url/port correct?"});
                                                                    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT",
-                                                                                         {"NWNX_ON_HTTP_CLIENT_FAILED",
+                                                                                         {"NWNX_ON_HTTPCLIENT_FAILED",
                                                                                           "0"});
                                                                    LOG_ERROR(
                                                                            "HTTP Client Request to '%s%s' failed, [Error: %d].",
@@ -252,7 +252,7 @@ void PerformRequest(const Request &client_req)
                                                                    {
                                                                        MessageBus::Broadcast(
                                                                                "NWNX_EVENT_SIGNAL_EVENT",
-                                                                               {"NWNX_ON_HTTP_CLIENT_SUCCESS",
+                                                                               {"NWNX_ON_HTTPCLIENT_SUCCESS",
                                                                                 moduleOid});
                                                                        LOG_INFO(
                                                                                "HTTP Client Request to '%s%s' succeeded.",
@@ -262,7 +262,7 @@ void PerformRequest(const Request &client_req)
                                                                    {
                                                                        MessageBus::Broadcast(
                                                                                "NWNX_EVENT_SIGNAL_EVENT",
-                                                                               {"NWNX_ON_HTTP_CLIENT_FAILED",
+                                                                               {"NWNX_ON_HTTPCLIENT_FAILED",
                                                                                 moduleOid});
                                                                        LOG_WARNING(
                                                                                "HTTP Client Request to '%s%s' failed, rate limited.",
@@ -272,7 +272,7 @@ void PerformRequest(const Request &client_req)
                                                                else
                                                                {
                                                                    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT",
-                                                                                         {"NWNX_ON_HTTP_CLIENT_FAILED",
+                                                                                         {"NWNX_ON_HTTPCLIENT_FAILED",
                                                                                           moduleOid});
                                                                    LOG_WARNING(
                                                                            "HTTP Client Request to '%s%s' failed, status code '%d'.",
