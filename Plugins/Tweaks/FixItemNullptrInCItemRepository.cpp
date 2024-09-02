@@ -35,7 +35,8 @@ static int32_t CalculateContentsWeightHook(CItemRepository *pThis)
 {
     int32_t nResult = 0;
     auto *pServer = Globals::AppManager()->m_pServerExoApp;
-    std::vector<CExoLinkedListNode*> badItem(32);
+    std::vector<CExoLinkedListNode*> badItem;
+    badItem.reserve(16);
 
     for (auto *node = pThis->m_oidItems.m_pcExoLinkedListInternal->pHead; node; node = node->pNext)
     {
