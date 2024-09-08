@@ -953,9 +953,9 @@ NWNX_EXPORT ArgumentStack SetPersistentLocation(ArgumentStack&& args)
 
                     // Fake some changes to their area/position as though they had a TURD
                     auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
-                    if (pWP)
+                    auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                    if (pWP && pCreature)
                     {
-                        auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
                         pCreature->m_oidDesiredArea = pWP->m_oidArea;
                         pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
                         pCreature->m_bDesiredAreaUpdateComplete = false;

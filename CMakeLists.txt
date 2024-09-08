@@ -7,6 +7,13 @@ endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+    message(STATUS "using ccache")
+endif(CCACHE_FOUND)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Includes the sanitizer package to facilitate debugging.
