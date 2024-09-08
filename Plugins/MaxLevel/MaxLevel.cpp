@@ -1,6 +1,8 @@
 #include "nwnx.hpp"
 
 #include "API/C2DA.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWClass.hpp"
 #include "API/CNWRules.hpp"
@@ -14,6 +16,7 @@
 #include "API/CNWRace.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWLevelStats.hpp"
+#include "API/CNWCCMessageData.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
@@ -22,6 +25,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
+using namespace NWNXLib::API::Globals;
 
 const int CORE_MAX_LEVEL = 40;
 const int MAX_LEVEL_MAX = 60;
@@ -38,6 +42,7 @@ static Hooks::Hook s_CanLevelUpHook;
 static Hooks::Hook s_GetExpNeededForLevelUpHook;
 static Hooks::Hook s_GetSpellGainHook;
 static Hooks::Hook s_GetSpellsKnownPerLevelHook;
+static Hooks::Hook s_SetExperienceHook;
 
 uint8_t s_maxLevel;
 
@@ -56,6 +61,7 @@ static void LoadSpellGainTableHook(CNWClass* pClass, CExoString sTable);
 static void LoadSpellKnownTableHook(CNWClass* pClass, CExoString sTable);
 static uint8_t GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel);
 static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel, uint8_t nClass, uint16_t nRace, uint8_t nCHABase);
+static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool bDoLevel);
 
 void MaxLevel() __attribute__((constructor));
 void MaxLevel()
@@ -102,6 +108,10 @@ void MaxLevel()
         s_GetSpellsKnownPerLevelHook = Hooks::HookFunction(
             &CNWClass::GetSpellsKnownPerLevel,
             &GetSpellsKnownPerLevelHook, Hooks::Order::Final);
+
+        s_SetExperienceHook = Hooks::HookFunction(
+            &CNWSCreatureStats::SetExperience,
+            &SetExperienceHook, Hooks::Order::Early);
     }
 }
 
@@ -356,4 +366,42 @@ static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint
         result = spellsKnownPerSpellLevel;
     }
     return result;
+}
+
+static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool bDoLevel)
+{
+    int32_t nExpDiff = nValue - pStats->m_nExperience;
+
+    if (pStats->GetIsDM() || nExpDiff >= 0)
+    {
+        s_SetExperienceHook->CallOriginal<void>(pStats, nValue, bDoLevel);
+        return;
+    }
+
+    auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pStats->m_pBaseCreature->m_idSelf);
+    
+    if ( bDoLevel && pPlayer != NULL )
+    {
+            auto *pMessageData = new CNWCCMessageData;
+
+            pMessageData->SetInteger(0,nExpDiff * -1);
+            pStats->m_pBaseCreature->SendFeedbackMessage(183,pMessageData);
+    }
+
+    pStats->m_nExperience = nValue;
+    if ( bDoLevel )
+    {
+        uint8_t currentLevel = pStats->GetLevel();
+        while (currentLevel > Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMinLevel &&
+            currentLevel > 0 &&
+            ((currentLevel <= CORE_MAX_LEVEL && g_pRules->m_nExperienceTable[currentLevel-1] > pStats->m_nExperience) ||
+                (currentLevel > CORE_MAX_LEVEL && s_nExperienceTableAdded[currentLevel-1] > pStats->m_nExperience)))
+        {
+            auto *pLevelStat = pStats->GetLevelStats(--currentLevel);
+            if (pLevelStat)
+            {
+                pStats->LevelDown(pLevelStat);
+            }
+        }
+    }
 }
