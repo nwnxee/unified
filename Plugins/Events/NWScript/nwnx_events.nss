@@ -562,6 +562,11 @@ _______________________________________
 
     `OBJECT_SELF` = The player disconnecting from the server
 
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    PLAYER_NAME           | string | Player name of the disconnecting client
+    CDKEY                 | string | Public cdkey of the disconnecting client
+
     @note This event also runs when a player connects to the server but cancels out of character select.
     OBJECT_SELF will be OBJECT_INVALID in this case.
 
