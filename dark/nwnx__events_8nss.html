@@ -854,6 +854,14 @@ Client Disconnect Events</h2>
 <li>NWNX_ON_CLIENT_DISCONNECT_AFTER</li>
 </ul>
 <p><code>OBJECT_SELF</code> = The player disconnecting from the server</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PLAYER_NAME </td><td class="markdownTableBodyNone">string </td><td class="markdownTableBodyNone">Player name of the disconnecting client  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CDKEY </td><td class="markdownTableBodyNone">string </td><td class="markdownTableBodyNone">Public cdkey of the disconnecting client  </td></tr>
+</table>
 <dl class="section note"><dt>Note</dt><dd>This event also runs when a player connects to the server but cancels out of character select. OBJECT_SELF will be OBJECT_INVALID in this case.</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md352"></a>
@@ -3219,13 +3227,13 @@ The whitelist is enabled by default for these events, to whitelist a particular 
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02492">nwnx_events.nss:2492</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02497">nwnx_events.nss:2497</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Thu Aug 29 2024 06:01:56 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Sep 8 2024 22:06:29 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
