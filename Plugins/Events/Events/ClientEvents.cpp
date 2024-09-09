@@ -81,8 +81,16 @@ void RemovePCFromWorldHook(CServerExoAppInternal *pServerExoAppInternal, CNWSPla
 {
     // NOTE: Events won't be processed for disconnecting characters, e.g. RemoveEffect events.
     // If we wanted that to happen, we'd need to process the event like CServerAIMaster__GetPendingEvent.
+    auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+    auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
+    auto playerName = pPlayerInfo->m_sPlayerName.CStr();
+    auto cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+    PushEventData("PLAYER_NAME", playerName);
+    PushEventData("CDKEY", cdKey);
     SignalEvent("NWNX_ON_CLIENT_DISCONNECT_BEFORE" , pPlayer->m_oidNWSObject);
     s_RemovePCFromWorldHook->CallOriginal<void>(pServerExoAppInternal, pPlayer);
+    PushEventData("PLAYER_NAME", playerName);
+    PushEventData("CDKEY", cdKey);
     SignalEvent("NWNX_ON_CLIENT_DISCONNECT_AFTER", pPlayer->m_oidNWSObject);
 }
 
