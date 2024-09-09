@@ -5,22 +5,22 @@ on:
     branches:
       - master
     paths-ignore:
-      - "**.md"
-      - "docgen/**"
-      - "builder.Dockerfile"
+      - '**.md'
+      - 'docgen/**'
+      - 'builder.Dockerfile'
   pull_request:
     branches:
       - master
     paths-ignore:
-      - "**.md"
-      - "docgen/**"
-      - "builder.Dockerfile"
+      - '**.md'
+      - 'docgen/**'
+      - 'builder.Dockerfile'
 
 env:
   CC: gcc-7 -m64
   CXX: g++-7 -m64
 
-concurrency:
+concurrency: 
   group: "build"
   cancel-in-progress: false
 
@@ -30,155 +30,155 @@ jobs:
     container:
       image: docker://nwnxee/builder:latest
     steps:
-      - uses: actions/checkout@v3
-      - run: git config --system --add safe.directory /__w/unified/unified
+    - uses: actions/checkout@v3
+    - run: git config --system --add safe.directory /__w/unified/unified
 
-      - name: Set outputs
-        id: vars
-        run: |
+    - name: Set outputs
+      id: vars
+      run: |
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           echo "/usr/lib/ccache" >> $GITHUB_PATH
           echo "nwn_build=$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
           echo "nwn_build_revision=$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
           echo "nwn_build_postfix=$(grep 'set(TARGET_NWN_BUILD_POSTFIX ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
 
-      - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
-        run: |
+    - name: Prepare ccache timestamp
+      id: ccache_cache_timestamp
+      run: |
           echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> $GITHUB_OUTPUT
 
-      - name: ccache cache files
-        uses: actions/cache@v3
-        with:
-          path: .ccache
-          key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            gcc-ccache-
+    - name: ccache cache files
+      uses: actions/cache@v3
+      with:
+        path: .ccache
+        key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        restore-keys: |
+          gcc-ccache-
 
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
-      - name: Configure CMake
-        shell: cmake -P {0}
-        run: |
-          set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}:$ENV{PATH}")
-          execute_process(
-            COMMAND cmake
-              -S .
-              -B build
-              -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
-              -D CMAKE_C_COMPILER_LAUNCHER=ccache
-              -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            RESULT_VARIABLE result
-          )
-          if (NOT result EQUAL 0)
-            message(FATAL_ERROR "Bad exit status")
-          endif()
+    - name: Configure CMake
+      shell: cmake -P {0}
+      run: |
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}:$ENV{PATH}")
+        execute_process(
+          COMMAND cmake
+            -S .
+            -B build
+            -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
+            -D CMAKE_C_COMPILER_LAUNCHER=ccache
+            -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          RESULT_VARIABLE result
+        )
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Bad exit status")
+        endif()
 
-      - name: Build
-        shell: cmake -P {0}
-        run: |
-          execute_process(COMMAND /usr/sbin/update-ccache-symlinks)
-          file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
-          set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
-          set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
-          set(ENV{CCACHE_COMPRESS} "true")
-          set(ENV{CCACHE_COMPRESSLEVEL} "6")
-          set(ENV{CCACHE_MAXSIZE} "400M")
-          execute_process(COMMAND ccache -p)
-          execute_process(COMMAND ccache -z)
-          execute_process(
-            COMMAND cmake --build build -j 4
-            RESULT_VARIABLE result
-          )
-          if (NOT result EQUAL 0)
-            message(FATAL_ERROR "Build failed")
-          endif()
-          execute_process(COMMAND ccache -s)
+    - name: Build
+      shell: cmake -P {0}
+      run: |
+        execute_process(COMMAND /usr/sbin/update-ccache-symlinks)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
+        set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
+        set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
+        set(ENV{CCACHE_COMPRESS} "true")
+        set(ENV{CCACHE_COMPRESSLEVEL} "6")
+        set(ENV{CCACHE_MAXSIZE} "400M")
+        execute_process(COMMAND ccache -p)
+        execute_process(COMMAND ccache -z)
+        execute_process(
+          COMMAND cmake --build build -j 4
+          RESULT_VARIABLE result
+        )
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Build failed")
+        endif()
+        execute_process(COMMAND ccache -s)
 
-      - name: Drop timestamp into Binaries folder
-        if: github.event_name == 'push'
-        working-directory: ${{runner.workspace}}/unified/Binaries
-        run: echo "${{ steps.ccache_cache_timestamp.outputs.timestamp }}" > ${{ steps.vars.outputs.sha_short }}.txt
+    - name: Drop timestamp into Binaries folder
+      if: github.event_name == 'push'
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: echo "${{ steps.ccache_cache_timestamp.outputs.timestamp }}" > ${{ steps.vars.outputs.sha_short }}.txt
 
-      - name: Pack the Binaries
-        if: github.event_name == 'push'
-        working-directory: ${{runner.workspace}}/unified/Binaries
-        run: cmake -E tar cfv ../NWNX-EE.zip --format=zip .
+    - name: Pack the Binaries
+      if: github.event_name == 'push'
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: cmake -E tar cfv ../NWNX-EE.zip --format=zip .
 
-      - name: Pack the Binaries for Docker
-        if: github.event_name == 'push'
-        working-directory: ${{runner.workspace}}/unified/Binaries
-        run: cmake -E tar cfv ../NWNX-EE.tar .
+    - name: Pack the Binaries for Docker
+      if: github.event_name == 'push'
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: cmake -E tar cfv ../NWNX-EE.tar .
 
-      - name: Pack the Scripts
-        if: github.event_name == 'push'
-        working-directory: ${{runner.workspace}}/unified
-        shell: bash
-        run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
+    - name: Pack the Scripts
+      if: github.event_name == 'push'
+      working-directory: ${{runner.workspace}}/unified
+      shell: bash
+      run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
 
-      - name: Upload Binaries
-        uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
-        with:
-          path: ./NWNX-EE.zip
-          name: NWNX-EE.zip
+    - name: Upload Binaries
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'push'
+      with:
+       path: ./NWNX-EE.zip
+       name: NWNX-EE.zip
 
-      - name: Upload Scripts
-        uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
-        with:
-          path: ./NWScript.zip
-          name: NWScript.zip
+    - name: Upload Scripts
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'push'
+      with:
+        path: ./NWScript.zip
+        name: NWScript.zip
 
-      - name: Upload Tar Binaries for Docker
-        uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
-        with:
-          name: NWNX-EE.tar
-          path: ./NWNX-EE.tar
+    - name: Upload Tar Binaries for Docker
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'push'
+      with:
+        name: NWNX-EE.tar
+        path: ./NWNX-EE.tar
 
-      - name: Delete Old Version Release
-        uses: dev-drprasad/delete-tag-and-release@v1.0
-        if: github.event_name == 'push'
-        with:
-          tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          delete_release: true
+    - name: Delete Old Version Release
+      uses: dev-drprasad/delete-tag-and-release@v1.0
+      if: github.event_name == 'push'
+      with:
+        tag_name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        delete_release: true
 
-      - name: Delete Old Latest Release
-        uses: dev-drprasad/delete-tag-and-release@v1.0
-        if: github.event_name == 'push'
-        with:
-          tag_name: "latest"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          delete_release: true
+    - name: Delete Old Latest Release
+      uses: dev-drprasad/delete-tag-and-release@v1.0
+      if: github.event_name == 'push'
+      with:
+        tag_name: "latest"
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        delete_release: true
 
-      - name: Tag With Version and Release
-        uses: "ncipollo/release-action@v1"
-        if: github.event_name == 'push'
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          tag: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-          commit: "master"
-          prerelease: false
-          draft: false
-          generateReleaseNotes: true
-          name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-          artifacts: "NWNX-EE.zip,NWScript.zip"
+    - name: Tag With Version and Release
+      uses: "ncipollo/release-action@v1"
+      if: github.event_name == 'push'
+      with:
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        tag: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        commit: "master"
+        prerelease: false
+        draft: false
+        generateReleaseNotes: true
+        name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        artifacts: "NWNX-EE.zip,NWScript.zip"
 
-      - name: Tag With Latest and Release
-        uses: "ncipollo/release-action@v1"
-        if: github.event_name == 'push'
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          tag: "latest"
-          commit: "master"
-          prerelease: false
-          draft: false
-          generateReleaseNotes: true
-          name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
-          artifacts: "NWNX-EE.zip,NWScript.zip"
+    - name: Tag With Latest and Release
+      uses: "ncipollo/release-action@v1"
+      if: github.event_name == 'push'
+      with:
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        tag: "latest"
+        commit: "master"
+        prerelease: false
+        draft: false
+        generateReleaseNotes: true
+        name: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}-HEAD"
+        artifacts: "NWNX-EE.zip,NWScript.zip"
 
   docker:
     runs-on: ubuntu-20.04
@@ -197,7 +197,7 @@ jobs:
           echo "nwn_build_postfix=$(grep 'set(TARGET_NWN_BUILD_POSTFIX ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')" >> $GITHUB_OUTPUT
 
       - name: Download Binaries
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v3
         with:
           name: NWNX-EE.tar
 
@@ -226,14 +226,14 @@ jobs:
           push: true
           build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base
           labels: |
-            org.opencontainers.image.title=NWNX:EE
-            org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
-            org.opencontainers.image.author=NWNX:EE Community
-            org.opencontainers.image.vendor=NWNX:EE Community
-            org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
-            org.opencontainers.image.created=${{ steps.vars.outputs.created }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.documentation=https://nwnxee.github.io/unified
+              org.opencontainers.image.title=NWNX:EE
+              org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
+              org.opencontainers.image.author=NWNX:EE Community
+              org.opencontainers.image.vendor=NWNX:EE Community
+              org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+              org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+              org.opencontainers.image.revision=${{ github.sha }}
+              org.opencontainers.image.documentation=https://nwnxee.github.io/unified
           tags: |
             ${{ github.repository }}:latest
             ${{ github.repository }}:build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
@@ -279,46 +279,46 @@ jobs:
     needs: release
 
     steps:
-      - name: Download Binaries
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: NWNX-EE.zip
-          path: ./
+    - name: Download Binaries
+      uses: actions/download-artifact@v3
+      with:
+        name: NWNX-EE.zip
+        path: ./
 
-      - name: Download Scripts
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: NWScript.zip
-          path: ./
+    - name: Download Scripts
+      uses: actions/download-artifact@v3
+      with:
+        name: NWScript.zip
+        path: ./
 
-      - name: Download URL
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: upload_url
-          path: ./
-      - id: set_upload_url
-        run: |
-          upload_url=`cat ./upload_url`
-          echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
+    - name: Download URL
+      uses: actions/download-artifact@v3
+      with:
+        name: upload_url
+        path: ./
+    - id: set_upload_url
+      run: |
+        upload_url=`cat ./upload_url`
+        echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
 
-      - name: Upload Binaries to Release
-        id: upload_binaries_to_release
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-          asset_path: ./NWNX-EE.zip
-          asset_name: NWNX-EE.zip
-          asset_content_type: application/zip
+    - name: Upload Binaries to Release
+      id: upload_binaries_to_release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
+        asset_path: ./NWNX-EE.zip
+        asset_name: NWNX-EE.zip
+        asset_content_type: application/zip
 
-      - name: Upload Scripts to Release
-        id: upload_scripts_to_release
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-          asset_path: ./NWScript.zip
-          asset_name: NWScript.zip
-          asset_content_type: application/zip
+    - name: Upload Scripts to Release
+      id: upload_scripts_to_release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
+        asset_path: ./NWScript.zip
+        asset_name: NWScript.zip
+        asset_content_type: application/zip
