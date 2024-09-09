@@ -372,7 +372,7 @@ static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool b
 {
     int32_t nExpDiff = nValue - pStats->m_nExperience;
 
-    if (pStats->GetIsDM() || nExpDiff >= 0)
+    if (!bDoLevel || pStats->GetIsDM() || nExpDiff >= 0)
     {
         s_SetExperienceHook->CallOriginal<void>(pStats, nValue, bDoLevel);
         return;
