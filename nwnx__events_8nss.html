@@ -2272,6 +2272,20 @@ Broadcast Safe Projectile Events</h2>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md422"></a>
+SetExperience Events</h2>
+<ul>
+<li>NWNX_ON_SET_EXPERIENCE_BEFORE</li>
+<li>NWNX_ON_SET_EXPERIENCE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player the xp is being set on</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag </th><th class="markdownTableHeadNone">Type </th><th class="markdownTableHeadNone">Notes  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">XP </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The xp value that is being set  </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md423"></a>
 Broadcast Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2287,7 +2301,7 @@ Broadcast Attack of Opportunity Events</h2>
 <td class="markdownTableBodyNone">MOVEMENT </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">Whether this attack of opportunity is being triggered from movement  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md423"></a>
+ <h2><a class="anchor" id="autotoc_md424"></a>
 Combat Attack of Opportunity Events</h2>
 <ul>
 <li>NWNX_ON_COMBAT_ATTACK_OF_OPPORTUNITY_BEFORE</li>
@@ -2302,7 +2316,7 @@ Combat Attack of Opportunity Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>If the BEFORE event is skipped the broadcasting creature will still make a tumble skill roll if moving.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md424"></a>
+ <h2><a class="anchor" id="autotoc_md425"></a>
 Area Play Battle Music Events</h2>
 <ul>
 <li>NWNX_ON_AREA_PLAY_BATTLE_MUSIC_BEFORE</li>
@@ -2316,7 +2330,7 @@ Area Play Battle Music Events</h2>
 <td class="markdownTableBodyNone">PLAY </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the area is starting to play battle music, FALSE if stopping.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md425"></a>
+ <h2><a class="anchor" id="autotoc_md426"></a>
 Combat Attack Target Change Events</h2>
 <ul>
 <li>NWNX_ON_ATTACK_TARGET_CHANGE_BEFORE</li>
@@ -2336,7 +2350,7 @@ Combat Attack Target Change Events</h2>
 <td class="markdownTableBodyNone">RETARGETABLE </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">TRUE if the new target can be changed using <a class="el" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult()</a> (Only in BEFORE)  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md426"></a>
+ <h2><a class="anchor" id="autotoc_md427"></a>
 Creature Tile Change Events</h2>
 <ul>
 <li>NWNX_ON_CREATURE_TILE_CHANGE_BEFORE</li>
@@ -2360,7 +2374,7 @@ Creature Tile Change Events</h2>
 <td class="markdownTableBodyNone">NEW_TILE_Y </td><td class="markdownTableBodyNone">int </td><td class="markdownTableBodyNone">The tile grid y position of the new tile.  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md427"></a>
+ <h2><a class="anchor" id="autotoc_md428"></a>
 Creature Jump To Point Events</h2>
 <ul>
 <li>NWNX_ON_CREATURE_JUMP_TO_POINT_BEFORE</li>
@@ -2380,7 +2394,7 @@ Creature Jump To Point Events</h2>
 <td class="markdownTableBodyNone">POS_Z </td><td class="markdownTableBodyNone">float </td><td class="markdownTableBodyNone">The z position the target is being moved to  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md428"></a>
+ <h2><a class="anchor" id="autotoc_md429"></a>
 Creature Jump To Object Events</h2>
 <ul>
 <li>NWNX_ON_CREATURE_JUMP_TO_OBJECT_BEFORE</li>
@@ -2394,7 +2408,7 @@ Creature Jump To Object Events</h2>
 <td class="markdownTableBodyNone">OBJECT </td><td class="markdownTableBodyNone">object </td><td class="markdownTableBodyNone">The object the creature is jumping to. Convert to object with StringToObject()  </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md429"></a>
+ <h2><a class="anchor" id="autotoc_md430"></a>
 Item Property Effect Apply/Remove Events</h2>
 <ul>
 <li>NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE</li>
@@ -3227,13 +3241,13 @@ The whitelist is enabled by default for these events, to whitelist a particular 
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02497">nwnx_events.nss:2497</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02508">nwnx_events.nss:2508</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Fri Sep 13 2024 23:47:11 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Sep 13 2024 23:54:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
