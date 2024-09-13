@@ -43,6 +43,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 ### Fixed
 - Race: Documentation updated as `NWNX_Utils` is no longer required with introduction of native `Get2DARowCount()`.
 - Core README indicated wrong argument for logging. `NWNX_CORE_LOG_FILE_NAME` should have been `NWNX_CORE_LOG_FILE_PATH`.
+- MaxLevel: Fixed levelling down not working correctly.
 - Events: Fixed `NWNX_ON_DETECT_ENTER_*` events firing when it should have been `NWNX_ON_DETECT_EXIT_*`.
 
 ## 8193.36.10
