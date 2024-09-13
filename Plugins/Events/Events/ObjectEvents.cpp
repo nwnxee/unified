@@ -1,6 +1,7 @@
 #include "Events.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSPlaceable.hpp"
+#include "API/CNWSCreature.hpp"
 
 namespace Events {
 
@@ -8,12 +9,13 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooks::Hook s_AddLockObjectActionHook;
-static NWNXLib::Hooks::Hook s_AddUnlockObjectActionHook;
-static NWNXLib::Hooks::Hook s_AddUseObjectActionHook;
-static NWNXLib::Hooks::Hook s_OpenInventoryHook;
-static NWNXLib::Hooks::Hook s_CloseInventoryHook;
-static NWNXLib::Hooks::Hook s_BroadcastSafeProjectileHook;
+static Hooks::Hook s_AddLockObjectActionHook;
+static Hooks::Hook s_AddUnlockObjectActionHook;
+static Hooks::Hook s_AddUseObjectActionHook;
+static Hooks::Hook s_OpenInventoryHook;
+static Hooks::Hook s_CloseInventoryHook;
+static Hooks::Hook s_BroadcastSafeProjectileHook;
+static Hooks::Hook s_SetExperienceHook;
 
 static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
@@ -21,6 +23,7 @@ static int32_t AddUseObjectActionHook(CNWSObject*, ObjectID);
 static void OpenInventoryHook(CNWSPlaceable*, ObjectID);
 static void CloseInventoryHook(CNWSPlaceable*, ObjectID, BOOL);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
+static void SetExperienceHook(CNWSCreatureStats*, uint32_t, BOOL);
 
 void ObjectEvents() __attribute__((constructor));
 void ObjectEvents()
@@ -39,12 +42,12 @@ void ObjectEvents()
         s_AddUseObjectActionHook = Hooks::HookFunction(&CNWSObject::AddUseObjectAction,
                                                    (void*)&AddUseObjectActionHook, Hooks::Order::Early);
     });
-    
+
     InitOnFirstSubscribe("NWNX_ON_PLACEABLE_OPEN_.*", []() {
         s_OpenInventoryHook = Hooks::HookFunction(&CNWSPlaceable::OpenInventory,
                                                    (void*)&OpenInventoryHook, Hooks::Order::Early);
     });
-    
+
     InitOnFirstSubscribe("NWNX_ON_PLACEABLE_CLOSE_.*", []() {
         s_CloseInventoryHook = Hooks::HookFunction(&CNWSPlaceable::CloseInventory,
                                                    (void*)&CloseInventoryHook, Hooks::Order::Early);
@@ -53,6 +56,11 @@ void ObjectEvents()
     InitOnFirstSubscribe("NWNX_ON_BROADCAST_SAFE_PROJECTILE_.*", []() {
         s_BroadcastSafeProjectileHook = Hooks::HookFunction(&CNWSObject::BroadcastSafeProjectile,
                                              (void*)&BroadcastSafeProjectileHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_SET_EXPERIENCE_.*", []() {
+        s_SetExperienceHook = Hooks::HookFunction(&CNWSCreatureStats::SetExperience,
+            &SetExperienceHook, Hooks::Order::Early);
     });
 }
 
@@ -143,8 +151,8 @@ void OpenInventoryHook(CNWSPlaceable *thisPtr, ObjectID oidOpener)
     if (PushAndSignal("NWNX_ON_PLACEABLE_OPEN_BEFORE"))
     {
         s_OpenInventoryHook->CallOriginal<int32_t>(thisPtr, oidOpener);
-    } 
-    else 
+    }
+    else
     {
         skipped = true;
     }
@@ -194,6 +202,26 @@ void BroadcastSafeProjectileHook(CNWSObject *thisPtr, ObjectID oidOriginator, Ob
     }
 
     PushAndSignal("NWNX_ON_BROADCAST_SAFE_PROJECTILE_AFTER");
+}
+
+void SetExperienceHook(CNWSCreatureStats *thisPtr, uint32_t nValue, BOOL bDoLevel = true)
+{
+    // This avoids signaling twice when the Module XP Scale is set to 0. ApplyDeathExperience runs anyway but with no change.
+    if (nValue == thisPtr->m_nExperience) return;
+
+    if (!bDoLevel) {
+        s_SetExperienceHook->CallOriginal<void>(thisPtr, nValue, bDoLevel);
+    } else {
+        auto PushAndSignal = [&](const std::string& ev) -> bool {
+            PushEventData("XP", std::to_string(nValue));
+            return SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
+        };
+
+        if (PushAndSignal("NWNX_ON_SET_EXPERIENCE_BEFORE"))
+            s_SetExperienceHook->CallOriginal<void>(thisPtr, nValue, bDoLevel);
+
+        PushAndSignal("NWNX_ON_SET_EXPERIENCE_AFTER");
+    }
 }
 
 }
