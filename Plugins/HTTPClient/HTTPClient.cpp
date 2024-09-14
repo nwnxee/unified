@@ -3,28 +3,28 @@
 
 enum RequestMethod
 {
-    GET = 0,
-    POST = 1,
+    GET    = 0,
+    POST   = 1,
     DEL = 2,
-    PATCH = 3,
-    PUT = 5,
+    PATCH  = 3,
+    PUT    = 5,
     OPTION = 6,
-    HEAD = 7
+    HEAD   = 7
 };
 enum AuthenticationType
 {
-    NONE = 0,
-    BASIC = 1,
-    DIGEST = 2,
+    NONE         = 0,
+    BASIC        = 1,
+    DIGEST       = 2,
     BEARER_TOKEN = 3
 };
 enum ContentType
 {
-    HTML = 0,
-    PLAINTEXT = 1,
-    JSON = 2,
-    URL_ENCODED = 3,
-    XML = 4,
+    HTML               = 0,
+    PLAINTEXT          = 1,
+    JSON               = 2,
+    URL_ENCODED        = 3,
+    XML                = 4,
 };
 
 struct Request
@@ -53,32 +53,33 @@ struct Request
     }
 };
 
-static constexpr const char *ContentTypeToString(const unsigned value)
+static constexpr const char* ContentTypeToString(const unsigned value)
 {
-    constexpr const char *TYPE_STRINGS[] =
-        {
-            "text/html",
-            "text/plain",
-            "application/json",
-            "application/x-www-form-urlencoded",
-            "application/xml"};
+    constexpr const char* TYPE_STRINGS[] =
+    {
+        "text/html",
+        "text/plain",
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "application/xml"
+    };
     return (value > 4) ? "text/html" : TYPE_STRINGS[value];
 }
 
-namespace Core
-{
+namespace Core {
     extern bool g_CoreShuttingDown;
 }
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static std::unique_ptr<httplib::Result> GetResult(const Request &);
-static httplib::Headers ParseHeaderString(const std::string &);
+static std::unique_ptr<httplib::Result> GetResult(const Request&);
+static httplib::Headers ParseHeaderString(const std::string&);
 static int s_clientRequestId = 0;
 static int s_clientTimeout = Config::Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
 static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_clientHostCache;
 static std::unordered_map<int, Request> s_clientRequests;
+
 
 std::unique_ptr<httplib::Result> GetResult(const Request &client_req)
 {
@@ -86,35 +87,35 @@ std::unique_ptr<httplib::Result> GetResult(const Request &client_req)
     auto cli = s_clientHostCache[client_req.host].get();
     switch (client_req.requestMethod)
     {
-    case RequestMethod::GET:
-        result = std::make_unique<httplib::Result>(cli->Get(client_req.path.c_str(), client_req.headers));
-        break;
-    case RequestMethod::POST:
-        result = std::make_unique<httplib::Result>(
-            cli->Post(client_req.path.c_str(), client_req.headers, client_req.data,
-                      ContentTypeToString(client_req.contentType)));
-        break;
-    case RequestMethod::DEL:
-        result = std::make_unique<httplib::Result>(
-            cli->Delete(client_req.path.c_str(), client_req.headers, client_req.data,
-                        ContentTypeToString(client_req.contentType)));
-        break;
-    case RequestMethod::PATCH:
-        result = std::make_unique<httplib::Result>(
-            cli->Patch(client_req.path.c_str(), client_req.headers, client_req.data,
-                       ContentTypeToString(client_req.contentType)));
-        break;
-    case RequestMethod::PUT:
-        result = std::make_unique<httplib::Result>(
-            cli->Put(client_req.path.c_str(), client_req.headers, client_req.data,
-                     ContentTypeToString(client_req.contentType)));
-        break;
-    case RequestMethod::OPTION:
-        result = std::make_unique<httplib::Result>(cli->Options(client_req.path.c_str(), client_req.headers));
-        break;
-    case RequestMethod::HEAD:
-        result = std::make_unique<httplib::Result>(cli->Head(client_req.path.c_str(), client_req.headers));
-        break;
+        case RequestMethod::GET:
+            result = std::make_unique<httplib::Result>(cli->Get(client_req.path.c_str(), client_req.headers));
+            break;
+        case RequestMethod::POST:
+            result = std::make_unique<httplib::Result>(
+                    cli->Post(client_req.path.c_str(), client_req.headers, client_req.data,
+                              ContentTypeToString(client_req.contentType)));
+            break;
+        case RequestMethod::DEL:
+            result = std::make_unique<httplib::Result>(
+                    cli->Delete(client_req.path.c_str(), client_req.headers, client_req.data,
+                                ContentTypeToString(client_req.contentType)));
+            break;
+        case RequestMethod::PATCH:
+            result = std::make_unique<httplib::Result>(
+                    cli->Patch(client_req.path.c_str(), client_req.headers, client_req.data,
+                               ContentTypeToString(client_req.contentType)));
+            break;
+        case RequestMethod::PUT:
+            result = std::make_unique<httplib::Result>(
+                    cli->Put(client_req.path.c_str(), client_req.headers, client_req.data,
+                             ContentTypeToString(client_req.contentType)));
+            break;
+        case RequestMethod::OPTION:
+            result = std::make_unique<httplib::Result>(cli->Options(client_req.path.c_str(), client_req.headers));
+            break;
+        case RequestMethod::HEAD:
+            result = std::make_unique<httplib::Result>(cli->Head(client_req.path.c_str(), client_req.headers));
+            break;
     }
 
     return result;
@@ -128,8 +129,7 @@ void PerformRequest(const Request &client_req)
         LOG_DEBUG("Creating new SSL client for host %s.", client_req.host);
         cli = s_clientHostCache.insert(std::make_pair(client_req.host,
                                                       std::make_unique<httplib::SSLClient>(client_req.host.c_str(),
-                                                                                           client_req.port)))
-                  .first;
+                                                                                           client_req.port))).first;
     }
 
     if (client_req.authType == AuthenticationType::BASIC)
@@ -279,7 +279,8 @@ void PerformRequest(const Request &client_req)
                                                                            client_req.host, client_req.path,
                                                                            response.status);
                                                                }
-                                                           }); });
+                                                           });
+                              });
 }
 
 httplib::Headers ParseHeaderString(const std::string &headerStr)
@@ -320,8 +321,7 @@ NWNX_EXPORT ArgumentStack SendRequest(ArgumentStack &&args)
     clientReq.authUserToken = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.authPassword = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.port = ScriptAPI::ExtractArgument<int>(args);
-    if (!clientReq.port)
-        clientReq.port = 443;
+    if (!clientReq.port) clientReq.port = 443;
     clientReq.headersString = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.headers = ParseHeaderString(clientReq.headersString);
     s_clientRequests[clientReq.id] = clientReq;
@@ -339,15 +339,15 @@ NWNX_EXPORT ArgumentStack GetRequest(ArgumentStack &&args)
     auto clientReq = req->second;
 
     ScriptAPI::InsertArgument(stack, clientReq.headersString);
-    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.port);
+    ScriptAPI::InsertArgument(stack, (int32_t) clientReq.port);
     ScriptAPI::InsertArgument(stack, clientReq.authPassword);
     ScriptAPI::InsertArgument(stack, clientReq.authUserToken);
-    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.authType);
+    ScriptAPI::InsertArgument(stack, (int32_t) clientReq.authType);
     ScriptAPI::InsertArgument(stack, clientReq.data);
-    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.contentType);
+    ScriptAPI::InsertArgument(stack, (int32_t) clientReq.contentType);
     ScriptAPI::InsertArgument(stack, clientReq.path);
     ScriptAPI::InsertArgument(stack, clientReq.host);
-    ScriptAPI::InsertArgument(stack, (int32_t)clientReq.requestMethod);
+    ScriptAPI::InsertArgument(stack, (int32_t) clientReq.requestMethod);
     ScriptAPI::InsertArgument(stack, clientReq.tag);
     return stack;
 }
