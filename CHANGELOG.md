@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - DotNET: Added `NWNX_DOTNET_METHOD` option to change entrypoint method (default: `Bootstrap`)
 - DotNET: Added `NWNX_DOTNET_NEW_BOOTSTRAP` option to enable a new bootstrap method with less boilerplate code.
 - DotNET: Added `RequestFunctionHook`, `ReturnFunctionHook`.
+- Events: Added events `NWNX_ON_SET_EXPERIENCE_{BEFORE|AFTER}` which fire when the XP of a player changes.
 
 ##### New Plugins
 - Store: Enables getting and setting store data.
@@ -44,6 +45,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Race: Documentation updated as `NWNX_Utils` is no longer required with introduction of native `Get2DARowCount()`.
 - Core README indicated wrong argument for logging. `NWNX_CORE_LOG_FILE_NAME` should have been `NWNX_CORE_LOG_FILE_PATH`.
 - MaxLevel: Fixed levelling down not working correctly.
+- Events: Fixed `NWNX_ON_DETECT_ENTER_*` events firing when it should have been `NWNX_ON_DETECT_EXIT_*`.
 
 ## 8193.36.10
 https://github.com/nwnxee/unified/compare/build8193.36.9...build8193.36.10
