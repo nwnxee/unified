@@ -316,7 +316,7 @@ NWNX_EXPORT ArgumentStack SendRequest(ArgumentStack &&args)
     clientReq.host = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.path = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.contentType = static_cast<ContentType>(ScriptAPI::ExtractArgument<int>(args));
-    clientReq.data = ScriptAPI::ExtractArgument<std::string>(args);
+    clientReq.data = String::ToUTF8(ScriptAPI::ExtractArgument<std::string>(args));
     clientReq.authType = static_cast<AuthenticationType>(ScriptAPI::ExtractArgument<int>(args));
     clientReq.authUserToken = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.authPassword = ScriptAPI::ExtractArgument<std::string>(args);
