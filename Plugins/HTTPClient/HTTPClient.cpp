@@ -194,7 +194,7 @@ void PerformRequest(const Request &client_req)
                                                                                      {"STATUS", std::to_string(
                                                                                              response.status)});
                                                                MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA",
-                                                                                     {"RESPONSE", response.body});
+                                                                                     {"RESPONSE", String::FromUTF8(response.body)});
                                                                MessageBus::Broadcast("NWNX_EVENT_PUSH_EVENT_DATA",
                                                                                      {"REQUEST_ID", std::to_string(
                                                                                              client_req.id)});
