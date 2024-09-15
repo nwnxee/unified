@@ -734,7 +734,7 @@ _______________________________________
     ITEM_OBJECT_ID        | object | Convert to object with StringToObject() |
     ITEM_PROPERTY_INDEX   | int    | |
     MOVE_TO_TARGET        | int    | |
-    ACTION_RESULT         | int    | |
+    ACTION_RESULT         | int    | ACTION_IN_PROGRESS=0, ACTION_COMPLETE=1, ACTION_FAILED=2|
 
 _______________________________________
     ## Healing Events
