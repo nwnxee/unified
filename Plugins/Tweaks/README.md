@@ -29,7 +29,6 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_UNHARDCODE_SHIELDS` | true or false | baseitems.2da will be used to define shield AC for shields and shield-like items. |
 | `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM` | true or false | Disables the dm_spawnitem console command. |
 | `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE` | true or false | Allows armor with a max DEX bonus of under 1. |
-| `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY` | true or false | Fixes a (rare?) inventory crash bug. |
 | `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS` | true or false | Effects on logged out player characters will be removed when a caster rests. |
 | `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` | true or false | Creatures will always have their full dex states, even when immobilized/entangled. |
 | `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` | true or false | The number of attacks per round overridden by SetBaseAttackBonus() will show on the character sheet. |

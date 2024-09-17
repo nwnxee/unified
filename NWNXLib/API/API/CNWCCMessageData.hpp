@@ -18,14 +18,14 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWCCMessageData
 {
-    uint8_t m_nType;
+    uint8_t m_nType = 0;
     CExoArrayList<int32_t> m_nParamInteger;
     CExoArrayList<float> m_nParamFloat;
     CExoArrayList<CExoString> m_sParamString;
     CExoArrayList<OBJECT_ID> m_oidParamObjectID;
 
-    CNWCCMessageData();
-    ~CNWCCMessageData();
+    CNWCCMessageData() { }
+    ~CNWCCMessageData() { }
     int32_t GetInteger(int32_t nStorageLocation);
     void SetInteger(int32_t nStorageLocation, int32_t nValue);
     float GetFloat(int32_t nStorageLocation);

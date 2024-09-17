@@ -57,7 +57,7 @@ struct C2DA : CResHelper<CRes2DA, 2017>
     BOOL SetBlankEntry(CExoString sRowLabel, CExoString sColumnLabel);
     BOOL SetBlankEntry(int32_t nRow, CExoString sColumnLabel);
     BOOL SetBlankEntry(CExoString sRowLabel, int32_t nColumn);
-    BOOL Load2DArray();
+    BOOL Load2DArray(BOOL optional = false);
     void Unload2DArray();
     int32_t GetColumnIndex(const CExoString & sColumn);
     uint32_t GetNextLineLength(char * pBuffer, uint32_t nBufferSize);

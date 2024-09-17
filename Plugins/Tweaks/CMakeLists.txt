@@ -13,7 +13,6 @@ add_plugin(Tweaks
     "FixArmorDexBonusUnderOne.cpp"
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
-    "FixItemNullptrInCItemRepository.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
