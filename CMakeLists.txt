@@ -69,6 +69,17 @@ add_definitions(-DNWNX_TARGET_NWN_BUILD_REVISION=${TARGET_NWN_BUILD_REVISION})
 add_definitions(-DNWNX_TARGET_NWN_BUILD_POSTFIX=${TARGET_NWN_BUILD_POSTFIX})
 add_definitions(-DNWNX_BUILD_SHA="${NWNX_BUILD_SHA}")
 
+# Tracy stuff, not sure if all of it is actually needed
+string(LENGTH "${CMAKE_SOURCE_DIR}/" CMAKE_SOURCE_DIR_LENGTH)
+add_definitions("-DCMAKE_SOURCE_DIR_LENGTH=${CMAKE_SOURCE_DIR_LENGTH}")
+add_definitions(-DTRACY_ENABLE)
+add_definitions(-DTRACY_ON_DEMAND)
+add_definitions(-DTRACY_NO_CODE_TRANSFER)
+add_definitions(-DTRACY_MANUAL_LIFETIME -DTRACY_DELAYED_INIT)
+add_definitions(-DTRACY_NO_BROADCAST)
+add_definitions(-DTRACY_ONLY_IPV4)
+add_definitions(-DTRACY_NO_CRASH_HANDLER)
+
 # Provides the NWN API and other useful things as a static lib.
 add_subdirectory(NWNXLib)
 

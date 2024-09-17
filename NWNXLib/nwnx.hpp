@@ -314,6 +314,8 @@ struct ScopeGuard {
 #define SCOPEGUARD_IMPL(x) ::NWNXLib::ScopeGuard CAT(_scopeguard_, __LINE__) ([&]{x;})
 }
 
+#include "Instrumentation.hpp"
+
 // TODO: Remove entry points
 //todo: remove with Plugin
 #include "Services/Services.hpp"

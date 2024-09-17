@@ -44,6 +44,10 @@ std::optional<ScriptAPI::FunctionCallback> GetEventCallback(const std::string& p
 
 void Call(const std::string& pluginName, const std::string& eventName)
 {
+    INSTR_SCOPE();
+    INSTR_SCOPE_PROP_STR("Plugin", pluginName.c_str());
+    INSTR_SCOPE_PROP_STR("Function", eventName.c_str());
+
     if (auto callback = GetEventCallback(pluginName, eventName))
     {
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.", eventName, pluginName);

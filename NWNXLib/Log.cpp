@@ -80,6 +80,8 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         return;
     }
 
+    INSTR_MESSAGE(message, strlen(message));
+
     switch (channel)
     {
         case Channel::SEV_DEBUG:   std::cout << rang::fg::cyan << rang::style::dim;  break;
