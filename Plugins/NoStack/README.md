@@ -10,6 +10,7 @@ Functions and variables to control stacking of multiple bonuses of the same type
 * `NWNX_NOSTACK_ITEM_DEFAULT_TYPE`: Between 0 and 20. See below.
 * `NWNX_NOSTACK_ALWAYS_STACK_PENALTIES`: true or false. Defaults to false.
 * `NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS`: true or false. Defaults to false.
+* `NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE`: true or false. Defaults to false.
 
 ### NWNX_NOSTACK_*
 
@@ -60,3 +61,7 @@ This is needed because scripted effects, unless created from a spellscript, alwa
 This is a quick fix, if you want to control each of the scripted effect types you will need to unpack the effect, set a valid spellId and use the
 `SetSpellBonusType()` function to set the bonus for that spellId. The spellId has to be a valid spell, so either reuse one of the existing spells
 that don't give a bonus effect (i.e. healing or damaging spells) or add a dummy spell to your spells.2da.
+
+### NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE
+Set this value to true if you want to ignore your stacking rules for Supernatural Innate effects. This is the type of effect used in the
+Race, SkillRanks and Feat plugins.
