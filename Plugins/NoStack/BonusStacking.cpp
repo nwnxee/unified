@@ -55,6 +55,7 @@ static int s_nSavingThrowStackingMode = NostackMode::Disabled;
 static int s_nAttackBonusStackingMode = NostackMode::Disabled;
 static bool s_bAlwaysStackPenalties = false;
 static bool s_bSeparateInvalidOidEffects = false;
+static bool s_bIgnoreSupernaturalInnate = false;
 static std::vector<int32_t> s_nSpellBonusTypes;
 static int32_t s_nSpellDefaultType = NostackType::Circumstance;
 static int32_t s_nItemDefaultType = NostackType::Enhancement;
@@ -66,6 +67,7 @@ struct EffectData
     OBJECT_ID objectId = Constants::OBJECT_INVALID;
     uint32_t spellId = ~0;
     int32_t strength = 0;
+    uint32_t subType = 0;
 };
 
 constexpr auto MAX_DAMAGE_FLAGS = 13;
@@ -95,6 +97,7 @@ void BonusStacking()
         s_nItemDefaultType = std::clamp(Config::Get<int>("ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int32_t>(NostackType::Max));
         s_bAlwaysStackPenalties = Config::Get<bool>("ALWAYS_STACK_PENALTIES", false);
         s_bSeparateInvalidOidEffects = Config::Get<bool>("SEPARATE_INVALID_OID_EFFECTS", false);
+        s_bIgnoreSupernaturalInnate = Config::Get<bool>("IGNORE_SUPERNATURAL_INNATE", false);
 
         s_GetTotalEffectBonusHook = Hooks::HookFunction(&CNWSCreature::GetTotalEffectBonus, &CNWSCreature__GetTotalEffectBonus, Hooks::Order::Final);
 
@@ -105,10 +108,23 @@ void BonusStacking()
 
 inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAlignLaw,
                                uint8_t nEffectAlignLaw, uint8_t nAlignGood, uint8_t nEffectAlignGood);
-inline int32_t GetUnstackedBonus(bool negative = false, int mode = 0);
+inline int32_t GetUnstackedBonus(bool negative = false, int mode = 0, bool bSupernaturalInnate = false);
+
+inline bool IsSupernaturalAndInnate(uint32_t subType)
+{
+    constexpr uint32_t SupernaturalInnateMask = Constants::EffectSubType::Supernatural | Constants::EffectDurationType::Innate;
+    return (subType & SupernaturalInnateMask) == SupernaturalInnateMask;
+}
 
 void AddEffect(EffectData&& effectData, bool negative)
 {
+    if (s_bIgnoreSupernaturalInnate && IsSupernaturalAndInnate(effectData.subType))
+    {
+        auto &effectList = negative ? s_negativeEffects : s_positiveEffects;
+        effectList.emplace_back(effectData);
+        return;
+    }
+
     auto& effectList = negative ? s_negativeEffects : s_positiveEffects;
     if(effectData.spellId == ~0u)
     {
@@ -158,7 +174,7 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
 
     uint16_t nRace = static_cast<uint16_t>(~0u);
     uint8_t nAlignLaw = static_cast<uint8_t>(~0u), nAlignGood = static_cast<uint8_t>(~0u);
-    uint32_t nEffectBonus = 0, nEffectPenalty = 0;
+    uint32_t nEffectBonus = 0, nEffectPenalty = 0, nSupernaturalInnateBonus = 0, nSupernaturalInnatePenalty = 0;
 
     if (pObject)
     {
@@ -210,9 +226,9 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
                     if (nEffectWeaponType == 0 || nEffectBonusType != Constants::EffectBonusType::TouchAttack)
                     {
                         if (pEffect->m_nType == Constants::EffectTrueType::AttackIncrease)
-                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
+                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, false);
                         else if (pEffect->m_nType == Constants::EffectTrueType::AttackDecrease)
-                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
+                            AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, true);
                     }
                 }
             }
@@ -221,11 +237,17 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
                 nEffectBonus = GetUnstackedBonus(false, s_nAttackBonusStackingMode);
                 nEffectPenalty = GetUnstackedBonus(true, s_bAlwaysStackPenalties ? NostackMode::Disabled : s_nAttackBonusStackingMode);
 
-                uint32_t nAttackBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAttackBonusLimit();
+                if (s_bIgnoreSupernaturalInnate)
+                {
+                    nSupernaturalInnateBonus = GetUnstackedBonus(false, 0, true);
+                    nSupernaturalInnatePenalty = GetUnstackedBonus(true, 0, true);
+                }
+
+                uint32_t nAttackBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAttackBonusLimit() + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
                 nEffectBonus = std::min(nEffectBonus, nAttackBonusLimit);
                 nEffectPenalty = std::min(nEffectPenalty, nAttackBonusLimit);
             }
-            return nEffectBonus - nEffectPenalty;
+            return nEffectBonus - nEffectPenalty + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
 
         case Constants::EffectBonusType::Damage:
             //TODO: Damage bonuses can be added if needed by someone
@@ -253,11 +275,11 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
 
                     if (pEffect->m_nType == Constants::EffectTrueType::SavingThrowIncrease)
                     {
-                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, false);
                     }
                     else if (pEffect->m_nType == Constants::EffectTrueType::SavingThrowDecrease)
                     {
-                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, true);
                     }
                 }
             }
@@ -265,8 +287,14 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
             nEffectBonus = GetUnstackedBonus(false, s_nSavingThrowStackingMode);
             nEffectPenalty = GetUnstackedBonus(true, s_bAlwaysStackPenalties ? NostackMode::Disabled : s_nSavingThrowStackingMode);
 
+            if (s_bIgnoreSupernaturalInnate)
             {
-                uint32_t nSavingThrowBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSavingThrowBonusLimit();
+                nSupernaturalInnateBonus = GetUnstackedBonus(false, 0, true);
+                nSupernaturalInnatePenalty = GetUnstackedBonus(true, 0, true);
+            }
+
+            {
+                uint32_t nSavingThrowBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSavingThrowBonusLimit() + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
                 nEffectBonus = std::min(nEffectBonus, nSavingThrowBonusLimit);
                 nEffectPenalty = std::min(nEffectPenalty, nSavingThrowBonusLimit);
             }
@@ -278,7 +306,7 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
                     nEffectBonus += nChampionLevel / 2;
             }
 
-            return nEffectBonus - nEffectPenalty;
+            return nEffectBonus - nEffectPenalty + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
 
         case Constants::EffectBonusType::Ability:
             for (int i = thisPtr->m_pStats->m_nAbilityPtr; i < thisPtr->m_appliedEffects.num; i++)
@@ -297,24 +325,30 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
 
                 if (pEffect->m_nType == Constants::EffectTrueType::AbilityIncrease)
                 {
-                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
+                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, false);
                 }
                 else if (pEffect->m_nType == Constants::EffectTrueType::AbilityDecrease)
                 {
-                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
+                    AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, true);
                 }
             }
 
             nEffectBonus = GetUnstackedBonus(false, s_nAbilityStackingMode);
             nEffectPenalty = GetUnstackedBonus(true, s_bAlwaysStackPenalties ? NostackMode::Disabled : s_nAbilityStackingMode);
 
+            if (s_bIgnoreSupernaturalInnate)
             {
-                uint32_t nAbilityBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityBonusLimit();
-                uint32_t nAbilityPenaltyLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityPenaltyLimit();
+                nSupernaturalInnateBonus = GetUnstackedBonus(false, 0, true);
+                nSupernaturalInnatePenalty = GetUnstackedBonus(true, 0, true);
+            }
+
+            {
+                uint32_t nAbilityBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityBonusLimit() + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
+                uint32_t nAbilityPenaltyLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityPenaltyLimit() + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
                 nEffectBonus = std::min(nEffectBonus, nAbilityBonusLimit);
                 nEffectPenalty = std::min(nEffectPenalty, nAbilityPenaltyLimit);
             }
-            return nEffectBonus - nEffectPenalty;
+            return nEffectBonus - nEffectPenalty + nSupernaturalInnateBonus- nSupernaturalInnatePenalty;
 
         case Constants::EffectBonusType::Skill:
             for (int i = thisPtr->m_pStats->m_nSkillBonusPtr; i < thisPtr->m_appliedEffects.num; i++)
@@ -336,11 +370,11 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
 
                     if (pEffect->m_nType == Constants::EffectTrueType::SkillIncrease)
                     {
-                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, false);
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, false);
                     }
                     else if (pEffect->m_nType == Constants::EffectTrueType::SkillDecrease)
                     {
-                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength }, true);
+                        AddEffect(EffectData{ pEffect->m_oidCreator, pEffect->m_nSpellId, nEffectStrength, pEffect->m_nSubType }, true);
                     }
                 }
             }
@@ -348,13 +382,19 @@ int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffect
             nEffectBonus =  GetUnstackedBonus(false, s_nSkillStackingMode);
             nEffectPenalty = GetUnstackedBonus(true, s_bAlwaysStackPenalties ? NostackMode::Disabled : s_nSkillStackingMode);
 
+            if (s_bIgnoreSupernaturalInnate)
             {
-                uint32_t nSkillBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSkillBonusLimit();
+                nSupernaturalInnateBonus = GetUnstackedBonus(false, 0, true);
+                nSupernaturalInnatePenalty = GetUnstackedBonus(true, 0, true);
+            }
+
+            {
+                uint32_t nSkillBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSkillBonusLimit() + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
                 nEffectBonus = std::min(nEffectBonus, nSkillBonusLimit);
                 nEffectPenalty = std::min(nEffectPenalty, nSkillBonusLimit);
             }
 
-            return nEffectBonus - nEffectPenalty;
+            return nEffectBonus - nEffectPenalty + nSupernaturalInnateBonus - nSupernaturalInnatePenalty;
     }
 
     return 0;
@@ -369,10 +409,28 @@ inline bool CheckRaceAlignment(uint16_t nRace, uint16_t nEffectRace, uint8_t nAl
         && (nEffectAlignGood == 0 || nEffectAlignGood == nAlignGood);
 }
 
-inline int32_t GetUnstackedBonus(bool negative, int mode)
+inline int32_t GetUnstackedBonus(bool negative, int mode, bool bSupernaturalInnate)
 {
-    auto begin = negative ? s_negativeEffects.cbegin() : s_positiveEffects.cbegin();
-    auto end = negative ? s_negativeEffects.cend() : s_positiveEffects.cend();
+    auto &effects = negative ? s_negativeEffects : s_positiveEffects;
+    std::vector<EffectData> filteredEffects;
+
+    if (s_bIgnoreSupernaturalInnate)
+    {
+        std::copy_if(effects.cbegin(), effects.cend(), std::back_inserter(filteredEffects), [bSupernaturalInnate](const EffectData &data)
+                     { return bSupernaturalInnate ? IsSupernaturalAndInnate(data.subType) : !IsSupernaturalAndInnate(data.subType); });
+        if (bSupernaturalInnate)
+        {
+            return std::accumulate(filteredEffects.cbegin(), filteredEffects.cend(), 0, [](uint32_t acc, const EffectData &data)
+                                   { return acc + data.strength; });
+        }
+    }
+    else
+    {
+        filteredEffects = effects;
+    }
+
+    auto begin = filteredEffects.cbegin();
+    auto end = filteredEffects.cend();
 
     int32_t itemBonus = 0, spellBonus = 0;
 
