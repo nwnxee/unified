@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__DamageData.html#afe8dc555203735fbff65b1b39fcf2fdf":[0,9,4,19],
 "structNWNX__Damage__DamageEventData.html":[0,9,2],
 "structNWNX__Damage__DamageEventData.html#a04900ba3be651ebcc60e4bc115a5d4f5":[0,9,2,27],
 "structNWNX__Damage__DamageEventData.html#a1273adbedbccba5afb3592eadb34ce1b":[0,9,2,13],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__WebHook__Message.html#ad140bcf66224acce998f2d7ca3edd547":[0,49,3,22],
 "structNWNX__WebHook__Message.html#ad1a2af81fea4de75d522d42d357f01ee":[0,49,3,11],
 "structNWNX__WebHook__Message.html#adcd42dcbacf76889672ad8f4c2b53306":[0,49,3,33],
-"structNWNX__WebHook__Message.html#ae6ca50f2fc799a581ea7714864559026":[0,49,3,16],
-"structNWNX__WebHook__Message.html#aede5d86741cf96192df5228c3fae7e59":[0,49,3,31]
+"structNWNX__WebHook__Message.html#ae6ca50f2fc799a581ea7714864559026":[0,49,3,16]
 };

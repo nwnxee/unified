@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"nwnx__redis__short_8nss.html#a81c56a4be8401235aea2b743712d26a8":[4,0,3,30,0,3,61],
 "nwnx__redis__short_8nss.html#a827ac8f84fb14407b08d867e576693a5":[4,0,3,30,0,3,179],
 "nwnx__redis__short_8nss.html#a83437a22bb08ae767d476c4c82952550":[4,0,3,30,0,3,142],
 "nwnx__redis__short_8nss.html#a841e8753c4c6e15385c499d579464403":[4,0,3,30,0,3,33],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "structNWNX__Damage__DamageData.html#ab5a608d124514061b522fe771505c361":[0,9,4,1],
 "structNWNX__Damage__DamageData.html#acb57814977b5916c105b5c44261ba0ad":[0,9,4,16],
 "structNWNX__Damage__DamageData.html#ad868d4609cf1a36099eaa8ff04c25776":[0,9,4,22],
-"structNWNX__Damage__DamageData.html#af740d9ff307faa91a8c4c6cbe6b251fa":[0,9,4,20],
-"structNWNX__Damage__DamageData.html#afe8dc555203735fbff65b1b39fcf2fdf":[0,9,4,19]
+"structNWNX__Damage__DamageData.html#af740d9ff307faa91a8c4c6cbe6b251fa":[0,9,4,20]
 };

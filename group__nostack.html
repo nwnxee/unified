@@ -113,6 +113,7 @@ Environment Variables</h2>
 <li><code>NWNX_NOSTACK_ITEM_DEFAULT_TYPE</code>: Between 0 and 20. See below.</li>
 <li><code>NWNX_NOSTACK_ALWAYS_STACK_PENALTIES</code>: true or false. Defaults to false.</li>
 <li><code>NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS</code>: true or false. Defaults to false.</li>
+<li><code>NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE</code>: true or false. Defaults to false.</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md519"></a>
 NWNX_NOSTACK_*</h3>
@@ -175,7 +176,10 @@ NWNX_NOSTACK_*_DEFAULT_TYPE</h3>
 <h3><a class="anchor" id="autotoc_md521"></a>
 NWNX_NOSTACK_SEPARATE_INVALID_OID_EFFECTS</h3>
 <p>Set this value to true if you are adding effects through scripts that you want to stack with each other. This is needed because scripted effects, unless created from a spellscript, always have an INVALID_OBJECT creator and a spellId of -1.</p>
-<p>This is a quick fix, if you want to control each of the scripted effect types you will need to unpack the effect, set a valid spellId and use the <code>SetSpellBonusType()</code> function to set the bonus for that spellId. The spellId has to be a valid spell, so either reuse one of the existing spells that don't give a bonus effect (i.e. healing or damaging spells) or add a dummy spell to your spells.2da. </p>
+<p>This is a quick fix, if you want to control each of the scripted effect types you will need to unpack the effect, set a valid spellId and use the <code>SetSpellBonusType()</code> function to set the bonus for that spellId. The spellId has to be a valid spell, so either reuse one of the existing spells that don't give a bonus effect (i.e. healing or damaging spells) or add a dummy spell to your spells.2da.</p>
+<h3><a class="anchor" id="autotoc_md522"></a>
+NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE</h3>
+<p>Set this value to true if you want to ignore your stacking rules for Supernatural Innate effects. This is the type of effect used in the Race, SkillRanks and Feat plugins. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
@@ -379,7 +383,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Sep 13 2024 23:54:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Sep 23 2024 21:18:21 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
