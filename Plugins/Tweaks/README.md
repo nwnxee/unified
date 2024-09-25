@@ -49,6 +49,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` | true or false | If enabled, a creature getting added to an area will fire the `NWNX_ON_MATERIALCHANGE_*` and `NWNX_ON_CREATURE_TILE_CHANGE_*` events. |
 | `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` | true or false | The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures |
 | `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
+| `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
 
 ## Environment variable values
 
