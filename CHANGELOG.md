@@ -13,6 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - DotNET: Added `RequestFunctionHook`, `ReturnFunctionHook`.
 - Events: Added events `NWNX_ON_SET_EXPERIENCE_{BEFORE|AFTER}` which fire when the XP of a player changes.
 - NoStack: Added `NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE` to ignore effects created by the Feat, Race and SkillRanks plugins when stacking.
+- Tweaks: added `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` to not drop a TURD when SetCutsceneMode() is called.
 
 ##### New Plugins
 - Store: Enables getting and setting store data.
