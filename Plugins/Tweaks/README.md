@@ -1,6 +1,6 @@
 @addtogroup tweaks Tweaks
 @page tweaks Readme
-@ingroup tweaks 
+@ingroup tweaks
 
 Tweaks stuff. See below.
 
@@ -14,7 +14,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_DISABLE_QUICKSAVE` | true or false | Disables DM quicksave. |
 | `NWNX_TWEAKS_COMPARE_VARIABLES_WHEN_MERGING` | true or false | When trying to merge items, local variables are also considered. |
 | `NWNX_TWEAKS_PARRY_ALL_ATTACKS` | true or false | Removes the number of parried attacks per round limit. |
-| `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` | true or false | Allow sneakattacks on creatures that are immune to critical hits. | 
+| `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` | true or false | Allow sneakattacks on creatures that are immune to critical hits. |
 | `NWNX_TWEAKS_PRESERVE_DEPLETED_ITEMS` | true or false | Items that run out of charges are not destroyed. |
 | `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` | between 1 and 3 | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_players_on_char_list). |
 | `NWNX_TWEAKS_DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED` | true or false | Disables monk abilities (ac, speed, etc) when polymorphed. |
@@ -50,6 +50,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES` | true or false | The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures |
 | `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
 | `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
+| `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
 
 ## Environment variable values
 
@@ -88,7 +89,7 @@ Values between 1 and 3 are valid. Any of those values will adjust the item cost 
 
 ### NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX
 
-Add the numbers of the VFX you want to hide. For example to hide all Elemental Damage Bonus, Holy Avenger and OnHitVorpal visual effects you'd set the environment variable to 318 (2 + 4 + 8 + 16 + 32 + 256) 
+Add the numbers of the VFX you want to hide. For example to hide all Elemental Damage Bonus, Holy Avenger and OnHitVorpal visual effects you'd set the environment variable to 318 (2 + 4 + 8 + 16 + 32 + 256)
 
 Specific VFX values in order of priority:
 
