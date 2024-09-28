@@ -2,7 +2,6 @@
 /// @brief NWNX HTTPClient
 /// @{
 /// @file nwnx_httpclient.nss
-#include "nwnx"
 
 const string NWNX_HTTPClient = "NWNX_HTTPClient"; ///< @private
 

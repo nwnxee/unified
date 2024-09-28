@@ -29,20 +29,35 @@
 //
 extern bool g_bTracyEnabled;
 
+// True if a profiler is connected
+extern bool g_bTracyProfilerConnected;
+
 // Used internally to track nested scope disablement.
 extern uint32_t g_bTracyScopeDisableCounter;
 
 //
-// True if INSTR support is currently active.
+// True if INSTR support is currently enabled.
 //
 #define INSTR_IS_ENABLED() \
     (g_bTracyEnabled)
 
 //
+// True if a Profiler is currently connected.
+//
+#define INSTR_IS_CONNECTED() \
+    (g_bTracyProfilerConnected)
+
+//
+// True if INSTR support is enabled and a profiler is connected.
+//
+#define INSTR_IS_ACTIVE() \
+    INSTR_IS_ENABLED() && INSTR_IS_CONNECTED()
+
+//
 // True if INSTR is active and the current scope conditional permits evaluation.
 //
 #define INSTR_SCOPE_IS_ACTIVE() \
-    (INSTR_IS_ENABLED() && g_bTracyScopeDisableCounter == 0)
+    (INSTR_IS_ACTIVE() && g_bTracyScopeDisableCounter == 0)
 
 //
 // We set a very low max string length, to avoid attaching
@@ -161,11 +176,11 @@ extern uint32_t g_bTracyScopeDisableCounter;
 // Emit a human-readable, textual message to the profiler timegraph. Max 64K.
 //
 #define INSTR_MESSAGE(text, size) \
-    if (INSTR_IS_ENABLED()) { TracyMessage(text, std::min<uint16_t>(size, INSTR_MAX_STRING_SIZE)); }
+    if (INSTR_IS_ACTIVE()) { TracyMessage(text, std::min<uint16_t>(size, INSTR_MAX_STRING_SIZE)); }
 #define INSTR_MESSAGEC(text, size, col) \
-    if (INSTR_IS_ENABLED()) { TracyMessageC(text, std::min<uint16_t>(size, INSTR_MAX_STRING_SIZE), col); }
+    if (INSTR_IS_ACTIVE()) { TracyMessageC(text, std::min<uint16_t>(size, INSTR_MAX_STRING_SIZE), col); }
 #define INSTR_MESSAGEL(text) \
-    if (INSTR_IS_ENABLED()) { TracyMessageL(text); }
+    if (INSTR_IS_ACTIVE()) { TracyMessageL(text); }
 
 //
 // Name the currently-calling thread something else than a random thread id.
@@ -198,15 +213,15 @@ extern uint32_t g_bTracyScopeDisableCounter;
 //
 #define INSTR_PLOT_AGGREGATE_TIMED(msec, name, agg_type, numish, plot_type) \
     Instrumentation::assert_string_literal(name); \
-    if (INSTR_IS_ENABLED()) { Instrumentation::PushPlotAggregate(msec, name, agg_type, numish, plot_type); } \
+    if (INSTR_IS_ACTIVE()) { Instrumentation::PushPlotAggregate(msec, name, agg_type, numish, plot_type); } \
 
 //
 // Add a counting plot to the timegraph.
 // This value is plotted immediately and not aggregated.
 //
 #define INSTR_PLOT_COUNT(name,value) \
-        Instrumentation::assert_string_literal(name); \
-        if (INSTR_IS_ENABLED()) { TracyPlot(name, (int64_t)value); }
+    Instrumentation::assert_string_literal(name); \
+    if (INSTR_IS_ACTIVE()) { TracyPlot(name, (int64_t)value); }
 
 namespace Instrumentation
 {
