@@ -7,6 +7,9 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static std::unordered_map<ObjectID, std::unordered_map<ObjectID, int32_t>> s_PersonalOverrides;
+static std::unordered_map<ObjectID, int32_t> s_GlobalOverrides;
+
 NWNX_EXPORT ArgumentStack GetVisibilityOverride(ArgumentStack&& args)
 {
     const auto oidPlayer = args.extract<ObjectID>();
@@ -16,18 +19,18 @@ NWNX_EXPORT ArgumentStack GetVisibilityOverride(ArgumentStack&& args)
     int32_t retVal = -1;
     if (oidPlayer == Constants::OBJECT_INVALID)
     {
-        if (auto *pTargetGO = Utils::GetGameObject(oidTarget))
-        {
-            if (auto globalOverride = pTargetGO->nwnxGet<int32_t>("GLOBAL_VISIBILITY_OVERRIDE"))
-                retVal = *globalOverride;
-        }
+        auto globalIt = s_GlobalOverrides.find(oidTarget);
+        if (globalIt != s_GlobalOverrides.end())
+            return globalIt->second;
     }
     else
     {
-        if (auto *pPlayerGO = Utils::GetGameObject(oidPlayer))
+        auto personalIt = s_PersonalOverrides.find(oidPlayer);
+        if (personalIt != s_PersonalOverrides.end())
         {
-            if (auto personalOverride = pPlayerGO->nwnxGet<int32_t>("PERSONAL_VISIBILITY_OVERRIDE_" + std::to_string(oidTarget)))
-                retVal = *personalOverride;
+            auto targetIt = personalIt->second.find(oidTarget);
+            if (targetIt != personalIt->second.end())
+                return targetIt->second;
         }
     }
 
@@ -43,12 +46,18 @@ NWNX_EXPORT ArgumentStack SetVisibilityOverride(ArgumentStack&& args)
             return s_TestObjectVisibleHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
 
         int32_t visibilityOverride = -1;
-        if (auto personalOverride = pPlayerGameObject->nwnxGet<int32_t>("PERSONAL_VISIBILITY_OVERRIDE_" + std::to_string(pAreaObject->m_idSelf)))
-            visibilityOverride = *personalOverride;
+        auto personalIt = s_PersonalOverrides.find(pPlayerGameObject->m_idSelf);
+        if (personalIt != s_PersonalOverrides.end())
+        {
+            auto targetIt = personalIt->second.find(pAreaObject->m_idSelf);
+            if (targetIt != personalIt->second.end())
+                visibilityOverride = targetIt->second;
+        }
         if (visibilityOverride == -1)
         {
-            if (auto globalOverride = pAreaObject->nwnxGet<int32_t>("GLOBAL_VISIBILITY_OVERRIDE"))
-                visibilityOverride = *globalOverride;
+            auto globalIt = s_GlobalOverrides.find(pAreaObject->m_idSelf);
+            if (globalIt != s_GlobalOverrides.end())
+                visibilityOverride = globalIt->second;
         }
 
         switch (visibilityOverride)
@@ -77,9 +86,9 @@ NWNX_EXPORT ArgumentStack SetVisibilityOverride(ArgumentStack&& args)
         if (auto *pTargetGO = Utils::GetGameObject(oidTarget))
         {
             if (override < 0)
-                pTargetGO->nwnxRemove("GLOBAL_VISIBILITY_OVERRIDE");
+                s_GlobalOverrides.erase(oidTarget);
             else
-                pTargetGO->nwnxSet("GLOBAL_VISIBILITY_OVERRIDE", override);
+                s_GlobalOverrides[oidTarget] = override;
         }
     }
     else
@@ -87,9 +96,9 @@ NWNX_EXPORT ArgumentStack SetVisibilityOverride(ArgumentStack&& args)
         if (auto *pPlayerGO = Utils::GetGameObject(oidPlayer))
         {
             if (override < 0)
-                pPlayerGO->nwnxRemove("PERSONAL_VISIBILITY_OVERRIDE_" + std::to_string(oidTarget));
+                s_PersonalOverrides[oidPlayer].erase(oidTarget);
             else
-                pPlayerGO->nwnxSet("PERSONAL_VISIBILITY_OVERRIDE_" + std::to_string(oidTarget), override);
+                s_PersonalOverrides[oidPlayer][oidTarget] = override;
         }
     }
 
