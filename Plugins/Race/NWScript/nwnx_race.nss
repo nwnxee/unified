@@ -54,6 +54,16 @@ int NWNX_Race_GetParentRace(int iRace);
 /// or Favored Enemy: Wild Elf
 void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat);
 
+/// @brief Removes any nwnx_race 'Effects' on the targeted creature. Suppression lasts until levelup, next login, or Reactivated by function.
+/// @param oCreature The creature to suppress
+/// @note Not all nwnx_race modifiers are achieved via effect. Those that are not directly consider the creatures current race.
+void NWNX_Race_SuppressCreatureRaceEffects(object oCreature);
+
+/// @brief Reactivates the nwnx_race 'Effects' on the targeted creature after they were Suppressed.
+/// @param oCreature The creature to reactive
+/// @note Safe to use on non-suppressed creatures - Triggers a refresh of effects but won't stack.
+void NWNX_Race_ReactivateCreatureRaceEffects(object oCreature);
+
 /// @}
 
 void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF)
@@ -86,5 +96,21 @@ void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat)
     NWNX_PushArgumentInt(iFeat);
     NWNX_PushArgumentInt(iRace);
 
+    NWNX_CallFunction(NWNX_Race, sFunc);
+}
+
+void NWNX_Race_SuppressCreatureRaceEffects(object creature)
+{
+    string sFunc = "SuppressCreatureRaceEffects";
+
+    NWNX_PushArgumentObject(creature);
+    NWNX_CallFunction(NWNX_Race, sFunc);
+}
+
+void NWNX_Race_ReactivateCreatureRaceEffects(object oCreature)
+{
+    string sFunc = "ReactivateCreatureRaceEffects";
+
+    NWNX_PushArgumentObject(oCreature);
     NWNX_CallFunction(NWNX_Race, sFunc);
 }

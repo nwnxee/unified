@@ -25,6 +25,8 @@ private:
     ArgumentStack SetRacialModifier(ArgumentStack&& args);
     ArgumentStack GetParentRace(ArgumentStack&& args);
     ArgumentStack SetFavoredEnemyFeat(ArgumentStack&& args);
+    ArgumentStack SuppressCreatureRaceEffects(ArgumentStack&& args);
+    ArgumentStack ReactivateCreatureRaceEffects(ArgumentStack&& args);
 
     enum RaceModifier
     {
@@ -80,6 +82,7 @@ private:
 
 
     static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
+    static void RemoveRaceEffects(CNWSCreature*);
     static void ApplyRaceEffects(CNWSCreature*);
     static void SetOrRestoreRace(bool, CNWSCreatureStats*, CNWSCreatureStats* = nullptr);
     static void SetRaceModifier(int32_t, RaceModifier, int32_t, int32_t, int32_t);
