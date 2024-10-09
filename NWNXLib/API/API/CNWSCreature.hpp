@@ -20,7 +20,6 @@ NWN_API_PROLOGUE(CNWSCreature)
 
 struct CEffectIconObject;
 struct CGameEffect;
-struct CGameEffect;
 struct CItemRepository;
 struct CNWCCMessageData;
 struct CNWItemProperty;
@@ -742,4 +741,3 @@ struct CNWSCreature : CNWSObject
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CNWSCreature)
 #endif
-

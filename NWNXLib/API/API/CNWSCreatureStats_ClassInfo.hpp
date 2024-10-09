@@ -9,7 +9,6 @@ NWN_API_PROLOGUE(CNWSCreatureStats_ClassInfo)
 #endif
 
 struct CNWSStats_Spell;
-struct CNWSStats_Spell;
 
 
 typedef int BOOL;
@@ -69,4 +68,3 @@ struct CNWSCreatureStats_ClassInfo
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CNWSCreatureStats_ClassInfo)
 #endif
-

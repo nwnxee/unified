@@ -20,7 +20,6 @@ struct CNWSPlayer;
 struct CResGFF;
 struct CResStruct;
 struct CStoreCustomer;
-struct CStoreCustomer;
 
 
 typedef int BOOL;
@@ -84,4 +83,3 @@ struct CNWSStore : CNWSObject
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CNWSStore)
 #endif
-
