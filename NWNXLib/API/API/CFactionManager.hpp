@@ -10,7 +10,6 @@ NWN_API_PROLOGUE(CFactionManager)
 
 struct CExoString;
 struct CNWSFaction;
-struct CNWSFaction;
 struct CResGFF;
 struct CResList;
 
@@ -54,4 +53,3 @@ struct CFactionManager
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CFactionManager)
 #endif
-

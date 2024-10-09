@@ -18,7 +18,6 @@ NWN_API_PROLOGUE(CExoResMan)
 
 struct CExoFile;
 struct CExoKeyTable;
-struct CExoKeyTable;
 struct CExoStringList;
 struct CKeyTableEntry;
 
@@ -122,4 +121,3 @@ struct CExoResMan
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CExoResMan)
 #endif
-

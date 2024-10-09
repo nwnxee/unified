@@ -26,7 +26,6 @@ NWN_API_PROLOGUE(CNWSObject)
 
 struct CExoString;
 struct CGameEffect;
-struct CGameEffect;
 struct CLoopingVisualEffect;
 struct CNWCCMessageData;
 struct CNWSAnimBase;
@@ -331,4 +330,3 @@ struct CNWSObject : CGameObject
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CNWSObject)
 #endif
-
