@@ -212,15 +212,19 @@ void SetExperienceHook(CNWSCreatureStats *thisPtr, uint32_t nValue, BOOL bDoLeve
     if (!bDoLevel) {
         s_SetExperienceHook->CallOriginal<void>(thisPtr, nValue, bDoLevel);
     } else {
-        auto PushAndSignal = [&](const std::string& ev) -> bool {
-            PushEventData("XP", std::to_string(nValue));
-            return SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
-        };
-
-        if (PushAndSignal("NWNX_ON_SET_EXPERIENCE_BEFORE"))
+        PushEventData("XP", std::to_string(nValue));
+        std::string result;
+        if (SignalEvent("NWNX_ON_SET_EXPERIENCE_BEFORE", thisPtr->m_pBaseCreature->m_idSelf, &result))
+        {
             s_SetExperienceHook->CallOriginal<void>(thisPtr, nValue, bDoLevel);
+        }
+        else if (const auto newXP = String::FromString<uint32_t>(result))
+        {
+            s_SetExperienceHook->CallOriginal<void>(thisPtr, newXP.value(), bDoLevel);
+        }
 
-        PushAndSignal("NWNX_ON_SET_EXPERIENCE_AFTER");
+        PushEventData("XP", std::to_string(nValue));
+        SignalEvent("NWNX_ON_SET_EXPERIENCE_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
     }
 }
 
