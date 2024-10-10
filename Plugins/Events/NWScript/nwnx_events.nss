@@ -1664,7 +1664,9 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    XP                    | int    | The xp value that is being set |
+    XP                    | int    | The xp value to be set. |
+
+    @note To set a different xp value in the BEFORE event: Skip the event and call NWNX_Events_SetEventResult() with the new value.
 _______________________________________
     ## Broadcast Attack of Opportunity Events
     - NWNX_ON_BROADCAST_ATTACK_OF_OPPORTUNITY_BEFORE
