@@ -184,14 +184,17 @@ void Race::RemoveRaceEffects(CNWSCreature *pCreature)
     if (pCreature->m_pStats == nullptr || effectsLevelAdded == 0)
         return;
 
+    std::vector<uint64_t> remove(128);
     for (int i = pCreature->m_appliedEffects.num; i >= 0; --i)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
         if (eff->m_sCustomTag == "NWNX_Race_RacialMod")
         {
-            pCreature->RemoveEffectById(eff->m_nID);
+            remove.push_back(eff->m_nID);
         }
     }
+    for (auto id: remove)
+        pCreature->RemoveEffectById(id);
 
     pCreature->nwnxRemove("RACEMODS_ADDED_LEVEL");
 }
