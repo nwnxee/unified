@@ -29,6 +29,8 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Store: {Get|Set}MarkUp()
 - Player: ReloadTlk()
 - Player: ReloadColorPalettes()
+- Race: SuppressCreatureRaceEffects()
+- Race: ReactivateCreatureRaceEffects()
 
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature()
