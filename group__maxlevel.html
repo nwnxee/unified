@@ -118,8 +118,8 @@ Required Plugins</h2>
 <h2><a class="anchor" id="autotoc_md514"></a>
 Issues</h2>
 <ul>
-<li>Spellcasters may not change spells when levelling up</li>
-<li>Next Level XP on Character Sheet shows an incorrect value</li>
+<li>Spellcasters may not change spells when levelling up.</li>
+<li>Next Level XP on Character Sheet shows an incorrect value. For a possible workaround see below.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md515"></a>
 Setup</h2>
@@ -135,15 +135,33 @@ Setup</h2>
 <div class="line">44  45  63935000</div>
 <div class="line">45  46  0xFFFFFFF</div>
 </div><!-- fragment --></li>
-<li>(Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b>. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40. </li>
+<li>(Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b>. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.</li>
 </ul>
+<h2><a class="anchor" id="autotoc_md516"></a>
+Next Level XP workaround</h2>
+<p>Beginning at level 40 the xp value shown on the character sheet after "Next Level:" is incorrect. This can be worked around with, with a tlk override for the strref 315 "Next Level" that also pushes the xp value out of view by use of a new line <code>\n</code>. With NWNX this can be done per player and can show the actual value of xp needed for the next level so that it looks as usual. </p><div class="fragment"><div class="line"><span class="comment">// Todo: Do something to get the PC object as oPC.</span></div>
+<div class="line"><span class="keywordtype">int</span> nLevel = GetHitDice(oPC);</div>
+<div class="line"><span class="keywordflow">if</span> (nLevel &lt; 40)</div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// In case of a level down the override might not be needed anymore.</span></div>
+<div class="line">  <a class="code" href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a>(oPC, 315, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line">}</div>
+<div class="line"><span class="keywordflow">else</span></div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordtype">string</span> sNextLevel = IntToString((nLevel + 1) * nLevel * 500);</div>
+<div class="line">  <span class="comment">// The line above assumes you followed the same pattern of xp progression as the first 40 levels.</span></div>
+<div class="line">  <span class="comment">// If not, read from exptable.2da or do what you have to do to get the correct xp value for the next level.</span></div>
+<div class="line">  <a class="code" href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a>(oPC, 315, <span class="stringliteral">&quot;Next Level: &quot;</span> + sNextLevel + <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>Code like the above could for example be run in the base game events <code>EVENT_SCRIPT_MODULE_ON_CLIENT_ENTER</code>, <code>EVENT_SCRIPT_MODULE_ON_PLAYER_LEVEL_UP</code> and the NWNX event <code>NWNX_ON_LEVEL_DOWN_AFTER</code>. An alternative would be the nwnx event before opening the character sheet <code>NWNX_ON_CHARACTER_SHEET_OPEN_BEFORE</code>. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__player_html_gac1e82d1407aa32ddbcbe2c8822a0fa8a"><div class="ttname"><a href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a></div><div class="ttdeci">void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal=TRUE)</div><div class="ttdoc">Override nStrRef from the TlkTable with sOverride for oPlayer only.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__player_8nss_source.html#l01052">nwnx_player.nss:1052</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Oct 22 2024 12:18:55 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Oct 22 2024 12:19:43 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
