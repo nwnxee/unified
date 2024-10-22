@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Events: Added events `NWNX_ON_SET_EXPERIENCE_{BEFORE|AFTER}` which fire when the XP of a player changes.
 - NoStack: Added `NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE` to ignore effects created by the Feat, Race and SkillRanks plugins when stacking.
 - Tweaks: added `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` to not drop a TURD when SetCutsceneMode() is called.
-- Creature: Added `NWNX_Creature_{Get|Set}MulticlassLimit()`.
+- Tweaks: added `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` to allow all items to be used while polymorphed.
 
 ##### New Plugins
 - Store: Enables getting and setting store data.
@@ -29,6 +29,9 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Store: {Get|Set}MarkUp()
 - Player: ReloadTlk()
 - Player: ReloadColorPalettes()
+- Race: SuppressCreatureRaceEffects()
+- Race: ReactivateCreatureRaceEffects()
+- Creature: {Get|Set}MulticlassLimit()
 
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature()
