@@ -257,7 +257,7 @@ void main()
     NWNX_Creature_SetDomain(oCreature2, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", GetDomain(oCreature2, 1, CLASS_TYPE_CLERIC) == (nDomain2+1)%5);
 
-	//Test Armor class versus function, elf mage vs bandit
+    //Test Armor class versus function, elf mage vs bandit
     NWNX_Tests_Report("NWNX_Creature", "Without a Versus GetArmorClassVersus", NWNX_Creature_GetArmorClassVersus(oCreature, OBJECT_INVALID) > 0);
     int nOldAC = NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2);
     int nOldTouchAC = NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2, TRUE);
@@ -274,6 +274,10 @@ void main()
     int nInitiativeMod = NWNX_Creature_GetInitiativeModifier(oCreature);
     NWNX_Creature_SetInitiativeModifier(oCreature, nInitiativeMod + 10);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etInitiativeModifer", NWNX_Creature_GetInitiativeModifier(oCreature) == nInitiativeMod+10);
+
+    NWNX_Creature_SetMulticlassLimit(oCreature, 2);
+    NWNX_Tests_Report("NWNX_Creature", "{Set/Get}MulticlassLimit", NWNX_Creature_GetMulticlassLimit(oCreature) == 2);
+    NWNX_Creature_SetMulticlassLimit(oCreature, 0);
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

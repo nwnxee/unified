@@ -31,6 +31,7 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Player: ReloadColorPalettes()
 - Race: SuppressCreatureRaceEffects()
 - Race: ReactivateCreatureRaceEffects()
+- Creature: {Get|Set}MulticlassLimit()
 
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature()

@@ -3584,3 +3584,67 @@ NWNX_EXPORT ArgumentStack GetMaxAttackRange(ArgumentStack&& args)
 
     return 0.0f;
 }
+
+NWNX_EXPORT ArgumentStack GetMulticlassLimit(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        return pCreature->nwnxGet<int32_t>("MULTICLASS_LIMIT").value_or(0);
+    }
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetMulticlassLimit(ArgumentStack&& args)
+{
+    static Hooks::Hook s_GetIsClassAvailableHook = Hooks::HookFunction(&CNWSCreatureStats::GetIsClassAvailable,
+    +[](CNWSCreatureStats *pThis, uint8_t nClass) -> BOOL
+    {
+        if (pThis->m_bIsPC)
+        {
+            const auto limit = pThis->m_pBaseCreature->nwnxGet<int32_t>("MULTICLASS_LIMIT");
+            if (limit.has_value() && pThis->m_nNumMultiClasses >= limit.value())
+            {
+                for (int i = 0; i < pThis->m_nNumMultiClasses; ++i)
+                {
+                    if (pThis->m_ClassInfo[i].m_nClass == nClass)
+                        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
+                }
+
+                return 0;
+            }
+        }
+
+        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
+    }, Hooks::Order::Late);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto limit = args.extract<int32_t>();
+          ASSERT_OR_THROW(limit >= 0);
+
+        const bool persist = !!args.extract<int32_t>();
+
+        if (!pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("SetMulticlassLimit: Only works on PCs");
+            return {};
+        }
+
+        if (limit >= Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("MULTICLASS_LIMIT"), 3))
+        {
+            LOG_WARNING("SetMulticlassLimit: Limit has to be lower than the server limit");
+            return {};
+        }
+
+        if (limit == 0)
+        {
+            pCreature->nwnxRemove("MULTICLASS_LIMIT");
+        }
+        else
+        {
+            pCreature->nwnxSet("MULTICLASS_LIMIT", limit, persist);
+        }
+    }
+
+    return {};
+}
