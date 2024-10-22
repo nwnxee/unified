@@ -6,6 +6,8 @@ var group__race =
     [ "NWNX_Race_SetRacialModifier", "group__race.html#ga008aebe423e8f5f148e3119c8459d2b9", null ],
     [ "NWNX_Race_GetParentRace", "group__race.html#gabaf553f259396e06a67b0e580d2ecaae", null ],
     [ "NWNX_Race_SetFavoredEnemyFeat", "group__race.html#ga08cac1e5093adf088f302d2194538b68", null ],
+    [ "NWNX_Race_SuppressCreatureRaceEffects", "group__race.html#ga2ec690d5a85336ce36b04cc83ebf8537", null ],
+    [ "NWNX_Race_ReactivateCreatureRaceEffects", "group__race.html#ga4658ec1fefe4f07e0797c9b0f341edb9", null ],
     [ "NWNX_Race_GetModifierConstant", "group__race.html#gae2d72337de73db7e5cd65ad47ae73c48", null ],
     [ "NWNX_Race_LoadRacialModifiers", "group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e", null ],
     [ "NWNX_RACE_MODIFIER_INVALID", "group__race.html#ga4a698ce24f3f663775a8d418131edaeb", null ],

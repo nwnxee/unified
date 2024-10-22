@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__DamageData.html#aa0dd43e2db09627566cf87ef17c73915":[0,9,4,14],
+"structNWNX__Damage__DamageData.html#aa408b1cb0648a5278133fa7bd62031fb":[0,9,4,13],
+"structNWNX__Damage__DamageData.html#aa5c298fe357490c9d1f5123cf1ddac33":[0,9,4,24],
+"structNWNX__Damage__DamageData.html#aa968d22d9bd24a6a51186675b8225333":[0,9,4,17],
+"structNWNX__Damage__DamageData.html#ab5a608d124514061b522fe771505c361":[0,9,4,1],
+"structNWNX__Damage__DamageData.html#acb57814977b5916c105b5c44261ba0ad":[0,9,4,16],
+"structNWNX__Damage__DamageData.html#ad868d4609cf1a36099eaa8ff04c25776":[0,9,4,22],
+"structNWNX__Damage__DamageData.html#af740d9ff307faa91a8c4c6cbe6b251fa":[0,9,4,20],
 "structNWNX__Damage__DamageData.html#afe8dc555203735fbff65b1b39fcf2fdf":[0,9,4,19],
 "structNWNX__Damage__DamageEventData.html":[0,9,2],
 "structNWNX__Damage__DamageEventData.html#a04900ba3be651ebcc60e4bc115a5d4f5":[0,9,2,27],
@@ -241,13 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__WebHook__Message.html#aaca0432ebd98dce6e50d5d992146e94d":[0,49,3,34],
 "structNWNX__WebHook__Message.html#ab43baea2c02dad7c2b541e76ceb836c9":[0,49,3,27],
 "structNWNX__WebHook__Message.html#ab5bcc4879744c32a1c3f798e45c34de9":[0,49,3,32],
-"structNWNX__WebHook__Message.html#ac275e0b986065021198979d6c3675e9b":[0,49,3,35],
-"structNWNX__WebHook__Message.html#ac94747113373880fe34da76ab9ccba4f":[0,49,3,18],
-"structNWNX__WebHook__Message.html#ac953fbd1f38da318dceff4ee6570bf89":[0,49,3,2],
-"structNWNX__WebHook__Message.html#acc31ee95b8eeebba9f5d970bcc796c90":[0,49,3,14],
-"structNWNX__WebHook__Message.html#acda4237df462e2d4503a529154ea5b8b":[0,49,3,5],
-"structNWNX__WebHook__Message.html#ad140bcf66224acce998f2d7ca3edd547":[0,49,3,22],
-"structNWNX__WebHook__Message.html#ad1a2af81fea4de75d522d42d357f01ee":[0,49,3,11],
-"structNWNX__WebHook__Message.html#adcd42dcbacf76889672ad8f4c2b53306":[0,49,3,33],
-"structNWNX__WebHook__Message.html#ae6ca50f2fc799a581ea7714864559026":[0,49,3,16]
+"structNWNX__WebHook__Message.html#ac275e0b986065021198979d6c3675e9b":[0,49,3,35]
 };

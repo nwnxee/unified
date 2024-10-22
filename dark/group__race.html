@@ -527,6 +527,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga08cac1e5093adf088f302d2194538b68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__race.html#ga08cac1e5093adf088f302d2194538b68">NWNX_Race_SetFavoredEnemyFeat</a> (int iRace, int iFeat)</td></tr>
 <tr class="memdesc:ga08cac1e5093adf088f302d2194538b68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates the race with its favored enemy feat.  <a href="group__race.html#ga08cac1e5093adf088f302d2194538b68">More...</a><br /></td></tr>
 <tr class="separator:ga08cac1e5093adf088f302d2194538b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ec690d5a85336ce36b04cc83ebf8537"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__race.html#ga2ec690d5a85336ce36b04cc83ebf8537">NWNX_Race_SuppressCreatureRaceEffects</a> (object oCreature)</td></tr>
+<tr class="memdesc:ga2ec690d5a85336ce36b04cc83ebf8537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes any nwnx_race 'Effects' on the targeted creature. Suppression lasts until levelup, next login, or Reactivated by function.  <a href="group__race.html#ga2ec690d5a85336ce36b04cc83ebf8537">More...</a><br /></td></tr>
+<tr class="separator:ga2ec690d5a85336ce36b04cc83ebf8537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4658ec1fefe4f07e0797c9b0f341edb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__race.html#ga4658ec1fefe4f07e0797c9b0f341edb9">NWNX_Race_ReactivateCreatureRaceEffects</a> (object oCreature)</td></tr>
+<tr class="memdesc:ga4658ec1fefe4f07e0797c9b0f341edb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reactivates the nwnx_race 'Effects' on the targeted creature after they were Suppressed.  <a href="group__race.html#ga4658ec1fefe4f07e0797c9b0f341edb9">More...</a><br /></td></tr>
+<tr class="separator:ga4658ec1fefe4f07e0797c9b0f341edb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae2d72337de73db7e5cd65ad47ae73c48"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__race.html#gae2d72337de73db7e5cd65ad47ae73c48">NWNX_Race_GetModifierConstant</a> (string raceMod)</td></tr>
 <tr class="memdesc:gae2d72337de73db7e5cd65ad47ae73c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate a modifier type from a string to its constant.  <a href="group__race.html#gae2d72337de73db7e5cd65ad47ae73c48">More...</a><br /></td></tr>
 <tr class="separator:gae2d72337de73db7e5cd65ad47ae73c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -589,7 +595,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00059">59</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00069">69</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
 
 </div>
 </div>
@@ -618,7 +624,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The parent race if applicable, if not it just returns the race passed in. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00072">72</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00082">82</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
 
 </div>
 </div>
@@ -658,7 +664,65 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If a creature has a race that has a parent race then favored enemy bonuses will work for either race against that creature. For example a creature is a Wild Elf which has a parent race of Elf, an attacker would benefit if they had either Favored Enemy: Elf or Favored Enemy: Wild Elf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00082">82</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00092">92</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga2ec690d5a85336ce36b04cc83ebf8537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2ec690d5a85336ce36b04cc83ebf8537">&#9670;&nbsp;</a></span>NWNX_Race_SuppressCreatureRaceEffects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Race_SuppressCreatureRaceEffects </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oCreature</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes any nwnx_race 'Effects' on the targeted creature. Suppression lasts until levelup, next login, or Reactivated by function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oCreature</td><td>The creature to suppress </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Not all nwnx_race modifiers are achieved via effect. Those that are not directly consider the creatures current race. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00102">102</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga4658ec1fefe4f07e0797c9b0f341edb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4658ec1fefe4f07e0797c9b0f341edb9">&#9670;&nbsp;</a></span>NWNX_Race_ReactivateCreatureRaceEffects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Race_ReactivateCreatureRaceEffects </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oCreature</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reactivates the nwnx_race 'Effects' on the targeted creature after they were Suppressed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oCreature</td><td>The creature to reactive </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Safe to use on non-suppressed creatures - Triggers a refresh of effects but won't stack. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__race_8nss_source.html#l00110">110</a> of file <a class="el" href="nwnx__race_8nss_source.html">nwnx_race.nss</a>.</p>
 
 </div>
 </div>
@@ -1111,14 +1175,14 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__race_html_gaeaa1fa14d18cc965b1d83e7c1eb3d148"><div class="ttname"><a href="group__race.html#gaeaa1fa14d18cc965b1d83e7c1eb3d148">NWNX_RACE_MODIFIER_REGENERATION</a></div><div class="ttdeci">const int NWNX_RACE_MODIFIER_REGENERATION</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00028">nwnx_race.nss:28</a></div></div>
 <div class="ttc" id="agroup__race_html_ga05f5f5062977be3cd819c12fa136f9c6"><div class="ttname"><a href="group__race.html#ga05f5f5062977be3cd819c12fa136f9c6">NWNX_RACE_MODIFIER_CONCEALMENT</a></div><div class="ttdeci">const int NWNX_RACE_MODIFIER_CONCEALMENT</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00018">nwnx_race.nss:18</a></div></div>
 <div class="ttc" id="agroup__race_html_ga268bd591313ab1a0f01133d4f9b18b5f"><div class="ttname"><a href="group__race.html#ga268bd591313ab1a0f01133d4f9b18b5f">NWNX_RACE_MODIFIER_ACVSRACE</a></div><div class="ttdeci">const int NWNX_RACE_MODIFIER_ACVSRACE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00017">nwnx_race.nss:17</a></div></div>
-<div class="ttc" id="agroup__race_html_ga008aebe423e8f5f148e3119c8459d2b9"><div class="ttname"><a href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a></div><div class="ttdeci">void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2=0xDEADBEEF, int iParam3=0xDEADBEEF)</div><div class="ttdoc">Sets a racial modifier.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00059">nwnx_race.nss:59</a></div></div>
+<div class="ttc" id="agroup__race_html_ga008aebe423e8f5f148e3119c8459d2b9"><div class="ttname"><a href="group__race.html#ga008aebe423e8f5f148e3119c8459d2b9">NWNX_Race_SetRacialModifier</a></div><div class="ttdeci">void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2=0xDEADBEEF, int iParam3=0xDEADBEEF)</div><div class="ttdoc">Sets a racial modifier.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00069">nwnx_race.nss:69</a></div></div>
 <div class="ttc" id="agroup__race_html_ga11db9a14433e9a8e666a5d6b1dc807f7"><div class="ttname"><a href="group__race.html#ga11db9a14433e9a8e666a5d6b1dc807f7">NWNX_RACE_MODIFIER_MOVEMENTSPEED</a></div><div class="ttdeci">const int NWNX_RACE_MODIFIER_MOVEMENTSPEED</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00026">nwnx_race.nss:26</a></div></div>
 <div class="ttc" id="agroup__race_html_ga92ca11baf510761c396c25cd7cd6e62d"><div class="ttname"><a href="group__race.html#ga92ca11baf510761c396c25cd7cd6e62d">NWNX_RACE_MODIFIER_ABVSRACE</a></div><div class="ttdeci">const int NWNX_RACE_MODIFIER_ABVSRACE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__race_8nss_source.html#l00015">nwnx_race.nss:15</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Oct 22 2024 12:02:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Oct 22 2024 12:18:09 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
