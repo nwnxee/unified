@@ -51,6 +51,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
 | `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
 | `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
+| `NWNX_TWEAKS_RULESET_BARBARIAN_DR_CHANGE_FOR_PC_ONLY` | true or false | Changes in ruleset.2da to BARBARIAN_DAMAGE_REDUCTION apply only to PCs. |
 
 ## Environment variable values
 
