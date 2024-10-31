@@ -158,7 +158,7 @@ void LoadNetCore(const std::string& assembly)
 {
     hostfxr_handle cxt = nullptr;
 
-    auto runtimeConfig = assembly + ".runtimeConfig.json";
+    auto runtimeConfig = assembly + ".runtimeconfig.json";
     int returnCode = hostfxr_initialize_for_runtime_config(runtimeConfig.c_str(), nullptr, &cxt);
     if (returnCode != 0 || cxt == nullptr)
         LOG_FATAL("Unable to load runtime config '%s'; returnCode=0x%x", runtimeConfig, returnCode);
