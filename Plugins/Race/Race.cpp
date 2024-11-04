@@ -185,7 +185,7 @@ void Race::RemoveRaceEffects(CNWSCreature *pCreature)
         return;
 
     std::vector<uint64_t> remove(128);
-    for (int i = pCreature->m_appliedEffects.num; i >= 0; --i)
+    for (int32_t i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
         if (eff->m_sCustomTag == "NWNX_Race_RacialMod")
