@@ -798,3 +798,10 @@ NWNX_EXPORT ArgumentStack GetModuleTlkFile(ArgumentStack&& args)
     CNWSModule *pMod = Utils::GetModule();
     return pMod->m_sModuleAltTLKFile;
 }
+
+NWNX_EXPORT ArgumentStack UpdateResourceDirectory(ArgumentStack&& args)
+{
+    const auto alias = args.extract<std::string>();
+      ASSERT_OR_THROW(!alias.empty());
+    return Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
+}
