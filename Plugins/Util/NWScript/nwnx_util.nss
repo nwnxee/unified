@@ -263,6 +263,11 @@ int NWNX_Util_CleanResourceDirectory(string sAlias, int nResType = 0xFFFF);
 /// @return The name
 string NWNX_Util_GetModuleTlkFile();
 
+/// @brief Update a resource directory by having ResMan reindex it.
+/// @param sAlias A resource directory alias, eg: TEMP
+/// @return TRUE if successful, FALSE on error.
+int NWNX_Util_UpdateResourceDirectory(string sAlias);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -656,4 +661,12 @@ string NWNX_Util_GetModuleTlkFile()
     string sFunc = "GetModuleTlkFile";
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString();
+}
+
+int NWNX_Util_UpdateResourceDirectory(string sAlias)
+{
+    string sFunc = "UpdateResourceDirectory";
+    NWNX_PushArgumentString(sAlias);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
