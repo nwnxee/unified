@@ -228,9 +228,17 @@ int NWNX_Util_GetScriptParamIsSet(string sParamName);
 /// @param nDawnHour The new dawn hour
 void NWNX_Util_SetDawnHour(int nDawnHour);
 
+/// @brief Get the module dawn hour.
+/// @return The dawn hour
+int NWNX_Util_GetDawnHour();
+
 /// @brief Set the module dusk hour.
 /// @param nDuskHour The new dusk hour
 void NWNX_Util_SetDuskHour(int nDuskHour);
+
+/// @brief Get the module dusk hour.
+/// @return The dusk hour
+int NWNX_Util_GetDuskHour();
 
 /// @return Returns the number of microseconds since midnight on January 1, 1970.
 struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp();
@@ -593,12 +601,28 @@ void NWNX_Util_SetDawnHour(int nDawnHour)
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
+int NWNX_Util_GetDawnHour()
+{
+    string sFunc = "GetDawnHour";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
+}
+
 void NWNX_Util_SetDuskHour(int nDuskHour)
 {
     string sFunc = "SetDuskHour";
 
     NWNX_PushArgumentInt(nDuskHour);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetDuskHour()
+{
+    string sFunc = "GetDuskHour";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt();
 }
 
 struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp()

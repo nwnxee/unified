@@ -690,6 +690,11 @@ NWNX_EXPORT ArgumentStack SetDawnHour(ArgumentStack &&args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack &&args)
+{
+    return Utils::GetModule()->m_nDawnHour;
+}
+
 NWNX_EXPORT ArgumentStack SetDuskHour(ArgumentStack &&args)
 {
     const auto duskHour = args.extract<int32_t>();
@@ -699,6 +704,11 @@ NWNX_EXPORT ArgumentStack SetDuskHour(ArgumentStack &&args)
     Utils::GetModule()->m_nDuskHour = duskHour;
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack &&args)
+{
+    return Utils::GetModule()->m_nDuskHour;
 }
 
 NWNX_EXPORT ArgumentStack GetHighResTimeStamp(ArgumentStack&&)

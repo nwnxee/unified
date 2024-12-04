@@ -33,6 +33,8 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Race: ReactivateCreatureRaceEffects()
 - Creature: {Get|Set}MulticlassLimit()
 - Util: UpdateResourceDirectory()
+- Util: GetDawnHour()
+- Util: GetDuskHour()
 
 ### Changed
 - Player: added bChatWindow parameter to FloatingTextStringOnCreature()
