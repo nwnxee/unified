@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__DamageData.html#a5f2b292c4fc5f0ebf697994af6d38e04":[0,9,4,10],
+"structNWNX__Damage__DamageData.html#a6c2b056c139270360c2e68fd5bc6ace7":[0,9,4,9],
+"structNWNX__Damage__DamageData.html#a7c3afe6cc289c5904aa533d76938521b":[0,9,4,11],
+"structNWNX__Damage__DamageData.html#a7fc1ea4a754c26ca34bc77158b62ba7c":[0,9,4,27],
 "structNWNX__Damage__DamageData.html#a897eac283c5b8d73e8072ca018fdedb8":[0,9,4,2],
 "structNWNX__Damage__DamageData.html#a98a2dfa2b74f2504db3a27e891c7ea4a":[0,9,4,30],
 "structNWNX__Damage__DamageData.html#a9a2a5c4c2fca12b1f2fbb39768a41fd8":[0,9,4,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__WebHook__Message.html#a8c433df14ee4680cf7016500001fbbce":[0,49,3,43],
 "structNWNX__WebHook__Message.html#a8e2be188c362c871de82fcbe48ee34de":[0,49,3,7],
 "structNWNX__WebHook__Message.html#a916266d0a0a14ebdcd227583fc006bcf":[0,49,3,10],
-"structNWNX__WebHook__Message.html#a9761f89d8969406957e196240b676a67":[0,49,3,6],
-"structNWNX__WebHook__Message.html#a98c5c51f0229b0428230cd00eb3e582e":[0,49,3,17],
-"structNWNX__WebHook__Message.html#aa1df21fae063b94b82e2f3429410d243":[0,49,3,19],
-"structNWNX__WebHook__Message.html#aa606b8da37e0dec234e6a7c5f2562838":[0,49,3,26],
-"structNWNX__WebHook__Message.html#aaca0432ebd98dce6e50d5d992146e94d":[0,49,3,34]
+"structNWNX__WebHook__Message.html#a9761f89d8969406957e196240b676a67":[0,49,3,6]
 };
