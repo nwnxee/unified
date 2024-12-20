@@ -91,16 +91,12 @@ void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat)
 
 void NWNX_Race_SuppressCreatureRaceEffects(object creature)
 {
-    string sFunc = "SuppressCreatureRaceEffects";
-
-    NWNX_PushArgumentObject(creature);
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Race, "SuppressCreatureRaceEffects");
 }
 
 void NWNX_Race_ReactivateCreatureRaceEffects(object oCreature)
 {
-    string sFunc = "ReactivateCreatureRaceEffects";
-
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Race, "ReactivateCreatureRaceEffects");
 }

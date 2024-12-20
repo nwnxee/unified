@@ -515,10 +515,8 @@ void NWNX_Util_SetDawnHour(int nDawnHour)
 
 int NWNX_Util_GetDawnHour()
 {
-    string sFunc = "GetDawnHour";
-
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_Util, "GetDawnHour");
+    return NWNXPopInt();
 }
 
 void NWNX_Util_SetDuskHour(int nDuskHour)
@@ -529,10 +527,8 @@ void NWNX_Util_SetDuskHour(int nDuskHour)
 
 int NWNX_Util_GetDuskHour()
 {
-    string sFunc = "GetDuskHour";
-
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_Util, "GetDuskHour");
+    return NWNXPopInt();
 }
 
 struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp()
@@ -588,8 +584,7 @@ string NWNX_Util_GetModuleTlkFile()
 
 int NWNX_Util_UpdateResourceDirectory(string sAlias)
 {
-    string sFunc = "UpdateResourceDirectory";
-    NWNX_PushArgumentString(sAlias);
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(sAlias);
+    NWNXCall(NWNX_Util, "UpdateResourceDirectory");
+    return NWNXPopInt();
 }

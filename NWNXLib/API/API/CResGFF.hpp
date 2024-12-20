@@ -54,7 +54,6 @@ struct CResGFF : CRes
     BOOL m_bResourceLoaded;
     BOOL m_bSelfDemanded;
     BOOL m_bDataPtrOwned;
-    BOOL m_bReplaceExistingFields;
     BOOL m_bValidationFailed;
 
     CResGFF();

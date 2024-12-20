@@ -119,7 +119,7 @@ struct CScriptCompiler
     int32_t m_nMaxPredefinedIdentifierId;
     int32_t m_nPredefinedIdentifierOrder;
     int32_t m_nCompileFileLevel;
-    CScriptCompilerIncludeFileStackEntry m_pcIncludeFileStack[16];
+    CScriptCompilerIncludeFileStackEntry m_pcIncludeFileStack[200];
     int32_t m_nMaxIncludeDepth;
     int32_t m_nVarStackRecursionLevel;
     CScriptCompilerVarStackEntry * m_pcVarStackList;

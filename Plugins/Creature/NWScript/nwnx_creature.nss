@@ -2235,21 +2235,16 @@ float NWNX_Creature_GetMaxAttackRange(object oCreature, object oTarget)
 
 int NWNX_Creature_GetMulticlassLimit(object oCreature)
 {
-    string sFunc = "GetMulticlassLimit";
-
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Creature, "GetMulticlassLimit");
+    return NWNXPopInt();
 }
 
 
 void NWNX_Creature_SetMulticlassLimit(object oCreature, int nLimit, int bPersist = FALSE)
 {
-    string sFunc = "SetMulticlassLimit";
-
-    NWNX_PushArgumentInt(bPersist);
-    NWNX_PushArgumentInt(nLimit);
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_CallFunction(NWNX_Creature, sFunc);
+    NWNXPushInt(bPersist);
+    NWNXPushInt(nLimit);
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Creature, "SetMulticlassLimit");
 }
