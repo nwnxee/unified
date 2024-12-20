@@ -41,13 +41,13 @@ void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_
 {
     string sFunc = "PushPerfScope";
 
-    NWNX_PushArgumentString(name);
-
     if (tag0_value != "" && tag0_tag != "")
     {
         NWNX_PushArgumentString(tag0_value);
         NWNX_PushArgumentString(tag0_tag);
     }
+
+    NWNX_PushArgumentString(name);
 
     NWNX_CallFunction(NWNX_Profiler, sFunc);
 }
