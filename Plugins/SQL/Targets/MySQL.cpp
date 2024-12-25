@@ -11,6 +11,20 @@ namespace SQL {
 MySQL::MySQL()
 {
     mysql_init(&m_mysql);
+    /* 
+       SSL_CTX_set0_tmp_dh_pkey() might seg fault.
+       
+       To prevent that from happening, disable SSL with:
+           NWNX_SQL_SSL_DISABLED=true
+
+       NOTE: this generally should not be needed, but e.g. my MySQL server is a picky bugger
+             for a reason or other and doesn't play ball with NWNX if SSL is on.
+    */
+    if (Config::Get<bool>("SSL_DISABLED", false))
+    {
+        uint use_ssl = SSL_MODE_DISABLED;
+        mysql_options(&m_mysql, MYSQL_OPT_SSL_MODE, (uint const*)&use_ssl);
+    }
     m_stmt = nullptr;
     m_lastError = "";
     m_paramCount = 0;
