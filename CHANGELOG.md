@@ -51,6 +51,7 @@ Calling NWNX functions when NWNX is not running will now **abort the script**. T
 - NoStack: Added `NWNX_NOSTACK_IGNORE_SUPERNATURAL_INNATE` to ignore effects created by the Feat, Race and SkillRanks plugins when stacking.
 - Tweaks: added `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` to not drop a TURD when SetCutsceneMode() is called.
 - Tweaks: added `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` to allow all items to be used while polymorphed.
+- Tweaks: added `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` to make Resist Energy feats stack with Epic Energy Resistance.
 
 ##### New Plugins
 - Store: Enables getting and setting store data.

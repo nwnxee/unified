@@ -38,4 +38,5 @@ add_plugin(Tweaks
     "SetAreaCallsSetPosition.cpp"
     "EquipUnequipEventTweaks.cpp"
     "CutsceneModeNoTURD.cpp"
-    "CanUseItemsWhilePolymorphed.cpp")
+    "CanUseItemsWhilePolymorphed.cpp"
+    "ResistEnergyStacksWithEpicEnergyResistance.cpp")
