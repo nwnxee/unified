@@ -2,7 +2,6 @@
 /// @brief Facilitates renaming, overriding and customization of player names.
 /// @{
 /// @file nwnx_rename.nss
-#include "nwnx"
 
 const string NWNX_Rename = "NWNX_Rename"; ///< @private
 
@@ -46,35 +45,26 @@ void NWNX_Rename_ClearPCNameOverride(object oTarget, object oObserver = OBJECT_I
 void NWNX_Rename_SetPCNameOverride(object oTarget, string sNewName, string sPrefix = "" , string sSuffix = "" ,
                                    int iPlayerNameState = NWNX_RENAME_PLAYERNAME_DEFAULT, object oObserver = OBJECT_INVALID)
 {
-    string sFunc = "SetPCNameOverride";
-
-    NWNX_PushArgumentObject(oObserver);
-    NWNX_PushArgumentInt(iPlayerNameState);
-    NWNX_PushArgumentString(sSuffix);
-    NWNX_PushArgumentString(sPrefix);
-    NWNX_PushArgumentString(sNewName);
-    NWNX_PushArgumentObject(oTarget);
-
-    NWNX_CallFunction(NWNX_Rename, sFunc);
+    NWNXPushObject(oObserver);
+    NWNXPushInt(iPlayerNameState);
+    NWNXPushString(sSuffix);
+    NWNXPushString(sPrefix);
+    NWNXPushString(sNewName);
+    NWNXPushObject(oTarget);
+    NWNXCall(NWNX_Rename, "SetPCNameOverride");
 }
 string NWNX_Rename_GetPCNameOverride(object oTarget, object oObserver = OBJECT_INVALID)
 {
-    string sFunc = "GetPCNameOverride";
-
-    NWNX_PushArgumentObject(oObserver);
-    NWNX_PushArgumentObject(oTarget);
-
-    NWNX_CallFunction(NWNX_Rename, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushObject(oObserver);
+    NWNXPushObject(oTarget);
+    NWNXCall(NWNX_Rename, "GetPCNameOverride");
+    return NWNXPopString();
 }
 
 void NWNX_Rename_ClearPCNameOverride(object oTarget, object oObserver = OBJECT_INVALID, int clearAll = FALSE)
 {
-    string sFunc = "ClearPCNameOverride";
-
-    NWNX_PushArgumentInt(clearAll);
-    NWNX_PushArgumentObject(oObserver);
-    NWNX_PushArgumentObject(oTarget);
-
-    NWNX_CallFunction(NWNX_Rename, sFunc);
+    NWNXPushInt(clearAll);
+    NWNXPushObject(oObserver);
+    NWNXPushObject(oTarget);
+    NWNXCall(NWNX_Rename, "ClearPCNameOverride");
 }

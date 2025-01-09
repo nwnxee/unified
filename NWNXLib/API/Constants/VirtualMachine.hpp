@@ -1192,10 +1192,48 @@ namespace VMCommand
         SetAreaGrassOverride,
         RemoveAreaGrassOverride,
         SetAreaDefaultGrassDisabled,
+        GetAreaNoRestFlag,
+        SetAreaNoRestFlag,
+        SetAge,
+        GetAttacksPerRound,
+        EffectEnemyACIncrease,
+        SetAreaTileBorderDisabled,
+        GetIsDestroyable,
+        GetIsRaiseable,
+        GetIsSelectedableWhenDead,
+        NWNXGetIsAvailable,
+        NWNXCall,
+        NWNXPushInt,
+        NWNXPushFloat,
+        NWNXPushObject,
+        NWNXPushString,
+        NWNXPushVector,
+        NWNXPushLocation,
+        NWNXPushEffect,
+        NWNXPushItemproperty,
+        NWNXPushJson,
+        NWNXPushAction,
+        NWNXPushEvent,
+        NWNXPushTalent,
+        NWNXPushSqlquery,
+        NWNXPushCassowary,
+        NWNXPopInt,
+        NWNXPopFloat,
+        NWNXPopObject,
+        NWNXPopString,
+        NWNXPopVector,
+        NWNXPopLocation,
+        NWNXPopEffect,
+        NWNXPopItemproperty,
+        NWNXPopJson,
+        NWNXPopEvent,
+        NWNXPopTalent,
+        NWNXPopSqlquery,
+        NWNXPopCassowary,
     };
     constexpr int32_t MIN = 0;
-    constexpr int32_t MAX = 1141;
-    static_assert(MAX == SetAreaDefaultGrassDisabled);
+    constexpr int32_t MAX = 1179;
+    static_assert(MAX == NWNXPopCassowary);
 }
 
 

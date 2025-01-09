@@ -16,7 +16,6 @@ struct CExoConfig;
 struct CExoDebug;
 struct CExoIdentity;
 struct CExoIni;
-struct CExoRand;
 struct CExoTimers;
 
 
@@ -31,9 +30,7 @@ struct CExoBase
     CExoTimers * m_pcExoTimers;
     CExoDebug * m_pcExoDebug;
     CExoAliasList * m_pcExoAliasList;
-    CExoRand * m_pcExoRand;
     CExoIdentity * m_pcExoIdentity;
-    uint32_t m_nExpansionPacks;
     CExoBaseInternal * m_pcExoBaseInternal;
     CExoString m_sUserDirectory;
 

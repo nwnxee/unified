@@ -1,7 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 #include "SHA1.hpp"
-
+#include <atomic>
+#include <thread>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -11,10 +12,18 @@ NWN_API_PROLOGUE(CNWSync)
 
 namespace NWSync {
 
-struct CNWSync {
+struct CNWSync
+{
     void *m_internal;
-    char *m_tmp1;
-    uint32_t m_tmp2;
+    std::atomic<bool> m_ready = false;
+    std::unique_ptr<std::thread> m_init_thread;
+
+    CNWSync(const CNWSync&) = delete;
+    CNWSync(CNWSync&&) = delete;
+    CNWSync& operator=(const CNWSync&) = delete;
+    CNWSync& operator=(CNWSync&&) = delete;
+    explicit CNWSync() noexcept;
+    ~CNWSync();
 
     struct ManifestMetaData {
         Hash::SHA1 m_sha1;

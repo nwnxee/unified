@@ -155,7 +155,7 @@ json = json.map do |cmd, c|
   retdefcast = RetDefCasts[CastReturnValues ? retdef : "string"] || "%s;"
 
   body = ""
-  body += "  NWNX_PushArgumentString(\"NWNX_Redis\", \"Deferred\", \"%s\");\n" % cmd
+  body += "  NWNXPushString(\"NWNX_Redis\", \"Deferred\", \"%s\");\n" % cmd
   args.each do |aa|
     body += "  "
     # Optional values are kind of broken, because integer values aren't nullable,
@@ -166,12 +166,12 @@ json = json.map do |cmd, c|
       body += "if (%s != %s) " % [aa[1], TypeDefaultValues[aa[0]]]
     end
 
-    body += "NWNX_PushArgumentString(\"NWNX_Redis\", \"Deferred\", %s);\n" % [(ArgCasts[aa[0]] || "%s") % aa[1]]
+    body += "NWNXPushString(\"NWNX_Redis\", \"Deferred\", %s);\n" % [(ArgCasts[aa[0]] || "%s") % aa[1]]
   end
-    body += "  NWNX_CallFunction(\"NWNX_Redis\", \"Deferred\");\n"
+    body += "  NWNXCall(\"NWNX_Redis\", \"Deferred\");\n"
 
-  body += "  return " + "NWNX_GetReturnValueInt(\"NWNX_Redis\", \"Deferred\");"
-  # body += "  " + retdefcast % "NWNX_GetReturnValueString(\"NWNX_Redis\", \"Deferred\")" #"  return %s(redisCommand());" % retdefcast
+  body += "  return " + "NWNXPopInt(\"NWNX_Redis\", \"Deferred\");"
+  # body += "  " + retdefcast % "NWNXPopString(\"NWNX_Redis\", \"Deferred\")" #"  return %s(redisCommand());" % retdefcast
 
   optional = false
   argdef = args.map{|a|
@@ -219,7 +219,6 @@ if $args["--prefix"] == "NWNX_Redis_"
     puts "/// @file nwnx_redis.nss"
     puts "/// @name Redis Commands"
 end
-puts "#include \"nwnx\""
 puts "#include \"nwnx_redis_lib\""
 puts "\n\n"
 

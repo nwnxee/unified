@@ -2,7 +2,6 @@
 /// @brief Define racial and subrace characteristics.
 /// @{
 /// @file nwnx_race.nss
-#include "nwnx"
 
 const string NWNX_Race = "NWNX_Race"; ///< @private
 
@@ -68,49 +67,36 @@ void NWNX_Race_ReactivateCreatureRaceEffects(object oCreature);
 
 void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF)
 {
-    string sFunc = "SetRacialModifier";
-
-    NWNX_PushArgumentInt(iParam3);
-    NWNX_PushArgumentInt(iParam2);
-    NWNX_PushArgumentInt(iParam1);
-    NWNX_PushArgumentInt(iMod);
-    NWNX_PushArgumentInt(iRace);
-
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushInt(iParam3);
+    NWNXPushInt(iParam2);
+    NWNXPushInt(iParam1);
+    NWNXPushInt(iMod);
+    NWNXPushInt(iRace);
+    NWNXCall(NWNX_Race, "SetRacialModifier");
 }
 
 int NWNX_Race_GetParentRace(int iRace)
 {
-    string sFunc = "GetParentRace";
-
-    NWNX_PushArgumentInt(iRace);
-
-    NWNX_CallFunction(NWNX_Race, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(iRace);
+    NWNXCall(NWNX_Race, "GetParentRace");
+    return NWNXPopInt();
 }
 
 void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat)
 {
-    string sFunc = "SetFavoredEnemyFeat";
-
-    NWNX_PushArgumentInt(iFeat);
-    NWNX_PushArgumentInt(iRace);
-
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushInt(iFeat);
+    NWNXPushInt(iRace);
+    NWNXCall(NWNX_Race, "SetFavoredEnemyFeat");
 }
 
 void NWNX_Race_SuppressCreatureRaceEffects(object creature)
 {
-    string sFunc = "SuppressCreatureRaceEffects";
-
-    NWNX_PushArgumentObject(creature);
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Race, "SuppressCreatureRaceEffects");
 }
 
 void NWNX_Race_ReactivateCreatureRaceEffects(object oCreature)
 {
-    string sFunc = "ReactivateCreatureRaceEffects";
-
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_CallFunction(NWNX_Race, sFunc);
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Race, "ReactivateCreatureRaceEffects");
 }

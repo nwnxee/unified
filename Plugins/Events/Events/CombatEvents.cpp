@@ -1,7 +1,6 @@
 #include "Events.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/CNWSClient.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCombatRound.hpp"
@@ -145,7 +144,7 @@ int32_t ApplyDisarmHook(CNWSEffectListHandler* pEffectHandler, CNWSObject *pObje
 
 int32_t SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage *pMessage, PlayerID nPlayer, BOOL bPlay)
 {
-    if (auto *pPlayer = static_cast<CNWSPlayer *>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayer)))
+    if (auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayer))
     {
         if (bPlay)
         {

@@ -82,10 +82,9 @@ struct CNWSMessage : CNWMessage
     BOOL HandlePlayerToServerGoldMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerInventoryMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerLoginMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
-    BOOL HandlePlayerToServerMessage(uint32_t nPlayerId, uint8_t * pBuffer, uint32_t nBufferSize);
+    void HandlePlayerToServerMessage(uint32_t nPlayerId, uint8_t * pBuffer, uint32_t nBufferSize);
     BOOL HandlePlayerToServerModuleMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerParty(CNWSPlayer * pPlayer, uint8_t nMinor);
-    BOOL HandlePlayerToServerServerChatMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerServerStatusMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerQuickChatMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
     BOOL HandlePlayerToServerJournalMessage(CNWSPlayer * pPlayer, uint8_t nMinor);
@@ -165,6 +164,8 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerSoundObject_Stop(CNWSPlayer * pPlayer, OBJECT_ID oidSound);
     BOOL SendServerToPlayerSoundObject_ChangeVolume(CNWSPlayer * pPlayer, OBJECT_ID oidSound, int32_t nVolume);
     BOOL SendServerToPlayerSoundObject_ChangePosition(CNWSPlayer * pPlayer, OBJECT_ID oidSound, Vector vPos);
+    BOOL SendServerToPlayerSoundObject_Create(CNWSPlayer * pPlayer, CNWSSoundObject * pSoundObject);
+    BOOL SendServerToPlayerSoundObject_Destroy(CNWSPlayer * pPlayer, OBJECT_ID oidSound);
     BOOL SendServerToPlayerGameObjUpdate(CNWSPlayer * pPlayer, OBJECT_ID oidObjectToUpdate, int nMessageLimit);
     BOOL SendServerToPlayerGameObjUpdateVisEffect(CNWSPlayer * pPlayer, uint16_t nVisualEffectID, OBJECT_ID oidTarget, OBJECT_ID oidSource = 0x7f000000, uint8_t nSourceNode = 0, uint8_t nTargetNode = 0, Vector vTargetPosition = Vector(), float fDuration = 0.0f, ObjectVisualTransformData ovtd = ObjectVisualTransformData());
     BOOL SendServerToPlayerGameObjUpdateFloatyText(CNWSPlayer * pPlayer, uint32_t nStrRef, OBJECT_ID oidTarget);

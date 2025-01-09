@@ -78,16 +78,7 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
         const auto type  = args.extract<int32_t>();
         const auto idx   = args.extract<int32_t>();
         const auto val   = args.extract<int32_t>();
-
-        int32_t bUpdateCreatureAppearance = false;
-        try
-        {
-            bUpdateCreatureAppearance = !!args.extract<int32_t>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Item_SetItemAppearance() called from NWScript without bUpdateCreatureAppearance parameter. Please update nwnx_item.nss");
-        }
+        const auto bUpdateCreatureAppearance = !!args.extract<int32_t>();
 
         switch(type)
         {
@@ -147,11 +138,8 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                 return {};
 
             auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
-            auto *pPlayerList = static_cast<CExoLinkedList<CNWSClient>*>(Globals::AppManager()->m_pServerExoApp->GetPlayerList());
-            CExoLinkedListPosition pListPosition = pPlayerList->GetHeadPos();
-            while (pListPosition != nullptr)
+            for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
             {
-                auto *pPlayer = static_cast<CNWSPlayer*>(pPlayerList->GetAtPos(pListPosition));
                 if (auto *pLUO = pPlayer->GetLastUpdateObject(pPossessor->m_idSelf))
                 {
 #define UPDATE_ITEM_APPEARANCE(oid)                                                                 \
@@ -165,7 +153,6 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                     UPDATE_ITEM_APPEARANCE(pLUO->m_cAppearance.m_oidCloakItem)
 #undef UPDATE_ITEM_APPEARANCE
                 }
-                pPlayerList->GetNext(pListPosition);
             }
         }
     }

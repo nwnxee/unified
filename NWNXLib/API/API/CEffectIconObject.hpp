@@ -14,7 +14,7 @@ typedef int BOOL;
 
 struct CEffectIconObject
 {
-    uint8_t m_nIcon;
+    uint16_t m_nIcon;
     BOOL m_bFlashing;
     BOOL m_nPlayerBar;
 

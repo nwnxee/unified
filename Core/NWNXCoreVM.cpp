@@ -23,7 +23,6 @@ using namespace NWNXLib::API::Constants;
 
 namespace {
 
-
 struct Command
 {
     std::string plugin;
@@ -31,10 +30,10 @@ struct Command
     std::string operation;
 };
 
-static const int  NWNX_ABI_VERSION = 2;
-
 std::optional<Command> ProcessNWNX(const CExoString& str)
 {
+    static const int  NWNX_ABI_VERSION = 2;
+
     auto startsWith = [](const CExoString& str, const char *prefix) -> bool
     {
         auto len = std::strlen(prefix);
@@ -52,12 +51,7 @@ std::optional<Command> ProcessNWNX(const CExoString& str)
                             "NWNXEE!ABIv%d!%255[A-Za-z0-9_]!%255[A-Za-z0-9_]!%255[A-Za-z0-9_]",
                             &abi, plugin, event, operation);
 
-        if (scanned < 4 || abi != NWNX_ABI_VERSION)
-        {
-            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript());
-            LOG_WARNING("NWNX ABI has changed. Please update your \"nwnx.nss\" file and recompile all scripts.");
-        }
-        else
+        if (scanned == 4 && abi == NWNX_ABI_VERSION)
         {
             Command cmd;
             cmd.plugin    = plugin;
@@ -66,23 +60,8 @@ std::optional<Command> ProcessNWNX(const CExoString& str)
             return std::make_optional<>(cmd);
         }
     }
-    else if (startsWith(str, "NWNX!"))
-    {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript());
-        const char *cmd = str.m_sString + 5;
-        if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
-            !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
-            !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
-        {
-            LOG_NOTICE("  Please recompile all scripts that include \"nwnx.nss\"");
-        }
-        else
-        {
-            LOG_NOTICE("  This is a leftover from 1.69 nwnx2 scripts.");
-        }
-    }
 
-    return std::optional<Command>();
+    return {};
 }
 
 }
@@ -91,372 +70,229 @@ namespace Core {
 
 extern NWNXCore* g_core;
 
-int32_t NWNXCore::GetVarHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    switch (nCommandId)
-    {
-        case VMCommand::GetLocalInt:
-        case VMCommand::GetLocalFloat:
-        case VMCommand::GetLocalString:
-        case VMCommand::GetLocalObject:
-        case VMCommand::GetLocalJson:
-            break;
-        default:
-            return g_core->m_vmGetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
-    }
-
-    ASSERT(thisPtr); ASSERT(nParameters == 2);
-    auto *vm = Globals::VirtualMachine();
-
-    ObjectID oid;
-    if (!vm->StackPopObject(&oid))
-        return VMError::StackUnderflow;
-
-    CExoString varname;
-    if (!vm->StackPopString(&varname))
-        return VMError::StackUnderflow;
-
-    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-
-    auto nwnx = ProcessNWNX(varname);
-    ASSERT(!nwnx || nwnx->operation == "POP"); // Only POP operation for GetLocal
-
-    bool success = false;
-    switch (nCommandId)
-    {
-        case VMCommand::GetLocalInt:
-        {
-            int32_t n = 0;
-            if (nwnx)
-            {
-                n = ScriptAPI::Pop<int32_t>().value_or(n);
-            }
-            else if (vartable)
-            {
-                n = vartable->GetInt(varname);
-            }
-            success = vm->StackPushInteger(n);
-            break;
-        }
-        case VMCommand::GetLocalFloat:
-        {
-            float f = 0.0f;
-            if (nwnx)
-            {
-                f = ScriptAPI::Pop<float>().value_or(f);
-            }
-            else if (vartable)
-            {
-                f = vartable->GetFloat(varname);
-            }
-            success = vm->StackPushFloat(f);
-            break;
-        }
-        case VMCommand::GetLocalString:
-        {
-            CExoString str = "";
-            if (nwnx)
-            {
-                str = ScriptAPI::Pop<std::string>().value_or(str);
-            }
-            else if (vartable)
-            {
-                str = vartable->GetString(varname);
-            }
-            success = vm->StackPushString(str);
-            break;
-        }
-        case VMCommand::GetLocalObject:
-        {
-            ObjectID oid = Constants::OBJECT_INVALID;
-            if (nwnx)
-            {
-                oid = ScriptAPI::Pop<ObjectID>().value_or(oid);
-            }
-            else if (vartable)
-            {
-                oid = vartable->GetObject(varname);
-            }
-            success = vm->StackPushObject(oid);
-            break;
-        }
-        case VMCommand::GetLocalJson:
-        {
-            JsonEngineStructure j;
-            if (nwnx)
-            {
-                j = ScriptAPI::Pop<JsonEngineStructure>().value_or(j);
-            }
-            else if (vartable)
-            {
-                j = vartable->GetJson(varname);
-            }
-            success = vm->StackPushEngineStructure(VMStructure::Json, &j);
-            break;
-        }
-        default:
-            ASSERT_FAIL();
-    }
-
-    return success ? VMError::Success : VMError::StackOverflow;
-}
-int32_t NWNXCore::SetVarHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    switch (nCommandId)
-    {
-        case VMCommand::SetLocalInt:
-        case VMCommand::SetLocalFloat:
-        case VMCommand::SetLocalString:
-        case VMCommand::SetLocalObject:
-        case VMCommand::SetLocalJson:
-            break;
-        default:
-            return g_core->m_vmSetVarHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
-    }
-
-    ASSERT(thisPtr); ASSERT(nParameters == 3);
-    auto *vm = Globals::VirtualMachine();
-
-    ObjectID oid;
-    if (!vm->StackPopObject(&oid))
-        return VMError::StackUnderflow;
-
-    CExoString varname;
-    if (!vm->StackPopString(&varname))
-        return VMError::StackUnderflow;
-
-    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-
-    auto nwnx = ProcessNWNX(varname);
-    ASSERT(!nwnx || nwnx->operation == "PUSH"); // Only PUSH operation for SetLocal
-
-    switch (nCommandId)
-    {
-        case VMCommand::SetLocalInt:
-        {
-            int32_t value;
-            if (!vm->StackPopInteger(&value))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                ScriptAPI::Push(value);
-            }
-            else if (vartable)
-            {
-                vartable->SetInt(varname, value, 0);
-            }
-            break;
-        }
-        case VMCommand::SetLocalFloat:
-        {
-            float value;
-            if (!vm->StackPopFloat(&value))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                ScriptAPI::Push(value);
-            }
-            else if (vartable)
-            {
-                vartable->SetFloat(varname, value);
-            }
-            break;
-        }
-        case VMCommand::SetLocalString:
-        {
-            CExoString value;
-            if (!vm->StackPopString(&value))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                ScriptAPI::Push(std::string(value.CStr()));
-            }
-            else if (vartable)
-            {
-                vartable->SetString(varname, value);
-            }
-            break;
-        }
-        case VMCommand::SetLocalObject:
-        {
-            ObjectID value;
-            if (!vm->StackPopObject(&value))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                ScriptAPI::Push(value);
-            }
-            else if (vartable)
-            {
-                vartable->SetObject(varname, value);
-            }
-            break;
-        }
-        case VMCommand::SetLocalJson:
-        {
-            JsonEngineStructure *json;
-            if (!vm->StackPopEngineStructure(VMStructure::Json, (void**)&json))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                ScriptAPI::Push(*json);
-            }
-            else if (vartable)
-            {
-                vartable->SetJson(varname, *json);
-            }
-
-            delete json;
-
-            break;
-        }
-        default:
-            ASSERT_FAIL();
-    }
-
-
-    return VMError::Success;
-}
-
-int32_t NWNXCore::TagEffectHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagEffect); ASSERT(nParameters == 2);
-    auto *vm = Globals::VirtualMachine();
-
-    bool bSkipDelete = false;
-    CGameEffect *pEffect;
-    if (!vm->StackPopEngineStructure(VMStructure::Effect, (void**)&pEffect))
-        return VMError::StackUnderflow;
-
-    CExoString tag;
-    if (!vm->StackPopString(&tag))
-        return VMError::StackUnderflow;
-
-    if (auto nwnx = ProcessNWNX(tag))
-    {
-        if (nwnx->operation == "PUSH")
-        {
-            bSkipDelete = true;
-            ScriptAPI::Push(pEffect);
-        }
-        else if (nwnx->operation == "POP")
-        {
-            if (auto res = ScriptAPI::Pop<CGameEffect*>())
-            {
-                Utils::DestroyGameEffect(pEffect);
-                pEffect = *res;
-            }
-        }
-        else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagEffect");
-    }
-    else
-    {
-        pEffect->SetCustomTag(tag);
-        if (pEffect->m_nType == EffectTrueType::Link)
-        {
-            pEffect->UpdateLinked();
-        }
-    }
-
-    if (!vm->StackPushEngineStructure(VMStructure::Effect, pEffect))
-        return VMError::StackOverflow;
-
-    if (!bSkipDelete)
-    {
-        Utils::DestroyGameEffect(pEffect);
-    }
-    return VMError::Success;
-}
-
-
-int32_t NWNXCore::TagItemPropertyHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagItemProperty); ASSERT(nParameters == 2);
-    auto *vm = Globals::VirtualMachine();
-
-    bool bSkipDelete = false;
-    CGameEffect *pItemProperty; // Not a typo, same base type for effects and IPs
-    if (!vm->StackPopEngineStructure(VMStructure::ItemProperty, (void**)&pItemProperty))
-        return VMError::StackUnderflow;
-
-    CExoString tag;
-    if (!vm->StackPopString(&tag))
-        return VMError::StackUnderflow;
-
-    if (auto nwnx = ProcessNWNX(tag))
-    {
-        if (nwnx->operation == "PUSH")
-        {
-            bSkipDelete = true;
-            ScriptAPI::Push(pItemProperty);
-        }
-        else if (nwnx->operation == "POP")
-        {
-            if (auto res = ScriptAPI::Pop<CGameEffect*>())
-            {
-                Utils::DestroyGameEffect(pItemProperty);
-                pItemProperty = *res;
-            }
-        }
-        else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagItemProperty");
-    }
-    else
-    {
-        if (pItemProperty->m_nType == EffectTrueType::ItemProperty)
-        {
-            pItemProperty->SetString(0, tag);
-        }
-    }
-
-    if (!vm->StackPushEngineStructure(VMStructure::ItemProperty, pItemProperty))
-        return VMError::StackOverflow;
-
-    if (!bSkipDelete)
-    {
-        Utils::DestroyGameEffect(pItemProperty);
-    }
-    return VMError::Success;
-}
-
-
 int32_t NWNXCore::PlaySoundHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::PlaySound); ASSERT(nParameters == 1);
-    auto *vm = Globals::VirtualMachine();
 
     CExoString sound;
-    if (!vm->StackPopString(&sound))
+    if (!Globals::VirtualMachine()->StackPopString(&sound))
         return VMError::StackUnderflow;
 
     if (auto nwnx = ProcessNWNX(sound))
     {
-        ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
-        if (g_core->m_ScriptChunkRecursion == 0)
-            ScriptAPI::Call(nwnx->plugin, nwnx->event);
-        else
-            LOG_NOTICE("NWNX function '%s_%s' in ExecuteScriptChunk() was blocked due to configuration", nwnx->plugin, nwnx->event);
+        LOG_WARNING("Bad NWNX ABI call detected: \"%s_%s\" from %s.nss - ignored", nwnx->plugin, nwnx->event, Utils::GetCurrentScript());
+        LOG_WARNING("NWNX ABI has changed. Please update your \"nwnx_*.nss\" files and recompile all scripts.");
+        return VMError::Success;
     }
-    else
-    {
-        if (thisPtr->m_bValidObjectRunScript)
-        {
-            if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(thisPtr->m_oidObjectRunScript)))
-            {
-                if (obj->m_bAbleToModifyActionQueue)
-                {
-                    obj->AddAction(23, -1, 4, (CExoString*)&sound);
-                }
 
+    if (thisPtr->m_bValidObjectRunScript)
+    {
+        if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(thisPtr->m_oidObjectRunScript)))
+        {
+            if (obj->m_bAbleToModifyActionQueue)
+            {
+                obj->AddAction(23, -1, 4, (CExoString*)&sound);
             }
+
         }
     }
+
     return VMError::Success;
 }
 
+int32_t NWNXCore::NWNXFunctionManagementHandler(CNWSVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t)
+{
+    ASSERT(thisPtr);
+
+    auto *pVirtualMachine = Globals::VirtualMachine();
+    switch (nCommandId)
+    {
+        case VMCommand::NWNXGetIsAvailable:
+        {
+            if (!pVirtualMachine->StackPushInteger(1))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXCall:
+        {
+            CExoString sPlugin;
+            CExoString sFunction;
+            if (!pVirtualMachine->StackPopString(&sPlugin) ||
+                !pVirtualMachine->StackPopString(&sFunction))
+                return VMError::StackUnderflow;
+
+            if (g_core->m_ScriptChunkRecursion == 0)
+                ScriptAPI::Call(sPlugin, sFunction);
+            else
+                LOG_NOTICE("NWNX function '%s_%s' in ExecuteScriptChunk() was blocked due to configuration", sFunction, sFunction);
+            break;
+        }
+
+        case VMCommand::NWNXPushInt:
+        {
+            int32_t value;
+            if (!pVirtualMachine->StackPopInteger(&value))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(value);
+            break;
+        }
+
+        case VMCommand::NWNXPushFloat:
+        {
+            float value;
+            if (!pVirtualMachine->StackPopFloat(&value))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(value);
+            break;
+        }
+
+        case VMCommand::NWNXPushObject:
+        {
+            ObjectID value;
+            if (!pVirtualMachine->StackPopObject(&value))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(value);
+            break;
+        }
+
+        case VMCommand::NWNXPushString:
+        {
+            CExoString value;
+            if (!pVirtualMachine->StackPopString(&value))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(value);
+            break;
+        }
+
+        case VMCommand::NWNXPushVector:
+        {
+            Vector value;
+            if (!pVirtualMachine->StackPopVector(&value))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(value);
+            break;
+        }
+
+        case VMCommand::NWNXPushLocation:
+        {
+            CScriptLocation *pLocation;
+            SCOPEGUARD(delete pLocation);
+            if (!pVirtualMachine->StackPopEngineStructure(VMStructure::Location, (void**)&pLocation))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(*pLocation);
+            break;
+        }
+
+        case VMCommand::NWNXPushEffect:
+        {
+            CGameEffect *pEffect;
+            if (!pVirtualMachine->StackPopEngineStructure(VMStructure::Effect, (void**)&pEffect))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(pEffect);
+            break;
+        }
+
+        case VMCommand::NWNXPushItemproperty:
+        {
+            CGameEffect *pItemProperty;
+            if (!pVirtualMachine->StackPopEngineStructure(VMStructure::ItemProperty, (void**)&pItemProperty))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(pItemProperty);
+            break;
+        }
+
+        case VMCommand::NWNXPushJson:
+        {
+            JsonEngineStructure *j = nullptr;
+            SCOPEGUARD(delete j);
+            if (!pVirtualMachine->StackPopEngineStructure(VMStructure::Json, (void**)&j))
+                return VMError::StackUnderflow;
+            ScriptAPI::Push(*j);
+            break;
+        }
+
+        case VMCommand::NWNXPopInt:
+        {
+            if (!pVirtualMachine->StackPushInteger(ScriptAPI::Pop<int32_t>().value_or(0)))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopFloat:
+        {
+            if (!pVirtualMachine->StackPushFloat(ScriptAPI::Pop<float>().value_or(0.0f)))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopObject:
+        {
+            if (!pVirtualMachine->StackPushObject(ScriptAPI::Pop<ObjectID>().value_or(OBJECT_INVALID)))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopString:
+        {
+            if (!pVirtualMachine->StackPushString(ScriptAPI::Pop<std::string>().value_or("")))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopVector:
+        {
+            if (!pVirtualMachine->StackPushVector(ScriptAPI::Pop<Vector>().value_or(Vector())))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopLocation:
+        {
+            CScriptLocation location = ScriptAPI::Pop<CScriptLocation>().value_or(CScriptLocation());
+            if (!pVirtualMachine->StackPushEngineStructure(VMStructure::Location, &location))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopEffect:
+        {
+            CGameEffect *pEffect = nullptr;
+            SCOPEGUARD(delete pEffect);
+            if (auto effect = ScriptAPI::Pop<CGameEffect*>())
+                pEffect = *effect;
+            if (!pVirtualMachine->StackPushEngineStructure(VMStructure::Effect, pEffect))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopItemproperty:
+        {
+            CGameEffect *pItemProperty = nullptr;
+            SCOPEGUARD(delete pItemProperty);
+            if (auto effect = ScriptAPI::Pop<CGameEffect*>())
+                pItemProperty = *effect;
+            if (!pVirtualMachine->StackPushEngineStructure(VMStructure::ItemProperty, pItemProperty))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        case VMCommand::NWNXPopJson:
+        {
+            JsonEngineStructure j = ScriptAPI::Pop<JsonEngineStructure>().value_or(JsonEngineStructure{});
+            if (!pVirtualMachine->StackPushEngineStructure(VMStructure::Json, &j))
+                return VMError::StackOverflow;
+            break;
+        }
+
+        default:
+        {
+            pVirtualMachine->m_sAbortCustomError = "Unused NWNX VM Function Called :(";
+            return VMError::FakeAbortScript;
+        }
+    }
+
+    return VMError::Success;
+}
 
 }

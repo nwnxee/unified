@@ -28,9 +28,10 @@ struct CRes
     BOOL m_bAllocTrailingData;
     CExoLinkedListPosition m_pos;
     BOOL m_bAllowCaching;
+    CExoString m_sDebugLabel;
 
     CRes();
-    CRes(RESID nNewID);
+    CRes(RESID nNewID, const CExoString& sDebugLabel);
     virtual ~CRes();
     void * Demand();
     BOOL ReadRaw(int32_t nSize, char * pBuffer);

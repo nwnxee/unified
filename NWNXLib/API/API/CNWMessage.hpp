@@ -60,7 +60,6 @@ struct CNWMessage
     CNWMessage();
     virtual ~CNWMessage();
     BOOL SetReadMessage(uint8_t * pMessage, uint32_t dwSize, uint32_t dwPlayerID = 0xffffffff, BOOL bHighPriority = true);
-    void ClearReadMessage();
     void HandleExpectedTypeMismatch(MessageType expect, MessageType got);
     void ExpectType(MessageType t);
     BOOL ReadBOOL();
@@ -80,8 +79,8 @@ struct CNWMessage
     CExoString ReadCExoString(int32_t nCount = 32);
     void * ReadVOIDPtr(int32_t nSize);
     json ReadJSON();
-    BOOL MessageReadOverflow(BOOL bWarn = true);
-    BOOL MessageReadUnderflow(BOOL bWarn = true);
+    BOOL MessageReadOverflow();
+    BOOL MessageReadUnderflow();
     BOOL MessageMoreDataToRead();
     void CreateWriteMessage(uint32_t nSize = 128, uint32_t dwPlayerID = 0xffffffff, BOOL bHighPriority = true);
     void WriteType(MessageType t);

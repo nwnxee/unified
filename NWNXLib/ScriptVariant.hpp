@@ -2,6 +2,7 @@
 
 #include "API/API/CGameEffect.hpp"
 #include "API/API/JsonEngineStructure.hpp"
+#include "API/API/CScriptLocation.hpp"
 
 #include <deque>
 #include <stdexcept>
@@ -19,19 +20,30 @@ template <typename T>
 constexpr bool is_argument_type()
 {
     return (std::is_same_v<T, int32_t>
-        || std::is_same_v<T, float>
-        || std::is_same_v<T, ObjectID>
-        || std::is_same_v<T, std::string>
-        || std::is_same_v<T, CGameEffect*>
-        || std::is_same_v<T, JsonEngineStructure>
-        || std::is_same_v<T, NullArgument>);
+         || std::is_same_v<T, float>
+         || std::is_same_v<T, ObjectID>
+         || std::is_same_v<T, std::string>
+         || std::is_same_v<T, Vector>
+         || std::is_same_v<T, CScriptLocation>
+         || std::is_same_v<T, CGameEffect*>
+         || std::is_same_v<T, JsonEngineStructure>
+         || std::is_same_v<T, NullArgument>);
 }
 
 } // namespace detail
 
 struct ScriptVariant
 {
-    using Variant = std::variant<NullArgument, int32_t, float, ObjectID, std::string, CGameEffect*, JsonEngineStructure>;
+    using Variant = std::variant<
+        NullArgument,
+        int32_t,
+        float,
+        ObjectID,
+        std::string,
+        Vector,
+        CScriptLocation,
+        CGameEffect*,
+        JsonEngineStructure>;
     Variant m_data;
 
     // Constructors
@@ -66,11 +78,13 @@ struct ScriptVariant
 
     std::string toString() const
     {
-        if (Holds<int32_t>()) { return std::to_string(Get<int32_t>()); }
-        else if (Holds<float>()) { return std::to_string(Get<float>()); }
-        else if (Holds<ObjectID>()) { return Utils::ObjectIDToString(Get<ObjectID>()); }
-        else if (Holds<std::string>()) { return Get<std::string>(); }
-        else if (Holds<NullArgument>()) { return "(null)"; }
+        if (Holds<int32_t>()) {             return std::to_string(Get<int32_t>()); }
+        else if (Holds<float>()) {          return std::to_string(Get<float>()); }
+        else if (Holds<ObjectID>()) {       return Utils::ObjectIDToString(Get<ObjectID>()); }
+        else if (Holds<std::string>()) {    return Get<std::string>(); }
+        else if (Holds<Vector>()) {         return Get<Vector>().ToString(); }
+        else if (Holds<CScriptLocation>()) {return Get<CScriptLocation>().ToString(); }
+        else if (Holds<NullArgument>()) {   return "(null)"; }
         else if (Holds<CGameEffect*>())
         {
             auto e = Get<CGameEffect*>();
@@ -100,7 +114,7 @@ struct ScriptVariantStack
     ScriptVariantStack& operator=(const ScriptVariantStack&) = default;
     ScriptVariantStack& operator=(ScriptVariantStack&&) = default;
 
-    bool empty() { return m_stack.empty(); }
+    bool empty() const { return m_stack.empty(); }
 
     template <typename T>
     T extract()
@@ -127,7 +141,7 @@ struct ScriptVariantStack
 
     void pop() { m_stack.pop_back(); }
 
-    Stack::size_type size() { return m_stack.size(); };
+    Stack::size_type size() const { return m_stack.size(); };
 
     ScriptVariant& top() { return m_stack.back(); }
 };

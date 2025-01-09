@@ -16,14 +16,14 @@ struct CNWTileSet;
 
 struct CNWTileSetManager
 {
-    CNWTileSet * m_apTileSets[100];
-    int32_t m_anTileSetRegistered[100];
+    std::unordered_map<std::string, std::unique_ptr<CNWTileSet>> m_tileSets;
     CNWTilePathNode * m_apTileNodes[50][4];
+    BOOL m_bSkipClearTilesets;
 
     CNWTileSetManager();
     ~CNWTileSetManager();
-    CNWTileSet * RegisterTileSet(CResRef resrefTileSet);
-    void UnregisterTileSet(CNWTileSet * pTileSet);
+    CNWTileSet * GetTileSet(const CResRef &resrefTileSet);
+    void ClearTileSets(const CResRef &currentTileSet);
     void InitializeTilePathNodes();
     void ClearTilePathNodes();
     CNWTilePathNode * GetTilePathNode(uint8_t nNodeType, uint8_t nRotation);

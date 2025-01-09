@@ -754,7 +754,7 @@ NWNX_EXPORT ArgumentStack ExportARE(ArgumentStack&& args)
             std::sprintf(field, "Tag");
             resGff.WriteFieldCExoString(&resStruct, newTag.empty() ? pArea->m_sTag : CExoString(newTag).AsTAG(), field);
             std::sprintf(field, "ResRef");
-            resGff.WriteFieldCExoString(&resStruct, CResRef(fileName), field);
+            resGff.WriteFieldCExoString(&resStruct, CExoString(CResRef(fileName)), field);
             std::sprintf(field, "Width");
             resGff.WriteFieldINT(&resStruct, pArea->m_nWidth, field);
             std::sprintf(field, "Height");
@@ -916,12 +916,8 @@ NWNX_EXPORT ArgumentStack CreateSoundObject(ArgumentStack&& args)
 {
     if (auto *pArea = Utils::PopArea(args))
     {
-        Vector v;
-        v.x = args.extract<float>();
-        v.y = args.extract<float>();
-        v.z = args.extract<float>();
-
-        const std::string sResRef = args.extract<std::string>();
+        const auto v = args.extract<Vector>();
+        const auto sResRef = args.extract<std::string>();
         if(!sResRef.empty())
         {
             CResGFF resGFF(Constants::ResRefType::UTS, (char*)"UTS ", sResRef.c_str());
@@ -1276,21 +1272,20 @@ NWNX_EXPORT ArgumentStack GetPathExists(ArgumentStack&& args)
 {
     if (auto *pArea = Utils::PopArea(args))
     {
-        const auto startX = args.extract<float>();
-          ASSERT_OR_THROW(startX >= 0.0f);
-        const auto startY = args.extract<float>();
-          ASSERT_OR_THROW(startY >= 0.0f);
-        const auto endX = args.extract<float>();
-          ASSERT_OR_THROW(endX >= 0.0f);
-        const auto endY = args.extract<float>();
-          ASSERT_OR_THROW(endY >= 0.0f);
+        auto vStartPosition = args.extract<Vector>();
+          ASSERT_OR_THROW(vStartPosition.x >= 0.0f);
+          ASSERT_OR_THROW(vStartPosition.y >= 0.0f);
+        auto vEndPosition = args.extract<Vector>();
+          ASSERT_OR_THROW(vEndPosition.x >= 0.0f);
+          ASSERT_OR_THROW(vEndPosition.y >= 0.0f);
         const auto maxDepth = args.extract<int32_t>();
           ASSERT_OR_THROW(maxDepth > 0);
 
-        Vector vStart{startX, startY, 0.0f};
-        Vector vEnd{endX, endY, 0.0f};
-        CNWSTile *pStartTile = pArea->GetTile(vStart);
-        CNWSTile *pEndTile = pArea->GetTile(vEnd);
+        vStartPosition.z = 0.0f;
+        vEndPosition.z = 0.0f;
+
+        CNWSTile *pStartTile = pArea->GetTile(vStartPosition);
+        CNWSTile *pEndTile = pArea->GetTile(vEndPosition);
 
         if (!pStartTile || !pEndTile)
             return false;
@@ -1303,8 +1298,8 @@ NWNX_EXPORT ArgumentStack GetPathExists(ArgumentStack&& args)
             return false;
 
         float fStartX, fStartY, fEndX, fEndY;
-        pStartTile->RotateRealToCanonicalTile(vStart.x, vStart.y, &fStartX, &fStartY);
-        pEndTile->RotateRealToCanonicalTile(vEnd.x, vEnd.y, &fEndX, &fEndY);
+        pStartTile->RotateRealToCanonicalTile(vStartPosition.x, vStartPosition.y, &fStartX, &fStartY);
+        pEndTile->RotateRealToCanonicalTile(vEndPosition.x, vEndPosition.y, &fEndX, &fEndY);
 
         uint8_t nStartRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pStartTile, fStartX, fStartY);
         uint8_t nEndRegion = pStartTile->m_pTileData->m_pSurfaceMesh->FindClosestRegion(pEndTile, fEndX, fEndY);
@@ -1350,9 +1345,7 @@ NWNX_EXPORT ArgumentStack GetAreaWind(ArgumentStack&& args)
     {
         return
         {
-            pArea->m_vWindDirection.z,
-            pArea->m_vWindDirection.y,
-            pArea->m_vWindDirection.x,
+            Vector(pArea->m_vWindDirection.x,pArea->m_vWindDirection.y,pArea->m_vWindDirection.z),
             pArea->m_fWindMagnitude,
             pArea->m_fWindYaw,
             pArea->m_fWindPitch

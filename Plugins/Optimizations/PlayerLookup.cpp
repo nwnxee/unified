@@ -14,14 +14,12 @@ using namespace NWNXLib::API;
 static HashTable32<CNWSPlayer> s_playerobjects;
 
 static Hooks::Hook s_SetGameObject;
-static Hooks::Hook s_DestroyPlayer0;
 static Hooks::Hook s_DestroyPlayer1;
 static Hooks::Hook s_GetIsDM;
 static Hooks::Hook s_GetIsPlayerDM;
 static Hooks::Hook s_GetClientObjectByObjectId;
 
 static void SetGameObject(CNWSPlayer* pThis, CNWSObject *pObject);
-static void DestroyPlayer0(CNWSPlayer* pThis);
 static void DestroyPlayer1(CNWSPlayer* pThis);
 
 static BOOL GetIsDM(CNWSCreatureStats* pThis) __attribute__((hot));
@@ -38,7 +36,6 @@ void PlayerLookup()
         s_playerobjects.Initialize();
 
         s_SetGameObject  = Hooks::HookFunction(&CNWSPlayer::SetGameObject, SetGameObject, Hooks::Order::VeryEarly);
-        s_DestroyPlayer0 = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD0Ev, (void*)DestroyPlayer0, Hooks::Order::Early);
         s_DestroyPlayer1 = Hooks::HookFunction(Functions::_ZN10CNWSPlayerD1Ev, (void*)DestroyPlayer1, Hooks::Order::Early);
 
         s_GetIsDM        = Hooks::HookFunction(&CNWSCreatureStats::GetIsDM, GetIsDM, Hooks::Order::Final);
@@ -59,16 +56,12 @@ static void SetGameObject(CNWSPlayer* pThis, CNWSObject *pObject)
 }
 
 
-static void DestroyPlayer0(CNWSPlayer* pThis)
-{
-    s_playerobjects.Delete(pThis->m_oidNWSObject);
-    s_DestroyPlayer0->CallOriginal<void>(pThis);
-}
 static void DestroyPlayer1(CNWSPlayer* pThis)
 {
     s_playerobjects.Delete(pThis->m_oidNWSObject);
     s_DestroyPlayer1->CallOriginal<void>(pThis);
 }
+
 
 static BOOL GetIsDM(CNWSCreatureStats* pThis)
 {

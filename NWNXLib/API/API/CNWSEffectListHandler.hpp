@@ -10,8 +10,7 @@ NWN_API_PROLOGUE(CNWSEffectListHandler)
 
 struct CGameEffect;
 struct CNWSObject;
-typedef int32_t (*pfAECommands)(CNWSObject *, CGameEffect *, BOOL);
-typedef int32_t (*pfRECommands)(CNWSObject *, CGameEffect *);
+
 
 
 typedef int BOOL;
@@ -20,7 +19,9 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSEffectListHandler : CGameEffectApplierRemover
 {
+    typedef int32_t (CNWSEffectListHandler::*pfAECommands)(CNWSObject *, CGameEffect *, BOOL);
     pfAECommands * m_pApplyEffectCommands;
+    typedef int32_t (CNWSEffectListHandler::*pfRECommands)(CNWSObject *, CGameEffect *);
     pfRECommands * m_pRemoveEffectCommands;
 
     ~CNWSEffectListHandler();
@@ -198,6 +199,7 @@ struct CNWSEffectListHandler : CGameEffectApplierRemover
     int32_t OnApplyTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame = false);
     int32_t OnRemoveTimeStopImmunity(CNWSObject * pObject, CGameEffect * pEffect);
 
+    BOOL CheckEffectAppliesToObject(CNWSObject * pObject, CGameEffect * pEffect, BOOL bLoadingGame, BOOL bCheckDyingState = false);
 
 #ifdef NWN_CLASS_EXTENSION_CNWSEffectListHandler
     NWN_CLASS_EXTENSION_CNWSEffectListHandler

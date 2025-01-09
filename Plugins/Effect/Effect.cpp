@@ -70,13 +70,8 @@ ArgumentStack ResolveUnpack(CGameEffect *eff, bool bLink)
     stack.push((ObjectID)eff->m_oidParamObjectID[2]);
     stack.push((ObjectID)eff->m_oidParamObjectID[3]);
 
-    stack.push((float)eff->m_vParamVector[0].x);
-    stack.push((float)eff->m_vParamVector[0].y);
-    stack.push((float)eff->m_vParamVector[0].z);
-
-    stack.push((float)eff->m_vParamVector[1].x);
-    stack.push((float)eff->m_vParamVector[1].y);
-    stack.push((float)eff->m_vParamVector[1].z);
+    stack.push((Vector)eff->m_vParamVector[0]);
+    stack.push((Vector)eff->m_vParamVector[1]);
 
     stack.push(std::string(eff->m_sCustomTag.CStr()));
 
@@ -91,15 +86,8 @@ void ResolvePack(CGameEffect *eff, ArgumentStack& args, bool bReplace)
 
     eff->m_sCustomTag = args.extract<std::string>().c_str();
 
-    auto vector1z = args.extract<float>();
-    auto vector1y = args.extract<float>();
-    auto vector1x = args.extract<float>();
-    eff->m_vParamVector[1] = {vector1x, vector1y, vector1z};
-
-    auto vector0z = args.extract<float>();
-    auto vector0y = args.extract<float>();
-    auto vector0x = args.extract<float>();
-    eff->m_vParamVector[0] = {vector0x, vector0y, vector0z};
+    eff->m_vParamVector[1] = args.extract<Vector>();
+    eff->m_vParamVector[0] = args.extract<Vector>();
 
     eff->m_oidParamObjectID[3] = args.extract<ObjectID>();
     eff->m_oidParamObjectID[2] = args.extract<ObjectID>();

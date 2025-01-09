@@ -12,7 +12,6 @@ NWN_API_PROLOGUE(CNWSVirtualMachineCommands)
 struct C2DA;
 struct CResGFF;
 struct CResStruct;
-typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
 typedef int BOOL;
@@ -21,6 +20,7 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSVirtualMachineCommands : CVirtualMachineCmdImplementer
 {
+    typedef int32_t (CNWSVirtualMachineCommands::*pfCVMCommands)(int32_t, int32_t);
     pfCVMCommands * m_pVirtualMachineCommands;
 
     CNWSVirtualMachineCommands(CVirtualMachine* vm) : CVirtualMachineCmdImplementer(vm, VMContext::SERVER) {}
@@ -518,6 +518,7 @@ struct CNWSVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandMusicBackground(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandMusicBattle(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandNuiManagement(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandNWNXFunctionManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectTextBubble(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectToString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandObjectUiDiscoverMask(int32_t nCommandId, int32_t nParameters);

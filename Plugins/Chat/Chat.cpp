@@ -41,8 +41,8 @@ static Hooks::Hook s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
                 s_ActiveMessage = sSpeakerMessage.CStr();
                 s_ActiveSenderObjectId = oidSpeaker;
 
-                CNWSClient *pClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nTellPlayerId, 0);
-                s_ActiveTargetObjectId = pClient ? static_cast<CNWSPlayer *>(pClient)->m_oidPCObject : Constants::OBJECT_INVALID;
+                CNWSPlayer *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nTellPlayerId);
+                s_ActiveTargetObjectId = pPlayer ? pPlayer->m_oidPCObject : Constants::OBJECT_INVALID;
 
                 ++s_Depth;
                 Utils::ExecuteScript(s_ChatScript, oidSpeaker);
@@ -64,74 +64,68 @@ static Hooks::Hook s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
             {
                 if (s_CustomHearingDistances)
                 {
-                    auto *pServer = Globals::AppManager()->m_pServerExoApp;
-                    auto *pPlayerList = pServer->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
-
-                    if (pPlayerList)
+                    if (nChatMessageType == Constants::ChatChannel::PlayerShout &&
+                        Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PlayOptions.bDisallowShouting)
                     {
-                        if (nChatMessageType == Constants::ChatChannel::PlayerShout && pServer->GetServerInfo()->m_PlayOptions.bDisallowShouting)
+                        nChatMessageType = Constants::ChatChannel::PlayerTalk;
+                    }
+
+                    if (nChatMessageType == Constants::ChatChannel::PlayerTalk ||
+                        nChatMessageType == Constants::ChatChannel::PlayerWhisper ||
+                        nChatMessageType == Constants::ChatChannel::DmTalk ||
+                        nChatMessageType == Constants::ChatChannel::DmWhisper)
+                    {
+                        auto distance = s_HearingDistances[nChatMessageType];
+                        auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
+                        CNWSArea *pSpeakerArea = nullptr;
+
+                        if (auto *pSpeaker = Utils::AsNWSObject(Utils::GetGameObject(oidSpeaker)))
                         {
-                            nChatMessageType = Constants::ChatChannel::PlayerTalk;
+                            pSpeakerArea = pSpeaker->GetArea();
+                            speakerPos = pSpeaker->m_vPosition;
+                            pSpeaker->BroadcastDialog(sSpeakerMessage, distance);
                         }
 
-                        if (nChatMessageType == Constants::ChatChannel::PlayerTalk ||
-                            nChatMessageType == Constants::ChatChannel::PlayerWhisper ||
-                            nChatMessageType == Constants::ChatChannel::DmTalk ||
-                            nChatMessageType == Constants::ChatChannel::DmWhisper)
+                        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
                         {
-                            auto distance = s_HearingDistances[nChatMessageType];
-                            auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
-                            CNWSArea *pSpeakerArea = nullptr;
+                            auto *pListenerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
 
-                            if (auto *pSpeaker = Utils::AsNWSObject(pServer->GetGameObject(oidSpeaker)))
+                            if (!pListenerCreature)// No valid creature, player likely on character selection, so skip them
+                                continue;
+
+                            if (auto customHearingDistance = pListenerCreature->nwnxGet<float>("HEARING_DISTANCE:" + std::to_string(nChatMessageType)))
+                                distance = *customHearingDistance;
+
+                            float vSquared = Vector::MagnitudeSquared(pListenerCreature->m_vPosition - speakerPos);
+
+                            if (pSpeakerArea == pListenerCreature->GetArea() && vSquared <= distance * distance)
                             {
-                                pSpeakerArea = pSpeaker->GetArea();
-                                speakerPos = pSpeaker->m_vPosition;
-                                pSpeaker->BroadcastDialog(sSpeakerMessage, distance);
-                            }
-
-                            for (auto *head = pPlayerList->pHead; head; head = head->pNext)
-                            {
-                                auto *pPlayer = static_cast<CNWSPlayer*>(static_cast<CNWSClient*>(head->pObject));
-                                auto *pListenerCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
-
-                                if (!pListenerCreature)// No valid creature, player likely on character selection, so skip them
-                                    continue;
-
-                                if (auto customHearingDistance = pListenerCreature->nwnxGet<float>("HEARING_DISTANCE:" + std::to_string(nChatMessageType)))
-                                    distance = *customHearingDistance;
-
-                                float vSquared = Vector::MagnitudeSquared(pListenerCreature->m_vPosition - speakerPos);
-
-                                if (pSpeakerArea == pListenerCreature->GetArea() && vSquared <= distance * distance)
+                                switch (nChatMessageType)
                                 {
-                                    switch (nChatMessageType)
-                                    {
-                                        case Constants::ChatChannel::PlayerTalk:
-                                            thisPtr->SendServerToPlayerChat_Talk(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
-                                            break;
-                                        case Constants::ChatChannel::DmTalk:
-                                            thisPtr->SendServerToPlayerChat_DM_Talk(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
-                                            break;
-                                        case Constants::ChatChannel::PlayerWhisper:
-                                            thisPtr->SendServerToPlayerChat_Whisper(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
-                                            break;
-                                        case Constants::ChatChannel::DmWhisper:
-                                            thisPtr->SendServerToPlayerChat_DM_Whisper(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                    case Constants::ChatChannel::PlayerTalk:
+                                        thisPtr->SendServerToPlayerChat_Talk(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
+                                        break;
+                                    case Constants::ChatChannel::DmTalk:
+                                        thisPtr->SendServerToPlayerChat_DM_Talk(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
+                                        break;
+                                    case Constants::ChatChannel::PlayerWhisper:
+                                        thisPtr->SendServerToPlayerChat_Whisper(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
+                                        break;
+                                    case Constants::ChatChannel::DmWhisper:
+                                        thisPtr->SendServerToPlayerChat_DM_Whisper(pPlayer->m_nPlayerID, oidSpeaker, sSpeakerMessage);
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
+                        }
 
-                            retVal = true;
-                        }
-                        else
-                        {
-                            retVal = s_SendServerToPlayerChatMessageHook->CallOriginal<int32_t>(thisPtr, nChatMessageType, oidSpeaker,
-                                                                                                sSpeakerMessage, nTellPlayerId, sTellName);
-                        }
+                        retVal = true;
+                    }
+                    else
+                    {
+                        retVal = s_SendServerToPlayerChatMessageHook->CallOriginal<int32_t>(thisPtr, nChatMessageType, oidSpeaker,
+                                                                                            sSpeakerMessage, nTellPlayerId, sTellName);
                     }
                 }
                 else

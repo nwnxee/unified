@@ -3,7 +3,6 @@
 
 #include "CExoArrayList.hpp"
 #include "CBaseExoApp.hpp"
-#include "CExoArrayList.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
@@ -20,7 +19,6 @@ struct CGameObject;
 struct CGameObjectArray;
 struct CNWSArea;
 struct CNWSAreaOfEffectObject;
-struct CNWSClient;
 struct CNWSCreature;
 struct CNWSDoor;
 struct CNWSEncounter;
@@ -51,15 +49,14 @@ struct CServerExoApp : CBaseExoApp
 
     CServerExoApp(void );
     virtual ~CServerExoApp();
-    BOOL AdmitNetworkAddress(uint32_t nProtocol, CExoString sAddress);
-    BOOL SetNetworkAddressBan(uint32_t nProtocol, CExoString sAddress, BOOL bBanPlayer);
+    BOOL AdmitNetworkAddress(CExoString sAddress);
+    BOOL SetNetworkAddressBan(CExoString sAddress, BOOL bBanPlayer);
     BOOL AdmitPlayerName(CExoString sPlayerName);
     void PlayerListChange(uint32_t nPlayerId, BOOL bEnter, BOOL bPrimaryPlayer = false);
     void VomitServerOptionsToLog();
     BOOL ContinueMessageProcessing();
     void RemovePCFromWorld(CNWSPlayer * pPlayer);
     void Shutdown(BOOL bWarnLocals, BOOL bFromMessage = false);
-    void SetGameSpyReporting(BOOL bEnabled);
     class CServerInfo * GetServerInfo();
     CExoLocString GetModuleDescription();
     void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);
@@ -107,7 +104,7 @@ struct CServerExoApp : CBaseExoApp
     int32_t GetModuleLanguage();
     CServerAIMaster * GetServerAIMaster();
     void * GetSysAdminList();
-    void * GetPlayerList();
+    const CExoArrayList<CNWSPlayer*> & GetPlayerList();
     class CNWSMessage * GetNWSMessage();
     CNetLayer * GetNetLayer();
     class CNWPlaceMeshManager * GetPlaceMeshManager();
@@ -118,7 +115,7 @@ struct CServerExoApp : CBaseExoApp
     CWorldTimer * GetWorldTimer();
     CWorldTimer * GetTimestopTimer();
     CWorldTimer * GetPauseTimer();
-    BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
+    void HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize);
     BOOL Initialize();
     BOOL UnloadModule();
     BOOL LoadModule(CExoString moduleResRef, CUUID uuidOverride, BOOL bIsSaveGame, CNWSPlayer * pPlayer, int32_t sourceType, const NWSync::Advertisement & nwsyncModuleSourceAdvert);
@@ -149,14 +146,13 @@ struct CServerExoApp : CBaseExoApp
     void RemoveFromExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     BOOL IsOnActiveExclusionList(OBJECT_ID oidExclude);
     BOOL GetIsControlledByPlayer(OBJECT_ID oidObject);
-    CNWSClient * GetClientObjectByPlayerId(uint32_t nPlayerId, uint8_t nClientType = 0);
+    CNWSPlayer * GetClientObjectByPlayerId(uint32_t nPlayerId);
     BOOL ValidatePlayerLogin(void * pPlayer);
     void MovePlayerToArea(void * pPlayer);
     void InitiateModuleForPlayer(void * pPlayer);
-    void HandleGameSpyToServerMessage(int32_t nKeyId, void * pOutBuf, int nIndex = - 1);
     CConnectionLib * GetConnectionLib();
     CCampaignDB * GetCampaignDB();
-    BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
+    //CNetPeer GetPlayerAddressData(CNetConnectionId nConnectionId);
     BOOL GetFactionOfObject(OBJECT_ID oObject, int32_t * nFaction);
     uint32_t ResolvePlayerByFirstName(const CExoString & sName);
     BOOL GetMultiplayerEnabled(void );
@@ -182,14 +178,11 @@ struct CServerExoApp : CBaseExoApp
     OBJECT_ID GetNextPCObject();
     void PushMessageOverWall(uint8_t * pData, uint32_t nMsgLength);
     BOOL GetIsMultiPlayer();
-    void SetGameSpyEnabled(BOOL b);
-    BOOL GetGameSpyEnabled();
+    void SetGamePostedToInternet(BOOL b);
+    BOOL GetGamePostedToInternet();
     BOOL StripColorTokens(CExoString & sInput);
-    void AddSubNetProfileSendSize(uint32_t nPlayerID, uint32_t nSize);
     BOOL GetCreatureDeathLogging();
     void SetCreatureDeathLogging(BOOL );
-    BOOL GetHeartBeatLogging();
-    void SetHeartBeatLogging(BOOL );
     uint32_t GetClientsRequiredToDisableCPUSleep();
     BOOL GetStickyCombatModesEnabled();
     void SetStickyCombatModesEnabled(BOOL v);

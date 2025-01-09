@@ -88,6 +88,7 @@ struct CNWSCreatureStats
     char m_nACNaturalNeg;
     char m_nACDodgeMod;
     char m_nACDodgeNeg;
+    char m_nACPolymorph;
     uint8_t m_nBaseAttackBonus;
     uint8_t m_nOverrideBaseAttackBonus;
     char m_nEnemyAttackBonus;

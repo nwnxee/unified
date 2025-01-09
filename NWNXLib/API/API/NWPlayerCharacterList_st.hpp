@@ -25,7 +25,20 @@ struct NWPlayerCharacterList_st
     CResRef resPortrait;
     CExoArrayList<NWPlayerCharacterListClass_st> lstClasses;
 
+    NWPlayerCharacterList_st()
+    {
+        nType = 0;
+        nPortraitId = 0xffff;
+    }
 
+    BOOL operator==(NWPlayerCharacterList_st &stIn)
+    {
+        if (sLocFirstName == stIn.sLocFirstName && sLocLastName == stIn.sLocLastName)
+        {
+            return true;
+        }
+        return false;
+    }
 
 #ifdef NWN_CLASS_EXTENSION_NWPlayerCharacterList_st
     NWN_CLASS_EXTENSION_NWPlayerCharacterList_st

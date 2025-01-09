@@ -3,7 +3,6 @@
 /// skill related feats as well as modifying stock feats.
 /// @{
 /// @file nwnx_skillranks.nss
-#include "nwnx"
 
 const string NWNX_SkillRanks = "NWNX_SkillRanks"; ///< @private
 
@@ -144,82 +143,67 @@ void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier);
 
 int NWNX_SkillRanks_GetSkillFeatCountForSkill(int iSkill)
 {
-    string sFunc = "GetSkillFeatCountForSkill";
-
-    NWNX_PushArgumentInt(iSkill);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(iSkill);
+    NWNXCall(NWNX_SkillRanks, "GetSkillFeatCountForSkill");
+    return NWNXPopInt();
 }
 
 struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeatForSkillByIndex(int iSkill, int iIndex)
 {
-    string sFunc = "GetSkillFeatForSkillByIndex";
-
-    NWNX_PushArgumentInt(iIndex);
-    NWNX_PushArgumentInt(iSkill);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
-
+    NWNXPushInt(iIndex);
+    NWNXPushInt(iSkill);
+    NWNXCall(NWNX_SkillRanks, "GetSkillFeatForSkillByIndex");
     struct NWNX_SkillRanks_SkillFeat skillFeat;
-
     skillFeat.iSkill                   = iSkill;
-    skillFeat.iFeat                    = NWNX_GetReturnValueInt();
-    skillFeat.iModifier                = NWNX_GetReturnValueInt();
-    skillFeat.iFocusFeat               = NWNX_GetReturnValueInt();
-    skillFeat.sClasses                 = NWNX_GetReturnValueString();
-    skillFeat.fClassLevelMod           = NWNX_GetReturnValueFloat();
-    skillFeat.iAreaFlagsRequired       = NWNX_GetReturnValueInt();
-    skillFeat.iAreaFlagsForbidden      = NWNX_GetReturnValueInt();
-    skillFeat.iDayOrNight              = NWNX_GetReturnValueInt();
-    skillFeat.bBypassArmorCheckPenalty = NWNX_GetReturnValueInt();
-    skillFeat.iKeyAbilityMask          = NWNX_GetReturnValueInt();
-
+    skillFeat.iFeat                    = NWNXPopInt();
+    skillFeat.iModifier                = NWNXPopInt();
+    skillFeat.iFocusFeat               = NWNXPopInt();
+    skillFeat.sClasses                 = NWNXPopString();
+    skillFeat.fClassLevelMod           = NWNXPopFloat();
+    skillFeat.iAreaFlagsRequired       = NWNXPopInt();
+    skillFeat.iAreaFlagsForbidden      = NWNXPopInt();
+    skillFeat.iDayOrNight              = NWNXPopInt();
+    skillFeat.bBypassArmorCheckPenalty = NWNXPopInt();
+    skillFeat.iKeyAbilityMask          = NWNXPopInt();
     return skillFeat;
 }
 
 struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeat(int iSkill, int iFeat)
 {
-    string sFunc = "GetSkillFeat";
-
-    NWNX_PushArgumentInt(iFeat);
-    NWNX_PushArgumentInt(iSkill);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
-
+    NWNXPushInt(iFeat);
+    NWNXPushInt(iSkill);
+    NWNXCall(NWNX_SkillRanks, "GetSkillFeat");
     struct NWNX_SkillRanks_SkillFeat skillFeat;
-
     skillFeat.iSkill                   = iSkill;
     skillFeat.iFeat                    = iFeat;
-    skillFeat.iModifier                = NWNX_GetReturnValueInt();
-    skillFeat.iFocusFeat               = NWNX_GetReturnValueInt();
-    skillFeat.sClasses                 = NWNX_GetReturnValueString();
-    skillFeat.fClassLevelMod           = NWNX_GetReturnValueFloat();
-    skillFeat.iAreaFlagsRequired       = NWNX_GetReturnValueInt();
-    skillFeat.iAreaFlagsForbidden      = NWNX_GetReturnValueInt();
-    skillFeat.iDayOrNight              = NWNX_GetReturnValueInt();
-    skillFeat.bBypassArmorCheckPenalty = NWNX_GetReturnValueInt();
-    skillFeat.iKeyAbilityMask          = NWNX_GetReturnValueInt();
-
+    skillFeat.iModifier                = NWNXPopInt();
+    skillFeat.iFocusFeat               = NWNXPopInt();
+    skillFeat.sClasses                 = NWNXPopString();
+    skillFeat.fClassLevelMod           = NWNXPopFloat();
+    skillFeat.iAreaFlagsRequired       = NWNXPopInt();
+    skillFeat.iAreaFlagsForbidden      = NWNXPopInt();
+    skillFeat.iDayOrNight              = NWNXPopInt();
+    skillFeat.bBypassArmorCheckPenalty = NWNXPopInt();
+    skillFeat.iKeyAbilityMask          = NWNXPopInt();
     return skillFeat;
 }
 
 void NWNX_SkillRanks_SetSkillFeat(struct NWNX_SkillRanks_SkillFeat skillFeat, int createIfNonExistent = FALSE)
 {
-    string sFunc = "SetSkillFeat";
-
-    NWNX_PushArgumentInt(createIfNonExistent);
-    NWNX_PushArgumentInt(skillFeat.iKeyAbilityMask);
-    NWNX_PushArgumentInt(skillFeat.bBypassArmorCheckPenalty);
-    NWNX_PushArgumentInt(skillFeat.iDayOrNight);
-    NWNX_PushArgumentInt(skillFeat.iAreaFlagsForbidden);
-    NWNX_PushArgumentInt(skillFeat.iAreaFlagsRequired);
-    NWNX_PushArgumentFloat(skillFeat.fClassLevelMod);
+    NWNXPushInt(createIfNonExistent);
+    NWNXPushInt(skillFeat.iKeyAbilityMask);
+    NWNXPushInt(skillFeat.bBypassArmorCheckPenalty);
+    NWNXPushInt(skillFeat.iDayOrNight);
+    NWNXPushInt(skillFeat.iAreaFlagsForbidden);
+    NWNXPushInt(skillFeat.iAreaFlagsRequired);
+    NWNXPushFloat(skillFeat.fClassLevelMod);
     // We only need to send the string from the point of the first set bit
-    NWNX_PushArgumentString(GetStringRight(skillFeat.sClasses,GetStringLength(skillFeat.sClasses)-FindSubString(skillFeat.sClasses,"1")));
-    NWNX_PushArgumentInt(skillFeat.iFocusFeat);
-    NWNX_PushArgumentInt(skillFeat.iModifier);
-    NWNX_PushArgumentInt(skillFeat.iFeat);
-    NWNX_PushArgumentInt(skillFeat.iSkill);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+    NWNXPushString(GetStringRight(skillFeat.sClasses,GetStringLength(skillFeat.sClasses)-FindSubString(skillFeat.sClasses,"1")));
+    NWNXPushInt(skillFeat.iFocusFeat);
+    NWNXPushInt(skillFeat.iModifier);
+    NWNXPushInt(skillFeat.iFeat);
+    NWNXPushInt(skillFeat.iSkill);
+    NWNXCall(NWNX_SkillRanks, "SetSkillFeat");
 }
 
 struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_SkillRanks_SkillFeat skillFeat, int iClass)
@@ -237,47 +221,35 @@ struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_S
 
 void NWNX_SkillRanks_SetSkillFeatFocusModifier(int iModifier, int epicFocus = FALSE)
 {
-    string sFunc = "SetSkillFeatFocusModifier";
-
-    NWNX_PushArgumentInt(epicFocus);
-    NWNX_PushArgumentInt(iModifier);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+    NWNXPushInt(epicFocus);
+    NWNXPushInt(iModifier);
+    NWNXCall(NWNX_SkillRanks, "SetSkillFeatFocusModifier");
 }
 
 int NWNX_SkillRanks_GetBlindnessPenalty()
 {
-    string sFunc = "GetBlindnessPenalty";
-
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_SkillRanks, "GetBlindnessPenalty");
+    return NWNXPopInt();
 }
 
 void NWNX_SkillRanks_SetBlindnessPenalty(int iModifier)
 {
-    string sFunc = "SetBlindnessPenalty";
-
-    NWNX_PushArgumentInt(iModifier);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+    NWNXPushInt(iModifier);
+    NWNXCall(NWNX_SkillRanks, "SetBlindnessPenalty");
 }
 
 int NWNX_SkillRanks_GetAreaModifier(object oArea, int iSkill)
 {
-    string sFunc = "GetAreaModifier";
-
-    NWNX_PushArgumentInt(iSkill);
-    NWNX_PushArgumentObject(oArea);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(iSkill);
+    NWNXPushObject(oArea);
+    NWNXCall(NWNX_SkillRanks, "GetAreaModifier");
+    return NWNXPopInt();
 }
 
 void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier)
 {
-    string sFunc = "SetAreaModifier";
-
-    NWNX_PushArgumentInt(iModifier);
-    NWNX_PushArgumentInt(iSkill);
-    NWNX_PushArgumentObject(oArea);
-    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+    NWNXPushInt(iModifier);
+    NWNXPushInt(iSkill);
+    NWNXPushObject(oArea);
+    NWNXCall(NWNX_SkillRanks, "SetAreaModifier");
 }

@@ -84,7 +84,7 @@ void RemovePCFromWorldHook(CServerExoAppInternal *pServerExoAppInternal, CNWSPla
     auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
     auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
     auto playerName = pPlayerInfo->m_sPlayerName.CStr();
-    auto cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+    auto cdKey = pPlayerInfo->m_cCDKey.sPublic.CStr();
     PushEventData("PLAYER_NAME", playerName);
     PushEventData("CDKEY", cdKey);
     SignalEvent("NWNX_ON_CLIENT_DISCONNECT_BEFORE" , pPlayer->m_oidNWSObject);
@@ -127,7 +127,7 @@ int32_t SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPlayer *pPlayer)
     auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
 
     std::string playerName = pPlayerInfo->m_sPlayerName.CStr();
-    std::string cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+    std::string cdKey = pPlayerInfo->m_cCDKey.sPublic.CStr();
     std::string isDM = std::to_string(pPlayerInfo->m_bGameMasterPrivileges);
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
     std::string versionMajor = std::to_string(pPlayerInfo->m_nBuildVersion);

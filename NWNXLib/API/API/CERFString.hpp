@@ -18,10 +18,10 @@ struct CERFString
 {
     uint32_t m_nLanguageID;
     uint32_t m_nSize;
-    char * m_pText;
+    const char * m_pText;
 
     CExoString GetText();
-    void SetText(CExoString & sString);
+    void SetText(const CExoString & sString);
     CERFString();
     ~CERFString();
     BOOL Read();

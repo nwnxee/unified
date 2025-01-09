@@ -81,19 +81,16 @@ NWNX_EXPORT ArgumentStack SetPosition(ArgumentStack&& args)
 {
     if (auto *pObject = Utils::PopObject(args))
     {
-        Vector pos{};
-        pos.z = args.extract<float>();
-        pos.y = args.extract<float>();
-        pos.x = args.extract<float>();
-        auto bUpdateSubareas = !!args.extract<int32_t>();
+        const auto vPosition = args.extract<Vector>();
+        const auto bUpdateSubareas = !!args.extract<int32_t>();
 
-        pObject->SetPosition(pos, false);
+        pObject->SetPosition(vPosition, false);
 
         if (bUpdateSubareas)
         {
             if (auto *pCreature = Utils::AsNWSCreature(pObject))
             {
-                pCreature->UpdateSubareasOnJumpPosition(pos, pCreature->m_oidArea);
+                pCreature->UpdateSubareasOnJumpPosition(vPosition, pCreature->m_oidArea);
             }
         }
     }
@@ -239,14 +236,12 @@ NWNX_EXPORT ArgumentStack AddToArea(ArgumentStack&& args)
     {
         const auto oidArea = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-        const auto posX = args.extract<float>();
-        const auto posY = args.extract<float>();
-        const auto posZ = args.extract<float>();
+        const auto vPosition = args.extract<Vector>();
 
         if (auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea)))
         {
-            if (!Utils::AddToArea(pObject, pArea, posX, posY, posZ))
-                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, posX, posY, posZ);
+            if (!Utils::AddToArea(pObject, pArea, vPosition.x, vPosition.y, vPosition.z))
+                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, vPosition.x, vPosition.y, vPosition.z);
         }
     }
 
@@ -415,16 +410,7 @@ NWNX_EXPORT ArgumentStack Export(ArgumentStack&& args)
         const auto fileName = args.extract<std::string>();
           ASSERT_OR_THROW(!fileName.empty());
           ASSERT_OR_THROW(fileName.size() <= 16);
-        std::string alias;
-        try
-        {
-            alias = args.extract<std::string>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Object_Export() called from NWScript without sAlias parameter. Please update nwnx_object.nss");
-            alias = "NWNX";
-        }
+        auto alias = args.extract<std::string>();
 
         if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
         {
@@ -605,12 +591,7 @@ NWNX_EXPORT ArgumentStack GetPositionIsInTrigger(ArgumentStack&& args)
 {
     if (auto *pTrigger = Utils::PopTrigger(args))
     {
-        const auto fX = args.extract<float>();
-        const auto fY = args.extract<float>();
-        const auto fZ = args.extract<float>();
-
-        Vector vPosition = {fX, fY, fZ};
-        return pTrigger->InTrigger(vPosition);
+        return pTrigger->InTrigger(args.extract<Vector>());
     }
 
     return false;
@@ -684,17 +665,7 @@ NWNX_EXPORT ArgumentStack DoSpellImmunity(ArgumentStack&& args)
     {
         if(auto *pVersus = Utils::PopObject(args))
         {
-            int32_t spellId;
-            try
-            {
-                spellId = args.extract<int32_t>();
-            }
-            catch(const std::runtime_error& e)
-            {
-                LOG_WARNING("NWNX_Object_DoSpellImmunity() called from NWScript without new parameter. Please update nwnx_object.nss");
-                spellId = -1;
-            }
-
+            const auto spellId = args.extract<int32_t>();
             uint32_t prevSpellId;
             auto pAoEObject = Utils::AsNWSAreaOfEffectObject(pVersus);
             if(spellId>=0)
@@ -738,23 +709,11 @@ NWNX_EXPORT ArgumentStack DoSpellLevelAbsorption(ArgumentStack&& args)
     {
         if(auto *pVersus = Utils::PopObject(args))
         {
-            int32_t spellId, spellLevel, spellSchool;
-            try
-            {
-                spellId = args.extract<int32_t>();
-                spellLevel = args.extract<int32_t>();
-                spellSchool = args.extract<int32_t>();
-            }
-            catch(const std::runtime_error& e)
-            {
-                LOG_WARNING("NWNX_Object_DoSpellLevelAbsorption() called from NWScript without new parameters. Please update nwnx_object.nss");
-                spellId = -1;
-                spellLevel = -1;
-                spellSchool = -1;
-            }
-
-            ASSERT_OR_THROW(spellLevel <= 10);
-            ASSERT_OR_THROW(spellSchool <= 8);
+            const auto spellId = args.extract<int32_t>();
+            const auto spellLevel = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellLevel <= 10);
+            const auto spellSchool = args.extract<int32_t>();
+              ASSERT_OR_THROW(spellSchool <= 8);
 
             auto pCaster = Utils::AsNWSCreature(pVersus);
             if(!pCaster)

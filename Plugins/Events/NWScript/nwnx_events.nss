@@ -2,7 +2,6 @@
 /// @brief Provides an interface for plugins to create event-based systems, and exposes some events through that interface.
 /// @{
 /// @file nwnx_events.nss
-#include "nwnx"
 
 const string NWNX_Events = "NWNX_Events"; ///< @private
 
@@ -2373,163 +2372,127 @@ int NWNX_Events_GetNumSubscribers(string sEvent);
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
-    string sFunc = "SubscribeEvent";
-
-    NWNX_PushArgumentString(script);
-    NWNX_PushArgumentString(evt);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushString(script);
+    NWNXPushString(evt);
+    NWNXCall(NWNX_Events, "SubscribeEvent");
 }
 
 void NWNX_Events_UnsubscribeEvent(string evt, string script)
 {
-    string sFunc = "UnsubscribeEvent";
-
-    NWNX_PushArgumentString(script);
-    NWNX_PushArgumentString(evt);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushString(script);
+    NWNXPushString(evt);
+    NWNXCall(NWNX_Events, "UnsubscribeEvent");
 }
 
 void NWNX_Events_UnsubscribeAllStartingWith(string prefix)
 {
-    string sFunc = "UnsubscribeAllStartingWith";
-
-    NWNX_PushArgumentString(prefix);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushString(prefix);
+    NWNXCall(NWNX_Events, "UnsubscribeAllStartingWith");
 }
 
 void NWNX_Events_SubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE)
 {
-    string sFunc = "SubscribeEventScriptChunk";
-
-    NWNX_PushArgumentInt(bWrapIntoMain);
-    NWNX_PushArgumentString(sScriptChunk);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(bWrapIntoMain);
+    NWNXPushString(sScriptChunk);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "SubscribeEventScriptChunk");
 }
 
 void NWNX_Events_UnsubscribeEventScriptChunk(string sEvent, string sScriptChunk, int bWrapIntoMain = TRUE)
 {
-    string sFunc = "UnsubscribeEventScriptChunk";
-
-    NWNX_PushArgumentInt(bWrapIntoMain);
-    NWNX_PushArgumentString(sScriptChunk);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(bWrapIntoMain);
+    NWNXPushString(sScriptChunk);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "UnsubscribeEventScriptChunk");
 }
 
 void NWNX_Events_PushEventData(string tag, string data)
 {
-    string sFunc = "PushEventData";
-
-    NWNX_PushArgumentString(data);
-    NWNX_PushArgumentString(tag);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushString(data);
+    NWNXPushString(tag);
+    NWNXCall(NWNX_Events, "PushEventData");
 }
 
 int NWNX_Events_SignalEvent(string evt, object target)
 {
-    string sFunc = "SignalEvent";
-
-    NWNX_PushArgumentObject(target);
-    NWNX_PushArgumentString(evt);
-    NWNX_CallFunction(NWNX_Events, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushObject(target);
+    NWNXPushString(evt);
+    NWNXCall(NWNX_Events, "SignalEvent");
+    return NWNXPopInt();
 }
 
 string NWNX_Events_GetEventData(string tag)
 {
-    string sFunc = "GetEventData";
-
-    NWNX_PushArgumentString(tag);
-    NWNX_CallFunction(NWNX_Events, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushString(tag);
+    NWNXCall(NWNX_Events, "GetEventData");
+    return NWNXPopString();
 }
 
 void NWNX_Events_SkipEvent()
 {
-    string sFunc = "SkipEvent";
-
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXCall(NWNX_Events, "SkipEvent");
 }
 
 void NWNX_Events_SetEventResult(string data)
 {
-    string sFunc = "SetEventResult";
-
-    NWNX_PushArgumentString(data);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushString(data);
+    NWNXCall(NWNX_Events, "SetEventResult");
 }
 
 string NWNX_Events_GetCurrentEvent()
 {
-    string sFunc = "GetCurrentEvent";
-
-    NWNX_CallFunction(NWNX_Events, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXCall(NWNX_Events, "GetCurrentEvent");
+    return NWNXPopString();
 }
 
 void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScriptOrChunk, int bEnable)
 {
-    string sFunc = "ToggleDispatchListMode";
-
-    NWNX_PushArgumentInt(bEnable);
-    NWNX_PushArgumentString(sScriptOrChunk);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(bEnable);
+    NWNXPushString(sScriptOrChunk);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "ToggleDispatchListMode");
 }
 
 void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, object oObject)
 {
-    string sFunc = "AddObjectToDispatchList";
-
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentString(sScriptOrChunk);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushObject(oObject);
+    NWNXPushString(sScriptOrChunk);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "AddObjectToDispatchList");
 }
 
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject)
 {
-    string sFunc = "RemoveObjectFromDispatchList";
-
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentString(sScriptOrChunk);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushObject(oObject);
+    NWNXPushString(sScriptOrChunk);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "RemoveObjectFromDispatchList");
 }
 
 void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
 {
-    string sFunc = "ToggleIDWhitelist";
-
-    NWNX_PushArgumentInt(bEnable);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(bEnable);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "ToggleIDWhitelist");
 }
 
 void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)
 {
-    string sFunc = "AddIDToWhitelist";
-
-    NWNX_PushArgumentInt(nID);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(nID);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "AddIDToWhitelist");
 }
 
 void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID)
 {
-    string sFunc = "RemoveIDFromWhitelist";
-
-    NWNX_PushArgumentInt(nID);
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
+    NWNXPushInt(nID);
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "RemoveIDFromWhitelist");
 }
 
 int NWNX_Events_GetNumSubscribers(string sEvent)
 {
-    string sFunc = "GetNumSubscribers";
-
-    NWNX_PushArgumentString(sEvent);
-    NWNX_CallFunction(NWNX_Events, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(sEvent);
+    NWNXCall(NWNX_Events, "GetNumSubscribers");
+    return NWNXPopInt();
 }

@@ -14,7 +14,6 @@
 #include "CResRef.hpp"
 #include "CWorldJournalEntry.hpp"
 #include "NWMODULECUTSCENE.hpp"
-#include "NWMODULEEXPANSION.hpp"
 #include "NWPLAYERLISTITEM.hpp"
 #include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
@@ -50,7 +49,6 @@ typedef uint32_t STRREF;
 
 struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
 {
-    CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
     CExoLinkedList<NWMODULECUTSCENE> m_lstModuleCutScene;
     CExoLinkedList<CResRef> m_lstModuleArea;
     CExoArrayList<OBJECT_ID> m_lstModuleAreaID;
@@ -220,7 +218,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void TimeStopSanityCheck();
-    int32_t FindTagPositionInTable(char * szTag);
+    int32_t FindTagPositionInTable(const char * szTag);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSModule

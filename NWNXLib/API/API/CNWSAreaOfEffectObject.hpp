@@ -55,7 +55,7 @@ struct CNWSAreaOfEffectObject : CNWSObject
     void LoadAreaEffect(int32_t nId);
     void SetDuration(uint8_t nDurationType, float fDuration = 0.0f);
     Vector GetPosition();
-    void SetCreator(OBJECT_ID oidObject, int32_t nCasterLevel, int32_t nSpellId);
+    void SetCreator(OBJECT_ID oidObject, int32_t nCasterLevel, int32_t nSpellId, uint8_t nMulticlass = 0, uint8_t nMetaType = 0, int32_t nSaveDC = 14, uint16_t nFeat = 0xFFFF, BOOL bSpontaneous = false);
     virtual uint32_t GetEffectSpellId();
     virtual void SetEffectSpellId(uint32_t nSpellId);
     void JumpToPoint(CNWSArea * pNewArea, const Vector & vNewPos);

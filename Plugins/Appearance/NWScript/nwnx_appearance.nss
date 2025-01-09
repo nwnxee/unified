@@ -2,7 +2,6 @@
 /// @brief Allows the appearance and some other things of creatures to be overridden per player.
 /// @{
 /// @file nwnx_appearance.nss
-#include "nwnx"
 
 const string NWNX_Appearance = "NWNX_Appearance"; ///< @private
 
@@ -49,25 +48,18 @@ int NWNX_Appearance_GetOverride(object oPlayer, object oCreature, int nType);
 
 void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, int nValue)
 {
-    string sFunc = "SetOverride";
-
-    NWNX_PushArgumentInt(nValue);
-    NWNX_PushArgumentInt(nType);
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Appearance, sFunc);
+    NWNXPushInt(nValue);
+    NWNXPushInt(nType);
+    NWNXPushObject(oCreature);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Appearance, "SetOverride");
 }
 
 int NWNX_Appearance_GetOverride(object oPlayer, object oCreature, int nType)
 {
-    string sFunc = "GetOverride";
-
-    NWNX_PushArgumentInt(nType);
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Appearance, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(nType);
+    NWNXPushObject(oCreature);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Appearance, "GetOverride");
+    return NWNXPopInt();
 }

@@ -2,7 +2,6 @@
 /// @brief Define feat bonuses/penalties
 /// @{
 /// @file nwnx_feat.nss
-#include "nwnx"
 
 const string NWNX_Feat = "NWNX_Feat"; ///< @private
 
@@ -53,14 +52,11 @@ void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1 = 0xDEADBEEF, in
 
 void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1 = 0xDEADBEEF, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF, int iParam4 = 0xDEADBEEF)
 {
-    string sFunc = "SetFeatModifier";
-
-    NWNX_PushArgumentInt(iParam4);
-    NWNX_PushArgumentInt(iParam3);
-    NWNX_PushArgumentInt(iParam2);
-    NWNX_PushArgumentInt(iParam1);
-    NWNX_PushArgumentInt(iMod);
-    NWNX_PushArgumentInt(iFeat);
-
-    NWNX_CallFunction(NWNX_Feat, sFunc);
+    NWNXPushInt(iParam4);
+    NWNXPushInt(iParam3);
+    NWNXPushInt(iParam2);
+    NWNXPushInt(iParam1);
+    NWNXPushInt(iMod);
+    NWNXPushInt(iFeat);
+    NWNXCall(NWNX_Feat, "SetFeatModifier");
 }

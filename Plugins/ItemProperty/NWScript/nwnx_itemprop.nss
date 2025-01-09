@@ -2,7 +2,6 @@
 /// @brief Utility functions to manipulate the builtin itemproperty type.
 /// @{
 /// @file nwnx_itemprop.nss
-#include "nwnx"
 
 const string NWNX_ItemProperty = "NWNX_ItemProperty"; ///< @private
 
@@ -44,70 +43,58 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_GetActiveProperty(object oItem, int nIn
 
 struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
 {
-    string sFunc = "UnpackIP";
-
-    NWNX_PushArgumentItemProperty(ip);
-    NWNX_CallFunction(NWNX_ItemProperty, sFunc);
-
+    NWNXPushItemProperty(ip);
+    NWNXCall(NWNX_ItemProperty, "UnpackIP");
     struct NWNX_IPUnpacked n;
-
-    n.sID             = NWNX_GetReturnValueString();
-    n.nProperty       = NWNX_GetReturnValueInt();
-    n.nSubType        = NWNX_GetReturnValueInt();
-    n.nCostTable      = NWNX_GetReturnValueInt();
-    n.nCostTableValue = NWNX_GetReturnValueInt();
-    n.nParam1         = NWNX_GetReturnValueInt();
-    n.nParam1Value    = NWNX_GetReturnValueInt();
-    n.nUsesPerDay     = NWNX_GetReturnValueInt();
-    n.nChanceToAppear = NWNX_GetReturnValueInt();
-    n.bUsable         = NWNX_GetReturnValueInt();
-    n.nSpellId        = NWNX_GetReturnValueInt();
-    n.oCreator        = NWNX_GetReturnValueObject();
-    n.sTag            = NWNX_GetReturnValueString();
-
+    n.sID             = NWNXPopString();
+    n.nProperty       = NWNXPopInt();
+    n.nSubType        = NWNXPopInt();
+    n.nCostTable      = NWNXPopInt();
+    n.nCostTableValue = NWNXPopInt();
+    n.nParam1         = NWNXPopInt();
+    n.nParam1Value    = NWNXPopInt();
+    n.nUsesPerDay     = NWNXPopInt();
+    n.nChanceToAppear = NWNXPopInt();
+    n.bUsable         = NWNXPopInt();
+    n.nSpellId        = NWNXPopInt();
+    n.oCreator        = NWNXPopObject();
+    n.sTag            = NWNXPopString();
     return n;
 }
 
 itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
 {
-    string sFunc = "PackIP";
-
-    NWNX_PushArgumentString(n.sTag);
-    NWNX_PushArgumentObject(n.oCreator);
-    NWNX_PushArgumentInt(n.nSpellId);
-    NWNX_PushArgumentInt(n.bUsable);
-    NWNX_PushArgumentInt(n.nChanceToAppear);
-    NWNX_PushArgumentInt(n.nUsesPerDay);
-    NWNX_PushArgumentInt(n.nParam1Value);
-    NWNX_PushArgumentInt(n.nParam1);
-    NWNX_PushArgumentInt(n.nCostTableValue);
-    NWNX_PushArgumentInt(n.nCostTable);
-    NWNX_PushArgumentInt(n.nSubType);
-    NWNX_PushArgumentInt(n.nProperty);
-
-    NWNX_CallFunction(NWNX_ItemProperty, sFunc);
-    return NWNX_GetReturnValueItemProperty();
+    NWNXPushString(n.sTag);
+    NWNXPushObject(n.oCreator);
+    NWNXPushInt(n.nSpellId);
+    NWNXPushInt(n.bUsable);
+    NWNXPushInt(n.nChanceToAppear);
+    NWNXPushInt(n.nUsesPerDay);
+    NWNXPushInt(n.nParam1Value);
+    NWNXPushInt(n.nParam1);
+    NWNXPushInt(n.nCostTableValue);
+    NWNXPushInt(n.nCostTable);
+    NWNXPushInt(n.nSubType);
+    NWNXPushInt(n.nProperty);
+    NWNXCall(NWNX_ItemProperty, "PackIP");
+    return NWNXPopItemProperty();
 }
 
 struct NWNX_IPUnpacked NWNX_ItemProperty_GetActiveProperty(object oItem, int nIndex)
 {
-    string sFunc = "GetActiveProperty";
-    NWNX_PushArgumentInt(nIndex);
-    NWNX_PushArgumentObject(oItem);
-    NWNX_CallFunction(NWNX_ItemProperty, sFunc);
-
+    NWNXPushInt(nIndex);
+    NWNXPushObject(oItem);
+    NWNXCall(NWNX_ItemProperty, "GetActiveProperty");
     struct NWNX_IPUnpacked n;
-
-    n.nProperty       = NWNX_GetReturnValueInt();
-    n.nSubType        = NWNX_GetReturnValueInt();
-    n.nCostTable      = NWNX_GetReturnValueInt();
-    n.nCostTableValue = NWNX_GetReturnValueInt();
-    n.nParam1         = NWNX_GetReturnValueInt();
-    n.nParam1Value    = NWNX_GetReturnValueInt();
-    n.nUsesPerDay     = NWNX_GetReturnValueInt();
-    n.nChanceToAppear = NWNX_GetReturnValueInt();
-    n.bUsable         = NWNX_GetReturnValueInt();
-    n.sTag            = NWNX_GetReturnValueString();
-
+    n.nProperty       = NWNXPopInt();
+    n.nSubType        = NWNXPopInt();
+    n.nCostTable      = NWNXPopInt();
+    n.nCostTableValue = NWNXPopInt();
+    n.nParam1         = NWNXPopInt();
+    n.nParam1Value    = NWNXPopInt();
+    n.nUsesPerDay     = NWNXPopInt();
+    n.nChanceToAppear = NWNXPopInt();
+    n.bUsable         = NWNXPopInt();
+    n.sTag            = NWNXPopString();
     return n;
 }

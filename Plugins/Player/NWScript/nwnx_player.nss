@@ -2,7 +2,6 @@
 /// @brief Functions exposing additional player properties.
 /// @{
 /// @file nwnx_player.nss
-#include "nwnx"
 
 const string NWNX_Player = "NWNX_Player"; ///< @private
 
@@ -458,22 +457,16 @@ void NWNX_Player_ReloadColorPalettes(object oPlayer);
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
-    string sFunc = "ForcePlaceableExamineWindow";
-
-    NWNX_PushArgumentObject(placeable);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(placeable);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ForcePlaceableExamineWindow");
 }
 
 void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable)
 {
-    string sFunc = "ForcePlaceableInventoryWindow";
-
-    NWNX_PushArgumentObject(placeable);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(placeable);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ForcePlaceableInventoryWindow");
 }
 
 void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", int id = -1) ///< @private
@@ -482,17 +475,12 @@ void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", in
     // Either the timing event was never started, or it already finished.
     if (activeId == 0)
         return;
-
     // If id != -1, we ended up here through DelayCommand. Make sure it's for the right ID
     if (id != -1 && id != activeId)
         return;
-
     DeleteLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE");
-
-    string sFunc = "StopGuiTimingBar";
-    NWNX_PushArgumentObject(player);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "StopGuiTimingBar");
     if(script != "")
     {
         ExecuteScript(script, player);
@@ -503,18 +491,13 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 {
     if (GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE"))
         return;
-
-    string sFunc = "StartGuiTimingBar";
-    NWNX_PushArgumentInt(type);
-    NWNX_PushArgumentFloat(seconds);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-
+    NWNXPushInt(type);
+    NWNXPushFloat(seconds);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "StartGuiTimingBar");
     int id = GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ID") + 1;
     SetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE", id);
     SetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ID", id);
-
     DelayCommand(seconds, NWNX_Player_INTERNAL_StopGuiTimingBar(player, script, id));
 }
 
@@ -525,638 +508,471 @@ void NWNX_Player_StopGuiTimingBar(object player, string script = "")
 
 void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE)
 {
-    string sFunc = "SetAlwaysWalk";
-
-    NWNX_PushArgumentInt(bWalk);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bWalk);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetAlwaysWalk");
 }
 
 struct NWNX_Player_QuickBarSlot NWNX_Player_GetQuickBarSlot(object player, int slot)
 {
-    string sFunc = "GetQuickBarSlot";
     struct NWNX_Player_QuickBarSlot qbs;
-
-    NWNX_PushArgumentInt(slot);
-    NWNX_PushArgumentObject(player);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-
-    qbs.oAssociate     = NWNX_GetReturnValueObject();
-    qbs.nAssociateType = NWNX_GetReturnValueInt();
-    qbs.nDomainLevel   = NWNX_GetReturnValueInt();
-    qbs.nMetaType      = NWNX_GetReturnValueInt();
-    qbs.nINTParam1     = NWNX_GetReturnValueInt();
-    qbs.sToolTip       = NWNX_GetReturnValueString();
-    qbs.sCommandLine   = NWNX_GetReturnValueString();
-    qbs.sCommandLabel  = NWNX_GetReturnValueString();
-    qbs.sResRef        = NWNX_GetReturnValueString();
-    qbs.nMultiClass    = NWNX_GetReturnValueInt();
-    qbs.nObjectType    = NWNX_GetReturnValueInt();
-    qbs.oSecondaryItem = NWNX_GetReturnValueObject();
-    qbs.oItem          = NWNX_GetReturnValueObject();
-
+    NWNXPushInt(slot);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "GetQuickBarSlot");
+    qbs.oAssociate     = NWNXPopObject();
+    qbs.nAssociateType = NWNXPopInt();
+    qbs.nDomainLevel   = NWNXPopInt();
+    qbs.nMetaType      = NWNXPopInt();
+    qbs.nINTParam1     = NWNXPopInt();
+    qbs.sToolTip       = NWNXPopString();
+    qbs.sCommandLine   = NWNXPopString();
+    qbs.sCommandLabel  = NWNXPopString();
+    qbs.sResRef        = NWNXPopString();
+    qbs.nMultiClass    = NWNXPopInt();
+    qbs.nObjectType    = NWNXPopInt();
+    qbs.oSecondaryItem = NWNXPopObject();
+    qbs.oItem          = NWNXPopObject();
     return qbs;
 }
 
 void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_QuickBarSlot qbs)
 {
-    string sFunc = "SetQuickBarSlot";
-
-    NWNX_PushArgumentObject(qbs.oItem);
-    NWNX_PushArgumentObject(qbs.oSecondaryItem);
-    NWNX_PushArgumentInt(qbs.nObjectType);
-    NWNX_PushArgumentInt(qbs.nMultiClass);
-    NWNX_PushArgumentString(qbs.sResRef);
-    NWNX_PushArgumentString(qbs.sCommandLabel);
-    NWNX_PushArgumentString(qbs.sCommandLine);
-    NWNX_PushArgumentString(qbs.sToolTip);
-    NWNX_PushArgumentInt(qbs.nINTParam1);
-    NWNX_PushArgumentInt(qbs.nMetaType);
-    NWNX_PushArgumentInt(qbs.nDomainLevel);
-    NWNX_PushArgumentInt(qbs.nAssociateType);
-    NWNX_PushArgumentObject(qbs.oAssociate);
-
-    NWNX_PushArgumentInt(slot);
-    NWNX_PushArgumentObject(player);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(qbs.oItem);
+    NWNXPushObject(qbs.oSecondaryItem);
+    NWNXPushInt(qbs.nObjectType);
+    NWNXPushInt(qbs.nMultiClass);
+    NWNXPushString(qbs.sResRef);
+    NWNXPushString(qbs.sCommandLabel);
+    NWNXPushString(qbs.sCommandLine);
+    NWNXPushString(qbs.sToolTip);
+    NWNXPushInt(qbs.nINTParam1);
+    NWNXPushInt(qbs.nMetaType);
+    NWNXPushInt(qbs.nDomainLevel);
+    NWNXPushInt(qbs.nAssociateType);
+    NWNXPushObject(qbs.oAssociate);
+    NWNXPushInt(slot);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetQuickBarSlot");
 }
 
 string NWNX_Player_GetBicFileName(object player)
 {
-    string sFunc = "GetBicFileName";
-
-    NWNX_PushArgumentObject(player);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueString();
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "GetBicFileName");
+    return NWNXPopString();
 }
 
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position, float scale=1.0f, vector translate=[], vector rotate=[])
 {
-    string sFunc = "ShowVisualEffect";
-
-    NWNX_PushArgumentFloat(rotate.x);
-    NWNX_PushArgumentFloat(rotate.y);
-    NWNX_PushArgumentFloat(rotate.z);
-    NWNX_PushArgumentFloat(translate.x);
-    NWNX_PushArgumentFloat(translate.y);
-    NWNX_PushArgumentFloat(translate.z);
-    NWNX_PushArgumentFloat(scale);
-    NWNX_PushArgumentFloat(position.x);
-    NWNX_PushArgumentFloat(position.y);
-    NWNX_PushArgumentFloat(position.z);
-    NWNX_PushArgumentInt(effectId);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushVector(rotate);
+    NWNXPushVector(translate);
+    NWNXPushFloat(scale);
+    NWNXPushVector(position);
+    NWNXPushInt(effectId);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ShowVisualEffect");
 }
 
 void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
 {
-    string sFunc = "ChangeBackgroundMusic";
-
-    NWNX_PushArgumentInt(track);
-    NWNX_PushArgumentInt(TRUE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(track);
+    NWNXPushInt(TRUE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ChangeBackgroundMusic");
 }
 
 void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
 {
-    string sFunc = "ChangeBackgroundMusic";
-
-    NWNX_PushArgumentInt(track);
-    NWNX_PushArgumentInt(FALSE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(track);
+    NWNXPushInt(FALSE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ChangeBackgroundMusic");
 }
 
 void NWNX_Player_MusicBackgroundStart(object player)
 {
-    string sFunc = "PlayBackgroundMusic";
-
-    NWNX_PushArgumentInt(TRUE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(TRUE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "PlayBackgroundMusic");
 }
 
 void NWNX_Player_MusicBackgroundStop(object player)
 {
-    string sFunc = "PlayBackgroundMusic";
-
-    NWNX_PushArgumentInt(FALSE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(FALSE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "PlayBackgroundMusic");
 }
 
 void NWNX_Player_MusicBattleChange(object player, int track)
 {
-    string sFunc = "ChangeBattleMusic";
-
-    NWNX_PushArgumentInt(track);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(track);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ChangeBattleMusic");
 }
 
 void NWNX_Player_MusicBattleStart(object player)
 {
-    string sFunc = "PlayBattleMusic";
-
-    NWNX_PushArgumentInt(TRUE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(TRUE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "PlayBattleMusic");
 }
 
 void NWNX_Player_MusicBattleStop(object player)
 {
-    string sFunc = "PlayBattleMusic";
-
-    NWNX_PushArgumentInt(FALSE);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(FALSE);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "PlayBattleMusic");
 }
 
 void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID)
 {
-    string sFunc = "PlaySound";
-
-    NWNX_PushArgumentObject(target);
-    NWNX_PushArgumentString(sound);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(target);
+    NWNXPushString(sound);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "PlaySound");
 }
 
 void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 {
-    string sFunc = "SetPlaceableUsable";
-
-    NWNX_PushArgumentInt(usable);
-    NWNX_PushArgumentObject(placeable);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(usable);
+    NWNXPushObject(placeable);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetPlaceableUsable");
 }
 
 void NWNX_Player_SetRestDuration(object player, int duration)
 {
-    string sFunc = "SetRestDuration";
-
-    NWNX_PushArgumentInt(duration);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(duration);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetRestDuration");
 }
 
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect, float scale=1.0f, vector translate=[], vector rotate=[])
 {
-    string sFunc = "ApplyInstantVisualEffectToObject";
-
-    NWNX_PushArgumentFloat(rotate.z);
-    NWNX_PushArgumentFloat(rotate.y);
-    NWNX_PushArgumentFloat(rotate.x);
-    NWNX_PushArgumentFloat(translate.z);
-    NWNX_PushArgumentFloat(translate.y);
-    NWNX_PushArgumentFloat(translate.x);
-    NWNX_PushArgumentFloat(scale);
-    NWNX_PushArgumentInt(visualeffect);
-    NWNX_PushArgumentObject(target);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushVector(rotate);
+    NWNXPushVector(translate);
+    NWNXPushFloat(scale);
+    NWNXPushInt(visualeffect);
+    NWNXPushObject(target);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ApplyInstantVisualEffectToObject");
 }
 
 void NWNX_Player_UpdateCharacterSheet(object player)
 {
-    string sFunc = "UpdateCharacterSheet";
-
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "UpdateCharacterSheet");
 }
 
 void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
 {
-    string sFunc = "OpenInventory";
-
-    NWNX_PushArgumentInt(open);
-    NWNX_PushArgumentObject(target);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(open);
+    NWNXPushObject(target);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "OpenInventory");
 }
 
 string NWNX_Player_GetAreaExplorationState(object player, object area)
 {
-    string sFunc = "GetAreaExplorationState";
-
-    NWNX_PushArgumentObject(area);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return  NWNX_GetReturnValueString();
+    NWNXPushObject(area);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "GetAreaExplorationState");
+    return  NWNXPopString();
 }
 
 void NWNX_Player_SetAreaExplorationState(object player, object area, string str)
 {
-    string sFunc = "SetAreaExplorationState";
-
-    NWNX_PushArgumentString(str);
-    NWNX_PushArgumentObject(area);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(str);
+    NWNXPushObject(area);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetAreaExplorationState");
 }
 
 void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation)
 {
-    string sFunc = "SetRestAnimation";
-
-    NWNX_PushArgumentInt(nAnimation);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nAnimation);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetRestAnimation");
 }
 
 void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue)
 {
-    string sFunc = "SetObjectVisualTransformOverride";
-
-    NWNX_PushArgumentFloat(fValue);
-    NWNX_PushArgumentInt(nTransform);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushFloat(fValue);
+    NWNXPushInt(nTransform);
+    NWNXPushObject(oObject);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetObjectVisualTransformOverride");
 }
 
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect)
 {
-    string sFunc = "ApplyLoopingVisualEffectToObject";
-
-    NWNX_PushArgumentInt(visualeffect);
-    NWNX_PushArgumentObject(target);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(visualeffect);
+    NWNXPushObject(target);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "ApplyLoopingVisualEffectToObject");
 }
 
 void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, string name)
 {
-    string sFunc = "SetPlaceableNameOverride";
-
-    NWNX_PushArgumentString(name);
-    NWNX_PushArgumentObject(placeable);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(name);
+    NWNXPushObject(placeable);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "SetPlaceableNameOverride");
 }
 
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
 {
-    string sFunc = "GetQuestCompleted";
-
-    NWNX_PushArgumentString(sQuestName);
-    NWNX_PushArgumentObject(player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(sQuestName);
+    NWNXPushObject(player);
+    NWNXCall(NWNX_Player, "GetQuestCompleted");
+    return NWNXPopInt();
 }
 
 void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE)
 {
-    string sFunc = "SetPersistentLocation";
-
-    NWNX_PushArgumentInt(bFirstConnectOnly);
-    NWNX_PushArgumentObject(oWP);
-    NWNX_PushArgumentString(sBicFileName);
-    NWNX_PushArgumentString(sCDKeyOrCommunityName);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bFirstConnectOnly);
+    NWNXPushObject(oWP);
+    NWNXPushString(sBicFileName);
+    NWNXPushString(sCDKeyOrCommunityName);
+    NWNXCall(NWNX_Player, "SetPersistentLocation");
 }
 
 void NWNX_Player_UpdateItemName(object oPlayer, object oItem)
 {
-    string sFunc = "UpdateItemName";
-
-    NWNX_PushArgumentObject(oItem);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(oItem);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "UpdateItemName");
 }
 
 int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindImmune = TRUE, int bCreateDefaultQB = FALSE)
 {
-    string sFunc = "PossessCreature";
-
-    NWNX_PushArgumentInt(bCreateDefaultQB);
-    NWNX_PushArgumentInt(bMindImmune);
-    NWNX_PushArgumentObject(oPossessed);
-    NWNX_PushArgumentObject(oPossessor);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(bCreateDefaultQB);
+    NWNXPushInt(bMindImmune);
+    NWNXPushObject(oPossessed);
+    NWNXPushObject(oPossessor);
+    NWNXCall(NWNX_Player, "PossessCreature");
+    return NWNXPopInt();
 }
 
 int NWNX_Player_GetPlatformId(object oPlayer)
 {
-    string sFunc = "GetPlatformId";
-
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetPlatformId");
+    return NWNXPopInt();
 }
 
 int NWNX_Player_GetLanguage(object oPlayer)
 {
-    string sFunc = "GetLanguage";
-
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetLanguage");
+    return NWNXPopInt();
 }
 
 void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName)
 {
-    string sFunc = "SetResManOverride";
-
-    NWNX_PushArgumentString(sNewResName);
-    NWNX_PushArgumentString(sOldResName);
-    NWNX_PushArgumentInt(nResType);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(sNewResName);
+    NWNXPushString(sOldResName);
+    NWNXPushInt(nResType);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetResManOverride");
 }
 
 void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string sTokenValue)
 {
-    string sFunc = "SetCustomToken";
-
-    NWNX_PushArgumentString(sTokenValue);
-    NWNX_PushArgumentInt(nCustomTokenNumber);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(sTokenValue);
+    NWNXPushInt(nCustomTokenNumber);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetCustomToken");
 }
 
 void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName)
 {
-    string sFunc = "SetCreatureNameOverride";
-
-    NWNX_PushArgumentString(sName);
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(sName);
+    NWNXPushObject(oCreature);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetCreatureNameOverride");
 }
 
 void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText, int bChatWindow = TRUE)
 {
-    string sFunc = "FloatingTextStringOnCreature";
-
-    NWNX_PushArgumentInt(bChatWindow);
-    NWNX_PushArgumentString(sText);
-    NWNX_PushArgumentObject(oCreature);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bChatWindow);
+    NWNXPushString(sText);
+    NWNXPushObject(oCreature);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "FloatingTextStringOnCreature");
 }
 
 void NWNX_Player_ToggleDM(object oPlayer, int bIsDM)
 {
-    string sFunc = "ToggleDM";
-
-    NWNX_PushArgumentInt(bIsDM);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bIsDM);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "ToggleDM");
 }
 
 void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor)
 {
-    string sFunc = "SetObjectMouseCursorOverride";
-
-    NWNX_PushArgumentInt(nCursor);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nCursor);
+    NWNXPushObject(oObject);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetObjectMouseCursorOverride");
 }
 
 void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor)
 {
-    string sFunc = "SetObjectHiliteColorOverride";
-
-    NWNX_PushArgumentInt(nColor);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nColor);
+    NWNXPushObject(oObject);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetObjectHiliteColorOverride");
 }
 
 void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag)
 {
-    string sFunc = "RemoveEffectFromTURD";
-
-    NWNX_PushArgumentString(sEffectTag);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushString(sEffectTag);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "RemoveEffectFromTURD");
 }
 
 void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn)
 {
-    string sFunc = "SetSpawnLocation";
-
-    vector vPosition = GetPositionFromLocation(locSpawn);
-
-    NWNX_PushArgumentFloat(GetFacingFromLocation(locSpawn));
-    NWNX_PushArgumentFloat(vPosition.z);
-    NWNX_PushArgumentFloat(vPosition.y);
-    NWNX_PushArgumentFloat(vPosition.x);
-    NWNX_PushArgumentObject(GetAreaFromLocation(locSpawn));
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushLocation(locSpawn);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetSpawnLocation");
 }
 
 void NWNX_Player_SendDMAllCreatorLists(object oPlayer)
 {
-    string sFunc = "SendDMAllCreatorLists";
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SendDMAllCreatorLists");
 }
 
 int NWNX_Player_AddCustomJournalEntry(object oPlayer, struct NWNX_Player_JournalEntry journalEntry, int nSilentUpdate = 0)
 {
-    string sFunc = "AddCustomJournalEntry";
-    NWNX_PushArgumentInt(nSilentUpdate);
-    NWNX_PushArgumentInt(journalEntry.nTimeOfDay);
-    NWNX_PushArgumentInt(journalEntry.nCalendarDay);
-    NWNX_PushArgumentInt(journalEntry.nUpdated);
-    NWNX_PushArgumentInt(journalEntry.nQuestDisplayed);
-    NWNX_PushArgumentInt(journalEntry.nQuestCompleted);
-    NWNX_PushArgumentInt(journalEntry.nPriority);
-    NWNX_PushArgumentInt(journalEntry.nState);
-    NWNX_PushArgumentString(journalEntry.sTag);
-    NWNX_PushArgumentString(journalEntry.sText);
-    NWNX_PushArgumentString(journalEntry.sName);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXPushInt(nSilentUpdate);
+    NWNXPushInt(journalEntry.nTimeOfDay);
+    NWNXPushInt(journalEntry.nCalendarDay);
+    NWNXPushInt(journalEntry.nUpdated);
+    NWNXPushInt(journalEntry.nQuestDisplayed);
+    NWNXPushInt(journalEntry.nQuestCompleted);
+    NWNXPushInt(journalEntry.nPriority);
+    NWNXPushInt(journalEntry.nState);
+    NWNXPushString(journalEntry.sTag);
+    NWNXPushString(journalEntry.sText);
+    NWNXPushString(journalEntry.sName);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "AddCustomJournalEntry");
+    return NWNXPopInt();
 }
 
 struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, string questTag)
 {
-    string sFunc = "GetJournalEntry";
     struct NWNX_Player_JournalEntry entry;
-
-    NWNX_PushArgumentString(questTag);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-
-    entry.nUpdated = NWNX_GetReturnValueInt();
+    NWNXPushString(questTag);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetJournalEntry");
+    entry.nUpdated = NWNXPopInt();
     if(entry.nUpdated == -1) // -1 set as an indicator to say that the entry was not found
     {
         return entry;
     }
-    entry.nQuestDisplayed = NWNX_GetReturnValueInt();
-    entry.nQuestCompleted = NWNX_GetReturnValueInt();
-    entry.nPriority = NWNX_GetReturnValueInt();
-    entry.nState = NWNX_GetReturnValueInt();
-    entry.nTimeOfDay = NWNX_GetReturnValueInt();
-    entry.nCalendarDay = NWNX_GetReturnValueInt();
-    entry.sName = NWNX_GetReturnValueString();
-    entry.sText = NWNX_GetReturnValueString();
+    entry.nQuestDisplayed = NWNXPopInt();
+    entry.nQuestCompleted = NWNXPopInt();
+    entry.nPriority = NWNXPopInt();
+    entry.nState = NWNXPopInt();
+    entry.nTimeOfDay = NWNXPopInt();
+    entry.nCalendarDay = NWNXPopInt();
+    entry.sName = NWNXPopString();
+    entry.sText = NWNXPopString();
     entry.sTag = questTag;
     return entry;
 }
 
 void NWNX_Player_CloseStore(object oPlayer)
 {
-    string sFunc = "CloseStore";
-
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "CloseStore");
 }
 
 void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal = TRUE)
 {
-    string sFunc = "SetTlkOverride";
-
-    NWNX_PushArgumentInt(bRestoreGlobal);
-    NWNX_PushArgumentString(sOverride);
-    NWNX_PushArgumentInt(nStrRef);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bRestoreGlobal);
+    NWNXPushString(sOverride);
+    NWNXPushInt(nStrRef);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetTlkOverride");
 }
 
 void NWNX_Player_ReloadTlk(object oPlayer)
 {
-    string sFunc = "ReloadTlk";
-
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "ReloadTlk");
 }
 
 void NWNX_Player_UpdateWind(object oPlayer, vector vDirection, float fMagnitude, float fYaw, float fPitch)
 {
-    string sFunc = "UpdateWind";
-
-    NWNX_PushArgumentFloat(fPitch);
-    NWNX_PushArgumentFloat(fYaw);
-    NWNX_PushArgumentFloat(fMagnitude);
-    NWNX_PushArgumentFloat(vDirection.x);
-    NWNX_PushArgumentFloat(vDirection.y);
-    NWNX_PushArgumentFloat(vDirection.z);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushFloat(fPitch);
+    NWNXPushFloat(fYaw);
+    NWNXPushFloat(fMagnitude);
+    NWNXPushVector(vDirection);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "UpdateWind");
 }
 
 void NWNX_Player_UpdateSkyBox(object oPlayer, int nSkyBox)
 {
-    string sFunc = "UpdateSkyBox";
-
-    NWNX_PushArgumentInt(nSkyBox);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nSkyBox);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "UpdateSkyBox");
 }
 
 void NWNX_Player_UpdateFogColor(object oPlayer, int nSunFogColor, int nMoonFogColor)
 {
-    string sFunc = "UpdateFogColor";
-
-    NWNX_PushArgumentInt(nMoonFogColor);
-    NWNX_PushArgumentInt(nSunFogColor);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nMoonFogColor);
+    NWNXPushInt(nSunFogColor);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "UpdateFogColor");
 }
 
 void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFogAmount)
 {
-    string sFunc = "UpdateFogAmount";
-
-    NWNX_PushArgumentInt(nMoonFogAmount);
-    NWNX_PushArgumentInt(nSunFogAmount);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nMoonFogAmount);
+    NWNXPushInt(nSunFogAmount);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "UpdateFogAmount");
 }
 
 object NWNX_Player_GetGameObject(object oPlayer)
 {
-    string sFunc = "GetGameObject";
-
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueObject();
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetGameObject");
+    return NWNXPopObject();
 }
 
 void NWNX_Player_SetObjectUiDiscoveryMaskOverride(object oPlayer, object oObject, int nMask)
 {
-    string sFunc = "SetObjectUiDiscoveryMaskOverride";
-
-    NWNX_PushArgumentInt(nMask);
-    NWNX_PushArgumentObject(oObject);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(nMask);
+    NWNXPushObject(oObject);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SetObjectUiDiscoveryMaskOverride");
 }
 
 void NWNX_Player_SendPartyInvite(object oPlayer, object oInviter, int bForceInvite = FALSE, int bHideDialog = FALSE)
 {
-    string sFunc = "SendPartyInvite";
-
-    NWNX_PushArgumentInt(bHideDialog);
-    NWNX_PushArgumentInt(bForceInvite);
-    NWNX_PushArgumentObject(oInviter);
-    NWNX_PushArgumentObject(oPlayer);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushInt(bHideDialog);
+    NWNXPushInt(bForceInvite);
+    NWNXPushObject(oInviter);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "SendPartyInvite");
 }
 
 object NWNX_Player_GetTURD(object oPlayer)
 {
-    string sFunc = "GetTURD";
-
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
-
-    return NWNX_GetReturnValueObject();
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetTURD");
+    return NWNXPopObject();
 }
 
 void NWNX_Player_ReloadColorPalettes(object oPlayer)
 {
-    string sFunc = "ReloadColorPalettes";
-
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Player, sFunc);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "ReloadColorPalettes");
 }

@@ -88,7 +88,6 @@ MarshalPtr(CNWVisibilityNode*, void*)
 MarshalPtr(CObjectLookupTable*, void*)
 MarshalPtr(CPathfindInfoIntraTileSuccessors*, void*)
 MarshalPtr(CScriptCompiler*, void*)
-MarshalPtr(CScriptLog*, void*)
 MarshalPtr(CScriptParseTreeNode*, void*)
 MarshalPtr(CSpell_Add*, void*)
 MarshalPtr(CSpell_Delete*, void*)
@@ -184,7 +183,6 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %template(CExoLinkedListCKeyTableInfo) CExoLinkedList<CKeyTableInfo>;
 %template(CExoLinkedListCLastUpdateObject) CExoLinkedList<CLastUpdateObject>;
 %template(CExoLinkedListCLastUpdatePartyObject) CExoLinkedList<CLastUpdatePartyObject>;
-%template(CExoLinkedListCNWSClient) CExoLinkedList<CNWSClient>;
 %template(CExoLinkedListCNWSCombatRoundAction) CExoLinkedList<CNWSCombatRoundAction>;
 %template(CExoLinkedListCNWSDialogPlayer) CExoLinkedList<CNWSDialogPlayer>;
 %template(CExoLinkedListCNWSObjectActionNode) CExoLinkedList<CNWSObjectActionNode>;
@@ -194,9 +192,7 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 %template(CExoLinkedListCResRef) CExoLinkedList<CResRef>;
 %template(CExoLinkedListCServerAIEventNode) CExoLinkedList<CServerAIEventNode>;
 %template(CExoLinkedListEXOLOCSTRING) CExoLinkedList<EXOLOCSTRING>;
-%template(CExoLinkedListNWAreaExpansion) CExoLinkedList<NWAREAEXPANSION>;
 %template(CExoLinkedListNWModuleCutscene) CExoLinkedList<NWMODULECUTSCENE>;
-%template(CExoLinkedListNWModuleExpansion) CExoLinkedList<NWMODULEEXPANSION>;
 %template(CExoLinkedListNWPlayerListItem) CExoLinkedList<NWPLAYERLISTITEM>;
 %template(CExoLinkedListObjectId) CExoLinkedList<OBJECT_ID>;
 
@@ -225,7 +221,6 @@ MapArray(CNWActionNode, CNWActionNode, CNWActionNodeArray);
 MapArray(CNWSCombatAttackData, CNWSCombatAttackData, CNWSCombatAttackDataArray);
 MapArray(CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfoArray);
 MapArray(CNWTileSet*, CNWTileSet, CNWTileSetPtrArray);
-MapArray(CObjectLookupTable*, CObjectLookupTable, CObjectLookupTablePtrArray);
 MapArray(CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntryArray);
 MapArray(CScriptParseTreeNode, CScriptParseTreeNode, CScriptParseTreeNodeArray);
 MapArray(CServerAIList, CServerAIList, CServerAIListArray);
@@ -282,7 +277,6 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListCNWVisibilityNodePtr) CExoArrayList<CNWVisibilityNode *>;
 %template(CExoArrayListCNWVisibilityNode) CExoArrayList<CNWVisibilityNode>;
 %template(CExoArrayListCResRef) CExoArrayList<CResRef>;
-%template(CExoArrayListCScriptLogPtr) CExoArrayList<CScriptLog *>;
 %template(CExoArrayListCSpellAddPtr) CExoArrayList<CSpell_Add *>;
 %template(CExoArrayListCSpellDeletePtr) CExoArrayList<CSpell_Delete *>;
 %template(CExoArrayListCStoreCustomerPtr) CExoArrayList<CStoreCustomer *>;
@@ -294,7 +288,6 @@ MapArray(CNWClass_Skill, CNWClass_Skill, CNWClass_SkillArray);
 %template(CExoArrayListNWPlayerCharacterListClass) CExoArrayList<NWPlayerCharacterListClass_st>;
 %template(CExoArrayListScriptParam) CExoArrayList<ScriptParam>;
 %template(CExoArrayListSJournalEntry) CExoArrayList<SJournalEntry>;
-%template(CExoArrayListSSubNetProfilePtr) CExoArrayList<SSubNetProfile *>;
 %template(CExoArrayListTextureReplaceInfo) CExoArrayList<TextureReplaceInfo>;
 %template(CExoArrayListUInt16) CExoArrayList<uint16_t>;
 %template(CExoArrayListUInt32) CExoArrayList<uint32_t>;
@@ -313,7 +306,6 @@ DefineArray(CNWActionNode, CNWActionNode, CNWActionNodeArray);
 DefineArray(CNWSCombatAttackData, CNWSCombatAttackData, CNWSCombatAttackDataArray);
 DefineArray(CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfo, CNWSCreatureStats_ClassInfoArray);
 DefineArray(CNWTileSet*, CNWTileSet, CNWTileSetPtrArray);
-DefineArray(CObjectLookupTable*, CObjectLookupTable, CObjectLookupTablePtrArray);
 DefineArray(CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntry, CScriptCompilerIncludeFileStackEntryArray);
 DefineArray(CScriptParseTreeNode, CScriptParseTreeNode, CScriptParseTreeNodeArray);
 DefineArray(CServerAIList, CServerAIList, CServerAIListArray);
@@ -421,7 +413,6 @@ SWIG_DOTNET_DESTRUCTORS(CNWSAmbientSound)
 SWIG_DOTNET_DESTRUCTORS(CNWSArea)
 SWIG_DOTNET_DESTRUCTORS(CNWSAreaOfEffectObject)
 SWIG_DOTNET_DESTRUCTORS(CNWSBarter)
-SWIG_DOTNET_DESTRUCTORS(CNWSClient)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatAttackData)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatRound)
 SWIG_DOTNET_DESTRUCTORS(CNWSCombatRoundAction)
@@ -456,7 +447,6 @@ SWIG_DOTNET_DESTRUCTORS(CNWSPlayerTURD)
 SWIG_DOTNET_DESTRUCTORS(CNWSRules)
 SWIG_DOTNET_DESTRUCTORS(CNWSSoundObject)
 SWIG_DOTNET_DESTRUCTORS(CNWSStore)
-SWIG_DOTNET_DESTRUCTORS(CNWSSysAdmin)
 SWIG_DOTNET_DESTRUCTORS(CNWSTile)
 SWIG_DOTNET_DESTRUCTORS(CNWSTrigger)
 SWIG_DOTNET_DESTRUCTORS(CNWSUUID)

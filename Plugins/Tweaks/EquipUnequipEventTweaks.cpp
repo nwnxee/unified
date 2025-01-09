@@ -32,16 +32,16 @@ void EquipUnequipEventTweaks()
     if (s_bEquipForAll || s_bNoEquipEventDelay)
     {
         static Hooks::Hook s_EquipItemHook = Hooks::HookFunction(&CNWSCreature::EquipItem,
-            +[](CNWSCreature* pCreature, uint32_t nInventorySlot, CNWSItem* pItem, BOOL bApplyPropertyEffects, BOOL bLoadingItem) -> BOOL
+            +[](CNWSCreature* pCreature, uint32_t nInventorySlot, CNWSItem* pItem, BOOL bApplyPropertyEffects, BOOL bLoadingItem, BOOL bRunEquipEvent) -> BOOL
             {
-                if (((s_bEquipForAll) || (pCreature->m_pStats->m_bIsPC)) && (!s_bNoEquipEventDelay))
+                if (((s_bEquipForAll) || (pCreature->m_pStats->m_bIsPC && bRunEquipEvent)) && (!s_bNoEquipEventDelay))
                 {
                     CScriptEvent* pEvent = new CScriptEvent();
                     pEvent->m_nType = Constants::ScriptEvent::OnEquipItem;
                     pEvent->SetObjectID(0, pItem->m_idSelf);
                     pEvent->SetObjectID(1, pCreature->m_idSelf);
                     pEvent->SetInteger(0, pCreature->m_pInventory->GetArraySlotFromSlotFlag(nInventorySlot));
-                    
+
                     auto pServerAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
                     pServerAIMaster->AddEventDeltaTime(0, 0, pCreature->m_idSelf, Utils::GetModule()->m_idSelf, Constants::AIMasterEvent::SignalEvent, (void*)pEvent);
                 }
@@ -76,12 +76,12 @@ void EquipUnequipEventTweaks()
     if (s_bEquipForAll)
     {
         static Hooks::Hook s_UnEquipItemHook = Hooks::HookFunction(&CNWSCreature::UnequipItem,
-            +[](CNWSCreature* pCreature, CNWSItem * pItem, BOOL bUnequipWhilePolymorphed) -> BOOL
+            +[](CNWSCreature* pCreature, CNWSItem * pItem, BOOL bUnequipWhilePolymorphed, BOOL bRunUnequipEvent) -> BOOL
             {
                 if ((pCreature->m_bIsPolymorphed) && (!bUnequipWhilePolymorphed))
                     return false;
 
-                if ((s_bEquipForAll) || (pCreature->m_pStats->m_bIsPC))
+                if ((s_bEquipForAll) || (pCreature->m_pStats->m_bIsPC && bRunUnequipEvent))
                 {
                     auto* pModule = Utils::GetModule();
                     pModule->m_oidLastItemUnequippedBy = pCreature->m_idSelf;
@@ -89,7 +89,7 @@ void EquipUnequipEventTweaks()
                     pModule->m_nLastItemUnequippedSlot = pCreature->m_pInventory->GetArraySlotFromSlotFlag(pCreature->m_pInventory->GetSlotFromItem(pItem));
                     pModule->RunEventScript(16, nullptr);
                 }
-            
+
                 pItem->RemoveItemProperties(pCreature, pCreature->m_pInventory->GetSlotFromItem(pItem));
                 pCreature->m_pInventory->RemoveItem(pItem);
                 pCreature->ComputeArmourClass(pItem, true, false);

@@ -264,33 +264,13 @@ NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        Vector pos;
-        auto effectId = args.extract<int32_t>();
+        const auto effectId = args.extract<int32_t>();
           ASSERT_OR_THROW(effectId >= 0);
           ASSERT_OR_THROW(effectId <= 0xFFFF);
-        pos.z = args.extract<float>();
-        pos.y = args.extract<float>();
-        pos.x = args.extract<float>();
-
-        float fScale = 1.0;
-        Vector vTranslate = { 0.0, 0.0, 0.0 };
-        Vector vRotation = { 0.0, 0.0, 0.0 };
-        try
-        {
-            fScale = args.extract<float>();
-
-            vTranslate.z = args.extract<float>();
-            vTranslate.y = args.extract<float>();
-            vTranslate.x = args.extract<float>();
-
-            vRotation.z = args.extract<float>();
-            vRotation.y = args.extract<float>();
-            vRotation.x = args.extract<float>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Player_ShowVisualEffect: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
-        }
+        const auto vPosition = args.extract<Vector>();
+        const auto fScale = args.extract<float>();
+        const auto vTranslate = args.extract<Vector>();
+        const auto vRotation = args.extract<Vector>();
 
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
@@ -299,7 +279,7 @@ NWNX_EXPORT ArgumentStack ShowVisualEffect(ArgumentStack&& args)
             ovtd.m_scopes[0].m_rotate = vRotation;
             ovtd.m_scopes[0].m_translate = vTranslate;
             ovtd.m_scopes[0].m_animationSpeed = 1.0f;
-            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos, ovtd);
+            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, vPosition, ovtd);
         }
     }
     return {};
@@ -467,31 +447,13 @@ NWNX_EXPORT ArgumentStack ApplyInstantVisualEffectToObject(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        auto oidTarget = args.extract<ObjectID>();
+        const auto oidTarget = args.extract<ObjectID>();
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
-        auto visualEffect = args.extract<int32_t>();
+        const auto visualEffect = args.extract<int32_t>();
           ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
-
-        float fScale = 1.0;
-        Vector vTranslate = { 0.0, 0.0, 0.0 };
-        Vector vRotation = { 0.0, 0.0, 0.0 };
-        try
-        {
-            fScale = args.extract<float>();
-
-            vTranslate.x = args.extract<float>();
-            vTranslate.y = args.extract<float>();
-            vTranslate.z = args.extract<float>();
-
-            vRotation.x = args.extract<float>();
-            vRotation.y = args.extract<float>();
-            vRotation.z = args.extract<float>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Player_ApplyInstantVisualEffectToObject: Missing transformation arguments. Continuing with default values. Please update nwnx_player.nss and recompile your module!");
-        }
-
+        const auto fScale = args.extract<float>();
+        const auto vTranslate = args.extract<Vector>();
+        const auto vRotation = args.extract<Vector>();
         Vector vTargetPosition {};
 
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
@@ -933,7 +895,7 @@ NWNX_EXPORT ArgumentStack SetPersistentLocation(ArgumentStack&& args)
                     {
                         auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
                         auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-                        std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+                        std::string sCDKey = pPlayerInfo->m_cCDKey.sPublic.CStr();
                         sKey = sCDKey + "!" + sBicFileName;
                     }
                     auto wpOID = s_PersistentLocationWP[sKey].first;
@@ -1263,16 +1225,7 @@ NWNX_EXPORT ArgumentStack FloatingTextStringOnCreature(ArgumentStack&& args)
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         auto text = args.extract<std::string>();
           ASSERT_OR_THROW(!text.empty());
-
-        int32_t bChatWindow = true;
-        try
-        {
-            bChatWindow = !!args.extract<int32_t>();
-        }
-        catch(const std::runtime_error&)
-        {
-            LOG_WARNING("NWNX_Player_FloatingTextStringOnCreature() called from NWScript without 'bChatWindow' parameter. Please update nwnx_player.nss");
-        }
+        const auto bChatWindow = !!args.extract<int32_t>();
 
         if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
         {
@@ -1499,22 +1452,14 @@ NWNX_EXPORT ArgumentStack SetSpawnLocation(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        auto oidArea = args.extract<ObjectID>();
-          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
-          ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
-        auto x = args.extract<float>();
-        auto y = args.extract<float>();
-        auto z = args.extract<float>();
-        auto facing = args.extract<float>();
-
+        const auto locSpawn = args.extract<CScriptLocation>();
         if (auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
         {
             pPlayer->m_bFromTURD = true;
-
-            pCreature->m_oidDesiredArea = oidArea;
-            pCreature->m_vDesiredAreaLocation = {x, y, z};
+            pCreature->m_oidDesiredArea = locSpawn.m_oArea;
+            pCreature->m_vDesiredAreaLocation = locSpawn.m_vPosition;
             pCreature->m_bDesiredAreaUpdateComplete = false;
-            Utils::SetOrientation(pCreature, facing);
+            pCreature->SetOrientation(locSpawn.m_vOrientation);
         }
     }
 
@@ -1750,13 +1695,10 @@ NWNX_EXPORT ArgumentStack UpdateWind(ArgumentStack&& args)
 {
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
-        Vector vDirection;
-        vDirection.z = args.extract<float>();
-        vDirection.y = args.extract<float>();
-        vDirection.x = args.extract<float>();
-        float fMagnitude = args.extract<float>();
-        float fYaw = args.extract<float>();
-        float fPitch = args.extract<float>();
+        const auto vDirection = args.extract<Vector>();
+        const auto fMagnitude = args.extract<float>();
+        const auto fYaw = args.extract<float>();
+        const auto fPitch = args.extract<float>();
 
         if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
         {
@@ -1875,18 +1817,12 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
 {
     if (auto *obj = Utils::PopGameObject(args))
     {
-        auto *playerList = (CExoLinkedList<CNWSClient>*) Globals::AppManager()->m_pServerExoApp->GetPlayerList();
-        CExoLinkedListPosition pListPosition = playerList->GetHeadPos();
-        while (pListPosition != NULL)
+        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
         {
-            auto pPlayer = (CNWSPlayer *) playerList->GetAtPos(pListPosition);
-
             if (pPlayer->m_oidPCObject == obj->m_idSelf)
             {
                 return pPlayer->m_oidNWSObject;
             }
-
-            playerList->GetNext(pListPosition);
         }
     }
 

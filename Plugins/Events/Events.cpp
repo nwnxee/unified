@@ -76,6 +76,9 @@ std::string GetEventData(const std::string& tag)
 
 bool SignalEvent(const std::string& eventName, const ObjectID target, std::string *result)
 {
+    INSTR_SCOPE();
+    INSTR_SCOPE_PROP_STR("Event", eventName.c_str());
+
     bool skipped = false;
 
     CreateNewEventDataIfNeeded();

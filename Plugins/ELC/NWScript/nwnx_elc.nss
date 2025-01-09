@@ -2,7 +2,6 @@
 /// @brief Replacement for ValidateCharacter: ELC & ILR
 /// @{
 /// @file nwnx_elc.nss
-#include "nwnx"
 
 const string NWNX_ELC = "NWNX_ELC"; ///< @private
 
@@ -147,95 +146,71 @@ int NWNX_ELC_GetValidationFailureSpellID();
 
 void NWNX_ELC_SetELCScript(string sScript)
 {
-    string sFunc = "SetELCScript";
-
-    NWNX_PushArgumentString(sScript);
-    NWNX_CallFunction(NWNX_ELC, sFunc);
+    NWNXPushString(sScript);
+    NWNXCall(NWNX_ELC, "SetELCScript");
 }
 
 void NWNX_ELC_EnableCustomELCCheck(int bEnabled)
 {
-    string sFunc = "EnableCustomELCCheck";
-
-    NWNX_PushArgumentInt(bEnabled);
-    NWNX_CallFunction(NWNX_ELC, sFunc);
+    NWNXPushInt(bEnabled);
+    NWNXCall(NWNX_ELC, "EnableCustomELCCheck");
 }
 
 void NWNX_ELC_SkipValidationFailure()
 {
-    string sFunc = "SkipValidationFailure";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
+    NWNXCall(NWNX_ELC, "SkipValidationFailure");
 }
 
 int NWNX_ELC_GetValidationFailureType()
 {
-    string sFunc = "GetValidationFailureType";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureType");
+    return NWNXPopInt();
 }
 
 int NWNX_ELC_GetValidationFailureSubType()
 {
-    string sFunc = "GetValidationFailureSubType";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureSubType");
+    return NWNXPopInt();
 }
 
 int NWNX_ELC_GetValidationFailureMessageStrRef()
 {
-    string sFunc = "GetValidationFailureMessageStrRef";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureMessageStrRef");
+    return NWNXPopInt();
 }
 
 void NWNX_ELC_SetValidationFailureMessageStrRef(int nStrRef)
 {
-    string sFunc = "SetValidationFailureMessageStrRef";
-
-    NWNX_PushArgumentInt(nStrRef);
-    NWNX_CallFunction(NWNX_ELC, sFunc);
+    NWNXPushInt(nStrRef);
+    NWNXCall(NWNX_ELC, "SetValidationFailureMessageStrRef");
 }
 
 object NWNX_ELC_GetValidationFailureItem()
 {
-    string sFunc = "GetValidationFailureItem";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueObject();
+    NWNXCall(NWNX_ELC, "GetValidationFailureItem");
+    return NWNXPopObject();
 }
 
 int NWNX_ELC_GetValidationFailureLevel()
 {
-    string sFunc = "GetValidationFailureLevel";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureLevel");
+    return NWNXPopInt();
 }
 
 int NWNX_ELC_GetValidationFailureSkillID()
 {
-    string sFunc = "GetValidationFailureSkillID";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureSkillID");
+    return NWNXPopInt();
 }
 
 int NWNX_ELC_GetValidationFailureFeatID()
 {
-    string sFunc = "GetValidationFailureFeatID";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureFeatID");
+    return NWNXPopInt();
 }
 
 int NWNX_ELC_GetValidationFailureSpellID()
 {
-    string sFunc = "GetValidationFailureSpellID";
-
-    NWNX_CallFunction(NWNX_ELC, sFunc);
-    return NWNX_GetReturnValueInt();
+    NWNXCall(NWNX_ELC, "GetValidationFailureSpellID");
+    return NWNXPopInt();
 }

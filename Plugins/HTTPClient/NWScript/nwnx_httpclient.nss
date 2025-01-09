@@ -2,7 +2,6 @@
 /// @brief NWNX HTTPClient
 /// @{
 /// @file nwnx_httpclient.nss
-#include "nwnx"
 
 const string NWNX_HTTPClient = "NWNX_HTTPClient"; ///< @private
 
@@ -70,44 +69,39 @@ struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId);
 
 int NWNX_HTTPClient_SendRequest(struct NWNX_HTTPClient_Request s)
 {
-    string sFunc = "SendRequest";
-    NWNX_PushArgumentString(s.sHeaders);
-    NWNX_PushArgumentInt(s.nPort);
-    NWNX_PushArgumentString(s.sAuthPassword);
-    NWNX_PushArgumentString(s.sAuthUserOrToken);
-    NWNX_PushArgumentInt(s.nAuthType);
-    NWNX_PushArgumentString(s.sData);
-    NWNX_PushArgumentInt(s.nContentType);
-    NWNX_PushArgumentString(s.sPath);
-    NWNX_PushArgumentString(s.sHost);
-    NWNX_PushArgumentInt(s.nRequestMethod);
-    NWNX_PushArgumentString(s.sTag);
-    NWNX_CallFunction(NWNX_HTTPClient, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushString(s.sHeaders);
+    NWNXPushInt(s.nPort);
+    NWNXPushString(s.sAuthPassword);
+    NWNXPushString(s.sAuthUserOrToken);
+    NWNXPushInt(s.nAuthType);
+    NWNXPushString(s.sData);
+    NWNXPushInt(s.nContentType);
+    NWNXPushString(s.sPath);
+    NWNXPushString(s.sHost);
+    NWNXPushInt(s.nRequestMethod);
+    NWNXPushString(s.sTag);
+    NWNXCall(NWNX_HTTPClient, "SendRequest");
+    return NWNXPopInt();
 }
 
 struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId)
 {
-
-    string sFunc = "GetRequest";
-
-    NWNX_PushArgumentInt(nRequestId);
-    NWNX_CallFunction(NWNX_HTTPClient, sFunc);
+    NWNXPushInt(nRequestId);
+    NWNXCall(NWNX_HTTPClient, "GetRequest");
 
     struct NWNX_HTTPClient_Request s;
 
-    s.sTag             = NWNX_GetReturnValueString();
-    s.nRequestMethod   = NWNX_GetReturnValueInt();
-    s.sHost            = NWNX_GetReturnValueString();
-    s.sPath            = NWNX_GetReturnValueString();
-    s.nContentType     = NWNX_GetReturnValueInt();
-    s.sData            = NWNX_GetReturnValueString();
-    s.nAuthType        = NWNX_GetReturnValueInt();
-    s.sAuthUserOrToken = NWNX_GetReturnValueString();
-    s.sAuthPassword    = NWNX_GetReturnValueString();
-    s.nPort            = NWNX_GetReturnValueInt();
-    s.sHeaders         = NWNX_GetReturnValueString();
+    s.sTag             = NWNXPopString();
+    s.nRequestMethod   = NWNXPopInt();
+    s.sHost            = NWNXPopString();
+    s.sPath            = NWNXPopString();
+    s.nContentType     = NWNXPopInt();
+    s.sData            = NWNXPopString();
+    s.nAuthType        = NWNXPopInt();
+    s.sAuthUserOrToken = NWNXPopString();
+    s.sAuthPassword    = NWNXPopString();
+    s.nPort            = NWNXPopInt();
+    s.sHeaders         = NWNXPopString();
 
     return s;
 }

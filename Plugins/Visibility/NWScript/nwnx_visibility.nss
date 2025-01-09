@@ -2,7 +2,6 @@
 /// @brief Functions to manipulate visibility of objects both globally or per observer
 /// @{
 /// @file nwnx_visibility.nss
-#include "nwnx"
 
 const string NWNX_Visibility = "NWNX_Visibility"; ///< @private
 
@@ -57,21 +56,16 @@ void NWNX_Visibility_SetVisibilityOverride(object oPlayer, object oTarget, int n
 
 int NWNX_Visibility_GetVisibilityOverride(object oPlayer, object oTarget)
 {
-    string sFunc = "GetVisibilityOverride";
-
-    NWNX_PushArgumentObject(oTarget);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Visibility, sFunc);
-
-    return NWNX_GetReturnValueInt();
+    NWNXPushObject(oTarget);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Visibility, "GetVisibilityOverride");
+    return NWNXPopInt();
 }
 
 void NWNX_Visibility_SetVisibilityOverride(object oPlayer, object oTarget, int nOverride)
 {
-    string sFunc = "SetVisibilityOverride";
-
-    NWNX_PushArgumentInt(nOverride);
-    NWNX_PushArgumentObject(oTarget);
-    NWNX_PushArgumentObject(oPlayer);
-    NWNX_CallFunction(NWNX_Visibility, sFunc);
+    NWNXPushInt(nOverride);
+    NWNXPushObject(oTarget);
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Visibility, "SetVisibilityOverride");
 }

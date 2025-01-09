@@ -5,7 +5,6 @@
 #include "CExoString.hpp"
 #include "CLastUpdateObject.hpp"
 #include "CLastUpdatePartyObject.hpp"
-#include "CNWSClient.hpp"
 #include "CResRef.hpp"
 #include <unordered_map>
 #include <vector>
@@ -32,8 +31,15 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 typedef uint32_t STRREF;
 
+struct ExponentialSmoother
+{
+    double m_span;
+    double m_rate;
+    double m_last;
+    time_t m_prev;
+};
 
-struct CNWSPlayer : CNWSClient
+struct CNWSPlayer
 {
     struct NuiState
     {
@@ -59,6 +65,8 @@ struct CNWSPlayer : CNWSClient
     BOOL m_bFloatyEffects;
     int32_t m_nAreas;
     OBJECT_ID * m_pAreas;
+    uint32_t m_nPlayerID;
+    int32_t m_nLanguage;
     uint8_t m_nLoginState;
     OBJECT_ID m_oidNWSObject;
     uint64_t m_nLastUpdatedTime;
@@ -89,12 +97,16 @@ struct CNWSPlayer : CNWSClient
     OBJECT_ID m_oidDungeonMasterAvatar;
     uint8_t m_nPossessState;
     BOOL m_bWasSentITP;
+    uint32_t m_nLatencyLastPingRequest = 0;
+    uint32_t m_nLatencyLastPingResponse = 0;
+    uint32_t m_nLatestLatency = 0;
+    uint32_t m_nSmoothedLatency = 0;
+    ExponentialSmoother m_cSmoothedLatency;
 
     CNWSPlayer(uint32_t nPlayerID);
-    virtual ~CNWSPlayer();
+    ~CNWSPlayer();
     void ClearPlayerOnDestroyGame();
-    virtual CNWSPlayer * AsNWSPlayer();
-    virtual CNWSPlayer * AsNWSDungeonMaster();
+    void Update();
     STRREF LoadLocalCharacter();
     STRREF LoadDMCharacter();
     STRREF LoadServerCharacter(CResRef cResRef, BOOL bSubDirChar = false);
@@ -130,6 +142,8 @@ struct CNWSPlayer : CNWSClient
     BOOL GetIsDM();
     BOOL GetIsPlayerDM();
     void PossessCreature(OBJECT_ID oidTarget, uint8_t possessType);
+    void HandleEchoResponse(const void* pPayload, uint32_t nSize);
+    uint32_t GetNetworkLatency(bool bSmoothed = true) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSPlayer

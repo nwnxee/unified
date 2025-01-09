@@ -238,7 +238,7 @@ struct CNWSObject : CGameObject
     virtual uint32_t GetEffectSpellId();
     virtual void SetEffectSpellId(uint32_t n);
     void AddLoopingVisualEffect(uint16_t nVisEffectID, OBJECT_ID oidOriginator = 0x7f000000, uint8_t nBodyPart = 0, ObjectVisualTransformData ovtd = ObjectVisualTransformData());
-    void RemoveLoopingVisualEffect(uint16_t nVisEffectID);
+    void RemoveLoopingVisualEffect(uint16_t nVisEffectID, OBJECT_ID oidOriginator = 0x7f000000, uint8_t nBodyPart = 0, const ObjectVisualTransformData& ovtd = ObjectVisualTransformData());
     void BroadcastDialog(CExoString sSpokenString, float fRadius);
     Vector CalculateSpellRangedMissTarget(OBJECT_ID oidSource, OBJECT_ID oidTarget);
     int32_t GetLastDamageAmountByFlags(uint32_t nDamageFlags);

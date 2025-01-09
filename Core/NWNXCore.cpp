@@ -201,15 +201,10 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_vmSetVarHook         = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandSetVar, &SetVarHandler, Hooks::Order::Final);
-    m_vmGetVarHook         = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandGetVar, &GetVarHandler, Hooks::Order::Final);
-    m_vmTagEffectHook      = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandTagEffect, &TagEffectHandler, Hooks::Order::Final);
-    m_vmTagItemProperyHook = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandTagItemProperty, &TagItemPropertyHandler, Hooks::Order::Final);
-    m_vmPlaySoundHook      = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
-
-
-    m_destroyServerHook    = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
-    m_mainLoopInternalHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
+    m_vmPlaySoundHook               = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
+    m_nwnxFunctionManagementHook    = Hooks::HookFunction(&CNWSVirtualMachineCommands::ExecuteCommandNWNXFunctionManagement, &NWNXFunctionManagementHandler, Hooks::Order::Final);
+    m_destroyServerHook             = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
+    m_mainLoopInternalHook          = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
 
     POS::InitializeHooks();
 
@@ -367,69 +362,73 @@ void NWNXCore::InitialSetupPlugins()
 
 void NWNXCore::InitialSetupResourceDirectories()
 {
-    auto nwnxResDirPath = Config::Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
-    auto nwnxResDirPriority = Config::Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
-
-    std::unordered_map<std::string, std::pair<std::string, int32_t>> resourceDirectories;
-    resourceDirectories.emplace("NWNX", std::make_pair(nwnxResDirPath, nwnxResDirPriority));
-
-    if (auto customResmanDefinition = Config::Get<std::string>("CUSTOM_RESMAN_DEFINITION"))
+    static Hooks::Hook s_SetupDefaultSearchPathHook = Hooks::HookFunction(&CExoResMan::SetupDefaultSearchPath,
+    +[](CExoResMan *pThis) -> void
     {
-        std::string crdPath = *customResmanDefinition;
-        FILE* file = std::fopen(crdPath.c_str(), "r");
+        s_SetupDefaultSearchPathHook->CallOriginal<void>(pThis);
 
-        if (file)
+        if (g_CoreShuttingDown)
+            return;
+
+        auto nwnxResDirPath = Config::Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
+        auto nwnxResDirPriority = Config::Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
+
+        std::unordered_map<std::string, std::pair<std::string, int32_t>> resourceDirectories;
+        resourceDirectories.emplace("NWNX", std::make_pair(nwnxResDirPath, nwnxResDirPriority));
+
+        if (auto customResmanDefinition = Config::Get<std::string>("CUSTOM_RESMAN_DEFINITION"))
         {
-            LOG_INFO("Custom Resman Definition File: %s", crdPath);
+            std::string crdPath = *customResmanDefinition;
+            FILE* file = std::fopen(crdPath.c_str(), "r");
 
-            char line[640];
-            char alias[64];
-            char path[512];
-            int32_t priority;
-
-            while (std::fgets(line, 640, file))
+            if (file)
             {
-                if (sscanf(line, "%s %s %i", alias, path, &priority) == 3)
-                {
-                    resourceDirectories.try_emplace(alias, std::make_pair(path, priority));
-                }
-                else
-                {
-                    std::string errorLine = std::string(line);
-                    LOG_WARNING("Invalid Custom Resman Definition Line: %s", String::Trim(errorLine));
-                }
-            }
+                LOG_INFO("Custom Resman Definition File: %s", crdPath);
 
-            std::fclose(file);
+                char line[640];
+                char alias[64];
+                char path[512];
+                int32_t priority;
+
+                while (std::fgets(line, 640, file))
+                {
+                    if (sscanf(line, "%s %s %i", alias, path, &priority) == 3)
+                    {
+                        resourceDirectories.try_emplace(alias, std::make_pair(path, priority));
+                    }
+                    else
+                    {
+                        std::string errorLine = std::string(line);
+                        LOG_WARNING("Invalid Custom Resman Definition Line: %s", String::Trim(errorLine));
+                    }
+                }
+
+                std::fclose(file);
+            }
+            else
+                LOG_ERROR("Failed to open Custom Resman Definition File: %s", crdPath);
         }
-        else
-            LOG_ERROR("Failed to open Custom Resman Definition File: %s", crdPath);
-    }
 
-    Tasks::QueueOnMainThread([resourceDirectories]
+        for (const auto& resDir : resourceDirectories)
         {
-            if (g_CoreShuttingDown)
-                return;
+            CExoString alias = CExoString(resDir.first + ":");
+            CExoString path = CExoString(resDir.second.first);
 
-            for (const auto& resDir : resourceDirectories)
+            if (Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(alias).IsEmpty())
             {
-                CExoString alias = CExoString(resDir.first + ":");
-                CExoString path = CExoString(resDir.second.first);
+                LOG_INFO("Setting up Resource Directory: %s%s (Priority: %i)", alias, path, resDir.second.second);
 
-                if (Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(alias).IsEmpty())
-                {
-                    LOG_INFO("Setting up Resource Directory: %s%s (Priority: %i)", alias, path, resDir.second.second);
+                g_core->m_CustomResourceDirectoryAliases.emplace_back(resDir.first);
 
-                    g_core->m_CustomResourceDirectoryAliases.emplace_back(resDir.first);
-
-                    Globals::ExoBase()->m_pcExoAliasList->Add(resDir.first, path);
-                    Globals::ExoResMan()->CreateDirectory(alias);
-                    Globals::ExoResMan()->AddResourceDirectory(alias, resDir.second.second, true);
-                }
-                else
-                    LOG_WARNING("Resource Directory with alias '%s' already exists. Please use nwn.ini to redefine base game resource directories.", alias);
+                Globals::ExoBase()->m_pcExoAliasList->Add(resDir.first, path);
+                Globals::ExoResMan()->CreateDirectory(alias);
+                Globals::ExoResMan()->AddResourceDirectory(alias, resDir.second.second, true);
             }
-        });
+            else
+                LOG_WARNING("Resource Directory with alias '%s' already exists. Please use nwn.ini to redefine base game resource directories.", alias);
+        }
+
+    }, Hooks::Order::Early);
 }
 
 void NWNXCore::InitialSetupCommands()
