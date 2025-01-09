@@ -5,7 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
+https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.37.13
+https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
+
+**Notice: NWNX API Update**
+
+The NWNX API has been updated, resulting in the removal of nwnx.nss. All nwnx_*.nss files have been modified to use the new API functions. 
+
+What You Need to Do:
+
+* Replace all outdated NWNX include files with the updated versions.
+* Update your custom nwnx_*.nss files to use the new API.
+* Recompile your module
+
+Calling NWNX functions when NWNX is not running will now **abort the script**. To prevent this, use the base game function NWNXGetIsAvailable() to check if NWNX is available before making any NWNX function calls.
 
 ### Added
 - DotNET: Added `NWNX_DOTNET_METHOD` option to change entrypoint method (default: `Bootstrap`)
@@ -43,13 +79,15 @@ https://github.com/nwnxee/unified/compare/build8193.36.12...HEAD
 - Item: Added parameter `bUpdateCreatureAppearance` to SetItemAppearance() to update the appearance of the item's possessor.
 - Events: Added PLAYER_NAME, CDKEY as event data to the client disconnect events `NWNX_ON_CLIENT_DISCONNECT_{BEFORE|AFTER}`.
 - Profiler: fixed order of parameters in nss script for PushPerfScope()
+- Core: **!!Breaking Change!!** `NWNX_PluginExists` has been renamed to `NWNX_Core_PluginExists` and moved to `nwnx_core.nss`
 
 ### Deprecated
 - DotNET: GetFunctionPointer()
 - DotNET: GetNWNXExportedGlobals()
 
 ### Removed
-- N/A
+- ServerLogRedirector: removed `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES`
+- Tweaks: removed `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
 
 ### Fixed
 - Race: Documentation updated as `NWNX_Utils` is no longer required with introduction of native `Get2DARowCount()`.

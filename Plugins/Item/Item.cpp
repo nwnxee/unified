@@ -78,16 +78,7 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
         const auto type  = args.extract<int32_t>();
         const auto idx   = args.extract<int32_t>();
         const auto val   = args.extract<int32_t>();
-
-        int32_t bUpdateCreatureAppearance = false;
-        try
-        {
-            bUpdateCreatureAppearance = !!args.extract<int32_t>();
-        }
-        catch(const std::runtime_error& e)
-        {
-            LOG_WARNING("NWNX_Item_SetItemAppearance() called from NWScript without bUpdateCreatureAppearance parameter. Please update nwnx_item.nss");
-        }
+        const auto bUpdateCreatureAppearance = !!args.extract<int32_t>();
 
         switch(type)
         {
