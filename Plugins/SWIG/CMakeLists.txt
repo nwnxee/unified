@@ -1,6 +1,3 @@
-# Stuff's broken, yo
-return()
-
 find_package(SWIG 4.0 COMPONENTS csharp)
 
 function(add_swig_plugin target language interfaces)
