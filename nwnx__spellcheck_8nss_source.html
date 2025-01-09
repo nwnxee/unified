@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,44 +100,37 @@ $(document).ready(function(){initNavTree('nwnx__spellcheck_8nss_source.html','')
 <div class="title">nwnx_spellcheck.nss</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="nwnx__spellcheck_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;nwnx&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_SpellChecker = <span class="stringliteral">&quot;NWNX_SpellChecker&quot;</span>; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a>(<span class="keywordtype">string</span> sentence);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a>(<span class="keywordtype">string</span> word);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">   28</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a>(<span class="keywordtype">string</span> sentence)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;FindMisspell&quot;</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(sentence);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_SpellChecker, sFunc);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a>();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">   37</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a>(<span class="keywordtype">string</span> word)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetSuggestSpell&quot;</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(word);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_SpellChecker, sFunc);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a>();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<a href="nwnx__spellcheck_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_SpellChecker = <span class="stringliteral">&quot;NWNX_SpellChecker&quot;</span>; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a>(<span class="keywordtype">string</span> sentence);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a>(<span class="keywordtype">string</span> word);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">   27</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a>(<span class="keywordtype">string</span> sentence)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    NWNXPushString(sentence);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    NWNXCall(NWNX_SpellChecker, <span class="stringliteral">&quot;FindMisspell&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">return</span> NWNXPopString();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">   34</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a>(<span class="keywordtype">string</span> word)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    NWNXPushString(word);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    NWNXCall(NWNX_SpellChecker, <span class="stringliteral">&quot;GetSuggestSpell&quot;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> NWNXPopString();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__spellchecker_html_gacf06740191d7fc00fa355929b1904667"><div class="ttname"><a href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a></div><div class="ttdeci">string NWNX_SpellChecker_GetSuggestSpell(string word)</div><div class="ttdoc">Get suggestions on a single word, comma delimited.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__spellcheck_8nss_source.html#l00037">nwnx_spellcheck.nss:37</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gae9cc53e85c008a30a58c0d7cee4169d6"><div class="ttname"><a href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString()</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00109">nwnx.nss:109</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac4eedc41505f53a08f7aa03093a2daaf"><div class="ttname"><a href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00074">nwnx.nss:74</a></div></div>
-<div class="ttc" id="agroup__spellchecker_html_ga327dc28981e28b40ba9ca34447e4d639"><div class="ttname"><a href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a></div><div class="ttdeci">string NWNX_SpellChecker_FindMisspell(string sentence)</div><div class="ttdoc">Finds misspells in a string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__spellcheck_8nss_source.html#l00028">nwnx_spellcheck.nss:28</a></div></div>
+<div class="ttc" id="agroup__spellchecker_html_gacf06740191d7fc00fa355929b1904667"><div class="ttname"><a href="group__spellchecker.html#gacf06740191d7fc00fa355929b1904667">NWNX_SpellChecker_GetSuggestSpell</a></div><div class="ttdeci">string NWNX_SpellChecker_GetSuggestSpell(string word)</div><div class="ttdoc">Get suggestions on a single word, comma delimited.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__spellcheck_8nss_source.html#l00034">nwnx_spellcheck.nss:34</a></div></div>
+<div class="ttc" id="agroup__spellchecker_html_ga327dc28981e28b40ba9ca34447e4d639"><div class="ttname"><a href="group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639">NWNX_SpellChecker_FindMisspell</a></div><div class="ttdeci">string NWNX_SpellChecker_FindMisspell(string sentence)</div><div class="ttdoc">Finds misspells in a string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__spellcheck_8nss_source.html#l00027">nwnx_spellcheck.nss:27</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_2cb431146d89b7791aff694cfde16a4a.html">SpellChecker</a></li><li class="navelem"><a class="el" href="dir_3439960d65add46cb0fddea027b42b21.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__spellcheck_8nss.html">nwnx_spellcheck.nss</a></li>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

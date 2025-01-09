@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -99,15 +99,14 @@ $(document).ready(function(){initNavTree('group__nwnx.html',''); initResizable()
   <div class="summary">
 <a href="#groups">Function Groups</a> &#124;
 <a href="#files">Files</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">NWNX</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 
-<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md195"></a>
+<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md203"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -155,7 +154,7 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_BASE_GAME_CRASH_HANDLER</code> </td><td class="markdownTableBodyCenter">0-1 </td><td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">Sets whether to also call the base game handler in case of crash.  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md196"></a>
+<h2><a class="anchor" id="autotoc_md204"></a>
 Console Commands</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -171,16 +170,16 @@ Console Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]</code> </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md197"></a>
+<h2><a class="anchor" id="autotoc_md205"></a>
 Custom Resman Definition File</h2>
 <p>A file that lets you specify additional resource directories that act the same as the <code>/development</code> and <code>/nwnx</code> folders.</p>
 <p>Each line in the file must contain the following: <code>ALIASNAME /full/path/to/folder &lt;priority&gt;</code></p>
 <p>Example:</p>
 <div class="fragment"><div class="line">TEST /home/nwnx/test 70000001</div>
 <div class="line">STUFF /home/nwnx/stuff 70000002</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md198"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md206"></a>
 Plugin Management</h2>
-<h3><a class="anchor" id="autotoc_md199"></a>
+<h3><a class="anchor" id="autotoc_md207"></a>
 Environment Variable Configuration</h3>
 <p>Configuration of NWNX plugins are controlled by environment variables exported prior to starting the <code>nwserver</code> binary. Typical usage would be in the script used to start the server.</p>
 <p>Basic control of the plugin includes enabling/disabling the plugin and setting the logging level of the plugin. The following format is used for all plugins:</p>
@@ -188,7 +187,7 @@ Environment Variable Configuration</h3>
 <li>NWNX_&lt;x&gt;_LOG_LEVEL</li>
 <li>NWNX_&lt;x&gt;_SKIP</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md200"></a>
+<h3><a class="anchor" id="autotoc_md208"></a>
 Plugin Loading</h3>
 <p>Inclusion or exclusion of the plugin at server startup time is contolled by the environment variable <code>NWNX_&lt;x&gt;_SKIP</code> where &lt;x&gt; is the plugin name (all caps).</p>
 <ul>
@@ -197,38 +196,12 @@ Plugin Loading</h3>
 </ul>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Load the sql plugin at startup</div>
 <div class="line">export NWNX_SQL_SKIP=N</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md201"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md209"></a>
 Plugin Log Level</h3>
 <p>The default plugin log level is the same as the overall Core logging level.</p>
 <p>It can be changed, however, by assinging a value to <code>NWNX_&lt;x&gt;_LOG_LEVEL</code> (where &lt;x&gt; is the plugin name in all caps) in the same manner as the Core logging level. See the Core documentation for a description of available logging levels.</p>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Set the sql plugin to warning and above (warning, error, and fatal only)</div>
 <div class="line">export NWNX_SQL_LOG_LEVEL=4</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md202"></a>
-Core Functions For Plugin Developers</h2>
-<p>The core functions in <a class="el" href="nwnx_8nss.html">nwnx.nss</a> should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
-<h4><a class="anchor" id="autotoc_md203"></a>
-Sample</h4>
-<p>This following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
-<div class="line">{</div>
-<div class="line">    <span class="keywordtype">string</span> pluginName = <span class="stringliteral">&quot;NWNX_TestPlugin&quot;</span>;</div>
-<div class="line">    <span class="keywordtype">string</span> funcName = <span class="stringliteral">&quot;GiveMeBackTheSameValues&quot;</span>;</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// Note the inverse argument push order.</span></div>
-<div class="line">    <span class="comment">// C++-side, arguments will be consumed from left to right.</span></div>
-<div class="line">    <a class="code" href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">NWNX_PushArgumentFloat</a>(z);</div>
-<div class="line">    <a class="code" href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">NWNX_PushArgumentFloat</a>(y);</div>
-<div class="line">    <a class="code" href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">NWNX_PushArgumentFloat</a>(x);</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// This calls the function, which will prepare the return values.</span></div>
-<div class="line">    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(pluginName, funcName);</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// C++-side pushes the return values in reverse order so we can consume them naturally here.</span></div>
-<div class="line">    <span class="keywordtype">float</span> _x = <a class="code" href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">NWNX_GetReturnValueFloat</a>();</div>
-<div class="line">    <span class="keywordtype">float</span> _y = <a class="code" href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">NWNX_GetReturnValueFloat</a>();</div>
-<div class="line">    <span class="keywordtype">float</span> _z = <a class="code" href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">NWNX_GetReturnValueFloat</a>();</div>
-<div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> vector(_x, _y, _z);</div>
-<div class="line">}</div>
 </div><!-- fragment --> </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Function Groups</h2></td></tr>
@@ -241,463 +214,24 @@ Function Groups</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
-<tr class="memitem:nwnx_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx_8nss.html">nwnx.nss</a></td></tr>
+<tr class="memitem:nwnx__core_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__core_8nss.html">nwnx_core.nss</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a> (string pluginName, string functionName)</td></tr>
-<tr class="memdesc:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scripting interface to NWNX.  <a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">More...</a><br /></td></tr>
-<tr class="separator:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1d7bbbf30928800bacc327e93beff2e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a> (int value)</td></tr>
-<tr class="memdesc:ga1d7bbbf30928800bacc327e93beff2e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">More...</a><br /></td></tr>
-<tr class="separator:ga1d7bbbf30928800bacc327e93beff2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1d63de8f806049fdbf3a7c92670a1e21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">NWNX_PushArgumentFloat</a> (float value)</td></tr>
-<tr class="memdesc:ga1d63de8f806049fdbf3a7c92670a1e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">More...</a><br /></td></tr>
-<tr class="separator:ga1d63de8f806049fdbf3a7c92670a1e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga633ccd114d588939b34db8a85b3cbf63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a> (object value)</td></tr>
-<tr class="memdesc:ga633ccd114d588939b34db8a85b3cbf63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">More...</a><br /></td></tr>
-<tr class="separator:ga633ccd114d588939b34db8a85b3cbf63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4eedc41505f53a08f7aa03093a2daaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a> (string value)</td></tr>
-<tr class="memdesc:gac4eedc41505f53a08f7aa03093a2daaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">More...</a><br /></td></tr>
-<tr class="separator:gac4eedc41505f53a08f7aa03093a2daaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa536fa9ff7c2bd8753baa975d84b7fbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gaa536fa9ff7c2bd8753baa975d84b7fbc">NWNX_PushArgumentEffect</a> (effect value)</td></tr>
-<tr class="memdesc:gaa536fa9ff7c2bd8753baa975d84b7fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#gaa536fa9ff7c2bd8753baa975d84b7fbc">More...</a><br /></td></tr>
-<tr class="separator:gaa536fa9ff7c2bd8753baa975d84b7fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5d4f8a84144962d19b67e5d721ac28a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga5d4f8a84144962d19b67e5d721ac28a1">NWNX_PushArgumentItemProperty</a> (itemproperty value)</td></tr>
-<tr class="memdesc:ga5d4f8a84144962d19b67e5d721ac28a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga5d4f8a84144962d19b67e5d721ac28a1">More...</a><br /></td></tr>
-<tr class="separator:ga5d4f8a84144962d19b67e5d721ac28a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7bf260635d644b38abf4d0a6baabc4b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga7bf260635d644b38abf4d0a6baabc4b2">NWNX_PushArgumentJson</a> (json value)</td></tr>
-<tr class="memdesc:ga7bf260635d644b38abf4d0a6baabc4b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga7bf260635d644b38abf4d0a6baabc4b2">More...</a><br /></td></tr>
-<tr class="separator:ga7bf260635d644b38abf4d0a6baabc4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8bc42aa371f75376b969065f2b95aa19"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">NWNX_GetReturnValueInt</a> ()</td></tr>
-<tr class="memdesc:ga8bc42aa371f75376b969065f2b95aa19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga8bc42aa371f75376b969065f2b95aa19">More...</a><br /></td></tr>
-<tr class="separator:ga8bc42aa371f75376b969065f2b95aa19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3dcd61ce351dab1f1766dc8bf693684"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">NWNX_GetReturnValueFloat</a> ()</td></tr>
-<tr class="memdesc:gaa3dcd61ce351dab1f1766dc8bf693684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">More...</a><br /></td></tr>
-<tr class="separator:gaa3dcd61ce351dab1f1766dc8bf693684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga612b2acd591162a671739910de0d0b34"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga612b2acd591162a671739910de0d0b34">NWNX_GetReturnValueObject</a> ()</td></tr>
-<tr class="memdesc:ga612b2acd591162a671739910de0d0b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga612b2acd591162a671739910de0d0b34">More...</a><br /></td></tr>
-<tr class="separator:ga612b2acd591162a671739910de0d0b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae9cc53e85c008a30a58c0d7cee4169d6"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a> ()</td></tr>
-<tr class="memdesc:gae9cc53e85c008a30a58c0d7cee4169d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">More...</a><br /></td></tr>
-<tr class="separator:gae9cc53e85c008a30a58c0d7cee4169d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f0628baff6b1b0275da288206078f1b"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga9f0628baff6b1b0275da288206078f1b">NWNX_GetReturnValueEffect</a> ()</td></tr>
-<tr class="memdesc:ga9f0628baff6b1b0275da288206078f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga9f0628baff6b1b0275da288206078f1b">More...</a><br /></td></tr>
-<tr class="separator:ga9f0628baff6b1b0275da288206078f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0c3dece5a08fe4de9f04b40e898ab407"><td class="memItemLeft" align="right" valign="top">itemproperty&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga0c3dece5a08fe4de9f04b40e898ab407">NWNX_GetReturnValueItemProperty</a> ()</td></tr>
-<tr class="memdesc:ga0c3dece5a08fe4de9f04b40e898ab407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga0c3dece5a08fe4de9f04b40e898ab407">More...</a><br /></td></tr>
-<tr class="separator:ga0c3dece5a08fe4de9f04b40e898ab407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5f2cda8d53f022e974c48687db2b6c8"><td class="memItemLeft" align="right" valign="top">json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gac5f2cda8d53f022e974c48687db2b6c8">NWNX_GetReturnValueJson</a> ()</td></tr>
-<tr class="memdesc:gac5f2cda8d53f022e974c48687db2b6c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#gac5f2cda8d53f022e974c48687db2b6c8">More...</a><br /></td></tr>
-<tr class="separator:gac5f2cda8d53f022e974c48687db2b6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8d619f07b8154d06b1f9462d57385fb5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga8d619f07b8154d06b1f9462d57385fb5">NWNX_PluginExists</a> (string sPlugin)</td></tr>
-<tr class="memdesc:ga8d619f07b8154d06b1f9462d57385fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given plugin exists and is enabled.  <a href="group__nwnx.html#ga8d619f07b8154d06b1f9462d57385fb5">More...</a><br /></td></tr>
-<tr class="separator:ga8d619f07b8154d06b1f9462d57385fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ga0448ef12ff047f3fb7dbc8bc253f135f"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga0448ef12ff047f3fb7dbc8bc253f135f">NWNX_POP</a> = &quot;NWNXEE!ABIv2!X!Y!POP&quot;</td></tr>
-<tr class="separator:ga0448ef12ff047f3fb7dbc8bc253f135f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac0c1a51051cef3e79c53a8995c280021"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gac0c1a51051cef3e79c53a8995c280021">NWNX_Core_PluginExists</a> (string sPlugin)</td></tr>
+<tr class="memdesc:gac0c1a51051cef3e79c53a8995c280021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given plugin exists and is enabled.  <a href="group__nwnx.html#gac0c1a51051cef3e79c53a8995c280021">More...</a><br /></td></tr>
+<tr class="separator:gac0c1a51051cef3e79c53a8995c280021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gac59ae51d3e8c4f775ab7d1a18eab3fc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac59ae51d3e8c4f775ab7d1a18eab3fc4">&#9670;&nbsp;</a></span>NWNX_CallFunction()</h2>
+<a id="gac0c1a51051cef3e79c53a8995c280021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac0c1a51051cef3e79c53a8995c280021">&#9670;&nbsp;</a></span>NWNX_Core_PluginExists()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void NWNX_CallFunction </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>pluginName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>functionName</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Scripting interface to NWNX. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
-    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00054">54</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga1d7bbbf30928800bacc327e93beff2e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1d7bbbf30928800bacc327e93beff2e6">&#9670;&nbsp;</a></span>NWNX_PushArgumentInt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentInt </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00059">59</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga1d63de8f806049fdbf3a7c92670a1e21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1d63de8f806049fdbf3a7c92670a1e21">&#9670;&nbsp;</a></span>NWNX_PushArgumentFloat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentFloat </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00064">64</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga633ccd114d588939b34db8a85b3cbf63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga633ccd114d588939b34db8a85b3cbf63">&#9670;&nbsp;</a></span>NWNX_PushArgumentObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentObject </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00069">69</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="gac4eedc41505f53a08f7aa03093a2daaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac4eedc41505f53a08f7aa03093a2daaf">&#9670;&nbsp;</a></span>NWNX_PushArgumentString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentString </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00074">74</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="gaa536fa9ff7c2bd8753baa975d84b7fbc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa536fa9ff7c2bd8753baa975d84b7fbc">&#9670;&nbsp;</a></span>NWNX_PushArgumentEffect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentEffect </td>
-          <td>(</td>
-          <td class="paramtype">effect&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00079">79</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga5d4f8a84144962d19b67e5d721ac28a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5d4f8a84144962d19b67e5d721ac28a1">&#9670;&nbsp;</a></span>NWNX_PushArgumentItemProperty()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentItemProperty </td>
-          <td>(</td>
-          <td class="paramtype">itemproperty&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00084">84</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga7bf260635d644b38abf4d0a6baabc4b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7bf260635d644b38abf4d0a6baabc4b2">&#9670;&nbsp;</a></span>NWNX_PushArgumentJson()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NWNX_PushArgumentJson </td>
-          <td>(</td>
-          <td class="paramtype">json&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pushes the specified type to the c++ side. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga8bc42aa371f75376b969065f2b95aa19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8bc42aa371f75376b969065f2b95aa19">&#9670;&nbsp;</a></span>NWNX_GetReturnValueInt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int NWNX_GetReturnValueInt </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00094">94</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="gaa3dcd61ce351dab1f1766dc8bf693684"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa3dcd61ce351dab1f1766dc8bf693684">&#9670;&nbsp;</a></span>NWNX_GetReturnValueFloat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float NWNX_GetReturnValueFloat </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00099">99</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga612b2acd591162a671739910de0d0b34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga612b2acd591162a671739910de0d0b34">&#9670;&nbsp;</a></span>NWNX_GetReturnValueObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">object NWNX_GetReturnValueObject </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00104">104</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="gae9cc53e85c008a30a58c0d7cee4169d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae9cc53e85c008a30a58c0d7cee4169d6">&#9670;&nbsp;</a></span>NWNX_GetReturnValueString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">string NWNX_GetReturnValueString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00109">109</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga9f0628baff6b1b0275da288206078f1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9f0628baff6b1b0275da288206078f1b">&#9670;&nbsp;</a></span>NWNX_GetReturnValueEffect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">effect NWNX_GetReturnValueEffect </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00114">114</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga0c3dece5a08fe4de9f04b40e898ab407"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0c3dece5a08fe4de9f04b40e898ab407">&#9670;&nbsp;</a></span>NWNX_GetReturnValueItemProperty()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">itemproperty NWNX_GetReturnValueItemProperty </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00120">120</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="gac5f2cda8d53f022e974c48687db2b6c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac5f2cda8d53f022e974c48687db2b6c8">&#9670;&nbsp;</a></span>NWNX_GetReturnValueJson()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">json NWNX_GetReturnValueJson </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the specified type from the c++ side. </p>
-<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00126">126</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<a id="ga8d619f07b8154d06b1f9462d57385fb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8d619f07b8154d06b1f9462d57385fb5">&#9670;&nbsp;</a></span>NWNX_PluginExists()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int NWNX_PluginExists </td>
+          <td class="memname">int NWNX_Core_PluginExists </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>sPlugin</em></td><td>)</td>
@@ -709,44 +243,24 @@ Variables</h2></td></tr>
 <p>Determines if the given plugin exists and is enabled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sPlugin</td><td>The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX </td></tr>
+    <tr><td class="paramname">sPlugin</td><td>The name of the plugin to check. This is the case sensitive plugin name as used by NWNXCall </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Example usage: NWNX_PluginExists("NWNX_Creature"); </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the plugin exists and is enabled, otherwise FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00131">131</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ga0448ef12ff047f3fb7dbc8bc253f135f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0448ef12ff047f3fb7dbc8bc253f135f">&#9670;&nbsp;</a></span>NWNX_POP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const string NWNX_POP = &quot;NWNXEE!ABIv2!X!Y!POP&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00051">51</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__core_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__core_8nss_source.html">nwnx_core.nss</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__nwnx_html_gaa3dcd61ce351dab1f1766dc8bf693684"><div class="ttname"><a href="group__nwnx.html#gaa3dcd61ce351dab1f1766dc8bf693684">NWNX_GetReturnValueFloat</a></div><div class="ttdeci">float NWNX_GetReturnValueFloat()</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00099">nwnx.nss:99</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_ga1d63de8f806049fdbf3a7c92670a1e21"><div class="ttname"><a href="group__nwnx.html#ga1d63de8f806049fdbf3a7c92670a1e21">NWNX_PushArgumentFloat</a></div><div class="ttdeci">void NWNX_PushArgumentFloat(float value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00064">nwnx.nss:64</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

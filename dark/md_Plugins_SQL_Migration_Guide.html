@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('md_Plugins_SQL_Migration_Guide.html','
 <div class="textblock"><h1><a class="anchor" id="sql_migrate"></a>
 Migration Guide</h1>
 <p>Included below are some examples and guidance in migrating legacy NWNX ODBC style SQL code to the new NWNX:EE SQL Plugin.</p>
-<h3><a class="anchor" id="autotoc_md629"></a>
+<h3><a class="anchor" id="autotoc_md636"></a>
 General Information</h3>
 <p>The previous plugin only had one execution style: the SQL_ExecDirect() function that took a SQL string that had been constructed to execute.</p>
 <p>The new SQL Plugin has two methods of operation:</p>
@@ -117,7 +117,7 @@ General Information</h3>
 <li>The ability to serialize/un-serialize ObjectIDs and Objects to and from the database.</li>
 <li>Probably some others, too!</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md630"></a>
+<h3><a class="anchor" id="autotoc_md637"></a>
 Examples</h3>
 <p>A legacy (albeit contrived) example might look like this:</p>
 <div class="fragment"><div class="line"><span class="comment">//This is a silly, non-sensical function.</span></div>
@@ -228,7 +228,7 @@ Examples</h3>
 <div class="line"> </div>
 <div class="line">    AssignCommand(oBoard, ActionSpeakString(sFeedback));</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md631"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md638"></a>
 Multi-Platform Support</h3>
 <p>There is a function to retrieve the specific database type to enable multi-platform support through conditional logic.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="array__example_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>()</div>
@@ -280,20 +280,20 @@ Multi-Platform Support</h3>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__sql_html_gab7ec4280f37f01bafe8ce01f30cc7f13"><div class="ttname"><a href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecutePreparedQuery()</div><div class="ttdoc">Executes a query which has been prepared.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00126">nwnx_sql.nss:126</a></div></div>
+<div class="ttc" id="agroup__sql_html_gab7ec4280f37f01bafe8ce01f30cc7f13"><div class="ttname"><a href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecutePreparedQuery()</div><div class="ttdoc">Executes a query which has been prepared.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00123">nwnx_sql.nss:123</a></div></div>
 <div class="ttc" id="aarray__example_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="array__example_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="array__example_8nss_source.html#l00133">array_example.nss:133</a></div></div>
-<div class="ttc" id="agroup__sql_html_gaefc1bce86231177b8f972a8c0dc91a0b"><div class="ttname"><a href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a></div><div class="ttdeci">void NWNX_SQL_ReadNextRow()</div><div class="ttdoc">Reads the next row of returned data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00155">nwnx_sql.nss:155</a></div></div>
-<div class="ttc" id="agroup__sql_html_gae2e0e27014d82accfe4a0e510720515f"><div class="ttname"><a href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a></div><div class="ttdeci">int NWNX_SQL_PrepareQuery(string query)</div><div class="ttdoc">Prepares the provided query for execution.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00117">nwnx_sql.nss:117</a></div></div>
-<div class="ttc" id="agroup__sql_html_gad50edb1ed094961a96ef95f8099993ef"><div class="ttname"><a href="group__sql.html#gad50edb1ed094961a96ef95f8099993ef">NWNX_SQL_ExecuteQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecuteQuery(string query)</div><div class="ttdoc">Directly execute an SQL query.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00134">nwnx_sql.nss:134</a></div></div>
-<div class="ttc" id="agroup__sql_html_ga60dd9ffe0369ff795d4e375452edec51"><div class="ttname"><a href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a></div><div class="ttdeci">string NWNX_SQL_ReadDataInActiveRow(int column=0)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00162">nwnx_sql.nss:162</a></div></div>
-<div class="ttc" id="agroup__sql_html_ga38fdaf8c308512015849ac94ffede3bb"><div class="ttname"><a href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a></div><div class="ttdeci">int NWNX_SQL_ReadyToReadNextRow()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00147">nwnx_sql.nss:147</a></div></div>
-<div class="ttc" id="agroup__sql_html_ga4fbbffe1e86ad0e677185395b52949f5"><div class="ttname"><a href="group__sql.html#ga4fbbffe1e86ad0e677185395b52949f5">NWNX_SQL_GetDatabaseType</a></div><div class="ttdeci">string NWNX_SQL_GetDatabaseType()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00250">nwnx_sql.nss:250</a></div></div>
-<div class="ttc" id="agroup__sql_html_ga585546f0c7907cecde5a59508cbf4535"><div class="ttname"><a href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a></div><div class="ttdeci">void NWNX_SQL_PreparedString(int position, string value)</div><div class="ttdoc">Set the string value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00180">nwnx_sql.nss:180</a></div></div>
+<div class="ttc" id="agroup__sql_html_gaefc1bce86231177b8f972a8c0dc91a0b"><div class="ttname"><a href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a></div><div class="ttdeci">void NWNX_SQL_ReadNextRow()</div><div class="ttdoc">Reads the next row of returned data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00148">nwnx_sql.nss:148</a></div></div>
+<div class="ttc" id="agroup__sql_html_gae2e0e27014d82accfe4a0e510720515f"><div class="ttname"><a href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a></div><div class="ttdeci">int NWNX_SQL_PrepareQuery(string query)</div><div class="ttdoc">Prepares the provided query for execution.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00116">nwnx_sql.nss:116</a></div></div>
+<div class="ttc" id="agroup__sql_html_gad50edb1ed094961a96ef95f8099993ef"><div class="ttname"><a href="group__sql.html#gad50edb1ed094961a96ef95f8099993ef">NWNX_SQL_ExecuteQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecuteQuery(string query)</div><div class="ttdoc">Directly execute an SQL query.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00129">nwnx_sql.nss:129</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga60dd9ffe0369ff795d4e375452edec51"><div class="ttname"><a href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a></div><div class="ttdeci">string NWNX_SQL_ReadDataInActiveRow(int column=0)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00153">nwnx_sql.nss:153</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga38fdaf8c308512015849ac94ffede3bb"><div class="ttname"><a href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a></div><div class="ttdeci">int NWNX_SQL_ReadyToReadNextRow()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00142">nwnx_sql.nss:142</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga4fbbffe1e86ad0e677185395b52949f5"><div class="ttname"><a href="group__sql.html#ga4fbbffe1e86ad0e677185395b52949f5">NWNX_SQL_GetDatabaseType</a></div><div class="ttdeci">string NWNX_SQL_GetDatabaseType()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00223">nwnx_sql.nss:223</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga585546f0c7907cecde5a59508cbf4535"><div class="ttname"><a href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a></div><div class="ttdeci">void NWNX_SQL_PreparedString(int position, string value)</div><div class="ttdoc">Set the string value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00167">nwnx_sql.nss:167</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

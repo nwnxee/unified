@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,35 +100,32 @@ $(document).ready(function(){initNavTree('nwnx__redis__ps_8nss_source.html','');
 <div class="title">nwnx_redis_ps.nss</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="nwnx__redis__ps_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;nwnx&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html">    8</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">    9</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">channel</a>; </div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">   10</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">message</a>; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;};</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">   15</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> <a class="code" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">NWNX_Redis_GetPubSubMessageData</a>()</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> ret;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(<span class="stringliteral">&quot;NWNX_Redis&quot;</span>, <span class="stringliteral">&quot;GetPubSubData&quot;</span>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ret.<a class="code" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">message</a> = <a class="code" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a>();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    ret.<a class="code" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">channel</a> = <a class="code" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<a href="nwnx__redis__ps_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html">    7</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">    8</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">channel</a>; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">    9</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">message</a>; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;};</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">   14</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> <a class="code" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">NWNX_Redis_GetPubSubMessageData</a>()</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">struct </span><a class="code" href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a> ret;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    NWNXCall(<span class="stringliteral">&quot;NWNX_Redis&quot;</span>, <span class="stringliteral">&quot;GetPubSubData&quot;</span>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    ret.<a class="code" href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">message</a> = NWNXPopString();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ret.<a class="code" href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">channel</a> = NWNXPopString();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a></div><div class="ttdoc">A redis PUBSUB message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00008">nwnx_redis_ps.nss:8</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gae9cc53e85c008a30a58c0d7cee4169d6"><div class="ttname"><a href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString()</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00109">nwnx.nss:109</a></div></div>
-<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html_a778deff645dba834b490c9ef2b99fcfa"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">NWNX_Redis_PubSubMessageData::channel</a></div><div class="ttdeci">string channel</div><div class="ttdoc">The channel.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00009">nwnx_redis_ps.nss:9</a></div></div>
-<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html_a0a7db5807f63c88cd2386c1518c42d79"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">NWNX_Redis_PubSubMessageData::message</a></div><div class="ttdeci">string message</div><div class="ttdoc">The message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00010">nwnx_redis_ps.nss:10</a></div></div>
-<div class="ttc" id="anwnx__redis__ps_8nss_html_a64b6374c703673f57977a0473ec6f52c"><div class="ttname"><a href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">NWNX_Redis_GetPubSubMessageData</a></div><div class="ttdeci">struct NWNX_Redis_PubSubMessageData NWNX_Redis_GetPubSubMessageData()</div><div class="ttdoc">Get a PUBSUB message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00015">nwnx_redis_ps.nss:15</a></div></div>
+<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html">NWNX_Redis_PubSubMessageData</a></div><div class="ttdoc">A redis PUBSUB message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00007">nwnx_redis_ps.nss:7</a></div></div>
+<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html_a778deff645dba834b490c9ef2b99fcfa"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa">NWNX_Redis_PubSubMessageData::channel</a></div><div class="ttdeci">string channel</div><div class="ttdoc">The channel.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00008">nwnx_redis_ps.nss:8</a></div></div>
+<div class="ttc" id="astructNWNX__Redis__PubSubMessageData_html_a0a7db5807f63c88cd2386c1518c42d79"><div class="ttname"><a href="structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79">NWNX_Redis_PubSubMessageData::message</a></div><div class="ttdeci">string message</div><div class="ttdoc">The message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00009">nwnx_redis_ps.nss:9</a></div></div>
+<div class="ttc" id="anwnx__redis__ps_8nss_html_a64b6374c703673f57977a0473ec6f52c"><div class="ttname"><a href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c">NWNX_Redis_GetPubSubMessageData</a></div><div class="ttdeci">struct NWNX_Redis_PubSubMessageData NWNX_Redis_GetPubSubMessageData()</div><div class="ttdoc">Get a PUBSUB message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__ps_8nss_source.html#l00014">nwnx_redis_ps.nss:14</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_872591aa012bd12d901a16e34de85f03.html">Redis</a></li><li class="navelem"><a class="el" href="dir_2f44ecc40354c7f6d18296678c3fc3d1.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__redis__ps_8nss.html">nwnx_redis_ps.nss</a></li>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

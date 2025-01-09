@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,54 +100,44 @@ $(document).ready(function(){initNavTree('nwnx__reveal_8nss_source.html',''); in
 <div class="title">nwnx_reveal.nss</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="nwnx__reveal_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;nwnx&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Reveal = <span class="stringliteral">&quot;NWNX_Reveal&quot;</span>; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">   11</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">NWNX_REVEAL_SEEN</a> = 1; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">   12</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a> = 0; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">object</span> oObserver, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">int</span> bReveal, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">   29</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">object</span> oObserver, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;RevealTo&quot;</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(iDetectionMethod);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oObserver);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oHiding);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Reveal, sFunc);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">   40</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">int</span> bReveal, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetRevealToParty&quot;</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(iDetectionMethod);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(bReveal);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a>(oHiding);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Reveal, sFunc);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<a href="nwnx__reveal_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Reveal = <span class="stringliteral">&quot;NWNX_Reveal&quot;</span>; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">   10</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">NWNX_REVEAL_SEEN</a> = 1; </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">   11</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a> = 0; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">object</span> oObserver, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">int</span> bReveal, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">   28</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">object</span> oObserver, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    NWNXPushInt(iDetectionMethod);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    NWNXPushObject(oObserver);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    NWNXPushObject(oHiding);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    NWNXCall(NWNX_Reveal, <span class="stringliteral">&quot;RevealTo&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a>(<span class="keywordtype">object</span> oHiding, <span class="keywordtype">int</span> bReveal, <span class="keywordtype">int</span> iDetectionMethod = <a class="code" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    NWNXPushInt(iDetectionMethod);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    NWNXPushInt(bReveal);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    NWNXPushObject(oHiding);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    NWNXCall(NWNX_Reveal, <span class="stringliteral">&quot;SetRevealToParty&quot;</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__reveal_html_gacd928190408f6d69e9448c84141bee7e"><div class="ttname"><a href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a></div><div class="ttdeci">const int NWNX_REVEAL_HEARD</div><div class="ttdoc">Heard.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00012">nwnx_reveal.nss:12</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__reveal_html_ga88cfee3997f219dca4d75eb5c04e2df8"><div class="ttname"><a href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a></div><div class="ttdeci">void NWNX_Reveal_SetRevealToParty(object oHiding, int bReveal, int iDetectionMethod=NWNX_REVEAL_HEARD)</div><div class="ttdoc">Sets whether a character remains visible to their party through stealth.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00040">nwnx_reveal.nss:40</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_ga633ccd114d588939b34db8a85b3cbf63"><div class="ttname"><a href="group__nwnx.html#ga633ccd114d588939b34db8a85b3cbf63">NWNX_PushArgumentObject</a></div><div class="ttdeci">void NWNX_PushArgumentObject(object value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00069">nwnx.nss:69</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_ga1d7bbbf30928800bacc327e93beff2e6"><div class="ttname"><a href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00059">nwnx.nss:59</a></div></div>
-<div class="ttc" id="agroup__reveal_html_ga71f55177ffc85cd14a6981166dffb60a"><div class="ttname"><a href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a></div><div class="ttdeci">void NWNX_Reveal_RevealTo(object oHiding, object oObserver, int iDetectionMethod=NWNX_REVEAL_HEARD)</div><div class="ttdoc">Selectively reveals the character to an observer until the next time they stealth out of sight.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00029">nwnx_reveal.nss:29</a></div></div>
-<div class="ttc" id="agroup__reveal_html_gae4bff87fefb21bef87fe4e021fb13ac7"><div class="ttname"><a href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">NWNX_REVEAL_SEEN</a></div><div class="ttdeci">const int NWNX_REVEAL_SEEN</div><div class="ttdoc">Seen.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00011">nwnx_reveal.nss:11</a></div></div>
+<div class="ttc" id="agroup__reveal_html_gacd928190408f6d69e9448c84141bee7e"><div class="ttname"><a href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a></div><div class="ttdeci">const int NWNX_REVEAL_HEARD</div><div class="ttdoc">Heard.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00011">nwnx_reveal.nss:11</a></div></div>
+<div class="ttc" id="agroup__reveal_html_ga88cfee3997f219dca4d75eb5c04e2df8"><div class="ttname"><a href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a></div><div class="ttdeci">void NWNX_Reveal_SetRevealToParty(object oHiding, int bReveal, int iDetectionMethod=NWNX_REVEAL_HEARD)</div><div class="ttdoc">Sets whether a character remains visible to their party through stealth.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00036">nwnx_reveal.nss:36</a></div></div>
+<div class="ttc" id="agroup__reveal_html_ga71f55177ffc85cd14a6981166dffb60a"><div class="ttname"><a href="group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a">NWNX_Reveal_RevealTo</a></div><div class="ttdeci">void NWNX_Reveal_RevealTo(object oHiding, object oObserver, int iDetectionMethod=NWNX_REVEAL_HEARD)</div><div class="ttdoc">Selectively reveals the character to an observer until the next time they stealth out of sight.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00028">nwnx_reveal.nss:28</a></div></div>
+<div class="ttc" id="agroup__reveal_html_gae4bff87fefb21bef87fe4e021fb13ac7"><div class="ttname"><a href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">NWNX_REVEAL_SEEN</a></div><div class="ttdeci">const int NWNX_REVEAL_SEEN</div><div class="ttdoc">Seen.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__reveal_8nss_source.html#l00010">nwnx_reveal.nss:10</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_2dd1f4b35de9e27d2bf14be9b6b1c8dd.html">Reveal</a></li><li class="navelem"><a class="el" href="dir_6f5208de735e135e3cbfc78b16c95f88.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__reveal_8nss.html">nwnx_reveal.nss</a></li>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -35,7 +35,6 @@ var group__util =
     [ "NWNX_Util_GetInstructionsExecuted", "group__util.html#ga783bcf722cf620148b07dc9bb2900f53", null ],
     [ "NWNX_Util_RegisterServerConsoleCommand", "group__util.html#ga2bf1f3fc290ca7dcf27f8266336b2a65", null ],
     [ "NWNX_Util_UnregisterServerConsoleCommand", "group__util.html#gaf0dcdc5e920d5b156079476b66fef71f", null ],
-    [ "NWNX_Util_PluginExists", "group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a", null ],
     [ "NWNX_Util_GetUserDirectory", "group__util.html#gab9b71c82c64c7ae1a72187e47a828bed", null ],
     [ "NWNX_Util_GetScriptReturnValue", "group__util.html#gaa162793a2d0aa5cae40598351bf7cde0", null ],
     [ "NWNX_Util_CreateDoor", "group__util.html#ga8ca817683c192a4073768bb01e94f35f", null ],

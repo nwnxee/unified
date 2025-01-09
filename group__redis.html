@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -114,20 +114,20 @@ $(document).ready(function(){initNavTree('group__redis.html',''); initResizable(
 TODO:<ul>
 <li>SCO/RCO, so resman can automatically load resources from redis without user intervention. This requires a more generic interface/hook in core.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md606"></a>
+<h2><a class="anchor" id="autotoc_md614"></a>
 Hints</h2>
 <ul>
 <li>There are two includes, <code>nwnx_redis</code> and <code>nwnx_redis_short</code>. They do the same, but <code>_short</code> is not prefixed with <code>NWNX_Redis</code>.</li>
 <li><code><a class="el" href="nwnx__redis__ps_8nss.html" title="Interface to Redis PUBSUB.">nwnx_redis_ps.nss</a></code> and <code><a class="el" href="on__pubsub_8nss.html" title="Script to handle PubSub event.">on_pubsub.nss</a></code> are not needed if PubSub functionality is not being used.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md607"></a>
+<h2><a class="anchor" id="autotoc_md615"></a>
 Setup</h2>
 <ul>
 <li>Set up redis-server. Start it. This should be as simple as apt-get install redis. There's also a docker image.</li>
 <li>Configure <code>NWNX_REDIS_HOST</code> and <code>NWNX_REDIS_PORT</code> for nwnx. <code>NWNX_REDIS_PORT</code> is not necessary if the default redis port is used.</li>
 <li>Include the .nss files in NWScript/ into your module.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md608"></a>
+<h2><a class="anchor" id="autotoc_md616"></a>
 Accessing Redis from nwscript</h2>
 <p>To use Redis commands in nwscript include <code>nwnx_redis</code> and <code>nwnx_redis_lib</code>. The nwnx_redis include contains the redis commands like, for example, <code>int <a class="el" href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET(string key)</a></code>. All of the nwnx redis comands return an int which is the resultId. The nwnx_redis_lib include contains functions to get the data (and type) you can work with for this resultId. Three of these functions are:</p><ul>
 <li>int <a class="el" href="group__redis.html#ga1348f79753eb3dd2208edf7e63d84553" title="Gets the given result as an integer.">NWNX_Redis_GetResultAsInt(int resultId)</a></li>
@@ -144,7 +144,7 @@ Accessing Redis from nwscript</h2>
 <div class="line">  <span class="keywordtype">string</span> sValue = <a class="code" href="group__redis.html#ga54287d82441086cf187b5768af08490d">NWNX_Redis_GetResultAsString</a>(<a class="code" href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET</a>(<span class="stringliteral">&quot;examples:examplekey&quot;</span>));</div>
 <div class="line">  WriteTimestampedLogEntry(<span class="stringliteral">&quot;Value of redis key &#39;examples:examplekey&#39;: &quot;</span> + sValue);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md609"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md617"></a>
 Getting started with PubSub</h2>
 <ul>
 <li>Create a script called "on_pubsub" (or rename it through <code>NWNX_REDIS_PUBSUB_SCRIPT</code>). An example is included in NWScript/.</li>
@@ -155,7 +155,7 @@ Getting started with PubSub</h2>
 <li>Hint: <code>redis-cli monitor</code> in a separate shell is a great way to figure out what's going on.</li>
 <li>Your script should trigger with the payload available through <code><a class="el" href="nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c" title="Get a PUBSUB message.">NWNX_Redis_GetPubSubMessageData()</a></code>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md610"></a>
+<h3><a class="anchor" id="autotoc_md618"></a>
 Moving on</h3>
 <ul>
 <li>Now think of a good naming scheme for your various pubsub channels. Keep traffic as low as feasible, since each incoming message will trigger a script run. There is no batching yet.</li>
@@ -163,7 +163,7 @@ Moving on</h3>
 <li>Example: <code>NWNX_Redis_PUBLISH("nwserver.players.join", GetPCPlayerName(..));</code></li>
 <li>Hint: A good pattern is to store data in a redis key named after the channel and object identifier (i.e. <code>HSET nwserver:players:PlayerName:.lastSeen 1234</code>) and then trigger a PubSub message with the same subject (<code>PUBLISH nwserver.players.joins PlayerName</code>). This cuts down on wire overhead.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md611"></a>
+<h2><a class="anchor" id="autotoc_md619"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -233,7 +233,7 @@ Functions</h2></td></tr>
 
 <p>Returns the result type as a int. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00066">66</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00065">65</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -262,7 +262,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The length or 0 if the given result wasn't a list type. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00073">73</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00072">72</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -302,7 +302,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The list entry, will return "" if the given result is not a list, or if the requested index is out of bounds. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00081">81</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00080">80</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -331,7 +331,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result as a float. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00088">88</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result as an integer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00096">96</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00095">95</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -389,7 +389,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result as a string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00103">103</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00102">102</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -408,7 +408,7 @@ Functions</h2></td></tr>
 
 <p>Array result. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -427,7 +427,7 @@ Functions</h2></td></tr>
 <p>Error result. </p>
 <p>This never appears: it is rewritten into STRING for simplicity reasons. const int NWNX_REDIS_RESULT_BULK_STRING = 2; </p><dl class="section note"><dt>Note</dt><dd>You can retrieve errors as strings. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -447,7 +447,7 @@ Functions</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>This cannot represent integers above 32bit. </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Use <a class="el" href="group__redis.html#ga54287d82441086cf187b5768af08490d" title="Gets the given result as a string.">NWNX_Redis_GetResultAsString()</a> if you need the string representation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00025">25</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00024">24</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -465,7 +465,7 @@ Functions</h2></td></tr>
 
 <p>String result. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00028">28</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00027">27</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
@@ -483,22 +483,22 @@ Functions</h2></td></tr>
 
 <p>Null result. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__redis__lib_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__redis__lib_8nss_source.html">nwnx_redis_lib.nss</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__redis_html_ga54287d82441086cf187b5768af08490d"><div class="ttname"><a href="group__redis.html#ga54287d82441086cf187b5768af08490d">NWNX_Redis_GetResultAsString</a></div><div class="ttdeci">string NWNX_Redis_GetResultAsString(int resultId)</div><div class="ttdoc">Gets the given result as a string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__lib_8nss_source.html#l00103">nwnx_redis_lib.nss:103</a></div></div>
-<div class="ttc" id="agroup__redis_html_ga1348f79753eb3dd2208edf7e63d84553"><div class="ttname"><a href="group__redis.html#ga1348f79753eb3dd2208edf7e63d84553">NWNX_Redis_GetResultAsInt</a></div><div class="ttdeci">int NWNX_Redis_GetResultAsInt(int resultId)</div><div class="ttdoc">Gets the given result as an integer.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__lib_8nss_source.html#l00096">nwnx_redis_lib.nss:96</a></div></div>
-<div class="ttc" id="anwnx__redis_8nss_html_a511b24aea00b12ff67e15857891c2a1b"><div class="ttname"><a href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET</a></div><div class="ttdeci">int NWNX_Redis_GET(string key)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l04022">nwnx_redis.nss:4022</a></div></div>
-<div class="ttc" id="anwnx__redis_8nss_html_a7440040404ff2e41a1c4292e5a2f34ea"><div class="ttname"><a href="nwnx__redis_8nss.html#a7440040404ff2e41a1c4292e5a2f34ea">NWNX_Redis_EXISTS</a></div><div class="ttdeci">int NWNX_Redis_EXISTS(string key)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l03835">nwnx_redis.nss:3835</a></div></div>
-<div class="ttc" id="anwnx__redis_8nss_html_ad96b4061c4b94b7d4334f9162e519d6e"><div class="ttname"><a href="nwnx__redis_8nss.html#ad96b4061c4b94b7d4334f9162e519d6e">NWNX_Redis_SET</a></div><div class="ttdeci">int NWNX_Redis_SET(string key, string value, string condition=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l04890">nwnx_redis.nss:4890</a></div></div>
+<div class="ttc" id="agroup__redis_html_ga54287d82441086cf187b5768af08490d"><div class="ttname"><a href="group__redis.html#ga54287d82441086cf187b5768af08490d">NWNX_Redis_GetResultAsString</a></div><div class="ttdeci">string NWNX_Redis_GetResultAsString(int resultId)</div><div class="ttdoc">Gets the given result as a string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__lib_8nss_source.html#l00102">nwnx_redis_lib.nss:102</a></div></div>
+<div class="ttc" id="agroup__redis_html_ga1348f79753eb3dd2208edf7e63d84553"><div class="ttname"><a href="group__redis.html#ga1348f79753eb3dd2208edf7e63d84553">NWNX_Redis_GetResultAsInt</a></div><div class="ttdeci">int NWNX_Redis_GetResultAsInt(int resultId)</div><div class="ttdoc">Gets the given result as an integer.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis__lib_8nss_source.html#l00095">nwnx_redis_lib.nss:95</a></div></div>
+<div class="ttc" id="anwnx__redis_8nss_html_a511b24aea00b12ff67e15857891c2a1b"><div class="ttname"><a href="nwnx__redis_8nss.html#a511b24aea00b12ff67e15857891c2a1b">NWNX_Redis_GET</a></div><div class="ttdeci">int NWNX_Redis_GET(string key)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l04021">nwnx_redis.nss:4021</a></div></div>
+<div class="ttc" id="anwnx__redis_8nss_html_a7440040404ff2e41a1c4292e5a2f34ea"><div class="ttname"><a href="nwnx__redis_8nss.html#a7440040404ff2e41a1c4292e5a2f34ea">NWNX_Redis_EXISTS</a></div><div class="ttdeci">int NWNX_Redis_EXISTS(string key)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l03834">nwnx_redis.nss:3834</a></div></div>
+<div class="ttc" id="anwnx__redis_8nss_html_ad96b4061c4b94b7d4334f9162e519d6e"><div class="ttname"><a href="nwnx__redis_8nss.html#ad96b4061c4b94b7d4334f9162e519d6e">NWNX_Redis_SET</a></div><div class="ttdeci">int NWNX_Redis_SET(string key, string value, string condition=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__redis_8nss_source.html#l04889">nwnx_redis.nss:4889</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

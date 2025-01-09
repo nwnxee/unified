@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -106,10 +106,10 @@ $(document).ready(function(){initNavTree('group__skillranks.html',''); initResiz
 <div class="contents">
 
 
-<h3><a id="skillranks"></a>Readme</h3><div class="textblock">Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats.<h2><a class="anchor" id="autotoc_md620"></a>
+<h3><a id="skillranks"></a>Readme</h3><div class="textblock">Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats.<h2><a class="anchor" id="autotoc_md627"></a>
 Plugin Sample Usage</h2>
 <p>To create a new skill feat, builders create a <code>SkillFeat</code> structure and run functions on the <code>OnModuleLoad</code>.</p>
-<h4><a class="anchor" id="autotoc_md621"></a>
+<h4><a class="anchor" id="autotoc_md628"></a>
 Example 1</h4>
 <p>The builder wants to create a new skill called <b>Travel</b> and wants to add Skill Focus and Epic Skill Focus feats.</p>
 <ul>
@@ -129,7 +129,7 @@ Example 1</h4>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md622"></a>
+<h4><a class="anchor" id="autotoc_md629"></a>
 Example 2</h4>
 <p>The builder doesn't like the restriction on the <b>Trackless Step</b> feat which inhibits the skill bonus while Underground even if the Natural flag is set.</p>
 <ul>
@@ -140,7 +140,7 @@ Example 2</h4>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat);</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md623"></a>
+<h4><a class="anchor" id="autotoc_md630"></a>
 Example 3</h4>
 <p>The builder has created a new feat called <b>Doctor</b> which counts the creature's <b>Intelligence</b> instead of <b>Wisdom</b> if higher when calculating their <b>Heal</b> skill.</p><ul>
 <li>Add the Doctor feat to feat.2da.</li>
@@ -151,7 +151,7 @@ Example 3</h4>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md624"></a>
+<h4><a class="anchor" id="autotoc_md631"></a>
 Example 4</h4>
 <p>The builder has created a new feat called <b>Moonlight Spy</b> which gives a <b>Listen</b>, <b>Search</b> and <b>Spot</b> bonus of 3 plus 1 for every 2 levels of <b>Assassin</b> or <b>Rogue</b> when the player is outdoors at night time.</p><ul>
 <li>Add the <b>Moonlight Spy</b> feat to feat.2da</li>
@@ -174,7 +174,7 @@ Example 4</h4>
 <div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md625"></a>
+<h4><a class="anchor" id="autotoc_md632"></a>
 Example 5</h4>
 <p>The builder wants all Skill Focus feats to increase the modifier by 5 and all Epic Skill Focus feats to increase the modifier by 12.</p><ul>
 <li>Change the TLK reference in the feat.2da for all Skill Focus feats from 424 to a new custom TLK entry that states: <div class="fragment"><div class="line">Type of Feat: General</div>
@@ -191,7 +191,7 @@ Example 5</h4>
 <div class="line">NWNX_SkillRanks_SetSkillFeatFocusMod(12, TRUE);</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md626"></a>
+<h4><a class="anchor" id="autotoc_md633"></a>
 Example 6</h4>
 <p>The builder has an area in her module called <em>The Great Library</em> where she wants all creatures to receive a bonus of 10 <b>Lore</b> whenever inside.</p><ul>
 <li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keywordtype">object</span> oArea = GetObjectByTag(<span class="stringliteral">&quot;greatlibrary&quot;</span>);</div>
@@ -266,7 +266,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The count of feats for a specific skill. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00145">145</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00144">144</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -306,7 +306,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__SkillRanks__SkillFeat.html" title="A feat that manipulates skill ranks.">NWNX_SkillRanks_SkillFeat</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00180">180</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00171">171</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__SkillRanks__SkillFeat.html" title="A feat that manipulates skill ranks.">NWNX_SkillRanks_SkillFeat</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00155">155</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00151">151</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -386,7 +386,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00205">205</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00191">191</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The updated <a class="el" href="structNWNX__SkillRanks__SkillFeat.html" title="A feat that manipulates skill ranks.">NWNX_SkillRanks_SkillFeat</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00225">225</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00209">209</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -465,7 +465,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00238">238</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00222">222</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -487,7 +487,7 @@ Functions</h2></td></tr>
 <p>Gets the current penalty to Dexterity based skills when blind. </p>
 <dl class="section return"><dt>Returns</dt><dd>The penalty to Dexterity when blind. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00247">247</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00229">229</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -516,7 +516,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00256">256</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00235">235</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -556,7 +556,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The modifier to that skill in the area. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00264">264</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00241">241</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -602,7 +602,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00275">275</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00249">249</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -621,7 +621,7 @@ Functions</h2></td></tr>
 
 <p>Strength. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -639,7 +639,7 @@ Functions</h2></td></tr>
 
 <p>Dexterity. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -657,7 +657,7 @@ Functions</h2></td></tr>
 
 <p>Constitution. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -675,7 +675,7 @@ Functions</h2></td></tr>
 
 <p>Intelligence. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -693,7 +693,7 @@ Functions</h2></td></tr>
 
 <p>Wisdom. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -711,7 +711,7 @@ Functions</h2></td></tr>
 
 <p>Charisma. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -729,7 +729,7 @@ Functions</h2></td></tr>
 
 <p>Use the minimum value of the provided ability scores. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00028">28</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -747,7 +747,7 @@ Functions</h2></td></tr>
 
 <p>Use the maximum value of the provided ability scores. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -765,7 +765,7 @@ Functions</h2></td></tr>
 
 <p>Use the average value of the provided ability scores. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
@@ -783,33 +783,33 @@ Functions</h2></td></tr>
 
 <p>Use the sum of the provided ability scores. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00032">32</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a0e294b3acd481896cc1c7ae349aa397a"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a">NWNX_SkillRanks_SkillFeat::iFeat</a></div><div class="ttdeci">int iFeat</div><div class="ttdoc">The feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00039">nwnx_skillranks.nss:39</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a349f2205b03ebd3c5ed0635dff56d2d2"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2">NWNX_SkillRanks_SkillFeat::fClassLevelMod</a></div><div class="ttdeci">float fClassLevelMod</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00060">nwnx_skillranks.nss:60</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a534688bf4035fb5b6040e3c798605369"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369">NWNX_SkillRanks_SkillFeat::iAreaFlagsForbidden</a></div><div class="ttdeci">int iAreaFlagsForbidden</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00066">nwnx_skillranks.nss:66</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_gaf46fd7507a97f894f3e17b0d2c0e8eea"><div class="ttname"><a href="group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea">NWNX_SkillRanks_GetSkillFeat</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeat(int iSkill, int iFeat)</div><div class="ttdoc">Returns a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00180">nwnx_skillranks.nss:180</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af74a42efd47b5f9bc738cd7b6759a4b7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7">NWNX_SkillRanks_SkillFeat::iAreaFlagsRequired</a></div><div class="ttdeci">int iAreaFlagsRequired</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00063">nwnx_skillranks.nss:63</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_gacd135cb7afcf82c95e6ab9ffc5b294df"><div class="ttname"><a href="group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</div><div class="ttdoc">Use the maximum value of the provided ability scores.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00030">nwnx_skillranks.nss:30</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a73f5be9c11646af553b30000b2a72da7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">NWNX_SkillRanks_SkillFeat::iSkill</a></div><div class="ttdeci">int iSkill</div><div class="ttdoc">The skill this feat impacts.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00038">nwnx_skillranks.nss:38</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a1c26d25c176cfd36ce4a9007cddd7f0d"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d">NWNX_SkillRanks_SkillFeat::iKeyAbilityMask</a></div><div class="ttdeci">int iKeyAbilityMask</div><div class="ttdoc">Bitmask of abilities and method to calculate the ability modifier for a skill.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00080">nwnx_skillranks.nss:80</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_ga98a356da26953e1b850c981ea52714e8"><div class="ttname"><a href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">NWNX_SkillRanks_SetAreaModifier</a></div><div class="ttdeci">void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier)</div><div class="ttdoc">Sets a skill modifier for the area.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00275">nwnx_skillranks.nss:275</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a></div><div class="ttdoc">A feat that manipulates skill ranks.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00036">nwnx_skillranks.nss:36</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_ac10e1f8652735b57a5bd1f1533a80742"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742">NWNX_SkillRanks_SkillFeat::iModifier</a></div><div class="ttdeci">int iModifier</div><div class="ttdoc">Skill feat bonus/penalty.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00042">nwnx_skillranks.nss:42</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_ga7dd3c741b09e4111f974d1bf61c35c1c"><div class="ttname"><a href="group__skillranks.html#ga7dd3c741b09e4111f974d1bf61c35c1c">NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</div><div class="ttdoc">Wisdom.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00019">nwnx_skillranks.nss:19</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_gad83eb78b6cff3bac273bb17c32159f0d"><div class="ttname"><a href="group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d">NWNX_SkillRanks_AddSkillFeatClass</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_SkillRanks_SkillFeat skillFeat, int iClass)</div><div class="ttdoc">Add classes to a skill feat instead of working with the NWNX_SkillRanks_SkillFeat::sClasses string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00225">nwnx_skillranks.nss:225</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_gac34e2d7aa9cfa7330914732fa6392e10"><div class="ttname"><a href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a></div><div class="ttdeci">void NWNX_SkillRanks_SetSkillFeat(struct NWNX_SkillRanks_SkillFeat skillFeat, int createIfNonExistent=FALSE)</div><div class="ttdoc">Modifies or creates a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00205">nwnx_skillranks.nss:205</a></div></div>
-<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af739ed67510b85727943101c94b4b1f3"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3">NWNX_SkillRanks_SkillFeat::iDayOrNight</a></div><div class="ttdeci">int iDayOrNight</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00070">nwnx_skillranks.nss:70</a></div></div>
-<div class="ttc" id="agroup__skillranks_html_ga00f0fbad3b10c1cd427c4dbc2467113d"><div class="ttname"><a href="group__skillranks.html#ga00f0fbad3b10c1cd427c4dbc2467113d">NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</div><div class="ttdoc">Intelligence.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00018">nwnx_skillranks.nss:18</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a0e294b3acd481896cc1c7ae349aa397a"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a">NWNX_SkillRanks_SkillFeat::iFeat</a></div><div class="ttdeci">int iFeat</div><div class="ttdoc">The feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00038">nwnx_skillranks.nss:38</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a349f2205b03ebd3c5ed0635dff56d2d2"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2">NWNX_SkillRanks_SkillFeat::fClassLevelMod</a></div><div class="ttdeci">float fClassLevelMod</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00059">nwnx_skillranks.nss:59</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a534688bf4035fb5b6040e3c798605369"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369">NWNX_SkillRanks_SkillFeat::iAreaFlagsForbidden</a></div><div class="ttdeci">int iAreaFlagsForbidden</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00065">nwnx_skillranks.nss:65</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gaf46fd7507a97f894f3e17b0d2c0e8eea"><div class="ttname"><a href="group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea">NWNX_SkillRanks_GetSkillFeat</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeat(int iSkill, int iFeat)</div><div class="ttdoc">Returns a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00171">nwnx_skillranks.nss:171</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af74a42efd47b5f9bc738cd7b6759a4b7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7">NWNX_SkillRanks_SkillFeat::iAreaFlagsRequired</a></div><div class="ttdeci">int iAreaFlagsRequired</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00062">nwnx_skillranks.nss:62</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gacd135cb7afcf82c95e6ab9ffc5b294df"><div class="ttname"><a href="group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</div><div class="ttdoc">Use the maximum value of the provided ability scores.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00029">nwnx_skillranks.nss:29</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a73f5be9c11646af553b30000b2a72da7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">NWNX_SkillRanks_SkillFeat::iSkill</a></div><div class="ttdeci">int iSkill</div><div class="ttdoc">The skill this feat impacts.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00037">nwnx_skillranks.nss:37</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a1c26d25c176cfd36ce4a9007cddd7f0d"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d">NWNX_SkillRanks_SkillFeat::iKeyAbilityMask</a></div><div class="ttdeci">int iKeyAbilityMask</div><div class="ttdoc">Bitmask of abilities and method to calculate the ability modifier for a skill.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00079">nwnx_skillranks.nss:79</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga98a356da26953e1b850c981ea52714e8"><div class="ttname"><a href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">NWNX_SkillRanks_SetAreaModifier</a></div><div class="ttdeci">void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier)</div><div class="ttdoc">Sets a skill modifier for the area.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00249">nwnx_skillranks.nss:249</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a></div><div class="ttdoc">A feat that manipulates skill ranks.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00035">nwnx_skillranks.nss:35</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_ac10e1f8652735b57a5bd1f1533a80742"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742">NWNX_SkillRanks_SkillFeat::iModifier</a></div><div class="ttdeci">int iModifier</div><div class="ttdoc">Skill feat bonus/penalty.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00041">nwnx_skillranks.nss:41</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga7dd3c741b09e4111f974d1bf61c35c1c"><div class="ttname"><a href="group__skillranks.html#ga7dd3c741b09e4111f974d1bf61c35c1c">NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</div><div class="ttdoc">Wisdom.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00018">nwnx_skillranks.nss:18</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gad83eb78b6cff3bac273bb17c32159f0d"><div class="ttname"><a href="group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d">NWNX_SkillRanks_AddSkillFeatClass</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_SkillRanks_SkillFeat skillFeat, int iClass)</div><div class="ttdoc">Add classes to a skill feat instead of working with the NWNX_SkillRanks_SkillFeat::sClasses string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00209">nwnx_skillranks.nss:209</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gac34e2d7aa9cfa7330914732fa6392e10"><div class="ttname"><a href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a></div><div class="ttdeci">void NWNX_SkillRanks_SetSkillFeat(struct NWNX_SkillRanks_SkillFeat skillFeat, int createIfNonExistent=FALSE)</div><div class="ttdoc">Modifies or creates a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00191">nwnx_skillranks.nss:191</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af739ed67510b85727943101c94b4b1f3"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3">NWNX_SkillRanks_SkillFeat::iDayOrNight</a></div><div class="ttdeci">int iDayOrNight</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00069">nwnx_skillranks.nss:69</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga00f0fbad3b10c1cd427c4dbc2467113d"><div class="ttname"><a href="group__skillranks.html#ga00f0fbad3b10c1cd427c4dbc2467113d">NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</div><div class="ttdoc">Intelligence.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00017">nwnx_skillranks.nss:17</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,43 +100,38 @@ $(document).ready(function(){initNavTree('nwnx__webhook_8nss_source.html',''); i
 <div class="title">nwnx_webhook.nss</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="nwnx__webhook_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;nwnx&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_WebHook = <span class="stringliteral">&quot;NWNX_WebHook&quot;</span>; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> message, <span class="keywordtype">string</span> username = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">int</span> mrkdwn = 1);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> sMessage, <span class="keywordtype">float</span> delay = 0.0f);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">   29</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> message, <span class="keywordtype">string</span> username = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">int</span> mrkdwn = 1)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SendWebHookHTTPS&quot;</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a>(mrkdwn);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(username);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(message);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(path);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(host);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_WebHook, sFunc);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">   40</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> sMessage, <span class="keywordtype">float</span> delay = 0.0f)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    DelayCommand(delay, <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(host, path, sMessage));</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<a href="nwnx__webhook_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_WebHook = <span class="stringliteral">&quot;NWNX_WebHook&quot;</span>; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> message, <span class="keywordtype">string</span> username = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">int</span> mrkdwn = 1);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> sMessage, <span class="keywordtype">float</span> delay = 0.0f);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">   28</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> message, <span class="keywordtype">string</span> username = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">int</span> mrkdwn = 1)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    NWNXPushInt(mrkdwn);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    NWNXPushString(username);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    NWNXPushString(message);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    NWNXPushString(path);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    NWNXPushString(host);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    NWNXCall(NWNX_WebHook, <span class="stringliteral">&quot;SendWebHookHTTPS&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">   38</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a>(<span class="keywordtype">string</span> host, <span class="keywordtype">string</span> path, <span class="keywordtype">string</span> sMessage, <span class="keywordtype">float</span> delay = 0.0f)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    DelayCommand(delay, <a class="code" href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a>(host, path, sMessage));</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__webhook_html_ga8030e0fe61e40060c60246dd1cc2f5cc"><div class="ttname"><a href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a></div><div class="ttdeci">void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, float delay=0.0f)</div><div class="ttdoc">Resends a webhook message after a defined delay.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook_8nss_source.html#l00040">nwnx_webhook.nss:40</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac4eedc41505f53a08f7aa03093a2daaf"><div class="ttname"><a href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00074">nwnx.nss:74</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_ga1d7bbbf30928800bacc327e93beff2e6"><div class="ttname"><a href="group__nwnx.html#ga1d7bbbf30928800bacc327e93beff2e6">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00059">nwnx.nss:59</a></div></div>
-<div class="ttc" id="agroup__webhook_html_ga619daabd1f5b9034e0b9326524a0562d"><div class="ttname"><a href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a></div><div class="ttdeci">void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, string username=&quot;&quot;, int mrkdwn=1)</div><div class="ttdoc">Send a slack compatible webhook.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook_8nss_source.html#l00029">nwnx_webhook.nss:29</a></div></div>
+<div class="ttc" id="agroup__webhook_html_ga8030e0fe61e40060c60246dd1cc2f5cc"><div class="ttname"><a href="group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc">NWNX_WebHook_ResendWebHookHTTPS</a></div><div class="ttdeci">void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, float delay=0.0f)</div><div class="ttdoc">Resends a webhook message after a defined delay.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook_8nss_source.html#l00038">nwnx_webhook.nss:38</a></div></div>
+<div class="ttc" id="agroup__webhook_html_ga619daabd1f5b9034e0b9326524a0562d"><div class="ttname"><a href="group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d">NWNX_WebHook_SendWebHookHTTPS</a></div><div class="ttdeci">void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, string username=&quot;&quot;, int mrkdwn=1)</div><div class="ttdoc">Send a slack compatible webhook.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__webhook_8nss_source.html#l00028">nwnx_webhook.nss:28</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_4bc0f77fa752a1e8395a049e84c59928.html">WebHook</a></li><li class="navelem"><a class="el" href="dir_d026abc894e6ce462d67b263b4cdd96c.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__webhook_8nss.html">nwnx_webhook.nss</a></li>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

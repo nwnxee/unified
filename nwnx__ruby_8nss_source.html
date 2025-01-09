@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -100,33 +100,27 @@ $(document).ready(function(){initNavTree('nwnx__ruby_8nss_source.html',''); init
 <div class="title">nwnx_ruby.nss</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="nwnx__ruby_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;nwnx&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Ruby = <span class="stringliteral">&quot;NWNX_Ruby&quot;</span>; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a>(<span class="keywordtype">string</span> sCode);</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">   14</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a>(<span class="keywordtype">string</span> sCode)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;Evaluate&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a>(sCode);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Ruby, sFunc);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<a href="nwnx__ruby_8nss.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Ruby = <span class="stringliteral">&quot;NWNX_Ruby&quot;</span>; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a>(<span class="keywordtype">string</span> sCode);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">   13</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a>(<span class="keywordtype">string</span> sCode)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    NWNXPushString(sCode);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    NWNXCall(NWNX_Ruby, <span class="stringliteral">&quot;Evaluate&quot;</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> NWNXPopString();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00054">nwnx.nss:54</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gae9cc53e85c008a30a58c0d7cee4169d6"><div class="ttname"><a href="group__nwnx.html#gae9cc53e85c008a30a58c0d7cee4169d6">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString()</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00109">nwnx.nss:109</a></div></div>
-<div class="ttc" id="agroup__nwnx_html_gac4eedc41505f53a08f7aa03093a2daaf"><div class="ttname"><a href="group__nwnx.html#gac4eedc41505f53a08f7aa03093a2daaf">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00074">nwnx.nss:74</a></div></div>
-<div class="ttc" id="agroup__ruby_html_ga1be911de5fdb8bdd3df814f663f06f42"><div class="ttname"><a href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a></div><div class="ttdeci">string NWNX_Ruby_Evaluate(string sCode)</div><div class="ttdoc">Evaluates some ruby code.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__ruby_8nss_source.html#l00014">nwnx_ruby.nss:14</a></div></div>
+<div class="ttc" id="agroup__ruby_html_ga1be911de5fdb8bdd3df814f663f06f42"><div class="ttname"><a href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a></div><div class="ttdeci">string NWNX_Ruby_Evaluate(string sCode)</div><div class="ttdoc">Evaluates some ruby code.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__ruby_8nss_source.html#l00013">nwnx_ruby.nss:13</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_96ade152febc262a31be38f7a77ed436.html">Ruby</a></li><li class="navelem"><a class="el" href="dir_8808a4e2faeab328a83928bd340a3cf5.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__ruby_8nss.html">nwnx_ruby.nss</a></li>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

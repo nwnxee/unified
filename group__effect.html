@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -107,9 +107,9 @@ $(document).ready(function(){initNavTree('group__effect.html',''); initResizable
 <div class="contents">
 
 
-<h3><a id="effect"></a>Readme</h3><div class="textblock">Provide various utility functions to manipulate builtin effect type<h2><a class="anchor" id="autotoc_md305"></a>
+<h3><a id="effect"></a>Readme</h3><div class="textblock">Provide various utility functions to manipulate builtin effect type<h2><a class="anchor" id="autotoc_md313"></a>
 Environment Variables</h2>
-<h3><a class="anchor" id="autotoc_md306"></a>
+<h3><a class="anchor" id="autotoc_md314"></a>
 NWNX_EFFECT_EXTEND_DURATION_TYPE = true/false</h3>
 <p>Allow ApplyEffectToObject to apply internal duration types; simply give the new constants as described below to the function.</p>
 <p>To correctly read and iterate these functions, you need to use:</p>
@@ -119,12 +119,12 @@ NWNX_EFFECT_EXTEND_DURATION_TYPE = true/false</h3>
 <li><a class="el" href="group__effect.html#ga86a29b10362c8010d4e6cf917aa49a58" title="Returns the nNth applied effect on a object.">NWNX_Effect_GetAppliedEffect()</a></li>
 </ul>
 <p>The builtin functions (GetFirstEffect, GetNextEffect, GetIsEffectValid) do not expose internal effect types.</p>
-<h4><a class="anchor" id="autotoc_md307"></a>
+<h4><a class="anchor" id="autotoc_md315"></a>
 const int DURATION_TYPE_EQUIPPED = 3;</h4>
 <p>This effect gets automatically removed when the item that created it gets unequipped.</p>
 <p>For this to work, the effect creator needs to be a valid equipped item; you can set this either by spawning the effect from the item handler, or by using SetEffectCreator().</p>
 <p>Behaviour without a equipped item in the effect creator slot is undefined.</p>
-<h4><a class="anchor" id="autotoc_md308"></a>
+<h4><a class="anchor" id="autotoc_md316"></a>
 const int DURATION_TYPE_INNATE = 4;</h4>
 <p>This is used by the game to represent things like racial and feat effects, as well as movement speed adjustments. </p>
 </div><table class="memberdecls">
@@ -211,7 +211,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__EffectUnpacked.html" title="An unpacked effect.">NWNX_EffectUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00278">278</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00266">266</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00287">287</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00272">272</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -280,7 +280,7 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>eNew and eOld need to have the same type. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of internal effects updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00297">297</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00279">279</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -309,7 +309,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of effects (item properties and other non-exposed effects included) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00310">310</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00288">288</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -349,7 +349,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__EffectUnpacked.html" title="An unpacked effect.">NWNX_EffectUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00319">319</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00295">295</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -396,7 +396,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Cannot replace an effect with a different type or ID. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00329">329</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00303">303</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -436,7 +436,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>FALSE/0 on failure TRUE/1 on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00340">340</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00311">311</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00350">350</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00319">319</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -515,7 +515,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The effect with creator field set. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00358">358</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00326">326</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -544,7 +544,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the effect is valid (including internal types). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00370">370</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00334">334</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -573,7 +573,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of applied effects, including internal. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00381">381</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00341">341</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -614,7 +614,7 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Make sure to check with NWNX_Effect_GetIsEffectValid, as this iterator also includes internal effects. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A copy of the applied game effect, or a invalid effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00392">392</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00348">348</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -632,7 +632,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>EQUIPPED effects are always associated with a slotted item: Setting this duration type requires the effect creator to be set to the (already equipped) item that should remove this effect when unequipped. Removal behaviour for effects where the creator is NOT a equipped item is undefined. They are not removed by resting, cannot be dispelled, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -649,7 +649,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>These are feat/racial effects used internally by the game to implement things like movement speed changes and darkvision. They cannot be removed by resting, dispelling, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -659,7 +659,7 @@ Variables</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

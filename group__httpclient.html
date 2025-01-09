@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.36.12</span>
+								&#160;<span id="projectnumber">8193.37.13</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -106,10 +106,10 @@ $(document).ready(function(){initNavTree('group__httpclient.html',''); initResiz
 <div class="contents">
 
 
-<h3><a id="httpclient"></a>Readme</h3><div class="textblock"><h2><a class="anchor" id="autotoc_md498"></a>
+<h3><a id="httpclient"></a>Readme</h3><div class="textblock"><h2><a class="anchor" id="autotoc_md506"></a>
 Introduction</h2>
 <p>The HTTPClient Plugin provides access to an HTTP Client to perform requests and return responses.</p>
-<h2><a class="anchor" id="autotoc_md499"></a>
+<h2><a class="anchor" id="autotoc_md507"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -117,18 +117,18 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NWNX_HTTPCLIENT_REQUEST_TIMEOUT </td><td class="markdownTableBodyCenter">int </td><td class="markdownTableBodyNone">2000  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md500"></a>
+<h2><a class="anchor" id="autotoc_md508"></a>
 Setup</h2>
-<h3><a class="anchor" id="autotoc_md501"></a>
+<h3><a class="anchor" id="autotoc_md509"></a>
 Client</h3>
 <p>The Client commands are functional by simply loading the plugin.</p>
-<h2><a class="anchor" id="autotoc_md502"></a>
+<h2><a class="anchor" id="autotoc_md510"></a>
 Client Usage</h2>
 <p>The HTTP Client contains two functions, <code><a class="el" href="group__httpclient.html#ga8acd402dd345f0851a4bd7b2da16d0de" title="Sends an http method to the given host.">NWNX_HTTPClient_SendRequest()</a></code> and <code><a class="el" href="group__httpclient.html#ga3dafa443a24d90a53de5ed161e9b8f80" title="Returns an NWNX_HTTP_Client_Request structure.">NWNX_HTTPClient_GetRequest()</a></code> and broadcasts two events, <code>NWNX_ON_HTTPCLIENT_SUCCESS</code> and <code>NWNX_ON_HTTPCLIENT_FAILED</code>.</p>
 <p>The builder constructs an <code><a class="el" href="structNWNX__HTTPClient__Request.html" title="A structure for an HTTP Client Request.">NWNX_HTTPClient_Request</a></code> struct with the appropriate information then passes that struct into <code><a class="el" href="group__httpclient.html#ga8acd402dd345f0851a4bd7b2da16d0de" title="Sends an http method to the given host.">NWNX_HTTPClient_SendRequest()</a></code> which will return a unique request identifier. The request is then sent to the host and upon success or failure the respective event is called.</p>
 <p>The event data sent is <code>REQUEST_ID</code>, <code>STATUS</code> and <code>RESPONSE</code>. The <code>REQUEST_ID</code> event data is the integer returned with <code><a class="el" href="group__httpclient.html#ga8acd402dd345f0851a4bd7b2da16d0de" title="Sends an http method to the given host.">NWNX_HTTPClient_SendRequest()</a></code>. The structure for that request can then be queried via <code><a class="el" href="group__httpclient.html#ga3dafa443a24d90a53de5ed161e9b8f80" title="Returns an NWNX_HTTP_Client_Request structure.">NWNX_HTTPClient_GetRequest()</a></code>. The <code>STATUS</code> event data is the server HTTP status return code, (usually 200 on success) and the <code>RESPONSE</code> is the body of text the server returned.</p>
 <p>Additionally the event data includes Rate Limit information that some servers provide. These are <code>RATELIMIT_LIMIT</code> which is how many requests you can send in a given time period, <code>RATELIMIT_REMAINING</code> is how many requests you have left in that time period and <code>RATELIMIT_RESET</code> is an epoch timestamp when the request limit is reset again. There is also <code>RETRY_AFTER</code> which some servers provide which is how long in seconds before you can send another request.</p>
-<h3><a class="anchor" id="autotoc_md503"></a>
+<h3><a class="anchor" id="autotoc_md511"></a>
 Example Client Requests</h3>
 <p>Here is an example of posting an issue to a github repository. </p><div class="fragment"><div class="line">json githubJSON = JsonObject();</div>
 <div class="line">githubJSON = JsonObjectSet(githubJSON, <span class="stringliteral">&quot;title&quot;</span>, JsonString(GetModuleName() + <span class="stringliteral">&quot; NWN Bug Report via &quot;</span>+sAuthorName));</div>
@@ -221,7 +221,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique identifier for the request for later access in the REQUEST_ID event data. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00071">71</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00070">70</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -250,7 +250,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The structured <a class="el" href="structNWNX__HTTPClient__Request.html" title="A structure for an HTTP Client Request.">NWNX_HTTPClient_Request</a> information </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00090">90</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00087">87</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -267,7 +267,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -283,7 +283,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -299,7 +299,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -315,7 +315,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -331,7 +331,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -363,7 +363,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00026">26</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00025">25</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -395,7 +395,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00027">27</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00026">26</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -411,7 +411,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00028">28</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00027">27</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -427,7 +427,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00028">28</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -443,7 +443,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -459,7 +459,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00037">37</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00036">36</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00037">37</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -491,7 +491,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
@@ -507,29 +507,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00040">40</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__httpclient_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__httpclient_8nss_source.html">nwnx_httpclient.nss</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructNWNX__HTTPClient__Request_html_a3be08d4ee8eb994359cffb5df8afd6fc"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html#a3be08d4ee8eb994359cffb5df8afd6fc">NWNX_HTTPClient_Request::nRequestMethod</a></div><div class="ttdeci">int nRequestMethod</div><div class="ttdoc">A Request Type.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00046">nwnx_httpclient.nss:46</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_gafd15a8f9850588cf504640229cd441a9"><div class="ttname"><a href="group__httpclient.html#gafd15a8f9850588cf504640229cd441a9">NWNX_HTTPCLIENT_REQUEST_METHOD_GET</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_REQUEST_METHOD_GET</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00013">nwnx_httpclient.nss:13</a></div></div>
-<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02463">nwnx_events.nss:2463</a></div></div>
-<div class="ttc" id="astructNWNX__HTTPClient__Request_html"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html">NWNX_HTTPClient_Request</a></div><div class="ttdoc">A structure for an HTTP Client Request.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00044">nwnx_httpclient.nss:44</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_ga8529986dd782e8439714dabc84edb053"><div class="ttname"><a href="group__httpclient.html#ga8529986dd782e8439714dabc84edb053">NWNX_HTTPCLIENT_REQUEST_METHOD_POST</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_REQUEST_METHOD_POST</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00014">nwnx_httpclient.nss:14</a></div></div>
-<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02439">nwnx_events.nss:2439</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_ga8acd402dd345f0851a4bd7b2da16d0de"><div class="ttname"><a href="group__httpclient.html#ga8acd402dd345f0851a4bd7b2da16d0de">NWNX_HTTPClient_SendRequest</a></div><div class="ttdeci">int NWNX_HTTPClient_SendRequest(struct NWNX_HTTPClient_Request s)</div><div class="ttdoc">Sends an http method to the given host.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00071">nwnx_httpclient.nss:71</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_ga507339d9e3a6e581efc14c81893c772d"><div class="ttname"><a href="group__httpclient.html#ga507339d9e3a6e581efc14c81893c772d">NWNX_HTTPCLIENT_CONTENT_TYPE_JSON</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_CONTENT_TYPE_JSON</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00028">nwnx_httpclient.nss:28</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_ga3dafa443a24d90a53de5ed161e9b8f80"><div class="ttname"><a href="group__httpclient.html#ga3dafa443a24d90a53de5ed161e9b8f80">NWNX_HTTPClient_GetRequest</a></div><div class="ttdeci">struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId)</div><div class="ttdoc">Returns an NWNX_HTTP_Client_Request structure.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00090">nwnx_httpclient.nss:90</a></div></div>
-<div class="ttc" id="agroup__httpclient_html_ga8dd0c82756977e8804380873008d5e42"><div class="ttname"><a href="group__httpclient.html#ga8dd0c82756977e8804380873008d5e42">NWNX_HTTPCLIENT_AUTH_TYPE_BASIC</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_AUTH_TYPE_BASIC</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00038">nwnx_httpclient.nss:38</a></div></div>
-<div class="ttc" id="agroup__util_html_gab0151e2741596a3a9f1ece22c62f9c9b"><div class="ttname"><a href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a></div><div class="ttdeci">string NWNX_Util_GetEnvironmentVariable(string sVarname)</div><div class="ttdoc">Retrieves an environment variable.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__util_8nss_source.html#l00348">nwnx_util.nss:348</a></div></div>
-<div class="ttc" id="astructNWNX__HTTPClient__Request_html_a8cb54bcba1f4c123ede728be04202630"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html#a8cb54bcba1f4c123ede728be04202630">NWNX_HTTPClient_Request::sTag</a></div><div class="ttdeci">string sTag</div><div class="ttdoc">A unique tag for this request.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00047">nwnx_httpclient.nss:47</a></div></div>
+<div class="ttc" id="astructNWNX__HTTPClient__Request_html_a3be08d4ee8eb994359cffb5df8afd6fc"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html#a3be08d4ee8eb994359cffb5df8afd6fc">NWNX_HTTPClient_Request::nRequestMethod</a></div><div class="ttdeci">int nRequestMethod</div><div class="ttdoc">A Request Type.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00045">nwnx_httpclient.nss:45</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_gafd15a8f9850588cf504640229cd441a9"><div class="ttname"><a href="group__httpclient.html#gafd15a8f9850588cf504640229cd441a9">NWNX_HTTPCLIENT_REQUEST_METHOD_GET</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_REQUEST_METHOD_GET</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00012">nwnx_httpclient.nss:12</a></div></div>
+<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02442">nwnx_events.nss:2442</a></div></div>
+<div class="ttc" id="astructNWNX__HTTPClient__Request_html"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html">NWNX_HTTPClient_Request</a></div><div class="ttdoc">A structure for an HTTP Client Request.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00043">nwnx_httpclient.nss:43</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_ga8529986dd782e8439714dabc84edb053"><div class="ttname"><a href="group__httpclient.html#ga8529986dd782e8439714dabc84edb053">NWNX_HTTPCLIENT_REQUEST_METHOD_POST</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_REQUEST_METHOD_POST</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00013">nwnx_httpclient.nss:13</a></div></div>
+<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02424">nwnx_events.nss:2424</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_ga8acd402dd345f0851a4bd7b2da16d0de"><div class="ttname"><a href="group__httpclient.html#ga8acd402dd345f0851a4bd7b2da16d0de">NWNX_HTTPClient_SendRequest</a></div><div class="ttdeci">int NWNX_HTTPClient_SendRequest(struct NWNX_HTTPClient_Request s)</div><div class="ttdoc">Sends an http method to the given host.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00070">nwnx_httpclient.nss:70</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_ga507339d9e3a6e581efc14c81893c772d"><div class="ttname"><a href="group__httpclient.html#ga507339d9e3a6e581efc14c81893c772d">NWNX_HTTPCLIENT_CONTENT_TYPE_JSON</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_CONTENT_TYPE_JSON</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00027">nwnx_httpclient.nss:27</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_ga3dafa443a24d90a53de5ed161e9b8f80"><div class="ttname"><a href="group__httpclient.html#ga3dafa443a24d90a53de5ed161e9b8f80">NWNX_HTTPClient_GetRequest</a></div><div class="ttdeci">struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId)</div><div class="ttdoc">Returns an NWNX_HTTP_Client_Request structure.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00087">nwnx_httpclient.nss:87</a></div></div>
+<div class="ttc" id="agroup__httpclient_html_ga8dd0c82756977e8804380873008d5e42"><div class="ttname"><a href="group__httpclient.html#ga8dd0c82756977e8804380873008d5e42">NWNX_HTTPCLIENT_AUTH_TYPE_BASIC</a></div><div class="ttdeci">const int NWNX_HTTPCLIENT_AUTH_TYPE_BASIC</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00037">nwnx_httpclient.nss:37</a></div></div>
+<div class="ttc" id="agroup__util_html_gab0151e2741596a3a9f1ece22c62f9c9b"><div class="ttname"><a href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a></div><div class="ttdeci">string NWNX_Util_GetEnvironmentVariable(string sVarname)</div><div class="ttdoc">Retrieves an environment variable.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__util_8nss_source.html#l00334">nwnx_util.nss:334</a></div></div>
+<div class="ttc" id="astructNWNX__HTTPClient__Request_html_a8cb54bcba1f4c123ede728be04202630"><div class="ttname"><a href="structNWNX__HTTPClient__Request.html#a8cb54bcba1f4c123ede728be04202630">NWNX_HTTPClient_Request::sTag</a></div><div class="ttdeci">string sTag</div><div class="ttdoc">A unique tag for this request.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__httpclient_8nss_source.html#l00046">nwnx_httpclient.nss:46</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 20 2024 09:10:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jan 9 2025 15:24:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
