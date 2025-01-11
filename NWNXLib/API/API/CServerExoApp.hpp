@@ -103,7 +103,6 @@ struct CServerExoApp : CBaseExoApp
     int32_t GetPlayerLanguage(uint32_t nPlayerID);
     int32_t GetModuleLanguage();
     CServerAIMaster * GetServerAIMaster();
-    void * GetSysAdminList();
     const CExoArrayList<CNWSPlayer*> & GetPlayerList();
     class CNWSMessage * GetNWSMessage();
     CNetLayer * GetNetLayer();
