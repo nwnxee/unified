@@ -91,7 +91,6 @@ struct CNetLayer
     void StoreMessage(uint8_t * pData, uint32_t nMsgLength);
     BOOL GetGameMasterPermision() const;
     void SetGameMasterPermission(BOOL state);
-    BOOL TranslateAddressFromString(const char * szAddress, uint8_t * pNetAddress1, uint32_t * nWPort);
     class CExoNet * GetExoNet();
     CExoString GetServerNetworkAddress();
     //void SetCurrentMasterServerInternetAddress(const CNetPeer& peer);

@@ -331,7 +331,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerGuiTimingEvent(CNWSPlayer * pPlayer, BOOL bStarting, uint8_t nGuiTimingEventID, uint32_t nDuration = 0);
     void UpdateLastUpdate_GuiEffectIcons(CNWSCreature * pCreature, CExoArrayList<CEffectIconObject *> * pLastUpdateEffectArray, BOOL bSendNonPlayerBarIcons = false);
     BOOL ComputeLastUpdate_GuiEffectIcons(CNWSCreature * pCreature, CExoArrayList<CEffectIconObject *> * pLastUpdateEffectArray, BOOL bSendNonPlayerBarIcons = false);
-    void WriteGuiEffectIconsUpdate(CNWSCreature * pCreature, CExoArrayList<CEffectIconObject *> * pLastUpdateEffectArray, BOOL bSendNonPlayerBarIcons = false);
+    void WriteGuiEffectIconsUpdate(CNWSCreature * pCreature, CExoArrayList<CEffectIconObject *> * pLastUpdateEffectArray, BOOL bSendNonPlayerBarIcons, CNWSPlayer* pPlayer);
     BOOL SendServerToPlayerPVP_Attitude_Change(uint32_t nTargetPlayerId, uint32_t nSourcePlayerId, BOOL bNewAttitude);
     BOOL SendServerToPlayerCutscene_Status(CNWSPlayer * pPlayer, BOOL bIsActive, BOOL bEnableLeftMouseButton);
     BOOL SendServerToPlayerCutscene_FadeToBlack(CNWSPlayer * pPlayer, float fFadeSpeed);
