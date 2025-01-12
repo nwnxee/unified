@@ -56,7 +56,7 @@ SWIG_DOTNET_EXTENSIONS
 %typemap(cscode, noblock=1) CExoString {
 SWIG_DOTNET_EXTENSIONS
 
-  public CExoString(string source) : this(source.GetNullTerminatedString()) {
+  public CExoString(string source) : this(NWNX.NET.Native.StringUtils.GetNullTerminatedString(source)) {
   }
 
   /// <summary>
@@ -72,7 +72,7 @@ SWIG_DOTNET_EXTENSIONS
 %typemap(cscode, noblock=1) CResRef {
 SWIG_DOTNET_EXTENSIONS
 
-  public CResRef(string source) : this(source.GetNullTerminatedString()) {
+  public CResRef(string source) : this(NWNX.NET.Native.StringUtils.GetNullTerminatedString(source)) {
   }
 
   /// <summary>
