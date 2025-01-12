@@ -64,7 +64,7 @@ SWIG_DOTNET_EXTENSIONS
   /// </summary>
   /// <returns>The equivalent C# string for this CExoString.</returns>
   public override string ToString() {
-    return StringHelper.ReadNullTerminatedString(CStr());
+    return NWNX.NET.Native.StringUtils.ReadNullTerminatedString(CStr());
   }
 }
 
@@ -80,7 +80,7 @@ SWIG_DOTNET_EXTENSIONS
   /// </summary>
   /// <returns>A C# string representing this ResRef.</returns>
   public override string ToString() {
-    return StringHelper.ReadNullTerminatedString(GetResRefStr());
+    return NWNX.NET.Native.StringUtils.ReadNullTerminatedString(GetResRefStr());
   }
 }
 

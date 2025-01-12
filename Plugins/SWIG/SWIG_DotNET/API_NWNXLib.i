@@ -21,10 +21,10 @@
 %pragma(csharp) imclassclassmodifiers="public unsafe class"
 %typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
 
-// Use NativeStringMarshaler for marshalling of cp1252 strings.
+// Use NwStringPInvokeMarshaller for marshalling of cp1252 strings.
 namespace std {
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") string "string"
-%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeStringMarshaler))]") const string & "string"
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NWNX.NET.Native.Interop.NwStringPInvokeMarshaller))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NWNX.NET.Native.Interop.NwStringPInvokeMarshaller))]") string "string"
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NWNX.NET.Native.Interop.NwStringPInvokeMarshaller))]", outattributes="[return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NWNX.NET.Native.Interop.NwStringPInvokeMarshaller))]") const string & "string"
 }
 
 // Marshal pointer types as void* for easier dereferencing
