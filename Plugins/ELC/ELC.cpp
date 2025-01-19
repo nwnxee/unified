@@ -316,7 +316,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
             {
                 for (int slot = 0; slot <= (InventorySlot::MAX - NUM_CREATURE_ITEM_SLOTS); slot++)
                 {
-                    CNWSItem *pItem = pInventory->GetItemInSlot(slot);
+                    CNWSItem *pItem = pInventory->GetItemInSlot(1 << slot);
 
                     if (!pItem)
                         continue;
