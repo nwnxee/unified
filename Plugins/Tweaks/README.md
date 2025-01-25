@@ -50,6 +50,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT` | true or false | Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick |
 | `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
 | `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
+| `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` | true or false | Resist Energy feats stack with Epic Energy Resistance. |
 
 ## Environment variable values
 
