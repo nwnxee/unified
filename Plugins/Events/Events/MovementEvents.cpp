@@ -22,15 +22,29 @@ static int32_t ActionJumpToPointHook(CNWSCreature*, CNWSObjectActionNode*);
 static int32_t ActionJumpToObjectHook(CNWSCreature*, CNWSObjectActionNode*);
 static void SetPositionAreaEdgeHook(CNWSObject*, Vector, int32_t);
 
+static bool s_InSetAreaCall = false;
+void InitSetAreaHook()
+{
+    static Hooks::Hook s_SetAreaHook = Hooks::HookFunction(&CNWSObject::SetArea,
+    +[](CNWSObject *pThis, CNWSArea *pArea) -> void
+    {
+        s_InSetAreaCall = true;
+        s_SetAreaHook->CallOriginal<void>(pThis, pArea);
+        s_InSetAreaCall = false;
+    }, Hooks::Order::Earliest);
+}
+
 void MovementEvents() __attribute__((constructor));
 void MovementEvents()
 {
     InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", []() {
+        InitSetAreaHook();
         s_SetPositionMaterialChangeHook = Hooks::HookFunction(&CNWSObject::SetPosition,
             &SetPositionMaterialChangeHook, Hooks::Order::Earliest);
     });
 
     InitOnFirstSubscribe("NWNX_ON_CREATURE_TILE_CHANGE_.*", []() {
+        InitSetAreaHook();
         s_SetPositionTileChangeHook = Hooks::HookFunction(&CNWSObject::SetPosition,
             &SetPositionTileChangeHook, Hooks::Order::Earliest);
     });
@@ -70,7 +84,7 @@ void SetPositionMaterialChangeHook(CNWSObject* thisPtr, Vector vPosition, BOOL b
             int32_t oldMaterial = pArea->GetSurfaceMaterial(pCreature->m_vPosition);
             int32_t newMaterial = pArea->GetSurfaceMaterial(vPosition);
 
-            if (oldMaterial != newMaterial)
+            if (oldMaterial != newMaterial || (s_InSetAreaCall && pCreature->m_vPosition == vPosition))
             {
                 PushEventData("MATERIAL_TYPE", std::to_string(newMaterial));
                 SignalEvent("NWNX_ON_MATERIALCHANGE_BEFORE", thisPtr->m_idSelf);
@@ -107,7 +121,7 @@ void SetPositionTileChangeHook(CNWSObject* thisPtr, Vector vPosition, BOOL bDoin
             CNWSTile *pOldTile = pArea->GetTile(pCreature->m_vPosition);
             CNWSTile *pNewTile = pArea->GetTile(vPosition);
 
-            if (pOldTile && pNewTile && (pOldTile != pNewTile || pCreature->m_vPosition == vPosition))
+            if (pOldTile && pNewTile && (pOldTile != pNewTile || (s_InSetAreaCall && pCreature->m_vPosition == vPosition)))
             {
                 PushEventData("OLD_TILE_INDEX", std::to_string(pOldTile->m_nGridX + (pArea->m_nWidth * pOldTile->m_nGridY)));
                 PushEventData("OLD_TILE_X", std::to_string(pOldTile->m_nGridX));
