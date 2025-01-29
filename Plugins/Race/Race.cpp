@@ -70,6 +70,8 @@ Race::Race(Services::ProxyServiceList* services)
     REGISTER(SetRacialModifier);
     REGISTER(GetParentRace);
     REGISTER(SetFavoredEnemyFeat);
+    REGISTER(SuppressCreatureRaceEffects);
+    REGISTER(ReactivateCreatureRaceEffects);
 
 #undef REGISTER
 
@@ -1200,7 +1202,7 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
     return ScriptAPI::Arguments();
 }
 
-NWNX_EXPORT ArgumentStack Race::SuppressCreatureRaceEffects(ArgumentStack&& args)
+ArgumentStack Race::SuppressCreatureRaceEffects(ArgumentStack&& args)
 {
     if(auto* pCreature = Utils::PopCreature(args))
     {
@@ -1209,7 +1211,7 @@ NWNX_EXPORT ArgumentStack Race::SuppressCreatureRaceEffects(ArgumentStack&& args
     return {};
 }
 
-NWNX_EXPORT ArgumentStack Race::ReactivateCreatureRaceEffects(ArgumentStack&& args)
+ArgumentStack Race::ReactivateCreatureRaceEffects(ArgumentStack&& args)
 {
     if(auto* pCreature = Utils::PopCreature(args))
     {
