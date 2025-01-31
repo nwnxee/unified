@@ -48,7 +48,7 @@ static void OnServerCrash(int sig)
 
 NWNX_EXPORT uintptr_t GetFunctionPointer(const char* name)
 {
-    LOG_WARNING("GetFunctionPointer is deprecated and will be removed in a future release. Function pointers can be resolved natively in .NET using the System.Runtime.InteropServices.NativeLibrary API.");
+    LOG_WARNING("GetFunctionPointer is deprecated and will be removed in the next release. Function pointers can be resolved natively in .NET using the System.Runtime.InteropServices.NativeLibrary API.");
 
     void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
     if (!core)
@@ -248,6 +248,8 @@ NWNX_EXPORT void RegisterCrashHandler(CrashHandler handler)
 
 NWNX_EXPORT void RegisterHandlers(AllHandlers* handlers, unsigned size)
 {
+    LOG_WARNING("RegisterHandlers is deprecated and will be removed in the next release. Register handlers individually through the RegisterXXXHandler methods.");
+
     if (handlers == nullptr)
     {
         LOG_ERROR("RegisterHandlers argument is null pointer, aborting");
@@ -333,6 +335,8 @@ NWNX_EXPORT void StackPushFloat(float value)
 
 NWNX_EXPORT void StackPushString(const char* value)
 {
+    LOG_WARNING("StackPushString is deprecated and will be removed in the next release. Use StackPushRawString and convert encoding in managed code instead.");
+
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
 
@@ -452,6 +456,8 @@ NWNX_EXPORT float StackPopFloat()
 
 NWNX_EXPORT const char* StackPopString()
 {
+    LOG_WARNING("StackPopString is deprecated and will be removed in the next release. Use StackPopRawString and convert encoding in managed code instead.");
+
     auto vm = Globals::VirtualMachine();
     ASSERT(vm->m_nRecursionLevel >= 0);
 
@@ -584,68 +590,81 @@ NWNX_EXPORT int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 
 NWNX_EXPORT void NWNXSetFunction(const char* plugin, const char* function)
 {
+    LOG_WARNING("NWNXSetFunction is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     s_nwnxActivePlugin = plugin;
     s_nwnxActiveFunction = function;
 }
 
 NWNX_EXPORT void NWNXPushInt(int32_t n)
 {
+    LOG_WARNING("NWNXPushInt is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push(n);
 }
 
 NWNX_EXPORT void NWNXPushFloat(float f)
 {
+    LOG_WARNING("NWNXPushFloat is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push(f);
 }
 
 NWNX_EXPORT void NWNXPushObject(uint32_t o)
 {
+    LOG_WARNING("NWNXPushObject is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push((ObjectID)o);
 }
 
 NWNX_EXPORT void NWNXPushString(const char* s)
 {
+    LOG_WARNING("NWNXPushString is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push(String::FromUTF8(s));
 }
 
 NWNX_EXPORT void NWNXPushRawString(const char* s)
 {
+    LOG_WARNING("NWNXPushRawString is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push<std::string>(s);
 }
 
 NWNX_EXPORT void NWNXPushEffect(CGameEffect* e)
 {
+    LOG_WARNING("NWNXPushEffect is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push(e);
 }
 
 NWNX_EXPORT void NWNXPushItemProperty(CGameEffect* ip)
 {
+    LOG_WARNING("NWNXPushItemProperty is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Push(ip);
 }
 
 NWNX_EXPORT int32_t NWNXPopInt()
 {
+    LOG_WARNING("NWNXPopInt is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     return ScriptAPI::Pop<int32_t>().value_or(0);
 }
 
 NWNX_EXPORT float NWNXPopFloat()
 {
+    LOG_WARNING("NWNXPopFloat is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     return ScriptAPI::Pop<float>().value_or(0.0f);
 }
 
 NWNX_EXPORT uint32_t NWNXPopObject()
 {
+    LOG_WARNING("NWNXPopObject is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     return ScriptAPI::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 
 NWNX_EXPORT const char* NWNXPopString()
 {
+    LOG_WARNING("NWNXPopString is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     auto str = ScriptAPI::Pop<std::string>().value_or(std::string{""});
     return strdup(String::ToUTF8(str).c_str());
 }
 
 NWNX_EXPORT const char* NWNXPopRawString()
 {
+    LOG_WARNING("NWNXPopRawString is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     auto value = ScriptAPI::Pop<std::string>();
 
     static std::string retVal;
@@ -662,16 +681,19 @@ NWNX_EXPORT const char* NWNXPopRawString()
 
 NWNX_EXPORT CGameEffect* NWNXPopEffect()
 {
+    LOG_WARNING("NWNXPopEffect is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 NWNX_EXPORT CGameEffect* NWNXPopItemProperty()
 {
+    LOG_WARNING("NWNXPopItemProperty is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     return ScriptAPI::Pop<CGameEffect*>().value_or(nullptr);
 }
 
 NWNX_EXPORT void NWNXCallFunction()
 {
+    LOG_WARNING("NWNXCallFunction is deprecated and will be removed in the next release. Use the built-in nwscript method instead.");
     ScriptAPI::Call(s_nwnxActivePlugin, s_nwnxActiveFunction);
 }
 
@@ -695,7 +717,7 @@ static struct NWNXExportedGlobals
 } ExportedGlobals;
 NWNX_EXPORT NWNXExportedGlobals GetNWNXExportedGlobals()
 {
-    LOG_WARNING("GetNWNXExportedGlobals is deprecated and will be removed in a future release. Native globals can be accessed using SWIG_DotNET, or through PInvoke.");
+    LOG_WARNING("GetNWNXExportedGlobals is deprecated and will be removed in the next release. Native globals can be accessed using SWIG_DotNET, or through the System.Runtime.InteropServices.NativeLibrary API.");
 
     if (ExportedGlobals.psBuildNumber == nullptr)
     {
@@ -721,12 +743,16 @@ NWNX_EXPORT NWNXExportedGlobals GetNWNXExportedGlobals()
 
 NWNX_EXPORT void* RequestHook(void* address, void* managedFuncPtr, int32_t order)
 {
+    LOG_WARNING("RequestHook is deprecated and will be removed in the next release. Use RequestFunctionHook instead.");
+
     auto funchook = s_managedHooks.emplace_back(Hooks::HookFunction(address, managedFuncPtr, order)).get();
     return funchook->GetOriginal();
 }
 
 NWNX_EXPORT void ReturnHook(void* trampoline)
 {
+    LOG_WARNING("ReturnHook is deprecated and will be removed in the next release. Use ReturnFunctionHook instead.");
+
     for (auto it = s_managedHooks.begin(); it != s_managedHooks.end(); it++)
     {
         if (it->get()->GetOriginal() == trampoline)
