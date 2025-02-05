@@ -58,6 +58,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_SendPartyInvite", "group__player.html#gae8493cf3d7d5bf22fd6cdbc6c6fcc22f", null ],
     [ "NWNX_Player_GetTURD", "group__player.html#ga192c92181939204edeedc21c03a7af64", null ],
     [ "NWNX_Player_ReloadColorPalettes", "group__player.html#gabe690b8bb044a40722f2e424dfc89b1d", null ],
+    [ "NWNX_Player_GetOpenStore", "group__player.html#ga544fa0a06d383a6ee5c92bb0dc641e06", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],
