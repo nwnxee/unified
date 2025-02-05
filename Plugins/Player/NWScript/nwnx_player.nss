@@ -453,6 +453,11 @@ object NWNX_Player_GetTURD(object oPlayer);
 /// @param oPlayer The player to reload the color palette for
 void NWNX_Player_ReloadColorPalettes(object oPlayer);
 
+/// @brief Get the current open store of oPlayer.
+/// @param oPlayer The player.
+/// @return The open store or OBJECT_INVALID if no store is open.
+object NWNX_Player_GetOpenStore(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -975,4 +980,11 @@ void NWNX_Player_ReloadColorPalettes(object oPlayer)
 {
     NWNXPushObject(oPlayer);
     NWNXCall(NWNX_Player, "ReloadColorPalettes");
+}
+
+object NWNX_Player_GetOpenStore(object oPlayer)
+{
+    NWNXPushObject(oPlayer);
+    NWNXCall(NWNX_Player, "GetOpenStore");
+    return NWNXPopObject();
 }
