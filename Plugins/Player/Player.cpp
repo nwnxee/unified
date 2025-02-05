@@ -1963,3 +1963,10 @@ NWNX_EXPORT ArgumentStack ReloadColorPalettes(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetOpenStore(ArgumentStack&& args)
+{
+    if (auto *pPlayer = Utils::PopPlayer(args))
+        return pPlayer->m_pStoreGUI->m_oidOpen;
+    return Constants::OBJECT_INVALID;
+}

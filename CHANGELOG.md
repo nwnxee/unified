@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Player: GetOpenStore()
 
 ### Changed
 - N/A
