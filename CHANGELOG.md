@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 
 ### Added
 - Tweaks: added `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` to make Resist Energy feats stack with Epic Energy Resistance.
+- Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` to allow special abilities to be used on target types other than creatures.
 
 ##### New Plugins
 - N/A
