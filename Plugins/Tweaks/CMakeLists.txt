@@ -39,4 +39,5 @@ add_plugin(Tweaks
     "EquipUnequipEventTweaks.cpp"
     "CutsceneModeNoTURD.cpp"
     "CanUseItemsWhilePolymorphed.cpp"
-    "ResistEnergyStacksWithEpicEnergyResistance.cpp")
+    "ResistEnergyStacksWithEpicEnergyResistance.cpp"
+    "UnhardcodeSpecialAbilityTargetType.cpp")
