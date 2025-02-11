@@ -1,6 +1,6 @@
 #include "nwnx.hpp"
-#include "API/CNWSObject.hpp"
 #include "API/Database.hpp"
+#include "API/CNWSObject.hpp"
 #include <random>
 
 using namespace NWNXLib;
@@ -22,8 +22,8 @@ void NWSQLiteExtensions()
         +[](CNWSObject *pThis) -> std::shared_ptr<NWSQLite::Database>
         {
             if (!pThis->m_sqlite_db)
-                pThis->m_sqlite_db = std::make_shared<NWSQLite::Database>(CExoString::F("Object(%x[%u],tag=%s)", pThis->m_idSelf,
-                                                                                        pThis->m_nObjectType, pThis->m_sTag.CStr()), "");
+                pThis->m_sqlite_db = std::make_shared<NWSQLite::Database>(
+                    CExoString::F("Object(%x[%u],tag=%s)", pThis->m_idSelf, pThis->m_nObjectType, pThis->m_sTag.CStr()), "");
 
             return pThis->m_sqlite_db;
         }, Hooks::Order::Final);
