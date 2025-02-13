@@ -52,6 +52,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
 | `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` | true or false | Resist Energy feats stack with Epic Energy Resistance. |
 | `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. |
+| `NWNX_TWEAKS_CON_DOES_NOT_AFFECT_HP` | true or false | Constitution does not affect creature HP. |
 
 ## Environment variable values
 
