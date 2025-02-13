@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
+- Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 
 ### Changed
 - N/A
