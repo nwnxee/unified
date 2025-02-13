@@ -31,7 +31,7 @@ jobs:
       id: doxygen-cache
       with:
         path: "~/doxygen"
-        key: doxygen-1
+        key: doxygen-2
 
     - name: Install Cache Doxygen
       env:
