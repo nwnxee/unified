@@ -60,7 +60,7 @@ static void SummonAssociateHook(CNWSCreature *pCreature, CResRef cResRef, CExoSt
 static void LoadSpellGainTableHook(CNWClass* pClass, CExoString sTable);
 static void LoadSpellKnownTableHook(CNWClass* pClass, CExoString sTable);
 static uint8_t GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel);
-static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel, uint8_t nClass, uint16_t nRace, uint8_t nCHABase);
+static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel, uint8_t nClass, uint16_t nRace, uint8_t nCastingAbilityBase);
 static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool bDoLevel);
 
 void MaxLevel() __attribute__((constructor));
@@ -329,43 +329,41 @@ static void LoadSpellKnownTableHook(CNWClass* pClass, CExoString sTable)
     }
 }
 
-// If the player is at level 40 or lower we get the spell known for that class from the normal array,
+// If the player is at class level 40 or lower we get the spell known for that class from the normal array,
 // otherwise we use our map
-static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel, uint8_t nClass,
-                                             uint16_t nRace, uint8_t nCHABase)
+static uint8_t GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSpellLevel, uint8_t,
+    uint16_t nRace, uint8_t nCastingAbilityBase)
 {
-    uint8_t result = 0;
-    uint8_t spellLevelsPerLevel = 0;
-    uint8_t spellsKnownPerSpellLevel = 0;
-    uint8_t spellsKnownPreviousSpellLevel = 0;
+    if (nLevel < 1 || nLevel > MAX_LEVEL_MAX) return 0;
 
-    if (pClass->m_lstSpellKnownTable)
+    if (!pClass->m_lstSpellKnownTable) return 0;
+
+    int nSpellLevelForLevel = nLevel <= CORE_MAX_LEVEL
+        ? pClass->m_lstSpellLevelsPerLevel[nLevel - 1]
+        : s_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 1];
+
+    if (nSpellLevel >= nSpellLevelForLevel) return 0;
+
+    auto spellKnownTable = [&](uint8_t idxLevel, uint8_t idxSpellLevel)
     {
         if (nLevel <= CORE_MAX_LEVEL)
-        {
-            spellLevelsPerLevel = pClass->m_lstSpellLevelsPerLevel[nLevel - 1];
-            spellsKnownPerSpellLevel = pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel];
-            spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel - 1];
-        }
+            return pClass->m_lstSpellKnownTable[idxLevel][idxSpellLevel];
         else
-        {
-            spellLevelsPerLevel = s_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 1];
-            spellsKnownPerSpellLevel = s_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel];
-            if (nLevel == CORE_MAX_LEVEL + 1)
-                spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[CORE_MAX_LEVEL - 1][nSpellLevel - 1];
-            else
-                spellsKnownPreviousSpellLevel = s_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel - 1];
-        }
+            return s_nSpellKnownTableAdded[pClass->m_nName][idxLevel][idxSpellLevel];
+    };
+
+    if (pClass->m_bSpellbookRestricted && !pClass->m_bCanLearnFromScrolls
+        && nSpellLevel > 0
+        && spellKnownTable(nLevel - 1, nSpellLevel - 1) == 0)
+    {
+        int nCastingAbility = nCastingAbilityBase;
+        nCastingAbility += Globals::Rules()->m_lstRaces[nRace].GetAbilityAdjust(pClass->m_nSpellcastingAbility);
+        nCastingAbility += pClass->GetAbilityGainForLevel(pClass->m_nSpellcastingAbility, nLevel);
+
+        if (nCastingAbility < 10 + nSpellLevel) return 0;
     }
 
-    if (nSpellLevel < spellLevelsPerLevel
-        && (nClass != API::Constants::ClassType::Bard
-            || spellsKnownPreviousSpellLevel
-            || Globals::Rules()->m_lstRaces[nRace].m_nCHAAdjust + nCHABase > nSpellLevel + 10))
-    {
-        result = spellsKnownPerSpellLevel;
-    }
-    return result;
+    return spellKnownTable(nLevel - 1, nSpellLevel);
 }
 
 static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool bDoLevel)
@@ -379,7 +377,7 @@ static void SetExperienceHook(CNWSCreatureStats *pStats, uint32_t nValue, bool b
     }
 
     auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pStats->m_pBaseCreature->m_idSelf);
-    
+
     if ( bDoLevel && pPlayer != NULL )
     {
             auto *pMessageData = new CNWCCMessageData;

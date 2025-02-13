@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 
 ### Fixed
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.
+- MaxLevel: Fixed returning an invalid number of known spells in some cases.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
