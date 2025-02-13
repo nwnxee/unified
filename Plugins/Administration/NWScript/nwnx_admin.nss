@@ -140,7 +140,7 @@ void NWNX_Administration_SetPlayOption(int option, int value);
 ///
 /// @param playerName The community (login name).
 /// @param characterName The character name.
-/// @return Returns TRUE if successful
+/// @return Returns TRUE if successful.
 int NWNX_Administration_DeleteTURD(string playerName, string characterName);
 
 /// @brief Get an @ref admin_debug "Administration Debug Type" value.

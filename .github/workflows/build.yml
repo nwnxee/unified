@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       image: docker://nwnxee/builder:latest
     steps:
@@ -181,7 +181,7 @@ jobs:
         artifacts: "NWNX-EE.zip,NWScript.zip"
 
   docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.event_name == 'push'
     needs: build
     steps:
@@ -249,7 +249,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: build
 
     steps:
@@ -275,7 +275,7 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: release
 
     steps:

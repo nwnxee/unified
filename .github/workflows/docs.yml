@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
 
@@ -31,7 +31,7 @@ jobs:
       id: doxygen-cache
       with:
         path: "~/doxygen"
-        key: doxygen-1
+        key: doxygen-2
 
     - name: Install Cache Doxygen
       env:
@@ -40,7 +40,7 @@ jobs:
         if [[ "$CACHE_HIT" == 'true' ]]; then
           sudo cp --force --recursive ~/doxygen/* /
         else
-          sudo apt-get install doxygen
+          sudo apt-get install doxygen graphviz
           mkdir -p ~/doxygen
           for dep in doxygen; do
               dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/doxygen/
