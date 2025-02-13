@@ -492,7 +492,7 @@ ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
     switch(nOption)
     {
         case NWNX_WEAPON_SETDATA_DC_BYPASS:
-            LOG_INFO("Set NWNX_WEAPON_SETDATA_DC_BYPASS to %d", nVal);
+            LOG_DEBUG("Set NWNX_WEAPON_SETDATA_DC_BYPASS to %d", nVal);
             m_DCData.bBypass = nVal;
             break;
     }
