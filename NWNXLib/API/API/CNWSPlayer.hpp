@@ -47,6 +47,7 @@ struct CNWSPlayer
         {
             Nui::JSON::WindowToken m_token;
             Nui::JSON::WindowIdentifier m_id;
+            CExoString m_eventScript;
             std::vector<Nui::JSON::BindName> m_bind_list;
             std::unordered_map<Nui::JSON::BindName, Nui::JSON::BindValue> m_binds;
             std::unordered_set<Nui::JSON::BindName> m_watch;
