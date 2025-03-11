@@ -40,4 +40,5 @@ add_plugin(Tweaks
     "CutsceneModeNoTURD.cpp"
     "CanUseItemsWhilePolymorphed.cpp"
     "ResistEnergyStacksWithEpicEnergyResistance.cpp"
-    "UnhardcodeSpecialAbilityTargetType.cpp")
+    "UnhardcodeSpecialAbilityTargetType.cpp"
+    "ConDoesNotAffectHP.cpp")
