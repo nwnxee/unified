@@ -671,7 +671,32 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     // Check if our first level class is a spellcaster and if their primary casting stat is >= 11
                     if (nLevel == 1 && pClassLeveledUpIn->m_bIsSpellCasterClass)
                     {
-                        if (nAbilityAtLevel[pClassLeveledUpIn->m_nPrimaryAbility] < 11)
+                        uint8_t nCastingAbilityAdjust = 0;
+                        switch (pClassLeveledUpIn->m_nPrimaryAbility)
+                        {
+                            case Constants::Ability::Strength:
+                                nCastingAbilityAdjust = pRace->m_nSTRAdjust;
+                                break;
+                            case Constants::Ability::Dexterity:
+                                nCastingAbilityAdjust = pRace->m_nDEXAdjust;
+                                break;
+                            case Constants::Ability::Constitution:
+                                nCastingAbilityAdjust = pRace->m_nCONAdjust;
+                                break;
+                            case Constants::Ability::Intelligence:
+                                nCastingAbilityAdjust = pRace->m_nINTAdjust;
+                                break;
+                            case Constants::Ability::Wisdom:
+                                nCastingAbilityAdjust = pRace->m_nWISAdjust;
+                                break;
+                            case Constants::Ability::Charisma:
+                                nCastingAbilityAdjust = pRace->m_nCHAAdjust;
+                                break;
+                            default:
+                                nCastingAbilityAdjust = 0;
+                                break;
+                        }
+                        if (nAbilityAtLevel[pClassLeveledUpIn->m_nPrimaryAbility]+nCastingAbilityAdjust < 11)
                         {
                             if (auto strrefFailure = HandleValidationFailure(
                                     ValidationFailureType::Character,
