@@ -1,3 +1,9 @@
 add_plugin(NWSQLiteExtensions
     "NWSQLiteExtensions.cpp"
-    "TwoDAVirtualTable.cpp")
+    "TwoDAVirtualTable.cpp"
+    "InventoryVirtualTable.cpp"
+    "ItemPropertiesVirtualTable.cpp"
+    "ScriptVarsVirtualTable.cpp"
+    "PlayersVirtualTable.cpp"
+    "AreaObjectsVirtualTable.cpp"
+    "GameObjectFunctions.cpp")
