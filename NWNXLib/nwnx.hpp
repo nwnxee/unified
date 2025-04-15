@@ -102,7 +102,7 @@ namespace Hooks
         static inline std::unordered_map<void*, std::vector<FunctionHook*>> s_hooks;
 
         template <typename F>
-        void UpdateHookList(void* originalFunction, const std::vector<FunctionHook*>& hookList, int32_t index, F&& hookOperation);
+        static void UpdateHookList(void* originalFunction, const std::vector<FunctionHook*>& hookList, int32_t index, F&& hookOperation);
     };
 
     using Hook = std::unique_ptr<FunctionHook>;
