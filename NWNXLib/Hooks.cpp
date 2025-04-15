@@ -16,36 +16,36 @@ FunctionHook::FunctionHook(void* originalFunction, void* newFunction, int32_t or
     m_trampoline = nullptr;
     m_funchook = nullptr;
 
-    auto &v = s_hooks[originalFunction];
-    if (order == Order::Final && v.size() > 0 && v[0]->m_order == Order::Final)
+    auto &funcHooks = s_hooks[originalFunction];
+    if (order == Order::Final && !funcHooks.empty() && funcHooks[0]->m_order == Order::Final)
         throw std::runtime_error("Multiple hooks with final ordering requested");
 
-    int32_t insert = v.size();
-    for (int32_t i = 0; i < (int32_t)v.size(); i++)
+    auto insert = static_cast<int32_t>(funcHooks.size());
+    for (int32_t i = 0; i < static_cast<int32_t>(funcHooks.size()); i++)
     {
-        if (v[i]->m_order < m_order)
+        if (funcHooks[i]->m_order < m_order)
         {
             insert = i;
             break;
         }
-        if (v[i]->m_order == m_order)
+        if (funcHooks[i]->m_order == m_order)
             m_order--;
     }
 
-    UpdateHookList(originalFunction, v, insert, [&v, insert, this]
+    UpdateHookList(originalFunction, funcHooks, insert, [&funcHooks, insert, this]
     {
-        v.insert(v.begin() + insert, this);
+        funcHooks.insert(funcHooks.begin() + insert, this);
     });
 }
 
 FunctionHook::~FunctionHook()
 {
-    auto &v = s_hooks[m_originalFunction];
+    auto &funcHooks = s_hooks[m_originalFunction];
 
     int32_t remove = -1;
-    for (int32_t i = 0; i < (int32_t)v.size(); i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(funcHooks.size()); i++)
     {
-        if (v[i] == this)
+        if (funcHooks[i] == this)
         {
             remove = i;
             break;
@@ -58,9 +58,9 @@ FunctionHook::~FunctionHook()
         return;
     }
 
-    UpdateHookList(m_originalFunction, v, remove, [&v, remove]
+    UpdateHookList(m_originalFunction, funcHooks, remove, [&funcHooks, remove]
     {
-        v.erase(v.begin() + remove);
+        funcHooks.erase(funcHooks.begin() + remove);
     });
 }
 
