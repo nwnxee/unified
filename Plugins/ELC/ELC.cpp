@@ -728,19 +728,9 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
                 }
 
-                for (int nMultiClass = 0; nMultiClass < NUM_MULTICLASS; nMultiClass++)
+                for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
                 {
-                    uint8_t nClassId = pCreatureStats->GetClass(nMultiClass);
-                    CNWClass *pClass = nClassId < pRules->m_nNumClasses ? &pRules->m_lstClasses[nClassId] : nullptr;
-
-                    if (pClass)
-                    {
-                        for (int nAbilityIndex = 0; nAbilityIndex < Ability::MAX; nAbilityIndex++)
-                        {
-                            nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForSingleLevel(nAbilityIndex,
-                                                                                                   nMultiClassLevel[nMultiClassLeveledUpIn]);
-                        }
-                    }
+                    nAbilityAtLevel[nAbilityIndex] += pClassLeveledUpIn->GetAbilityGainForSingleLevel(nAbilityIndex, nMultiClassLevel[nMultiClassLeveledUpIn]);
                 }
 
 // *** Check Hit Die ********************************************************************************************************
