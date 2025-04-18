@@ -13,53 +13,76 @@ namespace NWNXLib::Hooks
 FunctionHook::FunctionHook(void* originalFunction, void* newFunction, int32_t order)
     : m_originalFunction(originalFunction), m_newFunction(newFunction), m_order(order)
 {
-    auto &v = s_hooks[originalFunction];
-    if (order == Order::Final && v.size() > 0 && v[0]->m_order == Order::Final)
+    m_trampoline = nullptr;
+    m_funchook = nullptr;
+
+    auto &funcHooks = s_hooks[originalFunction];
+    if (order == Order::Final && !funcHooks.empty() && funcHooks[0]->m_order == Order::Final)
         throw std::runtime_error("Multiple hooks with final ordering requested");
 
-    int32_t insert = v.size();
-    for (int32_t i = 0; i < (int32_t)v.size(); i++)
+    auto insert = static_cast<int32_t>(funcHooks.size());
+    for (int32_t i = 0; i < static_cast<int32_t>(funcHooks.size()); i++)
     {
-        if (v[i]->m_order < m_order)
+        if (funcHooks[i]->m_order < m_order)
         {
             insert = i;
             break;
         }
-        if (v[i]->m_order == m_order)
+        if (funcHooks[i]->m_order == m_order)
             m_order--;
     }
 
-    for (int32_t i = v.size() - 1; i >= insert; i--)
+    UpdateHookList(originalFunction, funcHooks, insert, [&funcHooks, insert, this]
     {
-        ASSERT(!funchook_uninstall((funchook_t*) v[i]->m_funchook, 0));
-        ASSERT(!funchook_destroy((funchook_t*) v[i]->m_funchook));
-    }
-
-    v.insert(v.begin() + insert, this);
-
-    for (int32_t i = insert; i < (int32_t)v.size(); i++)
-    {
-        v[i]->m_trampoline = (void*)originalFunction;
-        v[i]->m_funchook = (funchook_t*)funchook_create();
-        ASSERT(v[i]->m_funchook);
-        ASSERT(!funchook_prepare((funchook_t*)v[i]->m_funchook, &v[i]->m_trampoline, v[i]->m_newFunction));
-        ASSERT(!funchook_install((funchook_t*)v[i]->m_funchook, 0));
-    }
+        funcHooks.insert(funcHooks.begin() + insert, this);
+    });
 }
 
 FunctionHook::~FunctionHook()
 {
-    auto &v = s_hooks[m_originalFunction];
-    for (auto it = v.begin(); it != v.end(); it++)
+    auto &funcHooks = s_hooks[m_originalFunction];
+
+    int32_t remove = -1;
+    for (int32_t i = 0; i < static_cast<int32_t>(funcHooks.size()); i++)
     {
-        if (*it == this)
+        if (funcHooks[i] == this)
         {
-            v.erase(it);
+            remove = i;
             break;
         }
     }
-    funchook_uninstall((funchook_t*)m_funchook, 0);
-    funchook_destroy((funchook_t*)m_funchook);
+
+    if (remove == -1)
+    {
+        LOG_WARNING("Attempt to remove unknown function hook.");
+        return;
+    }
+
+    UpdateHookList(m_originalFunction, funcHooks, remove, [&funcHooks, remove]
+    {
+        funcHooks.erase(funcHooks.begin() + remove);
+    });
+}
+
+template <typename F>
+void FunctionHook::UpdateHookList(void* originalFunction, const std::vector<FunctionHook*>& hookList, const int32_t index, F&& hookOperation)
+{
+    for (int32_t i = static_cast<int32_t>(hookList.size()) - 1; i >= index; i--)
+    {
+        ASSERT(!funchook_uninstall(static_cast<funchook_t*>(hookList[i]->m_funchook), 0));
+        ASSERT(!funchook_destroy(static_cast<funchook_t*>(hookList[i]->m_funchook)));
+    }
+
+    hookOperation();
+
+    for (int32_t i = index; i < static_cast<int32_t>(hookList.size()); i++)
+    {
+        hookList[i]->m_trampoline = originalFunction;
+        hookList[i]->m_funchook = funchook_create();
+        ASSERT(hookList[i]->m_funchook);
+        ASSERT(!funchook_prepare(static_cast<funchook_t*>(hookList[i]->m_funchook), &hookList[i]->m_trampoline, hookList[i]->m_newFunction));
+        ASSERT(!funchook_install(static_cast<funchook_t*>(hookList[i]->m_funchook), 0));
+    }
 }
 
 };
