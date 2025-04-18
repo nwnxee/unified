@@ -1023,6 +1023,19 @@ int NWNX_Creature_GetMulticlassLimit(object oCreature);
 /// @note Persistence is enabled after a server reset by the first use of this function.
 void NWNX_Creature_SetMulticlassLimit(object oCreature, int nLimit, int bPersist = FALSE);
 
+/// @brief Gets the creature's number of bonus spells.
+/// @param oCreature The creature object.
+/// @param nMultiClass The character class position, starting at 0.
+/// @param nSpellLevel The spell level, 0 to 9.
+int NWNX_Creature_GetNumberOfBonusSpells(object oCreature, int nMultiClass, int nSpellLevel);
+
+/// @brief Modifies the creature's number of bonus spells.
+/// @param oCreature The creature object.
+/// @param nMultiClass The character class position, starting at 0.
+/// @param nSpellLevel The spell level, 0 to 9.
+/// @param nDelta The value to change the number of bonus spells by. Can be negative.
+void NWNX_Creature_ModifyNumberBonusSpells(object oCreature, int nMultiClass, int nSpellLevel, int nDelta);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2247,4 +2260,22 @@ void NWNX_Creature_SetMulticlassLimit(object oCreature, int nLimit, int bPersist
     NWNXPushInt(nLimit);
     NWNXPushObject(oCreature);
     NWNXCall(NWNX_Creature, "SetMulticlassLimit");
+}
+
+int NWNX_Creature_GetNumberOfBonusSpells(object oCreature, int nMultiClass, int nSpellLevel)
+{
+    NWNXPushInt(nSpellLevel);
+    NWNXPushInt(nMultiClass);
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Creature, "GetNumberOfBonusSpells");
+    return NWNXPopInt();
+}
+
+void NWNX_Creature_ModifyNumberBonusSpells(object oCreature, int nMultiClass, int nSpellLevel, int nDelta)
+{
+    NWNXPushInt(nDelta);
+    NWNXPushInt(nSpellLevel);
+    NWNXPushInt(nMultiClass);
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Creature, "ModifyNumberBonusSpells");
 }
