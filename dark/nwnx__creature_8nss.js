@@ -152,6 +152,8 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_GetMaxAttackRange", "group__creature.html#ga352946dceda094041e3d49b2a851451f", null ],
     [ "NWNX_Creature_GetMulticlassLimit", "group__creature.html#gab71ac91b08e61465bc3c3690295a7b08", null ],
     [ "NWNX_Creature_SetMulticlassLimit", "group__creature.html#ga7ddd4d9660cafeaaf79514e5cb42f448", null ],
+    [ "NWNX_Creature_GetNumberOfBonusSpells", "group__creature.html#gacf570fa6ad676a9e5d3fff575cf2e1ee", null ],
+    [ "NWNX_Creature_ModifyNumberBonusSpells", "group__creature.html#ga49f2158783a573a0fdedcd343c0d6a35", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
