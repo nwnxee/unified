@@ -72,6 +72,10 @@ int32_t HandlePlayerToServerLevelUpMessageHook(CNWSMessage *thisPtr, CNWSPlayer 
         {
             retVal = s_HandlePlayerToServerLevelUpMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
         }
+        else
+        {
+            Utils::ClearReadMessage();
+        }
 
         SignalEvent("NWNX_ON_CLIENT_LEVEL_UP_BEGIN_AFTER", pPlayer->m_oidNWSObject);
 

@@ -63,6 +63,7 @@ int32_t HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPl
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -104,6 +105,7 @@ int32_t HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlay
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -134,6 +136,7 @@ int32_t HandleMapPinDestroyMapPinMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 

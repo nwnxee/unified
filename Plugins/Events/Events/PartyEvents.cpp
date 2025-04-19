@@ -78,6 +78,7 @@ int32_t HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
