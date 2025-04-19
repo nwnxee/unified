@@ -39,6 +39,7 @@ int32_t HandlePlayerToServerQuickChatMessageHook(CNWSMessage *thisPtr, CNWSPlaye
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 

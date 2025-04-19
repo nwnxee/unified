@@ -98,6 +98,7 @@ int32_t HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pMessage, CNWSP
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
 
         if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
@@ -297,6 +298,7 @@ int32_t HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -330,6 +332,7 @@ int32_t HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -369,6 +372,7 @@ int32_t HandlePlayerToServerInventoryMessageHook(CNWSMessage *pMessage, CNWSPlay
             }
             else
             {
+                Utils::ClearReadMessage();
                 pMessage->SendServerToPlayerInventory_DropCancel(pPlayer->m_nPlayerID, oidItem);
                 retVal = true;
             }

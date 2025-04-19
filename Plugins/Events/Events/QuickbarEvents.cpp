@@ -38,6 +38,7 @@ int32_t HandlePlayerToServerGuiQuickbar_SetButtonHook(CNWSMessage *thisPtr, CNWS
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
