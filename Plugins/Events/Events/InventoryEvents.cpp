@@ -85,6 +85,8 @@ int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage *thisPtr, CNWSPl
                 }
                 else
                 {
+                    Utils::ClearReadMessage();
+
                     CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == target ? pPlayer->m_pInventoryGUI :
                                                          pPlayer->m_pOtherInventoryGUI;
 
@@ -131,6 +133,8 @@ int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage *thisPtr, CNWSPl
                 }
                 else
                 {
+                    Utils::ClearReadMessage();
+
                     auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
                     if (pMessage)
                     {
