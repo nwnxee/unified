@@ -248,8 +248,12 @@ ObjectID FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t nBaseItem
         }
         else if (pItem->m_oidPossessor != thisPtr->m_oidParent)
         {
-            LOG_WARNING("Item does not belong to that creature, falling back to original call.");
-            return false;
+            auto *pPossessor = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(pItem->m_oidPossessor));
+            if (!pPossessor || pPossessor->m_oidPossessor != thisPtr->m_oidParent)
+            {
+                LOG_WARNING("Item does not belong to that creature, falling back to original call.");
+                return false;
+            }
         }
         return true;
     };
