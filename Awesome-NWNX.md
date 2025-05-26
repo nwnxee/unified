@@ -30,6 +30,7 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 - [NWNFileFormats](https://github.com/Liareth/NWNFileFormats) -  For developers - a modern (and hopefully fast?) C++ API to read NWN / Aurora engine file formats
 - [nwn_sqlite](https://github.com/hendrikgit/nwn_sqlite#nwn_sqlite) - Writes information from a module, gff, 2da to a sqlite database file
 - [NWScript: EE Language Server](https://github.com/PhilippeChab/nwscript-ee-language-server) - A Visual Studio Code extension LSP for the NWScript language.
+- [NWN Livegrep](https://livegrep.nwn.ovh) - Code search through the core NWScript files, several frameworks and modules.
 
 ## Frameworks
 
