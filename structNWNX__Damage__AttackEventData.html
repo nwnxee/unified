@@ -220,12 +220,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0">iSneakAttack</a></td></tr>
 <tr class="memdesc:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">0=neither, 1=sneak attack, 2=death attack, 3=both  <a href="structNWNX__Damage__AttackEventData.html#a1d9294445235a4ee280cc4ff1d78cbd0">More...</a><br /></td></tr>
 <tr class="separator:a1d9294445235a4ee280cc4ff1d78cbd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28fce1406884ca59dd146d31c99d7fb2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a28fce1406884ca59dd146d31c99d7fb2">bRangedAttack</a></td></tr>
+<tr class="separator:a28fce1406884ca59dd146d31c99d7fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a838f86200ed83ab9b52a84720168222d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">bKillingBlow</a></td></tr>
+<tr class="memdesc:a838f86200ed83ab9b52a84720168222d"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRUE if it is a ranged attack.  <a href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">More...</a><br /></td></tr>
+<tr class="separator:a838f86200ed83ab9b52a84720168222d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f">iAttackType</a></td></tr>
 <tr class="memdesc:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.  <a href="structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f">More...</a><br /></td></tr>
 <tr class="separator:a086c6998c3f5de7813d81ac0e2eecb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a838f86200ed83ab9b52a84720168222d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">bKillingBlow</a></td></tr>
-<tr class="memdesc:a838f86200ed83ab9b52a84720168222d"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRUE if the hit is a killing blow.  <a href="structNWNX__Damage__AttackEventData.html#a838f86200ed83ab9b52a84720168222d">More...</a><br /></td></tr>
-<tr class="separator:a838f86200ed83ab9b52a84720168222d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2418445d5a02752410e894d927d81235"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235">iToHitRoll</a></td></tr>
 <tr class="memdesc:a2418445d5a02752410e894d927d81235"><td class="mdescLeft">&#160;</td><td class="mdescRight">The to hit roll of the attack.  <a href="structNWNX__Damage__AttackEventData.html#a2418445d5a02752410e894d927d81235">More...</a><br /></td></tr>
 <tr class="separator:a2418445d5a02752410e894d927d81235"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -904,19 +906,17 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a086c6998c3f5de7813d81ac0e2eecb5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a086c6998c3f5de7813d81ac0e2eecb5f">&#9670;&nbsp;</a></span>iAttackType</h2>
+<a id="a28fce1406884ca59dd146d31c99d7fb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28fce1406884ca59dd146d31c99d7fb2">&#9670;&nbsp;</a></span>bRangedAttack</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int NWNX_Damage_AttackEventData::iAttackType</td>
+          <td class="memname">int NWNX_Damage_AttackEventData::bRangedAttack</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack. </p>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
@@ -934,9 +934,28 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>TRUE if the hit is a killing blow. </p>
+<p>TRUE if it is a ranged attack. </p>
+<p>TRUE if the hit is a killing blow </p>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00090">90</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
+
+</div>
+</div>
+<a id="a086c6998c3f5de7813d81ac0e2eecb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a086c6998c3f5de7813d81ac0e2eecb5f">&#9670;&nbsp;</a></span>iAttackType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Damage_AttackEventData::iAttackType</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00091">91</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
 </div>
 </div>
@@ -954,7 +973,7 @@ Public Attributes</h2></td></tr>
 
 <p>The to hit roll of the attack. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00091">91</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00092">92</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
 </div>
 </div>
@@ -972,7 +991,7 @@ Public Attributes</h2></td></tr>
 
 <p>The to hit modifier of the attack. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00092">92</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__damage_8nss_source.html#l00093">93</a> of file <a class="el" href="nwnx__damage_8nss_source.html">nwnx_damage.nss</a>.</p>
 
 </div>
 </div>
@@ -986,7 +1005,7 @@ Public Attributes</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="structNWNX__Damage__AttackEventData.html">NWNX_Damage_AttackEventData</a></li>
 				<li class="footer">
-					Generated on Mon May 26 2025 09:14:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Jul 8 2025 12:47:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -17,10 +17,11 @@ var searchData=
   ['blinkleftvalid_65',['bLinkLeftValid',['../structNWNX__EffectUnpacked.html#a6616a557c8c9c73faa051ff023450212',1,'NWNX_EffectUnpacked']]],
   ['blinkrightvalid_66',['bLinkRightValid',['../structNWNX__EffectUnpacked.html#a14f3744ff2467b6314841a0cd2e87350',1,'NWNX_EffectUnpacked']]],
   ['blpop_67',['BLPOP',['../nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431',1,'nwnx_redis_short.nss']]],
-  ['brpop_68',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
-  ['brpoplpush_69',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
-  ['bshowicon_70',['bShowIcon',['../structNWNX__EffectUnpacked.html#a332fd2e3db2012dc15d2fff35b88332e',1,'NWNX_EffectUnpacked']]],
-  ['busable_71',['bUsable',['../structNWNX__IPUnpacked.html#aaa2c8bc13b51d3f6ceaf64e3b7fd5326',1,'NWNX_IPUnpacked']]],
-  ['bzpopmax_72',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
-  ['bzpopmin_73',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
+  ['brangedattack_68',['bRangedAttack',['../structNWNX__Damage__AttackEventData.html#a28fce1406884ca59dd146d31c99d7fb2',1,'NWNX_Damage_AttackEventData']]],
+  ['brpop_69',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
+  ['brpoplpush_70',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
+  ['bshowicon_71',['bShowIcon',['../structNWNX__EffectUnpacked.html#a332fd2e3db2012dc15d2fff35b88332e',1,'NWNX_EffectUnpacked']]],
+  ['busable_72',['bUsable',['../structNWNX__IPUnpacked.html#aaa2c8bc13b51d3f6ceaf64e3b7fd5326',1,'NWNX_IPUnpacked']]],
+  ['bzpopmax_73',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
+  ['bzpopmin_74',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
 ];
