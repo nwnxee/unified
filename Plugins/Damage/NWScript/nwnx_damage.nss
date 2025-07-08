@@ -86,8 +86,9 @@ struct NWNX_Damage_AttackEventData
     int iAttackResult; ///< 1=hit, 2=parried, 3=critical hit, 4=miss, 5=resisted, 7=automatic hit, 8=concealed, 9=miss chance, 10=devastating crit
     int iWeaponAttackType; ///< 1=main hand, 2=offhand, 3-5=creature, 6=extra(haste), 7=unarmed, 8=unarmed extra
     int iSneakAttack; ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
-    int iAttackType; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
+    int bRangedAttack; /// TRUE if it is a ranged attack
     int bKillingBlow; ///< TRUE if the hit is a killing blow
+    int iAttackType; ///< 65002=Attack of Opportunity, 65003=Riposte or a FeatID like KnockDown or some other special attack.
     int iToHitRoll; ///< The to hit roll of the attack
     int iToHitModifier; ///< The to hit modifier of the attack
 };
@@ -311,6 +312,7 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iAttackType       = NWNXPopInt();
     data.iToHitRoll        = NWNXPopInt();
     data.iToHitModifier    = NWNXPopInt();
+    data.bRangedAttack     = NWNXPopInt();
     return data;
 }
 
