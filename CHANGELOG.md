@@ -19,7 +19,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 
 ### Changed
-- N/A
+- Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
 
 ### Deprecated
 - N/A
