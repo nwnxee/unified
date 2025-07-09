@@ -108,8 +108,8 @@ int NWNX_Item_MoveTo(object oItem, object oTarget, int bHideAllFeedback = FALSE)
 /// @param oItem The item object.
 /// @param nModifier the modifier to apply (After any Override)
 /// @param bPersist Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning)
-/// @note This function (or override partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
-/// @warning if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
+/// @note This function (or override partner) must be used each server reset to re-enable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
+/// @warning if Persistence is FALSE, or not re-enabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
 void NWNX_Item_SetMinEquipLevelModifier(object oItem, int nModifier, int bPersist = TRUE);
 
 /// @brief Gets the applied modifier to the Minimum Level to Equip (Item Level Restriction).
@@ -120,8 +120,8 @@ int NWNX_Item_GetMinEquipLevelModifier(object oItem);
 /// @param oItem The item object.
 /// @param nOverride the nOverride to apply (Before any Modifier)
 /// @param bPersist Whether the modifier should persist to gff field. Strongly Recommended to be TRUE (See warning)
-/// @note This function (or modifier partner) must be used each server reset to reenable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
-/// @warning if Persistence is FALSE, or not renabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
+/// @note This function (or modifier partner) must be used each server reset to re-enable persistence. Recommended use on OBJECT_INVALID OnModuleLoad.
+/// @warning if Persistence is FALSE, or not re-enabled, beware characters may trigger ELC logging in with now-invalid ItemLevelRestrictions equipped.
 void NWNX_Item_SetMinEquipLevelOverride(object oItem, int nOverride, int bPersist = TRUE);
 
 /// @brief Gets the applied override to the Minimum Level to Equip (Item Level Restriction).

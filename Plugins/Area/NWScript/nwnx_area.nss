@@ -93,7 +93,7 @@ int NWNX_Area_GetAreaSpotModifier(object area);
 /// @sa NWNX_SkillRanks_SetAreaModifier() to change any skill modifier.
 void NWNX_Area_SetAreaSpotModifier(object area, int spotModifier);
 
-/// @brief Get the listen modifer of area
+/// @brief Get the listen modifier of area
 /// @param area The area object.
 /// @return The value of the Listen skill modifier for this area.
 int NWNX_Area_GetAreaListenModifier(object area);
@@ -343,7 +343,7 @@ struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea);
 
 /// @brief Set the default discoverability mask for objects in an area.
 /// @param oArea The area or OBJECT_INVALID to set a global mask for all areas. Per area masks will override the global mask.
-/// @param nObjectTypes A mask of OBJECT_TYPE_* constants or OBJECT_TYPE_ALL for all suitable object types. Currently only works on Creatures, Doors (Hilite only), Items and Useable Placeables.
+/// @param nObjectTypes A mask of OBJECT_TYPE_* constants or OBJECT_TYPE_ALL for all suitable object types. Currently only works on Creatures, Doors (Hilite only), Items and Usable Placeables.
 /// @param nMask A mask of OBJECT_UI_DISCOVERY_*
 /// @param bForceUpdate If TRUE, will update the discovery mask of ALL objects in the area or module(if oArea == OBJECT_INVALID), according to the current mask. Use with care.
 void NWNX_Area_SetDefaultObjectUiDiscoveryMask(object oArea, int nObjectTypes, int nMask, int bForceUpdate = FALSE);
