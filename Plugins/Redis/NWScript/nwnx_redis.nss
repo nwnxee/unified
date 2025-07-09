@@ -3077,7 +3077,7 @@ int NWNX_Redis_XREVRANGE(
 /**
  * XLEN
  *
- * Return the number of entires in a stream
+ * Return the number of entries in a stream
  *
  * Time complexity: O(1)
  * Annotated return value: integer
@@ -3092,7 +3092,7 @@ int NWNX_Redis_XLEN(
  * Return never seen elements in multiple streams, with IDs greater than the ones reported by the caller for each stream. Can block.
  *
  * Time complexity: For each stream mentioned: O(N) with N being the number of elements being
- * returned, it menas that XREAD-ing with a fixed COUNT is O(1). Note that when
+ * returned, it means that XREAD-ing with a fixed COUNT is O(1). Note that when
  * the BLOCK option is used, XADD will pay O(M) time in order to serve the M
  * clients blocked on the stream getting new data.
 

@@ -45,7 +45,7 @@ int NWNX_Feat_GetModifierConstant(string featMod)
     else if (featMod == "VISUALEFFECT")         return NWNX_FEAT_MODIFIER_VISUALEFFECT;
     else if (featMod == "SPELLSAVEDCFORSCHOOL") return NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSCHOOL;
     else if (featMod == "SPELLSAVEDCFORSPELL")  return NWNX_FEAT_MODIFIER_SPELLSAVEDCFORSPELL;
-    
+
     return NWNX_FEAT_MODIFIER_INVALID;
 }
 
