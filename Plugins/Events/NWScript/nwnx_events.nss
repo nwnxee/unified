@@ -1785,6 +1785,22 @@ _______________________________________
           \code{.c}
           NWNX_Events_AddIDToWhitelist("NWNX_ON_ITEMPROPERTY_EFFECT", ITEM_PROPERTY_*);
           \endcode
+    _______________________________________
+    ## Ability Change Events
+    - NWNX_ON_ABILITY_CHANGE_BEFORE
+    - NWNX_ON_ABILITY_CHANGE_AFTER
+
+    `OBJECT_SELF` = The player object
+
+    Event Data Tag        | Type | Notes
+    ----------------------|------|-------
+    ABILITY               | int  | The ABILITY_* constant                             |
+    VALUE                 | int  | The new ability value                              |
+    MOD                   | int  | The new ability modifier (only available in AFTER) |
+
+    @note The event only fires for players. It might fire a few times during client enter when all the items are equipped and one or more of them have a bonus to abilities.
+
+    @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
 */
 
 /// @name Events Event Constants
