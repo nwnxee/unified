@@ -41,7 +41,6 @@ char CalcStatModifierHook(CNWSCreatureStats *thisPtr, uint8_t nValue)
         return s_CalcStatModifierHook->CallOriginal<char>(thisPtr, nValue);
     }
 
-    bool signalEvent = false;
     auto ability = Constants::Ability::None;
 
     if (!thisPtr->m_pBaseCreature->nwnxGet<int32_t>("STR"))
@@ -60,48 +59,42 @@ char CalcStatModifierHook(CNWSCreatureStats *thisPtr, uint8_t nValue)
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("STR") != thisPtr->GetSTRStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("STR", thisPtr->GetSTRStat());
-        signalEvent = true;
         ability = Constants::Ability::Strength;
     }
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("DEX") != thisPtr->GetDEXStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("DEX", thisPtr->GetDEXStat());
-        signalEvent = true;
         ability = Constants::Ability::Dexterity;
     }
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("CON") != thisPtr->GetCONStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("CON", thisPtr->GetCONStat());
-        signalEvent = true;
         ability = Constants::Ability::Constitution;
     }
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("INT") != thisPtr->GetINTStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("INT", thisPtr->GetINTStat());
-        signalEvent = true;
         ability = Constants::Ability::Intelligence;
     }
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("WIS") != thisPtr->GetWISStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("WIS", thisPtr->GetWISStat());
-        signalEvent = true;
         ability = Constants::Ability::Wisdom;
     }
     else if (thisPtr->m_pBaseCreature->nwnxGet<int32_t>("CHA") != thisPtr->GetCHAStat())
     {
         thisPtr->m_pBaseCreature->nwnxSet("CHA", thisPtr->GetCHAStat());
-        signalEvent = true;
         ability = Constants::Ability::Charisma;
     }
 
-    if (signalEvent)
+    if (ability != Constants::Ability::None)
     {
         PushEventData("ABILITY", std::to_string(ability));
         PushEventData("VALUE", std::to_string(nValue));
         SignalEvent("NWNX_ON_ABILITY_CHANGE_BEFORE", thisPtr->m_pBaseCreature->m_idSelf);
     }
     auto retVal = s_CalcStatModifierHook->CallOriginal<char>(thisPtr, nValue);
-    if (signalEvent)
+    if (ability != Constants::Ability::None)
     {
         PushEventData("ABILITY", std::to_string(ability));
         PushEventData("VALUE", std::to_string(nValue));
