@@ -1,5 +1,6 @@
 add_plugin(Events
     "Events.cpp"
+    "Events/AbilityEvents.cpp"
     "Events/AssociateEvents.cpp"
     "Events/BarterEvents.cpp"
     "Events/CalendarEvents.cpp"
