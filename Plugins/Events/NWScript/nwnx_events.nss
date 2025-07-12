@@ -1798,7 +1798,7 @@ _______________________________________
     VALUE                 | int  | The new ability value                              |
     MOD                   | int  | The new ability modifier (only available in AFTER) |
 
-    @note The event only fires for players. It might fire a few times during client enter when all the items are equipped and one or more of them have a bonus to abilities.
+    @note The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use `GetIsObjectValid(GetArea(OBJECT_SELF))`.
 
     @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
 */
