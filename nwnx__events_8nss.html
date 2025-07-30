@@ -374,7 +374,7 @@ Item Equip Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event does not run on login as the base game OnPlayerEquipItem event does. (Because this event hooks CNWSCreature::RunEquip which calls CNWSCreature::EquipItem. When the player character is first loaded, EquipItem is called directly.) </dd>
 <dd>
-If the goal is to prevent items from being equiped under certain conditions, and since this event does not run on login, it could be helpful to additionally use <a class="el" href="group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1" title="Have oCreature instantly unequip oItem.">NWNX_Creature_RunUnequip()</a> in the OnClientEnter (or similar) event.</dd></dl>
+If the goal is to prevent items from being equipped under certain conditions, and since this event does not run on login, it could be helpful to additionally use <a class="el" href="group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1" title="Have oCreature instantly unequip oItem.">NWNX_Creature_RunUnequip()</a> in the OnClientEnter (or similar) event.</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md334"></a>
 Item Unequip Events</h2>
@@ -3267,7 +3267,7 @@ Ability Change Events</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sat Jul 12 2025 20:36:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Jul 30 2025 12:30:52 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
