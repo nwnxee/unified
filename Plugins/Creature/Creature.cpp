@@ -1935,6 +1935,8 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierModifier(ArgumentStack&& args)
             pCreature->nwnxSet(varname, modifier, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -1985,6 +1987,8 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierOverride(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Override, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -2111,6 +2115,8 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeModifier(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Modifier, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -2161,6 +2167,8 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeOverride(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Override, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
