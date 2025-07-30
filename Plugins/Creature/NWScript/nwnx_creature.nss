@@ -323,7 +323,7 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 int NWNX_Creature_GetSkillRankByLevel(object creature, int skill, int level);
 
 /// @brief Set the ranks in a skill for creature assigned at a level.
-/// @note It only affect the leveling array, to know what to do on level-down. To effectivly change the skill rank on the current level, NWNX_Creature_SetSkillRank is also needed.
+/// @note It only affect the leveling array, to know what to do on level-down. To effectively change the skill rank on the current level, NWNX_Creature_SetSkillRank is also needed.
 /// @param creature The creature object.
 /// @param skill The skill id.
 /// @param level The level they gained skill ranks.
@@ -636,7 +636,7 @@ void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier
 /// @brief Gets the critical hit multiplier modifier for the Creature
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem modifer to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
+/// @param nBaseItem The baseitem modifier to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit multiplier modifier for the creature
 int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0, int nBaseItem = -1);
 
@@ -668,7 +668,7 @@ void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int
 /// @brief Gets the critical hit range modifier for the creature.
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem modifer to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
+/// @param nBaseItem The baseitem modifier to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit range modifier for the creature
 int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int nBaseItem = -1);
 

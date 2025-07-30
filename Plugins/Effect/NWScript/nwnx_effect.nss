@@ -112,7 +112,7 @@ void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_E
 /// @return FALSE/0 on failure TRUE/1 on success.
 int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 
-/// @brief Applys an effect, bypassing any processing done by ApplyEffectToObject
+/// @brief Applies an effect, bypassing any processing done by ApplyEffectToObject
 /// @param eEffect The effect to be applied.
 /// @param oObject The object to apply it to.
 void NWNX_Effect_Apply(effect eEffect, object oObject);

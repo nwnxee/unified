@@ -34,7 +34,7 @@ string NWNX_Rename_GetPCNameOverride(object oTarget, object oObserver = OBJECT_I
 
 /// @brief Clears an overridden PC Name.
 /// @param oTarget The PC whose overridden name to clear, use OBJECT_INVALID if you're clearing all overrides for an observer.
-/// @param oObserver The observer whose overriden name of oTarget is being cleared.
+/// @param oObserver The observer whose overridden name of oTarget is being cleared.
 /// If oTarget is OBJECT_INVALID then all overrides are cleared.
 /// @param clearAll If true, both the global and personal overrides will be cleared for that target PC.
 /// Requires oObserver be OBJECT_INVALID.
