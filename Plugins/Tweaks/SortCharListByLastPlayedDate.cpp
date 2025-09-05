@@ -19,7 +19,7 @@
 
 #include <algorithm>
 #include <vector>
-#include <filesystem>
+#include <sys/stat.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -31,7 +31,7 @@ static Hooks::Hook s_SendServerToPlayerCharListHook;
 struct CharInfoWithFileTime
 {
     NWPlayerCharacterList_st* pInfo;
-    std::filesystem::file_time_type fLastFileModified;
+    std::time_t fLastFileModified;
 };
 
 void SortCharListByLastPlayedDate() __attribute__((constructor));
@@ -56,14 +56,14 @@ static void SetCharacterListIndex(NWPlayerCharacterList_st* pCharInfo, int nInde
     }
 }
 
-static std::filesystem::file_time_type GetBICFileTime(CExoString sVaultPath, NWPlayerCharacterList_st* pCharInfo)
+static std::time_t GetBICFileTime(CExoString sVaultPath, NWPlayerCharacterList_st* pCharInfo)
 {
     CExoString sFilename = sVaultPath + CExoString(pCharInfo->resFileName) + ".bic";
-    auto pathToBic = std::filesystem::path(sFilename.c_str());
-    if (std::filesystem::exists(pathToBic))
-        return std::filesystem::last_write_time(pathToBic);
+    struct stat fileStats;
+    if (stat(sFilename.c_str(), &fileStats) == 0) 
+        return fileStats.st_mtime;
     else
-        return std::filesystem::file_time_type::min();
+        return 0;
 }
 
 static void GetServerVaultBasePaths(CNWSPlayer* pPlayer, CExoString& sOutRootServerVault, CExoString& sOutPlayerServerVault)
@@ -98,7 +98,7 @@ static void SortCharacterListByLastPlayedDate(CNWSPlayer* pPlayer, const CExoArr
         else if (ciwft.pInfo->nType == MessageLoginMinor::ServerCharacter)
             ciwft.fLastFileModified = GetBICFileTime(sRootServerVault, ciwft.pInfo);
         else // MessageLoginMinor::ServerSaveGameCharacter)
-            ciwft.fLastFileModified = std::filesystem::__file_clock::now();
+            ciwft.fLastFileModified = std::time(0);
 
         vecCharInfoWithTime.push_back(ciwft);
     }
