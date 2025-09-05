@@ -32,10 +32,6 @@ struct CharInfoWithFileTime
 {
     NWPlayerCharacterList_st* pInfo;
     std::filesystem::file_time_type fLastFileModified;
-    bool operator()(CharInfoWithFileTime a, CharInfoWithFileTime b) const 
-    { 
-        return a.fLastFileModified > b.fLastFileModified; 
-    }
 };
 
 void SortCharListByLastPlayedDate() __attribute__((constructor));
