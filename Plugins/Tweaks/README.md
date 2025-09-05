@@ -123,3 +123,7 @@ Some values for convenience:
 | 7168 | All Good/Evil vs AlignmentGroup |
 | 57344 | All Good/Evil vs SpecificAlignment |
 | 65535 | Hide All VFX |
+
+## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
+
+Warning: This tweak will disable savegame characters getting sent to the client. If you are using multiplayer savegames do not use this tweak!

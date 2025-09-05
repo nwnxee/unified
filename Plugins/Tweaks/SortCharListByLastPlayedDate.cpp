@@ -28,9 +28,8 @@ using namespace NWNXLib::API::Constants;
 static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pPlayer);
 static Hooks::Hook s_SendServerToPlayerCharListHook;
 
-struct CharInfoWithFileTime
+struct CharacterInfoWithFiletime : NWPlayerCharacterList_st
 {
-    NWPlayerCharacterList_st* pInfo;
     std::time_t fLastFileModified;
 };
 
@@ -44,7 +43,7 @@ void SortCharListByLastPlayedDate()
     s_SendServerToPlayerCharListHook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerCharList, &SendServerToPlayerCharListHook, Hooks::Order::Final);
 }
 
-static void SetCharacterListIndex(NWPlayerCharacterList_st* pCharInfo, int nIndex)
+static void SetCharacterListIndex(CharacterInfoWithFiletime* pCharInfo, int nIndex)
 {
     auto& pStrList = pCharInfo->sLocFirstName.m_pExoLocStringInternal->m_lstString;
     for (auto *pNode = pStrList.GetHeadPos(); pNode; pNode = pNode->pNext)
@@ -56,9 +55,10 @@ static void SetCharacterListIndex(NWPlayerCharacterList_st* pCharInfo, int nInde
     }
 }
 
-static std::time_t GetBICFileTime(CExoString sVaultPath, NWPlayerCharacterList_st* pCharInfo)
+static std::time_t GetBICFileTime(CExoString sVaultPath, const CResRef& sBicResRef)
 {
-    CExoString sFilename = sVaultPath + CExoString(pCharInfo->resFileName) + ".bic";
+    CExoString sFilename = sVaultPath + CExoString(sBicResRef) + ".bic";
+
     struct stat fileStats;
     if (stat(sFilename.c_str(), &fileStats) == 0) 
         return fileStats.st_mtime;
@@ -66,54 +66,18 @@ static std::time_t GetBICFileTime(CExoString sVaultPath, NWPlayerCharacterList_s
         return 0;
 }
 
-static void GetServerVaultBasePaths(CNWSPlayer* pPlayer, CExoString& sOutRootServerVault, CExoString& sOutPlayerServerVault)
+static void GetServerVaultBasePaths(CNWSPlayer* pPlayer, CExoString* sOutRootServerVault, CExoString* sOutPlayerServerVault)
 {
     CServerExoApp* pExoApp = Globals::AppManager()->m_pServerExoApp;
 
-    sOutRootServerVault = Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT");
+    *sOutRootServerVault = Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT");
     CExoString sPlayerdir;
     if (pExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
         sPlayerdir = pPlayer->GetPlayerName();
     else
         sPlayerdir = pExoApp->GetNetLayer()->GetPlayerInfo(pPlayer->m_nPlayerID)->m_cCDKey.sPublic;
 
-    sOutPlayerServerVault = sOutRootServerVault + sPlayerdir + "/";
-}
-
-static void SortCharacterListByLastPlayedDate(CNWSPlayer* pPlayer, const CExoArrayList<NWPlayerCharacterList_st*>& pCharList)
-{
-    std::vector<CharInfoWithFileTime> vecCharInfoWithTime;
-    vecCharInfoWithTime.reserve(pCharList.num);
-
-    CExoString sRootServerVault;
-    CExoString sPlayerServerVault;
-    GetServerVaultBasePaths(pPlayer, sRootServerVault, sPlayerServerVault);
-    for (int i=0; i < pCharList.num; i++)
-    {
-        CharInfoWithFileTime ciwft;
-        ciwft.pInfo = pCharList[i];
-
-        if (ciwft.pInfo->nType == MessageLoginMinor::ServerSubDirectoryCharacter)
-            ciwft.fLastFileModified = GetBICFileTime(sPlayerServerVault, ciwft.pInfo);
-        else if (ciwft.pInfo->nType == MessageLoginMinor::ServerCharacter)
-            ciwft.fLastFileModified = GetBICFileTime(sRootServerVault, ciwft.pInfo);
-        else // MessageLoginMinor::ServerSaveGameCharacter)
-            ciwft.fLastFileModified = std::time(0);
-
-        vecCharInfoWithTime.push_back(ciwft);
-    }
-
-    std::sort(vecCharInfoWithTime.begin(), vecCharInfoWithTime.end(), 
-    [](CharInfoWithFileTime a, CharInfoWithFileTime b)
-    {
-        return a.fLastFileModified > b.fLastFileModified; 
-    });
-
-    for (size_t i=0; i < vecCharInfoWithTime.size(); i++)
-    {
-        SetCharacterListIndex(vecCharInfoWithTime[i].pInfo, i);
-        pCharList[i] = vecCharInfoWithTime[i].pInfo;
-    }
+    *sOutPlayerServerVault = *sOutRootServerVault + sPlayerdir + "/";
 }
 
 static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pPlayer)
@@ -131,7 +95,11 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
     }
     else
     {
-        CExoArrayList<NWPlayerCharacterList_st*> lstChars;
+        std::vector<CharacterInfoWithFiletime> lstChars;
+
+        CExoString sRootServerVault;
+        CExoString sPlayerServerVault;
+        GetServerVaultBasePaths(pPlayer, &sRootServerVault, &sPlayerServerVault);
 
         CExoString sSubdirectory = pPlayerInfo->m_cCDKey.sPublic;
         if (pServerInfo->m_PersistantWorldOptions.bServerVaultByPlayerName)
@@ -159,13 +127,14 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                         
                         pRes->GetTopLevelStruct(&topLevelStruct);
 
-                        auto* pCharInfo = new NWPlayerCharacterList_st();
-                        pCharInfo->sLocFirstName = pRes->ReadFieldCExoLocString(&topLevelStruct, "FirstName", bSuccess);
-                        pCharInfo->sLocLastName = pRes->ReadFieldCExoLocString(&topLevelStruct, "LastName", bSuccess);
-                        pCharInfo->resFileName = sBicResRef;
-                        pCharInfo->nType = MessageLoginMinor::ServerSubDirectoryCharacter;
-                        pCharInfo->nPortraitId = pRes->ReadFieldWORD(&topLevelStruct, "PortraitId", bSuccess, 0xFFFF);
-                        pCharInfo->resPortrait = pRes->ReadFieldCResRef(&topLevelStruct, "Portrait", bSuccess);
+                        CharacterInfoWithFiletime charInfo;
+                        charInfo.sLocFirstName = pRes->ReadFieldCExoLocString(&topLevelStruct, "FirstName", bSuccess);
+                        charInfo.sLocLastName = pRes->ReadFieldCExoLocString(&topLevelStruct, "LastName", bSuccess);
+                        charInfo.resFileName = sBicResRef;
+                        charInfo.nType = MessageLoginMinor::ServerSubDirectoryCharacter;
+                        charInfo.nPortraitId = pRes->ReadFieldWORD(&topLevelStruct, "PortraitId", bSuccess, 0xFFFF);
+                        charInfo.resPortrait = pRes->ReadFieldCResRef(&topLevelStruct, "Portrait", bSuccess);
+                        charInfo.fLastFileModified = GetBICFileTime(sPlayerServerVault, charInfo.resFileName);
                         
                         CResList classList;
                         if (pRes->GetList(&classList, &topLevelStruct, "ClassList"))
@@ -179,13 +148,12 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                                     NWPlayerCharacterListClass_st classInfo;
                                     classInfo.nClass = pRes->ReadFieldINT(&classStruct, "Class", bSuccess, -1);
                                     classInfo.nClassLevel = (uint8_t)pRes->ReadFieldSHORT(&classStruct, "ClassLevel", bSuccess);
-                                    pCharInfo->lstClasses.Add(classInfo);
+                                    charInfo.lstClasses.Add(classInfo);
                                 }
                             }
                         }
 
-                        if (lstChars.DerefContains(pCharInfo) || !lstChars.AddUnique(pCharInfo))
-                            delete pCharInfo;
+                        lstChars.push_back(charInfo);
                     }
                     else
                     {
@@ -223,13 +191,14 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
 
                             pRes->GetTopLevelStruct(&topLevelStruct);
 
-                            auto* pCharInfo = new NWPlayerCharacterList_st();
-                            pCharInfo->sLocFirstName = pRes->ReadFieldCExoLocString(&topLevelStruct, "FirstName", bSuccess);
-                            pCharInfo->sLocLastName = pRes->ReadFieldCExoLocString(&topLevelStruct, "LastName", bSuccess);
-                            pCharInfo->resFileName = sBicResRef;
-                            pCharInfo->nType = MessageLoginMinor::ServerCharacter;
-                            pCharInfo->nPortraitId = pRes->ReadFieldWORD(&topLevelStruct, "PortraitId", bSuccess, 0xFFFF);
-                            pCharInfo->resPortrait = pRes->ReadFieldCResRef(&topLevelStruct, "Portrait", bSuccess);
+                            CharacterInfoWithFiletime charInfo;
+                            charInfo.sLocFirstName = pRes->ReadFieldCExoLocString(&topLevelStruct, "FirstName", bSuccess);
+                            charInfo.sLocLastName = pRes->ReadFieldCExoLocString(&topLevelStruct, "LastName", bSuccess);
+                            charInfo.resFileName = sBicResRef;
+                            charInfo.nType = MessageLoginMinor::ServerCharacter;
+                            charInfo.nPortraitId = pRes->ReadFieldWORD(&topLevelStruct, "PortraitId", bSuccess, 0xFFFF);
+                            charInfo.resPortrait = pRes->ReadFieldCResRef(&topLevelStruct, "Portrait", bSuccess);
+                            charInfo.fLastFileModified = GetBICFileTime(sRootServerVault, charInfo.resFileName);
 
                             CResList classList;
                             if (pRes->GetList(&classList, &topLevelStruct, "ClassList"))
@@ -243,13 +212,12 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                                         NWPlayerCharacterListClass_st classInfo;
                                         classInfo.nClass = pRes->ReadFieldINT(&classStruct, "Class", bSuccess, -1);
                                         classInfo.nClassLevel = (uint8_t)pRes->ReadFieldSHORT(&classStruct, "ClassLevel", bSuccess);
-                                        pCharInfo->lstClasses.Add(classInfo);
+                                        charInfo.lstClasses.Add(classInfo);
                                     }
                                 }
                             }
 
-                            if (lstChars.DerefContains(pCharInfo) || !lstChars.AddUnique(pCharInfo))
-                                delete pCharInfo;
+                            lstChars.push_back(charInfo);
                         }
                         else
                         {
@@ -262,32 +230,35 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
             }
         }
 
-        auto* pModule = pExoApp->GetModule();
-        if ((pModule->m_bIsSaveGame) && (!pAppManager->m_bMultiplayerEnabled || !pServerInfo->m_PersistantWorldOptions.bVaultCharsOnly))
-            pModule->PackPlayerCharacterListIntoMessage(pPlayer, lstChars);
-
-        SortCharacterListByLastPlayedDate(pPlayer, lstChars);
-
-        pMessage->WriteWORD(lstChars.num);
-        for (int i = 0; i < lstChars.num; i++)
+        std::sort(lstChars.begin(), lstChars.end(), 
+        [](CharacterInfoWithFiletime a, CharacterInfoWithFiletime b)
         {
-            auto* pCharInfo = lstChars[i];
-            pMessage->WriteCExoLocStringServer(pCharInfo->sLocFirstName);
-            pMessage->WriteCExoLocStringServer(pCharInfo->sLocLastName);
-            pMessage->WriteCResRef(pCharInfo->resFileName);
-            pMessage->WriteBYTE(pCharInfo->nType);
-            pMessage->WriteWORD(pCharInfo->nPortraitId);
-            pMessage->WriteCResRef(pCharInfo->resPortrait);
+            return a.fLastFileModified > b.fLastFileModified; 
+        });
 
-            uint32_t nClassCount = pCharInfo->lstClasses.num;
+        for (size_t i=0; i < lstChars.size(); i++)
+        {
+            SetCharacterListIndex(&lstChars[i], i);
+        }
+
+        pMessage->WriteWORD(lstChars.size());
+        for (size_t i = 0; i < lstChars.size(); i++)
+        {
+            auto& charInfo = lstChars[i];
+            pMessage->WriteCExoLocStringServer(charInfo.sLocFirstName);
+            pMessage->WriteCExoLocStringServer(charInfo.sLocLastName);
+            pMessage->WriteCResRef(charInfo.resFileName);
+            pMessage->WriteBYTE(charInfo.nType);
+            pMessage->WriteWORD(charInfo.nPortraitId);
+            pMessage->WriteCResRef(charInfo.resPortrait);
+
+            uint32_t nClassCount = charInfo.lstClasses.num;
             pMessage->WriteBYTE((uint8_t)nClassCount);
             for (uint32_t j = 0; j < nClassCount; j++)
             {
-                pMessage->WriteINT(pCharInfo->lstClasses[j].nClass);
-                pMessage->WriteBYTE(pCharInfo->lstClasses[j].nClassLevel);
+                pMessage->WriteINT(charInfo.lstClasses[j].nClass);
+                pMessage->WriteBYTE(charInfo.lstClasses[j].nClassLevel);
             }
-
-            delete pCharInfo;
         }
     }
 
