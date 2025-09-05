@@ -2,7 +2,7 @@
 # build dependencies change. This docker image created is pushed to Dockerhub and GHCR and is the base
 # image when users build their own docker images for NWNX:EE.
 
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN buildDeps="build-essential \
     git \
@@ -10,8 +10,8 @@ RUN buildDeps="build-essential \
     zip \
     cmake \
     gperf \
-    gcc-7 \
-    g++-7 \
+    gcc \
+    g++ \
     default-libmysqlclient-dev \
     libpq-dev \
     libseccomp-dev \
