@@ -27,7 +27,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - N/A
 
 ### Removed
-- N/A
+- Removed NWNX_Lua and NWNX_SpellChecker due to presumably being unused and bitrotten.
 
 ### Fixed
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.
