@@ -12,6 +12,5 @@ var searchData=
   ['lrange_285',['LRANGE',['../nwnx__redis__short_8nss.html#a70b208d5264f80de9032ebfb3d5d8f6e',1,'nwnx_redis_short.nss']]],
   ['lrem_286',['LREM',['../nwnx__redis__short_8nss.html#a941c378174461fc7c838922c172b6650',1,'nwnx_redis_short.nss']]],
   ['lset_287',['LSET',['../nwnx__redis__short_8nss.html#a8b15b3f807aa5105387a246b9a8fef72',1,'nwnx_redis_short.nss']]],
-  ['ltrim_288',['LTRIM',['../nwnx__redis__short_8nss.html#a47c101d9768b1c7cda47660f6cbb3b4b',1,'nwnx_redis_short.nss']]],
-  ['lua_289',['LUA',['../group__lua.html',1,'']]]
+  ['ltrim_288',['LTRIM',['../nwnx__redis__short_8nss.html#a47c101d9768b1c7cda47660f6cbb3b4b',1,'nwnx_redis_short.nss']]]
 ];
