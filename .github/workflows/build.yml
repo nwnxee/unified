@@ -16,11 +16,7 @@ on:
       - 'docgen/**'
       - 'builder.Dockerfile'
 
-env:
-  CC: gcc-7 -m64
-  CXX: g++-7 -m64
-
-concurrency: 
+concurrency:
   group: "build"
   cancel-in-progress: false
 
