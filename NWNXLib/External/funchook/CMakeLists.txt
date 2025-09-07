@@ -1,5 +1,5 @@
 # GIT_SHALLOW requires cmake 3.6.
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.10)
 
 project(funchook VERSION 2.0.0 LANGUAGES C ASM)
 
