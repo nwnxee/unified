@@ -60,7 +60,7 @@ static void SetCharacterListIndex(CharacterInfoWithFiletime* pCharInfo, int nInd
     }
 }
 
-static std::time_t GetBICFileTime(CExoString sVaultPath, const CResRef& sBicResRef)
+static std::time_t GetBICFileTime(const CExoString& sVaultPath, const CResRef& sBicResRef)
 {
     CExoString sFilename = sVaultPath + CExoString(sBicResRef) + ".bic";
 
@@ -236,7 +236,7 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
         }
 
         std::sort(lstChars.begin(), lstChars.end(), 
-        [](CharacterInfoWithFiletime a, CharacterInfoWithFiletime b)
+        [](const CharacterInfoWithFiletime& a, const CharacterInfoWithFiletime& b)
         {
             return a.fLastFileModified > b.fLastFileModified; 
         });
