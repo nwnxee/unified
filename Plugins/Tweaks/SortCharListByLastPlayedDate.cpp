@@ -45,13 +45,18 @@ void SortCharListByLastPlayedDate()
 
 static void SetCharacterListIndex(CharacterInfoWithFiletime* pCharInfo, int nIndex)
 {
+    // Set lowest bit of each rgb component to 1, reducing the range of available indices from 2^24 to 2^21 
+    // while avoiding null bytes and preserving uniqueness + order
+    nIndex = nIndex << 1;
+    int b = (nIndex & 0xFF) | 1;
+    int g = ((nIndex >> 7) & 0xFF) | 1;
+    int r = ((nIndex >> 14) & 0xFF) | 1;
+        
     auto& pStrList = pCharInfo->sLocFirstName.m_pExoLocStringInternal->m_lstString;
     for (auto *pNode = pStrList.GetHeadPos(); pNode; pNode = pNode->pNext)
     {
         if (EXOLOCSTRING* sCharName = pStrList.GetAtPos(pNode))
-        {
-            sCharName->sString = CExoString::F("<c%c\x01\x01></c>", (char)(nIndex + 1)) + sCharName->sString;
-        }
+            sCharName->sString = CExoString::F("<c%c%c%c></c>", r, g, b) + sCharName->sString;
     }
 }
 
