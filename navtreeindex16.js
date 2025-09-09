@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"inc__array_8nss_source.html":[4,0,0,1],
 "inc__sqlite__time_8nss.html":[4,0,0,2],
 "inc__sqlite__time_8nss_source.html":[4,0,0,2],
 "index.html":[],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "nwnx__redis_8nss.html#a93cc4dc3f419073faa7d5dc6a500c550":[4,0,3,29,0,0,97],
 "nwnx__redis_8nss.html#a94bafbaceffe0c1375edb17f893487bb":[4,0,3,29,0,0,145],
 "nwnx__redis_8nss.html#a96126077c38e121dafd47a67041ba19d":[4,0,3,29,0,0,36],
-"nwnx__redis_8nss.html#a9634f7cd344cc63ab4b5cede9e000855":[4,0,3,29,0,0,144],
-"nwnx__redis_8nss.html#a98d51b7976c8ac338fc531de350cfaac":[4,0,3,29,0,0,128]
+"nwnx__redis_8nss.html#a9634f7cd344cc63ab4b5cede9e000855":[4,0,3,29,0,0,144]
 };
