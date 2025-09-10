@@ -12,7 +12,6 @@ RUN buildDeps="build-essential \
     gperf \
     gcc \
     g++ \
-    swig \
     default-libmysqlclient-dev \
     libpq-dev \
     libseccomp-dev \
@@ -28,5 +27,10 @@ RUN buildDeps="build-essential \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
-    && rm -r /var/lib/apt/lists /var/cache/apt
-
+    && rm -r /var/lib/apt/lists /var/cache/apt \
+    && git clone --branch v4.0.2 --depth 1 https://github.com/swig/swig.git \
+    && cd swig \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install
