@@ -1,4 +1,4 @@
-find_package(SWIG 4.0 COMPONENTS csharp)
+find_package(SWIG 4.0.2 EXACT COMPONENTS csharp)
 
 function(add_swig_plugin target language interfaces)
     add_custom_command(
