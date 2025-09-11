@@ -70,6 +70,8 @@ var group__events =
     [ "NWNX_ON_ITEM_ACQUIRE_AFTER", "group__events.html#gabb6692c6425fdd2ecf371c5a46951c94", null ],
     [ "NWNX_ON_USE_FEAT_BEFORE", "group__events.html#ga4bf7ff1313c15a632c77fd518fddb514", null ],
     [ "NWNX_ON_USE_FEAT_AFTER", "group__events.html#ga79c5745d989d6301393d010270cfa0b5", null ],
+    [ "NWNX_ON_DECREMENT_REMAINING_FEAT_USES_BEFORE", "group__events.html#ga6924df4774b2089d8fc6bd716390ff4f", null ],
+    [ "NWNX_ON_DECREMENT_REMAINING_FEAT_USES_AFTER", "group__events.html#ga8872230ccb3128324d4e57f4fdf76723", null ],
     [ "NWNX_ON_HAS_FEAT_BEFORE", "group__events.html#gaa6ba4bd3160c9b10378a4f88534f491f", null ],
     [ "NWNX_ON_HAS_FEAT_AFTER", "group__events.html#ga8ca0d1e493f2b26a811623d4a4827e60", null ],
     [ "NWNX_ON_DM_GIVE_GOLD_BEFORE", "group__events.html#ga6d50d503a62fba114f15cc2a58dde3f3", null ],

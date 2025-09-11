@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('group__maxlevel.html',''); initResizab
 <div class="contents">
 
 
-<h3><a id="maxlevel"></a>Readme</h3><div class="textblock">This plugin extends the maximum level possibility from 40 to 60. The plugin provides normal level up alerting and procedure with a few minor issues. Feats and Ability Points follow their normal progression. Spell counts gained can be configured for the additional levels.<h2><a class="anchor" id="autotoc_md513"></a>
+<h3><a id="maxlevel"></a>Readme</h3><div class="textblock">This plugin extends the maximum level possibility from 40 to 60. The plugin provides normal level up alerting and procedure with a few minor issues. Feats and Ability Points follow their normal progression. Spell counts gained can be configured for the additional levels.<h2><a class="anchor" id="autotoc_md514"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -110,18 +110,18 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_MAXLEVEL_MAX</code>   </td><td class="markdownTableBodyCenter">41-60   </td><td class="markdownTableBodyCenter">null   </td><td class="markdownTableBodyNone">Maximum level you wish to support.   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md514"></a>
+<h2><a class="anchor" id="autotoc_md515"></a>
 Required Plugins</h2>
 <ul>
 <li>The <code>NWNX_ELC</code> plugin is also needed to bypass the level restriction. No configuration is necessary though, merely loading this plugin is sufficient.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md515"></a>
+<h2><a class="anchor" id="autotoc_md516"></a>
 Issues</h2>
 <ul>
 <li>Spellcasters may not change spells when levelling up.</li>
 <li>Next Level XP on Character Sheet shows an incorrect value. For a possible workaround see below.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md516"></a>
+<h2><a class="anchor" id="autotoc_md517"></a>
 Setup</h2>
 <ul>
 <li>Define your max levels variable in your server environment. <div class="fragment"><div class="line">export NWNX_MAXLEVEL_MAX=45</div>
@@ -137,7 +137,7 @@ Setup</h2>
 </div><!-- fragment --></li>
 <li>(Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b>. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md517"></a>
+<h2><a class="anchor" id="autotoc_md518"></a>
 Next Level XP workaround</h2>
 <p>Beginning at level 40 the xp value shown on the character sheet after "Next Level:" is incorrect. This can be worked around with, with a tlk override for the strref 315 "Next Level" that also pushes the xp value out of view by use of a new line <code>\n</code>. With NWNX this can be done per player and can show the actual value of xp needed for the next level so that it looks as usual. </p><div class="fragment"><div class="line"><span class="comment">// Todo: Do something to get the PC object as oPC.</span></div>
 <div class="line"><span class="keywordtype">int</span> nLevel = GetHitDice(oPC);</div>
@@ -161,7 +161,7 @@ Next Level XP workaround</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Sep 9 2025 08:55:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Sep 11 2025 10:39:28 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
