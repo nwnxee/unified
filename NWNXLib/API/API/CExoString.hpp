@@ -93,12 +93,12 @@ struct CExoString
     {
         return m_nStringLength;
     }
-    void Insert(const CExoString & string, uint32_t position);
+    void Insert(const CExoString & string, int32_t position);
     BOOL IsEmpty() const { return GetLength() == 0; }
-    CExoString Left(uint32_t count) const;
+    CExoString Left(int32_t count) const;
     CExoString LowerCase() const;
-    CExoString Right(uint32_t count) const;
-    CExoString SubString(uint32_t start, uint32_t count=~0) const;
+    CExoString Right(int32_t count) const;
+    CExoString SubString(int32_t start, int32_t count=-1) const;
     CExoString UpperCase() const;
     BOOL CompareNoCase(const CExoString & sString) const;
     BOOL ComparePrefixNoCase(const CExoString & sString, int32_t nSize) const;
