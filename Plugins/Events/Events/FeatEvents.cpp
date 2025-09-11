@@ -10,9 +10,11 @@ using namespace NWNXLib::Services;
 
 static Hooks::Hook s_UseFeatHook;
 static Hooks::Hook s_HasFeatHook;
+static Hooks::Hook s_DecrementFeatRemainingUsesHook;
 
 static int32_t UseFeatHook(CNWSCreature*, uint16_t, uint16_t, ObjectID, ObjectID, Vector*);
 static int32_t HasFeatHook(CNWSCreatureStats*, uint16_t);
+static void DecrementFeatRemainingUsesHook(CNWSCreatureStats*, uint16_t);
 
 void FeatEvents() __attribute__((constructor));
 void FeatEvents()
@@ -20,6 +22,11 @@ void FeatEvents()
     InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", []() {
         s_UseFeatHook = Hooks::HookFunction(&CNWSCreature::UseFeat, &UseFeatHook, Hooks::Order::Early);
     });
+
+    InitOnFirstSubscribe("NWNX_ON_DECREMENT_REMAINING_FEAT_USES_.*", []() {
+        s_DecrementFeatRemainingUsesHook = Hooks::HookFunction(&CNWSCreatureStats::DecrementFeatRemainingUses, &DecrementFeatRemainingUsesHook, Hooks::Order::Early);
+    });
+    
     InitOnFirstSubscribe("NWNX_ON_HAS_FEAT_.*", []() {
         ForceEnableWhitelist("NWNX_ON_HAS_FEAT");
         s_HasFeatHook = Hooks::HookFunction(&CNWSCreatureStats::HasFeat, &HasFeatHook, Hooks::Order::Early);
@@ -54,6 +61,24 @@ int32_t UseFeatHook(CNWSCreature* thisPtr, uint16_t nFeat, uint16_t nSubFeat, Ob
     PushAndSignal("NWNX_ON_USE_FEAT_AFTER");
 
     return retVal;
+}
+
+static void DecrementFeatRemainingUsesHook(CNWSCreatureStats* thisPtr, uint16_t nFeat)
+{
+    uint8_t nRemainingUses = thisPtr->GetFeatRemainingUses(nFeat);
+    auto PushAndSignal = [&](const std::string& ev, int nRemaining) -> bool {
+        PushEventData("FEAT_ID", std::to_string(nFeat));
+        PushEventData("REMAINING_USES", std::to_string(nRemaining));
+        return SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_DECREMENT_REMAINING_FEAT_USES_BEFORE", nRemainingUses))
+    {
+        s_DecrementFeatRemainingUsesHook->CallOriginal<void>(thisPtr, nFeat);
+        nRemainingUses = thisPtr->GetFeatRemainingUses(nFeat);
+    }
+
+    PushAndSignal("NWNX_ON_DECREMENT_REMAINING_FEAT_USES_AFTER", nRemainingUses);
 }
 
 int32_t HasFeatHook(CNWSCreatureStats* thisPtr, uint16_t nFeat)
