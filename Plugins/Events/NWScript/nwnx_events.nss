@@ -1779,6 +1779,7 @@ _______________________________________
     LOADING_GAME          | int    | TRUE if the itemproperty is being applied when loading into the game and not due to equipping the item. |
     INVENTORY_SLOT        | int    | The INVENTORY_SLOT_* the item is (un)equipped to/from. |
     PROPERTY              | int    | The ITEM_PROPERTY_* type. |
+    ID                    | int    | The ID of the item property. |
     SUBTYPE               | int    | The subtype of the itemproperty. |
     TAG                   | string | The optional tag set by TagItemProperty() |
     COST_TABLE            | int    | The index into iprp_costtable.2da |
