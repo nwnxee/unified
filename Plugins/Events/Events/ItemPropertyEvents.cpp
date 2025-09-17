@@ -166,6 +166,7 @@ static int32_t OnItemPropertyAppliedHook(CNWSItemPropertyHandler* pThis, CNWSIte
         PushEventData("LOADING_GAME", std::to_string(bLoadingGame));
         PushEventData("INVENTORY_SLOT", std::to_string(pCreature->m_pInventory->GetArraySlotFromSlotFlag(nInventorySlot)));
         PushEventData("PROPERTY", std::to_string(ipType));
+        PushEventData("ID", std::to_string(pItemProperty->m_nID));
         PushEventData("SUBTYPE", std::to_string(pItemProperty->m_nSubType));
         PushEventData("TAG", pItemProperty->m_sCustomTag.CStr());
         PushEventData("COST_TABLE", std::to_string(pItemProperty->m_nCostTable));
@@ -227,6 +228,7 @@ static int32_t OnItemPropertyRemovedHook(CNWSItemPropertyHandler* pThis, CNWSIte
         PushEventData("LOADING_GAME", "0");
         PushEventData("INVENTORY_SLOT", std::to_string(pCreature->m_pInventory->GetArraySlotFromSlotFlag(nInventorySlot)));
         PushEventData("PROPERTY", std::to_string(ipType));
+        PushEventData("ID", std::to_string(pItemProperty->m_nID));
         PushEventData("SUBTYPE", std::to_string(pItemProperty->m_nSubType));
         PushEventData("TAG", pItemProperty->m_sCustomTag.CStr());
         PushEventData("COST_TABLE", std::to_string(pItemProperty->m_nCostTable));
