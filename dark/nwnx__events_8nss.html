@@ -2285,7 +2285,7 @@ Broadcast Safe Projectile Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event fires for all projectiles. It's recommended to use ID whitelists with this event. You can whitelist the event by the projectile type, spell id, or both: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE&quot;</span>, NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*);</div>
 <div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02512">nwnx_events.nss:2512</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02513">nwnx_events.nss:2513</a></div></div>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location <hr  />
  </dd></dl>
 <h2><a class="anchor" id="autotoc_md431"></a>
@@ -2447,16 +2447,18 @@ Item Property Effect Apply/Remove Events</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">PROPERTY   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The ITEM_PROPERTY_* type.    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ID   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The ID of the item property.    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">SUBTYPE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The subtype of the itemproperty.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">TAG   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone">The optional tag set by TagItemProperty()    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">COST_TABLE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into iprp_costtable.2da    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">COST_TABLE_VALUE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into the 2da pointed at by COST_TABLE    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">PARAM1   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into iprp_paramtable.2da    </td></tr>
+<td class="markdownTableBodyNone">COST_TABLE_VALUE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into the 2da pointed at by COST_TABLE    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PARAM1   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into iprp_paramtable.2da    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">PARAM1_VALUE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The index into the 2da pointed at by PARAM1   </td></tr>
 </table>
 <dl class="section note"><dt>Note</dt><dd>These events fire when the game applies or removes the effects from an itemproperty. Skipping NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE will stop the basegame effects for that itemproperty to not be applied. If you skip the application of ITEM_PROPERTY_BONUS_SPELL_SLOT_OF_LEVEL_N or ITEM_PROPERTY_UNLIMITED_AMMUNITION you must also skip its removal event.</dd>
@@ -3288,7 +3290,7 @@ Ability Change Events</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Thu Sep 11 2025 10:39:28 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Sep 17 2025 16:53:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
