@@ -269,6 +269,10 @@ string NWNX_Util_GetModuleTlkFile();
 /// @return TRUE if successful, FALSE on error.
 int NWNX_Util_UpdateResourceDirectory(string sAlias);
 
+/// @brief Print a string with no log decorations.
+/// @param sString String to print
+void NWNX_Util_RawPrint(string sString);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -587,4 +591,10 @@ int NWNX_Util_UpdateResourceDirectory(string sAlias)
     NWNXPushString(sAlias);
     NWNXCall(NWNX_Util, "UpdateResourceDirectory");
     return NWNXPopInt();
+}
+
+void NWNX_Util_RawPrint(string sString)
+{
+    NWNXPushString(sString);
+    NWNXCall(NWNX_Util, "RawPrint");
 }

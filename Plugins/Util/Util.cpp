@@ -507,6 +507,13 @@ NWNX_EXPORT ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack RawPrint(ArgumentStack&& args)
+{
+  std::string sLogMessage = args.extract<std::string>();
+  std::cout << sLogMessage << std::endl;
+  return {};
+}
+
 NWNX_EXPORT ArgumentStack PluginExists(ArgumentStack&& args)
 {
     return Plugin::Find(args.extract<std::string>()) ? 1 : 0;
