@@ -684,7 +684,7 @@ NWNX_EXPORT ArgumentStack SetDawnHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDawnHour;
 }
@@ -700,7 +700,7 @@ NWNX_EXPORT ArgumentStack SetDuskHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDuskHour;
 }
