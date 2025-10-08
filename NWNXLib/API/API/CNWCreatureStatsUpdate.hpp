@@ -45,7 +45,7 @@ struct CNWCreatureStatsUpdate
     char m_nFortSave;
     char m_nWillSave;
     char m_nReflexSave;
-    char m_nNegativeLevels[3];
+    char m_nNegativeLevels[8];
     int16_t m_nCurrentHP;
     int16_t m_nMaxHP;
     uint32_t m_nCurrentXP;

@@ -64,9 +64,12 @@ namespace MessageMajor
         GuiEvent                               = 0x35,
         Device                                 = 0x36,
         Nui                                    = 0x37,
+        SetShaderUniform                       = 0x38,
+        TargetingData                          = 0x39,
+        AudioStream                            = 0x40,
     };
     constexpr int32_t MIN   = 0;
-    constexpr int32_t MAX   = 0x37;
+    constexpr int32_t MAX   = 0x40;
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -128,6 +131,9 @@ namespace MessageMajor
             "GuiEvent",
             "Device",
             "Nui",
+            "SetShaderUniform",
+            "TargetingData",
+            "AudioStream",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
