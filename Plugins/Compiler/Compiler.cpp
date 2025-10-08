@@ -153,7 +153,7 @@ static std::unique_ptr<CScriptCompiler> CreateAndConfigureCompiler(const CExoStr
     auto scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
 
     scriptCompiler->SetGenerateDebuggerOutput(Config::Get<int>("GENERATE_DEBUGGER_OUTPUT", 0));
-    scriptCompiler->SetOptimizationFlags(Config::Get<uint32_t>("OPTIMIZATION_FLAGS", CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING));
+    scriptCompiler->SetOptimizationFlags(Config::Get<uint32_t>("OPTIMIZATION_FLAGS", CSCRIPTCOMPILER_OPTIMIZE_AGGRESSIVE));
     scriptCompiler->SetIdentifierSpecification("nwscript");
     scriptCompiler->SetCompileConditionalOrMain(true);
     scriptCompiler->SetCompileConditionalFile(true);
