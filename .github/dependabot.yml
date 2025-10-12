@@ -1,0 +1,14 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    assignees:
+      - "daz"
+      - "urothis"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      actions:
+        patterns:
+          - "*"
