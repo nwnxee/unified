@@ -525,6 +525,7 @@ https://github.com/nwnxee/unified/compare/build8193.21...build8193.22
 
 ##### New Plugins
 - NoStack: Adds `NWNX_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
+- WeaponMaterials: Added functionality to implement Material properties on weapons and material-based damage reductions.
 
 ##### New NWScript Functions
 - Creature: Get{Armor|Shield}CheckPenalty()
