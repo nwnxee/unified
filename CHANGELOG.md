@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
+- Utils: Added environment variable `NWNX_UTIL_SILENT_CONSOLE` which disables the printing of the console command called.
 
 ##### New Plugins
 - N/A
@@ -21,6 +22,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ##### New NWScript Functions
 - Player: GetOpenStore()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
+- Utils: RawPrint()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.

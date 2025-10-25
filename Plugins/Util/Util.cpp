@@ -464,7 +464,10 @@ NWNX_EXPORT ArgumentStack RegisterServerConsoleCommand(ArgumentStack&& args)
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+        if (!Config::Get<bool>("SILENT_CONSOLE", false))
+        {
+          LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+        }
 
         std::string scriptChunk = s_serverConsoleCommandMap[command];
         bool wrapIntoMain = scriptChunk.find("void main()") == std::string::npos;
@@ -502,6 +505,13 @@ NWNX_EXPORT ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args)
     }
 
     return {};
+}
+
+NWNX_EXPORT ArgumentStack RawPrint(ArgumentStack&& args)
+{
+  std::string sLogMessage = args.extract<std::string>();
+  std::cout << sLogMessage << std::endl;
+  return {};
 }
 
 NWNX_EXPORT ArgumentStack PluginExists(ArgumentStack&& args)
@@ -684,7 +694,7 @@ NWNX_EXPORT ArgumentStack SetDawnHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDawnHour;
 }
@@ -700,7 +710,7 @@ NWNX_EXPORT ArgumentStack SetDuskHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDuskHour;
 }
