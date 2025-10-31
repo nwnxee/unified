@@ -51,8 +51,8 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
 | `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
 | `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` | true or false | Resist Energy feats stack with Epic Energy Resistance. |
-| `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. | 
-| `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` | true or false | Servervault characters will be sorted by last time played date, instead of character name in the character list |
+| `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. |
+| `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` | Between 1 and 2097152 | The set number of servervault characters will be sorted by last time played date, instead of character name, in the character list. |
 
 ## Environment variable values
 
