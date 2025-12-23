@@ -273,6 +273,12 @@ int NWNX_Util_UpdateResourceDirectory(string sAlias);
 /// @param sString String to print
 void NWNX_Util_RawPrint(string sString);
 
+/// @brief Set the starting location.
+/// @param sResRef ResRef of area.
+/// @param locLocation The location to move the starting point to.
+/// @param vDirection  Direction of starting point.
+void NWNX_Util_SetStartingLocation(string sResRef, location locLocation, vector vDirection);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -598,3 +604,12 @@ void NWNX_Util_RawPrint(string sString)
     NWNXPushString(sString);
     NWNXCall(NWNX_Util, "RawPrint");
 }
+
+void NWNX_Util_SetStartingLocation(string sResRef, location locLocation, vector vDirection)
+{
+    NWNXPushVector(vDirection);
+    NWNXPushLocation(locLocation);
+    NWNXPushString(sResRef);
+    NWNXCall(NWNX_Util, "SetStartingLocation");
+}
+

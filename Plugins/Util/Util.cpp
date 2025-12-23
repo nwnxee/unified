@@ -23,6 +23,7 @@
 #include "API/CResGFF.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSModule.hpp"
+#include "API/NWMODULEENTRYINFO.hpp"
 
 #include <string>
 #include <cstdio>
@@ -817,4 +818,28 @@ NWNX_EXPORT ArgumentStack UpdateResourceDirectory(ArgumentStack&& args)
     const auto alias = args.extract<std::string>();
       ASSERT_OR_THROW(!alias.empty());
     return Globals::ExoResMan()->UpdateResourceDirectory(alias + ":");
+}
+
+NWNX_EXPORT ArgumentStack SetStartingLocation(ArgumentStack&& args)
+{
+    const auto strResRef = args.extract<std::string>();
+      ASSERT_OR_THROW(!strResRef.empty());
+    const auto locSpawn = args.extract<CScriptLocation>();
+    const auto vDirection = args.extract<Vector>();
+
+    auto resRef = CResRef(strResRef);
+    if (!Globals::ExoResMan()->Exists(resRef, Constants::ResRefType::ARE, nullptr))
+    {
+        LOG_WARNING("SetStartingLocation: ResRef '%s' does not exist", resRef.GetResRefStr());
+        return Constants::OBJECT_INVALID;
+    }
+
+    CNWSModule *pMod = Utils::GetModule();
+    pMod->m_pModuleEntryInfo->refArea = resRef;
+    pMod->m_pModuleEntryInfo->nX = locSpawn.m_vPosition.x;
+    pMod->m_pModuleEntryInfo->nY = locSpawn.m_vPosition.y;
+    pMod->m_pModuleEntryInfo->nZ = locSpawn.m_vPosition.z;
+    pMod->m_pModuleEntryInfo->fDirX = vDirection.x;
+    pMod->m_pModuleEntryInfo->fDirY = vDirection.y;
+    return {};
 }
