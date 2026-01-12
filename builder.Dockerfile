@@ -23,7 +23,8 @@ RUN buildDeps="build-essential \
     autoconf \
     automake \
     bison \
-    ccache" \
+    ccache \
+    xxd" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
