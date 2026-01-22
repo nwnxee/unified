@@ -21,6 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ##### New NWScript Functions
 - Player: GetOpenStore()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
+- Store: GetBlackMarket(), SetBlackMarket(), GetGold(), SetGold(), GetIdentifyCost(), SetIdentifyCost(), GetMaxBuyPrice(), SetMaxBuyPrice()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
