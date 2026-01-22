@@ -88,3 +88,83 @@ NWNX_EXPORT ArgumentStack GetCurrentCustomersCount(ArgumentStack&& args)
     }
     return -1;
 }
+
+NWNX_EXPORT ArgumentStack GetBlackMarket(ArgumentStack&& args)
+{
+
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        return pStore->m_bBlackMarket;
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetBlackMarket(ArgumentStack&& args)
+{
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        const auto nValue = args.extract<int32_t>();
+        pStore->m_bBlackMarket = nValue;
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetGold(ArgumentStack&& args)
+{
+
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        return pStore->m_iGold;
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetGold(ArgumentStack&& args)
+{
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        const auto nValue = args.extract<int32_t>();
+        pStore->m_iGold = nValue;
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetIdentifyCost(ArgumentStack&& args)
+{
+
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        return pStore->m_iIdentifyCost;
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetIdentifyCost(ArgumentStack&& args)
+{
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        const auto nValue = args.extract<int32_t>();
+        pStore->m_iIdentifyCost = nValue;
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetMaxBuyPrice(ArgumentStack&& args)
+{
+
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        return pStore->m_iMaxBuyPrice;
+    }
+    return -1;
+}
+
+NWNX_EXPORT ArgumentStack SetMaxBuyPrice(ArgumentStack&& args)
+{
+    if (auto *pStore = Utils::PopStore(args))
+    {
+        const auto nValue = args.extract<int32_t>();
+        pStore->m_iMaxBuyPrice = nValue;
+    }
+    return {};
+}
