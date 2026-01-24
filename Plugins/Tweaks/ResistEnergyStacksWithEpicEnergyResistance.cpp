@@ -24,7 +24,7 @@ void ResistEnergyStacksWithEpicEnergyResistance()
 
             uint64_t hashedFeatLabel = 0;
 
-            if (nFlags == Constants::DamageType::Acid && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Acid))
+            if ((nFlags & Constants::DamageType::Acid) == Constants::DamageType::Acid && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Acid))
             {
                 if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Acid10))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_10");
@@ -47,7 +47,7 @@ void ResistEnergyStacksWithEpicEnergyResistance()
                 else if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Acid1))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_1");
             }
-            else if (nFlags == Constants::DamageType::Cold && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Cold))
+            else if ((nFlags & Constants::DamageType::Cold) == Constants::DamageType::Cold && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Cold))
             {
                 if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Cold10))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_10");
@@ -70,7 +70,7 @@ void ResistEnergyStacksWithEpicEnergyResistance()
                 else if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Cold1))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_1");
             }
-            else if (nFlags == Constants::DamageType::Electrical && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Electrical))
+            else if ((nFlags & Constants::DamageType::Electrical) == Constants::DamageType::Electrical && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Electrical))
             {
                 if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Electrical10))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_10");
@@ -93,7 +93,7 @@ void ResistEnergyStacksWithEpicEnergyResistance()
                 else if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Electrical1))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_1");
             }
-            else if (nFlags == Constants::DamageType::Fire && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Fire))
+            else if ((nFlags & Constants::DamageType::Fire) == Constants::DamageType::Fire && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Fire))
             {
                 if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Fire10))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_10");
@@ -116,7 +116,7 @@ void ResistEnergyStacksWithEpicEnergyResistance()
                 else if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Fire1))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_1");
             }
-            else if (nFlags == Constants::DamageType::Sonic && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Sonic))
+            else if ((nFlags & Constants::DamageType::Sonic) == Constants::DamageType::Sonic && thisCreature->m_pStats->HasFeat(Constants::Feat::ResistEnergy_Sonic))
             {
                 if (thisCreature->m_pStats->HasFeat(Constants::Feat::EpicEnergyResistance_Sonic10))
                     hashedFeatLabel = CRULES_HASHEDSTR("EPIC_ENERGY_RESISTANCE_AMOUNT_10");
