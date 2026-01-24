@@ -464,7 +464,7 @@ NWNX_EXPORT ArgumentStack RegisterServerConsoleCommand(ArgumentStack&& args)
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+        LOG_DEBUG("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
 
         std::string scriptChunk = s_serverConsoleCommandMap[command];
         bool wrapIntoMain = scriptChunk.find("void main()") == std::string::npos;
