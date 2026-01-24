@@ -37,7 +37,7 @@ JSContext* GetContext() {
         js_std_init_handlers(global_rt);
         js_std_add_helpers(global_ctx, 0, NULL);
 
-        const char* js = R"(
+        static constexpr const char js[] = R"(
             globalThis.processErrors = function(errors, data, verbosity) {
                 if (verbosity <= 0) return undefined;
                 if (!errors || !Array.isArray(errors)) return [];
@@ -198,7 +198,7 @@ NWNX_EXPORT ArgumentStack IsRegistered(ArgumentStack&& args) {
     JS_SetPropertyStr(ctx, global, "schemaID", JS_NewString(ctx, schemaId.c_str()));
     JS_FreeValue(ctx, global); 
 
-    const char* js = "!!globalThis.ajv.getSchema(globalThis.schemaID)";
+    static constexpr const char js[] = "!!globalThis.ajv.getSchema(globalThis.schemaID)";
     JSValue resVal = JS_Eval(ctx, js, strlen(js), "<eval>", JS_EVAL_TYPE_GLOBAL);
     int32_t isFound = JS_ToBool(ctx, resVal);
     JS_FreeValue(ctx, resVal);
@@ -215,7 +215,7 @@ NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args) {
     JS_SetPropertyStr(ctx, global, "schemaID", JS_NewString(ctx, schemaId.c_str()));
     JS_FreeValue(ctx, global);
 
-    const char* js = R"(
+    static constexpr const char js[] = R"(
         (function() {
             const id = globalThis.schemaID;
             const exists = !!globalThis.ajv.getSchema(id);
@@ -234,7 +234,7 @@ NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args) {
 }
 
 NWNX_EXPORT ArgumentStack ClearCache(ArgumentStack&&) {
-    const char* js = R"(
+    static constexpr const char js[] = R"(
         (function() {
             globalThis.ajv.removeSchema(); 
             return Object.keys(globalThis.ajv._schemas).length === 0;
@@ -267,7 +267,7 @@ NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args) {
     JS_SetPropertyStr(ctx, global, "schema", JS_NewString(ctx, schemaDump.c_str()));
     JS_FreeValue(ctx, global);
 
-    const char* js = R"(
+    static constexpr const char js[] = R"(
         (function() {
             try {
                 const s = JSON.parse(globalThis.schema);
@@ -311,7 +311,7 @@ NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args) {
     JS_SetPropertyStr(ctx, global, "overwrite", JS_NewBool(ctx, overwrite != 0));
     JS_FreeValue(ctx, global);
 
-    const char* js = R"(
+    static constexpr const char js[] = R"(
         (function() {
             try {
                 const s = JSON.parse(globalThis.schema);
@@ -362,7 +362,7 @@ NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args) {
     JS_SetPropertyStr(ctx, global, "verbosity", JS_NewInt32(ctx, verbosity));
     JS_FreeValue(ctx, global);
 
-    const char* js = R"(
+    static constexpr const char js[] = R"(
         (function() {
             try {
                 const s = JSON.parse(globalThis.schema);
