@@ -329,8 +329,6 @@ Technology continuously improves and along with it, the software to support it. 
 
 > If using `Windows`, these update scripts must be run in `bash`.
 
-- `external/update-external.sh` OS-aware updating utility that will update required `AJV` and `QuickJS` files into their respective subfolders, and bundle the `AJV` files into the required javascript bundle file.  The `xxd` command in `CMakeLists.txt` uses this bundle to build the required `#include` during the nwnx/image build process.
-- `external/ajv/update-ajv.sh` OS-aware updating utility that will update only `AJV` files and bundle them into the required javascript bundle file.
+- `external/update-external.sh` OS-aware updating utility that will update required `AJV` and `QuickJS` files into their respective subfolders, and bundle the `AJV` files into the required javascript bundle file.
+- `external/ajv/update-ajv.sh` OS-aware updating utility that will update only `AJV` files and bundle them into the required javascript bundle file.  XXD is required on the local machine to successfully run this update script.
 - `external/quickjs/update-quickjs.sh` OS-aware updating utility that will update only the `QuickJS` files.
-
-> None of these updates require `node` or other background software be present on the updating system.

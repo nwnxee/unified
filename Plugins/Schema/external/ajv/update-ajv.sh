@@ -57,6 +57,33 @@ async function run() {
 run();
 EOF
 
-# 5. Cleanup
+# 5. Create C header from the bundled JS so it can be committed into the ajv `dist` folder
+DEST_HEADER_DIR="$SCRIPT_DIR/dist"
+DEST_HEADER="$DEST_HEADER_DIR/ajv_bundle_data.h"
+
+echo "--- Creating C header from $OUTPUT_FILE -> $DEST_HEADER ---"
+
+# Ensure destination directory exists
+mkdir -p "$DEST_HEADER_DIR"
+
+# Ensure xxd is available
+# Fail early if xxd is missing
+if ! command -v xxd >/dev/null 2>&1; then
+    echo "ERROR: 'xxd' not found. Cannot generate $DEST_HEADER."
+    exit 1
+fi
+
+# Run xxd from inside the dist directory so it sees the basename
+pushd "$DEST_HEADER_DIR" >/dev/null
+if [ ! -f "ajv_runtime.min.js" ]; then
+    echo "ERROR: expected ajv_runtime.min.js in $DEST_HEADER_DIR but it's missing"
+    popd >/dev/null
+    exit 1
+fi
+xxd -i "ajv_runtime.min.js" > "$DEST_HEADER"
+echo "WROTE: $DEST_HEADER"
+popd >/dev/null
+
+# 6. Cleanup
 cd "$SCRIPT_DIR"
 rm -rf "$TEMP_DIR"
