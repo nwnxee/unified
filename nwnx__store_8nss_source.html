@@ -119,71 +119,151 @@ $(document).ready(function(){initNavTree('nwnx__store_8nss_source.html',''); ini
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga1813e336ba429d980f43382f84c302e2">NWNX_Store_GetCurrentCustomersCount</a>(<span class="keywordtype">object</span> oStore);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">   51</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">NWNX_Store_GetIsRestrictedBuyItem</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nBaseItem)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    NWNXPushInt(nBaseItem);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetIsRestrictedBuyItem&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga92fd3f4bd4c8f0a1cb8cc9654d4c1ac3">NWNX_Store_GetBlackMarket</a>(<span class="keywordtype">object</span> oStore);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga089c1d60bafcf52ac9779008d5ce8750">NWNX_Store_SetBlackMarket</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__store.html#gadd4056f835da629520235bd23a839620">   59</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gadd4056f835da629520235bd23a839620">NWNX_Store_GetBlackMarketMarkDown</a>(<span class="keywordtype">object</span> oStore)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetBlackMarketMarkDown&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="group__store.html#gac53a3a00bf7430405247295135ae30da">   66</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gac53a3a00bf7430405247295135ae30da">NWNX_Store_SetBlackMarketMarkDown</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    NWNXPushInt(nValue);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetBlackMarketMarkDown&quot;</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">   73</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">NWNX_Store_GetMarkDown</a>(<span class="keywordtype">object</span> oStore)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetMarkDown&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">   80</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">NWNX_Store_SetMarkDown</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    NWNXPushInt(nValue);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetMarkDown&quot;</span>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">   87</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">NWNX_Store_GetMarkUp</a>(<span class="keywordtype">object</span> oStore)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetMarkUp&quot;</span>);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">   94</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">NWNX_Store_SetMarkUp</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    NWNXPushInt(nValue);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetMarkUp&quot;</span>);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="group__store.html#ga1813e336ba429d980f43382f84c302e2">  101</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga1813e336ba429d980f43382f84c302e2">NWNX_Store_GetCurrentCustomersCount</a>(<span class="keywordtype">object</span> oStore)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    NWNXPushObject(oStore);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetCurrentCustomersCount&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
-<div class="ttc" id="agroup__store_html_ga1813e336ba429d980f43382f84c302e2"><div class="ttname"><a href="group__store.html#ga1813e336ba429d980f43382f84c302e2">NWNX_Store_GetCurrentCustomersCount</a></div><div class="ttdeci">int NWNX_Store_GetCurrentCustomersCount(object oStore)</div><div class="ttdoc">Return current customer count.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00101">nwnx_store.nss:101</a></div></div>
-<div class="ttc" id="agroup__store_html_ga258e75dde5642418d469b6aefaeeba36"><div class="ttname"><a href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">NWNX_Store_GetMarkDown</a></div><div class="ttdeci">int NWNX_Store_GetMarkDown(object oStore)</div><div class="ttdoc">Return the mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00073">nwnx_store.nss:73</a></div></div>
-<div class="ttc" id="agroup__store_html_gab3144f1d90359ffd4fe9feab9ba0bc61"><div class="ttname"><a href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">NWNX_Store_SetMarkUp</a></div><div class="ttdeci">void NWNX_Store_SetMarkUp(object oStore, int nValue)</div><div class="ttdoc">Set the mark up of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00094">nwnx_store.nss:94</a></div></div>
-<div class="ttc" id="agroup__store_html_gac2b17cfd46bfcda335e4679cbb1ed1f5"><div class="ttname"><a href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">NWNX_Store_GetIsRestrictedBuyItem</a></div><div class="ttdeci">int NWNX_Store_GetIsRestrictedBuyItem(object oStore, int nBaseItem)</div><div class="ttdoc">Return status of a base item purchase status.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00051">nwnx_store.nss:51</a></div></div>
-<div class="ttc" id="agroup__store_html_gac53a3a00bf7430405247295135ae30da"><div class="ttname"><a href="group__store.html#gac53a3a00bf7430405247295135ae30da">NWNX_Store_SetBlackMarketMarkDown</a></div><div class="ttdeci">void NWNX_Store_SetBlackMarketMarkDown(object oStore, int nValue)</div><div class="ttdoc">Set the blackmarket mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00066">nwnx_store.nss:66</a></div></div>
-<div class="ttc" id="agroup__store_html_gadd4056f835da629520235bd23a839620"><div class="ttname"><a href="group__store.html#gadd4056f835da629520235bd23a839620">NWNX_Store_GetBlackMarketMarkDown</a></div><div class="ttdeci">int NWNX_Store_GetBlackMarketMarkDown(object oStore)</div><div class="ttdoc">Return the blackmarket mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00059">nwnx_store.nss:59</a></div></div>
-<div class="ttc" id="agroup__store_html_gae2e57bddcc1f4c8a51812c0852a61b56"><div class="ttname"><a href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">NWNX_Store_SetMarkDown</a></div><div class="ttdeci">void NWNX_Store_SetMarkDown(object oStore, int nValue)</div><div class="ttdoc">Set the mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00080">nwnx_store.nss:80</a></div></div>
-<div class="ttc" id="agroup__store_html_gae5a7bed7fb21efbb887ecd15ba404e98"><div class="ttname"><a href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">NWNX_Store_GetMarkUp</a></div><div class="ttdeci">int NWNX_Store_GetMarkUp(object oStore)</div><div class="ttdoc">Return the mark up of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00087">nwnx_store.nss:87</a></div></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gab7307f56be4d02396dd56be6558d4b27">NWNX_Store_GetGold</a>(<span class="keywordtype">object</span> oStore);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga5a9d83403e449685cf0700a9979f693a">NWNX_Store_SetGold</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gaf822acf27637369aa101c87bebf4fea1">NWNX_Store_GetIdentifyCost</a>(<span class="keywordtype">object</span> oStore);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga191ff5c50e8e30b9ce48a996b0434ab1">NWNX_Store_SetIdentifyCost</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gaf9934cd70c7eb4229d6ee5148768dddc">NWNX_Store_GetMaxBuyPrice</a>(<span class="keywordtype">object</span> oStore);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga7d6cda35b9ee56f77ea54bbd5ffb11ce">NWNX_Store_SetMaxBuyPrice</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">   91</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">NWNX_Store_GetIsRestrictedBuyItem</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nBaseItem)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    NWNXPushInt(nBaseItem);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetIsRestrictedBuyItem&quot;</span>);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="group__store.html#gadd4056f835da629520235bd23a839620">   99</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gadd4056f835da629520235bd23a839620">NWNX_Store_GetBlackMarketMarkDown</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetBlackMarketMarkDown&quot;</span>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="group__store.html#gac53a3a00bf7430405247295135ae30da">  106</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gac53a3a00bf7430405247295135ae30da">NWNX_Store_SetBlackMarketMarkDown</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetBlackMarketMarkDown&quot;</span>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">  113</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">NWNX_Store_GetMarkDown</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetMarkDown&quot;</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">  120</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">NWNX_Store_SetMarkDown</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetMarkDown&quot;</span>);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">  127</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">NWNX_Store_GetMarkUp</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;{</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetMarkUp&quot;</span>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">  134</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">NWNX_Store_SetMarkUp</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetMarkUp&quot;</span>);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="group__store.html#ga1813e336ba429d980f43382f84c302e2">  141</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga1813e336ba429d980f43382f84c302e2">NWNX_Store_GetCurrentCustomersCount</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;{</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetCurrentCustomersCount&quot;</span>);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="group__store.html#ga92fd3f4bd4c8f0a1cb8cc9654d4c1ac3">  148</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#ga92fd3f4bd4c8f0a1cb8cc9654d4c1ac3">NWNX_Store_GetBlackMarket</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;{</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetBlackMarket&quot;</span>);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="group__store.html#ga089c1d60bafcf52ac9779008d5ce8750">  155</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga089c1d60bafcf52ac9779008d5ce8750">NWNX_Store_SetBlackMarket</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;{</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetBlackMarket&quot;</span>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="group__store.html#gab7307f56be4d02396dd56be6558d4b27">  162</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gab7307f56be4d02396dd56be6558d4b27">NWNX_Store_GetGold</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetGold&quot;</span>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="group__store.html#ga5a9d83403e449685cf0700a9979f693a">  169</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga5a9d83403e449685cf0700a9979f693a">NWNX_Store_SetGold</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;{</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetGold&quot;</span>);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="group__store.html#gaf822acf27637369aa101c87bebf4fea1">  176</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gaf822acf27637369aa101c87bebf4fea1">NWNX_Store_GetIdentifyCost</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;{</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetIdentifyCost&quot;</span>);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;}</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="group__store.html#ga191ff5c50e8e30b9ce48a996b0434ab1">  183</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga191ff5c50e8e30b9ce48a996b0434ab1">NWNX_Store_SetIdentifyCost</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;{</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetIdentifyCost&quot;</span>);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="group__store.html#gaf9934cd70c7eb4229d6ee5148768dddc">  190</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__store.html#gaf9934cd70c7eb4229d6ee5148768dddc">NWNX_Store_GetMaxBuyPrice</a>(<span class="keywordtype">object</span> oStore)</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;GetMaxBuyPrice&quot;</span>);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">return</span> NWNXPopInt();</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="group__store.html#ga7d6cda35b9ee56f77ea54bbd5ffb11ce">  197</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__store.html#ga7d6cda35b9ee56f77ea54bbd5ffb11ce">NWNX_Store_SetMaxBuyPrice</a>(<span class="keywordtype">object</span> oStore, <span class="keywordtype">int</span> nValue)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;{</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    NWNXPushInt(nValue);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    NWNXPushObject(oStore);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    NWNXCall(NWNX_Store, <span class="stringliteral">&quot;SetMaxBuyPrice&quot;</span>);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;}</div>
+<div class="ttc" id="agroup__store_html_ga089c1d60bafcf52ac9779008d5ce8750"><div class="ttname"><a href="group__store.html#ga089c1d60bafcf52ac9779008d5ce8750">NWNX_Store_SetBlackMarket</a></div><div class="ttdeci">void NWNX_Store_SetBlackMarket(object oStore, int nValue)</div><div class="ttdoc">Set the black market status.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00155">nwnx_store.nss:155</a></div></div>
+<div class="ttc" id="agroup__store_html_ga1813e336ba429d980f43382f84c302e2"><div class="ttname"><a href="group__store.html#ga1813e336ba429d980f43382f84c302e2">NWNX_Store_GetCurrentCustomersCount</a></div><div class="ttdeci">int NWNX_Store_GetCurrentCustomersCount(object oStore)</div><div class="ttdoc">Return current customer count.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00141">nwnx_store.nss:141</a></div></div>
+<div class="ttc" id="agroup__store_html_ga191ff5c50e8e30b9ce48a996b0434ab1"><div class="ttname"><a href="group__store.html#ga191ff5c50e8e30b9ce48a996b0434ab1">NWNX_Store_SetIdentifyCost</a></div><div class="ttdeci">void NWNX_Store_SetIdentifyCost(object oStore, int nValue)</div><div class="ttdoc">Set the identify cost.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00183">nwnx_store.nss:183</a></div></div>
+<div class="ttc" id="agroup__store_html_ga258e75dde5642418d469b6aefaeeba36"><div class="ttname"><a href="group__store.html#ga258e75dde5642418d469b6aefaeeba36">NWNX_Store_GetMarkDown</a></div><div class="ttdeci">int NWNX_Store_GetMarkDown(object oStore)</div><div class="ttdoc">Return the mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00113">nwnx_store.nss:113</a></div></div>
+<div class="ttc" id="agroup__store_html_ga5a9d83403e449685cf0700a9979f693a"><div class="ttname"><a href="group__store.html#ga5a9d83403e449685cf0700a9979f693a">NWNX_Store_SetGold</a></div><div class="ttdeci">void NWNX_Store_SetGold(object oStore, int nValue)</div><div class="ttdoc">Set the gold amount.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00169">nwnx_store.nss:169</a></div></div>
+<div class="ttc" id="agroup__store_html_ga7d6cda35b9ee56f77ea54bbd5ffb11ce"><div class="ttname"><a href="group__store.html#ga7d6cda35b9ee56f77ea54bbd5ffb11ce">NWNX_Store_SetMaxBuyPrice</a></div><div class="ttdeci">void NWNX_Store_SetMaxBuyPrice(object oStore, int nValue)</div><div class="ttdoc">Set the MaxBuyPrice amount.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00197">nwnx_store.nss:197</a></div></div>
+<div class="ttc" id="agroup__store_html_ga92fd3f4bd4c8f0a1cb8cc9654d4c1ac3"><div class="ttname"><a href="group__store.html#ga92fd3f4bd4c8f0a1cb8cc9654d4c1ac3">NWNX_Store_GetBlackMarket</a></div><div class="ttdeci">int NWNX_Store_GetBlackMarket(object oStore)</div><div class="ttdoc">Return the black market status.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00148">nwnx_store.nss:148</a></div></div>
+<div class="ttc" id="agroup__store_html_gab3144f1d90359ffd4fe9feab9ba0bc61"><div class="ttname"><a href="group__store.html#gab3144f1d90359ffd4fe9feab9ba0bc61">NWNX_Store_SetMarkUp</a></div><div class="ttdeci">void NWNX_Store_SetMarkUp(object oStore, int nValue)</div><div class="ttdoc">Set the mark up of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00134">nwnx_store.nss:134</a></div></div>
+<div class="ttc" id="agroup__store_html_gab7307f56be4d02396dd56be6558d4b27"><div class="ttname"><a href="group__store.html#gab7307f56be4d02396dd56be6558d4b27">NWNX_Store_GetGold</a></div><div class="ttdeci">int NWNX_Store_GetGold(object oStore)</div><div class="ttdoc">Return the gold amount.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00162">nwnx_store.nss:162</a></div></div>
+<div class="ttc" id="agroup__store_html_gac2b17cfd46bfcda335e4679cbb1ed1f5"><div class="ttname"><a href="group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5">NWNX_Store_GetIsRestrictedBuyItem</a></div><div class="ttdeci">int NWNX_Store_GetIsRestrictedBuyItem(object oStore, int nBaseItem)</div><div class="ttdoc">Return status of a base item purchase status.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00091">nwnx_store.nss:91</a></div></div>
+<div class="ttc" id="agroup__store_html_gac53a3a00bf7430405247295135ae30da"><div class="ttname"><a href="group__store.html#gac53a3a00bf7430405247295135ae30da">NWNX_Store_SetBlackMarketMarkDown</a></div><div class="ttdeci">void NWNX_Store_SetBlackMarketMarkDown(object oStore, int nValue)</div><div class="ttdoc">Set the blackmarket mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00106">nwnx_store.nss:106</a></div></div>
+<div class="ttc" id="agroup__store_html_gadd4056f835da629520235bd23a839620"><div class="ttname"><a href="group__store.html#gadd4056f835da629520235bd23a839620">NWNX_Store_GetBlackMarketMarkDown</a></div><div class="ttdeci">int NWNX_Store_GetBlackMarketMarkDown(object oStore)</div><div class="ttdoc">Return the blackmarket mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00099">nwnx_store.nss:99</a></div></div>
+<div class="ttc" id="agroup__store_html_gae2e57bddcc1f4c8a51812c0852a61b56"><div class="ttname"><a href="group__store.html#gae2e57bddcc1f4c8a51812c0852a61b56">NWNX_Store_SetMarkDown</a></div><div class="ttdeci">void NWNX_Store_SetMarkDown(object oStore, int nValue)</div><div class="ttdoc">Set the mark down of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00120">nwnx_store.nss:120</a></div></div>
+<div class="ttc" id="agroup__store_html_gae5a7bed7fb21efbb887ecd15ba404e98"><div class="ttname"><a href="group__store.html#gae5a7bed7fb21efbb887ecd15ba404e98">NWNX_Store_GetMarkUp</a></div><div class="ttdeci">int NWNX_Store_GetMarkUp(object oStore)</div><div class="ttdoc">Return the mark up of a store.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00127">nwnx_store.nss:127</a></div></div>
+<div class="ttc" id="agroup__store_html_gaf822acf27637369aa101c87bebf4fea1"><div class="ttname"><a href="group__store.html#gaf822acf27637369aa101c87bebf4fea1">NWNX_Store_GetIdentifyCost</a></div><div class="ttdeci">int NWNX_Store_GetIdentifyCost(object oStore)</div><div class="ttdoc">Return the identify cost.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00176">nwnx_store.nss:176</a></div></div>
+<div class="ttc" id="agroup__store_html_gaf9934cd70c7eb4229d6ee5148768dddc"><div class="ttname"><a href="group__store.html#gaf9934cd70c7eb4229d6ee5148768dddc">NWNX_Store_GetMaxBuyPrice</a></div><div class="ttdeci">int NWNX_Store_GetMaxBuyPrice(object oStore)</div><div class="ttdoc">Return the MaxBuyPrice amount.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__store_8nss_source.html#l00190">nwnx_store.nss:190</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
@@ -191,7 +271,7 @@ $(document).ready(function(){initNavTree('nwnx__store_8nss_source.html',''); ini
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_50ef9183bee59101dde5c15ccfa615b4.html">Store</a></li><li class="navelem"><a class="el" href="dir_caeb6d538d368afff2a96242e2902a4a.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__store_8nss.html">nwnx_store.nss</a></li>
 				<li class="footer">
-					Generated on Sat Jan 24 2026 15:06:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Jan 24 2026 15:07:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
