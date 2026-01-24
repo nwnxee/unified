@@ -27,6 +27,7 @@ using namespace NWNXLib::API::Constants;
 
 static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pPlayer);
 static Hooks::Hook s_SendServerToPlayerCharListHook;
+static size_t s_NumCharactersToSort;
 
 struct CharacterInfoWithFiletime : NWPlayerCharacterList_st
 {
@@ -36,22 +37,32 @@ struct CharacterInfoWithFiletime : NWPlayerCharacterList_st
 void SortCharListByLastPlayedDate() __attribute__((constructor));
 void SortCharListByLastPlayedDate()
 {
-    if (!Config::Get<bool>("CHARLIST_SORT_BY_LAST_PLAYED_DATE", false))
+    const int MAX_SORT_VALUE = 2097152; // 2^7 * 2^7 * 2^7 = 2^21 = 2097152, see below in SetCharacterListIndex
+
+    s_NumCharactersToSort = Config::Get<int>("CHARLIST_SORT_BY_LAST_PLAYED_DATE", 0);
+
+    if (s_NumCharactersToSort < 1)
         return;
 
-    LOG_INFO("Character list will be sorted by last played date");
+    if (s_NumCharactersToSort > MAX_SORT_VALUE)
+    {
+        LOG_ERROR("Plugin NOT active! The maximum value for CHARLIST_SORT_BY_LAST_PLAYED_DATE is %d", MAX_SORT_VALUE);
+        return;
+    }
+
+    LOG_INFO("Character list will be sorted by last played date for %d character(s)", s_NumCharactersToSort);
     s_SendServerToPlayerCharListHook = Hooks::HookFunction(&CNWSMessage::SendServerToPlayerCharList, &SendServerToPlayerCharListHook, Hooks::Order::Final);
 }
 
 static void SetCharacterListIndex(CharacterInfoWithFiletime* pCharInfo, int nIndex)
 {
-    // Set lowest bit of each rgb component to 1, reducing the range of available indices from 2^24 to 2^21 
+    // Set lowest bit of each rgb component to 1, reducing the range of available indices from 2^24 to 2^21
     // while avoiding null bytes and preserving uniqueness + order
     nIndex = nIndex << 1;
     int b = (nIndex & 0xFF) | 1;
     int g = ((nIndex >> 7) & 0xFF) | 1;
     int r = ((nIndex >> 14) & 0xFF) | 1;
-        
+
     auto& pStrList = pCharInfo->sLocFirstName.m_pExoLocStringInternal->m_lstString;
     for (auto *pNode = pStrList.GetHeadPos(); pNode; pNode = pNode->pNext)
     {
@@ -65,7 +76,7 @@ static std::time_t GetBICFileTime(const CExoString& sVaultPath, const CResRef& s
     CExoString sFilename = sVaultPath + CExoString(sBicResRef) + ".bic";
 
     struct stat fileStats;
-    if (stat(sFilename.c_str(), &fileStats) == 0) 
+    if (stat(sFilename.c_str(), &fileStats) == 0)
         return fileStats.st_mtime;
     else
         return 0;
@@ -129,7 +140,7 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                     {
                         BOOL bSuccess;
                         CResStruct topLevelStruct;
-                        
+
                         pRes->GetTopLevelStruct(&topLevelStruct);
 
                         CharacterInfoWithFiletime charInfo;
@@ -140,7 +151,7 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                         charInfo.nPortraitId = pRes->ReadFieldWORD(&topLevelStruct, "PortraitId", bSuccess, 0xFFFF);
                         charInfo.resPortrait = pRes->ReadFieldCResRef(&topLevelStruct, "Portrait", bSuccess);
                         charInfo.fLastFileModified = GetBICFileTime(sPlayerServerVault, charInfo.resFileName);
-                        
+
                         CResList classList;
                         if (pRes->GetList(&classList, &topLevelStruct, "ClassList"))
                         {
@@ -163,8 +174,8 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
                     else
                     {
                         LOG_ERROR("Corrupt BIC file in servervault of player: '%s' (%s) -> '%s.bic', character skipped.",
-                            pPlayer->GetPlayerName().CStr(), 
-                            pPlayerInfo->m_cCDKey.sPublic.CStr(), 
+                            pPlayer->GetPlayerName().CStr(),
+                            pPlayerInfo->m_cCDKey.sPublic.CStr(),
                             sBicResRef.CStr());
                     }
                 }
@@ -235,13 +246,13 @@ static BOOL SendServerToPlayerCharListHook(CNWSMessage* pMessage, CNWSPlayer* pP
             }
         }
 
-        std::sort(lstChars.begin(), lstChars.end(), 
+        std::sort(lstChars.begin(), lstChars.end(),
         [](const CharacterInfoWithFiletime& a, const CharacterInfoWithFiletime& b)
         {
-            return a.fLastFileModified > b.fLastFileModified; 
+            return a.fLastFileModified > b.fLastFileModified;
         });
 
-        for (size_t i=0; i < lstChars.size(); i++)
+        for (size_t i=0; i < std::min(s_NumCharactersToSort, lstChars.size()); i++)
         {
             SetCharacterListIndex(&lstChars[i], i);
         }
