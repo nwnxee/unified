@@ -142,7 +142,7 @@ static void ResolveSneakAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
             };
             int attackerLevels = 0, defenderLevels = 0;
 
-            for (uint8_t i = 0; i < 3; i++)
+            for (uint8_t i = 0; i < Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("MULTICLASS_LIMIT"), 3); i++)
             {
                 uint8_t attackerClass = pThis->m_pStats->GetClass(i);
                 uint8_t defenderClass = pTarget->m_pStats->GetClass(i);
@@ -255,7 +255,7 @@ static void ResolveDeathAttackHook(CNWSCreature *pThis, CNWSCreature *pTarget)
             };
             int attackerLevels = 0, defenderLevels = 0;
 
-            for (uint8_t i = 0; i < 3; i++)
+            for (uint8_t i = 0; i < Globals::Rules()->GetRulesetIntEntry(CRULES_HASHEDSTR("MULTICLASS_LIMIT"), 3); i++)
             {
                 uint8_t attackerClass = pThis->m_pStats->GetClass(i);
                 uint8_t defenderClass = pTarget->m_pStats->GetClass(i);
