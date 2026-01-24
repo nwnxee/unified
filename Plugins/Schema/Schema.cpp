@@ -18,7 +18,8 @@ static JSContext* GetContext();
 static json JSValueToJSON(JSValue val);
 
 void SchemaUnload() __attribute__((destructor));
-void SchemaUnload() {
+void SchemaUnload()
+{
     if (global_ctx) {
         JS_FreeContext(global_ctx);
         global_ctx = nullptr;
@@ -29,7 +30,8 @@ void SchemaUnload() {
     }
 }
 
-JSContext* GetContext() {
+JSContext* GetContext()
+{
     if (!global_ctx) {
         global_rt = JS_NewRuntime();
         global_ctx = JS_NewContext(global_rt);
@@ -163,10 +165,7 @@ JSContext* GetContext() {
             };
         )";
 
-        // Evaluate the initialization script
         JS_Eval(global_ctx, js, strlen(js), "<init>", JS_EVAL_TYPE_GLOBAL);
-
-        // Load AJV from the embedded header
         JS_Eval(global_ctx, (const char*)ajv_runtime_min_js, ajv_runtime_min_js_len, "ajv.js", JS_EVAL_TYPE_GLOBAL);
         
         LOG_DEBUG("Schema validation initialized");
@@ -175,14 +174,12 @@ JSContext* GetContext() {
     return global_ctx;
 }
 
-json JSValueToJSON(JSValue val) {
+json JSValueToJSON(JSValue val)
+{
     JSContext *ctx = Schema::GetContext();
-
-    // Stringify the result inside JS to ensure complex error objects are captured
     JSValue jsonStrVal = JS_JSONStringify(ctx, val, JS_UNDEFINED, JS_UNDEFINED);
     const char* cStr = JS_ToCString(ctx, jsonStrVal);
     
-    // Parse into nlohmann::json. If cStr is null, return a fallback error.
     json result = json::parse(cStr ? cStr : "{\"valid\": false, \"errors\": \"Engine Error\"}");
     
     JS_FreeCString(ctx, cStr);
@@ -190,7 +187,8 @@ json JSValueToJSON(JSValue val) {
     return result;
 }
 
-NWNX_EXPORT ArgumentStack IsRegistered(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack IsRegistered(ArgumentStack&& args)
+{
     const auto schemaId = args.extract<std::string>();
 
     JSContext *ctx = GetContext();
@@ -207,7 +205,8 @@ NWNX_EXPORT ArgumentStack IsRegistered(ArgumentStack&& args) {
     return isFound;
 }
 
-NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args)
+{
     const auto schemaId = args.extract<std::string>();
 
     JSContext *ctx = GetContext();
@@ -233,7 +232,8 @@ NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args) {
     return isFound;
 }
 
-NWNX_EXPORT ArgumentStack ClearCache(ArgumentStack&&) {
+NWNX_EXPORT ArgumentStack ClearCache(ArgumentStack&&)
+{
     static constexpr const char js[] = R"(
         (function() {
             globalThis.ajv.removeSchema(); 
@@ -249,16 +249,20 @@ NWNX_EXPORT ArgumentStack ClearCache(ArgumentStack&&) {
     JSContext *ctx_p;
     while (JS_ExecutePendingJob(global_rt, &ctx_p) > 0);
 
-    if (isEmpty) {
+    if (isEmpty)
+    {
         LOG_DEBUG("ClearCache(): cached schemas cleared");
-    } else {
+    }
+    else
+    {
         LOG_DEBUG("ClearCache(): failed to clear cached schemas");
     }
 
     return isEmpty;
 }
 
-NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args)
+{
     const auto schema = args.extract<JsonEngineStructure>();
     std::string schemaDump = schema.m_shared->m_json.dump();
 
@@ -288,10 +292,13 @@ NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args) {
     json result = JSValueToJSON(resVal);
     JS_FreeValue(ctx, resVal);
 
-    if (result["valid"].get<bool>()) {
+    if (result["valid"].get<bool>())
+    {
         LOG_DEBUG("RegisterMetaSchema(): Metaschema %s registered successfully", 
             schema.m_shared->m_json.value("$id", "UNKNOWN").c_str());
-    } else {
+    }
+    else
+    {
         LOG_DEBUG("RegisterMetaSchema(): Failed to register metaschema: %s", 
             result.contains("errors") ? result["errors"].dump().c_str() : "UNKNOWN_ERROR");
     }
@@ -299,7 +306,8 @@ NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args)
+{
     const auto schema = args.extract<JsonEngineStructure>();
     const auto overwrite = args.extract<int32_t>();
     
@@ -335,10 +343,13 @@ NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args) {
     json result = JSValueToJSON(resVal);
     JS_FreeValue(ctx, resVal);
 
-    if (result["valid"].get<bool>()) {
+    if (result["valid"].get<bool>())
+    {
         LOG_DEBUG("ValidateSchema(): schema [%s] validated and registered successfully", 
             schema.m_shared->m_json.value("$id", "UNNAMED").c_str());
-    } else {
+    }
+    else
+    {
         LOG_DEBUG("ValidateSchema(): schema [%s] validation failed: %s", 
             schema.m_shared->m_json.value("$id", "UNNAMED").c_str(), 
             result.contains("errors") ? result["errors"].dump().c_str() : "SILENT");
@@ -347,7 +358,8 @@ NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args)
+{
     const auto instance = args.extract<JsonEngineStructure>();
     const auto schema = args.extract<JsonEngineStructure>();
     const auto verbosity = args.extract<int32_t>(); 
@@ -415,9 +427,12 @@ NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args) {
     JS_FreeValue(ctx, resVal);
 
     std::string schemaId = schema.m_shared->m_json.value("$id", "UNNAMED");
-    if (result["valid"].get<bool>()) {
+    if (result["valid"].get<bool>())
+    {
         LOG_DEBUG("ValidateInstance(): validation successful for schema [%s]", schemaId.c_str());
-    } else {
+    }
+    else
+    {
         LOG_DEBUG("ValidateInstance(): validation failed for schema [%s]: %s", 
             schemaId.c_str(), 
             result.contains("errors") ? result["errors"].dump().c_str() : "SILENT");
@@ -426,7 +441,8 @@ NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack ValidateInstanceByID(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateInstanceByID(ArgumentStack&& args)
+{
     const auto instance = args.extract<JsonEngineStructure>();
     const auto schemaId = args.extract<std::string>();
     const auto verbosity = args.extract<int32_t>();
@@ -489,9 +505,12 @@ NWNX_EXPORT ArgumentStack ValidateInstanceByID(ArgumentStack&& args) {
     json result = JSValueToJSON(resVal);
     JS_FreeValue(ctx, resVal);
 
-    if (result["valid"].get<bool>()) {
+    if (result["valid"].get<bool>())
+    {
         LOG_DEBUG("ValidateInstanceByID(): validation successful for schema ID: %s", schemaId.c_str());
-    } else {
+    }
+    else
+    {
         LOG_DEBUG("ValidateInstanceByID(): validation failed for schema ID: %s. Errors: %s", 
             schemaId.c_str(), 
             result.contains("errors") ? result["errors"].dump().c_str() : "SILENT");
