@@ -1,34 +1,24 @@
-#include "Schema.hpp"
-
-JSRuntime* Schema::Schema::global_rt = nullptr;
-JSContext* Schema::Schema::global_ctx = nullptr;
-
-static Schema::Schema* g_plugin;
-
-NWNX_PLUGIN_ENTRY NWNXLib::Plugin* PluginLoad(NWNXLib::Services::ProxyServiceList* services) {
-    g_plugin = new Schema::Schema(services);
-    return g_plugin;
+extern "C" {
+    #include "quickjs.h"
+    #include "quickjs-libc.h"
 }
+
+#include "nwnx.hpp"
+#include "ajv_bundle_data.h" 
+
+static JSRuntime* global_rt = nullptr;
+static JSContext* global_ctx = nullptr;
 
 namespace Schema {
 
-Schema::Schema(NWNXLib::Services::ProxyServiceList* services) : Plugin(services) {
-    #define REGISTER(func) \
-        NWNXLib::ScriptAPI::RegisterEvent(PLUGIN_NAME, #func, \
-            [](ArgumentStack&& args){ return Schema::func(std::move(args)); })
+using json = nlohmann::json;
+using ArgumentStack = NWNXLib::ArgumentStack;
 
-    REGISTER(ValidateSchema);
-    REGISTER(ValidateInstance);
-    REGISTER(ValidateInstanceByID);
-    REGISTER(IsRegistered);
-    REGISTER(RemoveSchema);
-    REGISTER(ClearCache);
-    REGISTER(RegisterMetaSchema);
+static JSContext* GetContext();
+static json JSValueToJSON(JSValue val);
 
-    #undef REGISTER
-}
-
-Schema::~Schema() {
+void SchemaUnload() __attribute__((destructor));
+void SchemaUnload() {
     if (global_ctx) {
         JS_FreeContext(global_ctx);
         global_ctx = nullptr;
@@ -39,7 +29,7 @@ Schema::~Schema() {
     }
 }
 
-JSContext* Schema::GetContext() {
+JSContext* GetContext() {
     if (!global_ctx) {
         global_rt = JS_NewRuntime();
         global_ctx = JS_NewContext(global_rt);
@@ -49,13 +39,8 @@ JSContext* Schema::GetContext() {
 
         const char* js = R"(
             globalThis.processErrors = function(errors, data, verbosity) {
-                
-                // Verbosity Level 0 (silent)
                 if (verbosity <= 0) return undefined;
-
                 if (!errors || !Array.isArray(errors)) return [];
-                
-                // Level 2: Debug Verbosity (Maximum/Raw output)
                 if (verbosity >= 2) return errors;
 
                 const getNested = (obj, path) => {
@@ -69,14 +54,6 @@ JSContext* Schema::GetContext() {
 
                 errors.forEach(err => {
                     const fullPath = err.instancePath || "/";
-                    
-                    // Level 0 (Basic) Noise Filtering
-                    if (verbosity === 0) {
-                        if (applicators.includes(err.keyword) || (customPaths.has(fullPath) && err.keyword !== "errorMessage")) {
-                            return;
-                        }
-                    }
-
                     const parts = fullPath.split('/').filter(Boolean);
                     let targetPath = fullPath;
                     let leafKey = "root"; 
@@ -87,12 +64,6 @@ JSContext* Schema::GetContext() {
                             leafKey = lastPart;
                             targetPath = "/" + parts.slice(0, -1).join("/");
                         }
-                    }
-
-                    // Level 1: Moderate Verbosity (Placeholder for your future designated keys)
-                    // Currently behaves like Level 0 but includes more technical keywords
-                    if (verbosity === 1 && applicators.includes(err.keyword)) {
-                        // (Optionally add logic here for your designated moderate keys)
                     }
 
                     let entry = results.find(r => r.instancePath === targetPath);
@@ -111,7 +82,6 @@ JSContext* Schema::GetContext() {
                     }
                 });
 
-                // Convert single-error arrays to simple strings
                 results.forEach(entry => {
                     for (const key in entry.errors) {
                         if (entry.errors[key].length === 1) {
@@ -162,9 +132,6 @@ JSContext* Schema::GetContext() {
                      }
                 }
 
-                // Explicit URI validation for $id
-                // Use regex instead of URL() constructor to avoid dependency on specific JS environment capabilities
-                // Checks for scheme followed by colon
                 if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:[^\s]*$/.test(id)) {
                     return { valid: false, errors: [{ message: "Schema $id '" + id + "' is not a valid absolute URI." }] };
                 }
@@ -208,7 +175,7 @@ JSContext* Schema::GetContext() {
     return global_ctx;
 }
 
-json Schema::Schema::JSValueToJSON(JSValue val) {
+json JSValueToJSON(JSValue val) {
     JSContext *ctx = Schema::GetContext();
 
     // Stringify the result inside JS to ensure complex error objects are captured
@@ -223,10 +190,10 @@ json Schema::Schema::JSValueToJSON(JSValue val) {
     return result;
 }
 
-NWNX_EXPORT ArgumentStack Schema::IsRegistered(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack IsRegistered(ArgumentStack&& args) {
     const auto schemaId = args.extract<std::string>();
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schemaID", JS_NewString(ctx, schemaId.c_str()));
     JS_FreeValue(ctx, global); 
@@ -240,10 +207,10 @@ NWNX_EXPORT ArgumentStack Schema::IsRegistered(ArgumentStack&& args) {
     return isFound;
 }
 
-NWNX_EXPORT ArgumentStack Schema::RemoveSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack RemoveSchema(ArgumentStack&& args) {
     const auto schemaId = args.extract<std::string>();
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schemaID", JS_NewString(ctx, schemaId.c_str()));
     JS_FreeValue(ctx, global);
@@ -266,7 +233,7 @@ NWNX_EXPORT ArgumentStack Schema::RemoveSchema(ArgumentStack&& args) {
     return isFound;
 }
 
-NWNX_EXPORT ArgumentStack Schema::ClearCache(ArgumentStack&&) {
+NWNX_EXPORT ArgumentStack ClearCache(ArgumentStack&&) {
     const char* js = R"(
         (function() {
             globalThis.ajv.removeSchema(); 
@@ -291,11 +258,11 @@ NWNX_EXPORT ArgumentStack Schema::ClearCache(ArgumentStack&&) {
     return isEmpty;
 }
 
-NWNX_EXPORT ArgumentStack Schema::RegisterMetaSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack RegisterMetaSchema(ArgumentStack&& args) {
     const auto schema = args.extract<JsonEngineStructure>();
     std::string schemaDump = schema.m_shared->m_json.dump();
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schema", JS_NewString(ctx, schemaDump.c_str()));
     JS_FreeValue(ctx, global);
@@ -332,13 +299,13 @@ NWNX_EXPORT ArgumentStack Schema::RegisterMetaSchema(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack Schema::ValidateSchema(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateSchema(ArgumentStack&& args) {
     const auto schema = args.extract<JsonEngineStructure>();
     const auto overwrite = args.extract<int32_t>();
     
     std::string schemaDump = schema.m_shared->m_json.dump();
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schema", JS_NewString(ctx, schemaDump.c_str()));
     JS_SetPropertyStr(ctx, global, "overwrite", JS_NewBool(ctx, overwrite != 0));
@@ -380,7 +347,7 @@ NWNX_EXPORT ArgumentStack Schema::ValidateSchema(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack Schema::ValidateInstance(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateInstance(ArgumentStack&& args) {
     const auto instance = args.extract<JsonEngineStructure>();
     const auto schema = args.extract<JsonEngineStructure>();
     const auto verbosity = args.extract<int32_t>(); 
@@ -388,7 +355,7 @@ NWNX_EXPORT ArgumentStack Schema::ValidateInstance(ArgumentStack&& args) {
     std::string instanceDump = instance.m_shared->m_json.dump();
     std::string schemaDump = schema.m_shared->m_json.dump();    
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schema", JS_NewString(ctx, schemaDump.c_str()));
     JS_SetPropertyStr(ctx, global, "instance", JS_NewString(ctx, instanceDump.c_str()));
@@ -459,14 +426,14 @@ NWNX_EXPORT ArgumentStack Schema::ValidateInstance(ArgumentStack&& args) {
     return { JsonEngineStructure(std::move(result), "") };
 }
 
-NWNX_EXPORT ArgumentStack Schema::ValidateInstanceByID(ArgumentStack&& args) {
+NWNX_EXPORT ArgumentStack ValidateInstanceByID(ArgumentStack&& args) {
     const auto instance = args.extract<JsonEngineStructure>();
     const auto schemaId = args.extract<std::string>();
     const auto verbosity = args.extract<int32_t>();
     
     std::string instanceDump = instance.m_shared->m_json.dump();
 
-    JSContext *ctx = Schema::GetContext();
+    JSContext *ctx = GetContext();
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "schemaID", JS_NewString(ctx, schemaId.c_str()));
     JS_SetPropertyStr(ctx, global, "instance", JS_NewString(ctx, instanceDump.c_str()));
@@ -532,4 +499,4 @@ NWNX_EXPORT ArgumentStack Schema::ValidateInstanceByID(ArgumentStack&& args) {
 
     return { JsonEngineStructure(std::move(result), "") };
 }
-};
+}
