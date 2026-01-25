@@ -52,37 +52,43 @@ json NWNX_Schema_ValidateInstance(json jInstance, json jSchema, int nVerbosity =
 /// @return A json object containing validation results.
 json NWNX_Schema_ValidateInstanceByID(json jInstance, string sSchemaId, int nVerbosity = NWNX_SCHEMA_OUTPUT_VERBOSITY_NORMAL);
 
-int NWNX_Schema_GetIsRegistered(string sSchemaId) {
+int NWNX_Schema_GetIsRegistered(string sSchemaId)
+{
     NWNXPushString(sSchemaId);
     NWNXCall(NWNX_Schema, "IsRegistered");
     return NWNXPopInt();
 }
 
-int NWNX_Schema_RemoveSchema(string sSchemaId) {
+int NWNX_Schema_RemoveSchema(string sSchemaId)
+{
     NWNXPushString(sSchemaId);
     NWNXCall(NWNX_Schema, "RemoveSchema");
     return NWNXPopInt();
 }
 
-int NWNX_Schema_ClearCache() {
+int NWNX_Schema_ClearCache()
+{
     NWNXCall(NWNX_Schema, "ClearCache");
     return NWNXPopInt();
 }
 
-json NWNX_Schema_RegisterMetaSchema(json jSchema) {
+json NWNX_Schema_RegisterMetaSchema(json jSchema)
+{
     NWNXPushJson(jSchema);
     NWNXCall(NWNX_Schema, "RegisterMetaSchema");
     return NWNXPopJson();
 }
 
-json NWNX_Schema_ValidateSchema(json jSchema, int bReplaceExisting = FALSE) {
+json NWNX_Schema_ValidateSchema(json jSchema, int bReplaceExisting = FALSE)
+{
     NWNXPushInt(bReplaceExisting);
     NWNXPushJson(jSchema);
     NWNXCall(NWNX_Schema, "ValidateSchema");
     return NWNXPopJson();
 }
 
-json NWNX_Schema_ValidateInstance(json jInstance, json jSchema, int nVerbosity = NWNX_SCHEMA_OUTPUT_VERBOSITY_NORMAL) {
+json NWNX_Schema_ValidateInstance(json jInstance, json jSchema, int nVerbosity = NWNX_SCHEMA_OUTPUT_VERBOSITY_NORMAL)
+{
     NWNXPushInt(nVerbosity);
     NWNXPushJson(jSchema);
     NWNXPushJson(jInstance);
@@ -90,7 +96,8 @@ json NWNX_Schema_ValidateInstance(json jInstance, json jSchema, int nVerbosity =
     return NWNXPopJson();
 }
 
-json NWNX_Schema_ValidateInstanceByID(json jInstance, string sSchemaId, int nVerbosity = NWNX_SCHEMA_OUTPUT_VERBOSITY_NORMAL) {
+json NWNX_Schema_ValidateInstanceByID(json jInstance, string sSchemaId, int nVerbosity = NWNX_SCHEMA_OUTPUT_VERBOSITY_NORMAL)
+{
     NWNXPushInt(nVerbosity);
     NWNXPushString(sSchemaId);
     NWNXPushJson(jInstance);
