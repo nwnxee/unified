@@ -56,36 +56,6 @@ int NWNX_Store_GetBlackMarket(object oStore);
 /// @param nValue TRUE/FALSE.
 void NWNX_Store_SetBlackMarket(object oStore, int nValue);
 
-/// @brief Return the gold amount
-/// @param oStore The store object.
-/// @return status, -1 on error
-int NWNX_Store_GetGold(object oStore);
-
-/// @brief Set the gold amount
-/// @param oStore The store object.
-/// @param nValue Amount
-void NWNX_Store_SetGold(object oStore, int nValue);
-
-/// @brief Return the identify cost
-/// @param oStore The store object.
-/// @return status, -1 on error
-int NWNX_Store_GetIdentifyCost(object oStore);
-
-/// @brief Set the identify cost
-/// @param oStore The store object.
-/// @param nValue Cost
-void NWNX_Store_SetIdentifyCost(object oStore, int nValue);
-
-/// @brief Return the MaxBuyPrice amount
-/// @param oStore The store object.
-/// @return status, -1 on error
-int NWNX_Store_GetMaxBuyPrice(object oStore);
-
-/// @brief Set the MaxBuyPrice amount
-/// @param oStore The store object.
-/// @param nValue Amount
-void NWNX_Store_SetMaxBuyPrice(object oStore, int nValue);
-
 /// @}
 
 int NWNX_Store_GetIsRestrictedBuyItem(object oStore, int nBaseItem)
@@ -157,46 +127,4 @@ void NWNX_Store_SetBlackMarket(object oStore, int nValue)
     NWNXPushInt(nValue);
     NWNXPushObject(oStore);
     NWNXCall(NWNX_Store, "SetBlackMarket");
-}
-
-int NWNX_Store_GetGold(object oStore)
-{
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "GetGold");
-    return NWNXPopInt();
-}
-
-void NWNX_Store_SetGold(object oStore, int nValue)
-{
-    NWNXPushInt(nValue);
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "SetGold");
-}
-
-int NWNX_Store_GetIdentifyCost(object oStore)
-{
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "GetIdentifyCost");
-    return NWNXPopInt();
-}
-
-void NWNX_Store_SetIdentifyCost(object oStore, int nValue)
-{
-    NWNXPushInt(nValue);
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "SetIdentifyCost");
-}
-
-int NWNX_Store_GetMaxBuyPrice(object oStore)
-{
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "GetMaxBuyPrice");
-    return NWNXPopInt();
-}
-
-void NWNX_Store_SetMaxBuyPrice(object oStore, int nValue)
-{
-    NWNXPushInt(nValue);
-    NWNXPushObject(oStore);
-    NWNXCall(NWNX_Store, "SetMaxBuyPrice");
 }
