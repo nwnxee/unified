@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Object: GetLocalizedDescription(), SetLocalizedDescription()
 - Util: RawPrint()
 - Events: PeekEventData()
+- Creature: {Get|Set}BaseACPolymorph()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
