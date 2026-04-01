@@ -173,15 +173,31 @@ void NWNX_Creature_SetSpecialAbility(object creature, int index, struct NWNX_Cre
 /// @return The class id.
 int NWNX_Creature_GetClassByLevel(object creature, int level);
 
-/// @brief Sets the base AC for the creature.
+/// @brief Sets the base AC of a creature.
 /// @param creature The creature object.
-/// @param ac The base AC to set for the creature.
+/// @param ac The base AC to set.
+/// @note While polymorphed, the engine uses a separate variable for AC calculation.
+/// Use NWNX_Creature_SetBaseACPolymorph() to get/set AC when the creature is polymorphed.
 void NWNX_Creature_SetBaseAC(object creature, int ac);
 
-/// @brief Get the base AC for the creature.
+/// @brief Gets the base AC of a creature.
 /// @param creature The creature object.
 /// @return The base AC.
+/// @note While polymorphed, the engine uses a separate variable for AC calculation.
+/// Use NWNX_Creature_GetBaseACPolymorph() to get/set AC when the creature is polymorphed.
 int NWNX_Creature_GetBaseAC(object creature);
+
+/// @brief Sets the AC of a polymorphed creature.
+/// @param creature The creature object.
+/// @param ac The AC to set.
+/// @note This value is only used by the engine when the creature is polymorphed.
+void NWNX_Creature_SetBaseACPolymorph(object creature, int ac);
+
+/// @brief Gets the AC of a polymorphed creature.
+/// @param creature The creature object.
+/// @return The polymorph AC.
+/// @note This value is only used by the engine when the creature is polymorphed.
+int NWNX_Creature_GetBaseACPolymorph(object creature);
 
 /// @brief Sets the ability score of the creature to the provided value.
 /// @note Does not apply racial bonuses/penalties.

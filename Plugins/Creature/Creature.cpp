@@ -391,6 +391,26 @@ NWNX_EXPORT ArgumentStack GetBaseAC(ArgumentStack&& args)
     return -1;
 }
 
+NWNX_EXPORT ArgumentStack SetBaseACPolymorph(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto ac = args.extract<int32_t>();
+        ASSERT_OR_THROW(ac >= -128);
+        ASSERT_OR_THROW(ac <= 127);
+        pCreature->m_pStats->m_nACPolymorph = static_cast<int8_t>(ac);
+    }
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetBaseACPolymorph(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+        return (int32_t)pCreature->m_pStats->m_nACPolymorph;
+
+        return -1;
+}
+
 NWNX_EXPORT ArgumentStack SetRawAbilityScore(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
