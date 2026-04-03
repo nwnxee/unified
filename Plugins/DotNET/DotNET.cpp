@@ -59,7 +59,11 @@ bool LoadHostFxr()
 {
     char buffer[PATH_MAX];
     size_t buffer_size = PATH_MAX;
-    ASSERT_OR_RETURN(get_hostfxr_path(buffer, &buffer_size, nullptr) == 0, false);
+
+    if (get_hostfxr_path(buffer, &buffer_size, nullptr) != 0)
+    {
+        return false;
+    }
 
     void *hostfxr = dlopen(buffer, RTLD_LAZY);
     ASSERT_OR_RETURN(hostfxr != nullptr, false);
