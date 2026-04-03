@@ -1,4 +1,5 @@
 // https://docs.microsoft.com/en-us/dotnet/core/tutorials/netcore-hosting
+// https://github.com/dotnet/samples/blob/main/core/hosting/src/NativeHost/nativehost.cpp
 #include "nwnx.hpp"
 #include "DotNET.hpp"
 
@@ -6,8 +7,10 @@
 #include <string>
 #include <vector>
 
-#include "sdk/coreclr_delegates.h"
-#include "sdk/hostfxr.h"
+#include "External/Microsoft.NETCore.App.Host.linux-x64/nethost.h"
+#include "External/Microsoft.NETCore.App.Host.linux-x64/coreclr_delegates.h"
+#include "External/Microsoft.NETCore.App.Host.linux-x64/hostfxr.h"
+
 #include <dirent.h>
 #include <dlfcn.h>
 
@@ -19,8 +22,7 @@ namespace DotNET {
 extern std::vector<void*> GetExports();
 extern AllHandlers s_handlers;
 
-static void* LoadNetHost();
-static bool LoadHostFxr(void* nethost);
+static bool LoadHostFxr();
 static void LoadNetCore(const std::string& assembly);
 static void CoreMessageHandler(const std::vector<std::string>& message);
 static void Bootstrap();
@@ -34,17 +36,10 @@ static void DotNET() __attribute__((constructor));
 
 static void DotNET()
 {
-    void* nethost = LoadNetHost();
-    if (!nethost)
-    {
-        LOG_ERROR("Unable to load libnethost.so. .NET plugin will be unavailable.");
-        LOG_ERROR("If you're not using the .NET plugin, you can disable this message with 'NWNX_DOTNET_SKIP=y'");
-        return;
-    }
-
-    if (!LoadHostFxr(nethost))
+    if (!LoadHostFxr())
     {
         LOG_ERROR("Unable to load hostfxr.so. .NET plugin will be unavailable.");
+        LOG_ERROR("If you're not using the .NET plugin, you can disable this message with 'NWNX_DOTNET_SKIP=y'");
         return;
     }
 
@@ -60,85 +55,11 @@ static void DotNET()
     MessageBus::Subscribe("NWNX_CORE_SIGNAL", CoreMessageHandler);
 }
 
-void* LoadNetHost()
+bool LoadHostFxr()
 {
-    void* nethost = nullptr;
-    if (auto nethost_path = Config::Get<std::string>("NETHOST_PATH"))
-    {
-        nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
-        ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", nethost_path->c_str());
-    }
-
-    if (!nethost)
-    {
-        const char *paths[] = {
-            "libnethost.so",
-            "./libnethost.so",
-            "lib/libnethost.so"
-        };
-        for (auto& path : paths)
-        {
-            nethost = dlopen(path, RTLD_LAZY);
-            if (nethost)
-            {
-                LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
-                break;
-            }
-        }
-    }
-
-    if (!nethost)
-    {
-        const auto hostBaseDir = "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/";
-        const auto hostLibSuffix = "/runtimes/linux-x64/native/libnethost.so";
-
-        auto dir = opendir(hostBaseDir);
-        if (dir != nullptr)
-        {
-            auto* directoryEntry = readdir(dir);
-            std::vector<std::string> paths;
-
-            while (directoryEntry != nullptr)
-            {
-                if (directoryEntry->d_type == DT_DIR)
-                {
-                    const auto path = (std::string(hostBaseDir) + directoryEntry->d_name + hostLibSuffix);
-                    paths.push_back(path);
-                }
-
-                directoryEntry = readdir(dir);
-            }
-
-            closedir(dir);
-
-            if (!paths.empty())
-            {
-                std::sort(paths.begin(), paths.end(), std::greater<std::string>());
-                for (const std::string& path : paths)
-                {
-                    nethost = dlopen(path.c_str(), RTLD_LAZY);
-                    if (nethost)
-                    {
-                        LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    return nethost;
-}
-
-bool LoadHostFxr(void* nethost)
-{
-    auto get_hostfxr_path = (int(*)(char*,size_t*,const void*))dlsym(nethost, "get_hostfxr_path");
-    ASSERT_OR_RETURN(get_hostfxr_path != nullptr, false);
-
     char buffer[PATH_MAX];
     size_t buffer_size = PATH_MAX;
     ASSERT_OR_RETURN(get_hostfxr_path(buffer, &buffer_size, nullptr) == 0, false);
-    dlclose(nethost);
 
     void *hostfxr = dlopen(buffer, RTLD_LAZY);
     ASSERT_OR_RETURN(hostfxr != nullptr, false);
