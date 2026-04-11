@@ -213,15 +213,16 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Build base image
+      - name: Build and push base image
         uses: docker/build-push-action@v4
         with:
           context: ./
           file: ./base.Dockerfile
-          push: false
-          load: true
+          push: true
           build-args: NWSERVER_IMAGE=ghcr.io/urothis/nwserver:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}.${{ steps.vars.outputs.nwn_build_postfix }}
-          tags: nwnxee-base:local
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/nwnxee-base:latest
+            ghcr.io/${{ github.repository_owner }}/nwnxee-base:${{ steps.vars.outputs.sha_short }}
 
       - name: Build and push
         id: docker_build
@@ -230,7 +231,7 @@ jobs:
           context: ./
           file: ./gha.Dockerfile
           push: true
-          build-args: NWNXEE_BASE_IMAGE=nwnxee-base:local
+          build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base:${{ steps.vars.outputs.sha_short }}
           labels: |
               org.opencontainers.image.title=NWNX:EE
               org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
