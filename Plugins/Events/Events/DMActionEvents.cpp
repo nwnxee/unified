@@ -60,6 +60,7 @@ int32_t HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMin
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -106,6 +107,7 @@ int32_t HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMi
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -132,6 +134,7 @@ int32_t HandleSingleTargetEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -193,6 +196,7 @@ int32_t HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t 
     }
     else
     {
+        Utils::ClearReadMessage();
         retVal = false;
     }
 
@@ -214,6 +218,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
         }
         else
         {
+            Utils::ClearReadMessage();
             retVal  = false;
         }
         SignalEvent(event + "_AFTER", oidDM);
@@ -290,6 +295,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -313,6 +319,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -338,6 +345,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -363,6 +371,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -520,6 +529,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -545,6 +555,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -594,6 +605,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -623,6 +635,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -670,6 +683,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -718,6 +732,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 
@@ -770,6 +785,7 @@ int32_t HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t n
             }
             else
             {
+                Utils::ClearReadMessage();
                 retVal = false;
             }
 

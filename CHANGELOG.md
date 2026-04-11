@@ -10,32 +10,42 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ### Added
 - Tweaks: added `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` to make Resist Energy feats stack with Epic Energy Resistance.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` to allow special abilities to be used on target types other than creatures.
+- Events: Added events `NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}` which fire when an ability of a player changes.
+- Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
+- Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
+- Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
+- Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
+- Store: GetBlackMarket(), SetBlackMarket()
 
 ### Changed
-- N/A
+- Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
+- Events: Added ID to the NWNX_ON_ITEMPROPERTY_EFFECT_* events data.
+- Utils: Change LOG_INFO to LOG_DEBUG for console commands.
 
 ### Deprecated
 - N/A
 
 ### Removed
-- N/A
+- Removed NWNX_Lua and NWNX_SpellChecker due to presumably being unused and bitrotten.
 
 ### Fixed
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.
 - MaxLevel: Fixed returning an invalid number of known spells in some cases.
+- Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
+- Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
 
 **Notice: NWNX API Update**
 
-The NWNX API has been updated, resulting in the removal of nwnx.nss. All nwnx_*.nss files have been modified to use the new API functions. 
+The NWNX API has been updated, resulting in the removal of nwnx.nss. All nwnx_*.nss files have been modified to use the new API functions.
 
 What You Need to Do:
 

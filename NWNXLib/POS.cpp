@@ -163,7 +163,7 @@ public:
     {
         if (m_IntMap)     m_IntMap->clear();
         if (m_FloatMap)   m_FloatMap->clear();
-        if (m_StringMap)  m_IntMap->clear();
+        if (m_StringMap)  m_StringMap->clear();
         if (m_PointerMap) m_PointerMap->clear();
 
     #define SSCANF_OR_ABORT(s, fmt, val) \

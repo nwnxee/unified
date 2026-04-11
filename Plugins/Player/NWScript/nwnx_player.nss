@@ -77,7 +77,7 @@ const int NWNX_PLAYER_PLATFORM_SONY_PS4          = 70;
 /// @}
 
 /// @brief Force display placeable examine window for player
-/// @note If used on a placeable in a different area than the player, the portait will not be shown.
+/// @note If used on a placeable in a different area than the player, the portrait will not be shown.
 /// @param player The player object.
 /// @param placeable The placeable object.
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable);

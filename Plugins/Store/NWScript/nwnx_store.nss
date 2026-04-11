@@ -46,6 +46,16 @@ void NWNX_Store_SetMarkUp(object oStore, int nValue);
 /// @return count, or -1 on error
 int NWNX_Store_GetCurrentCustomersCount(object oStore);
 
+/// @brief Return the black market status
+/// @param oStore The store object.
+/// @return status, -1 on error
+int NWNX_Store_GetBlackMarket(object oStore);
+
+/// @brief Set the black market status
+/// @param oStore The store object.
+/// @param nValue TRUE/FALSE.
+void NWNX_Store_SetBlackMarket(object oStore, int nValue);
+
 /// @}
 
 int NWNX_Store_GetIsRestrictedBuyItem(object oStore, int nBaseItem)
@@ -103,4 +113,18 @@ int NWNX_Store_GetCurrentCustomersCount(object oStore)
     NWNXPushObject(oStore);
     NWNXCall(NWNX_Store, "GetCurrentCustomersCount");
     return NWNXPopInt();
+}
+
+int NWNX_Store_GetBlackMarket(object oStore)
+{
+    NWNXPushObject(oStore);
+    NWNXCall(NWNX_Store, "GetBlackMarket");
+    return NWNXPopInt();
+}
+
+void NWNX_Store_SetBlackMarket(object oStore, int nValue)
+{
+    NWNXPushInt(nValue);
+    NWNXPushObject(oStore);
+    NWNXCall(NWNX_Store, "SetBlackMarket");
 }

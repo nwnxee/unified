@@ -60,7 +60,7 @@ const int NWNX_FEEDBACK_SKILL_HEAL_TARGET_NOT_DISPSND      = 55;
 const int NWNX_FEEDBACK_SKILL_HEAL_VALID_TARGETS           = 56;
 const int NWNX_FEEDBACK_SKILL_STEALTH_IN_COMBAT            = 60;
 
-/// Miscellaneous Targetting Messages
+/// Miscellaneous Targeting Messages
 const int NWNX_FEEDBACK_TARGET_UNAWARE                     = 6;
 const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_STATUS         = 7;
 const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_PVP            = 187;

@@ -572,4 +572,14 @@ void UpdateClientObject(ObjectID oidObject)
     }
 }
 
+void ClearReadMessage()
+{
+    if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+    {
+        pMessage->m_nReadBufferPtr = pMessage->m_nReadBufferSize;
+        pMessage->m_nReadFragmentsBufferPtr = pMessage->m_nReadFragmentsBufferSize;
+        pMessage->m_nCurReadBit = pMessage->m_nLastByteBits;
+    }
+}
+
 }

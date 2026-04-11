@@ -34,6 +34,7 @@ void PostgreSQL::Connect()
     const std::string host = "host=" + Config::Get<std::string>("HOST", "localhost");
     const std::string user = "user=" + *Config::Get<std::string>("USERNAME");
     const std::string pass = "password=" + *Config::Get<std::string>("PASSWORD");
+    const std::string sslmode = "sslmode=" + Config::Get<std::string>("SSL_MODE", "disable");
 
     // Database technically is optional.  If not given, it will connect to the default
     // database of the given USERNAME.
@@ -47,7 +48,7 @@ void PostgreSQL::Connect()
     const std::string port = "port=" + Config::Get<std::string>("PORT", "5432");
 
     // Build the m_connection string - this is used later in the PQping (PQping doesn't need the password).
-    m_connectString = host + " " + port + " " + db + " " + user ;
+    m_connectString = host + " " + port + " " + db + " " + user + " " + sslmode;
 
     // hide the password in the log file
     LOG_INFO("Connect String:  %s password=xxxxxxxx", m_connectString);

@@ -174,7 +174,7 @@ _______________________________________
     SLOT                  | int    | |
 
     @note This event does not run on login as the base game OnPlayerEquipItem event does. (Because this event hooks CNWSCreature::RunEquip which calls CNWSCreature::EquipItem. When the player character is first loaded, EquipItem is called directly.)
-    @note If the goal is to prevent items from being equiped under certain conditions, and since this event does not run on login, it could be helpful to additionally use NWNX_Creature_RunUnequip() in the OnClientEnter (or similar) event.
+    @note If the goal is to prevent items from being equipped under certain conditions, and since this event does not run on login, it could be helpful to additionally use NWNX_Creature_RunUnequip() in the OnClientEnter (or similar) event.
 
 _______________________________________
     ## Item Unequip Events
@@ -278,6 +278,20 @@ _______________________________________
     TARGET_POSITION_Y     | float  | |
     TARGET_POSITION_Z     | float  | |
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
+
+_______________________________________
+    ## Feat Decrement Remaining Uses Events
+    - NWNX_ON_DECREMENT_REMAINING_FEAT_USES_BEFORE
+    - NWNX_ON_DECREMENT_REMAINING_FEAT_USES_AFTER
+
+    `OBJECT_SELF` = The object owning the feat
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    FEAT_ID               | int    | |
+    REMAINING_USES        | int    | Decremented by 1 in the _AFTER event if the _BEFORE event wasn't skipped |
+
+    @note Skipping the _BEFORE event will prevent the feat uses being decremented
 
 _______________________________________
     ## Has Feat Events
@@ -1765,6 +1779,7 @@ _______________________________________
     LOADING_GAME          | int    | TRUE if the itemproperty is being applied when loading into the game and not due to equipping the item. |
     INVENTORY_SLOT        | int    | The INVENTORY_SLOT_* the item is (un)equipped to/from. |
     PROPERTY              | int    | The ITEM_PROPERTY_* type. |
+    ID                    | int    | The ID of the item property. |
     SUBTYPE               | int    | The subtype of the itemproperty. |
     TAG                   | string | The optional tag set by TagItemProperty() |
     COST_TABLE            | int    | The index into iprp_costtable.2da |
@@ -1785,6 +1800,22 @@ _______________________________________
           \code{.c}
           NWNX_Events_AddIDToWhitelist("NWNX_ON_ITEMPROPERTY_EFFECT", ITEM_PROPERTY_*);
           \endcode
+    _______________________________________
+    ## Ability Change Events
+    - NWNX_ON_ABILITY_CHANGE_BEFORE
+    - NWNX_ON_ABILITY_CHANGE_AFTER
+
+    `OBJECT_SELF` = The player object
+
+    Event Data Tag        | Type | Notes
+    ----------------------|------|-------
+    ABILITY               | int  | The ABILITY_* constant                             |
+    VALUE                 | int  | The new ability value                              |
+    MOD                   | int  | The new ability modifier (only available in AFTER) |
+
+    @note The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use `GetIsObjectValid(GetArea(OBJECT_SELF))`.
+
+    @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
 */
 
 /// @name Events Event Constants
@@ -1840,6 +1871,8 @@ const string NWNX_ON_ITEM_ACQUIRE_BEFORE = "NWNX_ON_ITEM_ACQUIRE_BEFORE";
 const string NWNX_ON_ITEM_ACQUIRE_AFTER = "NWNX_ON_ITEM_ACQUIRE_AFTER";
 const string NWNX_ON_USE_FEAT_BEFORE = "NWNX_ON_USE_FEAT_BEFORE";
 const string NWNX_ON_USE_FEAT_AFTER = "NWNX_ON_USE_FEAT_AFTER";
+const string NWNX_ON_DECREMENT_REMAINING_FEAT_USES_BEFORE = "NWNX_ON_DECREMENT_REMAINING_FEAT_USES_BEFORE";
+const string NWNX_ON_DECREMENT_REMAINING_FEAT_USES_AFTER = "NWNX_ON_DECREMENT_REMAINING_FEAT_USES_AFTER";
 const string NWNX_ON_HAS_FEAT_BEFORE = "NWNX_ON_HAS_FEAT_BEFORE";
 const string NWNX_ON_HAS_FEAT_AFTER = "NWNX_ON_HAS_FEAT_AFTER";
 const string NWNX_ON_DM_GIVE_GOLD_BEFORE = "NWNX_ON_DM_GIVE_GOLD_BEFORE";
@@ -2293,6 +2326,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - CharacterSheetPermitted event
 /// - Input Drop Item
 /// - Decrement Spell Count event
+/// - Decrement Remaining Feat Uses event
 /// - Play Visual Effect event
 /// - EventScript event
 /// - Broadcast Safe Projectile event

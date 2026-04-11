@@ -32,14 +32,19 @@ typedef int BOOL;
 
 // Removes any functions that cannot possibly be called by any codepath
 #define CSCRIPTCOMPILER_OPTIMIZE_DEAD_FUNCTIONS                       0x00000001
-// Merges constant expressions into a single constant where possible.
-// Note: Only affects runtime expressions, assignments to const variables are always folded.
-#define CSCRIPTCOMPILER_OPTIMIZE_FOLD_CONSTANTS                       0x00000002
 // Post processes generated instructions to merge sequences into shorter equivalents
-#define CSCRIPTCOMPILER_OPTIMIZE_MELD_INSTRUCTIONS                    0x00000004
+#define CSCRIPTCOMPILER_OPTIMIZE_MELD_INSTRUCTIONS                    0x00000002
+// Removes the jump and the dead branches in if (CONST) constructs
+#define CSCRIPTCOMPILER_OPTIMIZE_DEAD_BRANCHES                        0x00000004
 
+// Optimization groups - roughly corresponding to -O0, -O1, -O2, -O3. Each group includes the previous one.
+// Safe - Known good, used by the game and toolset
+// Aggressive - Probably good, used by the external compiler
+// Experimental - Untested or known to break something
 #define CSCRIPTCOMPILER_OPTIMIZE_NOTHING                              0x00000000
-#define CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING                           0xFFFFFFFF
+#define CSCRIPTCOMPILER_OPTIMIZE_SAFE                                 (CSCRIPTCOMPILER_OPTIMIZE_DEAD_FUNCTIONS)
+#define CSCRIPTCOMPILER_OPTIMIZE_AGGRESSIVE                           (CSCRIPTCOMPILER_OPTIMIZE_SAFE | CSCRIPTCOMPILER_OPTIMIZE_DEAD_BRANCHES)
+#define CSCRIPTCOMPILER_OPTIMIZE_EXPERIMENTAL                         (CSCRIPTCOMPILER_OPTIMIZE_AGGRESSIVE | CSCRIPTCOMPILER_OPTIMIZE_MELD_INSTRUCTIONS)
 
 struct CScriptCompilerAPI
 {
@@ -297,7 +302,7 @@ struct CScriptCompiler
     int32_t GetStructureSize(const CExoString & sStructureName);
     int32_t GetIdentifierByName(const CExoString & sIdentifierName);
     int32_t AddToGlobalVariableList(CScriptParseTreeNode * pGlobalVariableNode);
-    BOOL ConstantFoldNode(CScriptParseTreeNode *pNode, BOOL bForce = false);
+    BOOL ConstantFoldNode(CScriptParseTreeNode *pNode);
     CScriptParseTreeNode *TrimParseTree(CScriptParseTreeNode *pNode);
     void InitializeSwitchLabelList();
     int32_t TraverseTreeForSwitchLabels(CScriptParseTreeNode * pNode);
