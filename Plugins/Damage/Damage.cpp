@@ -33,7 +33,7 @@ struct AttackData
     uint8_t nAttackResult;
     uint8_t nWeaponAttackType;
     uint8_t nSneakAttack;
-    uint8_t bRanged;
+    uint8_t bRangedAttack;
     int32_t bKillingBlow;
     uint16_t nAttackType;
     uint8_t nToHitRoll;
@@ -98,6 +98,7 @@ static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, const std::
     s_AttackData.nAttackResult = pCombatAttackData->m_nAttackResult;
     s_AttackData.nWeaponAttackType = pCombatAttackData->m_nWeaponAttackType;
     s_AttackData.nSneakAttack = pCombatAttackData->m_bSneakAttack + (pCombatAttackData->m_bDeathAttack << 1);
+    s_AttackData.bRangedAttack = pCombatAttackData->m_bRangedAttack;
     s_AttackData.bKillingBlow = pCombatAttackData->m_bKillingBlow;
     s_AttackData.nAttackType = pCombatAttackData->m_nAttackType;
     s_AttackData.nToHitRoll = pCombatAttackData->m_nToHitRoll;
@@ -184,6 +185,7 @@ NWNX_EXPORT ArgumentStack GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
+    ScriptAPI::InsertArgument(stack, s_AttackData.bRangedAttack);
     ScriptAPI::InsertArgument(stack, s_AttackData.nToHitModifier);
     ScriptAPI::InsertArgument(stack, s_AttackData.nToHitRoll);
     ScriptAPI::InsertArgument(stack, s_AttackData.nAttackType);

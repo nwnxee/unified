@@ -339,7 +339,7 @@ NWNX_EXPORT ArgumentStack AddScript(ArgumentStack&& args)
     {
         s_scriptCompiler = std::make_unique<CScriptCompiler>(Constants::ResRefType::NSS, Constants::ResRefType::NCS, Constants::ResRefType::NDB);
         s_scriptCompiler->SetGenerateDebuggerOutput(0);
-        s_scriptCompiler->SetOptimizationFlags(CSCRIPTCOMPILER_OPTIMIZE_EVERYTHING);
+        s_scriptCompiler->SetOptimizationFlags(CSCRIPTCOMPILER_OPTIMIZE_AGGRESSIVE);
         s_scriptCompiler->SetCompileConditionalOrMain(true);
         s_scriptCompiler->SetIdentifierSpecification("nwscript");
     }
@@ -464,7 +464,7 @@ NWNX_EXPORT ArgumentStack RegisterServerConsoleCommand(ArgumentStack&& args)
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+        LOG_DEBUG("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
 
         std::string scriptChunk = s_serverConsoleCommandMap[command];
         bool wrapIntoMain = scriptChunk.find("void main()") == std::string::npos;
@@ -684,7 +684,7 @@ NWNX_EXPORT ArgumentStack SetDawnHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDawnHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDawnHour;
 }
@@ -700,7 +700,7 @@ NWNX_EXPORT ArgumentStack SetDuskHour(ArgumentStack &&args)
     return {};
 }
 
-NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack &&args)
+NWNX_EXPORT ArgumentStack GetDuskHour(ArgumentStack&&)
 {
     return Utils::GetModule()->m_nDuskHour;
 }

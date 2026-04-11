@@ -65,8 +65,10 @@ int32_t HandlePlayerToServerBarter_StartBarterHook(CNWSMessage* pMessage, CNWSPl
         retVal = s_HandlePlayerToServerBarter_StartBarterHook->CallOriginal<int32_t>(pMessage, pPlayer);
     }
     else
+    {
+        Utils::ClearReadMessage();
         retVal = false;
-
+    }
     PushAndSignal("NWNX_ON_BARTER_START_AFTER");
 
     return retVal;

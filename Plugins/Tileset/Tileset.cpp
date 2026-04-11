@@ -83,101 +83,108 @@ static std::unordered_map<std::string, std::string> s_AreaTileOverrideMap;
 static std::unordered_map<std::string, TileOverride> s_TileOverrideMap;
 static bool s_CreatingArea = false;
 static std::string s_OriginalSourceAreaResRef;
+static bool s_TileOverrideHooksInitialized = false;
 
-static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
-        &CNWSVirtualMachineCommands::ExecuteCommandAreaManagement,
-        +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
+static void InitTileOverrideHooks()
+{
+    if (s_TileOverrideHooksInitialized)
+        return;
+    s_TileOverrideHooksInitialized = true;
+
+    static Hooks::Hook s_ExecuteCommandAreaManagementHook = Hooks::HookFunction(
+    &CNWSVirtualMachineCommands::ExecuteCommandAreaManagement,
+    +[](CNWSVirtualMachineCommands *pThis, int32_t nCommandId, int32_t nParameters) -> int32_t
+    {
+        if (nCommandId == Constants::VMCommand::CreateArea)
         {
-            if (nCommandId == Constants::VMCommand::CreateArea)
+            s_CreatingArea = true;
+            auto retVal = s_ExecuteCommandAreaManagementHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
+            s_CreatingArea = false;
+            return retVal;
+        }
+        else
+            return s_ExecuteCommandAreaManagementHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
+    }, Hooks::Order::Earliest);
+
+    static Hooks::Hook s_ResManGet = Hooks::HookFunction(
+    &CExoResMan::Get,
+    +[](CExoResMan *pThis, CResRef* cResRef, RESTYPE nType) -> DataBlockRef
+    {
+        if (s_CreatingArea && nType == Constants::ResRefType::ARE)
+            s_OriginalSourceAreaResRef = cResRef->GetResRefStr();
+        return s_ResManGet->CallOriginal<DataBlockRef>(pThis, cResRef, nType);
+    }, Hooks::Order::Earliest);
+
+    static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
+    &CNWSArea::LoadTileSetInfo,
+    +[](CNWSArea *pArea, CResStruct *pStruct) -> int32_t
+    {
+        if (s_CreatingArea)
+        {
+            LOG_DEBUG("Original ResRef: %s, New ResRef: %s", s_OriginalSourceAreaResRef, pArea->m_cResRef.GetResRefStr());
+
+            auto areaTileOverride = s_AreaTileOverrideMap.find(s_OriginalSourceAreaResRef);
+
+            if (areaTileOverride != s_AreaTileOverrideMap.end())
             {
-                s_CreatingArea = true;
-                auto retVal = s_ExecuteCommandAreaManagementHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
-                s_CreatingArea = false;
-                return retVal;
-            }
-            else
-                return s_ExecuteCommandAreaManagementHook->CallOriginal<int32_t>(pThis, nCommandId, nParameters);
-        }, Hooks::Order::Earliest);
+                auto tileOverride = s_TileOverrideMap.find(areaTileOverride->second);
 
-static Hooks::Hook s_ResManGet = Hooks::HookFunction(
-        &CExoResMan::Get,
-        +[](CExoResMan *pThis, CResRef* cResRef, RESTYPE nType) -> DataBlockRef
-        {
-            if (s_CreatingArea && nType == Constants::ResRefType::ARE)
-                s_OriginalSourceAreaResRef = cResRef->GetResRefStr();
-            return s_ResManGet->CallOriginal<DataBlockRef>(pThis, cResRef, nType);
-        }, Hooks::Order::Earliest);
-
-static Hooks::Hook s_LoadTileSetInfoHook = Hooks::HookFunction(
-        &CNWSArea::LoadTileSetInfo,
-        +[](CNWSArea *pArea, CResStruct *pStruct) -> int32_t
-        {
-            if (s_CreatingArea)
-            {
-                LOG_DEBUG("Original ResRef: %s, New ResRef: %s", s_OriginalSourceAreaResRef, pArea->m_cResRef.GetResRefStr());
-
-                auto areaTileOverride = s_AreaTileOverrideMap.find(s_OriginalSourceAreaResRef);
-
-                if (areaTileOverride != s_AreaTileOverrideMap.end())
+                if (tileOverride != s_TileOverrideMap.end())
                 {
-                    auto tileOverride = s_TileOverrideMap.find(areaTileOverride->second);
-
-                    if (tileOverride != s_TileOverrideMap.end())
+                    if (!tileOverride->second.height || !tileOverride->second.width || tileOverride->second.tileset.empty())
                     {
-                        if (!tileOverride->second.height || !tileOverride->second.width || tileOverride->second.tileset.empty())
-                        {
-                            LOG_WARNING("Invalid Tile Override Data: height or width are 0 or tileset is empty in override '%s'. Loading original tiles for area: '%s' (%s)",
-                                        areaTileOverride->second, pArea->m_cResRef.GetResRefStr(), s_OriginalSourceAreaResRef);
-                            return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
-                        }
-
-                        pArea->m_nHeight = tileOverride->second.height;
-                        pArea->m_nWidth = tileOverride->second.width;
-                        pArea->m_refTileSet = tileOverride->second.tileset;
-                        pArea->m_pTileSet = Globals::AppManager()->m_pNWTileSetManager->GetTileSet(CResRef(tileOverride->second.tileset));
-
-                        if (!pArea->m_pTileSet)
-                        {
-                            LOG_WARNING("Invalid Tile Override Data: could not load tileset '%s' in override '%s'. Loading original tiles for area: '%s' (%s)",
-                                        tileOverride->second.tileset, areaTileOverride->second, pArea->m_cResRef.GetResRefStr(), s_OriginalSourceAreaResRef);
-                            return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
-                        }
-
-                        int32_t numTiles = pArea->m_nHeight * pArea->m_nWidth;
-                        pArea->m_pTile = new CNWSTile[numTiles];
-
-                        for (int i = 0; i < numTiles; i++)
-                        {
-                            auto *pTile = &pArea->m_pTile[i];
-                            auto tileData = tileOverride->second.tileData[i];
-
-                            pTile->m_nID = tileData.id;
-                            pTile->m_pTileData = pArea->m_pTileSet->GetTileData(tileData.id);
-
-                            pTile->SetPosition(i % pArea->m_nWidth,
-                                               i / pArea->m_nWidth,
-                                               tileData.height,
-                                               pArea->m_pTileSet->GetHeightTransition());
-
-                            pTile->SetOrientation(tileData.orientation);
-
-                            pTile->SetMainLightColor(tileData.mainLightColor1, tileData.mainLightColor2);
-                            pTile->SetSourceLightColor(tileData.sourceLightColor1, tileData.sourceLightColor2);
-                            pTile->SetReplaceTexture(0);
-                            pTile->SetAnimLoop(tileData.animLoop1, tileData.animLoop2, tileData.animLoop3);
-
-                            pTile->m_bMainLightColorChange = false;
-                            pTile->m_bSourceLightColorChange = false;
-                        }
-
-                        return true;
+                        LOG_WARNING("Invalid Tile Override Data: height or width are 0 or tileset is empty in override '%s'. Loading original tiles for area: '%s' (%s)",
+                                    areaTileOverride->second, pArea->m_cResRef.GetResRefStr(), s_OriginalSourceAreaResRef);
+                        return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
                     }
+
+                    pArea->m_nHeight = tileOverride->second.height;
+                    pArea->m_nWidth = tileOverride->second.width;
+                    pArea->m_refTileSet = tileOverride->second.tileset;
+                    pArea->m_pTileSet = Globals::AppManager()->m_pNWTileSetManager->GetTileSet(CResRef(tileOverride->second.tileset));
+
+                    if (!pArea->m_pTileSet)
+                    {
+                        LOG_WARNING("Invalid Tile Override Data: could not load tileset '%s' in override '%s'. Loading original tiles for area: '%s' (%s)",
+                                    tileOverride->second.tileset, areaTileOverride->second, pArea->m_cResRef.GetResRefStr(), s_OriginalSourceAreaResRef);
+                        return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
+                    }
+
+                    int32_t numTiles = pArea->m_nHeight * pArea->m_nWidth;
+                    pArea->m_pTile = new CNWSTile[numTiles];
+
+                    for (int i = 0; i < numTiles; i++)
+                    {
+                        auto *pTile = &pArea->m_pTile[i];
+                        auto tileData = tileOverride->second.tileData[i];
+
+                        pTile->m_nID = tileData.id;
+                        pTile->m_pTileData = pArea->m_pTileSet->GetTileData(tileData.id);
+
+                        pTile->SetPosition(i % pArea->m_nWidth,
+                                           i / pArea->m_nWidth,
+                                           tileData.height,
+                                           pArea->m_pTileSet->GetHeightTransition());
+
+                        pTile->SetOrientation(tileData.orientation);
+
+                        pTile->SetMainLightColor(tileData.mainLightColor1, tileData.mainLightColor2);
+                        pTile->SetSourceLightColor(tileData.sourceLightColor1, tileData.sourceLightColor2);
+                        pTile->SetReplaceTexture(0);
+                        pTile->SetAnimLoop(tileData.animLoop1, tileData.animLoop2, tileData.animLoop3);
+
+                        pTile->m_bMainLightColorChange = false;
+                        pTile->m_bSourceLightColorChange = false;
+                    }
+
+                    return true;
                 }
             }
+        }
 
-            return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
-        }, Hooks::Order::Late);
-
+        return s_LoadTileSetInfoHook->CallOriginal<int32_t>(pArea, pStruct);
+    }, Hooks::Order::Late);
+}
 static CachedTileset* GetCachedTileset(const std::string& tileset)
 {
     auto cachedTilesetIterator = s_CachedTilesets.find(tileset);
@@ -514,6 +521,8 @@ NWNX_EXPORT ArgumentStack GetTileDoorData(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetAreaTileOverride(ArgumentStack&& args)
 {
+    InitTileOverrideHooks();
+
     const auto areaResref = args.extract<std::string>();
       ASSERT_OR_THROW(!areaResref.empty());
       ASSERT_OR_THROW(areaResref.size() <= 16);
@@ -529,6 +538,8 @@ NWNX_EXPORT ArgumentStack SetAreaTileOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack CreateTileOverride(ArgumentStack&& args)
 {
+    InitTileOverrideHooks();
+
     const auto overrideName = args.extract<std::string>();
       ASSERT_OR_THROW(!overrideName.empty());
     const auto tileset = args.extract<std::string>();
@@ -559,6 +570,8 @@ NWNX_EXPORT ArgumentStack DeleteTileOverride(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetOverrideTileData(ArgumentStack&& args)
 {
+    InitTileOverrideHooks();
+
     const auto overrideName = args.extract<std::string>();
       ASSERT_OR_THROW(!overrideName.empty());
     const auto tile = args.extract<int32_t>();
@@ -609,6 +622,8 @@ NWNX_EXPORT ArgumentStack SetOverrideTileData(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack DeleteOverrideTileData(ArgumentStack&& args)
 {
+    InitTileOverrideHooks();
+
     const auto overrideName = args.extract<std::string>();
       ASSERT_OR_THROW(!overrideName.empty());
     const auto tile = args.extract<int32_t>();

@@ -1935,6 +1935,8 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierModifier(ArgumentStack&& args)
             pCreature->nwnxSet(varname, modifier, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -1985,6 +1987,8 @@ NWNX_EXPORT ArgumentStack SetCriticalMultiplierOverride(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Override, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -2111,6 +2115,8 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeModifier(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Modifier, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -2161,6 +2167,8 @@ NWNX_EXPORT ArgumentStack SetCriticalRangeOverride(ArgumentStack&& args)
             pCreature->nwnxSet(varname, Override, persist);
         else
             pCreature->nwnxRemove(varname);
+
+        pCreature->m_pStats->UpdateCombatInformation();
     }
     return {};
 }
@@ -3626,6 +3634,35 @@ NWNX_EXPORT ArgumentStack SetMulticlassLimit(ArgumentStack&& args)
         {
             pCreature->nwnxSet("MULTICLASS_LIMIT", limit, persist);
         }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetNumberOfBonusSpells(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto nMultiClass = args.extract<int32_t>();
+        const auto nSpellLevel = args.extract<int32_t>();
+
+        return static_cast<int32_t>(pCreature->m_pStats->GetNumberOfBonusSpells(nMultiClass, nSpellLevel));
+    }
+
+    return 0;
+}
+
+NWNX_EXPORT ArgumentStack ModifyNumberBonusSpells(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const auto nMultiClass = args.extract<int32_t>();
+          ASSERT_OR_THROW(nMultiClass >= 0 && nMultiClass < pCreature->m_pStats->m_nNumMultiClasses);
+        const auto nSpellLevel = args.extract<int32_t>();
+            ASSERT_OR_THROW(nSpellLevel >= 0 && nSpellLevel <= 9);
+        const auto nDelta = args.extract<int32_t>();
+
+        pCreature->m_pStats->ModifyNumberBonusSpells(nMultiClass, nSpellLevel, nDelta);
     }
 
     return {};

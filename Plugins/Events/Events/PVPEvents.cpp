@@ -48,6 +48,7 @@ int32_t HandlePlayerToServerPVPListOperationsHook(CNWSMessage *thisPtr, CNWSPlay
         }
         else
         {
+            Utils::ClearReadMessage();
             // Need to reflip the Attitude switch back on the client that initiated the change when we skip the event
             auto targetPlayerId = Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target);
             thisPtr->SendServerToPlayerPVP_Attitude_Change(targetPlayerId, pPlayer->m_nPlayerID, attitude == 0);

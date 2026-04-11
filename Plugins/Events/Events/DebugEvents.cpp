@@ -47,7 +47,10 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
             if (PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_BEFORE"))
                 retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             else
+            {
+                Utils::ClearReadMessage();
                 retVal = false;
+            }
 
             PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_AFTER");
 
@@ -77,7 +80,10 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
             if (PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_BEFORE"))
                 retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             else
+            {
+                Utils::ClearReadMessage();
                 retVal = false;
+            }
 
             PushAndSignalEvent("NWNX_ON_DEBUG_RUN_SCRIPT_CHUNK_AFTER");
 
@@ -106,8 +112,10 @@ int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *p
             if (PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_BEFORE"))
                 retVal = s_HandlePlayerToServerCheatMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             else
+            {
+                Utils::ClearReadMessage();
                 retVal = false;
-
+            }
             PushAndSignalEvent("NWNX_ON_DEBUG_PLAY_VISUAL_EFFECT_AFTER");
 
             break;

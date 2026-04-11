@@ -40,6 +40,15 @@ static auto s_idPush = MessageBus::Subscribe("NWNX_EVENT_PUSH_EVENT_DATA",
         PushEventData(message[0], message[1]);
     });
 
+static auto s_idInitOnFirstSubscribe = MessageBus::Subscribe("NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE",
+    [](const std::vector<std::string> &message)
+    {
+        ASSERT(message.size() == 1);
+        InitOnFirstSubscribe(message[0], [message]() {
+            MessageBus::Broadcast("NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK",  { message[0] });
+        });
+    });
+
 static std::string GetEventData(const std::string& tag);
 static void CreateNewEventDataIfNeeded();
 static void RunEventInit(const std::string& eventName);

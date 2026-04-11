@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(libfunchook_test LANGUAGES C CXX ASM)
 
 set(FUNCHOOK_CPU ${CMAKE_SYSTEM_PROCESSOR})

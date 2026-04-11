@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.10)
 project(NWNX-Unified)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -27,7 +27,7 @@ find_package(Sanitizers)
 execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
 set(TARGET_NWN_BUILD_REVISION 37)
-set(TARGET_NWN_BUILD_POSTFIX 15)
+set(TARGET_NWN_BUILD_POSTFIX 17)
 set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
 
