@@ -18,6 +18,7 @@ public:
 
 private:
     static void RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag);
+    static bool HasEffectByTag(CNWSCreature *pCreature, const char* tag);
     static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
     static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
     static void SetPositionHook(CNWSObject*, Vector, int32_t);
