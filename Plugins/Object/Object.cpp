@@ -1263,7 +1263,7 @@ NWNX_EXPORT ArgumentStack GetLocalizedName(ArgumentStack&& args)
 
         return myString;
     }
-    return {};
+    return "";
 }
 
 NWNX_EXPORT ArgumentStack SetLocalizedName(ArgumentStack&& args)
@@ -1289,6 +1289,59 @@ NWNX_EXPORT ArgumentStack SetLocalizedName(ArgumentStack&& args)
         {
             pObject->GetFirstName().RemoveString(nLanguage, nGender);
             pObject->GetFirstName().AddString(nLanguage, myString, nGender);
+        }
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack GetLocalizedDescription(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        const auto nLanguage = args.extract<int32_t>();
+        const auto nGender   = args.extract<int32_t>();
+        const auto nIdentified = args.extract<int32_t>();
+
+        CExoString myString;
+
+        if (auto *pDoor = Utils::AsNWSDoor(pGameObject))
+            pDoor->GetDescription().GetString(nLanguage, &myString, nGender);
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pGameObject))
+            pPlaceable->GetDescription().GetString(nLanguage, &myString, nGender);
+        else if (auto *pItem = Utils::AsNWSItem(pGameObject))
+            pItem->GetDescription(nIdentified).GetString(nLanguage, &myString, nGender);
+
+        return myString;
+    }
+    return "";
+}
+
+NWNX_EXPORT ArgumentStack SetLocalizedDescription(ArgumentStack&& args)
+{
+    if (auto *pGameObject = Utils::PopGameObject(args))
+    {
+        const auto sValue    = args.extract<std::string>();
+        const auto nLanguage = args.extract<int32_t>();
+        const auto nGender   = args.extract<int32_t>();
+        const auto nIdentified = args.extract<int32_t>();
+
+        CExoString myString(sValue);
+
+        if (auto *pDoor = Utils::AsNWSDoor(pGameObject))
+        {
+            pDoor->GetDescription().RemoveString(nLanguage, nGender);
+            pDoor->GetDescription().AddString(nLanguage, myString, nGender);
+        }
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pGameObject))
+        {
+            pPlaceable->GetDescription().RemoveString(nLanguage, nGender);
+            pPlaceable->GetDescription().AddString(nLanguage, myString, nGender);
+        }
+        else if (auto *pItem = Utils::AsNWSItem(pGameObject))
+        {
+            pItem->GetDescription(nIdentified).RemoveString(nLanguage, nGender);
+            pItem->GetDescription(nIdentified).AddString(nLanguage, myString, nGender);
         }
     }
 

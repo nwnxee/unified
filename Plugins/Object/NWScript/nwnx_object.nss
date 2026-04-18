@@ -432,6 +432,21 @@ string NWNX_Object_GetLocalizedName(object oObject, int nLanguage, int nGender =
 /// @param nGender   Gender to use, 0 or 1.
 void NWNX_Object_SetLocalizedName(object oObject, string sName, int nLanguage, int nGender = 0);
 
+/// @brief Return the description of the object for nLanguage.
+/// @param oObject an object
+/// @param nLanguage A PLAYER_LANGUAGE constant.
+/// @param nGender Gender to use, 0 or 1.
+/// @return The localized string.
+/// @param bIdentified  Only for items, identified description or not
+string NWNX_Object_GetLocalizedDescription(object oObject, int nLanguage, int nGender = 0, int bIdentified = 1);
+
+/// @brief Set the description of the object as set in the toolset for nLanguage.
+/// @param oObject an object
+/// @param sDescription New value to set
+/// @param nLanguage A PLAYER_LANGUAGE constant.
+/// @param nGender Gender to use, 0 or 1.
+/// @param bIdentified Only for items, identified description or not
+void NWNX_Object_SetLocalizedDescription(object oObject, string sDescription, int nLanguage, int nGender = 0, int bIdentified = 1);
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -904,6 +919,32 @@ void NWNX_Object_SetLocalizedName(object oObject, string sName, int nLanguage, i
     NWNXPushInt(nGender);
     NWNXPushInt(nLanguage);
     NWNXPushString(sName);
+    NWNXPushObject(oObject);
+
+    NWNXCall(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_GetLocalizedDescription(object oObject, int nLanguage, int nGender = 0, int bIdentified = 1)
+{
+    string sFunc = "GetLocalizedDescription";
+
+    NWNXPushInt(bIdentified);
+    NWNXPushInt(nGender);
+    NWNXPushInt(nLanguage);
+    NWNXPushObject(oObject);
+
+    NWNXCall(NWNX_Object, sFunc);
+    return NWNXPopString();
+}
+
+void NWNX_Object_SetLocalizedDescription(object oObject, string sDescription, int nLanguage, int nGender = 0, int bIdentified = 1)
+{
+    string sFunc = "SetLocalizedDescription";
+
+    NWNXPushInt(bIdentified);
+    NWNXPushInt(nGender);
+    NWNXPushInt(nLanguage);
+    NWNXPushString(sDescription);
     NWNXPushObject(oObject);
 
     NWNXCall(NWNX_Object, sFunc);
