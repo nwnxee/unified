@@ -42,6 +42,8 @@
 #include "API/Functions.hpp"
 #include "API/CNWSFaction.hpp"
 
+#include "API/CScriptEvent.hpp"
+
 
 #include <set>
 
@@ -379,6 +381,52 @@ NWNX_EXPORT ArgumentStack PlaySound(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetPlaceableUsable(ArgumentStack&& args)
 {
+    	static Hooks::Hook s_AIActionUseObjectHook = Hooks::HookFunction(&CNWSObject::AIActionUseObject,
+	+[](CNWSObject *pThis, CNWSObjectActionNode *pNode) -> uint32_t
+	{
+    	OBJECT_ID oidObjectToUse;
+    	memcpy(&oidObjectToUse, &pNode->m_pParameter[0], sizeof(OBJECT_ID));
+
+    	if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUse)))
+    	{
+        	BOOL bUseable = pPlaceable->m_bUseable;
+	        pPlaceable->m_bUseable = true;
+	        auto retVal = s_AIActionUseObjectHook->CallOriginal<uint32_t>(pThis, pNode);
+        	pPlaceable->m_bUseable = bUseable;
+        	return retVal;
+    	}
+
+    	return s_AIActionUseObjectHook->CallOriginal<uint32_t>(pThis, pNode);
+	}, Hooks::Order::Early);
+
+        static Hooks::Hook s_PlaceableEventHandlerHook = Hooks::HookFunction(Functions::_ZN13CNWSPlaceable12EventHandlerEjjPvjj,
+	+[](CNWSPlaceable *pThis, uint32_t nEventId, OBJECT_ID nCallerObjectId, void *pEventData, uint32_t nCalendarDay, uint32_t nTimeOfDay) -> void
+	{
+    	     if (nEventId == Constants::AIMasterEvent::SignalEvent)
+    	     {
+        	auto *pScriptEvent = static_cast<CScriptEvent*>(pEventData);
+     		if (pScriptEvent->m_nType == Constants::ScriptEvent::OnLeftClick)
+     		   {
+     		       pThis->m_oidLastDefaultClickedBy = nCallerObjectId;
+      		      pThis->RunEventScript(15);
+      		      delete pScriptEvent;
+     		       return;
+     		   }   
+
+		if (pScriptEvent->m_nType == Constants::ScriptEvent::OnUsed)
+      		  {
+      		      pThis->m_oidLastUser = nCallerObjectId;
+      		      pThis->RunEventScript(12);
+      		      delete pScriptEvent;
+      		      return;
+      		  } 
+  	      }
+
+   	     s_PlaceableEventHandlerHook->CallOriginal<void>(pThis, nEventId, nCallerObjectId, pEventData, nCalendarDay, nTimeOfDay);
+	}, Hooks::Order::Early);
+
+
+
     if (auto *pPlayer = Utils::PopPlayer(args))
     {
         const auto oidPlaceable = args.extract<ObjectID>();
