@@ -21,6 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ##### New NWScript Functions
 - Player: GetOpenStore()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
+- Creature: {Get|Set}BaseACPolymorph()
 - Store: GetBlackMarket(), SetBlackMarket()
 - Util: SetStartingLocation()
 
@@ -28,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
 - Events: Added ID to the NWNX_ON_ITEMPROPERTY_EFFECT_* events data.
 - Utils: Change LOG_INFO to LOG_DEBUG for console commands.
+- Creature: GetBaseAC()/SetBaseAC() now include a note that these functions do not affect AC while polymorphed; use Get/SetBaseACPolymorph() instead.
 
 ### Deprecated
 - N/A
