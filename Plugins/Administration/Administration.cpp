@@ -57,15 +57,14 @@ static CExoLinkedListNode* FindTURD(std::string playerName, std::string characte
 NWNX_EXPORT ArgumentStack GetPlayerPassword(ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
-    LOG_DEBUG("Returned player password '%s'.", password.m_sString);
     return std::string(password.m_sString ? password.m_sString : "");
 }
 
 NWNX_EXPORT ArgumentStack SetPlayerPassword(ArgumentStack&& args)
 {
     const auto newPass = args.extract<std::string>();
-    LOG_NOTICE("Set player password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword(newPass.c_str());
+    LOG_DEBUG("Set player password.");
     return {};
 }
 
@@ -79,15 +78,14 @@ NWNX_EXPORT ArgumentStack ClearPlayerPassword(ArgumentStack&&)
 NWNX_EXPORT ArgumentStack GetDMPassword(ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
-    LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
     return std::string(password.m_sString ? password.m_sString : "");
 }
 
 NWNX_EXPORT ArgumentStack SetDMPassword(ArgumentStack&& args)
 {
     const auto newPass = args.extract<std::string>();
-    LOG_NOTICE("Set DM password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetGameMasterPassword(newPass.c_str());
+    LOG_DEBUG("Set DM password.");
     return {};
 }
 
