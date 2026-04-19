@@ -117,6 +117,7 @@ struct CNWSItem : CNWItem, CNWSObject
     float CalculatePassiveCost(CNWItemProperty * pItemProperty);
 
     inline CExoLocString &GetFirstName() override { return m_sName; }
+    inline CExoLocString &GetDescription(bool nIdentified) { return nIdentified ? m_sIdentifiedDescription : m_sUnidentifiedDescription; }
 
 #ifdef NWN_CLASS_EXTENSION_CNWSItem
     NWN_CLASS_EXTENSION_CNWSItem
