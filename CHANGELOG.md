@@ -22,6 +22,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Player: GetOpenStore()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 - Store: GetBlackMarket(), SetBlackMarket()
+- Util: SetStartingLocation()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.

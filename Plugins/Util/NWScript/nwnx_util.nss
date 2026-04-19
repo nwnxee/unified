@@ -269,6 +269,13 @@ string NWNX_Util_GetModuleTlkFile();
 /// @return TRUE if successful, FALSE on error.
 int NWNX_Util_UpdateResourceDirectory(string sAlias);
 
+/// @brief Set the starting location.
+/// @param sResRef ResRef of area.
+/// @param locLocation The location to move the starting point to.
+/// @param vDirection  Direction of starting point.
+/// @return TRUE if successful, FALSE on error.
+int NWNX_Util_SetStartingLocation(string sResRef, location locLocation, vector vDirection);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -588,3 +595,13 @@ int NWNX_Util_UpdateResourceDirectory(string sAlias)
     NWNXCall(NWNX_Util, "UpdateResourceDirectory");
     return NWNXPopInt();
 }
+
+int NWNX_Util_SetStartingLocation(string sResRef, location locLocation, vector vDirection)
+{
+    NWNXPushVector(vDirection);
+    NWNXPushLocation(locLocation);
+    NWNXPushString(sResRef);
+    NWNXCall(NWNX_Util, "SetStartingLocation");
+    return NWNXPopInt();
+}
+
