@@ -16,7 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 
 ##### New Plugins
-- N/A
+- Schema: Implements [AJV](https://ajv.js.org/) to allow validation of custom json metaschema, schema and instances.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
