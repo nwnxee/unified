@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
+- Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 
 ##### New Plugins
 - N/A
