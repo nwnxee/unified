@@ -20,3 +20,4 @@ The following environmental variable is required to load the plugin:
 | `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` | true/false | Removes the hardcoded effects of the Ranger's Dual-wield feat. |
 | `NWNX_EXPERIMENTAL_IGNORE_MODULE_VERSION` | true/false | Ignore the module's version when loading. |
 | `NWNX_EXPERIMENTAL_END_COMBATROUND_AFTER_SPELLCAST` | true/false | Combat rounds end immediately a spell cast making it possible to cast another spell right after |
+| `NWNX_EXPERIMENTAL_UFM_HOTFIX` | true/false | Attemps to resolve a server hang in CNetLayerWindow::UnpacketizeFullMessages. |
