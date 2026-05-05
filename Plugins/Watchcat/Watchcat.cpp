@@ -1,43 +1,71 @@
 #include "nwnx.hpp"
 
+#include "API/CAppManager.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "Globals.hpp"
 
+#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <cstdint>
+#include <dlfcn.h>
 #include <execinfo.h>
 #include <pthread.h>
 #include <signal.h>
-#include <sys/prctl.h>
-#include <sys/resource.h>
 #include <thread>
+#include <type_traits>
 #include <unordered_map>
 
 using namespace NWNXLib;
 
-// Do not engage watchcat until this many msec have passed after module load.
-#define WATCHCAT_WARMUP_MSEC            60000
-// If the mainloop stalls for this many msec, we start sampling callstacks.
-#define WATCHCAT_STALL_MSEC             1000
-// While stalling, sample stacks at this rate.
-#define WATCHCAT_STALL_SAMPLE_RATE_MSEC 16
-// Print this many stacks, by occurence desc.
-#define WATCHCAT_TOP_N_STACKS           10
-// Kill server with a FATAL message when a stall lasts longer than this many msec.
-// This assumes the thing is thoroughly wedged with no hope of recovery.
-#define WATCHCAT_KILL_MSEC              120000
+struct WatchcatConfig
+{
+    // Do not engage watchcat until this many msec have passed after plugin load.
+    uint32_t warmup_msec = 5000;
 
-// Turn this on to stall the server every 100 ticks for 5 seconds (for debugging Watchcat).
-// #define WATCHCAT_SIMULATE_STALL
+    // If the mainloop stalls for this many msec, we start sampling callstacks.
+    uint32_t stall_msec = 1000;
+
+    // While stalling, sample stacks at this rate.
+    uint32_t stall_sample_rate_msec = 16;
+
+    // Kill server with a FATAL message when a stall lasts longer than this many msec.
+    // This assumes the thing is thoroughly wedged with no hope of recovery.
+    uint32_t kill_msec = 120000;
+
+    // Turn this on to stall the server every 100 ticks for 5 seconds (for debugging Watchcat).
+    bool test_mode = false;
+
+    explicit WatchcatConfig()
+    {
+        warmup_msec = Config::Get<uint32_t>("WARMUP_MSEC").value_or(warmup_msec);
+        stall_msec = Config::Get<uint32_t>("STALL_MSEC").value_or(stall_msec);
+        stall_sample_rate_msec = Config::Get<uint32_t>("STALL_SAMPLE_RATE_MSEC")
+                                     .value_or(stall_sample_rate_msec);
+        kill_msec = Config::Get<uint32_t>("KILL_MSEC").value_or(kill_msec);
+        test_mode = Config::Get<bool>("TEST_MODE").value_or(test_mode);
+    }
+};
+
+// Print this many stacks, by occurence desc.
+#define WATCHCAT_TOP_N_STACKS 10
 
 // Don't change the signal unless you are already using USR2 for something else.
-#define CALLSTACK_SIG  SIGUSR2
+#define CALLSTACK_SIG         SIGUSR2
 // Max depth collected.
-#define CALLSTACK_SIZE 32
+#define CALLSTACK_SIZE        32
 
-using Callstack = std::vector<void*>;
+struct StackFrame
+{
+    // The raw pointer from the backtrace, which may be an offset into the function.
+    void* raw_ptr;
+    // The resolved function base address, or the raw pointer if resolution failed.
+    // Used for hashing and display.
+    void* func_base;
+};
+
+using Callstack = std::vector<StackFrame>;
 
 struct CallstackHash
 {
@@ -45,9 +73,9 @@ struct CallstackHash
     {
         std::size_t hash = 0;
         std::hash<void*> hasher;
-        for (void* ptr : callstack)
+        for (const auto& frame : callstack)
         {
-            hash ^= hasher(ptr) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+            hash ^= hasher(frame.func_base) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
         }
         return hash;
     }
@@ -55,7 +83,17 @@ struct CallstackHash
 
 struct CallstackEqual
 {
-    bool operator()(const Callstack& lhs, const Callstack& rhs) const { return lhs == rhs; }
+    bool operator()(const Callstack& lhs, const Callstack& rhs) const
+    {
+        if (lhs.size() != rhs.size())
+            return false;
+        for (size_t i = 0; i < lhs.size(); ++i)
+        {
+            if (lhs[i].func_base != rhs[i].func_base)
+                return false;
+        }
+        return true;
+    }
 };
 
 using CallstackMap = std::unordered_map<Callstack, size_t, CallstackHash, CallstackEqual>;
@@ -63,29 +101,31 @@ using CallstackMap = std::unordered_map<Callstack, size_t, CallstackHash, Callst
 static pthread_t s_mainThreadId;
 static pthread_t s_watchcatThreadId;
 
-// Written by the signal handler on the main thread.
+// Written by the signal handler on the main thread:
 static void* s_mainThreadStack[CALLSTACK_SIZE];
 static int s_mainThreadStackLen = 0;
-// Guarded by this.
-static std::atomic<bool> s_callstackCallback;
+// Guarded by this:
+static std::atomic<bool> s_callstackCallback { false };
 
-static std::atomic<bool> s_watchcatDisabledUntilScriptExit;
+static std::atomic<uint32_t> s_watchcatDisabledUntilScriptExitLevel { 0 };
+static std::atomic<uint64_t> s_mainThreadCounter { 0 };
+static std::atomic<bool> s_watchcatDisabledUntilScriptExit { false };
 
-static uint64_t s_mainThreadCounter = 0;
+static std::unique_ptr<struct WatchThread> s_watchcatThread;
 
-std::unique_ptr<struct WatchThread> s_watchcatThread;
+static std::unique_ptr<const WatchcatConfig> g_config;
+
+static_assert(std::is_integral<pthread_t>::value,
+    "pthread_t must be integral for this code to work");
 
 [[gnu::noinline]]
 static void callstack_signal_handler(int, siginfo_t*, void*)
 {
-    if (pthread_self() == s_watchcatThreadId)
+    if (!pthread_equal(pthread_self(), s_mainThreadId))
     {
-        assert(!s_callstackCallback.load());
         s_callstackCallback.store(true);
         return;
     }
-
-    assert(pthread_self() == s_mainThreadId);
 
     s_mainThreadStackLen = backtrace(s_mainThreadStack, CALLSTACK_SIZE);
 
@@ -95,7 +135,8 @@ static void callstack_signal_handler(int, siginfo_t*, void*)
     int frames_to_skip = 1; // this signal handler
     for (int i = 0; i < s_mainThreadStackLen; ++i)
     {
-        if (s_mainThreadStack[i] == backtrace_addr || s_mainThreadStack[i] == backtrace_symbols_addr)
+        if (s_mainThreadStack[i] == backtrace_addr ||
+            s_mainThreadStack[i] == backtrace_symbols_addr)
         {
             frames_to_skip += i;
             break;
@@ -116,10 +157,20 @@ static void callstack_register_handler()
 {
     LOG_INFO("Thread %d, setting up callstack signal handler", pthread_self());
     struct sigaction sa;
-    sa.sa_flags = SA_SIGINFO;
+    std::memset(&sa, 0, sizeof(sa));
+    sa.sa_flags = SA_SIGINFO | SA_RESTART;
     sa.sa_sigaction = callstack_signal_handler;
-    sigfillset(&sa.sa_mask);
-    sigaction(CALLSTACK_SIG, &sa, NULL);
+
+    if (sigfillset(&sa.sa_mask) != 0)
+    {
+        LOG_FATAL("sigfillset() failed while registering Watchcat signal handler, errno=%d", errno);
+    }
+
+    if (sigaction(CALLSTACK_SIG, &sa, nullptr) != 0)
+    {
+        LOG_FATAL("sigaction(%d) failed while registering Watchcat signal handler, errno=%d",
+            CALLSTACK_SIG, errno);
+    }
 }
 
 static void DumpStacks(const CallstackMap& callstacks)
@@ -129,14 +180,21 @@ static void DumpStacks(const CallstackMap& callstacks)
     std::sort(sortedCallstacks.begin(), sortedCallstacks.end(),
         [](const auto& a, const auto& b) { return a.second > b.second; });
 
-    const size_t numstacks = std::min(WATCHCAT_TOP_N_STACKS,
-        static_cast<int>(sortedCallstacks.size()));
+    const size_t numstacks = std::min<size_t>(WATCHCAT_TOP_N_STACKS, sortedCallstacks.size());
     for (size_t i = 0; i < numstacks; ++i)
     {
         const auto& [callstack, occurs] = sortedCallstacks.at(i);
-        char** strstack = backtrace_symbols(callstack.data(), callstack.size());
-        LOG_ERROR("Callstack %d: %d occurences", i, occurs);
-        for (size_t k = 0; k < callstack.size(); ++k)
+
+        std::vector<void*> raw_ptrs;
+        raw_ptrs.reserve(callstack.size());
+        for (const auto& frame : callstack)
+        {
+            raw_ptrs.push_back(frame.raw_ptr);
+        }
+
+        char** strstack = backtrace_symbols(raw_ptrs.data(), raw_ptrs.size());
+        LOG_ERROR("Callstack %d: %d occurrences", i, occurs);
+        for (size_t k = 0; k < raw_ptrs.size(); ++k)
         {
             LOG_ERROR("  %s", strstack[k]);
         }
@@ -156,9 +214,9 @@ static void WatchcatThread()
     callstack_register_handler();
 
     // Warmup delay to prevent false positives when the server is starting up.
-    LOG_INFO("Watchcat ^.^~ sleeping for %dms before arming", WATCHCAT_WARMUP_MSEC);
-    std::this_thread::sleep_for(milliseconds(WATCHCAT_WARMUP_MSEC));
-    LOG_INFO("Watchcat ^.^~ thread starting");
+    LOG_INFO("Watchcat ^.^~ sleeping for %dms before arming", g_config->warmup_msec);
+    std::this_thread::sleep_for(milliseconds(g_config->warmup_msec));
+    LOG_INFO("Watchcat ^.^~ thread armed");
 
     // Last count and time we saw the main thread tick over.
     uint64_t lastObservedCounter = 0;
@@ -179,7 +237,15 @@ static void WatchcatThread()
             continue;
         }
 
-        if (now - lastObservedAt < milliseconds(WATCHCAT_STALL_MSEC))
+        // Server stall is stuff that the server explicitly marks as taking a while;
+        // eg. module loads and saves.
+        // That includes NWSync operations in Resources.cpp via LoadModuleStart.
+        if (g_pAppManager->m_pReentrantServerStats->m_bStallServer)
+        {
+            continue;
+        }
+
+        if (now - lastObservedAt < milliseconds(g_config->stall_msec))
         {
             continue;
         }
@@ -204,23 +270,47 @@ static void WatchcatThread()
             // handle the stack store.
             s_callstackCallback.store(false);
             ASSERT(pthread_kill(s_mainThreadId, CALLSTACK_SIG) == 0);
-            while (!s_callstackCallback.load()) {}
 
-            const Callstack callstack(s_mainThreadStack, s_mainThreadStack + s_mainThreadStackLen);
+            bool sampler_failed = false;
+            const auto callback_deadline = steady_clock::now() + milliseconds(100);
+            while (!s_callstackCallback.load(std::memory_order_acquire))
+            {
+                if (steady_clock::now() >= callback_deadline)
+                {
+                    sampler_failed = true;
+                    break;
+                }
+                std::this_thread::yield();
+            }
+
+            if (sampler_failed)
+            {
+                LOG_WARNING("Failed to get callstack from main thread, giving up this sample");
+                continue;
+            }
+
+            Callstack callstack;
+            callstack.reserve(s_mainThreadStackLen);
+
+            for (int i = 0; i < s_mainThreadStackLen; ++i)
+            {
+                void* ptr = s_mainThreadStack[i];
+                Dl_info info;
+                // Attempt to resolve the function base address, or fall back to raw ptr.
+                void* base = (dladdr(ptr, &info) && info.dli_saddr) ? info.dli_saddr : ptr;
+                callstack.push_back({ ptr, base });
+            }
+
             callstacks[callstack]++;
 
             if (steady_clock::now() - lastObservedAt >
-                milliseconds(WATCHCAT_STALL_MSEC + WATCHCAT_KILL_MSEC))
+                milliseconds(g_config->stall_msec + g_config->kill_msec))
             {
                 DumpStacks(callstacks);
-                if (prctl(PR_SET_DUMPABLE, 1) != 0)
-                {
-                    LOG_WARNING("Failed to set PR_SET_DUMPABLE, errno=%d", errno);
-                }
                 LOG_FATAL("Watchcat ^.^~ ran out of patience.");
             }
 
-            std::this_thread::sleep_for(milliseconds(WATCHCAT_STALL_SAMPLE_RATE_MSEC));
+            std::this_thread::sleep_for(milliseconds(g_config->stall_sample_rate_msec));
         }
 
         LOG_ERROR("Stall recovered after %lums",
@@ -241,28 +331,14 @@ struct WatchThread
     std::thread m_thread;
 };
 
-static std::atomic<uint32_t> s_watchcatDisabledUntilScriptExitLevel = 0;
-
 static void WatchcatCtor() __attribute__((constructor));
 static void WatchcatCtor()
 {
-    struct rlimit core_limit;
-    if (getrlimit(RLIMIT_CORE, &core_limit) == 0)
-    {
-        if (core_limit.rlim_cur == RLIM_INFINITY)
-        {
-            LOG_INFO("Core dump limit is correctly set to unlimited.");
-        }
-        else
-        {
-            LOG_WARNING("Core dump limit is not set to unlimited. Current limit: %ld bytes.",
-                core_limit.rlim_cur);
-        }
-    }
-    else
-    {
-        LOG_ERROR("Unable to get core dump limit.");
-    }
+    g_config = std::make_unique<WatchcatConfig>();
+
+    // Invoke backtrace at least once to ensure functions are linked in and don't run
+    // on the hotpath on first hit.
+    backtrace(s_mainThreadStack, 0);
 
     s_mainThreadId = pthread_self();
     callstack_register_handler();
@@ -278,14 +354,12 @@ static void WatchcatCtor()
                 s_watchcatThread = std::make_unique<WatchThread>();
             }
 
-#ifdef WATCHCAT_SIMULATE_STALL
-            if (s_mainThreadCounter % 100 == 0)
+            if (g_config->test_mode && s_mainThreadCounter % 100 == 0)
             {
                 LOG_INFO("Simulating long stall");
                 std::this_thread::sleep_for(std::chrono::seconds(5));
                 LOG_INFO("Simulated long stall complete");
             }
-#endif
 
             return mainLoopHook->CallOriginal<int32_t>(thisPtr);
         },
