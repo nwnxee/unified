@@ -165,7 +165,7 @@ static int v2daConnect(sqlite3 *db, void *pAux, int argc, const char* const *arg
     CExoString sSchema = "CREATE TABLE x(";
     for (int32_t i = 0; i < p2DA->m_nNumColumns; i++)
     {
-        sSchema.Format("%s%s%s %s", sSchema.CStr(), i ? ", " : "", p2DA->m_pColumnLabel[i].CStr(), V2DAColumnType::ToColumnType(columnTypes[i]));
+        sSchema.Format("%s%s\"%s\" %s", sSchema.CStr(), i ? ", " : "", p2DA->m_pColumnLabel[i].CStr(), V2DAColumnType::ToColumnType(columnTypes[i]));
     }
     sSchema.Format("%s);", sSchema.CStr());
 
