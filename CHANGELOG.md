@@ -17,7 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 
 ##### New Plugins
-- N/A
+- Schema: Implements [AJV](https://ajv.js.org/) to allow validation of custom json metaschema, schema and instances.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
