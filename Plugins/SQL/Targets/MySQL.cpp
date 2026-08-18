@@ -34,7 +34,6 @@ void MySQL::Connect()
     }
 
     LOG_INFO("Connection info:  host=%s port=%i username=%s", host, port == 0 ? 3306 : port, username);
-    LOG_DEBUG("               :  password=%s", password);
 
     if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(),
             database ? (*database).c_str() : nullptr, port >= 0 ? port : 0, nullptr, 0))

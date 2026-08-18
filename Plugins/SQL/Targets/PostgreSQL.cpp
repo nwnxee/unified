@@ -50,10 +50,7 @@ void PostgreSQL::Connect()
     // Build the m_connection string - this is used later in the PQping (PQping doesn't need the password).
     m_connectString = host + " " + port + " " + db + " " + user + " " + sslmode;
 
-    // hide the password in the log file
-    LOG_INFO("Connect String:  %s password=xxxxxxxx", m_connectString);
-    // but add it if we're in debug logging.
-    LOG_DEBUG("              :  %s", pass);
+    LOG_INFO("Connect String:  %s", m_connectString);
 
     m_connectString += " " + pass;
 
