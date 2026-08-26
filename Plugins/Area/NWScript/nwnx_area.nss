@@ -348,6 +348,14 @@ struct NWNX_Area_AreaWind NWNX_Area_GetAreaWind(object oArea);
 /// @param bForceUpdate If TRUE, will update the discovery mask of ALL objects in the area or module(if oArea == OBJECT_INVALID), according to the current mask. Use with care.
 void NWNX_Area_SetDefaultObjectUiDiscoveryMask(object oArea, int nObjectTypes, int nMask, int bForceUpdate = FALSE);
 
+/// @brief Set how many tiles deep the automap explores outward from an explored tile.
+/// @param oArea The area.
+/// @param oCreature OBJECT_INVALID to apply to every creature exploring oArea, or a PC to apply
+/// only to that PC. A PC-specific depth takes priority over the area-wide one.
+/// @param nDepth The intertile exploration depth. Values <= 0 remove
+/// the override and restores the engine default.
+void NWNX_Area_SetAutomapTileDepth(object oArea, object oCreature, int nDepth);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -744,4 +752,12 @@ void NWNX_Area_SetDefaultObjectUiDiscoveryMask(object oArea, int nObjectTypes, i
     NWNXPushInt(nObjectTypes);
     NWNXPushObject(oArea);
     NWNXCall(NWNX_Area, "SetDefaultObjectUiDiscoveryMask");
+}
+
+void NWNX_Area_SetAutomapTileDepth(object oArea, object oCreature, int nDepth)
+{
+    NWNXPushInt(nDepth);
+    NWNXPushObject(oCreature);
+    NWNXPushObject(oArea);
+    NWNXCall(NWNX_Area, "SetAutomapTileDepth");
 }
