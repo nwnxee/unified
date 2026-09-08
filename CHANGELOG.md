@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
+- Tweaks: added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS` to set the number of servervault characters which will be sorted by date.
 
 ##### New Plugins
 - N/A
