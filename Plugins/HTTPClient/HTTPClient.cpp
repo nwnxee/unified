@@ -42,6 +42,9 @@ struct Request
     std::string headersString;
     httplib::Headers headers;
     std::string tag;
+    std::string custom1;
+    std::string custom2;
+    std::string custom3;
 
     Request()
     {
@@ -324,6 +327,18 @@ NWNX_EXPORT ArgumentStack SendRequest(ArgumentStack &&args)
     if (!clientReq.port) clientReq.port = 443;
     clientReq.headersString = ScriptAPI::ExtractArgument<std::string>(args);
     clientReq.headers = ParseHeaderString(clientReq.headersString);
+    try {
+      clientReq.custom1 = ScriptAPI::ExtractArgument<std::string>(args);
+    } catch (...)
+      {}
+    try {
+      clientReq.custom2 = ScriptAPI::ExtractArgument<std::string>(args);
+    } catch (...)
+      {}
+    try {
+      clientReq.custom3 = ScriptAPI::ExtractArgument<std::string>(args);
+    } catch (...)
+      {}
     s_clientRequests[clientReq.id] = clientReq;
     PerformRequest(clientReq);
 
@@ -338,6 +353,9 @@ NWNX_EXPORT ArgumentStack GetRequest(ArgumentStack &&args)
     ASSERT_OR_THROW(req != std::end(s_clientRequests));
     auto clientReq = req->second;
 
+    ScriptAPI::InsertArgument(stack, clientReq.custom3);
+    ScriptAPI::InsertArgument(stack, clientReq.custom2);
+    ScriptAPI::InsertArgument(stack, clientReq.custom1);
     ScriptAPI::InsertArgument(stack, clientReq.headersString);
     ScriptAPI::InsertArgument(stack, (int32_t) clientReq.port);
     ScriptAPI::InsertArgument(stack, clientReq.authPassword);
