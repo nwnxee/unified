@@ -218,6 +218,8 @@ var group__events =
     [ "NWNX_ON_QUICKCHAT_AFTER", "group__events.html#gae3b23ce9fdf5b93b67203a4537c74ab9", null ],
     [ "NWNX_ON_INVENTORY_OPEN_BEFORE", "group__events.html#ga3c1b2d4d926914b082404dce5f63e5ed", null ],
     [ "NWNX_ON_INVENTORY_OPEN_AFTER", "group__events.html#gaea7fac31dcefd48c00a659ebb2d0f468", null ],
+    [ "NWNX_ON_INVENTORY_CLOSE_BEFORE", "group__events.html#ga6718cbb51132d6021ce98e37fd5fd266", null ],
+    [ "NWNX_ON_INVENTORY_CLOSE_AFTER", "group__events.html#ga4d0bfb0b40118ca814e088197b9f9b7f", null ],
     [ "NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE", "group__events.html#ga62ee4787eb6e77e4a15915c33e87e9eb", null ],
     [ "NWNX_ON_INVENTORY_SELECT_PANEL_AFTER", "group__events.html#ga45a8de90b21cace9eaaa5e1a928f938c", null ],
     [ "NWNX_ON_BARTER_START_BEFORE", "group__events.html#gaea9433449c7aff267e8f94f7ae52db2a", null ],
