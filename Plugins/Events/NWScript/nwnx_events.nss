@@ -2294,6 +2294,9 @@ int NWNX_Events_SignalEvent(string evt, object target);
 /// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
 
+/// Returns true if the event data tag exists for the currently executing script.
+int NWNX_Events_PeekEventData(string tag);
+
 /// Skips execution of the currently executing event.
 /// If this is a NWNX event, that means that the base function call won't be called.
 /// This won't impact any other subscribers, nor dispatch for before / after functions.
@@ -2473,6 +2476,13 @@ string NWNX_Events_GetEventData(string tag)
     NWNXPushString(tag);
     NWNXCall(NWNX_Events, "GetEventData");
     return NWNXPopString();
+}
+
+int NWNX_Events_PeekEventData(string tag)
+{
+    NWNXPushString(tag);
+    NWNXCall(NWNX_Events, "PeekEventData");
+    return NWNXPopInt();
 }
 
 void NWNX_Events_SkipEvent()
