@@ -18,6 +18,7 @@ static Hooks::Hook s_CloseInventoryHook;
 static Hooks::Hook s_BroadcastSafeProjectileHook;
 static Hooks::Hook s_SetExperienceHook;
 static Hooks::Hook s_AddObjectToAreaHook;
+static Hooks::Hook s_RemoveObjectFromAreaHook;
 
 static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);
 static int32_t AddUnlockObjectActionHook(CNWSObject*, ObjectID, ObjectID, int32_t);
@@ -27,6 +28,7 @@ static void CloseInventoryHook(CNWSPlaceable*, ObjectID, BOOL);
 static void BroadcastSafeProjectileHook(CNWSObject*, ObjectID, ObjectID, Vector, Vector, uint32_t, uint8_t, uint32_t, uint8_t, uint8_t);
 static void SetExperienceHook(CNWSCreatureStats*, uint32_t, BOOL);
 static BOOL AddObjectToAreaHook(CNWSArea*, OBJECT_ID, BOOL);
+static BOOL RemoveObjectFromAreaHook(CNWSArea*, OBJECT_ID);
 
 void ObjectEvents() __attribute__((constructor));
 void ObjectEvents()
@@ -69,6 +71,11 @@ void ObjectEvents()
     InitOnFirstSubscribe("NWNX_ON_OBJECT_ADD_TO_AREA_.*", []() {
         s_AddObjectToAreaHook = Hooks::HookFunction(&CNWSArea::AddObjectToArea,
             &AddObjectToAreaHook, Hooks::Order::Early);
+    });
+
+    InitOnFirstSubscribe("NWNX_ON_OBJECT_REMOVE_FROM_AREA_.*", []() {
+        s_RemoveObjectFromAreaHook = Hooks::HookFunction(&CNWSArea::RemoveObjectFromArea,
+            &RemoveObjectFromAreaHook, Hooks::Order::Early);
     });
 }
 
@@ -255,6 +262,29 @@ BOOL AddObjectToAreaHook(CNWSArea* thisPtr, OBJECT_ID id, BOOL bRunScripts)
 
     PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_ADD_TO_AREA_AFTER");
+
+    return retVal;
+}
+
+BOOL RemoveObjectFromAreaHook(CNWSArea* thisPtr, OBJECT_ID id)
+{
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        PushEventData("AREA", Utils::ObjectIDToString(thisPtr->m_idSelf));
+        return SignalEvent(ev, id);
+    };
+
+    BOOL retVal;
+    if (PushAndSignal("NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE"))
+    {
+        retVal = s_RemoveObjectFromAreaHook->CallOriginal<BOOL>(thisPtr, id);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushAndSignal("NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER");
 
     return retVal;
 }

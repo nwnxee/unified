@@ -17,6 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
 - Events: Added events `NWNX_ON_OBJECT_ADD_TO_AREA_{BEFORE|AFTER}` which fire when an object is added to the area.
+- Events: Added events `NWNX_ON_OBJECT_REMOVE_FROM_AREA_{BEFORE|AFTER}` which fire when an object is removed to the area.
 
 ##### New Plugins
 - N/A

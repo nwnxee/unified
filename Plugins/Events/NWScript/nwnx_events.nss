@@ -1838,6 +1838,17 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     AREA                  | int    | The area the object is being added to. |
+_______________________________________
+    ## Remove object from area events
+    - NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE
+    - NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER
+
+    `OBJECT_SELF` = The object.
+    `AREA` = The area.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    AREA                  | int    | The area the object is being removed from. |
 */
 
 /// @name Events Event Constants
@@ -2196,6 +2207,8 @@ const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE = "NWNX_ON_ITEMPROPERTY_
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER";
 const string NWNX_ON_OBJECT_ADD_TO_AREA_BEFORE = "NWNX_ON_OBJECT_ADD_TO_AREA_BEFORE";
 const string NWNX_ON_OBJECT_ADD_TO_AREA_AFTER = "NWNX_ON_OBJECT_ADD_TO_AREA_AFTER";
+const string NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE = "NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE";
+const string NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER = "NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
