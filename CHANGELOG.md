@@ -18,7 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
 
 ##### New Plugins
-- N/A
+- Schema: Implements [AJV](https://ajv.js.org/) to allow validation of custom json metaschema, schema and instances.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
