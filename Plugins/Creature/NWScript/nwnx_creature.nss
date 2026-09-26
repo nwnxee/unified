@@ -236,7 +236,7 @@ int NWNX_Creature_GetMaxSpellSlots(object creature, int class, int level);
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
 /// @param level The spell level.
-/// @param spellId The spell to remove.
+/// @param spellId The spell to add.
 void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spellId);
 
 /// @brief Remove a spell from creature's spellbook for class.
