@@ -1459,3 +1459,70 @@ NWNX_EXPORT ArgumentStack SetDefaultObjectUiDiscoveryMask(ArgumentStack&& args)
 
     return {};
 }
+
+NWNX_EXPORT ArgumentStack SetAutomapTileDepth(ArgumentStack&& args)
+{
+    static auto MakeDepthKey = [](ObjectID oidArea, ObjectID oidCreature) -> uint64_t
+    {
+        return (static_cast<uint64_t>(oidArea) << 32) | oidCreature;
+    };
+
+    static std::unordered_map<uint64_t, int32_t> s_globalDepth;
+
+    static Hooks::Hook s_ExploreAreaHook = Hooks::HookFunction(&CNWSArea::ExploreArea,
+    +[](CNWSArea *pThis, CNWSCreature *pCreature, int32_t x, int32_t y, int32_t nDepth) -> int32_t
+    {
+        const auto oidCreature = pCreature ? pCreature->m_idSelf : Constants::OBJECT_INVALID;
+
+        // Creature-specific first, then the area-wide entry.
+        auto it = s_globalDepth.find(MakeDepthKey(pThis->m_idSelf, oidCreature));
+
+        if (it == s_globalDepth.end())
+            it = s_globalDepth.find(MakeDepthKey(pThis->m_idSelf, Constants::OBJECT_INVALID));
+
+        if (it != s_globalDepth.end())
+            nDepth = it->second;
+
+        return s_ExploreAreaHook->CallOriginal<int32_t>(pThis, pCreature, x, y, nDepth);
+    }, Hooks::Order::Early);
+
+    const auto oidArea     = args.extract<ObjectID>();
+    const auto oidCreature = args.extract<ObjectID>();
+    const auto nDepth      = args.extract<int32_t>();
+
+    auto *pArea = Utils::AsNWSArea(Utils::GetGameObject(oidArea));
+
+    if (!pArea)
+    {
+        LOG_WARNING("SetAutomapTileDepth() called on non-area object: 0x%08x", oidArea);
+        return {};
+    }
+
+    auto oidKeyCreature = Constants::OBJECT_INVALID;
+
+    if (oidCreature != Constants::OBJECT_INVALID)
+    {
+        auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature));
+
+        if (!pCreature)
+        {
+            LOG_WARNING("SetAutomapTileDepth() called on non-creature object: 0x%08x", oidCreature);
+            return {};
+        }
+
+        if (!pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("SetAutomapTileDepth() called on non-PC creature: 0x%08x", oidCreature);
+            return {};
+        }
+
+        oidKeyCreature = oidCreature;
+    }
+
+    if (nDepth <= 0)
+        s_globalDepth.erase(MakeDepthKey(pArea->m_idSelf, oidKeyCreature));
+    else
+        s_globalDepth[MakeDepthKey(pArea->m_idSelf, oidKeyCreature)] = nDepth;
+
+    return {};
+}
