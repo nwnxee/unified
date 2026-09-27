@@ -34,6 +34,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Utils: Change LOG_INFO to LOG_DEBUG for console commands.
 - Admin: Player/DM password functions no longer print the passwords to the log.
 - SQL: Database passwords are no longer printed to the log when connecting.
+- Events: Add missing NWNX_ON_SET_EXPERIENCE_* const.
 
 ### Deprecated
 - N/A
