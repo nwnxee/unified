@@ -45,6 +45,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Tweaks", "dir_2c0d2f9f39af116e744aae7608100ddc.html", null ],
     [ "Util", "dir_3ec7a3c41058dbbcb810665d92fbc7cc.html", "dir_3ec7a3c41058dbbcb810665d92fbc7cc" ],
     [ "Visibility", "dir_ae46fabea9884ae777249dbe6bcad7ea.html", "dir_ae46fabea9884ae777249dbe6bcad7ea" ],
+    [ "Watchcat", "dir_a166cb01f6703755d76a836cbd589be8.html", "dir_a166cb01f6703755d76a836cbd589be8" ],
     [ "Weapon", "dir_44622a012641c7eec6565a06d81e4c33.html", "dir_44622a012641c7eec6565a06d81e4c33" ],
     [ "WebHook", "dir_4bc0f77fa752a1e8395a049e84c59928.html", "dir_4bc0f77fa752a1e8395a049e84c59928" ]
 ];

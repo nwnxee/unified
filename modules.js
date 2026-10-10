@@ -46,6 +46,7 @@ var modules =
     [ "Tweaks", "group__tweaks.html", "group__tweaks" ],
     [ "Util", "group__util.html", "group__util" ],
     [ "Visibility", "group__visibility.html", "group__visibility" ],
+    [ "Watchcat", "group__watchcat.html", "group__watchcat" ],
     [ "Weapon", "group__weapon.html", "group__weapon" ],
     [ "Webhook", "group__webhook.html", "group__webhook" ]
 ];
