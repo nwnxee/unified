@@ -28,8 +28,18 @@ using namespace NWNXLib::API;
 static uint32_t s_PostFixVersion;
 
 static void (*nwn_crash_handler)(int);
+static volatile sig_atomic_t s_inSignalHandler = 0;
 extern "C" void nwnx_signal_handler(int sig)
 {
+    // A fault while handling a fault re-enters this handler. Reporting again cannot work - it is the
+    // report that faulted - and on the same fault it never stops, so just terminate.
+    if (s_inSignalHandler)
+    {
+        std::signal(SIGABRT, SIG_DFL);
+        std::abort();
+    }
+    s_inSignalHandler = 1;
+
     const char *err;
     switch (sig)
     {
