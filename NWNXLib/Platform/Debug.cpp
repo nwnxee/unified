@@ -30,25 +30,26 @@ bool IsDebuggerPresent()
 
 std::string GetStackTrace(uint8_t levels)
 {
-    char buffer[64*1024];
+    // Nothing large on the stack: this runs from signal handlers, which can be on a small alternate
+    // stack - the .NET runtime runs the chained SIGSEGV handler on one after a stack overflow - and a
+    // 64 KB frame faulted there before anything was printed.
     void* stackTrace[256];
+    std::string trace;
 
-    buffer[0] = 0;
     int numCapturedFrames = backtrace(stackTrace, levels);
-
-    if (numCapturedFrames)
+    if (numCapturedFrames > 0)
     {
-        char** resolvedFrames = backtrace_symbols(stackTrace, levels);
-        std::strncat(buffer, "\n  Backtrace:\n", sizeof(buffer)-1);
+        char** resolvedFrames = backtrace_symbols(stackTrace, numCapturedFrames);
+        trace = "\n  Backtrace:\n";
         for (int i = 0; i < numCapturedFrames; ++i)
         {
-            char backtraceBuffer[2048];
-            std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
+            trace += "    ";
+            trace += resolvedFrames ? resolvedFrames[i] : "?";
+            trace += "\n";
         }
         free(resolvedFrames);
     }
-    return std::string(buffer);
+    return trace;
 }
 
 }
