@@ -47,6 +47,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
+- Core: Fixed the crash handler looping forever, without a backtrace, when it runs on a small signal stack (seen with the .NET runtime loaded, after a stack overflow or a segfault on the main thread): the stack trace no longer needs 64 KB of stack, and a fault inside the handler now terminates the server instead of re-entering it.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
