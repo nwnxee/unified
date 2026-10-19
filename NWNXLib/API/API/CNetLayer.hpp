@@ -16,14 +16,9 @@ struct CNetLayerSessionInfo;
 
 typedef int BOOL;
 
-enum class CNetInstance
-{
-    INSTANCE_CLIENT,
-    INSTANCE_SERVER
-};
-
 struct CNetLayer
 {
+    const CNetInstance m_nInstance;
     CNetLayerInternal * m_pcNetLayerInternal;
 
     CNetLayer(CNetInstance);

@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <type_traits>
+#include <netinet/in.h>
 
 #include "External/json/json.hpp"
 
@@ -221,6 +222,17 @@ struct CNetConnectionId : public DistinctSimpleType<uint32_t>
     static const CNetConnectionId MASTERSERVER;
     static const CNetConnectionId BROADCAST;
     static const CNetConnectionId SINGLEPLAYER;
+};
+
+struct CNetPeer
+{
+    struct sockaddr_in m_address;
+};
+
+enum class CNetInstance
+{
+    INSTANCE_CLIENT,
+    INSTANCE_SERVER
 };
 
 #define NWN_CLASS_EXTENSION_CGameObject \

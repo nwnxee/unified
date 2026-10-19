@@ -17,6 +17,7 @@ typedef int BOOL;
 
 struct CNetLayerWindow
 {
+    CNetInstance m_nInstance;
     BOOL m_bInitialized;
     CNetLayerInternal * m_pNetLayer;
     BOOL m_bWindowInUse;

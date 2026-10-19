@@ -932,6 +932,17 @@ _______________________________________
     TARGET_INVENTORY      | object | Pretty sure this is always the player
 
 _______________________________________
+    ## Inventory Close Events
+    - NWNX_ON_INVENTORY_CLOSE_BEFORE
+    - NWNX_ON_INVENTORY_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player closing the inventory
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_INVENTORY      | object | The inventory being closed
+
+_______________________________________
     ## Inventory Select Panel Events
     - NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE
     - NWNX_ON_INVENTORY_SELECT_PANEL_AFTER
@@ -2019,6 +2030,8 @@ const string NWNX_ON_QUICKCHAT_BEFORE = "NWNX_ON_QUICKCHAT_BEFORE";
 const string NWNX_ON_QUICKCHAT_AFTER = "NWNX_ON_QUICKCHAT_AFTER";
 const string NWNX_ON_INVENTORY_OPEN_BEFORE = "NWNX_ON_INVENTORY_OPEN_BEFORE";
 const string NWNX_ON_INVENTORY_OPEN_AFTER = "NWNX_ON_INVENTORY_OPEN_AFTER";
+const string NWNX_ON_INVENTORY_CLOSE_BEFORE = "NWNX_ON_INVENTORY_CLOSE_BEFORE";
+const string NWNX_ON_INVENTORY_CLOSE_AFTER = "NWNX_ON_INVENTORY_CLOSE_AFTER";
 const string NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE = "NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE";
 const string NWNX_ON_INVENTORY_SELECT_PANEL_AFTER = "NWNX_ON_INVENTORY_SELECT_PANEL_AFTER";
 const string NWNX_ON_BARTER_START_BEFORE = "NWNX_ON_BARTER_START_BEFORE";

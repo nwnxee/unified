@@ -5,4 +5,5 @@ add_plugin(Experimental
     "UnhardcodeRangerDualWield.cpp"
     "PlayerHitpointsAsPercentage.cpp"
     "IgnoreModuleVersion.cpp"
-    "EndCombatRoundAfterSpellcast.cpp")
+    "EndCombatRoundAfterSpellcast.cpp"
+    "UFMHotfix.cpp")

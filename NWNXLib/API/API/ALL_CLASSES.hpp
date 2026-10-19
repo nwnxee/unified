@@ -311,3 +311,4 @@ struct CResGFFLabel;
 struct CResGFF;
 struct NWVMachineUtils;
 struct CNWSItemPropertyHandler;
+struct CCampaignDB;
