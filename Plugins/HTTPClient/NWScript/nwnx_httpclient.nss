@@ -44,6 +44,9 @@ struct NWNX_HTTPClient_Request
 {
     int nRequestMethod; ///< A @ref request_types "Request Type"
     string sTag; ///< A unique tag for this request
+    string sCustom1; ///< A custom value
+    string sCustom2; ///< A custom value
+    string sCustom3; ///< A custom value
     string sHost; ///< The host domain name/IP address
     string sPath; ///< The path for the url (include the leading /)
     string sData; ///< The data being sent
@@ -69,6 +72,9 @@ struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId);
 
 int NWNX_HTTPClient_SendRequest(struct NWNX_HTTPClient_Request s)
 {
+    NWNXPushString(s.sCustom3);
+    NWNXPushString(s.sCustom2);
+    NWNXPushString(s.sCustom1);
     NWNXPushString(s.sHeaders);
     NWNXPushInt(s.nPort);
     NWNXPushString(s.sAuthPassword);
@@ -102,6 +108,9 @@ struct NWNX_HTTPClient_Request NWNX_HTTPClient_GetRequest(int nRequestId)
     s.sAuthPassword    = NWNXPopString();
     s.nPort            = NWNXPopInt();
     s.sHeaders         = NWNXPopString();
+    s.sCustom1         = NWNXPopString();
+    s.sCustom2         = NWNXPopString();
+    s.sCustom3         = NWNXPopString();
 
     return s;
 }
