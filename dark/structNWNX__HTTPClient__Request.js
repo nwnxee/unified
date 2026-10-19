@@ -2,6 +2,9 @@ var structNWNX__HTTPClient__Request =
 [
     [ "nRequestMethod", "structNWNX__HTTPClient__Request.html#a3be08d4ee8eb994359cffb5df8afd6fc", null ],
     [ "sTag", "structNWNX__HTTPClient__Request.html#a8cb54bcba1f4c123ede728be04202630", null ],
+    [ "sCustom1", "structNWNX__HTTPClient__Request.html#ad6df66a939bfb3f734a0de33858545df", null ],
+    [ "sCustom2", "structNWNX__HTTPClient__Request.html#a1a9a92cd04fed8f289e4f50dd1dadeeb", null ],
+    [ "sCustom3", "structNWNX__HTTPClient__Request.html#a6cb4ad7ff1f7327daefe399f896933cd", null ],
     [ "sHost", "structNWNX__HTTPClient__Request.html#a3a14a77cc0e40f4a4e3d8ceb273c8003", null ],
     [ "sPath", "structNWNX__HTTPClient__Request.html#ad0f541924d188dcf930d85298fb758b0", null ],
     [ "sData", "structNWNX__HTTPClient__Request.html#a10298e81c6d6fabcb6765f6a003a3995", null ],
