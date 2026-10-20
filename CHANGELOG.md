@@ -16,6 +16,8 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
+- Events: Added events `NWNX_ON_OBJECT_ADD_TO_AREA_{BEFORE|AFTER}` which fire when an object is added to the area.
+- Events: Added events `NWNX_ON_OBJECT_REMOVE_FROM_AREA_{BEFORE|AFTER}` which fire when an object is removed to the area.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
@@ -27,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Util: SetStartingLocation()
 - Object: GetLocalizedDescription(), SetLocalizedDescription()
 - Util: RawPrint()
+- Events: RemoveObjectFromAllDispatchLists()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.

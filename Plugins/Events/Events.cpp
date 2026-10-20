@@ -441,6 +441,19 @@ NWNX_EXPORT ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack RemoveObjectFromAllDispatchLists(ArgumentStack&& args)
+{
+    const auto oidObject = args.extract<ObjectID>();
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    for (auto& eventDispatchList : s_dispatchList)
+    {
+        eventDispatchList.second.erase(oidObject);
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack ToggleIDWhitelist(ArgumentStack&& args)
 {
     const auto eventName = args.extract<std::string>();

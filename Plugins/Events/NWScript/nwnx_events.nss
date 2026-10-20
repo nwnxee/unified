@@ -1827,6 +1827,28 @@ _______________________________________
     @note The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use `GetIsObjectValid(GetArea(OBJECT_SELF))`.
 
     @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
+_______________________________________
+    ## Add object to area events
+    - NWNX_ON_OBJECT_ADD_TO_AREA_BEFORE
+    - NWNX_ON_OBJECT_ADD_TO_AREA_AFTER
+
+    `OBJECT_SELF` = The object.
+    `AREA` = The area.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    AREA                  | int    | The area the object is being added to. |
+_______________________________________
+    ## Remove object from area events
+    - NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE
+    - NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER
+
+    `OBJECT_SELF` = The object.
+    `AREA` = The area.
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    AREA                  | int    | The area the object is being removed from. |
 */
 
 /// @name Events Event Constants
@@ -2183,6 +2205,10 @@ const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE = "NWNX_ON_ITEMPROPERTY_
 const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER";
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE";
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER";
+const string NWNX_ON_OBJECT_ADD_TO_AREA_BEFORE = "NWNX_ON_OBJECT_ADD_TO_AREA_BEFORE";
+const string NWNX_ON_OBJECT_ADD_TO_AREA_AFTER = "NWNX_ON_OBJECT_ADD_TO_AREA_AFTER";
+const string NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE = "NWNX_ON_OBJECT_REMOVE_FROM_AREA_BEFORE";
+const string NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER = "NWNX_ON_OBJECT_REMOVE_FROM_AREA_AFTER";
 /// @}
 
 /// @name Events ObjectType Constants
@@ -2383,6 +2409,9 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, o
 /// Remove oObject from the dispatch list for sEvent+sScript(Chunk).
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject);
 
+/// Remove oObject from the dispatch list of every events.
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject);
+
 /// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
 /// on its whitelist.
 ///
@@ -2514,6 +2543,12 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
     NWNXPushString(sScriptOrChunk);
     NWNXPushString(sEvent);
     NWNXCall(NWNX_Events, "RemoveObjectFromDispatchList");
+}
+
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject)
+{
+    NWNXPushObject(oObject);
+    NWNXCall(NWNX_Events, "RemoveObjectFromAllDispatchLists");
 }
 
 void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
