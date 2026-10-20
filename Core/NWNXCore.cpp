@@ -613,6 +613,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
     g_core->m_createServerHook.reset();
     app->CreateServer();
+    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_CREATE_SERVER" });
 }
 
 void NWNXCore::DestroyServerHandler(CAppManager* app)
