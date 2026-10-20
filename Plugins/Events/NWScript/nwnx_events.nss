@@ -1021,6 +1021,32 @@ _______________________________________
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events (not ENTER)
 
 _______________________________________
+    ## Encounter Events
+    - NWNX_ON_ENCOUNTER_TRIGGER_BEFORE
+    - NWNX_ON_ENCOUNTER_TRIGGER_AFTER
+    - NWNX_ON_ENCOUNTER_SPAWN_BEFORE
+    - NWNX_ON_ENCOUNTER_SPAWN_AFTER
+    - NWNX_ON_ENCOUNTER_RESET_BEFORE
+    - NWNX_ON_ENCOUNTER_RESET_AFTER
+
+    `OBJECT_SELF` = The encounter
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ENTERED               | object | Convert to object with StringToObject(), only in TRIGGER events
+    ACTIVE                | int    | TRUE/FALSE, only in TRIGGER events
+    STARTED               | int    | TRUE/FALSE, only in TRIGGER events
+    EXHAUSTED             | int    | TRUE/FALSE, only in TRIGGER events
+    LAST_ENTERED          | object | Convert to object with StringToObject(), only in SPAWN events
+    RESPAWNS_CURRENT      | int    | Only in SPAWN and RESET events
+    RESPAWNS_MAX          | int    | Only in SPAWN and RESET events
+    NUM_SPAWNED           | int    | Creatures currently alive from this encounter, only in TRIGGER and SPAWN events
+
+    @note TRIGGER fires every time the engine evaluates whether an object entering the encounter should spawn it, whether or not it ends up spawning.
+    @note SPAWN fires only when creatures are actually about to be created, for the first spawn and every respawn. Skipping a _BEFORE event prevents it.
+    @note RESET fires when the engine re-arms the encounter (reset time elapsed). In the _BEFORE event the encounter is still in its pre-reset state. Skipping it keeps the encounter as it was; the engine will try again on its next update, so the _BEFORE event fires again until it is allowed.
+
+_______________________________________
     ## Timing Bar Events
     - NWNX_ON_TIMING_BAR_START_BEFORE
     - NWNX_ON_TIMING_BAR_START_AFTER
@@ -2052,6 +2078,12 @@ const string NWNX_ON_TRAP_RECOVER_BEFORE = "NWNX_ON_TRAP_RECOVER_BEFORE";
 const string NWNX_ON_TRAP_RECOVER_AFTER = "NWNX_ON_TRAP_RECOVER_AFTER";
 const string NWNX_ON_TRAP_SET_BEFORE = "NWNX_ON_TRAP_SET_BEFORE";
 const string NWNX_ON_TRAP_SET_AFTER = "NWNX_ON_TRAP_SET_AFTER";
+const string NWNX_ON_ENCOUNTER_TRIGGER_BEFORE = "NWNX_ON_ENCOUNTER_TRIGGER_BEFORE";
+const string NWNX_ON_ENCOUNTER_TRIGGER_AFTER = "NWNX_ON_ENCOUNTER_TRIGGER_AFTER";
+const string NWNX_ON_ENCOUNTER_SPAWN_BEFORE = "NWNX_ON_ENCOUNTER_SPAWN_BEFORE";
+const string NWNX_ON_ENCOUNTER_SPAWN_AFTER = "NWNX_ON_ENCOUNTER_SPAWN_AFTER";
+const string NWNX_ON_ENCOUNTER_RESET_BEFORE = "NWNX_ON_ENCOUNTER_RESET_BEFORE";
+const string NWNX_ON_ENCOUNTER_RESET_AFTER = "NWNX_ON_ENCOUNTER_RESET_AFTER";
 const string NWNX_ON_TIMING_BAR_START_BEFORE = "NWNX_ON_TIMING_BAR_START_BEFORE";
 const string NWNX_ON_TIMING_BAR_START_AFTER = "NWNX_ON_TIMING_BAR_START_AFTER";
 const string NWNX_ON_TIMING_BAR_STOP_BEFORE = "NWNX_ON_TIMING_BAR_STOP_BEFORE";
