@@ -31,6 +31,41 @@ NWNX_EXPORT ArgumentStack GetNumberOfCreaturesInEncounterList(ArgumentStack&& ar
     return 0;
 }
 
+NWNX_EXPORT ArgumentStack SetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto count = args.extract<int32_t>();
+        ASSERT_OR_THROW(count > 0);
+
+        if (count == pEncounter->m_nNumEncounterListEntries)
+            return {};
+
+        auto *pNewList = new CEncounterListEntry[count];
+        const auto numKept = std::min(count, pEncounter->m_nNumEncounterListEntries);
+        for (int32_t i = 0; i < numKept; i++)
+        {
+            pNewList[i] = pEncounter->m_pEncounterList[i];
+        }
+
+        // New entries are empty: they must be set with SetEncounterCreatureByIndex().
+        for (int32_t i = numKept; i < count; i++)
+        {
+            pNewList[i].m_fCR = 0.0f;
+            pNewList[i].m_fCreaturePoints = 0.0f;
+            pNewList[i].m_bAlreadyUsed = false;
+            pNewList[i].m_bAlreadyChecked = false;
+            pNewList[i].m_bUnique = false;
+        }
+
+        delete[] pEncounter->m_pEncounterList;
+        pEncounter->m_pEncounterList = pNewList;
+        pEncounter->m_nNumEncounterListEntries = count;
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetEncounterCreatureByIndex(ArgumentStack&& args)
 {
     std::string resRef = "";

@@ -23,6 +23,13 @@ void NWNX_Encounter_Destroy(object encounter);
 /// @return The number of creatures in the encounter list.
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter);
 
+/// @brief Set the number of creatures in the encounter list
+/// @note Existing entries are kept up to the new size. New entries are empty
+/// and must be set with NWNX_Encounter_SetEncounterCreatureByIndex().
+/// @param encounter The encounter object.
+/// @param count The new number of creatures in the encounter list, 0 or more.
+void NWNX_Encounter_SetNumberOfCreaturesInEncounterList(object encounter, int count);
+
 /// @brief Gets the encounter creature list entry at the specified index
 /// @param encounter The encounter object.
 /// @param index The index of the creature in the encounter list.
@@ -263,4 +270,11 @@ void NWNX_Encounter_SetGeometry(object oEncounter, string sGeometry)
     NWNXPushString(sGeometry);
     NWNXPushObject(oEncounter);
     NWNXCall(NWNX_Encounter, "SetGeometry");
+}
+
+void NWNX_Encounter_SetNumberOfCreaturesInEncounterList(object oEncounter, int nCount)
+{
+    NWNXPushInt(nCount);
+    NWNXPushObject(oEncounter);
+    NWNXCall(NWNX_Encounter, "SetNumberOfCreaturesInEncounterList");
 }
