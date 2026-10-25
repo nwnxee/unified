@@ -10,6 +10,7 @@ var group__events =
     [ "NWNX_Events_PushEventData", "group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4", null ],
     [ "NWNX_Events_SignalEvent", "group__events.html#gab4a9847f9f4b134c0618429671f78a53", null ],
     [ "NWNX_Events_GetEventData", "group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6", null ],
+    [ "NWNX_Events_PeekEventData", "group__events.html#ga094dfbdf62992dd3009e971125f6d222", null ],
     [ "NWNX_Events_SkipEvent", "group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be", null ],
     [ "NWNX_Events_SetEventResult", "group__events.html#gae28a9b2f668f2efae2335efc748dca14", null ],
     [ "NWNX_Events_GetCurrentEvent", "group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b", null ],

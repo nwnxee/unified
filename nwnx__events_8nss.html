@@ -128,6 +128,9 @@ Functions</h2></td></tr>
 <tr class="separator:gab4a9847f9f4b134c0618429671f78a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad74d90c308e190da8d49b1db0aa2f1b6"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a> (string tag)</td></tr>
 <tr class="separator:gad74d90c308e190da8d49b1db0aa2f1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga094dfbdf62992dd3009e971125f6d222"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga094dfbdf62992dd3009e971125f6d222">NWNX_Events_PeekEventData</a> (string tag)</td></tr>
+<tr class="memdesc:ga094dfbdf62992dd3009e971125f6d222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the event data tag exists for the currently executing script.  <a href="group__events.html#ga094dfbdf62992dd3009e971125f6d222">More...</a><br /></td></tr>
+<tr class="separator:ga094dfbdf62992dd3009e971125f6d222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe379f5be8fb94c52cfeb5bda6ce51be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a> ()</td></tr>
 <tr class="separator:gafe379f5be8fb94c52cfeb5bda6ce51be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae28a9b2f668f2efae2335efc748dca14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a> (string data)</td></tr>
@@ -2299,7 +2302,7 @@ Broadcast Safe Projectile Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event fires for all projectiles. It's recommended to use ID whitelists with this event. You can whitelist the event by the projectile type, spell id, or both: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE&quot;</span>, NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*);</div>
 <div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02526">nwnx_events.nss:2526</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02536">nwnx_events.nss:2536</a></div></div>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location <hr  />
  </dd></dl>
 <h2><a class="anchor" id="autotoc_md432"></a>
@@ -3308,7 +3311,7 @@ Ability Change Events</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Mon Oct 19 2026 22:58:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 25 2026 04:48:57 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
