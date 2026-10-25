@@ -2386,6 +2386,11 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, o
 /// Remove oObject from the dispatch list for sEvent+sScript(Chunk).
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject);
 
+/// @brief Remove oObject from the dispatch list of every event.
+/// @param oObject The object to remove.
+/// @note The lists themselves stay enabled, they just no longer contain oObject.
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject);
+
 /// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
 /// on its whitelist.
 ///
@@ -2524,6 +2529,12 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
     NWNXPushString(sScriptOrChunk);
     NWNXPushString(sEvent);
     NWNXCall(NWNX_Events, "RemoveObjectFromDispatchList");
+}
+
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject)
+{
+    NWNXPushObject(oObject);
+    NWNXCall(NWNX_Events, "RemoveObjectFromAllDispatchLists");
 }
 
 void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
