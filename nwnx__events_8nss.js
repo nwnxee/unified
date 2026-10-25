@@ -15,6 +15,7 @@ var nwnx__events_8nss =
     [ "NWNX_Events_ToggleDispatchListMode", "group__events.html#ga28ea15430c5afe99a0abffd81a181e5f", null ],
     [ "NWNX_Events_AddObjectToDispatchList", "group__events.html#ga7984d703dabbde000f62a36cf36d0c4e", null ],
     [ "NWNX_Events_RemoveObjectFromDispatchList", "group__events.html#gaf993f0b749302ccd063c15266998c7e2", null ],
+    [ "NWNX_Events_RemoveObjectFromAllDispatchLists", "group__events.html#gafa60942221c78c53dd9498cbc4deec2f", null ],
     [ "NWNX_Events_ToggleIDWhitelist", "group__events.html#ga6aeb7191ec294fcae051e7522d2cd70e", null ],
     [ "NWNX_Events_AddIDToWhitelist", "group__events.html#ga7651182dbfadf41dd9007355dbadd769", null ],
     [ "NWNX_Events_RemoveIDFromWhitelist", "group__events.html#ga542c1822a5fceee6074b1865601c67b7", null ],

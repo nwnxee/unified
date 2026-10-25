@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__DamageEventData.html#a4066eded1261a8eba565bb97fe7a9f0c":[0,9,2,17],
+"structNWNX__Damage__DamageEventData.html#a48864853216c141aca745c0f858f66f3":[0,9,2,22],
 "structNWNX__Damage__DamageEventData.html#a4a32a9c0538c69d040fb6c346032736c":[0,9,2,32],
 "structNWNX__Damage__DamageEventData.html#a4aa92aff650d2562d96f38a25a1a25fe":[0,9,2,18],
 "structNWNX__Damage__DamageEventData.html#a4abb22e26f7ab484c221d33550f3aefd":[0,9,2,6],
@@ -247,6 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__WebHook__Message.html#afd77404e0c5eca11bf383c50896d276e":[0,48,3,30],
 "structNWNX__WebHook__Message.html#afd8b5c47c7de32c4c3b29e4111340736":[0,48,3,41],
 "structSQLite__MillisecondTimeStamp.html":[0,1,2],
-"structSQLite__MillisecondTimeStamp.html#a6438b40dad993553d39397575332ada2":[0,1,2,1],
-"structSQLite__MillisecondTimeStamp.html#a6e1ec061a2b6a0522dc8e7b2430370dc":[0,1,2,0]
+"structSQLite__MillisecondTimeStamp.html#a6438b40dad993553d39397575332ada2":[0,1,2,1]
 };

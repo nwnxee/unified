@@ -145,6 +145,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf993f0b749302ccd063c15266998c7e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf993f0b749302ccd063c15266998c7e2">NWNX_Events_RemoveObjectFromDispatchList</a> (string sEvent, string sScriptOrChunk, object oObject)</td></tr>
 <tr class="memdesc:gaf993f0b749302ccd063c15266998c7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list for sEvent+sScript(Chunk).  <a href="group__events.html#gaf993f0b749302ccd063c15266998c7e2">More...</a><br /></td></tr>
 <tr class="separator:gaf993f0b749302ccd063c15266998c7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa60942221c78c53dd9498cbc4deec2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gafa60942221c78c53dd9498cbc4deec2f">NWNX_Events_RemoveObjectFromAllDispatchLists</a> (object oObject)</td></tr>
+<tr class="memdesc:gafa60942221c78c53dd9498cbc4deec2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list of every event.  <a href="group__events.html#gafa60942221c78c53dd9498cbc4deec2f">More...</a><br /></td></tr>
+<tr class="separator:gafa60942221c78c53dd9498cbc4deec2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga6aeb7191ec294fcae051e7522d2cd70e">NWNX_Events_ToggleIDWhitelist</a> (string sEvent, int bEnable)</td></tr>
 <tr class="memdesc:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are on its whitelist.  <a href="group__events.html#ga6aeb7191ec294fcae051e7522d2cd70e">More...</a><br /></td></tr>
 <tr class="separator:ga6aeb7191ec294fcae051e7522d2cd70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2302,7 +2305,7 @@ Broadcast Safe Projectile Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event fires for all projectiles. It's recommended to use ID whitelists with this event. You can whitelist the event by the projectile type, spell id, or both: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE&quot;</span>, NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*);</div>
 <div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02536">nwnx_events.nss:2536</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02547">nwnx_events.nss:2547</a></div></div>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location <hr  />
  </dd></dl>
 <h2><a class="anchor" id="autotoc_md432"></a>
@@ -3311,7 +3314,7 @@ Ability Change Events</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 25 2026 14:49:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 25 2026 18:37:06 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
