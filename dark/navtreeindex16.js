@@ -1,6 +1,10 @@
 var NAVTREEINDEX16 =
 {
+"group__weapon.html#gae42853a0c8a7721686bb406b3965d7ff":[4,0,3,46,0,0,25],
+"group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[4,0,3,46,0,0,18],
+"group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[0,47,21],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[4,0,3,46,0,0,1],
+"group__weapon.html#gae8574965a3aae542e79e051bfad60217":[0,47,4],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[4,0,3,46,0,0,24],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,47,26],
 "group__weapon.html#weapon":[0,47,0],
@@ -13,11 +17,11 @@ var NAVTREEINDEX16 =
 "group__webhook.html#autotoc_md664":[10],
 "group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d":[0,48,4],
 "group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d":[4,0,3,47,0,0,0],
-"group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc":[4,0,3,47,0,0,1],
 "group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc":[0,48,5],
+"group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc":[4,0,3,47,0,0,1],
 "group__webhook.html#ga93cfa8d03c5e936385aeb34f9983c254":[4,0,3,47,0,0,2],
-"group__webhook.html#gaa00d5470aa2ba99e649e08770ac86bb6":[0,48,6],
 "group__webhook.html#gaa00d5470aa2ba99e649e08770ac86bb6":[4,0,3,47,0,1,1],
+"group__webhook.html#gaa00d5470aa2ba99e649e08770ac86bb6":[0,48,6],
 "group__webhook.html#webhook":[0,48,0],
 "inc__array_8nss.html":[4,0,0,1],
 "inc__array_8nss.html#a2217bc4001b9a66315bb8b327ce14a87":[4,0,0,1,33],
@@ -245,9 +249,5 @@ var NAVTREEINDEX16 =
 "nwnx__redis_8nss.html#a6d1f9aa60ff2a33fc7b8c68bb223fe44":[4,0,3,29,0,0,48],
 "nwnx__redis_8nss.html#a6d324b1d115a65eebee0f31cfc75da63":[4,0,3,29,0,0,164],
 "nwnx__redis_8nss.html#a6ed53adf0a393d41b4037f178b48872b":[4,0,3,29,0,0,29],
-"nwnx__redis_8nss.html#a6f517d9f9e047db8e25c8b79bffa9636":[4,0,3,29,0,0,3],
-"nwnx__redis_8nss.html#a6fc038d503a0d48b92c62c3c57735509":[4,0,3,29,0,0,211],
-"nwnx__redis_8nss.html#a7088469190fc9b6d2eec0103063939e2":[4,0,3,29,0,0,182],
-"nwnx__redis_8nss.html#a70d5fe49045153cc19659e0b98882a56":[4,0,3,29,0,0,126],
-"nwnx__redis_8nss.html#a738c31ca077bec3e4e7a2c21ba90272f":[4,0,3,29,0,0,15]
+"nwnx__redis_8nss.html#a6f517d9f9e047db8e25c8b79bffa9636":[4,0,3,29,0,0,3]
 };

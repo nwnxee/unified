@@ -26,6 +26,8 @@ var group__creature =
     [ "NWNX_Creature_GetClassByLevel", "group__creature.html#ga9f675908b28f41658f1c1e5acfe78068", null ],
     [ "NWNX_Creature_SetBaseAC", "group__creature.html#ga0a277468e5ea998dfbb7db20289e931b", null ],
     [ "NWNX_Creature_GetBaseAC", "group__creature.html#ga4aeb53c89ee532c17bd3574484a4593c", null ],
+    [ "NWNX_Creature_SetBaseACPolymorph", "group__creature.html#ga08e82deaa21db21ee1f30728967c4a88", null ],
+    [ "NWNX_Creature_GetBaseACPolymorph", "group__creature.html#gaf72a5804ef4390a8cd145aec78fa78d4", null ],
     [ "NWNX_Creature_SetRawAbilityScore", "group__creature.html#ga7e0289bb93f298bce44527f53611f1b4", null ],
     [ "NWNX_Creature_GetRawAbilityScore", "group__creature.html#ga4fbd561eaf7af28bdacd9c58075b3a9a", null ],
     [ "NWNX_Creature_ModifyRawAbilityScore", "group__creature.html#gac927f01d12df06dc070988e9f5fad3f1", null ],
