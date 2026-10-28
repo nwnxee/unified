@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a":[4,0,3,46,0,0,3],
 "group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a":[0,47,6],
 "group__weapon.html#gae42853a0c8a7721686bb406b3965d7ff":[0,47,27],
 "group__weapon.html#gae42853a0c8a7721686bb406b3965d7ff":[4,0,3,46,0,0,25],
@@ -7,16 +8,16 @@ var NAVTREEINDEX16 =
 "group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c":[4,0,3,46,0,0,18],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[0,47,4],
 "group__weapon.html#gae8574965a3aae542e79e051bfad60217":[4,0,3,46,0,0,1],
-"group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,47,26],
 "group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[4,0,3,46,0,0,24],
+"group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0":[0,47,26],
 "group__weapon.html#weapon":[0,47,0],
 "group__webhook.html":[0,48],
-"group__webhook.html#autotoc_md659":[68],
 "group__webhook.html#autotoc_md660":[69],
-"group__webhook.html#autotoc_md661":[7],
-"group__webhook.html#autotoc_md662":[8],
-"group__webhook.html#autotoc_md663":[9],
-"group__webhook.html#autotoc_md664":[10],
+"group__webhook.html#autotoc_md661":[70],
+"group__webhook.html#autotoc_md662":[7],
+"group__webhook.html#autotoc_md663":[8],
+"group__webhook.html#autotoc_md664":[9],
+"group__webhook.html#autotoc_md665":[10],
 "group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d":[0,48,4],
 "group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d":[4,0,3,47,0,0,0],
 "group__webhook.html#ga8030e0fe61e40060c60246dd1cc2f5cc":[0,48,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "nwnx__redis_8nss.html#a6a703b75524d7fa63359b5c91c645914":[4,0,3,29,0,0,125],
 "nwnx__redis_8nss.html#a6b07983d014b3bf195397c50b79fce95":[4,0,3,29,0,0,62],
 "nwnx__redis_8nss.html#a6b9df4e2134f4ea26ea660b50b3cc817":[4,0,3,29,0,0,74],
-"nwnx__redis_8nss.html#a6d1f9aa60ff2a33fc7b8c68bb223fe44":[4,0,3,29,0,0,48],
-"nwnx__redis_8nss.html#a6d324b1d115a65eebee0f31cfc75da63":[4,0,3,29,0,0,164]
+"nwnx__redis_8nss.html#a6d1f9aa60ff2a33fc7b8c68bb223fe44":[4,0,3,29,0,0,48]
 };
