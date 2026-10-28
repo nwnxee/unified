@@ -127,17 +127,7 @@ Some values for convenience:
 
 ## NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION
 
-To place an item, the game tries every cell of the inventory grid in turn, and for each cell it checks the item against every
-item already there. That is quadratic in the number of items: adding one item to a store that holds 400 takes about 100 times
-as long as adding it to an empty one (roughly 3.8 ms against 0.03 ms), and filling a store, a placeable or a bag in a loop gets
-slower with every item.
-
-With this tweak the cells the other items cover are marked once and the grid is scanned for the first cell the item fits on, in the
-same order as the game (rows, then columns), so items land in the same places. If nothing fits, or the position is asked for by a
-script (`bOriginatingFromScript`), the game's own code runs.
-
-`NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION_VERIFY=true` also runs the game's code for every hit and logs an error if the two disagree.
-It is meant for testing and gives the time back.
+Finding a free spot for an item in a store, container or inventory is quadratic in the number of items. With this tweak it is linear, and items land in the same cells. Calls from scripts, and a repository with no room (Lost Items handling), still run the game's own code.
 
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 
