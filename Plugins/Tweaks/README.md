@@ -22,6 +22,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT` | true or false | Dead creatures will fire the on area exit event. |
 | `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS` | true or false | DMs possessing a creature will not clear their actions. |
 | `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG` | true or false | Fixes a bug with greater sanctuary. |
+| `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` | true or false | Finding a free spot in a store, container or inventory takes time linear in the number of items instead of quadratic. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fast_item_repository_find_position). |
 | `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` | Between 1 and 3 | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_item_charges_cost_mode). |
 | `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` | true or false | Fixes dispel checks vs. effects created by deleted objects. |
 | `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` | true or false | Adds prestige class levels to caster level. |
@@ -123,6 +124,20 @@ Some values for convenience:
 | 7168 | All Good/Evil vs AlignmentGroup |
 | 57344 | All Good/Evil vs SpecificAlignment |
 | 65535 | Hide All VFX |
+
+## NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION
+
+To place an item, the game tries every cell of the inventory grid in turn, and for each cell it checks the item against every
+item already there. That is quadratic in the number of items: adding one item to a store that holds 400 takes about 100 times
+as long as adding it to an empty one (roughly 3.8 ms against 0.03 ms), and filling a store, a placeable or a bag in a loop gets
+slower with every item.
+
+With this tweak the cells the other items cover are marked once and the grid is scanned for the first cell the item fits on, in the
+same order as the game (rows, then columns), so items land in the same places. If nothing fits, or the position is asked for by a
+script (`bOriginatingFromScript`), the game's own code runs.
+
+`NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION_VERIFY=true` also runs the game's code for every hit and logs an error if the two disagree.
+It is meant for testing and gives the time back.
 
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 
