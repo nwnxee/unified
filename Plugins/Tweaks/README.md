@@ -22,6 +22,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT` | true or false | Dead creatures will fire the on area exit event. |
 | `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS` | true or false | DMs possessing a creature will not clear their actions. |
 | `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG` | true or false | Fixes a bug with greater sanctuary. |
+| `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` | true or false | Finding a free spot in a store, container or inventory takes time linear in the number of items instead of quadratic. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fast_item_repository_find_position). |
 | `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` | Between 1 and 3 | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_item_charges_cost_mode). |
 | `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` | true or false | Fixes dispel checks vs. effects created by deleted objects. |
 | `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` | true or false | Adds prestige class levels to caster level. |
@@ -123,6 +124,10 @@ Some values for convenience:
 | 7168 | All Good/Evil vs AlignmentGroup |
 | 57344 | All Good/Evil vs SpecificAlignment |
 | 65535 | Hide All VFX |
+
+## NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION
+
+Finding a free spot for an item in a store, container or inventory is quadratic in the number of items. With this tweak it is linear, and items land in the same cells. Calls from scripts, and a repository with no room (Lost Items handling), still run the game's own code.
 
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 

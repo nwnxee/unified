@@ -11,6 +11,7 @@ add_plugin(Tweaks
     "DisableQuicksave.cpp"
     "DisplayNumAttacksOverrideInCharacterSheet.cpp"
     "FixArmorDexBonusUnderOne.cpp"
+    "FastItemRepositoryFindPosition.cpp"
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixTriggerEnterDetection.cpp"
