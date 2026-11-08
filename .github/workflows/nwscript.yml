@@ -2,6 +2,9 @@ name: NWScript
 
 # Compile every tracked .nss file with the NWScript compiler.
 #
+# This is called as a job from build.yml so the expensive C++ build only starts
+# after the scripts compile. It can also be run manually.
+#
 # nwscript.nss (the language spec) and the base-game includes are not tracked
 # in this repo. They are loaded from the dedicated server's key/BIF data by
 # pointing nwn_script_comp at the extracted server as NWN_ROOT. The compiler is
@@ -11,23 +14,8 @@ name: NWScript
 # NWNEE_DEDICATED_VERSION when updating the game.
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - '**.nss'
-      - '.github/workflows/nwscript.yml'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - '**.nss'
-      - '.github/workflows/nwscript.yml'
+  workflow_call:
   workflow_dispatch:
-
-concurrency:
-  group: "nwscript-${{ github.ref }}"
-  cancel-in-progress: true
 
 permissions:
   contents: read
