@@ -21,7 +21,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  nwscript:
+    name: NWScript
+    uses: ./.github/workflows/nwscript.yml
+
   build:
+    needs: nwscript
     runs-on: ubuntu-22.04
     container:
       image: docker://nwnxee/builder:latest
