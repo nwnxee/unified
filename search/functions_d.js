@@ -914,7 +914,7 @@ var searchData=
   ['nwnx_5futil_5fupdateresourcedirectory_3849',['NWNX_Util_UpdateResourceDirectory',['../group__util.html#ga4ff7181f22af12357878044b76c102cf',1,'nwnx_util.nss']]],
   ['nwnx_5fvisibility_5fgetvisibilityoverride_3850',['NWNX_Visibility_GetVisibilityOverride',['../group__visibility.html#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef',1,'nwnx_visibility.nss']]],
   ['nwnx_5fvisibility_5fsetvisibilityoverride_3851',['NWNX_Visibility_SetVisibilityOverride',['../group__visibility.html#gacaa7614a849cd656edef0395d5876d95',1,'nwnx_visibility.nss']]],
-  ['nwnx_5fwatchcat_5fdisableuntilscriptexit_3852',['NWNX_Watchcat_DisableUntilScriptExit',['../group__watchcat.html#ga323d8c441239354f7f0ef85727ad49dc',1,'nwnx_watchcat.nss']]],
+  ['nwnx_5fwatchcat_5fdisableuntilscriptexit_3852',['NWNX_Watchcat_DisableUntilScriptExit',['../group__watchcat.html#ga5f1216a37ae298a62cd53e9e026cd2fe',1,'nwnx_watchcat.nss']]],
   ['nwnx_5fweapon_5fbypassdevastatingcritical_3853',['NWNX_Weapon_BypassDevastatingCritical',['../group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73',1,'nwnx_weapon.nss']]],
   ['nwnx_5fweapon_5fgetdevastatingcriticaleventdata_3854',['NWNX_Weapon_GetDevastatingCriticalEventData',['../group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7',1,'nwnx_weapon.nss']]],
   ['nwnx_5fweapon_5fgetonehalfstrength_3855',['NWNX_Weapon_GetOneHalfStrength',['../group__weapon.html#ga3656299a57ac60f31a0139b569319478',1,'nwnx_weapon.nss']]],
