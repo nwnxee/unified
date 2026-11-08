@@ -1,0 +1,166 @@
+name: NWScript
+
+# Compile every tracked .nss file with the NWScript compiler.
+#
+# nwscript.nss (the language spec) and the base-game includes are not tracked
+# in this repo. They are loaded from the dedicated server's key/BIF data by
+# pointing nwn_script_comp at the extracted server as NWN_ROOT. The compiler is
+# a pinned neverwinter.nim release.
+#
+# Bump NWN_SCRIPT_COMP_VERSION when updating the compiler, and
+# NWNEE_DEDICATED_VERSION when updating the game.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**.nss'
+      - '.github/workflows/nwscript.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**.nss'
+      - '.github/workflows/nwscript.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: "nwscript-${{ github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NWN_SCRIPT_COMP_VERSION: "2.3.2"
+  NWNEE_DEDICATED_VERSION: "8193.37-17"
+
+jobs:
+  compile:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache nwn_script_comp
+        id: cache-nwn-script-comp
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/nwn-script-comp
+          key: nwn-script-comp-${{ runner.os }}-${{ env.NWN_SCRIPT_COMP_VERSION }}
+
+      - name: Download nwn_script_comp
+        if: steps.cache-nwn-script-comp.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/nwn-script-comp" "$RUNNER_TEMP/nwn-script-comp-dl"
+          echo "Using neverwinter.nim ${{ env.NWN_SCRIPT_COMP_VERSION }}"
+          gh release download "${{ env.NWN_SCRIPT_COMP_VERSION }}" \
+            -R niv/neverwinter.nim \
+            -p 'neverwinter-x86_64-linux-gnu.zip' \
+            -D "$RUNNER_TEMP/nwn-script-comp-dl"
+          unzip -q "$RUNNER_TEMP/nwn-script-comp-dl/neverwinter-x86_64-linux-gnu.zip" \
+            -d "$RUNNER_TEMP/nwn-script-comp-dl/unpacked"
+          cp "$(find "$RUNNER_TEMP/nwn-script-comp-dl/unpacked" -type f -name nwn_script_comp -print -quit)" \
+            "$RUNNER_TEMP/nwn-script-comp/"
+          chmod +x "$RUNNER_TEMP/nwn-script-comp/nwn_script_comp"
+          rm -rf "$RUNNER_TEMP/nwn-script-comp-dl"
+
+      - name: Add nwn_script_comp to PATH
+        run: echo "$RUNNER_TEMP/nwn-script-comp" >> "$GITHUB_PATH"
+
+      - name: Cache Neverwinter Nights dedicated server
+        id: cache-nwn
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/nwn-server
+          key: nwnee-dedicated-${{ env.NWNEE_DEDICATED_VERSION }}-${{ runner.os }}
+
+      - name: Download Neverwinter Nights dedicated server
+        if: steps.cache-nwn.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/nwn-server"
+          curl -fL --retry 3 --retry-delay 2 \
+            -o "$RUNNER_TEMP/nwn-server.zip" \
+            "https://nwn.beamdog.net/downloads/nwnee-dedicated-${{ env.NWNEE_DEDICATED_VERSION }}.zip"
+          unzip -q "$RUNNER_TEMP/nwn-server.zip" -d "$RUNNER_TEMP/nwn-server"
+          rm -f "$RUNNER_TEMP/nwn-server.zip"
+
+      - name: Configure NWN root
+        run: |
+          # The dedicated server does not ship a loose nwscript.nss; the language
+          # spec lives in data/nwn_base.key. Use the key file to locate the root.
+          key="$(find "$RUNNER_TEMP/nwn-server" -type f -path '*/data/nwn_base.key' -print -quit)"
+          if [ -z "$key" ]; then
+            echo "::error::Could not find data/nwn_base.key in the dedicated server archive"
+            find "$RUNNER_TEMP/nwn-server" -maxdepth 3 -type d | head -50
+            exit 1
+          fi
+          root="$(dirname "$(dirname "$key")")"
+          mkdir -p "$RUNNER_TEMP/nwn-user"
+          echo "NWN_ROOT=$root" >> "$GITHUB_ENV"
+          echo "NWN_USER_DIRECTORY=$RUNNER_TEMP/nwn-user" >> "$GITHUB_ENV"
+          echo "NWN_ROOT=$root"
+
+      - name: Show versions
+        run: |
+          nwn_script_comp --version | tail -n 1
+          if [ -f "$NWN_ROOT/databuild.txt" ]; then
+            echo "NWN databuild: $(cat "$NWN_ROOT/databuild.txt")"
+          fi
+
+      - name: Compile all NWScript sources
+        shell: bash
+        run: |
+          set -u
+
+          mapfile -t all < <(git ls-files '*.nss')
+          shipped=()
+          tests=()
+          for f in "${all[@]}"; do
+            if [ "$f" = "nwscript.nss" ]; then
+              continue
+            fi
+            if [[ "$f" =~ _t[0-9]*\.nss$ ]]; then
+              tests+=("$f")
+            else
+              shipped+=("$f")
+            fi
+          done
+
+          # The language spec comes from NWN_ROOT's keys, so the repo root does
+          # not need to be in the include search path.
+          mapfile -t dirs_arr < <(printf '%s\n' "${all[@]}" | xargs -r -n1 dirname | sort -u)
+          dirs="$(IFS=,; echo "${dirs_arr[*]}")"
+
+          overall=0
+          run_comp() {
+            local label="$1"
+            shift
+            local files=("$@")
+            local rc=0
+
+            if [ "${#files[@]}" -eq 0 ]; then
+              echo "No files for $label"
+              return 0
+            fi
+
+            echo "::group::$label (${#files[@]} files)"
+            if ! nwn_script_comp \
+              --root "$NWN_ROOT" \
+              --userdirectory "$NWN_USER_DIRECTORY" \
+              --dirs "$dirs" \
+              --no-ovr \
+              -s -y --verbose --fatal-warnings --no-require-entry-point \
+              -c "${files[@]}"; then
+              rc=1
+            fi
+            echo "::endgroup::"
+            return "$rc"
+          }
+
+          run_comp "Shipped NWScript sources" "${shipped[@]}" || overall=1
+          run_comp "_t test scripts" "${tests[@]}" || overall=1
+          exit "$overall"
