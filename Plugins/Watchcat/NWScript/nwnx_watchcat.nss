@@ -10,7 +10,7 @@ void NWNX_Watchcat_DisableUntilScriptExit();
 
 /// @}
 
-int NWNX_Watchcat_DisableUntilScriptExit()
+void NWNX_Watchcat_DisableUntilScriptExit()
 {
     NWNXCall(NWNX_Watchcat, "DisableUntilScriptExit");
 }
