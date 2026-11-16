@@ -172,14 +172,21 @@ namespace Nui::JSON {
     //using EventQueue = std::queue<Event>;
 }
 
+struct CResGFF;
+struct CResStruct;
+
+// Keep the virtuals in the server's order (8193.37): NWNX calls them through the server's vtables.
 template<typename T>
 struct SharedPtrEngineStructure
 {
     std::shared_ptr<T> m_shared;
+    virtual uint64_t GetId() const = 0;
     virtual ~SharedPtrEngineStructure() {}
     virtual bool IsEmpty() const = 0;
     virtual void Clear() = 0;
     virtual void Unlink() = 0;
+    virtual void SaveToGFF(CResGFF*, CResStruct*) {}
+    virtual void LoadFromGff(CResGFF*, CResStruct*) {}
 };
 
 template<typename T>

@@ -13,6 +13,7 @@ struct CassowarySolverEngineStructure : public SharedPtrEngineStructure<Cassowar
 {
     CassowarySolverEngineStructure();
     virtual ~CassowarySolverEngineStructure() {}
+    uint64_t GetId() const override;
     bool IsEmpty() const override;
     void Clear() override;
     void Unlink() override;
