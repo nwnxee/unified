@@ -123,6 +123,11 @@ void main()
     NWNX_Tests_Report("NWNX_Creature", "GetMovementRateFactor", 1.25 == NWNX_Creature_GetMovementRateFactor(oCreature));
     NWNX_Creature_SetMovementRateFactor(oCreature, 1.5);
     NWNX_Tests_Report("NWNX_Creature", "SetMovementRateFactor", 1.5 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    NWNX_Creature_SetMovementRateFactorModifier(oCreature, 0.5);
+    NWNX_Tests_Report("NWNX_Creature", "SetMovementRateFactorModifier", 0.5 == NWNX_Creature_GetMovementRateFactorModifier(oCreature));
+    NWNX_Tests_Report("NWNX_Creature", "SetMovementRateFactorModifier", 0.75 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    NWNX_Creature_SetMovementRateFactorModifier(oCreature, 1.0);
+    NWNX_Tests_Report("NWNX_Creature", "SetMovementRateFactorModifier", 1.5 == NWNX_Creature_GetMovementRateFactor(oCreature));
 
     int nLvl1HP = NWNX_Creature_GetMaxHitPointsByLevel(oCreature, 1);
     NWNX_Tests_Report("NWNX_Creature", "GetMaxHitPointsByLevel", nLvl1HP >= 0);
