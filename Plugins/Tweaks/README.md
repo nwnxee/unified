@@ -58,6 +58,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER` | true or false | Splitting a stack inside a container owned by another object (e.g. a bag in a chest) is refused. The engine puts the new stack in the wrong inventory, which later crashes inventory updates. Splits of items with no owner are refused too. A refused split doesn't fire the `NWNX_ON_ITEM_SPLIT_*` events. |
 | `NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY` | true or false | Item IDs that no longer resolve to an item are removed from an inventory before it is sent to a player (`CNWSMessage::WriteRepositoryUpdate`), instead of crashing the server. The removed `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY` covered `CItemRepository::CalculateContentsWeight`, which the engine now null-checks itself; `WriteRepositoryUpdate` still lacks that check in 8193.37-17. |
 | `NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH` | true or false | An open inventory panel whose owner is not (or no longer) a creature is closed instead of crashing the server. |
+| `NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH` | true or false | A creature jumping to another area while linked to an area of effect that is in no area no longer crashes the server. |
 
 ## Environment variable values
 

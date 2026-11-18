@@ -10,6 +10,7 @@ add_plugin(Tweaks
     "DisablePause.cpp"
     "DisableQuicksave.cpp"
     "DisplayNumAttacksOverrideInCharacterSheet.cpp"
+    "FixAoEJumpWithoutAreaCrash.cpp"
     "FixArmorDexBonusUnderOne.cpp"
     "FastItemRepositoryFindPosition.cpp"
     "FixDispelEffectLevels.cpp"
