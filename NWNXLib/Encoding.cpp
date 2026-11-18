@@ -4,6 +4,7 @@
 #include <string>
 #include <string.h>
 #include <algorithm>
+#include <cctype>
 
 namespace NWNXLib::String {
 
@@ -26,34 +27,29 @@ void SetDefaultLocale(const std::string& locale)
     if (locale.empty())
         return;
 
-    std::string sub = locale.substr(0, 2);
-    std::transform(sub.begin(), sub.end(), sub.begin(), ::tolower);
+    std::string lower = locale;
+    std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) { return std::tolower(c); });
+    std::string sub = lower.substr(0, 2);
 
-    if (sub == "cp")
+    if (lower == "cp1250")
+        SetDefaultLocale(cp1250);
+    else if (lower == "cp1251")
+        SetDefaultLocale(cp1251);
+    else if (lower == "cp1252")
+        SetDefaultLocale(cp1252);
+    // "cz" is kept for compatibility; the ISO 639-1 code is "cs".
+    else if (sub == "ru" || sub == "bg" || sub == "mk")
+        SetDefaultLocale(cp1251);
+    else if (sub == "pl" || sub == "cs" || sub == "cz" || sub == "sk" || sub == "hr" || sub == "hu")
+        SetDefaultLocale(cp1250);
+    else if (sub == "en" || sub == "de" || sub == "es" || sub == "fr" || sub == "it")
+        SetDefaultLocale(cp1252);
+    else
     {
-        if (locale == "cp1250")
-            SetDefaultLocale(cp1250);
-        if (locale == "cp1251")
-            SetDefaultLocale(cp1251);
-        if (locale == "cp1252")
-            SetDefaultLocale(cp1252);
-    }
-    else // Symbolic country codes
-    {
-        if (sub == "ru" || sub == "bg" || sub == "mk")
-            SetDefaultLocale(cp1251);
-        else if (sub == "pl" || sub == "cz" || sub == "sk" || sub == "hr" || sub == "hu")
-            SetDefaultLocale(cp1250);
-        else if (sub == "en" || sub == "de" || sub == "es" || sub == "fr" || sub == "it")
-            SetDefaultLocale(cp1252);
-        else
-        {
-            LOG_WARNING("Unknown locale %s", locale);
-            SetDefaultLocale(Default);
-        }
+        LOG_WARNING("Unknown locale '%s', using cp1252", locale);
+        SetDefaultLocale(Default);
     }
 }
-
 
 // Bytes 0x80-0xFF from https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/; undefined bytes map to C1 controls.
 static constexpr std::array<uint16_t, 128> s_cp1250 =
