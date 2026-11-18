@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
 - Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
+- Tweaks: added `NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST` to fix the point-in-trigger test giving the wrong answer for points straight south of a trigger corner.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
