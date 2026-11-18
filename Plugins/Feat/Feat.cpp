@@ -80,8 +80,6 @@ Feat::Feat(Services::ProxyServiceList* services)
     s_OnRemoveBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveBonusFeat,
                                                            &OnRemoveBonusFeatHook, Hooks::Order::Early);
     s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD, &EatTURDHook, Hooks::Order::Early);
-    s_RemoveEffectByIdHook = Hooks::HookFunction(&CNWSObject::RemoveEffectById, &RemoveEffectByIdHook, Hooks::Order::Earliest);
-    s_RemoveEffectHook = Hooks::HookFunction(&CNWSObject::RemoveEffect, &RemoveEffectHook, Hooks::Order::Earliest);
 }
 
 Feat::~Feat()
@@ -614,6 +612,17 @@ void Feat::FlushPendingFeatModRemovals()
     s_RemoveEffectDepth--;
 }
 
+// Hooked only once a feat modifier is set, so other servers don't pay for it on every effect removal
+void Feat::InstallRemoveEffectHooks()
+{
+    if (s_RemoveEffectByIdHook)
+        return;
+
+    LOG_INFO("First feat modifier set: hooking effect removal to defer modifier removal.");
+    s_RemoveEffectByIdHook = Hooks::HookFunction(&CNWSObject::RemoveEffectById, &RemoveEffectByIdHook, Hooks::Order::Earliest);
+    s_RemoveEffectHook = Hooks::HookFunction(&CNWSObject::RemoveEffect, &RemoveEffectHook, Hooks::Order::Earliest);
+}
+
 int32_t Feat::RemoveEffectByIdHook(CNWSObject *pObject, uint64_t nId)
 {
     s_RemoveEffectDepth++;
@@ -1047,7 +1056,10 @@ ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
     auto param4 = ScriptAPI::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
+    {
         g_plugin->m_Feats.insert(featId);
+        InstallRemoveEffectHooks();
+    }
 
     return ScriptAPI::Arguments();
 }

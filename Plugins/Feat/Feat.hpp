@@ -96,6 +96,7 @@ private:
     static void AddFeatEffects(CNWSCreatureStats*, uint16_t);
     static void RemoveFeatEffects(CNWSCreatureStats*, uint16_t);
     static void FlushPendingFeatModRemovals();
+    static void InstallRemoveEffectHooks();
     static void AddRemoveBonusSpell(CNWSCreatureStats*, uint16_t, bool bAdd = true);
     static bool DoFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
 
