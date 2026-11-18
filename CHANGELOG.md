@@ -17,6 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
+- Core: added `NWNX_CORE_ENCODING_BEST_FIT` to replace characters the codepage lacks with close equivalents instead of `?` when converting from UTF-8.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.

@@ -5,6 +5,8 @@
 #include <string.h>
 #include <algorithm>
 #include <cctype>
+#include <iterator>
+#include <utility>
 
 namespace NWNXLib::String {
 
@@ -224,6 +226,115 @@ static uint32_t DecodeUTF8(const uint8_t* str, size_t len, size_t& i)
     return cp;
 }
 
+static bool g_BestFit = false;
+
+void SetBestFit(bool enabled)
+{
+    g_BestFit = enabled;
+}
+
+// Characters none of the three codepages have. Substitutes are ASCII or U+00A0, which all of them have.
+struct BestFitEntry
+{
+    uint16_t from;
+    uint16_t to;
+};
+static constexpr BestFitEntry s_bestFit[] =
+{
+    { 0x2000, ' ' },
+    { 0x2001, ' ' },
+    { 0x2002, ' ' },
+    { 0x2003, ' ' },
+    { 0x2004, ' ' },
+    { 0x2005, ' ' },
+    { 0x2006, ' ' },
+    { 0x2007, 0x00A0 },
+    { 0x2008, ' ' },
+    { 0x2009, ' ' },
+    { 0x200A, ' ' },
+    { 0x2010, '-' },
+    { 0x2011, '-' },
+    { 0x2012, '-' },
+    { 0x2015, '-' },
+    { 0x201B, '\'' },
+    { 0x201F, '"' },
+    { 0x202F, 0x00A0 },
+    { 0x205F, ' ' },
+    { 0x2212, '-' },
+};
+
+// Covers every precomposed character of the three codepages (from UnicodeData.txt).
+struct Composition
+{
+    uint16_t base;
+    uint16_t mark;
+    uint16_t composed;
+};
+static constexpr Composition s_compositions[] =
+{
+    {0x0041, 0x0300, 0x00C0}, {0x0041, 0x0301, 0x00C1}, {0x0041, 0x0302, 0x00C2}, {0x0041, 0x0303, 0x00C3},
+    {0x0041, 0x0306, 0x0102}, {0x0041, 0x0308, 0x00C4}, {0x0041, 0x030A, 0x00C5}, {0x0041, 0x0328, 0x0104},
+    {0x0043, 0x0301, 0x0106}, {0x0043, 0x030C, 0x010C}, {0x0043, 0x0327, 0x00C7}, {0x0044, 0x030C, 0x010E},
+    {0x0045, 0x0300, 0x00C8}, {0x0045, 0x0301, 0x00C9}, {0x0045, 0x0302, 0x00CA}, {0x0045, 0x0308, 0x00CB},
+    {0x0045, 0x030C, 0x011A}, {0x0045, 0x0328, 0x0118}, {0x0049, 0x0300, 0x00CC}, {0x0049, 0x0301, 0x00CD},
+    {0x0049, 0x0302, 0x00CE}, {0x0049, 0x0308, 0x00CF}, {0x004C, 0x0301, 0x0139}, {0x004C, 0x030C, 0x013D},
+    {0x004E, 0x0301, 0x0143}, {0x004E, 0x0303, 0x00D1}, {0x004E, 0x030C, 0x0147}, {0x004F, 0x0300, 0x00D2},
+    {0x004F, 0x0301, 0x00D3}, {0x004F, 0x0302, 0x00D4}, {0x004F, 0x0303, 0x00D5}, {0x004F, 0x0308, 0x00D6},
+    {0x004F, 0x030B, 0x0150}, {0x0052, 0x0301, 0x0154}, {0x0052, 0x030C, 0x0158}, {0x0053, 0x0301, 0x015A},
+    {0x0053, 0x030C, 0x0160}, {0x0053, 0x0327, 0x015E}, {0x0054, 0x030C, 0x0164}, {0x0054, 0x0327, 0x0162},
+    {0x0055, 0x0300, 0x00D9}, {0x0055, 0x0301, 0x00DA}, {0x0055, 0x0302, 0x00DB}, {0x0055, 0x0308, 0x00DC},
+    {0x0055, 0x030A, 0x016E}, {0x0055, 0x030B, 0x0170}, {0x0059, 0x0301, 0x00DD}, {0x0059, 0x0308, 0x0178},
+    {0x005A, 0x0301, 0x0179}, {0x005A, 0x0307, 0x017B}, {0x005A, 0x030C, 0x017D}, {0x0061, 0x0300, 0x00E0},
+    {0x0061, 0x0301, 0x00E1}, {0x0061, 0x0302, 0x00E2}, {0x0061, 0x0303, 0x00E3}, {0x0061, 0x0306, 0x0103},
+    {0x0061, 0x0308, 0x00E4}, {0x0061, 0x030A, 0x00E5}, {0x0061, 0x0328, 0x0105}, {0x0063, 0x0301, 0x0107},
+    {0x0063, 0x030C, 0x010D}, {0x0063, 0x0327, 0x00E7}, {0x0064, 0x030C, 0x010F}, {0x0065, 0x0300, 0x00E8},
+    {0x0065, 0x0301, 0x00E9}, {0x0065, 0x0302, 0x00EA}, {0x0065, 0x0308, 0x00EB}, {0x0065, 0x030C, 0x011B},
+    {0x0065, 0x0328, 0x0119}, {0x0069, 0x0300, 0x00EC}, {0x0069, 0x0301, 0x00ED}, {0x0069, 0x0302, 0x00EE},
+    {0x0069, 0x0308, 0x00EF}, {0x006C, 0x0301, 0x013A}, {0x006C, 0x030C, 0x013E}, {0x006E, 0x0301, 0x0144},
+    {0x006E, 0x0303, 0x00F1}, {0x006E, 0x030C, 0x0148}, {0x006F, 0x0300, 0x00F2}, {0x006F, 0x0301, 0x00F3},
+    {0x006F, 0x0302, 0x00F4}, {0x006F, 0x0303, 0x00F5}, {0x006F, 0x0308, 0x00F6}, {0x006F, 0x030B, 0x0151},
+    {0x0072, 0x0301, 0x0155}, {0x0072, 0x030C, 0x0159}, {0x0073, 0x0301, 0x015B}, {0x0073, 0x030C, 0x0161},
+    {0x0073, 0x0327, 0x015F}, {0x0074, 0x030C, 0x0165}, {0x0074, 0x0327, 0x0163}, {0x0075, 0x0300, 0x00F9},
+    {0x0075, 0x0301, 0x00FA}, {0x0075, 0x0302, 0x00FB}, {0x0075, 0x0308, 0x00FC}, {0x0075, 0x030A, 0x016F},
+    {0x0075, 0x030B, 0x0171}, {0x0079, 0x0301, 0x00FD}, {0x0079, 0x0308, 0x00FF}, {0x007A, 0x0301, 0x017A},
+    {0x007A, 0x0307, 0x017C}, {0x007A, 0x030C, 0x017E}, {0x0406, 0x0308, 0x0407}, {0x0413, 0x0301, 0x0403},
+    {0x0415, 0x0308, 0x0401}, {0x0418, 0x0306, 0x0419}, {0x041A, 0x0301, 0x040C}, {0x0423, 0x0306, 0x040E},
+    {0x0433, 0x0301, 0x0453}, {0x0435, 0x0308, 0x0451}, {0x0438, 0x0306, 0x0439}, {0x043A, 0x0301, 0x045C},
+    {0x0443, 0x0306, 0x045E}, {0x0456, 0x0308, 0x0457},
+};
+
+static constexpr bool IsSorted()
+{
+    for (size_t i = 1; i < std::size(s_bestFit); i++)
+        if (s_bestFit[i].from <= s_bestFit[i - 1].from)
+            return false;
+    for (size_t i = 1; i < std::size(s_compositions); i++)
+        if (s_compositions[i].base < s_compositions[i - 1].base ||
+            (s_compositions[i].base == s_compositions[i - 1].base && s_compositions[i].mark <= s_compositions[i - 1].mark))
+            return false;
+    return true;
+}
+static_assert(IsSorted(), "best-fit tables must be sorted for binary search");
+
+static uint8_t BestFit(const Codepage& codepage, uint32_t cp)
+{
+    auto entry = std::lower_bound(std::begin(s_bestFit), std::end(s_bestFit), cp,
+                                  [](const BestFitEntry& e, uint32_t c) { return e.from < c; });
+    if (entry != std::end(s_bestFit) && entry->from == cp)
+        return FromUnicode(codepage, entry->to);
+    return 0;
+}
+
+static uint32_t Compose(uint32_t base, uint32_t mark)
+{
+    auto entry = std::lower_bound(std::begin(s_compositions), std::end(s_compositions), std::make_pair(base, mark),
+                                  [](const Composition& e, const std::pair<uint32_t, uint32_t>& key)
+                                  { return e.base < key.first || (e.base == key.first && e.mark < key.second); });
+    if (entry != std::end(s_compositions) && entry->base == base && entry->mark == mark)
+        return entry->composed;
+    return 0;
+}
+
 static bool IsASCII8(const char* str, size_t len)
 {
     if (len < 8)
@@ -313,6 +424,7 @@ static std::string FromUTF8(const char *str, size_t len, Locale locale)
     memcpy(out, str, ascii);
     out += ascii;
     const uint8_t* bytes = reinterpret_cast<const uint8_t*>(str);
+    uint32_t last = ascii > 0 ? bytes[ascii - 1] : InvalidCodePoint;
     for (size_t i = ascii; i < len;)
     {
         if (bytes[i] < 0x80)
@@ -327,11 +439,47 @@ static std::string FromUTF8(const char *str, size_t len, Locale locale)
             {
                 *out++ = str[i++];
             }
+            last = bytes[i - 1];
             continue;
         }
         uint32_t cp = DecodeUTF8(bytes, len, i);
-        uint8_t ch = cp == InvalidCodePoint ? 0 : FromUnicode(*codepage, cp);
-        *out++ = ch ? static_cast<char>(ch) : '?';
+        if (cp == InvalidCodePoint)
+        {
+            *out++ = '?';
+            last = InvalidCodePoint;
+            continue;
+        }
+
+        if (uint8_t ch = FromUnicode(*codepage, cp))
+        {
+            *out++ = static_cast<char>(ch);
+            last = cp;
+            continue;
+        }
+
+        if (g_BestFit)
+        {
+            if (cp >= 0x0300 && cp <= 0x036F)
+            {
+                // Merge a combining mark into the previous letter, or drop it.
+                uint32_t composed = last != InvalidCodePoint ? Compose(last, cp) : 0;
+                if (uint8_t ch = composed ? FromUnicode(*codepage, composed) : 0)
+                {
+                    out[-1] = static_cast<char>(ch);
+                    last = composed;
+                }
+                continue;
+            }
+            if (uint8_t ch = BestFit(*codepage, cp))
+            {
+                *out++ = static_cast<char>(ch);
+                last = InvalidCodePoint;
+                continue;
+            }
+        }
+
+        *out++ = '?';
+        last = InvalidCodePoint;
     }
     result.resize(out - result.data());
 
