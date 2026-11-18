@@ -54,6 +54,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` | true or false | Resist Energy feats stack with Epic Energy Resistance. |
 | `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. | 
 | `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` | true or false | Servervault characters will be sorted by last time played date, instead of character name in the character list |
+| `NWNX_TWEAKS_FIX_NUI_EVENT_CRASH` | true or false | A NUI event that makes the engine throw an exception (e.g. a string with invalid UTF-8) is dropped instead of aborting the server. |
 
 ## Environment variable values
 

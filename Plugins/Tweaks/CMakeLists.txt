@@ -14,6 +14,7 @@ add_plugin(Tweaks
     "FastItemRepositoryFindPosition.cpp"
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
+    "FixNuiEventCrash.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
