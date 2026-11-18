@@ -1,17 +1,8 @@
-// Add move constructor to CExoString
-#define NWN_CLASS_EXTENSION_CExoString                \
-    CExoString(CExoString&& rhs)                      \
-    {                                                 \
-        this->m_sString = rhs.m_sString;              \
-        this->m_nBufferLength = rhs.m_nBufferLength;  \
-        rhs.m_sString = nullptr;                      \
-        rhs.m_nBufferLength = 0;                      \
-    }
-
 #include "nwnx.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CGameObjectArray.hpp"
+#include "API/CNWSModule.hpp"
 #include "API/CNWSObject.hpp"
 #include "tsl/robin_map.h"
 #include <algorithm>
@@ -91,10 +82,10 @@ void GetObjectByTag()
 {
     if (Config::Get<bool>("GET_OBJECT_BY_TAG", false))
     {
-        static Hooks::Hook _0 = Hooks::HookFunction(API::Functions::_ZN10CNWSModule22AddObjectToLookupTableE10CExoStringj, (void*)&AddObjectToLookupTable, Hooks::Order::Final);
-        static Hooks::Hook _1 = Hooks::HookFunction(API::Functions::_ZN10CNWSModule27RemoveObjectFromLookupTableE10CExoStringj, (void*)&RemoveObjectFromLookupTable, Hooks::Order::Final);
-        static Hooks::Hook _2 = Hooks::HookFunction(API::Functions::_ZN10CNWSModule22FindObjectByTagOrdinalERK10CExoStringj, (void*)&FindObjectByTagOrdinal, Hooks::Order::Final);
-        static Hooks::Hook _3 = Hooks::HookFunction(API::Functions::_ZN10CNWSModule26FindObjectByTagTypeOrdinalERK10CExoStringij, (void*)&FindObjectByTagTypeOrdinal, Hooks::Order::Final);
+        static Hooks::Hook _0 = Hooks::HookFunction(&CNWSModule::AddObjectToLookupTable, &AddObjectToLookupTable, Hooks::Order::Final);
+        static Hooks::Hook _1 = Hooks::HookFunction(&CNWSModule::RemoveObjectFromLookupTable, &RemoveObjectFromLookupTable, Hooks::Order::Final);
+        static Hooks::Hook _2 = Hooks::HookFunction(&CNWSModule::FindObjectByTagOrdinal, &FindObjectByTagOrdinal, Hooks::Order::Final);
+        static Hooks::Hook _3 = Hooks::HookFunction(&CNWSModule::FindObjectByTagTypeOrdinal, &FindObjectByTagTypeOrdinal, Hooks::Order::Final);
     }
 }
 
