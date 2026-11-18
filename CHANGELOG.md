@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Tweaks: added `NWNX_TWEAKS_FIX_NUI_EVENT_CRASH` which fixes a server crash when a NUI event holds invalid UTF-8.
 - Tweaks: added `NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER` which refuses to split a stack inside a container owned by another object, as the engine puts the new stack in the wrong inventory, and refuses splits of items with no owner.
 - Tweaks: added `NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY` which fixes a server crash when an inventory holds an item ID that no longer resolves to an item.
+- Tweaks: added `NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH` which fixes a server crash when an open inventory panel's owner is not (or no longer) a creature.
 - Events: Added events `NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}` which fire when an ability of a player changes.
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
@@ -56,6 +57,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
+- Player: `OpenInventory()` no longer opens the inventory of a target that isn't a creature, which crashed the server.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13

@@ -14,6 +14,7 @@ add_plugin(Tweaks
     "FastItemRepositoryFindPosition.cpp"
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
+    "FixInventoryPanelOwnerCrash.cpp"
     "FixNuiEventCrash.cpp"
     "FixSplitItemInForeignContainer.cpp"
     "FixStaleItemsInItemRepository.cpp"
