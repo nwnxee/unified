@@ -15,6 +15,8 @@ add_plugin(Tweaks
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixNuiEventCrash.cpp"
+    "FixSplitItemInForeignContainer.cpp"
+    "FixStaleItemsInItemRepository.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
