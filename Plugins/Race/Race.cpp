@@ -510,6 +510,8 @@ void Race::ApplyEffectHook(CNWSObject *pObject, CGameEffect *pEffect)
             //AC, AB, Skill, Dmg increases and decreases
         default: nRaceParam = 2; break;
     }
+    if (nRaceParam >= pEffect->m_nNumIntegers)
+        return;
     // Not operator[], which would insert an entry for every parameter value
     auto itChild = g_plugin->m_ChildRaces.find(pEffect->m_nParamInteger[nRaceParam]);
     if (itChild == g_plugin->m_ChildRaces.end())
@@ -520,7 +522,8 @@ void Race::ApplyEffectHook(CNWSObject *pObject, CGameEffect *pEffect)
     for(uint16_t nChild : vChild)
     {
         pEffectNew = new CGameEffect(false);
-        pEffectNew->m_nNumIntegers = pEffect->m_nNumIntegers;
+        // CGameEffect(false) allocates only 8 integers
+        pEffectNew->SetNumIntegers(pEffect->m_nNumIntegers);
         for(i = 0; i < pEffect->m_nNumIntegers; i++)
             pEffectNew->m_nParamInteger[i] = pEffect->m_nParamInteger[i];
         pEffectNew->m_nID = pEffect->m_nID;
