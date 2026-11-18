@@ -17,6 +17,8 @@ struct CassowarySolverEngineStructure : public SharedPtrEngineStructure<Cassowar
     bool IsEmpty() const override;
     void Clear() override;
     void Unlink() override;
+    void SaveToGFF(CResGFF* pRes, CResStruct* pStruct) override;
+    void LoadFromGff(CResGFF* pRes, CResStruct* pStruct) override;
 
 #ifdef NWN_CLASS_EXTENSION_CassowarySolverEngineStructure
     NWN_CLASS_EXTENSION_CassowarySolverEngineStructure
