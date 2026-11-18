@@ -263,8 +263,9 @@ static CNWSEncounter* GetEncounter(CServerExoApp*, ObjectID oid)
 static CNWSSoundObject* GetSoundObject(CServerExoApp*, ObjectID oid)
 {
     auto* obj = s_table.Get(oid);
+    // CNWSPlayerTURD also has OBJECT_TYPE_SOUND
     if (obj && obj->m_nObjectType == Constants::ObjectType::Sound)
-        return static_cast<CNWSSoundObject*>(obj);
+        return obj->AsNWSSoundObject();
     return nullptr;
 }
 

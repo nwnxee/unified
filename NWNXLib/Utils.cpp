@@ -150,8 +150,9 @@ CNWSPlaceable* AsNWSPlaceable(CGameObject* obj)
 }
 CNWSSoundObject* AsNWSSoundObject(CGameObject* obj)
 {
+    // CNWSPlayerTURD also has OBJECT_TYPE_SOUND
     if (obj && obj->m_nObjectType == ObjectType::Sound)
-        return static_cast<CNWSSoundObject*>(obj);
+        return obj->AsNWSSoundObject();
     return nullptr;
 }
 CNWSStore* AsNWSStore(CGameObject* obj)
@@ -263,8 +264,12 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
             AsNWSAreaOfEffectObject(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Sound:
-            AsNWSSoundObject(pObject)->AddToArea(pArea, true);
-            return true;
+            if (auto *pSound = AsNWSSoundObject(pObject))
+            {
+                pSound->AddToArea(pArea, true);
+                return true;
+            }
+            return false;
         default:
             return false;
     }
