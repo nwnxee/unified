@@ -103,6 +103,7 @@ void GetObjectByTag()
     if (!Config::Get<bool>("GET_OBJECT_BY_TAG", false))
         return;
 
+    LOG_INFO("Using a hash map for the tag lookup table");
     s_loadModuleStartHook = Hooks::HookFunction(&CNWSModule::LoadModuleStart, &LoadModuleStart, Hooks::Order::Earliest);
     static Hooks::Hook s_addHook = Hooks::HookFunction(&CNWSModule::AddObjectToLookupTable, &AddObjectToLookupTable, Hooks::Order::Final);
     static Hooks::Hook s_removeHook = Hooks::HookFunction(&CNWSModule::RemoveObjectFromLookupTable, &RemoveObjectFromLookupTable, Hooks::Order::Final);
