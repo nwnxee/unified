@@ -39,6 +39,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Admin: Player/DM password functions no longer print the passwords to the log.
 - SQL: Database passwords are no longer printed to the log when connecting.
 - HTTPClient: Enable three custom fields to pass to response.
+- Race: the effect-apply hook no longer adds a child-race map entry for every new effect parameter or copies the child list, and does nothing when no child races are set.
 
 ### Deprecated
 - N/A
