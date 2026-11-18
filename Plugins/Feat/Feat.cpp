@@ -44,6 +44,12 @@ static Hooks::Hook s_RemoveFeatHook;
 static Hooks::Hook s_OnApplyBonusFeatHook;
 static Hooks::Hook s_OnRemoveBonusFeatHook;
 static Hooks::Hook s_EatTURDHook;
+static Hooks::Hook s_RemoveEffectByIdHook;
+static Hooks::Hook s_RemoveEffectHook;
+
+// Feat modifier effects to remove once the outermost engine effect removal returns
+static int s_RemoveEffectDepth = 0;
+static std::vector<std::pair<ObjectID, uint64_t>> s_PendingFeatModRemovals;
 
 Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -74,6 +80,8 @@ Feat::Feat(Services::ProxyServiceList* services)
     s_OnRemoveBonusFeatHook = Hooks::HookFunction(&CNWSEffectListHandler::OnRemoveBonusFeat,
                                                            &OnRemoveBonusFeatHook, Hooks::Order::Early);
     s_EatTURDHook = Hooks::HookFunction(&CNWSPlayer::EatTURD, &EatTURDHook, Hooks::Order::Early);
+    s_RemoveEffectByIdHook = Hooks::HookFunction(&CNWSObject::RemoveEffectById, &RemoveEffectByIdHook, Hooks::Order::Earliest);
+    s_RemoveEffectHook = Hooks::HookFunction(&CNWSObject::RemoveEffect, &RemoveEffectHook, Hooks::Order::Earliest);
 }
 
 Feat::~Feat()
@@ -566,20 +574,61 @@ void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
             {
                 g_plugin->AddRemoveBonusSpell(pCreatureStats, featId, false);
             }
+            auto *pCreature = pCreatureStats->m_pBaseCreature;
+            std::string featTag = "NWNX_Feat_FeatMod_" + std::to_string(featId);
             std::vector<uint64_t> remove;
-            for (int i = 0; i < pCreatureStats->m_pBaseCreature->m_appliedEffects.num; i++)
+            for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
             {
-                auto eff = (CGameEffect *) pCreatureStats->m_pBaseCreature->m_appliedEffects.element[i];
-                std::string featTag = "NWNX_Feat_FeatMod_" + std::to_string(featId);
+                auto eff = (CGameEffect *) pCreature->m_appliedEffects.element[i];
                 if (eff->m_sCustomTag == featTag)
                 {
                     remove.push_back(eff->m_nID);
                 }
             }
-            for (auto id: remove)
-                pCreatureStats->m_pBaseCreature->RemoveEffectById(id);
+            // Removing effects while the engine walks the effect list shifts it under the engine's index
+            if (s_RemoveEffectDepth > 0)
+            {
+                for (auto id: remove)
+                    s_PendingFeatModRemovals.emplace_back(pCreature->m_idSelf, id);
+            }
+            else
+            {
+                for (auto id: remove)
+                    pCreature->RemoveEffectById(id);
+            }
         }
     }
+}
+
+void Feat::FlushPendingFeatModRemovals()
+{
+    // Removals made from here queue instead of flushing re-entrantly
+    s_RemoveEffectDepth++;
+    for (size_t i = 0; i < s_PendingFeatModRemovals.size(); i++)
+    {
+        auto [oidCreature, effectId] = s_PendingFeatModRemovals[i];
+        if (auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidCreature))
+            pCreature->RemoveEffectById(effectId);
+    }
+    s_PendingFeatModRemovals.clear();
+    s_RemoveEffectDepth--;
+}
+
+int32_t Feat::RemoveEffectByIdHook(CNWSObject *pObject, uint64_t nId)
+{
+    s_RemoveEffectDepth++;
+    auto retVal = s_RemoveEffectByIdHook->CallOriginal<int32_t>(pObject, nId);
+    if (--s_RemoveEffectDepth == 0 && !s_PendingFeatModRemovals.empty())
+        FlushPendingFeatModRemovals();
+    return retVal;
+}
+
+void Feat::RemoveEffectHook(CNWSObject *pObject, CGameEffect *pEffect)
+{
+    s_RemoveEffectDepth++;
+    s_RemoveEffectHook->CallOriginal<void>(pObject, pEffect);
+    if (--s_RemoveEffectDepth == 0 && !s_PendingFeatModRemovals.empty())
+        FlushPendingFeatModRemovals();
 }
 
 void Feat::AddRemoveBonusSpell(CNWSCreatureStats *pCreatureStats, uint16_t featId, bool bAdd)

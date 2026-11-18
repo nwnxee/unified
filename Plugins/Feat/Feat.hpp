@@ -95,6 +95,7 @@ private:
     static void ApplyFeatEffects(CNWSCreature*, uint16_t);
     static void AddFeatEffects(CNWSCreatureStats*, uint16_t);
     static void RemoveFeatEffects(CNWSCreatureStats*, uint16_t);
+    static void FlushPendingFeatModRemovals();
     static void AddRemoveBonusSpell(CNWSCreatureStats*, uint16_t, bool bAdd = true);
     static bool DoFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
 
@@ -106,6 +107,8 @@ private:
     static int32_t GetWeaponPowerHook(CNWSCreature*, CNWSObject*, int32_t);
     static int32_t GetTotalEffectBonusHook(CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
     static void EatTURDHook(CNWSPlayer*, CNWSPlayerTURD*);
+    static int32_t RemoveEffectByIdHook(CNWSObject*, uint64_t);
+    static void RemoveEffectHook(CNWSObject*, CGameEffect*);
 };
 
 }
