@@ -186,7 +186,7 @@ void Race::RemoveRaceEffects(CNWSCreature *pCreature)
     if (pCreature->m_pStats == nullptr || effectsLevelAdded == 0)
         return;
 
-    std::vector<uint64_t> remove(128);
+    std::vector<uint64_t> remove;
     for (int32_t i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];

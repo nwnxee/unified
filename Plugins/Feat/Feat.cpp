@@ -566,7 +566,7 @@ void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
             {
                 g_plugin->AddRemoveBonusSpell(pCreatureStats, featId, false);
             }
-            std::vector<uint64_t> remove(128);
+            std::vector<uint64_t> remove;
             for (int i = 0; i < pCreatureStats->m_pBaseCreature->m_appliedEffects.num; i++)
             {
                 auto eff = (CGameEffect *) pCreatureStats->m_pBaseCreature->m_appliedEffects.element[i];
@@ -643,7 +643,7 @@ void Feat::EatTURDHook(CNWSPlayer *pPlayer, CNWSPlayerTURD *pTURD)
 {
     if (pTURD)
     {
-        std::vector<uint64_t> remove(128);
+        std::vector<uint64_t> remove;
         for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
         {
             auto *eff = pTURD->m_appliedEffects.element[i];
