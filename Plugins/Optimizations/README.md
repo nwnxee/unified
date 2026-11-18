@@ -16,3 +16,4 @@ Game optimizations. Improves performance of various game elements.
 | `NWNX_OPTIMIZATIONS_CACHE_SCRIPT_CHUNKS` | true/false | Caches all script chunks, improving performance |
 | `NWNX_OPTIMIZATIONS_CACHE_DEBUGGER_INSTANCES` | true/false | Caches all nwscript debugger instances, improving GetScriptBacktrace() performance |
 | `NWNX_OPTIMIZATIONS_CACHE_SCRIPTS` | true/false | Caches all scripts, improving performance |
+| `NWNX_OPTIMIZATIONS_GET_OBJECT_BY_TAG` | true/false | Keeps the tag lookup table in a hash map, speeding up `GetObjectByTag()` and the creation and destruction of tagged objects. Results and their order are the same as without it |
