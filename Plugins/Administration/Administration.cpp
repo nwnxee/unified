@@ -655,3 +655,29 @@ NWNX_EXPORT ArgumentStack SetMaxLevel(ArgumentStack&& args)
     pServerInfo->m_JoiningRestrictions.nMaxLevel = nLevel;
     return {};
 }
+
+NWNX_EXPORT ArgumentStack GetNWSyncAdvertHash(ArgumentStack&&)
+{
+    return Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_nwsyncAdvertisedData.m_primary_manifest.Hex();
+}
+
+NWNX_EXPORT ArgumentStack GetNWSyncAdvertUrl(ArgumentStack&&)
+{
+    return Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_nwsyncAdvertisedData.m_url.CStr();
+}
+
+NWNX_EXPORT ArgumentStack SetNWSyncAdvert(ArgumentStack&& args)
+{
+    const auto hash = args.extract<std::string>();
+    const auto url = args.extract<std::string>();
+    ASSERT_OR_THROW(hash.empty() == url.empty());
+    ASSERT_OR_THROW(hash.empty() || (hash.size() == SHA1_DIGEST_SIZE * 2 &&
+                                     hash.find_first_not_of("0123456789abcdefABCDEF") == std::string::npos));
+    LOG_NOTICE("Set NWSync advert to '%s' @ '%s'.", hash, url);
+    auto& advert = Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_nwsyncAdvertisedData;
+    advert.m_primary_manifest = Hash::SHA1(CExoString(hash));
+    advert.m_url = CExoString(url);
+    // Additional manifests belong to the old primary one.
+    advert.m_additional_manifests.clear();
+    return {};
+}
