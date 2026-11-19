@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"group__consts.html#ga39f52ea25e872bff385666e4cd26be23":[4,0,1,0,0,1],
+"group__consts.html#ga39f52ea25e872bff385666e4cd26be23":[0,2,1,2],
+"group__consts.html#gaee44aad01b7468a094b310dab48ebe50":[4,0,1,0,0,0],
+"group__consts.html#gaee44aad01b7468a094b310dab48ebe50":[0,2,1,1],
+"group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae":[4,0,1,0,0,2],
+"group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae":[0,2,1,3],
 "group__creature.html":[0,8],
 "group__creature.html#creature":[0,8,0],
 "group__creature.html#ga007d581a39d037dce04fdfa034427efd":[4,0,3,5,0,0,86],
@@ -34,8 +40,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22":[0,8,160],
 "group__creature.html#ga161c4a1c39d2293d77d00ef708663650":[4,0,3,5,0,0,159],
 "group__creature.html#ga161c4a1c39d2293d77d00ef708663650":[0,8,161],
-"group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100":[0,8,66],
 "group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100":[4,0,3,5,0,0,63],
+"group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100":[0,8,66],
 "group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb":[4,0,3,5,0,0,74],
 "group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb":[0,8,77],
 "group__creature.html#ga1ca18c6575ef041368e50f978441e7ca":[4,0,3,5,0,0,70],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaa064e2886118310f391f0d6c4901f33d":[0,8,132],
 "group__creature.html#gaa1e7668abb0a7b20830dbadc2ee1dc01":[4,0,3,5,0,0,176],
 "group__creature.html#gaa1e7668abb0a7b20830dbadc2ee1dc01":[0,8,178],
-"group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1":[4,0,3,5,0,0,132],
-"group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1":[0,8,135],
-"group__creature.html#gaa2c4265518c9385e694f438ce4fb7816":[4,0,3,5,0,0,71],
-"group__creature.html#gaa2c4265518c9385e694f438ce4fb7816":[0,8,74],
-"group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b":[4,0,3,5,0,0,81],
-"group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b":[0,8,84],
-"group__creature.html#gaaf4852e6a077da9128b3923ff52701df":[4,0,3,5,0,0,104]
+"group__creature.html#gaa2141d9dfe8ec4ee03b228b4ca6274f1":[4,0,3,5,0,0,132]
 };
