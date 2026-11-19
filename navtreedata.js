@@ -57,13 +57,13 @@ var NAVTREEINDEX =
 "group__feedback.html#gac651c3f6b95761cb56ba59f440031d5a",
 "group__nostack.html#gae43da613a7225996ceeb2f8e2604c39e",
 "group__player.html#ga21d587709818c38216b5788d652111d7",
-"group__race.html#ga268bd591313ab1a0f01133d4f9b18b5f",
-"group__tests.html#gaf98ccf82736419b7ca23183b880d0d1d",
-"group__weapon.html#ga928cbbcbedeb6fcd313d5da26e4f547a",
-"nwnx__redis_8nss.html#a52caa07fdb3ddc25813c7090df60d255",
-"nwnx__redis__short_8nss.html#a7550a241db2886f7e122a77a41f4739c",
-"structNWNX__Damage__DamageData.html#aa0dd43e2db09627566cf87ef17c73915",
-"structNWNX__WebHook__Message.html#ab43baea2c02dad7c2b541e76ceb836c9"
+"group__race.html#ga008aebe423e8f5f148e3119c8459d2b9",
+"group__store.html#gadd4056f835da629520235bd23a839620",
+"group__weapon.html#ga74ace8b29031865e3f08f01e5a660cb1",
+"nwnx__redis_8nss.html#a49d9ee0055c612db598c240d7cb3d736",
+"nwnx__redis__short_8nss.html#a70b208d5264f80de9032ebfb3d5d8f6e",
+"structNWNX__Damage__DamageData.html#a4d1794a300d2113e7d0ac058dce39b9c",
+"structNWNX__WebHook__Message.html#a8c433df14ee4680cf7016500001fbbce"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__DamageData.html#a4d1794a300d2113e7d0ac058dce39b9c":[0,9,4,21],
+"structNWNX__Damage__DamageData.html#a5f2b292c4fc5f0ebf697994af6d38e04":[0,9,4,10],
+"structNWNX__Damage__DamageData.html#a6c2b056c139270360c2e68fd5bc6ace7":[0,9,4,9],
+"structNWNX__Damage__DamageData.html#a7c3afe6cc289c5904aa533d76938521b":[0,9,4,11],
+"structNWNX__Damage__DamageData.html#a7fc1ea4a754c26ca34bc77158b62ba7c":[0,9,4,27],
+"structNWNX__Damage__DamageData.html#a897eac283c5b8d73e8072ca018fdedb8":[0,9,4,2],
+"structNWNX__Damage__DamageData.html#a98a2dfa2b74f2504db3a27e891c7ea4a":[0,9,4,30],
+"structNWNX__Damage__DamageData.html#a9a2a5c4c2fca12b1f2fbb39768a41fd8":[0,9,4,0],
 "structNWNX__Damage__DamageData.html#aa0dd43e2db09627566cf87ef17c73915":[0,9,4,14],
 "structNWNX__Damage__DamageData.html#aa408b1cb0648a5278133fa7bd62031fb":[0,9,4,13],
 "structNWNX__Damage__DamageData.html#aa5c298fe357490c9d1f5123cf1ddac33":[0,9,4,24],
@@ -241,13 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__WebHook__Message.html#a7db5ee8f6d1cf3ce42bba046d947ff01":[0,48,3,37],
 "structNWNX__WebHook__Message.html#a838a7f626332023398ebb5965ac0fdde":[0,48,3,20],
 "structNWNX__WebHook__Message.html#a845ba7eadfd2390e6e9acc0db8fd5361":[0,48,3,42],
-"structNWNX__WebHook__Message.html#a8ac91259adbe62020d5da36142876618":[0,48,3,0],
-"structNWNX__WebHook__Message.html#a8c433df14ee4680cf7016500001fbbce":[0,48,3,43],
-"structNWNX__WebHook__Message.html#a8e2be188c362c871de82fcbe48ee34de":[0,48,3,7],
-"structNWNX__WebHook__Message.html#a916266d0a0a14ebdcd227583fc006bcf":[0,48,3,10],
-"structNWNX__WebHook__Message.html#a9761f89d8969406957e196240b676a67":[0,48,3,6],
-"structNWNX__WebHook__Message.html#a98c5c51f0229b0428230cd00eb3e582e":[0,48,3,17],
-"structNWNX__WebHook__Message.html#aa1df21fae063b94b82e2f3429410d243":[0,48,3,19],
-"structNWNX__WebHook__Message.html#aa606b8da37e0dec234e6a7c5f2562838":[0,48,3,26],
-"structNWNX__WebHook__Message.html#aaca0432ebd98dce6e50d5d992146e94d":[0,48,3,34]
+"structNWNX__WebHook__Message.html#a8ac91259adbe62020d5da36142876618":[0,48,3,0]
 };

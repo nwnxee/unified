@@ -59,6 +59,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_GetTURD", "group__player.html#ga192c92181939204edeedc21c03a7af64", null ],
     [ "NWNX_Player_ReloadColorPalettes", "group__player.html#gabe690b8bb044a40722f2e424dfc89b1d", null ],
     [ "NWNX_Player_GetOpenStore", "group__player.html#ga544fa0a06d383a6ee5c92bb0dc641e06", null ],
+    [ "NWNX_Player_ReloadResources", "group__player.html#ga6aec83cfa546924a8a286b924e934419", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],
@@ -85,5 +86,8 @@ var nwnx__player_8nss =
     [ "NWNX_PLAYER_PLATFORM_ANDROID_X64", "group__player.html#ga4f15d7dcafa0382a2584163ea856e049", null ],
     [ "NWNX_PLAYER_PLATFORM_NINTENDO_SWITCH", "group__player.html#ga1b56a647b228119c3977dc8fc567d548", null ],
     [ "NWNX_PLAYER_PLATFORM_MICROSOFT_XBOXONE", "group__player.html#ga21d587709818c38216b5788d652111d7", null ],
-    [ "NWNX_PLAYER_PLATFORM_SONY_PS4", "group__player.html#gadd7e638820452402763d64737369bde8", null ]
+    [ "NWNX_PLAYER_PLATFORM_SONY_PS4", "group__player.html#gadd7e638820452402763d64737369bde8", null ],
+    [ "NWNX_PLAYER_RELOAD_RESOURCES_TEXTURES", "group__player.html#ga57297c3817997663b828e76cd0aa0ed5", null ],
+    [ "NWNX_PLAYER_RELOAD_RESOURCES_CURSORS", "group__player.html#gaa18b3d40a86723c0ad852d0e0a0a281a", null ],
+    [ "NWNX_PLAYER_RELOAD_RESOURCES_NUI_SKIN", "group__player.html#gab8536e41ca31b84f6dd5828650487a39", null ]
 ];
