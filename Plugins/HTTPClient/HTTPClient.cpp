@@ -1,5 +1,7 @@
 #include "nwnx.hpp"
 #include "External/httplib.h"
+#include <cmath>
+#include <cstring>
 
 enum RequestMethod
 {
@@ -78,6 +80,8 @@ using namespace NWNXLib::API;
 
 static std::unique_ptr<httplib::Result> GetResult(const Request&);
 static httplib::Headers ParseHeaderString(const std::string&);
+static double ParseDelaySeconds(const std::string&);
+static double GetRateLimitDelaySeconds(const httplib::Response&);
 static int s_clientRequestId = 0;
 static int s_clientTimeout = Config::Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
 static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_clientHostCache;
@@ -205,6 +209,7 @@ void PerformRequest(const Request &client_req)
                                                                    response.status == 201 ||
                                                                    response.status == 204 || response.status == 429)
                                                                {
+                                                                   bool bRetryAfterSet = false;
                                                                    // Discord sends your rate limit information even on success so you can stagger calls if you want
                                                                    // This header also lets us know it's Discord not Slack, important because Discord sends RETRY_AFTER
                                                                    // in milliseconds and Slack sends it as seconds.
@@ -226,11 +231,14 @@ void PerformRequest(const Request &client_req)
                                                                                 response.get_header_value(
                                                                                         "X-RateLimit-Reset")});
                                                                        if (response.has_header("Retry-After"))
+                                                                       {
                                                                            MessageBus::Broadcast(
                                                                                    "NWNX_EVENT_PUSH_EVENT_DATA",
                                                                                    {"RETRY_AFTER",
                                                                                     response.get_header_value(
                                                                                             "Retry-After")});
+                                                                           bRetryAfterSet = true;
+                                                                       }
                                                                        else if (response.has_header("Retry-At"))
                                                                        {
                                                                            MessageBus::Broadcast(
@@ -238,18 +246,31 @@ void PerformRequest(const Request &client_req)
                                                                                    {"RETRY_AFTER",
                                                                                     response.get_header_value(
                                                                                             "Retry-At")});
+                                                                           bRetryAfterSet = true;
                                                                        }
                                                                    }
                                                                        // Slack rate limited
                                                                    else if (response.has_header("Retry-After"))
                                                                    {
-                                                                       float fSlackRetry =
-                                                                               stof(response.get_header_value(
-                                                                                       "Retry-After")) * 1000.0f;
+                                                                       // Retry-After may also be an HTTP-date, which we don't parse
+                                                                       double fRetry = ParseDelaySeconds(
+                                                                               response.get_header_value("Retry-After"));
+                                                                       if (fRetry >= 0)
+                                                                       {
+                                                                           MessageBus::Broadcast(
+                                                                                   "NWNX_EVENT_PUSH_EVENT_DATA",
+                                                                                   {"RETRY_AFTER",
+                                                                                    std::to_string(fRetry * 1000.0)});
+                                                                           bRetryAfterSet = true;
+                                                                       }
+                                                                   }
+                                                                   // Always tell scripts how long to wait when rate limited, so they don't retry immediately
+                                                                   if (response.status == 429 && !bRetryAfterSet)
+                                                                   {
                                                                        MessageBus::Broadcast(
                                                                                "NWNX_EVENT_PUSH_EVENT_DATA",
                                                                                {"RETRY_AFTER",
-                                                                                std::to_string(fSlackRetry)});
+                                                                                std::to_string(GetRateLimitDelaySeconds(response) * 1000.0)});
                                                                    }
                                                                    if (response.status != 429)
                                                                    {
@@ -368,4 +389,50 @@ NWNX_EXPORT ArgumentStack GetRequest(ArgumentStack &&args)
     ScriptAPI::InsertArgument(stack, (int32_t) clientReq.requestMethod);
     ScriptAPI::InsertArgument(stack, clientReq.tag);
     return stack;
+}
+
+// Parses delay-seconds ("30", "1.5") or a duration ("1m30s", "200ms"). Returns -1 if invalid.
+double ParseDelaySeconds(const std::string &value)
+{
+    const char *p = value.c_str();
+    double total = 0.0;
+    bool any = false;
+    while (*p)
+    {
+        char *end;
+        double n = std::strtod(p, &end);
+        if (end == p || !std::isfinite(n) || n < 0)
+            return -1;
+        p = end;
+        if (std::strncmp(p, "ms", 2) == 0) { n /= 1000.0; p += 2; }
+        else if (*p == 's') { p++; }
+        else if (*p == 'm') { n *= 60.0; p++; }
+        else if (*p == 'h') { n *= 3600.0; p++; }
+        else if (*p) return -1;
+        total += n;
+        any = true;
+    }
+    return (any && std::isfinite(total * 1000.0)) ? total : -1;
+}
+
+double GetRateLimitDelaySeconds(const httplib::Response &response)
+{
+    for (const char *header : {"RateLimit-Reset", "X-RateLimit-Reset-After"})
+    {
+        if (response.has_header(header))
+        {
+            double delay = ParseDelaySeconds(response.get_header_value(header));
+            if (delay >= 0)
+                return delay;
+        }
+    }
+
+    // Per-bucket resets: wait for the longest so every bucket has reset
+    double delay = -1;
+    for (const char *header : {"X-RateLimit-Reset-Requests", "X-RateLimit-Reset-Tokens"})
+    {
+        if (response.has_header(header))
+            delay = std::max(delay, ParseDelaySeconds(response.get_header_value(header)));
+    }
+    return delay >= 0 ? delay : 5.0;
 }

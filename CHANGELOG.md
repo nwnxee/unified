@@ -63,6 +63,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
 - Feat, Race: Fixed 128 needless `RemoveEffectById(0)` calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.
 - Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.
+- HTTPClient: Fixed `RETRY_AFTER` missing from rate limited (429) responses that have no `Retry-After` header; it now falls back to common rate limit reset headers, or 5 seconds. A non-numeric `Retry-After` header no longer throws.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
