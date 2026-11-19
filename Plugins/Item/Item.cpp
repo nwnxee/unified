@@ -89,7 +89,7 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                 }
                 break;
             case Constants::ItemAppearanceType::WeaponColor:
-                if (val >= 1 && val <= 9 && idx >= 0 && idx <= 2)
+                if (val >= 0 && val <= 9 && idx >= 0 && idx <= 2)
                 {
                     uint16_t nTemp = pItem->m_nModelPart[idx];
                     nTemp = nTemp - (nTemp % 10) + val;

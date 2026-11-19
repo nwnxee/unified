@@ -51,7 +51,7 @@ void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem);
 /// ```
 /// nType                            nIndex                              nValue
 /// ITEM_APPR_TYPE_SIMPLE_MODEL      [Ignored]                           Model #
-/// ITEM_APPR_TYPE_WEAPON_COLOR      ITEM_APPR_WEAPON_COLOR_*            0-255
+/// ITEM_APPR_TYPE_WEAPON_COLOR      ITEM_APPR_WEAPON_COLOR_*            0-9
 /// ITEM_APPR_TYPE_WEAPON_MODEL      ITEM_APPR_WEAPON_MODEL_*            Model #
 /// ITEM_APPR_TYPE_ARMOR_MODEL       ITEM_APPR_ARMOR_MODEL_*             Model #
 /// ITEM_APPR_TYPE_ARMOR_COLOR       ITEM_APPR_ARMOR_COLOR_* [0]         0-255 [1]
