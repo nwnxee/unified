@@ -16,6 +16,7 @@ add_plugin(Tweaks
     "FixGreaterSanctuaryBug.cpp"
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
+    "FixTakeGoldNoCallerCrash.cpp"
     "HideOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
     "ItemChargesCost.cpp"
