@@ -2,11 +2,7 @@
 
 #include "API/CNWSTrigger.hpp"
 
-// CNWSTrigger::InTrigger casts a ray north from the point and counts edge crossings, but a corner
-// lying exactly on the ray can be counted twice. A point straight south of a corner then gets the
-// wrong answer: outside below a bottom corner reads as inside, inside below a top corner as outside.
-// This replaces it with a crossing test that counts each edge by a half-open rule, so a corner on
-// the ray counts once when the boundary crosses it and zero or two times when it only touches.
+// The engine test can count a corner on the ray twice; this counts each edge half-open.
 
 namespace Tweaks {
 
@@ -26,10 +22,7 @@ void FixTriggerPointTest()
     static Hooks::Hook s_InTriggerHook = Hooks::HookFunction(&CNWSTrigger::InTrigger, &InTriggerHook, Hooks::Order::Final);
 }
 
-// Ray north (+y) from the point, z ignored, like the original. An edge counts when exactly one end
-// is east of the point and the edge passes north of it. The sign of c tells which side of the edge
-// the point is on and flips with the edge's direction, so c * dx > 0 means the edge is north of
-// the point. A point exactly on an edge gives c == 0 and is not counted for that edge.
+// Ray north from the point; c * dx > 0 means the edge passes north of it.
 static BOOL InTriggerHook(CNWSTrigger *pThis, Vector vPosition)
 {
     const Vector *pVertices = pThis->m_pvVertices;
