@@ -32,6 +32,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: PeekEventData()
 - Creature: {Get|Set}BaseACPolymorph()
 - Events: RemoveObjectFromAllDispatchLists()
+- Creature: GetMovementRateFactorModifier(), SetMovementRateFactorModifier()
 - Administration: GetNWSyncAdvertHash(), GetNWSyncAdvertUrl(), SetNWSyncAdvert()
 
 ### Changed
