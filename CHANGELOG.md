@@ -58,6 +58,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
+- Profiler: Fixed the `Area` tag of the `PlotPath` timing carrying the resref's trailing NUL padding.
 - Fixed every `json` value returned from or passed to an NWNX function leaking: NWNX declared `SharedPtrEngineStructure`'s virtuals in a different order from the 8193.37 server, so destroying one called `GetId()` instead of the destructor.
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
