@@ -39,6 +39,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Administration: GetNWSyncAdvertHash(), GetNWSyncAdvertUrl(), SetNWSyncAdvert()
 - Encounter: SetNumberOfCreaturesInEncounterList()
 - Encounter: Set{Min|Max}NumSpawned()
+- Item: RefreshInventoryWindow(), RefreshWieldedItems()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
