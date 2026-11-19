@@ -1827,6 +1827,19 @@ _______________________________________
     @note The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use `GetIsObjectValid(GetArea(OBJECT_SELF))`.
 
     @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
+    _______________________________________
+    ## Encumbrance Change Events
+    - NWNX_ON_ENCUMBRANCE_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature whose encumbrance state changed
+
+    Event Data Tag        | Type | Notes
+    ----------------------|------|-------
+    OLD_STATE             | int  | The previous state, see @ref events_encumbrance "Encumbrance States" |
+    NEW_STATE             | int  | The new state, see @ref events_encumbrance "Encumbrance States"      |
+    TOTAL_WEIGHT          | int  | The weight the creature now carries, in tenths of pounds              |
+
+    @note Only fires for player characters and their henchmen. It fires during (before) client enter if the character logs in encumbered.
 */
 
 /// @name Events Event Constants
@@ -2183,6 +2196,14 @@ const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_BEFORE = "NWNX_ON_ITEMPROPERTY_
 const string NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_APPLIED_AFTER";
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE";
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER";
+/// @}
+
+/// @name Events Encumbrance State Constants
+/// @anchor events_encumbrance
+/// @{
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_NORMAL             = 0;
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_ENCUMBERED         = 1;
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_HEAVILY_ENCUMBERED = 2;
 /// @}
 
 /// @name Events ObjectType Constants

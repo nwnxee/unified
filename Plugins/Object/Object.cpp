@@ -30,6 +30,7 @@
 #include "API/CNWSStore.hpp"
 #include "API/CNWSFaction.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/JsonEngineStructure.hpp"
 #include <cstring>
 
 using namespace NWNXLib;
@@ -75,6 +76,43 @@ NWNX_EXPORT ArgumentStack GetLocalVariable(ArgumentStack&& args)
         }
     }
     return {type, key};
+}
+
+NWNX_EXPORT ArgumentStack GetLocalVariables(ArgumentStack&& args)
+{
+    json result = json::array();
+    auto *pGameObject = Utils::PopGameObject(args);
+    const auto typeFilter = args.extract<int32_t>();
+    const auto prefix = args.extract<std::string>();
+    if (pGameObject)
+    {
+        auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
+
+        // One name can hold a value of each type at once, so add one entry per type it holds.
+        auto add = [&](const CExoString& key, int32_t type)
+        {
+            if (typeFilter < 0 || typeFilter == type)
+                result.push_back({{"key", key.CStr()}, {"type", type}});
+        };
+
+        for (auto& it : pVarTable->m_vars)
+        {
+            const auto& key = it.first;
+            if (!prefix.empty() &&
+                (key.GetLength() < prefix.size() || std::strncmp(key.CStr(), prefix.c_str(), prefix.size()) != 0))
+                continue;
+
+            const auto& var = it.second;
+            if (var.HasInt())      add(key, 1);
+            if (var.HasFloat())    add(key, 2);
+            if (var.HasString())   add(key, 3);
+            if (var.HasObject())   add(key, 4);
+            if (var.HasLocation()) add(key, 5);
+            if (var.HasJson())     add(key, 6);
+            if (var.HasCswy())     add(key, 0);
+        }
+    }
+    return JsonEngineStructure(std::move(result), CExoString(""));
 }
 
 NWNX_EXPORT ArgumentStack SetPosition(ArgumentStack&& args)
