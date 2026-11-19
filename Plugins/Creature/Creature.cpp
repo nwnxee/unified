@@ -787,6 +787,43 @@ NWNX_EXPORT ArgumentStack SetMovementRateFactorCap(ArgumentStack&& args)
     return {};
 }
 
+NWNX_EXPORT ArgumentStack GetMovementRateFactorModifier(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+        return pCreature->nwnxGet<float>("MOVEMENT_RATE_FACTOR_MODIFIER").value_or(1.0f);
+
+    return 0.0f;
+}
+
+NWNX_EXPORT ArgumentStack SetMovementRateFactorModifier(ArgumentStack&& args)
+{
+    // Applied on top of the engine's result, which it recomputes on every movement speed change.
+    static Hooks::Hook pGetMovementRateFactor_hook =
+        Hooks::HookFunction(&CNWSCreature::GetMovementRateFactor,
+        +[](CNWSCreature *pThis) -> float
+        {
+            const float fRate = pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
+            if (pThis->m_bCutsceneCameraMode)
+                return fRate;
+
+            auto pModifier = pThis->nwnxGet<float>("MOVEMENT_RATE_FACTOR_MODIFIER");
+            return pModifier ? fRate * *pModifier : fRate;
+        }, Hooks::Order::Early);
+
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        const float fModifier = args.extract<float>();
+        ASSERT_OR_THROW(fModifier > 0.0f);
+
+        if (fModifier == 1.0f)
+            pCreature->nwnxRemove("MOVEMENT_RATE_FACTOR_MODIFIER");
+        else
+            pCreature->nwnxSet("MOVEMENT_RATE_FACTOR_MODIFIER", fModifier, true);
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SetAlignmentGoodEvil(ArgumentStack&& args)
 {
     if (auto *pCreature = Utils::PopCreature(args))
