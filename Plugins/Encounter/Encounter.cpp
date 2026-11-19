@@ -260,6 +260,32 @@ NWNX_EXPORT ArgumentStack GetMaxNumSpawned(ArgumentStack&& args)
     return 0;
 }
 
+NWNX_EXPORT ArgumentStack SetMinNumSpawned(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto minNumSpawned = args.extract<int32_t>();
+        ASSERT_OR_THROW(minNumSpawned > 0);
+        ASSERT_OR_THROW(minNumSpawned <= pEncounter->m_nMaxSpawnedCreatures);
+        pEncounter->m_nMinNumSpawnedCreatures = minNumSpawned;
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetMaxNumSpawned(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto maxNumSpawned = args.extract<int32_t>();
+        ASSERT_OR_THROW(maxNumSpawned > 0);
+        ASSERT_OR_THROW(maxNumSpawned >= pEncounter->m_nMinNumSpawnedCreatures);
+        pEncounter->m_nMaxSpawnedCreatures = maxNumSpawned;
+    }
+
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack GetCurrentNumSpawned(ArgumentStack&& args)
 {
     if (auto *pEncounter = Utils::PopEncounter(args))

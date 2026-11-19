@@ -107,6 +107,16 @@ int NWNX_Encounter_GetMinNumSpawned(object encounter);
 /// @return the maximal amount.
 int NWNX_Encounter_GetMaxNumSpawned(object encounter);
 
+/// @brief Set the minimum amount of creatures that encounter will spawn.
+/// @param encounter The encounter object.
+/// @param minNumSpawned The minimal amount, 1 or more, and no greater than the current maximum.
+void NWNX_Encounter_SetMinNumSpawned(object encounter, int minNumSpawned);
+
+/// @brief Set the maximum amount of creatures that encounter will spawn.
+/// @param encounter The encounter object.
+/// @param maxNumSpawned The maximal amount, 1 or more, and no less than the current minimum.
+void NWNX_Encounter_SetMaxNumSpawned(object encounter, int maxNumSpawned);
+
 /// @brief Get the current number of creatures that are spawned and alive
 /// @param encounter The encounter object.
 /// @return amount of creatures
@@ -253,6 +263,20 @@ int NWNX_Encounter_GetMaxNumSpawned(object encounter)
     NWNXPushObject(encounter);
     NWNXCall(NWNX_Encounter, "GetMaxNumSpawned");
     return NWNXPopInt();
+}
+
+void NWNX_Encounter_SetMinNumSpawned(object encounter, int minNumSpawned)
+{
+    NWNXPushInt(minNumSpawned);
+    NWNXPushObject(encounter);
+    NWNXCall(NWNX_Encounter, "SetMinNumSpawned");
+}
+
+void NWNX_Encounter_SetMaxNumSpawned(object encounter, int maxNumSpawned)
+{
+    NWNXPushInt(maxNumSpawned);
+    NWNXPushObject(encounter);
+    NWNXCall(NWNX_Encounter, "SetMaxNumSpawned");
 }
 
 int NWNX_Encounter_GetCurrentNumSpawned(object encounter)
