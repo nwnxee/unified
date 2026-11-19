@@ -126,6 +126,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga57d47ecbb856f487ee70f7fce6c4b3f4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga57d47ecbb856f487ee70f7fce6c4b3f4">NWNX_Encounter_GetNumberOfCreaturesInEncounterList</a> (object encounter)</td></tr>
 <tr class="memdesc:ga57d47ecbb856f487ee70f7fce6c4b3f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of creatures in the encounter list.  <a href="group__encounter.html#ga57d47ecbb856f487ee70f7fce6c4b3f4">More...</a><br /></td></tr>
 <tr class="separator:ga57d47ecbb856f487ee70f7fce6c4b3f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga082c7b8355fef520ced3766ae207cdbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga082c7b8355fef520ced3766ae207cdbe">NWNX_Encounter_SetNumberOfCreaturesInEncounterList</a> (object encounter, int count)</td></tr>
+<tr class="memdesc:ga082c7b8355fef520ced3766ae207cdbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of creatures in the encounter list.  <a href="group__encounter.html#ga082c7b8355fef520ced3766ae207cdbe">More...</a><br /></td></tr>
+<tr class="separator:ga082c7b8355fef520ced3766ae207cdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d6f20a2a2036d9bdff05235f3dd9f0e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structNWNX__Encounter__CreatureListEntry.html">NWNX_Encounter_CreatureListEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e">NWNX_Encounter_GetEncounterCreatureByIndex</a> (object encounter, int index)</td></tr>
 <tr class="memdesc:ga7d6f20a2a2036d9bdff05235f3dd9f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the encounter creature list entry at the specified index.  <a href="group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e">More...</a><br /></td></tr>
 <tr class="separator:ga7d6f20a2a2036d9bdff05235f3dd9f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +212,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00132">132</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00143">143</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -238,7 +241,51 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of creatures in the encounter list. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00138">138</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00149">149</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga082c7b8355fef520ced3766ae207cdbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga082c7b8355fef520ced3766ae207cdbe">&#9670;&nbsp;</a></span>NWNX_Encounter_SetNumberOfCreaturesInEncounterList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Encounter_SetNumberOfCreaturesInEncounterList </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the number of creatures in the encounter list. </p>
+<dl class="section note"><dt>Note</dt><dd>Existing entries are kept up to the new size. New entries are empty and must be set with <a class="el" href="group__encounter.html#gac6953a870158522005e6638d872a6f6a" title="Set the encounter creature list entry at the specified index.">NWNX_Encounter_SetEncounterCreatureByIndex()</a>. </dd>
+<dd>
+The list is sorted by challenge rating, highest first, so shrinking it removes the weakest creatures. </dd>
+<dd>
+After inserting creatures with NWNX_Encounter_SetEncounterCreatureByIndex, calling this function with the current size is recommended to ensure array is sorted. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+    <tr><td class="paramname">count</td><td>The new number of creatures in the encounter list, 0 or more. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00303">303</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -278,7 +325,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Encounter__CreatureListEntry.html" title="A creature list entry for an encounter.">NWNX_Encounter_CreatureListEntry</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00138">138</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00149">149</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -324,7 +371,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00158">158</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00169">169</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -353,7 +400,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The faction id. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00169">169</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00180">180</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -392,7 +439,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00176">176</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00187">187</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -421,7 +468,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if encounter is player triggered only. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00183">183</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00194">194</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -460,7 +507,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00190">190</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00201">201</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -489,7 +536,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the encounter does respawn, FALSE otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00198">198</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00209">209</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -528,7 +575,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00205">205</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00216">216</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -557,7 +604,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The seconds the encounter is defined to reset. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00212">212</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00223">223</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -596,7 +643,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00219">219</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00230">230</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -625,7 +672,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The count of the spawn points for the encounter. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00226">226</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00237">237</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -665,7 +712,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Location of spawn point. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00244">244</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -694,7 +741,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the minimal amount. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00243">243</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00254">254</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -723,7 +770,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the maximal amount. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00250">250</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00261">261</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -762,7 +809,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00257">257</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00268">268</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -801,7 +848,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00264">264</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00275">275</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -830,7 +877,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>amount of creatures </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00271">271</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00282">282</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -859,7 +906,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A string of vertex positions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00278">278</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00289">289</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -901,7 +948,7 @@ Functions</h2></td></tr>
 <dd>
 The minimum number of vertices is 3. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00285">285</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00296">296</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -911,7 +958,7 @@ The minimum number of vertices is 3. </dd></dl>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 19 2026 21:20:00 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 19 2026 21:25:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>

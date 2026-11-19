@@ -10,6 +10,7 @@ var group__encounter =
     ] ],
     [ "NWNX_Encounter_Destroy", "group__encounter.html#ga64920d120cd56c821897a496eeb9a1d4", null ],
     [ "NWNX_Encounter_GetNumberOfCreaturesInEncounterList", "group__encounter.html#ga57d47ecbb856f487ee70f7fce6c4b3f4", null ],
+    [ "NWNX_Encounter_SetNumberOfCreaturesInEncounterList", "group__encounter.html#ga082c7b8355fef520ced3766ae207cdbe", null ],
     [ "NWNX_Encounter_GetEncounterCreatureByIndex", "group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e", null ],
     [ "NWNX_Encounter_SetEncounterCreatureByIndex", "group__encounter.html#gac6953a870158522005e6638d872a6f6a", null ],
     [ "NWNX_Encounter_GetFactionId", "group__encounter.html#ga63e14a9f74bbee43dd845a24491d232a", null ],
