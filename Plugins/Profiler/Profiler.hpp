@@ -13,6 +13,7 @@ class NetMessages;
 class ObjectAIUpdates;
 class ObjectEventHandlers;
 class Pathing;
+class PathingOutcomes;
 class Scripts;
 
 class Profiler : public NWNXLib::Plugin
@@ -29,6 +30,7 @@ private:
     std::unique_ptr<ObjectAIUpdates> m_objectAIUpdates;
     std::unique_ptr<ObjectEventHandlers> m_objectEventHandlers;
     std::unique_ptr<Pathing> m_pathing;
+    std::unique_ptr<PathingOutcomes> m_pathingOutcomes;
     std::unique_ptr<Scripts> m_scripts;
 
     static void HandleTickrateReporting(const std::chrono::time_point<std::chrono::high_resolution_clock>& now);

@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
 - Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
+- Profiler: added `NWNX_PROFILER_ENABLE_PATHING_OUTCOMES` to count how path requests end per area (`PathingOutcome`), with optional logging of slow and failed path requests.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
@@ -58,6 +59,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
+- Profiler: Fixed the `Area` tag of the `PlotPath` timing carrying the resref's trailing NUL padding.
 - Fixed every `json` value returned from or passed to an NWNX function leaking: NWNX declared `SharedPtrEngineStructure`'s virtuals in a different order from the 8193.37 server, so destroying one called `GetId()` instead of the destructor.
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
