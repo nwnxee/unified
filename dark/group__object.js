@@ -8,6 +8,7 @@ var group__object =
     ] ],
     [ "NWNX_Object_GetLocalVariableCount", "group__object.html#ga11f4a73b409e6d3726f84fd4c556344c", null ],
     [ "NWNX_Object_GetLocalVariable", "group__object.html#gaf2230d31bc03edaa2b5a1be654846a46", null ],
+    [ "NWNX_Object_GetLocalVariables", "group__object.html#gad89e5262824e501e1d52f814c8446c0a", null ],
     [ "NWNX_Object_SetPosition", "group__object.html#ga1578fb78ce8258f0e5f86f3dd9ebc9f5", null ],
     [ "NWNX_Object_GetCurrentHitPoints", "group__object.html#gac6c6af54fc3db854823ad9fabb86da2c", null ],
     [ "NWNX_Object_SetCurrentHitPoints", "group__object.html#gad42e6039777c646447c61fae4d216fdd", null ],

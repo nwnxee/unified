@@ -132,6 +132,7 @@ New NWScript Functions</h4>
 <li>Store: GetBlackMarket(), SetBlackMarket()</li>
 <li>Util: SetStartingLocation()</li>
 <li>Object: GetLocalizedDescription(), SetLocalizedDescription()</li>
+<li>Object: GetLocalVariables()</li>
 <li>Util: RawPrint()</li>
 <li>Events: PeekEventData()</li>
 <li>Creature: {Get|Set}BaseACPolymorph()</li>
@@ -167,6 +168,7 @@ Fixed</h2>
 <li>Fixed <code>NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE</code> not working correctly when the character has more than one resist energy feat.</li>
 <li>Fixed <code>NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</code> only considering 3 classes for determining the level difference of attacker and defender.</li>
 <li>Fixed <code>NWNX_NWSQLiteExtensions</code> by escaping the columns names during CREATE TABLE.</li>
+<li>Fixed every <code>json</code> value returned from or passed to an NWNX function leaking: NWNX declared <code>SharedPtrEngineStructure</code>'s virtuals in a different order from the 8193.37 server, so destroying one called <code>GetId()</code> instead of the destructor.</li>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md18"></a>
@@ -1720,7 +1722,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 19 2026 11:41:23 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 19 2026 11:42:07 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
