@@ -60,10 +60,10 @@ var NAVTREEINDEX =
 "group__race.html#autotoc_md598",
 "group__store.html#gac2b17cfd46bfcda335e4679cbb1ed1f5",
 "group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73",
-"nwnx__redis_8nss.html#a4721627fd91fc4511fa64e799109f5b7",
-"nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f",
-"structNWNX__Damage__DamageData.html#a4484bc3ade9aeb8ea8a8b5aa467d4623",
-"structNWNX__WebHook__Message.html#a7db5ee8f6d1cf3ce42bba046d947ff01"
+"nwnx__redis_8nss.html#a46ff1988a4b4a259553a556463f597ea",
+"nwnx__redis__short_8nss.html#a6863ff7c9ba028686444c6f3f5b79f8f",
+"structNWNX__Damage__DamageData.html#a41dd881e5a82c93d0b830b3228243eac",
+"structNWNX__WebHook__Message.html#a78619e981c65b0433becc29dab96fd75"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -158,12 +158,18 @@ NWNX_SQL_QUERY_METRICS</h3>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_QUERY_METRICS=true</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md642"></a>
+NWNX_SQL_QUERY_METRICS_ID_AS_FIELD</h3>
+<p>Send the query ID as a field instead of a tag in the <code>SQLQueries</code> measurement. Each query is then pushed as its own point in a single series.</p>
+<p>With the ID as a tag (the default), every query creates a new InfluxDB series, so a long running server can reach InfluxDB's <code>max-values-per-tag</code> limit (default 100000) and its query metrics stop being written.</p>
+<p><b>Example</b></p>
+<div class="fragment"><div class="line">export NWNX_SQL_QUERY_METRICS_ID_AS_FIELD=true</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md643"></a>
 NWNX_SQL_USE_UTF8</h3>
 <p>Convert all strings going between the database and game to/from UTF8</p>
 <p>This takes into account the core locale as well.</p>
 <p><b>Example</b></p>
 <div class="fragment"><div class="line">export NWNX_SQL_USE_UTF8=true</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md643"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md644"></a>
 NWNX_SQL_CHARACTER_SET</h3>
 <p>Set the connection's character set to be used.</p>
 <p>Only supported on mysql and pgsql. For sqlite this can be achieved with a query.</p>
@@ -862,7 +868,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 19 2026 21:18:43 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 19 2026 21:19:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
