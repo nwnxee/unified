@@ -2305,7 +2305,7 @@ Broadcast Safe Projectile Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event fires for all projectiles. It's recommended to use ID whitelists with this event. You can whitelist the event by the projectile type, spell id, or both: <div class="fragment"><div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_TYPE&quot;</span>, NWNX_EVENTS_BROADCAST_SAFE_PROJECTILE_TYPE_*);</div>
 <div class="line"><a class="code" href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a>(<span class="stringliteral">&quot;NWNX_ON_BROADCAST_SAFE_PROJECTILE_SPELL&quot;</span>, SPELL_*);</div>
-<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02547">nwnx_events.nss:2547</a></div></div>
+<div class="ttc" id="agroup__events_html_ga7651182dbfadf41dd9007355dbadd769"><div class="ttname"><a href="group__events.html#ga7651182dbfadf41dd9007355dbadd769">NWNX_Events_AddIDToWhitelist</a></div><div class="ttdeci">void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)</div><div class="ttdoc">Add nID to the whitelist of sEvent.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l02568">nwnx_events.nss:2568</a></div></div>
 </div><!-- fragment --> <code>TARGET_OBJECT_ID</code> will be <code>OBJECT_INVALID</code> if the projectile is cast at a location <hr  />
  </dd></dl>
 <h2><a class="anchor" id="autotoc_md432"></a>
@@ -2508,7 +2508,25 @@ Ability Change Events</h2>
 <td class="markdownTableBodyNone">MOD   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The new ability modifier (only available in AFTER)   </td></tr>
 </table>
 <dl class="section note"><dt>Note</dt><dd>The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use <code>GetIsObjectValid(GetArea(OBJECT_SELF))</code>.</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>The nwscript function GetAbilityModifier() will return the <b>old</b> modifier when used in this event. Use the MOD event data to get the new value.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>The nwscript function GetAbilityModifier() will return the <b>old</b> modifier when used in this event. Use the MOD event data to get the new value. <hr  />
+ </dd></dl>
+<h2><a class="anchor" id="autotoc_md442"></a>
+Encumbrance Change Events</h2>
+<ul>
+<li>NWNX_ON_ENCUMBRANCE_CHANGE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature whose encumbrance state changed</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag   </th><th class="markdownTableHeadNone">Type   </th><th class="markdownTableHeadNone">Notes    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OLD_STATE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The previous state, see <a class="el" href="group__events.html#events_encumbrance">Encumbrance States</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NEW_STATE   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The new state, see <a class="el" href="group__events.html#events_encumbrance">Encumbrance States</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TOTAL_WEIGHT   </td><td class="markdownTableBodyNone">int   </td><td class="markdownTableBodyNone">The weight the creature now carries, in tenths of pounds   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Only fires for player characters and their henchmen. It fires during (before) client enter if the character logs in encumbered.</dd></dl>
 <p><a class="anchor" id="events_events"></a></p>
 </div></td></tr>
 <tr class="memitem:gaa99b0924a97b2a6105f27058c435c510"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaa99b0924a97b2a6105f27058c435c510">NWNX_ON_ADD_ASSOCIATE_BEFORE</a> = &quot;NWNX_ON_ADD_ASSOCIATE_BEFORE&quot;</td></tr>
@@ -3213,6 +3231,15 @@ Ability Change Events</h2>
 <tr class="separator:ga02649d6f4f80c8a95c1e9933eac12eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gababa73c2b852bed5edb966abff7c0b98"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gababa73c2b852bed5edb966abff7c0b98">NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER</a> = &quot;NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER&quot;</td></tr>
 <tr class="separator:gababa73c2b852bed5edb966abff7c0b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Events Encumbrance State Constants</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_encumbrance"></a></p>
+</div></td></tr>
+<tr class="memitem:gabb1f146ce792caac5400a482a3273749"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gabb1f146ce792caac5400a482a3273749">NWNX_EVENTS_ENCUMBRANCE_STATE_NORMAL</a> = 0</td></tr>
+<tr class="separator:gabb1f146ce792caac5400a482a3273749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e3418380cb52d46c67103e5b7f78af3"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga9e3418380cb52d46c67103e5b7f78af3">NWNX_EVENTS_ENCUMBRANCE_STATE_ENCUMBERED</a> = 1</td></tr>
+<tr class="separator:ga9e3418380cb52d46c67103e5b7f78af3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga830716e3f5f185144ca57459bdcd5a63"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga830716e3f5f185144ca57459bdcd5a63">NWNX_EVENTS_ENCUMBRANCE_STATE_HEAVILY_ENCUMBERED</a> = 2</td></tr>
+<tr class="separator:ga830716e3f5f185144ca57459bdcd5a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Events ObjectType Constants</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="events_objtype"></a></p>
 </div></td></tr>
@@ -3314,7 +3341,7 @@ Ability Change Events</h2>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Thu Nov 19 2026 02:45:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 19 2026 11:35:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
