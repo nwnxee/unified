@@ -284,11 +284,11 @@ void Set(CGameObject *pGameObject, const std::string& prefix, const std::string&
 
 template <> std::optional<int> Get<int>(CGameObject *pGameObject, const std::string& prefix, const std::string& key)
 {
-    if (auto *pOS = GetObjectStorage(pGameObject))
+    auto *pOS = pGameObject ? static_cast<ObjectStorage*>(pGameObject->m_pNwnxData) : nullptr;
+    if (pOS && pOS->m_IntMap)
     {
-        auto fullkey = prefix + "!" + key;
-        auto map = pOS->GetIntMap();
-        auto it = map.find(fullkey);
+        const auto& map = *pOS->m_IntMap;
+        auto it = map.find(prefix + "!" + key);
         if (it != map.end())
             return std::make_optional<int>(it->second.first);
     }
@@ -297,11 +297,11 @@ template <> std::optional<int> Get<int>(CGameObject *pGameObject, const std::str
 
 template <> std::optional<float> Get<float>(CGameObject *pGameObject, const std::string& prefix, const std::string& key)
 {
-    if (auto *pOS = GetObjectStorage(pGameObject))
+    auto *pOS = pGameObject ? static_cast<ObjectStorage*>(pGameObject->m_pNwnxData) : nullptr;
+    if (pOS && pOS->m_FloatMap)
     {
-        auto fullkey = prefix + "!" + key;
-        auto map = pOS->GetFloatMap();
-        auto it = map.find(fullkey);
+        const auto& map = *pOS->m_FloatMap;
+        auto it = map.find(prefix + "!" + key);
         if (it != map.end())
             return std::make_optional<float>(it->second.first);
     }
@@ -310,11 +310,11 @@ template <> std::optional<float> Get<float>(CGameObject *pGameObject, const std:
 
 template <> std::optional<std::string> Get<std::string>(CGameObject *pGameObject,  const std::string& prefix, const std::string& key)
 {
-    if (auto *pOS = GetObjectStorage(pGameObject))
+    auto *pOS = pGameObject ? static_cast<ObjectStorage*>(pGameObject->m_pNwnxData) : nullptr;
+    if (pOS && pOS->m_StringMap)
     {
-        auto fullkey = prefix + "!" + key;
-        auto map = pOS->GetStringMap();
-        auto it = map.find(fullkey);
+        const auto& map = *pOS->m_StringMap;
+        auto it = map.find(prefix + "!" + key);
         if (it != map.end())
             return std::make_optional<std::string>(it->second.first);
     }
@@ -323,11 +323,11 @@ template <> std::optional<std::string> Get<std::string>(CGameObject *pGameObject
 
 template <> std::optional<void*> Get<void*>(CGameObject *pGameObject, const std::string& prefix, const std::string& key)
 {
-    if (auto *pOS = GetObjectStorage(pGameObject))
+    auto *pOS = pGameObject ? static_cast<ObjectStorage*>(pGameObject->m_pNwnxData) : nullptr;
+    if (pOS && pOS->m_PointerMap)
     {
-        auto fullkey = prefix + "!" + key;
-        auto map = pOS->GetPointerMap();
-        auto it = map.find(fullkey);
+        const auto& map = *pOS->m_PointerMap;
+        auto it = map.find(prefix + "!" + key);
         if (it != map.end())
             return std::make_optional<void*>(it->second.first);
     }

@@ -189,7 +189,7 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_PossessFamiliar()
 
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSpecialAbility(int nSpell, int nCasterLevel)
 {
-    struct NWNX_Player_QuickBarSlot qbs = NWNX_Player_QBS_Empty(NWNX_PLAYER_QBS_TYPE_SPELL);
+    struct NWNX_Player_QuickBarSlot qbs = NWNX_Player_QBS_Empty(NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY);
 
     qbs.nINTParam1     = nSpell;
     qbs.nDomainLevel   = nCasterLevel;
