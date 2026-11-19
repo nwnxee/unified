@@ -1977,3 +1977,31 @@ NWNX_EXPORT ArgumentStack GetOpenStore(ArgumentStack&& args)
         return pPlayer->m_pStoreGUI->m_oidOpen;
     return Constants::OBJECT_INVALID;
 }
+
+NWNX_EXPORT ArgumentStack ReloadResources(ArgumentStack&& args)
+{
+    if (auto* pPlayer = Utils::PopPlayer(args))
+    {
+        const auto flags = args.extract<int32_t>();
+        if (!flags)
+            return {};
+
+        // Same Resman 0x4 reload message as ReloadTlk() (0x10) and ReloadColorPalettes() (0x20).
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            pMessage->CreateWriteMessage(4, pPlayer->m_nPlayerID, 1);
+            pMessage->WriteDWORD(static_cast<uint32_t>(flags));
+            uint8_t* buffer;
+            uint32_t size;
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                    Constants::MessageMajor::Resman,
+                    0x4,
+                    buffer, size);
+            }
+        }
+    }
+
+    return {};
+}

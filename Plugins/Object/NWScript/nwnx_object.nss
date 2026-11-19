@@ -74,6 +74,20 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 
+/// @brief Gets all local variables of an object in one call.
+/// @param oObject The object.
+/// @param nTypeFilter Only return variables of this @ref object_localvar_types "type", or -1 for all types.
+/// @param sPrefix Only return variables whose name starts with this (case-sensitive), or "" for all names.
+/// @note A name holding values of more than one type (e.g. both a local int and a local string)
+///       appears once for each type.
+/// @note Like NWNX_Object_GetLocalVariable(), a variable holding the default value for its type
+///       (0/0.0/""/OBJECT_INVALID/JsonNull()) is not set and is not returned; cassowary variables
+///       are returned with type NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN. The order is unspecified.
+/// @note Reads the variable table directly, so it is far cheaper than looping over
+///       NWNX_Object_GetLocalVariable(), which takes O(n) time per call.
+/// @return A json array of objects {"key": string, "type": int}, an empty array if oObject is invalid.
+json NWNX_Object_GetLocalVariables(object oObject, int nTypeFilter = -1, string sPrefix = "");
+
 /// @brief Set oObject's position.
 /// @param oObject The object.
 /// @param vPosition A vector position.
@@ -465,6 +479,15 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
     var.key  = NWNXPopString();
     var.type = NWNXPopInt();
     return var;
+}
+
+json NWNX_Object_GetLocalVariables(object oObject, int nTypeFilter = -1, string sPrefix = "")
+{
+    NWNXPushString(sPrefix);
+    NWNXPushInt(nTypeFilter);
+    NWNXPushObject(oObject);
+    NWNXCall(NWNX_Object, "GetLocalVariables");
+    return NWNXPopJson();
 }
 
 void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
