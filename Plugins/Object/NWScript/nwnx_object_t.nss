@@ -20,6 +20,24 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.key == "nwnx_object_test");
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.type == NWNX_OBJECT_LOCALVAR_TYPE_INT);
 
+    SetLocalString(o, "nwnx_object_test", "x");
+    SetLocalFloat(o, "nwnx_object_test_f", 1.0);
+    json jAll = NWNX_Object_GetLocalVariables(o);
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables", JsonGetLength(jAll) >= nVarCount + 3);
+    json jTest = NWNX_Object_GetLocalVariables(o, -1, "nwnx_object_test");
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables (prefix)", JsonGetLength(jTest) == 3);
+    json jInts = NWNX_Object_GetLocalVariables(o, NWNX_OBJECT_LOCALVAR_TYPE_INT, "nwnx_object_test");
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables (type)", JsonGetLength(jInts) == 1 &&
+        JsonGetString(JsonObjectGet(JsonArrayGet(jInts, 0), "key")) == "nwnx_object_test" &&
+        JsonGetInt(JsonObjectGet(JsonArrayGet(jInts, 0), "type")) == NWNX_OBJECT_LOCALVAR_TYPE_INT);
+    json jFloats = NWNX_Object_GetLocalVariables(o, NWNX_OBJECT_LOCALVAR_TYPE_FLOAT, "nwnx_object_test");
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables (type)", JsonGetLength(jFloats) == 1 &&
+        JsonGetString(JsonObjectGet(JsonArrayGet(jFloats, 0), "key")) == "nwnx_object_test_f");
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables (no match)", JsonGetLength(NWNX_Object_GetLocalVariables(o, -1, "nwnx_object_test_zz")) == 0);
+    NWNX_Tests_Report("NWNX_Object", "GetLocalVariables (invalid)", JsonGetLength(NWNX_Object_GetLocalVariables(OBJECT_INVALID)) == 0);
+    DeleteLocalString(o, "nwnx_object_test");
+    DeleteLocalFloat(o, "nwnx_object_test_f");
+
     vector vPos = GetPosition(o);
     vPos.x += 1;
     NWNX_Object_SetPosition(o, vPos);

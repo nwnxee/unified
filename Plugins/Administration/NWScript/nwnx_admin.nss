@@ -174,6 +174,20 @@ int NWNX_Administration_GetMaxLevel();
 /// @param nLevel The maximum level for the server.
 void NWNX_Administration_SetMaxLevel(int nLevel);
 
+/// @brief Get the NWSync manifest hash the server advertises.
+/// @return The hash, or "" if NWSync isn't advertised.
+string NWNX_Administration_GetNWSyncAdvertHash();
+
+/// @brief Get the NWSync URL the server advertises.
+/// @return The URL, or "" if NWSync isn't advertised.
+string NWNX_Administration_GetNWSyncAdvertUrl();
+
+/// @brief Set the NWSync manifest and URL the server advertises, without a restart.
+/// @note Only clients that connect afterwards sync to it. Additional manifests are dropped.
+/// @param sHash The manifest's SHA1 hash, or "" to stop advertising NWSync.
+/// @param sUrl The NWSync repository URL, or "" to stop advertising NWSync.
+void NWNX_Administration_SetNWSyncAdvert(string sHash, string sUrl);
+
 /// @}
 
 string NWNX_Administration_GetPlayerPassword()
@@ -335,4 +349,23 @@ void NWNX_Administration_SetMaxLevel(int nLevel)
 {
     NWNXPushInt(nLevel);
     NWNXCall(NWNX_Administration, "SetMaxLevel");
+}
+
+string NWNX_Administration_GetNWSyncAdvertHash()
+{
+    NWNXCall(NWNX_Administration, "GetNWSyncAdvertHash");
+    return NWNXPopString();
+}
+
+string NWNX_Administration_GetNWSyncAdvertUrl()
+{
+    NWNXCall(NWNX_Administration, "GetNWSyncAdvertUrl");
+    return NWNXPopString();
+}
+
+void NWNX_Administration_SetNWSyncAdvert(string sHash, string sUrl)
+{
+    NWNXPushString(sUrl);
+    NWNXPushString(sHash);
+    NWNXCall(NWNX_Administration, "SetNWSyncAdvert");
 }
