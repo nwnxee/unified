@@ -15,6 +15,7 @@ add_plugin(Tweaks
     "FixDispelEffectLevels.cpp"
     "FixGreaterSanctuaryBug.cpp"
     "FixTriggerEnterDetection.cpp"
+    "FixTriggerPointTest.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "HideOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
