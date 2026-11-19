@@ -37,6 +37,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: RemoveObjectFromAllDispatchLists()
 - Creature: GetMovementRateFactorModifier(), SetMovementRateFactorModifier()
 - Administration: GetNWSyncAdvertHash(), GetNWSyncAdvertUrl(), SetNWSyncAdvert()
+- Encounter: SetNumberOfCreaturesInEncounterList()
 - Encounter: Set{Min|Max}NumSpawned()
 
 ### Changed
