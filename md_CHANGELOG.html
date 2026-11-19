@@ -149,6 +149,7 @@ Changed</h2>
 <li>Admin: Player/DM password functions no longer print the passwords to the log.</li>
 <li>SQL: Database passwords are no longer printed to the log when connecting.</li>
 <li>HTTPClient: Enable three custom fields to pass to response.</li>
+<li>Core: per-object storage lookups (<code>nwnxGet</code>) no longer copy the whole map, or create storage for objects that have none, on every call; this speeds up the Appearance and Player per-object update hooks.</li>
 <li>Race: the effect-apply hook no longer adds a child-race map entry for every new effect parameter or copies the child list, and does nothing when no child races are set.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md15"></a>
@@ -1726,7 +1727,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 19 2026 11:46:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 19 2026 11:57:57 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
