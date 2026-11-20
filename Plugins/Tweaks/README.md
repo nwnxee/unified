@@ -23,6 +23,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS` | true or false | DMs possessing a creature will not clear their actions. |
 | `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG` | true or false | Fixes a bug with greater sanctuary. |
 | `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` | true or false | Finding a free spot in a store, container or inventory takes time linear in the number of items instead of quadratic. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fast_item_repository_find_position). |
+| `NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY` | true or false | Skill check feedback with a DC over 127 (or a modifier outside -128..127) is shown with the real numbers. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fix_skill_check_display). |
 | `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` | Between 1 and 3 | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_item_charges_cost_mode). |
 | `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` | true or false | Fixes dispel checks vs. effects created by deleted objects. |
 | `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` | true or false | Adds prestige class levels to caster level. |
@@ -133,3 +134,7 @@ Finding a free spot for an item in a store, container or inventory is quadratic 
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 
 Warning: This tweak will disable savegame characters getting sent to the client. If you are using multiplayer savegames do not use this tweak!
+
+## NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY
+
+The skill check message only has room for a DC up to 127 and a skill modifier from -128 to 127, so a lock or trap with DC 200 shows as DC 72 in the combat log. The check itself uses the real values. With this tweak, a skill check that doesn't fit is sent as feedback text built from the same TLK strings and name colours as the client's line, with the real numbers. All other skill checks are unchanged, and the Feedback plugin can still hide them.
