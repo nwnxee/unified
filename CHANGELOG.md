@@ -29,6 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ##### New NWScript Functions
 - Player: GetOpenStore()
 - Player: ReloadResources()
+- Player: GetControllingPlayer()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 - Store: GetBlackMarket(), SetBlackMarket()
 - Util: SetStartingLocation()
