@@ -19,6 +19,7 @@ struct JsonEngineStructure : public SharedPtrEngineStructure<JsonEngineStructure
     JsonEngineStructure(const json& j, const CExoString& err);
     JsonEngineStructure(json&& j, CExoString&& err);
     virtual ~JsonEngineStructure() {}
+    uint64_t GetId() const override;
     bool IsEmpty() const override;
     void Clear() override;
     void Unlink() override;

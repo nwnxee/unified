@@ -96,6 +96,18 @@ __Example__
 export NWNX_SQL_QUERY_METRICS=true
 ```
 
+### NWNX_SQL_QUERY_METRICS_ID_AS_FIELD
+
+Send the query ID as a field instead of a tag in the `SQLQueries` measurement. Each query is then pushed as its own point in a single series.
+
+With the ID as a tag (the default), every query creates a new InfluxDB series, so a long running server can reach InfluxDB's `max-values-per-tag` limit (default 100000) and its query metrics stop being written.
+
+__Example__
+
+```
+export NWNX_SQL_QUERY_METRICS_ID_AS_FIELD=true
+```
+
 ### NWNX_SQL_USE_UTF8
 
 Convert all strings going between the database and game to/from UTF8

@@ -1,9 +1,6 @@
 #include "nwnx_feedback"
 #include "nwnx_tests"
 
-const int NWNX_FEEDBACK_REST_BEGINNING_REST             = 18;
-const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE        = 3;
-
 void main()
 {
     WriteTimestampedLogEntry("NWNX_Feedback unit test begin..");

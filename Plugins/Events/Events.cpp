@@ -50,6 +50,7 @@ static auto s_idInitOnFirstSubscribe = MessageBus::Subscribe("NWNX_EVENT_INIT_ON
     });
 
 static std::string GetEventData(const std::string& tag);
+static bool PeekEventData(const std::string& tag);
 static void CreateNewEventDataIfNeeded();
 static void RunEventInit(const std::string& eventName);
 
@@ -81,6 +82,19 @@ std::string GetEventData(const std::string& tag)
     retVal = data->second;
     LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag, retVal);
     return retVal;
+}
+
+bool PeekEventData(const std::string& tag)
+{
+    if (s_eventDepth == 0 || s_eventData.empty())
+    {
+        return false;
+    }
+
+    auto& eventData = s_eventData.top();
+    auto data = eventData.m_EventDataMap.find(tag);
+
+    return (data != std::end(eventData.m_EventDataMap));
 }
 
 bool SignalEvent(const std::string& eventName, const ObjectID target, std::string *result)
@@ -353,6 +367,11 @@ NWNX_EXPORT ArgumentStack GetEventData(ArgumentStack&& args)
     return GetEventData(args.extract<std::string>());
 }
 
+NWNX_EXPORT ArgumentStack PeekEventData(ArgumentStack&& args)
+{
+    return PeekEventData(args.extract<std::string>());
+}
+
 NWNX_EXPORT ArgumentStack SkipEvent(ArgumentStack&&)
 {
     if (s_eventDepth == 0 || s_eventData.empty())
@@ -436,6 +455,19 @@ NWNX_EXPORT ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args)
     if (eventDispatchList != s_dispatchList.end())
     {
         eventDispatchList->second.erase(oidObject);
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack RemoveObjectFromAllDispatchLists(ArgumentStack&& args)
+{
+    const auto oidObject = args.extract<ObjectID>();
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    for (auto& eventDispatchList : s_dispatchList)
+    {
+        eventDispatchList.second.erase(oidObject);
     }
 
     return {};

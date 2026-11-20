@@ -154,6 +154,7 @@ MarshalPtr(Task::CExoTaskManager*, void*)
 // Ignore complex types
 %ignore CNWSync;
 %ignore CNWTileSetManager;
+%ignore CCampaignDB;
 
 // Interfaces for multi-inheritance types.
 %interface_custom("CGameObject", "ICGameObject", CGameObject);

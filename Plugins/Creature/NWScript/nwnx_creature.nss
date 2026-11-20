@@ -173,15 +173,31 @@ void NWNX_Creature_SetSpecialAbility(object creature, int index, struct NWNX_Cre
 /// @return The class id.
 int NWNX_Creature_GetClassByLevel(object creature, int level);
 
-/// @brief Sets the base AC for the creature.
+/// @brief Sets the base AC of a creature.
 /// @param creature The creature object.
-/// @param ac The base AC to set for the creature.
+/// @param ac The base AC to set.
+/// @note While polymorphed, the engine uses a separate variable for AC calculation.
+/// Use NWNX_Creature_SetBaseACPolymorph() when the creature is polymorphed.
 void NWNX_Creature_SetBaseAC(object creature, int ac);
 
-/// @brief Get the base AC for the creature.
+/// @brief Gets the base AC of a creature.
 /// @param creature The creature object.
 /// @return The base AC.
+/// @note While polymorphed, the engine uses a separate variable for AC calculation.
+/// Use NWNX_Creature_GetBaseACPolymorph() when the creature is polymorphed.
 int NWNX_Creature_GetBaseAC(object creature);
+
+/// @brief Sets the AC of a polymorphed creature.
+/// @param creature The creature object.
+/// @param ac The AC to set.
+/// @note This value is only used by the engine when the creature is polymorphed.
+void NWNX_Creature_SetBaseACPolymorph(object creature, int ac);
+
+/// @brief Gets the AC of a polymorphed creature.
+/// @param creature The creature object.
+/// @return The polymorph AC.
+/// @note This value is only used by the engine when the creature is polymorphed.
+int NWNX_Creature_GetBaseACPolymorph(object creature);
 
 /// @brief Sets the ability score of the creature to the provided value.
 /// @note Does not apply racial bonuses/penalties.
@@ -236,7 +252,7 @@ int NWNX_Creature_GetMaxSpellSlots(object creature, int class, int level);
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
 /// @param level The spell level.
-/// @param spellId The spell to remove.
+/// @param spellId The spell to add.
 void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spellId);
 
 /// @brief Remove a spell from creature's spellbook for class.
@@ -271,6 +287,8 @@ float NWNX_Creature_GetMovementRateFactor(object creature);
 
 /// @brief Sets the creature's current movement rate factor.
 /// @note Base movement rate factor is 1.0.
+/// @note The engine resets this whenever movement speed effects or encumbrance change.
+/// For a lasting change use NWNX_Creature_SetMovementRateFactorModifier().
 /// @param creature The creature object.
 /// @param rate The rate to set.
 void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
@@ -286,6 +304,18 @@ float NWNX_Creature_GetMovementRateFactorCap(object creature);
 /// @param creature The creature object.
 /// @param cap The cap to set.
 void NWNX_Creature_SetMovementRateFactorCap(object creature, float cap);
+
+/// @brief Returns the creature's movement rate factor modifier.
+/// @param creature The creature object.
+/// @return The modifier, 1.0 if not set.
+float NWNX_Creature_GetMovementRateFactorModifier(object creature);
+
+/// @brief Multiplies the creature's movement rate factor by modifier.
+/// @note Applied after the engine's own factor (effects, encumbrance, monk/barbarian speed and caps),
+/// so it keeps working when those change. 1.0 removes it.
+/// @param creature The creature object.
+/// @param modifier The modifier, greater than 0.0.
+void NWNX_Creature_SetMovementRateFactorModifier(object creature, float modifier);
 
 /// @brief Returns the creature's current movement type
 /// @param creature The creature object.
@@ -1191,6 +1221,20 @@ int NWNX_Creature_GetBaseAC(object creature)
     return NWNXPopInt();
 }
 
+void NWNX_Creature_SetBaseACPolymorph(object creature, int ac)
+{
+    NWNXPushInt(ac);
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Creature, "SetBaseACPolymorph");
+}
+
+int NWNX_Creature_GetBaseACPolymorph(object creature)
+{
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Creature, "GetBaseACPolymorph");
+    return NWNXPopInt();
+}
+
 void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value)
 {
     NWNXPushInt(value);
@@ -1319,6 +1363,20 @@ void NWNX_Creature_SetMovementRateFactorCap(object creature, float cap)
     NWNXPushFloat(cap);
     NWNXPushObject(creature);
     NWNXCall(NWNX_Creature, "SetMovementRateFactorCap");
+}
+
+float NWNX_Creature_GetMovementRateFactorModifier(object creature)
+{
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Creature, "GetMovementRateFactorModifier");
+    return NWNXPopFloat();
+}
+
+void NWNX_Creature_SetMovementRateFactorModifier(object creature, float modifier)
+{
+    NWNXPushFloat(modifier);
+    NWNXPushObject(creature);
+    NWNXCall(NWNX_Creature, "SetMovementRateFactorModifier");
 }
 
 void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value)

@@ -10,13 +10,34 @@ NWN_API_PROLOGUE(CAppManager)
 #endif
 
 struct CClientExoApp;
-struct CNWReentrantServerStats;
 struct CNWTileSetManager;
 struct CServerExoApp;
 
 
 typedef int BOOL;
 
+struct CNWReentrantServerStats
+{
+    BOOL m_bStallServer;
+
+    uint32_t m_nStallEvent;
+
+    uint32_t m_nCompletedWork;
+    uint32_t m_nTotalWork;
+
+    BOOL m_bFirstRenderOfStall;
+    BOOL m_bLastRenderOfStall;
+
+    CUUID m_cUUID;
+
+    CExoString m_sStallEvent;
+    CExoString m_sStallEvent2;
+    CExoString m_sStallEvent3;
+    uint32_t m_nStallEventDWORD;
+    uint32_t m_nStallEventDWORD2;
+
+    uint32_t m_nStallEventError;
+};
 
 struct CAppManager
 {
@@ -60,4 +81,3 @@ struct CAppManager
 #ifdef NWN_API_EPILOGUE
 NWN_API_EPILOGUE(CAppManager)
 #endif
-

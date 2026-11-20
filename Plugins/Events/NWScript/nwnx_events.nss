@@ -747,7 +747,7 @@ _______________________________________
     ITEM_OBJECT_ID        | object | Convert to object with StringToObject() |
     ITEM_PROPERTY_INDEX   | int    | |
     MOVE_TO_TARGET        | int    | |
-    ACTION_RESULT         | int    | |
+    ACTION_RESULT         | int    | ACTION_IN_PROGRESS=1, ACTION_COMPLETE=2, ACTION_FAILED=3 |
 
 _______________________________________
     ## Healing Events
@@ -930,6 +930,17 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     TARGET_INVENTORY      | object | Pretty sure this is always the player
+
+_______________________________________
+    ## Inventory Close Events
+    - NWNX_ON_INVENTORY_CLOSE_BEFORE
+    - NWNX_ON_INVENTORY_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player closing the inventory
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET_INVENTORY      | object | The inventory being closed
 
 _______________________________________
     ## Inventory Select Panel Events
@@ -1816,6 +1827,19 @@ _______________________________________
     @note The event only fires for players. It might fire a few times during (before) client enter when all the items are equipped and one or more of them have a bonus to abilities. To detect and possibly skip events happening before client enter one can use `GetIsObjectValid(GetArea(OBJECT_SELF))`.
 
     @warning The nwscript function GetAbilityModifier() will return the **old** modifier when used in this event. Use the MOD event data to get the new value.
+    _______________________________________
+    ## Encumbrance Change Events
+    - NWNX_ON_ENCUMBRANCE_CHANGE_AFTER
+
+    `OBJECT_SELF` = The creature whose encumbrance state changed
+
+    Event Data Tag        | Type | Notes
+    ----------------------|------|-------
+    OLD_STATE             | int  | The previous state, see @ref events_encumbrance "Encumbrance States" |
+    NEW_STATE             | int  | The new state, see @ref events_encumbrance "Encumbrance States"      |
+    TOTAL_WEIGHT          | int  | The weight the creature now carries, in tenths of pounds              |
+
+    @note Only fires for player characters and their henchmen. It fires during (before) client enter if the character logs in encumbered.
 */
 
 /// @name Events Event Constants
@@ -2019,6 +2043,8 @@ const string NWNX_ON_QUICKCHAT_BEFORE = "NWNX_ON_QUICKCHAT_BEFORE";
 const string NWNX_ON_QUICKCHAT_AFTER = "NWNX_ON_QUICKCHAT_AFTER";
 const string NWNX_ON_INVENTORY_OPEN_BEFORE = "NWNX_ON_INVENTORY_OPEN_BEFORE";
 const string NWNX_ON_INVENTORY_OPEN_AFTER = "NWNX_ON_INVENTORY_OPEN_AFTER";
+const string NWNX_ON_INVENTORY_CLOSE_BEFORE = "NWNX_ON_INVENTORY_CLOSE_BEFORE";
+const string NWNX_ON_INVENTORY_CLOSE_AFTER = "NWNX_ON_INVENTORY_CLOSE_AFTER";
 const string NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE = "NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE";
 const string NWNX_ON_INVENTORY_SELECT_PANEL_AFTER = "NWNX_ON_INVENTORY_SELECT_PANEL_AFTER";
 const string NWNX_ON_BARTER_START_BEFORE = "NWNX_ON_BARTER_START_BEFORE";
@@ -2172,6 +2198,14 @@ const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_BEFORE = "NWNX_ON_ITEMPROPERTY_
 const string NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER = "NWNX_ON_ITEMPROPERTY_EFFECT_REMOVED_AFTER";
 /// @}
 
+/// @name Events Encumbrance State Constants
+/// @anchor events_encumbrance
+/// @{
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_NORMAL             = 0;
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_ENCUMBERED         = 1;
+const int NWNX_EVENTS_ENCUMBRANCE_STATE_HEAVILY_ENCUMBERED = 2;
+/// @}
+
 /// @name Events ObjectType Constants
 /// @anchor events_objtype
 /// @{
@@ -2281,6 +2315,9 @@ int NWNX_Events_SignalEvent(string evt, object target);
 /// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
 
+/// Returns true if the event data tag exists for the currently executing script.
+int NWNX_Events_PeekEventData(string tag);
+
 /// Skips execution of the currently executing event.
 /// If this is a NWNX event, that means that the base function call won't be called.
 /// This won't impact any other subscribers, nor dispatch for before / after functions.
@@ -2369,6 +2406,11 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScriptOrChunk, o
 
 /// Remove oObject from the dispatch list for sEvent+sScript(Chunk).
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChunk, object oObject);
+
+/// @brief Remove oObject from the dispatch list of every event.
+/// @param oObject The object to remove.
+/// @note The lists themselves stay enabled, they just no longer contain oObject.
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject);
 
 /// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
 /// on its whitelist.
@@ -2462,6 +2504,13 @@ string NWNX_Events_GetEventData(string tag)
     return NWNXPopString();
 }
 
+int NWNX_Events_PeekEventData(string tag)
+{
+    NWNXPushString(tag);
+    NWNXCall(NWNX_Events, "PeekEventData");
+    return NWNXPopInt();
+}
+
 void NWNX_Events_SkipEvent()
 {
     NWNXCall(NWNX_Events, "SkipEvent");
@@ -2501,6 +2550,12 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScriptOrChu
     NWNXPushString(sScriptOrChunk);
     NWNXPushString(sEvent);
     NWNXCall(NWNX_Events, "RemoveObjectFromDispatchList");
+}
+
+void NWNX_Events_RemoveObjectFromAllDispatchLists(object oObject)
+{
+    NWNXPushObject(oObject);
+    NWNXCall(NWNX_Events, "RemoveObjectFromAllDispatchLists");
 }
 
 void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)

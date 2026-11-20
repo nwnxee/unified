@@ -890,7 +890,7 @@ ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
-    int32_t retVal = *pArea->nwnxGet<int>(areaModPOSKey + std::to_string(skillId));
+    int32_t retVal = pArea->nwnxGet<int>(areaModPOSKey + std::to_string(skillId)).value_or(0);
 
     return ScriptAPI::Arguments(retVal);
 }

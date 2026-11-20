@@ -10,29 +10,46 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 ### Added
 - Tweaks: added `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` to make Resist Energy feats stack with Epic Energy Resistance.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` to allow special abilities to be used on target types other than creatures.
+- Tweaks: added `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` to find a free inventory spot in linear instead of quadratic time, which speeds up filling stores and large containers.
 - Events: Added events `NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}` which fire when an ability of a player changes.
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Tweaks: added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS` to set the number of servervault characters which will be sorted by date.
+- Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
+- Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
+- SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
 
 ##### New Plugins
-- N/A
+- Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
+- Player: ReloadResources()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 - Store: GetBlackMarket(), SetBlackMarket()
 - Util: SetStartingLocation()
 - Object: GetLocalizedDescription(), SetLocalizedDescription()
+- Object: GetLocalVariables()
 - Util: RawPrint()
+- Events: PeekEventData()
+- Creature: {Get|Set}BaseACPolymorph()
+- Events: RemoveObjectFromAllDispatchLists()
+- Creature: GetMovementRateFactorModifier(), SetMovementRateFactorModifier()
+- Administration: GetNWSyncAdvertHash(), GetNWSyncAdvertUrl(), SetNWSyncAdvert()
+- Encounter: SetNumberOfCreaturesInEncounterList()
+- Encounter: Set{Min|Max}NumSpawned()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
 - Events: Added ID to the NWNX_ON_ITEMPROPERTY_EFFECT_* events data.
 - Utils: Change LOG_INFO to LOG_DEBUG for console commands.
 - Admin: Player/DM password functions no longer print the passwords to the log.
+- SQL: Database passwords are no longer printed to the log when connecting.
+- HTTPClient: Enable three custom fields to pass to response.
+- Core: per-object storage lookups (`nwnxGet`) no longer copy the whole map, or create storage for objects that have none, on every call; this speeds up the Appearance and Player per-object update hooks.
+- Race: the effect-apply hook no longer adds a child-race map entry for every new effect parameter or copies the child list, and does nothing when no child races are set.
 
 ### Deprecated
 - N/A
@@ -41,11 +58,17 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Removed NWNX_Lua and NWNX_SpellChecker due to presumably being unused and bitrotten.
 
 ### Fixed
+- Player: Fixed `NWNX_Player_QBS_UseSpecialAbility()` making a slot of type `NWNX_PLAYER_QBS_TYPE_SPELL` instead of `NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY`.
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.
 - MaxLevel: Fixed returning an invalid number of known spells in some cases.
 - Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
+- Fixed every `json` value returned from or passed to an NWNX function leaking: NWNX declared `SharedPtrEngineStructure`'s virtuals in a different order from the 8193.37 server, so destroying one called `GetId()` instead of the destructor.
+- SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
+- Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
+- Feat, Race: Fixed 128 needless `RemoveEffectById(0)` calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.
+- Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
