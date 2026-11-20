@@ -156,8 +156,8 @@ void PerformRequest(const Request &client_req)
         if (res.status == 200)
             LOG_INFO("Sent webhook '%s' to '%s%s'.", client_req.data, client_req.host, client_req.path);
         else
-            LOG_WARNING("HTTP Client Request to '%s%s' failed, status code '%d'.", client_req.data.c_str(),
-                        client_req.host.c_str(), client_req.path.c_str(), res.status);
+            LOG_WARNING("HTTP Client Request to '%s%s' failed, status code '%d'.", client_req.host, client_req.path,
+                        res.status);
         return;
     }
     Tasks::QueueOnAsyncThread([cli, client_req]()
