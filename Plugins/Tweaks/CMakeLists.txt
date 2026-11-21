@@ -18,6 +18,7 @@ add_plugin(Tweaks
     "FixTriggerEnterDetection.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "FixTakeGoldNoCallerCrash.cpp"
+    "FixGridSearchOutOfBounds.cpp"
     "HideOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
     "ItemChargesCost.cpp"
