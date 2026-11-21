@@ -20,6 +20,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
 - Tweaks: added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS` to set the number of servervault characters which will be sorted by date.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
+- Core: added `NWNX_CORE_ENCODING_BEST_FIT` to replace characters the codepage lacks with close equivalents instead of `?` when converting from UTF-8.
 - Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
 - SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
 
@@ -68,6 +69,8 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
 - Fixed every `json` value returned from or passed to an NWNX function leaking: NWNX declared `SharedPtrEngineStructure`'s virtuals in a different order from the 8193.37 server, so destroying one called `GetId()` instead of the destructor.
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
+- Core: Fixed codepage <-> UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.
+- Core: `NWNX_CORE_LOCALE` is now case-insensitive, accepts `cs` for Czech, and warns about unknown values.
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
 - Feat, Race: Fixed 128 needless `RemoveEffectById(0)` calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.
 - Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.
