@@ -8,7 +8,7 @@ The HTTPClient Plugin provides access to an HTTP Client to perform requests and 
 
 | Variable Name                     |  Type      | Default Value      |
 | ----------------------------------| :--------: | ------------------ |
-| NWNX_HTTPCLIENT_REQUEST_TIMEOUT  | int        | 2000               |
+| NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT | int  | 2000               |
 
 ## Setup
 ### Client

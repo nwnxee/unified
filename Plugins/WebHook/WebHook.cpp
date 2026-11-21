@@ -62,7 +62,11 @@ NWNX_EXPORT ArgumentStack SendWebHookHTTPS(ArgumentStack&& args)
     {
         auto res = cli->second->post(path.c_str(), message, "application/json");
 
-        if (res->status == 200)
+        if (!res)
+        {
+            LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host, path);
+        }
+        else if (res->status == 200)
         {
             LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
         }
