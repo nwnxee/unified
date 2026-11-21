@@ -8,6 +8,8 @@ If enabled and used without setting an ELC script it will function just like ELC
 
 This is a pretty advanced plugin and may at times require you to dive into the source code to figure out what's going on.
 
+A `NON_PLAYER_RACE` or `NON_PLAYER_CLASS` failure for a race or class id outside `racialtypes.2da` or `classes.2da` can't be skipped: the character fails validation even if the ELC script calls `NWNX_ELC_SkipValidationFailure()`.
+
 ## Environment Variables
 | Variable Name | Value | Default | Notes |
 | ------------- | :---: | :-----: | ----- |

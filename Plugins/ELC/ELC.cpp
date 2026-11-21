@@ -429,6 +429,12 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     return strrefFailure;
                 }
             }
+            if (!pRace)
+            {
+                LOG_WARNING("Failing ELC Validation of object '%x' despite the skip: race '%i' is not in racialtypes.2da",
+                            pPlayer->m_oidNWSObject, pCreatureStats->m_nRace);
+                return STRREF_CHARACTER_NON_PLAYER_RACE;
+            }
 
             // Check for non player classes, class level restrictions and prestige class requirements
             // We also check class alignment restrictions for new characters only
@@ -447,6 +453,12 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                     {
                         return strrefFailure;
                     }
+                }
+                if (!pClass)
+                {
+                    LOG_WARNING("Failing ELC Validation of object '%x' despite the skip: class '%i' is not in classes.2da",
+                                pPlayer->m_oidNWSObject, classId);
+                    return STRREF_CHARACTER_NON_PLAYER_CLASS;
                 }
 
                 if (pClass->m_nMaxLevel > 0 && pCreatureStats->GetClassLevel(nMultiClass, false) > pClass->m_nMaxLevel)
@@ -1017,6 +1029,8 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                             return strrefFailure;
                         }
                     }
+                    if (!pFeat)
+                        continue;
 
                     // Set the id of the feat we're checking so we can retrieve it
                     s_ELCFeatID = nFeat;
@@ -1526,7 +1540,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                         s_ELCSpellID = nSpellID;
 
                         // Check the spell level
-                        if (pSpell->GetSpellLevel(nClassLeveledUpIn) != nSpellLevel)
+                        if (pSpell && pSpell->GetSpellLevel(nClassLeveledUpIn) != nSpellLevel)
                         {
                             if (auto strrefFailure = HandleValidationFailure(
                                     ValidationFailureType::Spell,
@@ -1562,7 +1576,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                                 int32_t nOppositionSchool;
                                 if (pRules->m_p2DArrays->GetSpellSchoolTable()->GetINTEntry(nSchool, "Opposition", &nOppositionSchool))
                                 {
-                                    if (pSpell->m_nSchool == (uint8_t) nOppositionSchool)
+                                    if (pSpell && pSpell->m_nSchool == (uint8_t) nOppositionSchool)
                                     {
                                         if (auto strrefFailure = HandleValidationFailure(
                                                 ValidationFailureType::Spell,
