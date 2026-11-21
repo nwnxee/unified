@@ -31,8 +31,8 @@ bool IsDebuggerPresent()
 std::string GetStackTrace(uint8_t levels)
 {
     // Nothing large on the stack: this runs from signal handlers, which can be on a small alternate
-    // stack - the .NET runtime runs the chained SIGSEGV handler on one after a stack overflow - and a
-    // 64 KB frame faulted there before anything was printed.
+    // stack - the .NET runtime calls the NWNX handler from its own SIGSEGV handler, on its ~12 KB
+    // alternate stack - and a 64 KB frame faulted there before anything was printed.
     void* stackTrace[256];
     std::string trace;
 
