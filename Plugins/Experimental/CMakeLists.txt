@@ -6,4 +6,5 @@ add_plugin(Experimental
     "PlayerHitpointsAsPercentage.cpp"
     "IgnoreModuleVersion.cpp"
     "EndCombatRoundAfterSpellcast.cpp"
-    "UFMHotfix.cpp")
+    "UFMHotfix.cpp"
+    "NuiEventHotfix.cpp")
