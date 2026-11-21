@@ -9,6 +9,7 @@ add_plugin(Events
     "Events/DebugEvents.cpp"
     "Events/DMActionEvents.cpp"
     "Events/EffectEvents.cpp"
+    "Events/EncounterEvents.cpp"
     "Events/EncumbranceEvents.cpp"
     "Events/EventScriptEvents.cpp"
     "Events/ExamineEvents.cpp"

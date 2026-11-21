@@ -23,6 +23,8 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Core: added `NWNX_CORE_ENCODING_BEST_FIT` to replace characters the codepage lacks with close equivalents instead of `?` when converting from UTF-8.
 - Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
 - SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
+- Events: Added events `NWNX_ON_ENCOUNTER_TRIGGER_{BEFORE|AFTER}` which fire when an encounter triggers.
+- Events: Added events `NWNX_ON_ENCOUNTER_SPAWN_{BEFORE|AFTER}` which fire when an encounter spawns.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
