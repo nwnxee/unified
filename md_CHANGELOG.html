@@ -179,6 +179,7 @@ Fixed</h2>
 <li>Fixed <code>NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE</code> not working correctly when the character has more than one resist energy feat.</li>
 <li>Fixed <code>NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</code> only considering 3 classes for determining the level difference of attacker and defender.</li>
 <li>Fixed <code>NWNX_NWSQLiteExtensions</code> by escaping the columns names during CREATE TABLE.</li>
+<li>Dialog: Fixed <code>GetCurrentNodeID()</code>, <code>GetCurrentNodeIndex()</code> and <code>Get/SetCurrentNodeText()</code> reporting the wrong node in StartingConditional scripts of stacked entries, after skipped links (unknown speaker), and in multiplayer conversations.</li>
 <li>Fixed every <code>json</code> value returned from or passed to an NWNX function leaking: NWNX declared <code>SharedPtrEngineStructure</code>'s virtuals in a different order from the 8193.37 server, so destroying one called <code>GetId()</code> instead of the destructor.</li>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
 <li>Core: Fixed codepage &lt;-&gt; UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.</li>
@@ -1742,7 +1743,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Nov 21 2026 04:23:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Nov 21 2026 14:06:41 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
