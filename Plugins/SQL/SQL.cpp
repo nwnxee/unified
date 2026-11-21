@@ -399,7 +399,7 @@ ArgumentStack SQL::ReadFullObjectInActiveRow(ArgumentStack&& args)
             if (!Utils::AddToArea(pObject, pArea, x, y, z))
                 LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", retval, owner, x, y, z);
         }
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
+        else if (auto *pItem = Utils::AsNWSItem(pObject); pItem && owner != API::Constants::OBJECT_INVALID)
         {
             if (!Utils::AcquireItem(pItem, pOwner))
                 LOG_WARNING("Failed to 'acquire' deserialized item %x by owner %x", retval, owner);
