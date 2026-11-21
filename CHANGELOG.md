@@ -79,6 +79,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - HTTPClient: Fixed the warning for a failed request sent during shutdown logging the request body as the host and the path as the status code.
 - WebHook: Fixed a crash when a webhook sent during shutdown got no response.
 - HTTPClient: The README named the timeout variable `NWNX_HTTPCLIENT_REQUEST_TIMEOUT`; the code reads `NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT`.
+- Core: Fixed the crash handler looping forever without a backtrace when it runs on a small signal stack, as it does with the .NET runtime loaded.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13
