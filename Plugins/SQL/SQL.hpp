@@ -44,6 +44,7 @@ private:
     ResultRow m_activeRow;
     int32_t m_nextQueryId;
     bool m_queryMetrics;
+    bool m_queryMetricsIdAsField;
     bool m_queryPrepared;
     bool m_utf8;
     std::string m_databaseType;

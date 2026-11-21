@@ -8,7 +8,7 @@ The HTTPClient Plugin provides access to an HTTP Client to perform requests and 
 
 | Variable Name                     |  Type      | Default Value      |
 | ----------------------------------| :--------: | ------------------ |
-| NWNX_HTTPCLIENT_REQUEST_TIMEOUT  | int        | 2000               |
+| NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT | int  | 2000               |
 
 ## Setup
 ### Client
@@ -31,7 +31,9 @@ the server returned.
 Additionally the event data includes Rate Limit information that some servers provide. These are `RATELIMIT_LIMIT` which is how
 many requests you can send in a given time period, `RATELIMIT_REMAINING` is how many requests you have left in that
 time period and `RATELIMIT_RESET` is an epoch timestamp when the request limit is reset again. There is also `RETRY_AFTER` which
-some servers provide which is how long in seconds before you can send another request.
+is how long in milliseconds before you can send another request. It is always set when the server rate limits you (status 429),
+taken from the `Retry-After`, `RateLimit-Reset`, `X-RateLimit-Reset-After` or `X-RateLimit-Reset-Requests`/`-Tokens` headers,
+or 5 seconds if the server sends none of them. If the server sends `X-RateLimit-Limit` (e.g. Discord), its `Retry-After` header is passed on as is.
 
 ### Example Client Requests
 Here is an example of posting an issue to a github repository.

@@ -9,8 +9,35 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 
+#include <algorithm>
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
+
+namespace {
+struct ServerEncounterListEntry : CEncounterListEntry
+{
+    ~ServerEncounterListEntry() {}
+};
+static_assert(sizeof(ServerEncounterListEntry) == sizeof(CEncounterListEntry));
+
+// Restore the invariants set up by CNWSEncounter::LoadEncounter: the list is sorted by CR
+// from highest to lowest, and m_fSmallestCreature holds the points of the last entry.
+// MakeSpawnList() and SpawnEncounterCreatures() both rely on them.
+void SortEncounterList(CNWSEncounter *pEncounter)
+{
+    auto *pBegin = pEncounter->m_pEncounterList;
+    auto *pEnd = pBegin + pEncounter->m_nNumEncounterListEntries;
+    std::stable_sort(pBegin, pEnd, [](const CEncounterListEntry& a, const CEncounterListEntry& b)
+    {
+        return a.m_fCR > b.m_fCR;
+    });
+
+    pEncounter->m_fSmallestCreature = pEncounter->m_nNumEncounterListEntries > 0
+        ? pEncounter->m_pEncounterList[pEncounter->m_nNumEncounterListEntries - 1].m_fCreaturePoints
+        : 0.0f;
+}
+}
 
 NWNX_EXPORT ArgumentStack Destroy(ArgumentStack&& args)
 {
@@ -29,6 +56,45 @@ NWNX_EXPORT ArgumentStack GetNumberOfCreaturesInEncounterList(ArgumentStack&& ar
         return pEncounter->m_nNumEncounterListEntries;
 
     return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto count = args.extract<int32_t>();
+        ASSERT_OR_THROW(count >= 0);
+
+        if (count == pEncounter->m_nNumEncounterListEntries)
+        {
+            SortEncounterList(pEncounter);
+            return {};
+        }
+
+        CEncounterListEntry *pNewList = new ServerEncounterListEntry[count];
+        const auto numKept = std::min(count, pEncounter->m_nNumEncounterListEntries);
+        for (int32_t i = 0; i < numKept; i++)
+        {
+            pNewList[i] = pEncounter->m_pEncounterList[i];
+        }
+
+        // New entries are empty: they must be set with SetEncounterCreatureByIndex().
+        for (int32_t i = numKept; i < count; i++)
+        {
+            pNewList[i].m_fCR = 0.0f;
+            pNewList[i].m_fCreaturePoints = 0.0f;
+            pNewList[i].m_bAlreadyUsed = false;
+            pNewList[i].m_bAlreadyChecked = false;
+            pNewList[i].m_bUnique = false;
+        }
+
+        delete[] static_cast<ServerEncounterListEntry*>(pEncounter->m_pEncounterList);
+        pEncounter->m_pEncounterList = pNewList;
+        pEncounter->m_nNumEncounterListEntries = count;
+        SortEncounterList(pEncounter);
+    }
+
+    return {};
 }
 
 NWNX_EXPORT ArgumentStack GetEncounterCreatureByIndex(ArgumentStack&& args)
@@ -60,6 +126,7 @@ NWNX_EXPORT ArgumentStack SetEncounterCreatureByIndex(ArgumentStack&& args)
     if (auto *pEncounter = Utils::PopEncounter(args))
     {
         const auto index = args.extract<int32_t>();
+        ASSERT_OR_THROW(index >= 0);
         const auto resRef = args.extract<std::string>();
         auto cr = args.extract<float>();
         ASSERT_OR_THROW(cr >= 0.0);
@@ -191,6 +258,32 @@ NWNX_EXPORT ArgumentStack GetMaxNumSpawned(ArgumentStack&& args)
         return pEncounter->m_nMaxSpawnedCreatures;
 
     return 0;
+}
+
+NWNX_EXPORT ArgumentStack SetMinNumSpawned(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto minNumSpawned = args.extract<int32_t>();
+        ASSERT_OR_THROW(minNumSpawned > 0);
+        ASSERT_OR_THROW(minNumSpawned <= pEncounter->m_nMaxSpawnedCreatures);
+        pEncounter->m_nMinNumSpawnedCreatures = minNumSpawned;
+    }
+
+    return {};
+}
+
+NWNX_EXPORT ArgumentStack SetMaxNumSpawned(ArgumentStack&& args)
+{
+    if (auto *pEncounter = Utils::PopEncounter(args))
+    {
+        const auto maxNumSpawned = args.extract<int32_t>();
+        ASSERT_OR_THROW(maxNumSpawned > 0);
+        ASSERT_OR_THROW(maxNumSpawned >= pEncounter->m_nMinNumSpawnedCreatures);
+        pEncounter->m_nMaxSpawnedCreatures = maxNumSpawned;
+    }
+
+    return {};
 }
 
 NWNX_EXPORT ArgumentStack GetCurrentNumSpawned(ArgumentStack&& args)

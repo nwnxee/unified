@@ -151,6 +151,8 @@ namespace String
     Locale GetDefaultLocale();
     void SetDefaultLocale(Locale locale);
     void SetDefaultLocale(const std::string& locale);
+    // FromUTF8 substitutes close equivalents for characters the codepage lacks, instead of '?'.
+    void SetBestFit(bool enabled);
 
     std::string ToUTF8(const char *str, Locale locale = Default);
     std::string ToUTF8(const std::string& str, Locale locale = Default);
