@@ -120,6 +120,7 @@ Added</h2>
 <li>Experimental: added <code>NWNX_EXPERIMENTAL_UFM_HOTFIX</code> to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS</code> to set the number of servervault characters which will be sorted by date.</li>
 <li>Events: Added events <code>NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}</code> which fire when a player closes an inventory through a client status message.</li>
+<li>Core: added <code>NWNX_CORE_ENCODING_BEST_FIT</code> to replace characters the codepage lacks with close equivalents instead of <code>?</code> when converting from UTF-8.</li>
 <li>Events: Added event <code>NWNX_ON_ENCUMBRANCE_CHANGE_AFTER</code> which fires when a creature's encumbrance state changes.</li>
 <li>SQL: Added <code>NWNX_SQL_QUERY_METRICS_ID_AS_FIELD</code> to send the query ID of <code>NWNX_SQL_QUERY_METRICS</code> as a field instead of a tag, so a long running server doesn't hit InfluxDB's <code>max-values-per-tag</code> limit.</li>
 </ul>
@@ -180,6 +181,8 @@ Fixed</h2>
 <li>Fixed <code>NWNX_NWSQLiteExtensions</code> by escaping the columns names during CREATE TABLE.</li>
 <li>Fixed every <code>json</code> value returned from or passed to an NWNX function leaking: NWNX declared <code>SharedPtrEngineStructure</code>'s virtuals in a different order from the 8193.37 server, so destroying one called <code>GetId()</code> instead of the destructor.</li>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
+<li>Core: Fixed codepage &lt;-&gt; UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.</li>
+<li>Core: <code>NWNX_CORE_LOCALE</code> is now case-insensitive, accepts <code>cs</code> for Czech, and warns about unknown values.</li>
 <li>Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.</li>
 <li>Feat, Race: Fixed 128 needless <code>RemoveEffectById(0)</code> calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.</li>
 <li>Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.</li>
@@ -1735,7 +1738,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Nov 20 2026 20:50:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Nov 21 2026 00:29:14 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
