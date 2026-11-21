@@ -40,11 +40,22 @@ std::string GetStackTrace(uint8_t levels)
     if (numCapturedFrames > 0)
     {
         char** resolvedFrames = backtrace_symbols(stackTrace, numCapturedFrames);
+        trace.reserve(16 + 128 * numCapturedFrames);
         trace = "\n  Backtrace:\n";
         for (int i = 0; i < numCapturedFrames; ++i)
         {
             trace += "    ";
-            trace += resolvedFrames ? resolvedFrames[i] : "?";
+            if (resolvedFrames)
+            {
+                trace += resolvedFrames[i];
+            }
+            else
+            {
+                // Resolving needs memory, which may be what failed: the raw address still locates the frame.
+                char address[32];
+                std::snprintf(address, sizeof(address), "[%p]", stackTrace[i]);
+                trace += address;
+            }
             trace += "\n";
         }
         free(resolvedFrames);
