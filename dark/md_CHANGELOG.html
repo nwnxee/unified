@@ -186,6 +186,10 @@ Fixed</h2>
 <li>Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.</li>
 <li>Feat, Race: Fixed 128 needless <code>RemoveEffectById(0)</code> calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.</li>
 <li>Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.</li>
+<li>HTTPClient: Fixed <code>RETRY_AFTER</code> missing from rate limited (429) responses that have no <code>Retry-After</code> header; it now falls back to common rate limit reset headers, or 5 seconds. A non-numeric <code>Retry-After</code> header no longer throws.</li>
+<li>HTTPClient: Fixed the warning for a failed request sent during shutdown logging the request body as the host and the path as the status code.</li>
+<li>WebHook: Fixed a crash when a webhook sent during shutdown got no response.</li>
+<li>HTTPClient: The README named the timeout variable <code>NWNX_HTTPCLIENT_REQUEST_TIMEOUT</code>; the code reads <code>NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT</code>.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md18"></a>
 8193.37.13</h1>
@@ -1738,7 +1742,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Nov 21 2026 00:29:14 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Nov 21 2026 04:23:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
