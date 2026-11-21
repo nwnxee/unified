@@ -26,6 +26,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
+- TestPlayer: Fake players for headless test servers. Turns a creature into a player character with no client behind it, so PC-only scripts can be tested without anyone logging in. Does nothing unless `NWNX_TESTPLAYER_ENABLE` is set.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
