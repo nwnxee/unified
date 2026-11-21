@@ -151,6 +151,12 @@ void PerformRequest(const Request &client_req)
         // Shorter timeout when shutting down
         cli->second->set_connection_timeout(0, 300000);
         auto result = GetResult(client_req);
+        if (result == nullptr || result->error() != httplib::Error::Success)
+        {
+            LOG_WARNING("HTTP Client Request to '%s%s' failed, [Error: %d].", client_req.host, client_req.path,
+                        result != nullptr ? result->error() : httplib::Error::Unknown);
+            return;
+        }
         auto res = result->value();
 
         if (res.status == 200)
