@@ -29,6 +29,8 @@ public:
         std::string m_host;
         // PORT
         int m_port;
+        // AUTH (no ACL support)
+        std::string m_password;
 
         // TODO:
         // Bridge the internal message bus to redis?
