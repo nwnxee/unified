@@ -587,6 +587,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     {
         String::SetDefaultLocale(*locale);
     }
+    String::SetBestFit(Config::Get<bool>("ENCODING_BEST_FIT", false));
 
     if (Config::Get<bool>("SKIP", false))
     {
