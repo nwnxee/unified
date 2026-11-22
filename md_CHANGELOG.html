@@ -113,6 +113,11 @@ Added</h2>
 <li>Tweaks: added <code>NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION</code> to find a free inventory spot in linear instead of quadratic time, which speeds up filling stores and large containers.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH</code> to make TakeGoldFromCreature() do nothing, instead of crashing the server, when OBJECT_SELF no longer exists.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY</code> to show skill checks with a DC over 127 with the real DC in the combat log.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_NUI_EVENT_CRASH</code> which fixes a server crash when a NUI event holds invalid UTF-8.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER</code> which refuses to split a stack inside a container owned by another object, as the engine puts the new stack in the wrong inventory, and refuses splits of items with no owner.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY</code> which fixes a server crash when an inventory holds an item ID that no longer resolves to an item.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH</code> which fixes a server crash when an open inventory panel's owner is not (or no longer) a creature.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH</code> which fixes a server crash when a creature jumps to another area while linked to an area of effect that is in no area.</li>
 <li>Events: Added events <code>NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}</code> which fire when an ability of a player changes.</li>
 <li>Events: Added <code>NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE</code> messagebus message as a wrapper for the <code>InitOnFirstSubscribe</code> function. Broadcasts <code>NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK</code> message when a registered event gets subscribed to.</li>
 <li>Tweaks: Added <code>NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE</code> to enable character list sorting by last played date</li>
@@ -185,6 +190,7 @@ Fixed</h2>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
 <li>Core: Fixed codepage &lt;-&gt; UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.</li>
 <li>Core: <code>NWNX_CORE_LOCALE</code> is now case-insensitive, accepts <code>cs</code> for Czech, and warns about unknown values.</li>
+<li>Player: <code>OpenInventory()</code> no longer opens the inventory of a target that isn't a creature, which crashed the server.</li>
 <li>Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.</li>
 <li>Feat, Race: Fixed 128 needless <code>RemoveEffectById(0)</code> calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.</li>
 <li>Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.</li>
@@ -1745,7 +1751,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:45:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 02:48:40 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
