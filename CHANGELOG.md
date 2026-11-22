@@ -70,6 +70,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Removed NWNX_Lua and NWNX_SpellChecker due to presumably being unused and bitrotten.
 
 ### Fixed
+- Ruby: the plugin is skipped when the Ruby headers aren't found, instead of failing the build on `ruby.h`.
 - Race: favored enemy bonuses now use each race's `FavoredEnemyFeat` from racialtypes.2da, as the engine does, instead of a hardcoded list of the base races.
 - SQL: `ReadFullObjectInActiveRow()` no longer warns "Failed to 'acquire' deserialized item" when an item is read without an owner; it is created outside the world as documented.
 - Player: Fixed `NWNX_Player_QBS_UseSpecialAbility()` making a slot of type `NWNX_PLAYER_QBS_TYPE_SPELL` instead of `NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY`.
