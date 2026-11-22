@@ -11,20 +11,33 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Tweaks: added `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` to make Resist Energy feats stack with Epic Energy Resistance.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` to allow special abilities to be used on target types other than creatures.
 - Tweaks: added `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` to find a free inventory spot in linear instead of quadratic time, which speeds up filling stores and large containers.
+- Tweaks: added `NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH` to make TakeGoldFromCreature() do nothing, instead of crashing the server, when OBJECT_SELF no longer exists.
+- Tweaks: added `NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY` to show skill checks with a DC over 127 with the real DC in the combat log.
+- Tweaks: added `NWNX_TWEAKS_FIX_NUI_EVENT_CRASH` which fixes a server crash when a NUI event holds invalid UTF-8.
+- Tweaks: added `NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER` which refuses to split a stack inside a container owned by another object, as the engine puts the new stack in the wrong inventory, and refuses splits of items with no owner.
+- Tweaks: added `NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY` which fixes a server crash when an inventory holds an item ID that no longer resolves to an item.
+- Tweaks: added `NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH` which fixes a server crash when an open inventory panel's owner is not (or no longer) a creature.
+- Tweaks: added `NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH` which fixes a server crash when a creature jumps to another area while linked to an area of effect that is in no area.
 - Events: Added events `NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}` which fire when an ability of a player changes.
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
 - Events: Added events `NWNX_ON_DECREMENT_REMAINING_FEAT_USES_{BEFORE|AFTER}` which fire when the remaining uses of a feat are decremented
 - Experimental: added `NWNX_EXPERIMENTAL_UFM_HOTFIX` to attempt to fix a server hang in CNetLayerWindow::UnpacketizeFullMessages.
+- Tweaks: added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS` to set the number of servervault characters which will be sorted by date.
 - Events: Added events `NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}` which fire when a player closes an inventory through a client status message.
+- Core: added `NWNX_CORE_ENCODING_BEST_FIT` to replace characters the codepage lacks with close equivalents instead of `?` when converting from UTF-8.
 - Events: Added event `NWNX_ON_ENCUMBRANCE_CHANGE_AFTER` which fires when a creature's encumbrance state changes.
 - Profiler: added `NWNX_PROFILER_ENABLE_PATHING_OUTCOMES` to count how path requests end per area (`PathingOutcome`), with optional logging of slow and failed path requests.
+- Tweaks: added `NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST` to fix the point-in-trigger test giving the wrong answer for points straight south of a trigger corner.
+- SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
+- Player: ReloadResources()
+- Player: GetControllingPlayer()
 - Creature: GetNumberOfBonusSpells(), ModifyNumberBonusSpells()
 - Store: GetBlackMarket(), SetBlackMarket()
 - Util: SetStartingLocation()
@@ -36,6 +49,9 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Events: RemoveObjectFromAllDispatchLists()
 - Creature: GetMovementRateFactorModifier(), SetMovementRateFactorModifier()
 - Administration: GetNWSyncAdvertHash(), GetNWSyncAdvertUrl(), SetNWSyncAdvert()
+- Encounter: SetNumberOfCreaturesInEncounterList()
+- Encounter: Set{Min|Max}NumSpawned()
+- Item: RefreshInventoryWindow(), RefreshWieldedItems()
 
 ### Changed
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
@@ -54,17 +70,34 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Removed NWNX_Lua and NWNX_SpellChecker due to presumably being unused and bitrotten.
 
 ### Fixed
+- Race: favored enemy bonuses now use each race's `FavoredEnemyFeat` from racialtypes.2da, as the engine does, instead of a hardcoded list of the base races.
+- SQL: `ReadFullObjectInActiveRow()` no longer warns "Failed to 'acquire' deserialized item" when an item is read without an owner; it is created outside the world as documented.
+- Player: Fixed `NWNX_Player_QBS_UseSpecialAbility()` making a slot of type `NWNX_PLAYER_QBS_TYPE_SPELL` instead of `NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY`.
+- Item: Fixed `SetItemAppearance()` rejecting color 0 for `ITEM_APPR_WEAPON_COLOR_*`.
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.
 - MaxLevel: Fixed returning an invalid number of known spells in some cases.
 - Fixed `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` not working correctly when the character has more than one resist energy feat.
 - Fixed `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY` only considering 3 classes for determining the level difference of attacker and defender.
 - Fixed `NWNX_NWSQLiteExtensions` by escaping the columns names during CREATE TABLE.
 - Profiler: Fixed the `Area` tag of the `PlotPath` timing carrying the resref's trailing NUL padding.
+- Dialog: Fixed `GetCurrentNodeID()`, `GetCurrentNodeIndex()` and `Get/SetCurrentNodeText()` reporting the wrong node in StartingConditional scripts of stacked entries, after skipped links (unknown speaker), and in multiplayer conversations.
 - Fixed every `json` value returned from or passed to an NWNX function leaking: NWNX declared `SharedPtrEngineStructure`'s virtuals in a different order from the 8193.37 server, so destroying one called `GetId()` instead of the destructor.
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
+- POS: fixed a crash or double free when a player with NWNX pointer data (looping VFX, visual transform or appearance overrides) leaves cutscene mode.
+- ELC: fixed a crash when an ELC script skipped an INVALID_FEAT/INVALID_SPELL failure, or NON_PLAYER_RACE/CLASS for an id outside the 2da.
+- Area/Optimizations: fixed player TURDs being treated as sound objects (crash in NWNX_Area_ExportGIT after a player logged out, corruption in RotateArea).
+- Core: Fixed codepage <-> UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.
+- Core: `NWNX_CORE_LOCALE` is now case-insensitive, accepts `cs` for Czech, and warns about unknown values.
+- Player: `OpenInventory()` no longer opens the inventory of a target that isn't a creature, which crashed the server.
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
 - Feat, Race: Fixed 128 needless `RemoveEffectById(0)` calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.
 - Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.
+- HTTPClient: Fixed `RETRY_AFTER` missing from rate limited (429) responses that have no `Retry-After` header; it now falls back to common rate limit reset headers, or 5 seconds. A non-numeric `Retry-After` header no longer throws.
+- HTTPClient: Fixed the warning for a failed request sent during shutdown logging the request body as the host and the path as the status code.
+- WebHook: Fixed a crash when a webhook sent during shutdown got no response.
+- HTTPClient: Fixed a crash when a request sent during shutdown got no response.
+- HTTPClient: The README named the timeout variable `NWNX_HTTPCLIENT_REQUEST_TIMEOUT`; the code reads `NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT`.
+- Core: Fixed the crash handler looping forever without a backtrace when it runs on a small signal stack, as it does with the .NET runtime loaded.
 
 ## 8193.37.13
 https://github.com/nwnxee/unified/compare/build8193.36.10...build8193.37.13

@@ -23,6 +23,17 @@ void NWNX_Encounter_Destroy(object encounter);
 /// @return The number of creatures in the encounter list.
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter);
 
+/// @brief Set the number of creatures in the encounter list
+/// @note Existing entries are kept up to the new size. New entries are empty
+/// and must be set with NWNX_Encounter_SetEncounterCreatureByIndex().
+/// @note The list is sorted by challenge rating, highest first, so shrinking it
+/// removes the weakest creatures.
+/// @note After inserting creatures with NWNX_Encounter_SetEncounterCreatureByIndex,
+/// calling this function with the current size is recommended to ensure array is sorted.
+/// @param encounter The encounter object.
+/// @param count The new number of creatures in the encounter list, 0 or more.
+void NWNX_Encounter_SetNumberOfCreaturesInEncounterList(object encounter, int count);
+
 /// @brief Gets the encounter creature list entry at the specified index
 /// @param encounter The encounter object.
 /// @param index The index of the creature in the encounter list.
@@ -95,6 +106,16 @@ int NWNX_Encounter_GetMinNumSpawned(object encounter);
 /// @param encounter The encounter object.
 /// @return the maximal amount.
 int NWNX_Encounter_GetMaxNumSpawned(object encounter);
+
+/// @brief Set the minimum amount of creatures that encounter will spawn.
+/// @param encounter The encounter object.
+/// @param minNumSpawned The minimal amount, 1 or more, and no greater than the current maximum.
+void NWNX_Encounter_SetMinNumSpawned(object encounter, int minNumSpawned);
+
+/// @brief Set the maximum amount of creatures that encounter will spawn.
+/// @param encounter The encounter object.
+/// @param maxNumSpawned The maximal amount, 1 or more, and no less than the current minimum.
+void NWNX_Encounter_SetMaxNumSpawned(object encounter, int maxNumSpawned);
 
 /// @brief Get the current number of creatures that are spawned and alive
 /// @param encounter The encounter object.
@@ -244,6 +265,20 @@ int NWNX_Encounter_GetMaxNumSpawned(object encounter)
     return NWNXPopInt();
 }
 
+void NWNX_Encounter_SetMinNumSpawned(object encounter, int minNumSpawned)
+{
+    NWNXPushInt(minNumSpawned);
+    NWNXPushObject(encounter);
+    NWNXCall(NWNX_Encounter, "SetMinNumSpawned");
+}
+
+void NWNX_Encounter_SetMaxNumSpawned(object encounter, int maxNumSpawned)
+{
+    NWNXPushInt(maxNumSpawned);
+    NWNXPushObject(encounter);
+    NWNXCall(NWNX_Encounter, "SetMaxNumSpawned");
+}
+
 int NWNX_Encounter_GetCurrentNumSpawned(object encounter)
 {
     NWNXPushObject(encounter);
@@ -263,4 +298,11 @@ void NWNX_Encounter_SetGeometry(object oEncounter, string sGeometry)
     NWNXPushString(sGeometry);
     NWNXPushObject(oEncounter);
     NWNXCall(NWNX_Encounter, "SetGeometry");
+}
+
+void NWNX_Encounter_SetNumberOfCreaturesInEncounterList(object oEncounter, int nCount)
+{
+    NWNXPushInt(nCount);
+    NWNXPushObject(oEncounter);
+    NWNXCall(NWNX_Encounter, "SetNumberOfCreaturesInEncounterList");
 }

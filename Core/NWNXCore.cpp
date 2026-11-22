@@ -21,6 +21,9 @@
 #include <cstdio>
 #include <sstream>
 #include <dlfcn.h>
+#include <atomic>
+#include <pthread.h>
+#include <execinfo.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -28,8 +31,31 @@ using namespace NWNXLib::API;
 static uint32_t s_PostFixVersion;
 
 static void (*nwn_crash_handler)(int);
+
+// The thread currently reporting a crash, 0 when none is. A glibc pthread_t is the address of the
+// thread's descriptor, so 0 never names a live thread.
+static std::atomic<pthread_t> s_crashReportingThread{0};
+static_assert(std::atomic<pthread_t>::is_always_lock_free, "the crash handler needs a lock-free atomic");
+
 extern "C" void nwnx_signal_handler(int sig)
 {
+    const pthread_t self = pthread_self();
+    pthread_t owner = 0;
+    if (!s_crashReportingThread.compare_exchange_strong(owner, self))
+    {
+        // The reporting thread faulted again: its report is what faulted, and on the same fault it
+        // would never stop re-entering, so terminate.
+        if (pthread_equal(owner, self))
+        {
+            std::signal(SIGABRT, SIG_DFL);
+            std::abort();
+        }
+
+        // Another thread is already reporting: let it finish, it ends the process.
+        for (;;)
+            pause();
+    }
+
     const char *err;
     switch (sig)
     {
@@ -54,6 +80,10 @@ extern "C" void nwnx_signal_handler(int sig)
                 "==============================================================\n",
                 NWNX_TARGET_NWN_BUILD_POSTFIX, s_PostFixVersion);
     }
+
+    // stdout is fully buffered when it is not a terminal (under Docker, for one): flush the header now,
+    // so it survives if building the stack trace faults and the re-entry guard aborts.
+    std::fflush(stdout);
 
     std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
     std::fflush(stdout);
@@ -94,6 +124,11 @@ namespace {
 
 void InitCrashHandlers()
 {
+    // The first backtrace() loads libgcc_s, which needs far more stack than a warm call. Make that
+    // call here, so the handler does not have to make it on a small signal stack.
+    void* warmUpFrame[1];
+    backtrace(warmUpFrame, 1);
+
     nwn_crash_handler = std::signal(SIGABRT, nwnx_signal_handler);
     std::signal(SIGFPE,  nwnx_signal_handler);
     std::signal(SIGSEGV, nwnx_signal_handler);
@@ -587,6 +622,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     {
         String::SetDefaultLocale(*locale);
     }
+    String::SetBestFit(Config::Get<bool>("ENCODING_BEST_FIT", false));
 
     if (Config::Get<bool>("SKIP", false))
     {

@@ -30,25 +30,37 @@ bool IsDebuggerPresent()
 
 std::string GetStackTrace(uint8_t levels)
 {
-    char buffer[64*1024];
+    // Nothing large on the stack: this runs from signal handlers, which can be on a small alternate
+    // stack - the .NET runtime calls the NWNX handler from its own SIGSEGV handler, on its ~12 KB
+    // alternate stack - and a 64 KB frame faulted there before anything was printed.
     void* stackTrace[256];
+    std::string trace;
 
-    buffer[0] = 0;
     int numCapturedFrames = backtrace(stackTrace, levels);
-
-    if (numCapturedFrames)
+    if (numCapturedFrames > 0)
     {
-        char** resolvedFrames = backtrace_symbols(stackTrace, levels);
-        std::strncat(buffer, "\n  Backtrace:\n", sizeof(buffer)-1);
+        char** resolvedFrames = backtrace_symbols(stackTrace, numCapturedFrames);
+        trace.reserve(16 + 128 * numCapturedFrames);
+        trace = "\n  Backtrace:\n";
         for (int i = 0; i < numCapturedFrames; ++i)
         {
-            char backtraceBuffer[2048];
-            std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
+            trace += "    ";
+            if (resolvedFrames)
+            {
+                trace += resolvedFrames[i];
+            }
+            else
+            {
+                // Resolving needs memory, which may be what failed: the raw address still locates the frame.
+                char address[32];
+                std::snprintf(address, sizeof(address), "[%p]", stackTrace[i]);
+                trace += address;
+            }
+            trace += "\n";
         }
         free(resolvedFrames);
     }
-    return std::string(buffer);
+    return trace;
 }
 
 }

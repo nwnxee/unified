@@ -494,6 +494,13 @@ NWNX_EXPORT ArgumentStack OpenInventory(ArgumentStack&& args)
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto open = !!args.extract<int32_t>();
 
+        // The engine's inventory panel update crashes on a non-creature owner
+        if (open && !Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidTarget))
+        {
+            LOG_ERROR("OpenInventory: target 0x%08x is not a creature.", oidTarget);
+            return {};
+        }
+
         CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == oidTarget ? pPlayer->m_pInventoryGUI :
                                                                                     pPlayer->m_pOtherInventoryGUI;
 
@@ -1829,6 +1836,22 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
     return Constants::OBJECT_INVALID;
 }
 
+NWNX_EXPORT ArgumentStack GetControllingPlayer(ArgumentStack&& args)
+{
+    if (auto *obj = Utils::PopGameObject(args))
+    {
+        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
+        {
+            if (pPlayer->m_oidNWSObject == obj->m_idSelf)
+            {
+                return pPlayer->m_oidPCObject;
+            }
+        }
+    }
+
+    return Constants::OBJECT_INVALID;
+}
+
 NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectUiDiscoveryMaskOverrideHook =
@@ -1969,4 +1992,32 @@ NWNX_EXPORT ArgumentStack GetOpenStore(ArgumentStack&& args)
     if (auto *pPlayer = Utils::PopPlayer(args))
         return pPlayer->m_pStoreGUI->m_oidOpen;
     return Constants::OBJECT_INVALID;
+}
+
+NWNX_EXPORT ArgumentStack ReloadResources(ArgumentStack&& args)
+{
+    if (auto* pPlayer = Utils::PopPlayer(args))
+    {
+        const auto flags = args.extract<int32_t>();
+        if (!flags)
+            return {};
+
+        // Same Resman 0x4 reload message as ReloadTlk() (0x10) and ReloadColorPalettes() (0x20).
+        if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+        {
+            pMessage->CreateWriteMessage(4, pPlayer->m_nPlayerID, 1);
+            pMessage->WriteDWORD(static_cast<uint32_t>(flags));
+            uint8_t* buffer;
+            uint32_t size;
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                    Constants::MessageMajor::Resman,
+                    0x4,
+                    buffer, size);
+            }
+        }
+    }
+
+    return {};
 }

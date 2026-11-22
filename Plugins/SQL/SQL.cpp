@@ -27,7 +27,7 @@ using namespace NWNXLib::Services;
 namespace SQL {
 
 SQL::SQL(Services::ProxyServiceList* services)
-    : Plugin(services), m_nextQueryId(0), m_queryMetrics(false)
+    : Plugin(services), m_nextQueryId(0), m_queryMetrics(false), m_queryMetricsIdAsField(false)
 {
 
 #define REGISTER(func) \
@@ -55,8 +55,10 @@ SQL::SQL(Services::ProxyServiceList* services)
 #undef REGISTER
 
     m_queryMetrics = Config::Get<bool>("QUERY_METRICS", false);
+    m_queryMetricsIdAsField = Config::Get<bool>("QUERY_METRICS_ID_AS_FIELD", false);
 
-    if (m_queryMetrics)
+    // Summing would add up the query IDs, so with ID as a field each query is pushed as its own point.
+    if (m_queryMetrics && !m_queryMetricsIdAsField)
     {
         Resamplers::ResamplerFuncPtr sum = &Resamplers::template Sum<int64_t>;
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
@@ -196,10 +198,19 @@ ArgumentStack SQL::ExecutePreparedQuery(ArgumentStack&&)
         using namespace std::chrono;
         nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
 
-        GetServices()->m_metrics->Push(
-            "SQLQueries",
-            { { "ns", std::to_string(dur.count()) } },
-            { { "ID", std::to_string(queryId) } });
+        if (m_queryMetricsIdAsField)
+        {
+            GetServices()->m_metrics->Push(
+                "SQLQueries",
+                { { "ns", std::to_string(dur.count()) }, { "ID", std::to_string(queryId) } });
+        }
+        else
+        {
+            GetServices()->m_metrics->Push(
+                "SQLQueries",
+                { { "ns", std::to_string(dur.count()) } },
+                { { "ID", std::to_string(queryId) } });
+        }
     }
     else
     {
@@ -388,7 +399,7 @@ ArgumentStack SQL::ReadFullObjectInActiveRow(ArgumentStack&& args)
             if (!Utils::AddToArea(pObject, pArea, x, y, z))
                 LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", retval, owner, x, y, z);
         }
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
+        else if (auto *pItem = Utils::AsNWSItem(pObject); pItem && owner != API::Constants::OBJECT_INVALID)
         {
             if (!Utils::AcquireItem(pItem, pOwner))
                 LOG_WARNING("Failed to 'acquire' deserialized item %x by owner %x", retval, owner);

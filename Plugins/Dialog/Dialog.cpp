@@ -147,6 +147,24 @@ static int32_t HandleReply(CNWSDialog *pThis, uint32_t nPlayerID, CNWSObject *pN
     return retVal;
 }
 
+// Returns i if sActive is &pLinks[i].m_sActive, -1 otherwise.
+template <typename T>
+static int32_t GetLinkIndex(const CResRef *sActive, const T *pLinks, uint32_t nLinks)
+{
+    if (!pLinks || !nLinks)
+        return -1;
+
+    auto offset = reinterpret_cast<const uint8_t*>(sActive) - reinterpret_cast<const uint8_t*>(pLinks);
+    if (offset < 0)
+        return -1;
+
+    auto i = static_cast<size_t>(offset) / sizeof(T);
+    if (i >= nLinks || &pLinks[i].m_sActive != sActive)
+        return -1;
+
+    return static_cast<int32_t>(i);
+}
+
 static int32_t CheckScript(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner, const CResRef *sActive, const CExoArrayList<ScriptParam> &scriptParams)
 {
     s_pDialog = pThis;
@@ -156,8 +174,37 @@ static int32_t CheckScript(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner, const
     {
         s_statestack[s_ssp] = DIALOG_STATE_SEND_ENTRY;
         s_idxReply = s_pDialog->m_pEntries[s_idxEntry].m_pReplies[s_idxReply].m_nIndex;
-        s_idxEntry = s_pDialog->m_pReplies[s_idxReply].m_pEntries[s_loopCount].m_nIndex;
     }
+
+    // Counting calls drifts (skipped links, one pass per player), so find the link from its pointer.
+    int32_t idx = -1;
+    switch (s_statestack[s_ssp])
+    {
+        case DIALOG_STATE_START:
+            idx = GetLinkIndex(sActive, pThis->m_pStartingEntries, pThis->m_nStartingEntries);
+            break;
+        case DIALOG_STATE_SEND_ENTRY:
+            if (s_idxReply < pThis->m_nReplies)
+            {
+                auto *pReply = &pThis->m_pReplies[s_idxReply];
+                idx = GetLinkIndex(sActive, pReply->m_pEntries, pReply->m_nEntries);
+                if (idx >= 0)
+                    s_idxEntry = pReply->m_pEntries[idx].m_nIndex;
+            }
+            break;
+        case DIALOG_STATE_SEND_REPLIES:
+            if (pThis->m_currentEntryIndex < pThis->m_nEntries)
+            {
+                auto *pEntry = &pThis->m_pEntries[pThis->m_currentEntryIndex];
+                idx = GetLinkIndex(sActive, pEntry->m_pReplies, pEntry->m_nReplies);
+            }
+            break;
+        default:
+            break;
+    }
+    if (idx >= 0)
+        s_loopCount = idx;
+
     s_scriptType = SCRIPT_TYPE_STARTING_CONDITIONAL;
     auto retVal = s_CheckScriptHook->CallOriginal<int32_t>(pThis, pNWSObjectOwner, sActive, scriptParams);
     s_loopCount++;
