@@ -13,6 +13,8 @@
 #include "API/CNWCCMessageData.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSInventory.hpp"
+#include "API/CNWSPlayerInventoryGUI.hpp"
+#include "API/CNWSPlayerLUOInventory.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -71,6 +73,42 @@ NWNX_EXPORT ArgumentStack SetBaseItemType(ArgumentStack&& args)
     return {};
 }
 
+// The client keeps an item's old icon while the window stays open, so reopen it and resend everything.
+NWNX_EXPORT ArgumentStack RefreshInventoryWindow(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_idSelf);
+        if (pPlayer && pPlayer->m_pInventoryGUI && pPlayer->m_pInventoryGUI->m_bGuiInventoryOpen &&
+            pPlayer->m_pInventoryGUI->m_pcLastUpdateInventory)
+        {
+            auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage();
+            pMessage->SendPlayerToServerGuiInventory_Status(pPlayer, false, pCreature->m_idSelf);
+            pMessage->SendPlayerToServerGuiInventory_Status(pPlayer, true, pCreature->m_idSelf);
+            pPlayer->m_pInventoryGUI->m_pcLastUpdateInventory->ClearSlots();
+            pPlayer->m_pInventoryGUI->m_pcLastUpdateInventory->ClearRepository();
+        }
+    }
+    return {};
+}
+
+// Forgetting the hands in every player's last update makes the next update resend them.
+NWNX_EXPORT ArgumentStack RefreshWieldedItems(ArgumentStack&& args)
+{
+    if (auto *pCreature = Utils::PopCreature(args))
+    {
+        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
+        {
+            if (auto *pLUO = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
+            {
+                pLUO->m_cAppearance.m_oidRightHandItem = Constants::OBJECT_INVALID;
+                pLUO->m_cAppearance.m_oidLeftHandItem = Constants::OBJECT_INVALID;
+            }
+        }
+    }
+    return {};
+}
+
 NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
 {
     if (auto *pItem = Utils::PopItem(args))
@@ -89,7 +127,7 @@ NWNX_EXPORT ArgumentStack SetItemAppearance(ArgumentStack&& args)
                 }
                 break;
             case Constants::ItemAppearanceType::WeaponColor:
-                if (val >= 1 && val <= 9 && idx >= 0 && idx <= 2)
+                if (val >= 0 && val <= 9 && idx >= 0 && idx <= 2)
                 {
                     uint16_t nTemp = pItem->m_nModelPart[idx];
                     nTemp = nTemp - (nTemp % 10) + val;

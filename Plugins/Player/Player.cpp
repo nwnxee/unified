@@ -494,6 +494,13 @@ NWNX_EXPORT ArgumentStack OpenInventory(ArgumentStack&& args)
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto open = !!args.extract<int32_t>();
 
+        // The engine's inventory panel update crashes on a non-creature owner
+        if (open && !Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidTarget))
+        {
+            LOG_ERROR("OpenInventory: target 0x%08x is not a creature.", oidTarget);
+            return {};
+        }
+
         CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == oidTarget ? pPlayer->m_pInventoryGUI :
                                                                                     pPlayer->m_pOtherInventoryGUI;
 
@@ -1822,6 +1829,22 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
             if (pPlayer->m_oidPCObject == obj->m_idSelf)
             {
                 return pPlayer->m_oidNWSObject;
+            }
+        }
+    }
+
+    return Constants::OBJECT_INVALID;
+}
+
+NWNX_EXPORT ArgumentStack GetControllingPlayer(ArgumentStack&& args)
+{
+    if (auto *obj = Utils::PopGameObject(args))
+    {
+        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
+        {
+            if (pPlayer->m_oidNWSObject == obj->m_idSelf)
+            {
+                return pPlayer->m_oidPCObject;
             }
         }
     }
