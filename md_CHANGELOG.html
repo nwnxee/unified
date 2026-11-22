@@ -182,6 +182,7 @@ Removed</h2>
 <h2><a class="anchor" id="autotoc_md17"></a>
 Fixed</h2>
 <ul>
+<li>Ruby: the plugin is skipped when the Ruby headers aren't found, instead of failing the build on <code>ruby.h</code>.</li>
 <li>Race: favored enemy bonuses now use each race's <code>FavoredEnemyFeat</code> from racialtypes.2da, as the engine does, instead of a hardcoded list of the base races.</li>
 <li>SQL: <code>ReadFullObjectInActiveRow()</code> no longer warns "Failed to 'acquire' deserialized item" when an item is read without an owner; it is created outside the world as documented.</li>
 <li>Player: Fixed <code><a class="el" href="group__player.html#ga93b73395786bcc1c62df9dbb7d0aaeff" title="Create a QBS for casting a spell.">NWNX_Player_QBS_UseSpecialAbility()</a></code> making a slot of type <code>NWNX_PLAYER_QBS_TYPE_SPELL</code> instead of <code>NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY</code>.</li>
@@ -1761,7 +1762,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 18:02:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 20:23:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
