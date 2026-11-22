@@ -24,6 +24,7 @@ add_plugin(Tweaks
     "FixTriggerPointTest.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "FixTakeGoldNoCallerCrash.cpp"
+    "FixGridSearchOutOfBounds.cpp"
     "HideOnCharList.cpp"
     "HideHardcodedItemVFX.cpp"
     "ItemChargesCost.cpp"

@@ -12,6 +12,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` to allow special abilities to be used on target types other than creatures.
 - Tweaks: added `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` to find a free inventory spot in linear instead of quadratic time, which speeds up filling stores and large containers.
 - Tweaks: added `NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH` to make TakeGoldFromCreature() do nothing, instead of crashing the server, when OBJECT_SELF no longer exists.
+- Tweaks: added `NWNX_TWEAKS_FIX_GRID_SEARCH_OUT_OF_BOUNDS` to keep the grid pathfinder (CNWSArea::PlotGridPath) from writing a searched mark outside its array, a heap overflow that crashes the server later, elsewhere.
 - Tweaks: added `NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY` to show skill checks with a DC over 127 with the real DC in the combat log.
 - Tweaks: added `NWNX_TWEAKS_FIX_NUI_EVENT_CRASH` which fixes a server crash when a NUI event holds invalid UTF-8.
 - Tweaks: added `NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER` which refuses to split a stack inside a container owned by another object, as the engine puts the new stack in the wrong inventory, and refuses splits of items with no owner.
