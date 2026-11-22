@@ -13,6 +13,11 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Tweaks: added `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` to find a free inventory spot in linear instead of quadratic time, which speeds up filling stores and large containers.
 - Tweaks: added `NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH` to make TakeGoldFromCreature() do nothing, instead of crashing the server, when OBJECT_SELF no longer exists.
 - Tweaks: added `NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY` to show skill checks with a DC over 127 with the real DC in the combat log.
+- Tweaks: added `NWNX_TWEAKS_FIX_NUI_EVENT_CRASH` which fixes a server crash when a NUI event holds invalid UTF-8.
+- Tweaks: added `NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER` which refuses to split a stack inside a container owned by another object, as the engine puts the new stack in the wrong inventory, and refuses splits of items with no owner.
+- Tweaks: added `NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY` which fixes a server crash when an inventory holds an item ID that no longer resolves to an item.
+- Tweaks: added `NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH` which fixes a server crash when an open inventory panel's owner is not (or no longer) a creature.
+- Tweaks: added `NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH` which fixes a server crash when a creature jumps to another area while linked to an area of effect that is in no area.
 - Events: Added events `NWNX_ON_ABILITY_CHANGE_{BEFORE|AFTER}` which fire when an ability of a player changes.
 - Events: Added `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE` messagebus message as a wrapper for the `InitOnFirstSubscribe` function. Broadcasts `NWNX_EVENT_INIT_ON_FIRST_SUBSCRIBE_CALLBACK` message when a registered event gets subscribed to.
 - Tweaks: Added `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` to enable character list sorting by last played date
@@ -73,6 +78,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - SkillRanks: Fixed `GetAreaModifier()` dereferencing an empty `std::optional` (undefined behavior) when the queried area had no modifier set for the skill. Now returns `0` in that case.
 - Core: Fixed codepage <-> UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.
 - Core: `NWNX_CORE_LOCALE` is now case-insensitive, accepts `cs` for Czech, and warns about unknown values.
+- Player: `OpenInventory()` no longer opens the inventory of a target that isn't a creature, which crashed the server.
 - Race: Fixed a heap overflow when an effect with more than 8 integers (e.g. loaded from a character file) was copied from a parent race to its child races.
 - Feat, Race: Fixed 128 needless `RemoveEffectById(0)` calls on every feat modifier removal, TURD load and racial modifier reapply. Applied effects with ID 0 are no longer removed by them.
 - Feat: Fixed removing an effect with two or more linked bonus feats that have feat modifiers leaving some of the bonus feats and their modifiers applied. Modifier removal now waits until the engine has finished removing the effect.
