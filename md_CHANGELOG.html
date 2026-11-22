@@ -127,6 +127,7 @@ Added</h2>
 <li>Events: Added events <code>NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}</code> which fire when a player closes an inventory through a client status message.</li>
 <li>Core: added <code>NWNX_CORE_ENCODING_BEST_FIT</code> to replace characters the codepage lacks with close equivalents instead of <code>?</code> when converting from UTF-8.</li>
 <li>Events: Added event <code>NWNX_ON_ENCUMBRANCE_CHANGE_AFTER</code> which fires when a creature's encumbrance state changes.</li>
+<li>Tweaks: added <code>NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST</code> to fix the point-in-trigger test giving the wrong answer for points straight south of a trigger corner.</li>
 <li>SQL: Added <code>NWNX_SQL_QUERY_METRICS_ID_AS_FIELD</code> to send the query ID of <code>NWNX_SQL_QUERY_METRICS</code> as a field instead of a tag, so a long running server doesn't hit InfluxDB's <code>max-values-per-tag</code> limit.</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md12"></a>
@@ -1751,7 +1752,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:48:40 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 02:49:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -178,42 +178,44 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Adds an additional bounds check for triggers to fix a trigger detection bug.    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Fixes the test of whether a point is inside a trigger for points straight south of a trigger corner. See <a href="https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fix_trigger_point_test">here</a>.    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">TakeGoldFromCreature() does nothing instead of crashing the server when OBJECT_SELF no longer exists (e.g. ExecuteScript() on a destroyed object).    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Uncaps the compounded damage flags of EffectDamageResistance.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition).    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition).    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CAST_ALL_ON_HIT_CAST_SPELL_ITEM_PROPERTIES</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Casts all On Hit: Cast Spell item properties on hit, instead of only the first property.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">If enabled, a creature getting added to an area will fire the <code>NWNX_ON_MATERIALCHANGE_*</code> and <code>NWNX_ON_CREATURE_TILE_CHANGE_*</code> events.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIRE_EQUIP_EVENTS_FOR_ALL_CREATURES</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">The module OnPlayerEquipItem and OnPlayerUnEquipItem events are fired for all creatures    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_DONT_DELAY_EQUIP_EVENT</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Fixes Unequip/Equip events being out of sync if an item is equipped/unequipped multiple times per server tick    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">SetCutsceneMode() will not cause a TURD to be dropped.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Allow all items to be used while polymorphed.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Resist Energy feats stack with Epic Energy Resistance.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Allows special abilities to be used on target types other than creatures.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Servervault characters will be sorted by last time played date, instead of character name in the character list.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS</code>   </td><td class="markdownTableBodyNone">Between 1 and 2097152   </td><td class="markdownTableBodyNone">This number of servervault characters will be sorted by date, the rest alphabetically. Defaults to the max value if not set. <code>NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE</code> has to be <code>true</code> for this to have an effect.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_NUI_EVENT_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">A NUI event that makes the engine throw an exception (e.g. a string with invalid UTF-8) is dropped instead of aborting the server.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_SPLIT_ITEM_IN_FOREIGN_CONTAINER</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Splitting a stack inside a container owned by another object (e.g. a bag in a chest) is refused. The engine puts the new stack in the wrong inventory, which later crashes inventory updates. Splits of items with no owner are refused too. A refused split doesn't fire the <code>NWNX_ON_ITEM_SPLIT_*</code> events.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Item IDs that no longer resolve to an item are removed from an inventory before it is sent to a player (<code>CNWSMessage::WriteRepositoryUpdate</code>), instead of crashing the server. The removed <code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code> covered <code>CItemRepository::CalculateContentsWeight</code>, which the engine now null-checks itself; <code>WriteRepositoryUpdate</code> still lacks that check in 8193.37-17.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">An open inventory panel whose owner is not (or no longer) a creature is closed instead of crashing the server.    </td></tr>
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_STALE_ITEMS_IN_ITEM_REPOSITORY</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">Item IDs that no longer resolve to an item are removed from an inventory before it is sent to a player (<code>CNWSMessage::WriteRepositoryUpdate</code>), instead of crashing the server. The removed <code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code> covered <code>CItemRepository::CalculateContentsWeight</code>, which the engine now null-checks itself; <code>WriteRepositoryUpdate</code> still lacks that check in 8193.37-17.    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_INVENTORY_PANEL_OWNER_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">An open inventory panel whose owner is not (or no longer) a creature is closed instead of crashing the server.    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">A creature jumping to another area while linked to an area of effect that is in no area no longer crashes the server.   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md650"></a>
@@ -329,9 +331,13 @@ NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</h3>
 NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION</h2>
 <p>Finding a free spot for an item in a store, container or inventory is quadratic in the number of items. With this tweak it is linear, and items land in the same cells. Calls from scripts, and a repository with no room (Lost Items handling), still run the game's own code.</p>
 <h2><a class="anchor" id="autotoc_md656"></a>
+NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST</h2>
+<p>The game decides whether a point is inside a trigger by counting how often a line going north from the point crosses the trigger's edges. A corner exactly on that line can be counted twice, so a point straight south of a corner (same x) can get the wrong answer: outside a trigger below its bottom corner reads as inside, inside it below its top corner reads as outside. The game uses this test when creatures walk into and out of triggers and for use ranges, and <code><a class="el" href="group__object.html#ga16d6d0bacd964e083fe6522d32061373" title="Get if vPosition is inside oTrigger&#39;s geometry.">NWNX_Object_GetPositionIsInTrigger()</a></code> uses it too.</p>
+<p>This tweak replaces the test with one that counts every corner correctly, and is two to three times faster. Other points get the same answer as before, apart from points within float rounding of an edge.</p>
+<h2><a class="anchor" id="autotoc_md657"></a>
 NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE</h2>
 <p>Warning: This tweak will disable savegame characters getting sent to the client. If you are using multiplayer savegames do not use this tweak!</p>
-<h2><a class="anchor" id="autotoc_md657"></a>
+<h2><a class="anchor" id="autotoc_md658"></a>
 NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY</h2>
 <p>The skill check message only has room for a DC up to 127 and a skill modifier from -128 to 127, so a lock or trap with DC 200 shows as DC 72 in the combat log. The check itself uses the real values. With this tweak, a skill check that doesn't fit is sent as feedback text built from the same TLK strings and name colours as the client's line, with the real numbers. All other skill checks are unchanged, and the Feedback plugin can still hide them. </p>
 </div></div><!-- contents -->
@@ -340,7 +346,7 @@ NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:48:40 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 02:49:02 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
