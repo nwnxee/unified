@@ -84,6 +84,7 @@ var group__player =
     [ "NWNX_Player_UpdateFogColor", "group__player.html#gaa9cda6c9e2572f4854a96502b8c11aec", null ],
     [ "NWNX_Player_UpdateFogAmount", "group__player.html#ga9385c73ca1762939cfe3c1e434870080", null ],
     [ "NWNX_Player_GetGameObject", "group__player.html#gae74e9ff12663e7af59965ea3e5fe6b84", null ],
+    [ "NWNX_Player_GetControllingPlayer", "group__player.html#ga40f4472a8eca0eeb8fc6407d24323092", null ],
     [ "NWNX_Player_SetObjectUiDiscoveryMaskOverride", "group__player.html#gab71886625585721519e1e3f64d4b5699", null ],
     [ "NWNX_Player_SendPartyInvite", "group__player.html#gae8493cf3d7d5bf22fd6cdbc6c6fcc22f", null ],
     [ "NWNX_Player_GetTURD", "group__player.html#ga192c92181939204edeedc21c03a7af64", null ],

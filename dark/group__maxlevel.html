@@ -153,7 +153,7 @@ Next Level XP workaround</h2>
 <div class="line">  <span class="comment">// If not, read from exptable.2da or do what you have to do to get the correct xp value for the next level.</span></div>
 <div class="line">  <a class="code" href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a>(oPC, 315, <span class="stringliteral">&quot;Next Level: &quot;</span> + sNextLevel + <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__player_html_gac1e82d1407aa32ddbcbe2c8822a0fa8a"><div class="ttname"><a href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a></div><div class="ttdeci">void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal=TRUE)</div><div class="ttdoc">Override nStrRef from the TlkTable with sOverride for oPlayer only.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__player_8nss_source.html#l00919">nwnx_player.nss:919</a></div></div>
+<div class="ttc" id="agroup__player_html_gac1e82d1407aa32ddbcbe2c8822a0fa8a"><div class="ttname"><a href="group__player.html#gac1e82d1407aa32ddbcbe2c8822a0fa8a">NWNX_Player_SetTlkOverride</a></div><div class="ttdeci">void NWNX_Player_SetTlkOverride(object oPlayer, int nStrRef, string sOverride, int bRestoreGlobal=TRUE)</div><div class="ttdoc">Override nStrRef from the TlkTable with sOverride for oPlayer only.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__player_8nss_source.html#l00927">nwnx_player.nss:927</a></div></div>
 </div><!-- fragment --><p> Code like the above could for example be run in the base game events <code>EVENT_SCRIPT_MODULE_ON_CLIENT_ENTER</code>, <code>EVENT_SCRIPT_MODULE_ON_PLAYER_LEVEL_UP</code> and the NWNX event <code>NWNX_ON_LEVEL_DOWN_AFTER</code>. An alternative would be the nwnx event before opening the character sheet <code>NWNX_ON_CHARACTER_SHEET_OPEN_BEFORE</code>. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
@@ -161,7 +161,7 @@ Next Level XP workaround</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:50:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 02:52:13 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
