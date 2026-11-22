@@ -43,6 +43,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX` | int | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_hide_hardcoded_item_vfx). |
 | `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
+| `NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST` | true or false | Fixes the test of whether a point is inside a trigger for points straight south of a trigger corner. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fix_trigger_point_test). |
 | `NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH` | true or false | TakeGoldFromCreature() does nothing instead of crashing the server when OBJECT_SELF no longer exists (e.g. ExecuteScript() on a destroyed object). |
 | `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
@@ -136,6 +137,12 @@ Some values for convenience:
 ## NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION
 
 Finding a free spot for an item in a store, container or inventory is quadratic in the number of items. With this tweak it is linear, and items land in the same cells. Calls from scripts, and a repository with no room (Lost Items handling), still run the game's own code.
+
+## NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST
+
+The game decides whether a point is inside a trigger by counting how often a line going north from the point crosses the trigger's edges. A corner exactly on that line can be counted twice, so a point straight south of a corner (same x) can get the wrong answer: outside a trigger below its bottom corner reads as inside, inside it below its top corner reads as outside. The game uses this test when creatures walk into and out of triggers and for use ranges, and `NWNX_Object_GetPositionIsInTrigger()` uses it too.
+
+This tweak replaces the test with one that counts every corner correctly, and is two to three times faster. Other points get the same answer as before, apart from points within float rounding of an edge.
 
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 

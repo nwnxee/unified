@@ -21,6 +21,7 @@ add_plugin(Tweaks
     "FixSplitItemInForeignContainer.cpp"
     "FixStaleItemsInItemRepository.cpp"
     "FixTriggerEnterDetection.cpp"
+    "FixTriggerPointTest.cpp"
     "FixUnlimitedPotionsBug.cpp"
     "FixTakeGoldNoCallerCrash.cpp"
     "HideOnCharList.cpp"
