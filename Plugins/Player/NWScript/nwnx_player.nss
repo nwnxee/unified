@@ -444,6 +444,14 @@ void NWNX_Player_UpdateFogAmount(object oPlayer, int nSunFogAmount, int nMoonFog
 /// @return the actual game object of oPlayer, or OBJECT_INVALID on error.
 object NWNX_Player_GetGameObject(object oPlayer);
 
+/// @brief Get the player controlling oCreature.
+/// @note This is the reverse of NWNX_Player_GetGameObject(): if oCreature is possessed by a DM, a possessed
+/// familiar, or a creature taken over with NWNX_Player_PossessCreature(), this returns the player's own
+/// creature that was left behind. A player's own creature that is not possessing anything returns itself.
+/// @param oCreature The creature.
+/// @return The player object (e.g. as returned by GetFirst/NextPC()) controlling oCreature, or OBJECT_INVALID if no player controls it.
+object NWNX_Player_GetControllingPlayer(object oCreature);
+
 /// @brief Override the ui discovery mask of oObject for oPlayer only
 /// @param oPlayer The player object.
 /// @param oObject The target object.
@@ -968,6 +976,13 @@ object NWNX_Player_GetGameObject(object oPlayer)
 {
     NWNXPushObject(oPlayer);
     NWNXCall(NWNX_Player, "GetGameObject");
+    return NWNXPopObject();
+}
+
+object NWNX_Player_GetControllingPlayer(object oCreature)
+{
+    NWNXPushObject(oCreature);
+    NWNXCall(NWNX_Player, "GetControllingPlayer");
     return NWNXPopObject();
 }
 

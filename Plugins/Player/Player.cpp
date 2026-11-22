@@ -1836,6 +1836,22 @@ NWNX_EXPORT ArgumentStack GetGameObject(ArgumentStack&& args)
     return Constants::OBJECT_INVALID;
 }
 
+NWNX_EXPORT ArgumentStack GetControllingPlayer(ArgumentStack&& args)
+{
+    if (auto *obj = Utils::PopGameObject(args))
+    {
+        for (auto *pPlayer : Globals::AppManager()->m_pServerExoApp->GetPlayerList())
+        {
+            if (pPlayer->m_oidNWSObject == obj->m_idSelf)
+            {
+                return pPlayer->m_oidPCObject;
+            }
+        }
+    }
+
+    return Constants::OBJECT_INVALID;
+}
+
 NWNX_EXPORT ArgumentStack SetObjectUiDiscoveryMaskOverride(ArgumentStack&& args)
 {
     static Hooks::Hook pSetObjectUiDiscoveryMaskOverrideHook =
