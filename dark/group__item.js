@@ -9,6 +9,8 @@ var group__item =
     [ "NWNX_Item_GetAddGoldPieceValue", "group__item.html#ga6ef9c816f115d571f4b40a0f8edc81fd", null ],
     [ "NWNX_Item_SetBaseItemType", "group__item.html#ga96785d68cf29f226db8d834e523dd019", null ],
     [ "NWNX_Item_SetItemAppearance", "group__item.html#ga521f6fb8560e5e15b3755006f533fd33", null ],
+    [ "NWNX_Item_RefreshInventoryWindow", "group__item.html#ga7eec3080688df90df49234a8cbb9dec5", null ],
+    [ "NWNX_Item_RefreshWieldedItems", "group__item.html#ga92a28cdb97b242c7ea2c6ab02e1d409f", null ],
     [ "NWNX_Item_GetEntireItemAppearance", "group__item.html#ga267c047a82417b633ebb2fc2a2a1b51e", null ],
     [ "NWNX_Item_RestoreItemAppearance", "group__item.html#ga511381fc65b8cdf4c8df4fe5ac6bfda0", null ],
     [ "NWNX_Item_GetBaseArmorClass", "group__item.html#ga8a874145d6373bf0df9050db4614fce5", null ],
