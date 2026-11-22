@@ -23,6 +23,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS` | true or false | DMs possessing a creature will not clear their actions. |
 | `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG` | true or false | Fixes a bug with greater sanctuary. |
 | `NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION` | true or false | Finding a free spot in a store, container or inventory takes time linear in the number of items instead of quadratic. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fast_item_repository_find_position). |
+| `NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY` | true or false | Skill check feedback with a DC over 127 (or a modifier outside -128..127) is shown with the real numbers. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fix_skill_check_display). |
 | `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` | Between 1 and 3 | See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_item_charges_cost_mode). |
 | `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` | true or false | Fixes dispel checks vs. effects created by deleted objects. |
 | `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` | true or false | Adds prestige class levels to caster level. |
@@ -43,6 +44,7 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_CANUSEITEM_CHECK_ILR_FOR_HENCHMEN` | true or false | The CNWSCreature::CanUseItem() function will also check ILR for Henchmen. |
 | `NWNX_TWEAKS_FIX_TRIGGER_ENTER_DETECTION` | true or false | Adds an additional bounds check for triggers to fix a trigger detection bug. |
 | `NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST` | true or false | Fixes the test of whether a point is inside a trigger for points straight south of a trigger corner. See [here](https://github.com/nwnxee/unified/tree/master/Plugins/Tweaks#nwnx_tweaks_fix_trigger_point_test). |
+| `NWNX_TWEAKS_FIX_TAKE_GOLD_NO_CALLER_CRASH` | true or false | TakeGoldFromCreature() does nothing instead of crashing the server when OBJECT_SELF no longer exists (e.g. ExecuteScript() on a destroyed object). |
 | `NWNX_TWEAKS_UNCAP_DAMAGE_RESISTANCE_DAMAGE_FLAGS` | true or false | Uncaps the compounded damage flags of EffectDamageResistance. |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_EFFECT_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Effect item properties (in addition to their ammunition). |
 | `NWNX_TWEAKS_RANGED_WEAPONS_USE_ON_HIT_CAST_SPELL_ITEM_PROPERTIES` | true or false | Makes all bows, crossbows, and slings use On Hit: Cast Spell item properties (in addition to their ammunition). |
@@ -53,8 +55,9 @@ Tweaks stuff. See below.
 | `NWNX_TWEAKS_CUTSCENE_MODE_NO_TURD` | true or false | SetCutsceneMode() will not cause a TURD to be dropped. |
 | `NWNX_TWEAKS_CAN_USE_ITEMS_WHILE_POLYMORPHED` | true or false | Allow all items to be used while polymorphed. |
 | `NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE` | true or false | Resist Energy feats stack with Epic Energy Resistance. |
-| `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. | 
-| `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` | true or false | Servervault characters will be sorted by last time played date, instead of character name in the character list |
+| `NWNX_TWEAKS_UNHARDCODE_SPECIAL_ABILITY_TARGET_TYPE` | true or false | Allows special abilities to be used on target types other than creatures. |
+| `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` | true or false | Servervault characters will be sorted by last time played date, instead of character name in the character list. |
+| `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE_NUM_CHARS` | Between 1 and 2097152 | This number of servervault characters will be sorted by date, the rest alphabetically. Defaults to the max value if not set. `NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE` has to be `true` for this to have an effect. |
 
 ## Environment variable values
 
@@ -139,3 +142,7 @@ This tweak replaces the test with one that counts every corner correctly, and is
 ## NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE
 
 Warning: This tweak will disable savegame characters getting sent to the client. If you are using multiplayer savegames do not use this tweak!
+
+## NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY
+
+The skill check message only has room for a DC up to 127 and a skill modifier from -128 to 127, so a lock or trap with DC 200 shows as DC 72 in the combat log. The check itself uses the real values. With this tweak, a skill check that doesn't fit is sent as feedback text built from the same TLK strings and name colours as the client's line, with the real numbers. All other skill checks are unchanged, and the Feedback plugin can still hide them.
