@@ -193,6 +193,9 @@ Fixed</h2>
 <li>Dialog: Fixed <code>GetCurrentNodeID()</code>, <code>GetCurrentNodeIndex()</code> and <code>Get/SetCurrentNodeText()</code> reporting the wrong node in StartingConditional scripts of stacked entries, after skipped links (unknown speaker), and in multiplayer conversations.</li>
 <li>Fixed every <code>json</code> value returned from or passed to an NWNX function leaking: NWNX declared <code>SharedPtrEngineStructure</code>'s virtuals in a different order from the 8193.37 server, so destroying one called <code>GetId()</code> instead of the destructor.</li>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
+<li>POS: fixed a crash or double free when a player with NWNX pointer data (looping VFX, visual transform or appearance overrides) leaves cutscene mode.</li>
+<li>ELC: fixed a crash when an ELC script skipped an INVALID_FEAT/INVALID_SPELL failure, or NON_PLAYER_RACE/CLASS for an id outside the 2da.</li>
+<li>Area/Optimizations: fixed player TURDs being treated as sound objects (crash in NWNX_Area_ExportGIT after a player logged out, corruption in RotateArea).</li>
 <li>Core: Fixed codepage &lt;-&gt; UTF-8 conversion: cp1252 0x80-0x9F (€ ’ “ ” — … ™), cp1250/cp1251 characters above U+07FF, and U+0080-U+00FF on cp1250/cp1251 now convert correctly; malformed UTF-8 no longer corrupts the next character. Conversion is also several times faster.</li>
 <li>Core: <code>NWNX_CORE_LOCALE</code> is now case-insensitive, accepts <code>cs</code> for Czech, and warns about unknown values.</li>
 <li>Player: <code>OpenInventory()</code> no longer opens the inventory of a target that isn't a creature, which crashed the server.</li>
@@ -1757,7 +1760,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 03:27:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 18:00:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
