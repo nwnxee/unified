@@ -201,6 +201,7 @@ Fixed</h2>
 <li>HTTPClient: Fixed <code>RETRY_AFTER</code> missing from rate limited (429) responses that have no <code>Retry-After</code> header; it now falls back to common rate limit reset headers, or 5 seconds. A non-numeric <code>Retry-After</code> header no longer throws.</li>
 <li>HTTPClient: Fixed the warning for a failed request sent during shutdown logging the request body as the host and the path as the status code.</li>
 <li>WebHook: Fixed a crash when a webhook sent during shutdown got no response.</li>
+<li>HTTPClient: Fixed a crash when a request sent during shutdown got no response.</li>
 <li>HTTPClient: The README named the timeout variable <code>NWNX_HTTPCLIENT_REQUEST_TIMEOUT</code>; the code reads <code>NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT</code>.</li>
 <li>Core: Fixed the crash handler looping forever without a backtrace when it runs on a small signal stack, as it does with the .NET runtime loaded.</li>
 </ul>
@@ -1755,7 +1756,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:52:34 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 03:04:29 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
