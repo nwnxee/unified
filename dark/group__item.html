@@ -441,7 +441,7 @@ This value will also revert if item is identified or player relogs into server. 
 <dl class="section warning"><dt>Warning</dt><dd>This will not be visible to PCs until the item is refreshed for them (e.g. by logging out and back in).</dd></dl>
 <p>Helmet models and simple items ignore nIndex. </p><div class="fragment"><div class="line">nType                            nIndex                              nValue</div>
 <div class="line">ITEM_APPR_TYPE_SIMPLE_MODEL      [Ignored]                           Model #</div>
-<div class="line">ITEM_APPR_TYPE_WEAPON_COLOR      ITEM_APPR_WEAPON_COLOR_*            0-255</div>
+<div class="line">ITEM_APPR_TYPE_WEAPON_COLOR      ITEM_APPR_WEAPON_COLOR_*            0-9</div>
 <div class="line">ITEM_APPR_TYPE_WEAPON_MODEL      ITEM_APPR_WEAPON_MODEL_*            Model #</div>
 <div class="line">ITEM_APPR_TYPE_ARMOR_MODEL       ITEM_APPR_ARMOR_MODEL_*             Model #</div>
 <div class="line">ITEM_APPR_TYPE_ARMOR_COLOR       ITEM_APPR_ARMOR_COLOR_* [0]         0-255 [1]</div>
@@ -454,7 +454,7 @@ This value will also revert if item is identified or player relogs into server. 
     <tr><td class="paramname">nType</td><td>The type </td></tr>
     <tr><td class="paramname">nIndex</td><td>The index </td></tr>
     <tr><td class="paramname">nValue</td><td>The value </td></tr>
-    <tr><td class="paramname">bUpdateCreatureAppearance</td><td>If TRUE, also update the appearance of oItem's possessor. Only works for armor/helmets/cloaks. Will remove the item from the quickbar as side effect. </td></tr>
+    <tr><td class="paramname">bUpdateCreatureAppearance</td><td>If TRUE, also update the appearance of oItem's possessor. Only works for armor/helmets/cloaks; for an item held in either hand, call <a class="el" href="group__item.html#ga92a28cdb97b242c7ea2c6ab02e1d409f" title="Make every player resend what oCreature holds in its hands, without destroying the items.">NWNX_Item_RefreshWieldedItems()</a> after a short delay instead. Will remove the item from the quickbar as side effect. </td></tr>
   </table>
   </dd>
 </dl>
@@ -854,7 +854,7 @@ This value will also revert if item is identified or player relogs into server. 
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 02:49:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 22 2026 02:50:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
