@@ -767,30 +767,14 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
     static bool bFavoredEnemyRacesInitialized = false;
     if (!bFavoredEnemyRacesInitialized)
     {
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Aberration].push_back(Constants::Feat::FavoredEnemy_Aberration);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Animal].push_back(Constants::Feat::FavoredEnemy_Animal);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Beast].push_back(Constants::Feat::FavoredEnemy_Beast);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Construct].push_back(Constants::Feat::FavoredEnemy_Construct);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Dragon].push_back(Constants::Feat::FavoredEnemy_Dragon);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Dwarf].push_back(Constants::Feat::FavoredEnemy_Dwarf);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Elemental].push_back(Constants::Feat::FavoredEnemy_Elemental);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Elf].push_back(Constants::Feat::FavoredEnemy_Elf);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Fey].push_back(Constants::Feat::FavoredEnemy_Fey);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Giant].push_back(Constants::Feat::FavoredEnemy_Giant);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Gnome].push_back(Constants::Feat::FavoredEnemy_Gnome);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halfelf].push_back(Constants::Feat::FavoredEnemy_Halfelf);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halfling].push_back(Constants::Feat::FavoredEnemy_Halfling);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halforc].push_back(Constants::Feat::FavoredEnemy_Halforc);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Human].push_back(Constants::Feat::FavoredEnemy_Human);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidGoblinoid].push_back(Constants::Feat::FavoredEnemy_Goblinoid);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidMonstrous].push_back(Constants::Feat::FavoredEnemy_Monstrous);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidOrc].push_back(Constants::Feat::FavoredEnemy_Orc);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidReptilian].push_back(Constants::Feat::FavoredEnemy_Reptilian);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::MagicalBeast].push_back(Constants::Feat::FavoredEnemy_MagicalBeast);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Outsider].push_back(Constants::Feat::FavoredEnemy_Outsider);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Shapechanger].push_back(Constants::Feat::FavoredEnemy_Shapechanger);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Undead].push_back(Constants::Feat::FavoredEnemy_Undead);
-        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Vermin].push_back(Constants::Feat::FavoredEnemy_Vermin);
+        // The engine reads each race's favored enemy feat from racialtypes.2da (FavoredEnemyFeat)
+        auto *pRules = Globals::Rules();
+        for (uint16_t nRace = 0; nRace < pRules->m_nNumRaces; nRace++)
+        {
+            const auto nFeat = pRules->m_lstRaces[nRace].m_nFavoredEnemyFeat;
+            if (nFeat != 0xFFFF)
+                g_plugin->m_RaceFavoredEnemyFeat[nRace].push_back(nFeat);
+        }
         bFavoredEnemyRacesInitialized = true;
     }
 
