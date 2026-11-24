@@ -137,6 +137,18 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NWNX_PROFILER_ENABLE_PATHING   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">true    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NWNX_PROFILER_ENABLE_PATHING_OUTCOMES   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">false    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NWNX_PROFILER_PATHING_OUTCOMES_INTERVAL   </td><td class="markdownTableBodyCenter">uint32_t   </td><td class="markdownTableBodyNone">60    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NWNX_PROFILER_PATHING_LOG_SLOW_MS   </td><td class="markdownTableBodyCenter">uint32_t   </td><td class="markdownTableBodyNone">0    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NWNX_PROFILER_PATHING_LOG_FAILED   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">false    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NWNX_PROFILER_PATHING_LOG_FAILED_MIN_AI_LEVEL   </td><td class="markdownTableBodyCenter">int32_t   </td><td class="markdownTableBodyNone">2    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NWNX_PROFILER_PATHING_LOG_INTERVAL   </td><td class="markdownTableBodyCenter">uint32_t   </td><td class="markdownTableBodyNone">60    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">NWNX_PROFILER_ENABLE_SCRIPTS   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">true    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NWNX_PROFILER_SCRIPTS_AREA_TIMINGS   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">true    </td></tr>
@@ -145,7 +157,36 @@ Environment Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NWNX_PROFILER_ENABLE_TICKRATE   </td><td class="markdownTableBodyCenter">bool   </td><td class="markdownTableBodyNone">true   </td></tr>
 </table>
-</div><table class="memberdecls">
+<h2><a class="anchor" id="autotoc_md538"></a>
+Pathing outcomes</h2>
+<p><code>NWNX_PROFILER_ENABLE_PATHING_OUTCOMES</code> counts how each in-area path request (<code>CNWSModule::PlotPathInArea</code>) ends and pushes the counts every <code>NWNX_PROFILER_PATHING_OUTCOMES_INTERVAL</code> seconds as <code>PathingOutcome</code> with field <code>Count</code> and tags:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Tag   </th><th class="markdownTableHeadNone">Values    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Area   </td><td class="markdownTableBodyNone">Area resref    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AILevel   </td><td class="markdownTableBodyNone">The creature's AI level, <code>-1</code> (default) to <code>4</code>. In an area without players creatures run at <code>0</code>, where a move whose straight line is blocked fails at once and is retried    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Outcome   </td><td class="markdownTableBodyNone"><code>Complete</code>, <code>Partial</code> (complete, but the last waypoint stops more than 1m short of the requested range: the engine's straight-line fallback), <code>Failed</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Controller   </td><td class="markdownTableBodyNone"><code>PC</code> (player-controlled) or <code>NPC</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">GridSearch   </td><td class="markdownTableBodyNone"><code>true</code> if the short-range grid search was used    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NoTileRoute   </td><td class="markdownTableBodyNone"><code>true</code> if the tile-to-tile route search found no route during the request   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md539"></a>
+Logging single requests</h3>
+<p>These settings need <code>NWNX_PROFILER_ENABLE_PATHING_OUTCOMES</code>. They write lines to the NWNX log, with the creature's tag, template, object id and AI level, and the start and goal:</p>
+<ul>
+<li><code>NWNX_PROFILER_PATHING_LOG_SLOW_MS</code>: log each planner call (one <code>CNWSModule::PlotPath</code>, the same call the <code>PlotPath</code> timing measures) that takes at least this many milliseconds. Each call runs inside the main loop, so a slow call is a server stall. <code>0</code> turns this off. The line splits the time into the inter-area search (<code>ComputeInterAreaPath</code>), the in-area planner (<code>PlotPathInArea</code>) and everything else, so it shows where a stall goes. It gives the request as the creature made it (<code>at entry</code>: start, goal, their areas, and the object it is moving to), because the planner rewrites those fields while it works (<code>after</code>). It is logged as the call ends, so requests that never finish are logged too.</li>
+<li><code>NWNX_PROFILER_PATHING_LOG_FAILED</code>: log failed requests (counted when the in-area planner finishes) of creatures at <code>NWNX_PROFILER_PATHING_LOG_FAILED_MIN_AI_LEVEL</code> or higher. The default, <code>2</code> (normal), leaves out creatures in areas without players. Set it to <code>-1</code> to log every failed request. A request that fails in the inter-area search, before the in-area planner runs, is not counted.</li>
+<li><code>NWNX_PROFILER_PATHING_LOG_INTERVAL</code>: log a creature at most once in this many seconds, separately for each kind of line.</li>
+</ul>
+<div class="fragment"><div class="line">Pathing slow call: NPC &#39;DEER_WANDER&#39; (nw_deer, 311), AI level 2, in area forest001, at entry: from (46.83, 52.74) in forest001 to (90.00, 100.00) in library001, temp goal area -, moving to &#39;WP_LIBRARY&#39; (library001), range 1.90, route areas 0 (resolved 0, in progress 0, new points 1, temp points 0), after: area forest001, leg goal area library001, final goal area -, route areas 10 (resolved 0, in progress 0), call 0, failed, 48.20 ms: inter-area search 47.95, in-area planner 0.21, other 0.04</div>
+<div class="line">Pathing failed: area forest001, NPC &#39;NW_DEER&#39; (nw_deer, 2e0), AI level 2, from (46.83, 52.14) to (41.34, 45.45), range 1.00, 101 calls, 134.1 ms (slowest call 3.3 ms), grid search 0, no tile route 0</div>
+</div><!-- fragment --> </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__profiler_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__profiler_8nss.html">nwnx_profiler.nss</a></td></tr>
@@ -244,7 +285,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 20:23:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 24 2026 00:17:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>

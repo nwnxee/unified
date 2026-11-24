@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('group__tweaks.html',''); initResizable
 <div class="contents">
 
 
-<h3><a id="tweaks"></a>Readme</h3><div class="textblock">Tweaks stuff. See below.<h2><a class="anchor" id="autotoc_md649"></a>
+<h3><a id="tweaks"></a>Readme</h3><div class="textblock">Tweaks stuff. See below.<h2><a class="anchor" id="autotoc_md651"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -220,9 +220,9 @@ Environment Variables</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_TWEAKS_FIX_AOE_JUMP_WITHOUT_AREA_CRASH</code>   </td><td class="markdownTableBodyNone">true or false   </td><td class="markdownTableBodyNone">A creature jumping to another area while linked to an area of effect that is in no area no longer crashes the server.   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md650"></a>
+<h2><a class="anchor" id="autotoc_md652"></a>
 Environment variable values</h2>
-<h3><a class="anchor" id="autotoc_md651"></a>
+<h3><a class="anchor" id="autotoc_md653"></a>
 NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</h3>
 <p>Values between 1 and 3 are valid. Any of those values will adjust who is shown on the Module Character Listing. Note: DMs always see all PCs and DMs logged in.</p>
 <table class="markdownTable">
@@ -235,7 +235,7 @@ NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight">3   </td><td class="markdownTableBodyNone">Both PCs and DMs are hidden on the module character list.   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md652"></a>
+<h3><a class="anchor" id="autotoc_md654"></a>
 NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</h3>
 <p>Values between 1 and 3 are valid. Any of those values will adjust the item cost to the old values used in 1.69 for items with 50 charges or less.</p>
 <table class="markdownTable">
@@ -248,7 +248,7 @@ NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight">3   </td><td class="markdownTableBodyNone">Cost will be calculated linearly based on the number of charges the same it was in 1.69, making items with 250 charges 5 times as expensive as 50 charges ones.   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md653"></a>
+<h3><a class="anchor" id="autotoc_md655"></a>
 NWNX_TWEAKS_LANGUAGE_OVERRIDE</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -274,7 +274,7 @@ NWNX_TWEAKS_LANGUAGE_OVERRIDE</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight">131   </td><td class="markdownTableBodyNone">Japanese   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md654"></a>
+<h3><a class="anchor" id="autotoc_md656"></a>
 NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</h3>
 <p>Add the numbers of the VFX you want to hide. For example to hide all Elemental Damage Bonus, Holy Avenger and OnHitVorpal visual effects you'd set the environment variable to 318 (2 + 4 + 8 + 16 + 32 + 256)</p>
 <p>Specific VFX values in order of priority:</p>
@@ -329,17 +329,17 @@ NWNX_TWEAKS_HIDE_HARDCODED_ITEM_VFX</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight">65535   </td><td class="markdownTableBodyNone">Hide All VFX   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md655"></a>
+<h2><a class="anchor" id="autotoc_md657"></a>
 NWNX_TWEAKS_FAST_ITEM_REPOSITORY_FIND_POSITION</h2>
 <p>Finding a free spot for an item in a store, container or inventory is quadratic in the number of items. With this tweak it is linear, and items land in the same cells. Calls from scripts, and a repository with no room (Lost Items handling), still run the game's own code.</p>
-<h2><a class="anchor" id="autotoc_md656"></a>
+<h2><a class="anchor" id="autotoc_md658"></a>
 NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST</h2>
 <p>The game decides whether a point is inside a trigger by counting how often a line going north from the point crosses the trigger's edges. A corner exactly on that line can be counted twice, so a point straight south of a corner (same x) can get the wrong answer: outside a trigger below its bottom corner reads as inside, inside it below its top corner reads as outside. The game uses this test when creatures walk into and out of triggers and for use ranges, and <code><a class="el" href="group__object.html#ga16d6d0bacd964e083fe6522d32061373" title="Get if vPosition is inside oTrigger&#39;s geometry.">NWNX_Object_GetPositionIsInTrigger()</a></code> uses it too.</p>
 <p>This tweak replaces the test with one that counts every corner correctly, and is two to three times faster. Other points get the same answer as before, apart from points within float rounding of an edge.</p>
-<h2><a class="anchor" id="autotoc_md657"></a>
+<h2><a class="anchor" id="autotoc_md659"></a>
 NWNX_TWEAKS_CHARLIST_SORT_BY_LAST_PLAYED_DATE</h2>
 <p>Warning: This tweak will disable savegame characters getting sent to the client. If you are using multiplayer savegames do not use this tweak!</p>
-<h2><a class="anchor" id="autotoc_md658"></a>
+<h2><a class="anchor" id="autotoc_md660"></a>
 NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY</h2>
 <p>The skill check message only has room for a DC up to 127 and a skill modifier from -128 to 127, so a lock or trap with DC 200 shows as DC 72 in the combat log. The check itself uses the real values. With this tweak, a skill check that doesn't fit is sent as feedback text built from the same TLK strings and name colours as the client's line, with the real numbers. All other skill checks are unchanged, and the Feedback plugin can still hide them. </p>
 </div></div><!-- contents -->
@@ -348,7 +348,7 @@ NWNX_TWEAKS_FIX_SKILL_CHECK_DISPLAY</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 20:23:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 24 2026 00:17:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>

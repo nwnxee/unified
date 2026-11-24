@@ -128,6 +128,7 @@ Added</h2>
 <li>Events: Added events <code>NWNX_ON_INVENTORY_CLOSE_{BEFORE|AFTER}</code> which fire when a player closes an inventory through a client status message.</li>
 <li>Core: added <code>NWNX_CORE_ENCODING_BEST_FIT</code> to replace characters the codepage lacks with close equivalents instead of <code>?</code> when converting from UTF-8.</li>
 <li>Events: Added event <code>NWNX_ON_ENCUMBRANCE_CHANGE_AFTER</code> which fires when a creature's encumbrance state changes.</li>
+<li>Profiler: added <code>NWNX_PROFILER_ENABLE_PATHING_OUTCOMES</code> to count how path requests end per area (<code>PathingOutcome</code>), with optional logging of slow and failed path requests.</li>
 <li>Tweaks: added <code>NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST</code> to fix the point-in-trigger test giving the wrong answer for points straight south of a trigger corner.</li>
 <li>SQL: Added <code>NWNX_SQL_QUERY_METRICS_ID_AS_FIELD</code> to send the query ID of <code>NWNX_SQL_QUERY_METRICS</code> as a field instead of a tag, so a long running server doesn't hit InfluxDB's <code>max-values-per-tag</code> limit.</li>
 </ul>
@@ -192,6 +193,7 @@ Fixed</h2>
 <li>Fixed <code>NWNX_TWEAKS_RESIST_ENERGY_STACKS_WITH_EPIC_ENERGY_RESISTANCE</code> not working correctly when the character has more than one resist energy feat.</li>
 <li>Fixed <code>NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY</code> only considering 3 classes for determining the level difference of attacker and defender.</li>
 <li>Fixed <code>NWNX_NWSQLiteExtensions</code> by escaping the columns names during CREATE TABLE.</li>
+<li>Profiler: Fixed the <code>Area</code> tag of the <code>PlotPath</code> timing carrying the resref's trailing NUL padding.</li>
 <li>Dialog: Fixed <code>GetCurrentNodeID()</code>, <code>GetCurrentNodeIndex()</code> and <code>Get/SetCurrentNodeText()</code> reporting the wrong node in StartingConditional scripts of stacked entries, after skipped links (unknown speaker), and in multiplayer conversations.</li>
 <li>Fixed every <code>json</code> value returned from or passed to an NWNX function leaking: NWNX declared <code>SharedPtrEngineStructure</code>'s virtuals in a different order from the 8193.37 server, so destroying one called <code>GetId()</code> instead of the destructor.</li>
 <li>SkillRanks: Fixed <code>GetAreaModifier()</code> dereferencing an empty <code>std::optional</code> (undefined behavior) when the queried area had no modifier set for the skill. Now returns <code>0</code> in that case.</li>
@@ -1762,7 +1764,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 22 2026 20:23:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 24 2026 00:17:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
