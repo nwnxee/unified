@@ -11,6 +11,8 @@
 #include "API/Globals.hpp"
 #include "ProfilerMacros.hpp"
 
+#include <cstring>
+
 namespace Profiler {
 
 using namespace NWNXLib;
@@ -38,7 +40,8 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
 
                 if (area)
                 {
-                    std::string areaName = std::string(area->m_cResRef.GetResRef(), 16);
+                    const char* resRef = area->m_cResRef.GetResRefStr();
+                    std::string areaName(resRef, strnlen(resRef, 16));
                     tags.emplace_back("Area", areaName.empty() ? "(unknown)" : std::move(areaName));
                 }
             }

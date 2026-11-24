@@ -8,4 +8,5 @@ add_plugin(Profiler
    "Targets/ObjectAIUpdates.cpp"
    "Targets/ObjectEventHandlers.cpp"
    "Targets/Pathing.cpp"
+   "Targets/PathingOutcomes.cpp"
    "Targets/Scripts.cpp")
