@@ -31,6 +31,8 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Profiler: added `NWNX_PROFILER_ENABLE_PATHING_OUTCOMES` to count how path requests end per area (`PathingOutcome`), with optional logging of slow and failed path requests.
 - Tweaks: added `NWNX_TWEAKS_FIX_TRIGGER_POINT_TEST` to fix the point-in-trigger test giving the wrong answer for points straight south of a trigger corner.
 - SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
+- Events: Added events `NWNX_ON_ENCOUNTER_TRIGGER_{BEFORE|AFTER}` which fire when an encounter triggers.
+- Events: Added events `NWNX_ON_ENCOUNTER_SPAWN_{BEFORE|AFTER}` which fire when an encounter spawns.
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
