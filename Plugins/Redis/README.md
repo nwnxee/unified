@@ -70,5 +70,6 @@ if (NWNX_Redis_GetResultAsInt(NWNX_Redis_EXISTS("examples:examplekey")))
 | ---------------------------- | :---------------------: | ---------------------------------- |
 | `NWNX_REDIS_HOST`            | string                  | (none)                             |
 | `NWNX_REDIS_PORT`            | int16                   | 6379                               |
+| `NWNX_REDIS_AUTH_PASSWORD`   | string                  | ""                                 |
 | `NWNX_REDIS_PUBSUB_SCRIPT`   | string                  | on_pubsub                          |
 | `NWNX_REDIS_PUBSUB_CHANNELS` | comma-separated strings | ""                                 |
