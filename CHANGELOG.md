@@ -33,9 +33,11 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - SQL: Added `NWNX_SQL_QUERY_METRICS_ID_AS_FIELD` to send the query ID of `NWNX_SQL_QUERY_METRICS` as a field instead of a tag, so a long running server doesn't hit InfluxDB's `max-values-per-tag` limit.
 
 ##### New Plugins
+- Chess: Chess games in plugin memory (legal moves, check, mate, the draw rules, FEN and PGN, using the vendored header-only chess-library) and engine moves from a user-installed Stockfish, computed on a worker thread and delivered by polling or the `NWNX_ON_CHESS_BESTMOVE` event.
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
 
 ##### New NWScript Functions
+- Chess: NewGame(), EndGame(), MakeMove(), GetLegalMoves(), GetMoves(), GetFEN(), GetPGN(), GetStatus(), GetSideToMove(), GetPieceAt(), RequestBestMove(), GetBestMoveResult(), GetBestMoveState()
 - Player: GetOpenStore()
 - Player: ReloadResources()
 - Player: GetControllingPlayer()
