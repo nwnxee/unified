@@ -34,6 +34,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 
 ##### New Plugins
 - Watchcat: Improved hang detection. When the main loop stalls, Watchcat repeatedly samples the main thread’s callstack, aggregates the most frequent stacks, and logs them to pinpoint the cause. Stalls that never recover force a fatal shutdown. Do not run alongside the Watchdog: They really don't get along.
+- ItemAppearance: Lists the appearances an item can take, with blacklist and sync rules, and gets the next, previous or a random one for simple items and weapons.
 
 ##### New NWScript Functions
 - Player: GetOpenStore()
