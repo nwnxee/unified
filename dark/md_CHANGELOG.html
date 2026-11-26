@@ -212,6 +212,7 @@ Fixed</h2>
 <li>HTTPClient: Fixed a crash when a request sent during shutdown got no response.</li>
 <li>HTTPClient: The README named the timeout variable <code>NWNX_HTTPCLIENT_REQUEST_TIMEOUT</code>; the code reads <code>NWNX_HTTPCLIENT_CLIENT_REQUEST_TIMEOUT</code>.</li>
 <li>Core: Fixed the crash handler looping forever without a backtrace when it runs on a small signal stack, as it does with the .NET runtime loaded.</li>
+<li>Core: Fixed the crash handler hanging without a backtrace after a fault inside malloc or free (heap corruption): it no longer allocates.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md18"></a>
 8193.37.13</h1>
@@ -1764,7 +1765,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Nov 24 2026 00:17:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 26 2026 03:19:42 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>
