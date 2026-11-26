@@ -63,7 +63,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetCorpseDecayTime", "group__creature.html#ga9416ebcf6ecac41884242e6f40096100", null ],
     [ "NWNX_Creature_GetBaseSavingThrow", "group__creature.html#gaec44d5608a8adeb007c901425cfd92f8", null ],
     [ "NWNX_Creature_SetBaseSavingThrow", "group__creature.html#ga6a50f09f77b3dd53a49b2e68ebf75547", null ],
-    [ "NWNX_Creature_LevelUp", "group__creature.html#gad9c359948d6fca590e670986a7ed083d", null ],
+    [ "NWNX_Creature_LevelUp", "group__creature.html#gaa2f30c93f44bf4c175a6f682e10e0dc1", null ],
     [ "NWNX_Creature_LevelDown", "group__creature.html#ga2789c514094503115b75d44a73c5122f", null ],
     [ "NWNX_Creature_SetChallengeRating", "group__creature.html#ga1a64b91a8193ff8c1da8400d9d41d100", null ],
     [ "NWNX_Creature_GetAttackBonus", "group__creature.html#ga8215cd4d9a5511c62d97d97952d92599", null ],
@@ -186,5 +186,9 @@ var nwnx__creature_8nss =
     [ "NWNX_CREATURE_PROJECTILE_VFX_FIRE", "group__creature.html#gaef302436809eebedcba2b0a682b8e71a", null ],
     [ "NWNX_CREATURE_PROJECTILE_VFX_SONIC", "group__creature.html#ga023cb65acd8f802b1157068187054f26", null ],
     [ "NWNX_CREATURE_PROJECTILE_VFX_RANDOM", "group__creature.html#ga2059460faa68d5eff02713348851845f", null ],
+    [ "NWNX_CREATURE_LEVELUP_BYPASS_NONE", "group__creature.html#ga3a1042cd4a083e2cd6d057f741c2e7f9", null ],
+    [ "NWNX_CREATURE_LEVELUP_BYPASS_PREREQUISITES", "group__creature.html#gabe3dd3edde4bd8615b0cbfbded39d4f3", null ],
+    [ "NWNX_CREATURE_LEVELUP_BYPASS_ALIGNMENT", "group__creature.html#ga4fae43010211fc81328d2c140928a0a8", null ],
+    [ "NWNX_CREATURE_LEVELUP_BYPASS_ALL", "group__creature.html#ga98eeb2e658638fd24512a6ad15deaae1", null ],
     [ "NWNX_CREATURE_ABILITY_NONE", "group__creature.html#ga7298a8793120c4bd6adb362ee7ad6412", null ]
 ];

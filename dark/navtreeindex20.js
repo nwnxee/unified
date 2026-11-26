@@ -1,5 +1,13 @@
 var NAVTREEINDEX20 =
 {
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,47,2],
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23":[0,47,2,1],
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,47,2,0],
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,47,2,2],
+"structNWNX__WebHook__Message.html":[0,48,3],
+"structNWNX__WebHook__Message.html#a014f92efa064359f6360a6230091820c":[0,48,3,25],
+"structNWNX__WebHook__Message.html#a02aa0be5aef4c5608dcbfdeed5184593":[0,48,3,44],
+"structNWNX__WebHook__Message.html#a1e438925f97be57ac69401f43d0e16bf":[0,48,3,3],
 "structNWNX__WebHook__Message.html#a21863d8d913f6716210d0ca835b7b794":[0,48,3,23],
 "structNWNX__WebHook__Message.html#a2752ebbb220b5a26142e8f63c2da5e60":[0,48,3,4],
 "structNWNX__WebHook__Message.html#a41108b212b8ff86848c53d48ae992619":[0,48,3,24],

@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"structNWNX__Damage__AttackEventData.html#ae5d7b491bc4b3bac0ee4504fa502f9f8":[0,9,3,26],
+"structNWNX__Damage__AttackEventData.html#ae7b76b4e3cb09563e67132a58fec572d":[0,9,3,10],
+"structNWNX__Damage__AttackEventData.html#ae8062caa6110947a51dc1f8e2fef81aa":[0,9,3,14],
+"structNWNX__Damage__AttackEventData.html#aebba350a6ae68da04b1fdd3d98556d30":[0,9,3,1],
+"structNWNX__Damage__AttackEventData.html#aecc6f36b32c8c79c657852ebc956661b":[0,9,3,22],
+"structNWNX__Damage__AttackEventData.html#af83d60735d50ba0926015905279668b6":[0,9,3,8],
+"structNWNX__Damage__AttackEventData.html#afb304220f389dd1e0aeac3fd1f6cf1e0":[0,9,3,30],
+"structNWNX__Damage__AttackEventData.html#afc184d97f1079b5dfeb7d2ff807ad18a":[0,9,3,0],
 "structNWNX__Damage__AttackEventData.html#afc5f25c2e9d25dfe026a45eb479f0ece":[0,9,3,41],
 "structNWNX__Damage__DamageData.html":[0,9,4],
 "structNWNX__Damage__DamageData.html#a053b5e861523333bb9eec9cee6f0c2ff":[0,9,4,5],
@@ -241,13 +249,5 @@ var NAVTREEINDEX19 =
 "structNWNX__Util__HighResTimestamp.html#af3737b091078810d1d68beee390a48e0":[0,44,3,0],
 "structNWNX__Util__WorldTime.html":[0,44,2],
 "structNWNX__Util__WorldTime.html#a40e833c28b4d71306dd171afe50dc3a9":[0,44,2,1],
-"structNWNX__Util__WorldTime.html#afc097db3b754424f759865e53f56de39":[0,44,2,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,47,2],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23":[0,47,2,1],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,47,2,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,47,2,2],
-"structNWNX__WebHook__Message.html":[0,48,3],
-"structNWNX__WebHook__Message.html#a014f92efa064359f6360a6230091820c":[0,48,3,25],
-"structNWNX__WebHook__Message.html#a02aa0be5aef4c5608dcbfdeed5184593":[0,48,3,44],
-"structNWNX__WebHook__Message.html#a1e438925f97be57ac69401f43d0e16bf":[0,48,3,3]
+"structNWNX__Util__WorldTime.html#afc097db3b754424f759865e53f56de39":[0,44,2,0]
 };

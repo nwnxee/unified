@@ -161,6 +161,7 @@ New NWScript Functions</h4>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Changed</h2>
 <ul>
+<li>Creature: added a <code>bypass</code> parameter to <code>LevelUp()</code> to skip class prerequisites, alignment restrictions or all class requirements.</li>
 <li>Damage: Added bRangedAttack to the <a class="el" href="structNWNX__Damage__AttackEventData.html" title="Attack Event Data.">NWNX_Damage_AttackEventData</a> struct.</li>
 <li>Events: Added ID to the NWNX_ON_ITEMPROPERTY_EFFECT_* events data.</li>
 <li>Utils: Change LOG_INFO to LOG_DEBUG for console commands.</li>
@@ -366,7 +367,7 @@ New NWScript Functions</h4>
 <h2><a class="anchor" id="autotoc_md37"></a>
 Changed</h2>
 <ul>
-<li>Creature: Added an argument for passing a class package to <code><a class="el" href="group__creature.html#gad9c359948d6fca590e670986a7ed083d" title="Add levels of class to the creature, bypassing all validation.">NWNX_Creature_LevelUp()</a></code></li>
+<li>Creature: Added an argument for passing a class package to <code><a class="el" href="group__creature.html#gaa2f30c93f44bf4c175a6f682e10e0dc1" title="Add levels of class to the creature, bypassing level up validation.">NWNX_Creature_LevelUp()</a></code></li>
 <li>Player: Added arguments for passing transform data (scale, translation, rotation) to <code><a class="el" href="group__player.html#ga7dbffb81ef377eb430f50011b675573d" title="Plays the VFX at the target position in current area for the given player only.">NWNX_Player_ShowVisualEffect()</a></code> and <code><a class="el" href="group__player.html#ga9c984ffe634a7d8d57464c758f6cc6aa" title="Apply visualeffect to target that only player can see.">NWNX_Player_ApplyInstantVisualEffectToObject()</a></code></li>
 <li>Damage: The damage event now also fires for doors</li>
 <li>Feat: Added the 'Damage'(Increase/Decrease) as an option</li>
@@ -1765,7 +1766,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 26 2026 03:19:42 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 26 2026 03:20:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="../">Light version</a>
 				</li>

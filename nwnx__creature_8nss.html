@@ -304,9 +304,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6a50f09f77b3dd53a49b2e68ebf75547"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6a50f09f77b3dd53a49b2e68ebf75547">NWNX_Creature_SetBaseSavingThrow</a> (object creature, int which, int value)</td></tr>
 <tr class="memdesc:ga6a50f09f77b3dd53a49b2e68ebf75547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the creature's base save.  <a href="group__creature.html#ga6a50f09f77b3dd53a49b2e68ebf75547">More...</a><br /></td></tr>
 <tr class="separator:ga6a50f09f77b3dd53a49b2e68ebf75547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad9c359948d6fca590e670986a7ed083d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gad9c359948d6fca590e670986a7ed083d">NWNX_Creature_LevelUp</a> (object creature, int class, int count=1, int package=PACKAGE_INVALID)</td></tr>
-<tr class="memdesc:gad9c359948d6fca590e670986a7ed083d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add levels of class to the creature, bypassing all validation.  <a href="group__creature.html#gad9c359948d6fca590e670986a7ed083d">More...</a><br /></td></tr>
-<tr class="separator:gad9c359948d6fca590e670986a7ed083d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa2f30c93f44bf4c175a6f682e10e0dc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaa2f30c93f44bf4c175a6f682e10e0dc1">NWNX_Creature_LevelUp</a> (object creature, int class, int count=1, int package=PACKAGE_INVALID, int bypass=<a class="el" href="group__creature.html#ga3a1042cd4a083e2cd6d057f741c2e7f9">NWNX_CREATURE_LEVELUP_BYPASS_NONE</a>)</td></tr>
+<tr class="memdesc:gaa2f30c93f44bf4c175a6f682e10e0dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add levels of class to the creature, bypassing level up validation.  <a href="group__creature.html#gaa2f30c93f44bf4c175a6f682e10e0dc1">More...</a><br /></td></tr>
+<tr class="separator:gaa2f30c93f44bf4c175a6f682e10e0dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2789c514094503115b75d44a73c5122f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga2789c514094503115b75d44a73c5122f">NWNX_Creature_LevelDown</a> (object creature, int count=1)</td></tr>
 <tr class="memdesc:ga2789c514094503115b75d44a73c5122f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove last levels from a creature.  <a href="group__creature.html#ga2789c514094503115b75d44a73c5122f">More...</a><br /></td></tr>
 <tr class="separator:ga2789c514094503115b75d44a73c5122f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -662,6 +662,21 @@ Variables</h2></td></tr>
 <tr class="memitem:ga2059460faa68d5eff02713348851845f"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga2059460faa68d5eff02713348851845f">NWNX_CREATURE_PROJECTILE_VFX_RANDOM</a> = 6</td></tr>
 <tr class="memdesc:ga2059460faa68d5eff02713348851845f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random Elemental VFX.  <a href="group__creature.html#ga2059460faa68d5eff02713348851845f">More...</a><br /></td></tr>
 <tr class="separator:ga2059460faa68d5eff02713348851845f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Level Up Bypass Flags</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="levelup_bypass_flags"></a> Used with <a class="el" href="group__creature.html#gaa2f30c93f44bf4c175a6f682e10e0dc1" title="Add levels of class to the creature, bypassing level up validation.">NWNX_Creature_LevelUp()</a> to skip class requirement checks. Combine with a bitwise OR. </p>
+</div></td></tr>
+<tr class="memitem:ga3a1042cd4a083e2cd6d057f741c2e7f9"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga3a1042cd4a083e2cd6d057f741c2e7f9">NWNX_CREATURE_LEVELUP_BYPASS_NONE</a> = 0</td></tr>
+<tr class="memdesc:ga3a1042cd4a083e2cd6d057f741c2e7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check all class requirements.  <a href="group__creature.html#ga3a1042cd4a083e2cd6d057f741c2e7f9">More...</a><br /></td></tr>
+<tr class="separator:ga3a1042cd4a083e2cd6d057f741c2e7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe3dd3edde4bd8615b0cbfbded39d4f3"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gabe3dd3edde4bd8615b0cbfbded39d4f3">NWNX_CREATURE_LEVELUP_BYPASS_PREREQUISITES</a> = 1</td></tr>
+<tr class="memdesc:gabe3dd3edde4bd8615b0cbfbded39d4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip prestige class prerequisites.  <a href="group__creature.html#gabe3dd3edde4bd8615b0cbfbded39d4f3">More...</a><br /></td></tr>
+<tr class="separator:gabe3dd3edde4bd8615b0cbfbded39d4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4fae43010211fc81328d2c140928a0a8"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga4fae43010211fc81328d2c140928a0a8">NWNX_CREATURE_LEVELUP_BYPASS_ALIGNMENT</a> = 2</td></tr>
+<tr class="memdesc:ga4fae43010211fc81328d2c140928a0a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip class alignment restrictions.  <a href="group__creature.html#ga4fae43010211fc81328d2c140928a0a8">More...</a><br /></td></tr>
+<tr class="separator:ga4fae43010211fc81328d2c140928a0a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98eeb2e658638fd24512a6ad15deaae1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga98eeb2e658638fd24512a6ad15deaae1">NWNX_CREATURE_LEVELUP_BYPASS_ALL</a> = 0xFF</td></tr>
+<tr class="memdesc:ga98eeb2e658638fd24512a6ad15deaae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip all class requirements, including the class's MaxLevel and EpicLevel.  <a href="group__creature.html#ga98eeb2e658638fd24512a6ad15deaae1">More...</a><br /></td></tr>
+<tr class="separator:ga98eeb2e658638fd24512a6ad15deaae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -670,7 +685,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_efcc7e8cb6d48fa5ae53e4b1e4942f85.html">Creature</a></li><li class="navelem"><a class="el" href="dir_df2c9402d4c835b594b2af66d6709907.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a></li>
 				<li class="footer">
-					Generated on Thu Nov 26 2026 03:19:41 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 26 2026 03:20:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.9.1.
 					<a href="dark/">Dark version</a>
 				</li>
