@@ -60,6 +60,17 @@ const int NWNX_CREATURE_PROJECTILE_VFX_SONIC        = 5;
 const int NWNX_CREATURE_PROJECTILE_VFX_RANDOM       = 6; ///< Random Elemental VFX
 /// @}
 
+/// @name Level Up Bypass Flags
+/// @anchor levelup_bypass_flags
+///
+/// Used with NWNX_Creature_LevelUp() to skip class requirement checks. Combine with a bitwise OR.
+/// @{
+const int NWNX_CREATURE_LEVELUP_BYPASS_NONE          = 0;    ///< Check all class requirements
+const int NWNX_CREATURE_LEVELUP_BYPASS_PREREQUISITES = 1;    ///< Skip prestige class prerequisites
+const int NWNX_CREATURE_LEVELUP_BYPASS_ALIGNMENT     = 2;    ///< Skip class alignment restrictions
+const int NWNX_CREATURE_LEVELUP_BYPASS_ALL           = 0xFF; ///< Skip all class requirements, including the class's MaxLevel and EpicLevel
+/// @}
+
 const int NWNX_CREATURE_ABILITY_NONE = 6;
 
 /// @struct NWNX_Creature_SpecialAbility
@@ -462,13 +473,15 @@ int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
 /// @param value The base save value.
 void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 
-/// @brief Add levels of class to the creature, bypassing all validation
+/// @brief Add levels of class to the creature, bypassing level up validation.
 /// @param creature The creature object.
 /// @param class The class id.
 /// @param count The amount of levels of class to add.
 /// @param package The class package to use for leveling up (PACKAGE_INVALID = starting package)
+/// @param bypass The class requirements to skip, a @ref levelup_bypass_flags "Level Up Bypass Flag" or a combination of them.
 /// @note This will not work on player characters.
-void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID);
+/// @note Unless bypassed, the creature must still be able to take the class: its alignment, the class's prerequisites, MaxLevel and EpicLevel.
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID, int bypass = NWNX_CREATURE_LEVELUP_BYPASS_NONE);
 
 /// @brief Remove last levels from a creature.
 /// @param creature The creature object.
@@ -1557,8 +1570,9 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
     NWNXCall(NWNX_Creature, "SetBaseSavingThrow");
 }
 
-void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID)
+void NWNX_Creature_LevelUp(object creature, int class, int count = 1, int package = PACKAGE_INVALID, int bypass = NWNX_CREATURE_LEVELUP_BYPASS_NONE)
 {
+    NWNXPushInt(bypass);
     NWNXPushInt(package);
     NWNXPushInt(count);
     NWNXPushInt(class);

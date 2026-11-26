@@ -55,6 +55,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Item: RefreshInventoryWindow(), RefreshWieldedItems()
 
 ### Changed
+- Creature: added a `bypass` parameter to `LevelUp()` to skip class prerequisites, alignment restrictions or all class requirements.
 - Damage: Added bRangedAttack to the NWNX_Damage_AttackEventData struct.
 - Events: Added ID to the NWNX_ON_ITEMPROPERTY_EFFECT_* events data.
 - Utils: Change LOG_INFO to LOG_DEBUG for console commands.

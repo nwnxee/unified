@@ -1279,6 +1279,38 @@ NWNX_EXPORT ArgumentStack SetBaseSavingThrow(ArgumentStack&& args)
     return {};
 }
 
+static uint8_t s_LevelUpBypass;
+constexpr uint8_t LEVELUP_BYPASS_PREREQUISITES = 1;
+constexpr uint8_t LEVELUP_BYPASS_ALIGNMENT = 2;
+constexpr uint8_t LEVELUP_BYPASS_ALL = 0xFF;
+
+static void HookGetIsClassAvailable()
+{
+    static Hooks::Hook s_GetIsClassAvailableHook = Hooks::HookFunction(&CNWSCreatureStats::GetIsClassAvailable,
+    +[](CNWSCreatureStats *pThis, uint8_t nClass) -> BOOL
+    {
+        if (s_LevelUpBypass == LEVELUP_BYPASS_ALL)
+            return true;
+
+        if (pThis->m_bIsPC)
+        {
+            const auto limit = pThis->m_pBaseCreature->nwnxGet<int32_t>("MULTICLASS_LIMIT");
+            if (limit.has_value() && pThis->m_nNumMultiClasses >= limit.value())
+            {
+                for (int i = 0; i < pThis->m_nNumMultiClasses; ++i)
+                {
+                    if (pThis->m_ClassInfo[i].m_nClass == nClass)
+                        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
+                }
+
+                return 0;
+            }
+        }
+
+        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
+    }, Hooks::Order::Late);
+}
+
 NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
 {
     static bool bSkipLevelUpValidation = false;
@@ -1318,9 +1350,39 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
         const auto cls = args.extract<int32_t>();
         const auto count = args.extract<int32_t>();
         const auto package = args.extract<int32_t>();
+        const auto bypass = static_cast<uint8_t>(args.extract<int32_t>());
+
+        if (cls < 0 || cls >= Globals::Rules()->m_nNumClasses)
+        {
+            LOG_WARNING("LevelUp() called with invalid class %d", cls);
+            return {};
+        }
+
+        if (bypass)
+        {
+            static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook = Hooks::HookFunction(&CNWSCreatureStats::GetMeetsPrestigeClassRequirements,
+            +[](CNWSCreatureStats *pThis, CNWClass *pClass) -> BOOL
+            {
+                if (s_LevelUpBypass & LEVELUP_BYPASS_PREREQUISITES)
+                    return true;
+                return s_GetMeetsPrestigeClassRequirementsHook->CallOriginal<BOOL>(pThis, pClass);
+            }, Hooks::Order::Late);
+
+            static Hooks::Hook s_GetIsAlignmentAllowedHook = Hooks::HookFunction(&CNWClass::GetIsAlignmentAllowed,
+            +[](CNWClass *pThis, uint8_t nGoodEvil, uint8_t nLawChaos) -> BOOL
+            {
+                if (s_LevelUpBypass & LEVELUP_BYPASS_ALIGNMENT)
+                    return true;
+                return s_GetIsAlignmentAllowedHook->CallOriginal<BOOL>(pThis, nGoodEvil, nLawChaos);
+            }, Hooks::Order::Late);
+
+            if (bypass == LEVELUP_BYPASS_ALL)
+                HookGetIsClassAvailable();
+        }
 
         // Allow leveling outside of regular rules
         bSkipLevelUpValidation = true;
+        s_LevelUpBypass = bypass;
         for (int32_t i = 0; i < count; i++)
         {
             if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, package))
@@ -1331,6 +1393,7 @@ NWNX_EXPORT ArgumentStack LevelUp(ArgumentStack&& args)
         }
         // Restore leveling restrictions
         bSkipLevelUpValidation = false;
+        s_LevelUpBypass = 0;
     }
     return {};
 }
@@ -3643,26 +3706,7 @@ NWNX_EXPORT ArgumentStack GetMulticlassLimit(ArgumentStack&& args)
 
 NWNX_EXPORT ArgumentStack SetMulticlassLimit(ArgumentStack&& args)
 {
-    static Hooks::Hook s_GetIsClassAvailableHook = Hooks::HookFunction(&CNWSCreatureStats::GetIsClassAvailable,
-    +[](CNWSCreatureStats *pThis, uint8_t nClass) -> BOOL
-    {
-        if (pThis->m_bIsPC)
-        {
-            const auto limit = pThis->m_pBaseCreature->nwnxGet<int32_t>("MULTICLASS_LIMIT");
-            if (limit.has_value() && pThis->m_nNumMultiClasses >= limit.value())
-            {
-                for (int i = 0; i < pThis->m_nNumMultiClasses; ++i)
-                {
-                    if (pThis->m_ClassInfo[i].m_nClass == nClass)
-                        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
-                }
-
-                return 0;
-            }
-        }
-
-        return s_GetIsClassAvailableHook->CallOriginal<BOOL>(pThis, nClass);
-    }, Hooks::Order::Late);
+    HookGetIsClassAvailable();
 
     if (auto *pCreature = Utils::PopCreature(args))
     {
