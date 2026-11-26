@@ -32,6 +32,10 @@ static uint32_t s_PostFixVersion;
 
 static void (*nwn_crash_handler)(int);
 
+// BASE_GAME_CRASH_HANDLER, read when the handlers are installed: reading the config allocates, which
+// the handler must not do.
+static bool s_chainBaseGameCrashHandler = false;
+
 // The thread currently reporting a crash, 0 when none is. A glibc pthread_t is the address of the
 // thread's descriptor, so 0 never names a live thread.
 static std::atomic<pthread_t> s_crashReportingThread{0};
@@ -85,10 +89,24 @@ extern "C" void nwnx_signal_handler(int sig)
     // so it survives if building the stack trace faults and the re-entry guard aborts.
     std::fflush(stdout);
 
-    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stdout);
-    std::fflush(stdout);
+    // Nothing below allocates. A fault inside malloc or free leaves the allocator lock held, and any
+    // allocation here would wait on it forever: backtrace_symbols_fd writes each frame straight to the
+    // file descriptor instead of building strings.
+    void* frames[20];
+    const int numFrames = backtrace(frames, 20);
+    if (numFrames > 0)
+    {
+        const int fd = fileno(stdout);
+        std::fputs("\n  Backtrace:\n", stdout);
+        for (int i = 0; i < numFrames; ++i)
+        {
+            std::fputs("    ", stdout);
+            std::fflush(stdout);
+            backtrace_symbols_fd(&frames[i], 1, fd);
+        }
+    }
 
-    if (Config::Get<bool>("BASE_GAME_CRASH_HANDLER", false))
+    if (s_chainBaseGameCrashHandler)
     {
         nwn_crash_handler(sig);
     }
@@ -128,6 +146,8 @@ void InitCrashHandlers()
     // call here, so the handler does not have to make it on a small signal stack.
     void* warmUpFrame[1];
     backtrace(warmUpFrame, 1);
+
+    s_chainBaseGameCrashHandler = Config::Get<bool>("BASE_GAME_CRASH_HANDLER", false);
 
     nwn_crash_handler = std::signal(SIGABRT, nwnx_signal_handler);
     std::signal(SIGFPE,  nwnx_signal_handler);
