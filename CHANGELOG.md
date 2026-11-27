@@ -75,6 +75,7 @@ https://github.com/nwnxee/unified/compare/build8193.37.13...HEAD
 - Ruby: the plugin is skipped when the Ruby headers aren't found, instead of failing the build on `ruby.h`.
 - Race: favored enemy bonuses now use each race's `FavoredEnemyFeat` from racialtypes.2da, as the engine does, instead of a hardcoded list of the base races.
 - SQL: `ReadFullObjectInActiveRow()` no longer warns "Failed to 'acquire' deserialized item" when an item is read without an owner; it is created outside the world as documented.
+- Core: Fixed a server crash, or the calling script silently stopping, after `AbortRunningScript()` in a script run with `ExecuteScript()` or `ExecuteScriptChunk()`. The caller now resumes as documented.
 - Player: Fixed `NWNX_Player_QBS_UseSpecialAbility()` making a slot of type `NWNX_PLAYER_QBS_TYPE_SPELL` instead of `NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY`.
 - Item: Fixed `SetItemAppearance()` rejecting color 0 for `ITEM_APPR_WEAPON_COLOR_*`.
 - Fixed `NWNX_TWEAKS_SETAREA_CALLS_SETPOSITION` not working with `NWNX_ON_MATERIALCHANGE_*`.

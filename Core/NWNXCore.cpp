@@ -291,6 +291,26 @@ void NWNXCore::InitialSetupHooks()
                 return loadModuleFinishHook->CallOriginal<uint32_t>(pModule);
             }, Hooks::Order::Earliest);
 
+    // AbortRunningScript() leaves RunScriptFile() without restoring the return addresses and stack it does on any
+    // other error, so the caller of an aborted nested script resumes in the dead script's frames and can crash.
+    static Hooks::Hook runScriptFileHook = Hooks::HookFunction(&CVirtualMachine::RunScriptFile,
+            +[](CVirtualMachine *pVirtualMachine, int32_t nInstructionPointer) -> int32_t
+            {
+                const int32_t nStackPointer = pVirtualMachine->m_cRunTimeStack.m_nStackPointer;
+                const int32_t nInstructPtrLevel = pVirtualMachine->m_nInstructPtrLevel;
+                const int32_t retVal = runScriptFileHook->CallOriginal<int32_t>(pVirtualMachine, nInstructionPointer);
+
+                if (pVirtualMachine->m_nInstructPtrLevel != nInstructPtrLevel)
+                {
+                    if (pVirtualMachine->m_cRunTimeStack.m_nStackPointer > nStackPointer)
+                        pVirtualMachine->m_cRunTimeStack.SetStackPointer(nStackPointer);
+                    else
+                        pVirtualMachine->m_cRunTimeStack.m_nStackPointer = nStackPointer;
+                    pVirtualMachine->m_nInstructPtrLevel = nInstructPtrLevel;
+                }
+                return retVal;
+            }, Hooks::Order::Final);
+
     if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static Hooks::Hook runScriptChunkHook = Hooks::HookFunction(
