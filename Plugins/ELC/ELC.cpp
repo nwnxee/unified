@@ -1569,7 +1569,7 @@ static auto s_ValidateCharacter = Hooks::HookFunction(&CNWSPlayer::ValidateChara
                         // Check Opposition School
                         if (pClassLeveledUpIn->m_bSpellbookRestricted && pClassLeveledUpIn->m_bNeedsToMemorizeSpells)
                         {
-                            uint8_t nSchool = pCreatureStats->GetSchool(nClassLeveledUpIn);
+                            uint8_t nSchool = pCreatureStats->GetSchool(nMultiClassLeveledUpIn);
 
                             if (nSchool != 0)
                             {
