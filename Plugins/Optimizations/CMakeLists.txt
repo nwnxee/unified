@@ -6,4 +6,5 @@ add_plugin(Optimizations
         "CacheScriptChunks.cpp"
         "CacheDebuggerInstances.cpp"
         "CacheScripts.cpp"
+        "GetObjectByTag.cpp"
 )
